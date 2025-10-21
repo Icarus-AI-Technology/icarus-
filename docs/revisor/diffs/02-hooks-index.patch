@@ -1,0 +1,9 @@
+*** Begin Patch
+*** Update File: src/hooks/index.ts
+@@
+-export { useGPTResearcher } from './useGPTResearcher';
+-export type { GPTResearcherConfig, GPTResearcherClient, LogData, ResearchMessage, ResearchResult } from './useGPTResearcher';
++export { useGPTResearcher } from './useGPTResearcher';
+// Ajuste: exportar apenas tipos existentes no hook
+export type { GPTResearcherConfig, ResearchLog, ResearchResult } from './useGPTResearcher';
+*** End Patch

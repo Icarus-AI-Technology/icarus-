@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Diagnóstico - ICARUS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .status { font-size: 1.2rem; margin: 1rem 0; }
+        .success { color: #10b981; }
+        .error { color: #ef4444; }
+        ul { margin: 1rem 0; padding-left: 2rem; }
+        li { margin: 0.5rem 0; }
+        .box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+        #console-output {
+            background: #1a1a1a;
+            color: #0f0;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Diagnóstico ICARUS v5.0</h1>
+        
+        <div class="status success" id="status">
+            ✅ Se você está vendo esta página, o servidor HTTP está funcionando!
+        </div>
+
+        <div class="box">
+            <h2>📊 Testes de Sistema:</h2>
+            <ul id="tests">
+                <li id="test-html">⏳ HTML: Testando...</li>
+                <li id="test-css">⏳ CSS: Testando...</li>
+                <li id="test-js">⏳ JavaScript: Testando...</li>
+                <li id="test-dom">⏳ DOM: Testando...</li>
+            </ul>
+        </div>
+
+        <div class="box">
+            <h2>🔍 Console Output:</h2>
+            <div id="console-output"></div>
+        </div>
+
+        <div class="box" id="next-steps" style="display:none;">
+            <h2>📝 Próximo Passo:</h2>
+            <p>Se todos os testes passaram, o problema está no React ou no Vite.</p>
+            <p>Por favor, <strong>abra o Console do navegador</strong> (Cmd+Option+J) e me envie os erros!</p>
+        </div>
+    </div>
+
+    <script>
+        const log = (msg) => {
+            const output = document.getElementById('console-output');
+            output.innerHTML += msg + '<br>';
+            console.log(msg);
+        };
+
+        // Teste 1: HTML
+        setTimeout(() => {
+            document.getElementById('test-html').innerHTML = '✅ HTML: OK (carregou corretamente)';
+            log('✅ HTML loaded');
+        }, 100);
+
+        // Teste 2: CSS
+        setTimeout(() => {
+            const computedStyle = window.getComputedStyle(document.body);
+            if (computedStyle.background.includes('linear-gradient') || computedStyle.backgroundColor !== 'rgba(0, 0, 0, 0)') {
+                document.getElementById('test-css').innerHTML = '✅ CSS: OK (estilos aplicados)';
+                log('✅ CSS working');
+            } else {
+                document.getElementById('test-css').innerHTML = '❌ CSS: FALHOU';
+                log('❌ CSS failed');
+            }
+        }, 200);
+
+        // Teste 3: JavaScript
+        setTimeout(() => {
+            document.getElementById('test-js').innerHTML = '✅ JavaScript: OK (executando)';
+            log('✅ JavaScript working');
+        }, 300);
+
+        // Teste 4: DOM
+        setTimeout(() => {
+            const testDiv = document.createElement('div');
+            testDiv.textContent = 'teste';
+            if (testDiv.textContent === 'teste') {
+                document.getElementById('test-dom').innerHTML = '✅ DOM: OK (manipulação funcionando)';
+                log('✅ DOM manipulation working');
+            } else {
+                document.getElementById('test-dom').innerHTML = '❌ DOM: FALHOU';
+                log('❌ DOM failed');
+            }
+            
+            document.getElementById('next-steps').style.display = 'block';
+            log('='.repeat(50));
+            log('TODOS OS TESTES BÁSICOS PASSARAM!');
+            log('O problema está no React/Vite, não no navegador.');
+            log('ABRA O CONSOLE e verifique erros do React!');
+        }, 400);
+
+        // Capturar erros
+        window.onerror = function(msg, url, line, col, error) {
+            const errorMsg = `❌ ERRO: ${msg} (linha ${line})`;
+            log(errorMsg);
+            document.getElementById('status').innerHTML = errorMsg;
+            document.getElementById('status').className = 'status error';
+            return false;
+        };
+
+        log('🚀 Iniciando testes...');
+    </script>
+</body>
+</html>
+

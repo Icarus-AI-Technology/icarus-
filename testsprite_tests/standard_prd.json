@@ -1,0 +1,141 @@
+{
+  "meta": {
+    "project": "ICARUS v5.0",
+    "date": "2025-10-18",
+    "prepared_by": "Software Development Manager"
+  },
+  "product_overview": "ICARUS v5.0 is a comprehensive, modular software platform tailored for healthcare and hospital management, featuring a fully implemented neumorphic design system, responsive UI, centralized API Gateway, and robust analytics dashboards. It aims to streamline operations through intuitive navigation, advanced forms, and data-driven insights across 29 main modules and 100+ sub-modules.",
+  "core_goals": [
+    "Deliver a fully responsive and visually cohesive user interface utilizing a neumorphic design system.",
+    "Implement and complete all critical business, operational, and financial forms across modules by Q2 2025.",
+    "Achieve 100% module coverage with all sub-modules and forms by Q4 2025 for complete functional delivery.",
+    "Ensure high performance with lazy loading, code splitting, and fast load times (<2s).",
+    "Maintain top-tier code quality and accessibility standards with TypeScript, React 18, and Tailwind CSS.",
+    "Provide centralized API Gateway with comprehensive documentation and hooks to support scalable integrations.",
+    "Expand AI and Business Intelligence capabilities for predictive analytics and real-time monitoring by Q3 2025."
+  ],
+  "key_features": [
+    "100% implemented neumorphic design system with 150+ standardized CSS classes and reusable components (cards, buttons, inputs).",
+    "Dark mode toggle with theme persistence and adaptive neumorphic styles.",
+    "Responsive navigation system with collapsible sidebar, hamburger menu, and dynamic routing via React Router.",
+    "Dashboards featuring KPI cards with neumorphic icons and data visualizations using Recharts.",
+    "Centralized API Gateway with 19 pre-configured APIs and React hooks for seamless backend integration.",
+    "Form management with advanced multi-tab forms for medical, patient, and financial data input; 8 forms completed, 15-20 critical forms planned.",
+    "Responsive layout optimized for 16:9 screens with breakpoints for various device widths.",
+    "Error boundaries and lazy loading implemented for robust and performant user experience.",
+    "Planned expansion includes AI-driven predictive models, compliance auditing workflows, and advanced BI dashboards.",
+    "Comprehensive design tokens imported from Figma for color, typography, spacing, and shadows to maintain visual consistency."
+  ],
+  "user_flow_summary": [
+    "User lands on Welcome page presenting the project overview, feature grids, call-to-action sections, and key statistics cards.",
+    "User navigates through responsive sidebar or top navigation to access modules such as Dashboard, Settings, and operational sub-modules.",
+    "User interacts with neumorphic components including cards, buttons, and inputs to input and review data across multiple tabs in advanced forms.",
+    "Users toggle between light and dark modes, with seamless theme persistence throughout the session.",
+    "Users access analytics dashboards featuring KPI cards and detailed data visualizations for decision-making.",
+    "Administrators utilize centralized API hooks to manage backend data integrations.",
+    "Users experience error handling and loading states transparently, with lazy loading of modules for performance optimization."
+  ],
+  "validation_criteria": [
+    "All 29 main modules and 100+ sub-modules must be accessible with complete navigation and routing.",
+    "At least 25 critical forms fully implemented and functional by end of Q2 2025, including all required tabs and validation.",
+    "Performance benchmarks: Load times under 2 seconds for main pages under typical network conditions.",
+    "Theme toggle persists user preference across sessions and adapts neumorphic styles correctly.",
+    "100% compliance with accessibility standards including keyboard navigation and contrast.",
+    "API Gateway must expose all configured endpoints with proper React hooks and accompanying documentation.",
+    "No critical bugs reported in production; audit score maintained at 10/10.",
+    "Successful implementation of lazy loading and error boundaries validated by testing.",
+    "AI and BI dashboards must provide accurate, real-time data visualization as per roadmap by Q3 2025."
+  ],
+  "code_summary": {
+    "tech_stack": [
+      "TypeScript",
+      "React 18.3",
+      "Vite 5.4",
+      "React Router DOM 6.26",
+      "Tailwind CSS 3.4",
+      "Radix UI",
+      "Lucide React Icons",
+      "PostCSS",
+      "ESLint",
+      "Prettier"
+    ],
+    "features": [
+      {
+        "name": "Neuomorphic Design System",
+        "description": "Sistema de design neumórfico completo com componentes estilizados incluindo cards, botões e inputs com efeitos de sombra suaves e tridimensionais",
+        "files": [
+          "src/styles/globals.css",
+          "src/components/neumorphic.tsx",
+          "tokens/figma.tokens.json",
+          "tailwind.config.js"
+        ]
+      },
+      {
+        "name": "Dark Mode Toggle",
+        "description": "Funcionalidade de alternância entre modo claro e escuro com persistência de tema e estilos neumórficos adaptados para cada modo",
+        "files": [
+          "src/App.tsx",
+          "src/styles/globals.css"
+        ]
+      },
+      {
+        "name": "Responsive Navigation",
+        "description": "Sistema de navegação responsivo com sidebar colapsável, menu hamburguer e rotas dinâmicas usando React Router",
+        "files": [
+          "src/App.tsx"
+        ]
+      },
+      {
+        "name": "Welcome Page",
+        "description": "Página inicial com apresentação do projeto, cards estatísticos, grid de features e seção de call-to-action",
+        "files": [
+          "src/pages/Welcome.tsx"
+        ]
+      },
+      {
+        "name": "Dashboard Page",
+        "description": "Dashboard analítico com métricas, visualização de dados e cards informativos",
+        "files": [
+          "src/pages/Dashboard.tsx"
+        ]
+      },
+      {
+        "name": "Neumorphic Components Library",
+        "description": "Biblioteca de componentes reutilizáveis com design neumórfico incluindo NeumorphicCard, NeumorphicButton e NeumorphicInput",
+        "files": [
+          "src/components/neumorphic.tsx"
+        ]
+      },
+      {
+        "name": "Utility Functions",
+        "description": "Funções utilitárias para manipulação de classes CSS com clsx e tailwind-merge",
+        "files": [
+          "src/lib/utils.ts"
+        ]
+      },
+      {
+        "name": "Design Tokens",
+        "description": "Sistema de tokens de design do Figma incluindo cores, tipografia, espaçamentos, border-radius e sombras neumórficas",
+        "files": [
+          "tokens/figma.tokens.json"
+        ]
+      },
+      {
+        "name": "Routing System",
+        "description": "Sistema de roteamento com React Router DOM para navegação entre páginas (Home, Dashboard, Settings)",
+        "files": [
+          "src/App.tsx",
+          "src/main.tsx"
+        ]
+      },
+      {
+        "name": "Responsive Layout",
+        "description": "Layout responsivo com header fixo, sidebar colapsável e área de conteúdo principal adaptável a diferentes tamanhos de tela",
+        "files": [
+          "src/App.tsx",
+          "src/styles/globals.css"
+        ]
+      }
+    ]
+  }
+}

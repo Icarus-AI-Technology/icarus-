@@ -1,0 +1,9 @@
+*** Begin Patch
+*** Update File: package.json
+@@
+   "dependencies": {
+@@
+-    "react-router-dom": "^6.26.0",
++    "react-router-dom": "^6.26.0",
++    "date-fns": "^2.30.0",
+*** End Patch

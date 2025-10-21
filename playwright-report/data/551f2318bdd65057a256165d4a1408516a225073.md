@@ -1,0 +1,113 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - link "Pular para conteúdo principal" [active] [ref=e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner "Cabeçalho principal" [ref=e5]:
+    - generic [ref=e6]:
+      - button "Toggle Sidebar" [ref=e7] [cursor=pointer]:
+        - img [ref=e8]
+      - heading "Icarus Make" [level=1] [ref=e9]
+    - button "Toggle Dark Mode" [ref=e10] [cursor=pointer]:
+      - img [ref=e11]
+  - generic [ref=e13]:
+    - navigation "Menu lateral" [ref=e14]:
+      - navigation "Navegação principal" [ref=e15]:
+        - list [ref=e16]:
+          - listitem [ref=e17]:
+            - link "Home" [ref=e18] [cursor=pointer]:
+              - /url: /
+              - img [ref=e19]
+              - generic [ref=e22]: Home
+          - listitem [ref=e23]:
+            - link "Dashboard" [ref=e24] [cursor=pointer]:
+              - /url: /dashboard
+              - img [ref=e25]
+              - generic [ref=e30]: Dashboard
+          - listitem [ref=e31]:
+            - link "Módulos" [ref=e32] [cursor=pointer]:
+              - /url: /modules
+              - img [ref=e33]
+              - generic [ref=e35]: Módulos
+          - listitem [ref=e36]:
+            - link "Design System" [ref=e37] [cursor=pointer]:
+              - /url: /showcase
+              - img [ref=e38]
+              - generic [ref=e44]: Design System
+          - listitem [ref=e45]:
+            - link "Estoque IA" [ref=e46] [cursor=pointer]:
+              - /url: /estoque-ia
+              - img [ref=e47]
+              - generic [ref=e51]: Estoque IA
+          - listitem [ref=e52]:
+            - link "Cirurgias" [ref=e53] [cursor=pointer]:
+              - /url: /cirurgias
+              - img [ref=e54]
+              - generic [ref=e58]: Cirurgias
+          - listitem [ref=e59]:
+            - link "Financeiro" [ref=e60] [cursor=pointer]:
+              - /url: /financeiro
+              - img [ref=e61]
+              - generic [ref=e63]: Financeiro
+          - listitem [ref=e64]:
+            - link "CRM & Vendas" [ref=e65] [cursor=pointer]:
+              - /url: /crm-vendas
+              - img [ref=e66]
+              - generic [ref=e69]: CRM & Vendas
+          - listitem [ref=e70]:
+            - button "Configurações" [ref=e71] [cursor=pointer]:
+              - img [ref=e72]
+              - generic [ref=e75]: Configurações
+    - main "Conteúdo principal" [ref=e76]:
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - heading "Bem-vindo ao Icarus Make" [level=2] [ref=e80]
+          - paragraph [ref=e81]: Design neumórfico moderno importado do Figma. Uma experiência visual única e elegante para suas aplicações.
+        - generic [ref=e82]:
+          - generic [ref=e83]:
+            - generic [ref=e84]:
+              - heading "Total de Usuários" [level=3] [ref=e85]
+              - img [ref=e86]
+            - paragraph [ref=e91]: 2,543
+            - paragraph [ref=e92]: +12% em relação ao mês anterior
+          - generic [ref=e93]:
+            - generic [ref=e94]:
+              - heading "Receita" [level=3] [ref=e95]
+              - img [ref=e96]
+            - paragraph [ref=e98]: R$ 45,231
+            - paragraph [ref=e99]: +8% em relação ao mês anterior
+          - generic [ref=e100]:
+            - generic [ref=e101]:
+              - heading "Atividade" [level=3] [ref=e102]
+              - img [ref=e103]
+            - paragraph [ref=e105]: 89%
+            - paragraph [ref=e106]: Taxa de engajamento
+          - generic [ref=e107]:
+            - generic [ref=e108]:
+              - heading "Crescimento" [level=3] [ref=e109]
+              - img [ref=e110]
+            - paragraph [ref=e113]: +23%
+            - paragraph [ref=e114]: Taxa de crescimento mensal
+        - generic [ref=e115]:
+          - generic [ref=e116]:
+            - heading "🎨 Design Neumórfico" [level=3] [ref=e117]
+            - paragraph [ref=e118]: Interface moderna com efeitos de sombra suaves que criam uma sensação tridimensional única.
+            - list [ref=e119]:
+              - listitem [ref=e120]: ✓ Sombras suaves e realistas
+              - listitem [ref=e121]: ✓ Transições fluidas
+              - listitem [ref=e122]: ✓ Cores harmoniosas
+              - listitem [ref=e123]: ✓ Responsivo e adaptável
+          - generic [ref=e124]:
+            - heading "🌓 Modo Escuro" [level=3] [ref=e125]
+            - paragraph [ref=e126]: Alterne facilmente entre os modos claro e escuro para uma experiência personalizada.
+            - list [ref=e127]:
+              - listitem [ref=e128]: ✓ Tema claro otimizado
+              - listitem [ref=e129]: ✓ Tema escuro elegante
+              - listitem [ref=e130]: ✓ Transição suave
+              - listitem [ref=e131]: ✓ Preferências salvas
+        - generic [ref=e132]:
+          - heading "Pronto para começar?" [level=3] [ref=e133]
+          - paragraph [ref=e134]: Explore o dashboard e descubra todas as funcionalidades.
+          - button "Explorar Dashboard" [ref=e135] [cursor=pointer]
+```

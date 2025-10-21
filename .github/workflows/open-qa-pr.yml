@@ -1,0 +1,63 @@
+name: Open QA Checklist PR
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Create QA Issues from Reports"]
+    types: ["completed"]
+
+jobs:
+  qa-pr:
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build checklist from open QA issues
+        id: build
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner, repo, state: 'open', per_page: 100
+            });
+            const qaIssues = issues.filter(i => i.labels.some(l => typeof l === 'string' ? (l==='qa'||l==='a11y'||l==='hard-gates') : (l.name==='qa'||l.name==='a11y'||l.name==='hard-gates')));
+            const a11y = qaIssues.filter(i => i.labels.some(l => (typeof l==='string'?l:l.name)==='a11y'));
+            const hg = qaIssues.filter(i => i.labels.some(l => (typeof l==='string'?l:l.name)==='hard-gates'));
+
+            function section(title, list) {
+              let md = `\n## ${title}\n`;
+              if (list.length === 0) return md + `- (sem itens)\n`;
+              list.forEach(i => { md += `- [ ] #${i.number} ${i.title} (${i.html_url})\n`; });
+              return md;
+            }
+
+            const now = new Date();
+            const ymd = now.toISOString().slice(0,10);
+            let content = `# QA Checklist — ${ymd}\n`;
+            content += `\nResumo automático a partir de issues com label \`qa\`.\n`;
+            content += section('A11y', a11y);
+            content += section('Hard Gates', hg);
+            content += `\n> Fonte: docs/revisor/issues-a11y-hardgates.md\n`;
+
+            const fs = require('fs');
+            const path = require('path');
+            const outPath = path.join(process.cwd(), 'docs', 'revisor', 'qa-pr-checklist.md');
+            fs.mkdirSync(path.dirname(outPath), { recursive: true });
+            fs.writeFileSync(outPath, content);
+            core.setOutput('title', `QA checklist — ${ymd}`);
+            core.setOutput('body', content);
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: chore/qa-checklist-${{ github.run_id }}
+          commit-message: "chore(qa): add QA checklist"
+          title: ${{ steps.build.outputs.title }}
+          body: ${{ steps.build.outputs.body }}
+          add-paths: |
+            docs/revisor/qa-pr-checklist.md
+
+

@@ -1,0 +1,68 @@
+name: Create QA Issues from Reports
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'docs/revisor/issues-a11y-hardgates.md'
+
+permissions:
+  issues: write
+
+jobs:
+  create-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create issues from docs/revisor/issues-a11y-hardgates.md
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = 'docs/revisor/issues-a11y-hardgates.md';
+            if (!fs.existsSync(path)) {
+              core.info('Report file not found, skipping.');
+              return;
+            }
+            const md = fs.readFileSync(path, 'utf8');
+            const lines = md.split(/\r?\n/);
+            const { owner, repo } = context.repo;
+            let section = '';
+            let created = 0;
+
+            async function createIssueSafe(title, body, labels) {
+              try {
+                await github.rest.issues.create({ owner, repo, title, body, labels });
+                created++;
+              } catch (e) {
+                core.warning(`Failed to create issue: ${title} => ${e.message}`);
+              }
+            }
+
+            for (const line of lines) {
+              if (line.startsWith('## ')) { section = line; continue; }
+              if (!line.startsWith('- [ ]')) continue;
+              const text = line.replace('- [ ] ', '');
+              if (section.includes('A11y')) {
+                const m = text.match(/\((\d+)\)\s+(.+?)\s+—\s+(.*)/);
+                const score = m ? m[1] : '';
+                const subject = m ? m[2] : text;
+                const rest = m ? m[3] : '';
+                const title = `A11y: ${subject}`;
+                const body = `Priority score: ${score}\n\n${text}\n\nSee: docs/qa-a11y-playwright.md`;
+                await createIssueSafe(title, body, ['a11y','qa']);
+              } else if (section.includes('Hard Gates')) {
+                const m = text.match(/\((\d+)\)\s+([^\s]+)\s+—\s+(.*)/);
+                const total = m ? m[1] : '';
+                const file = m ? m[2] : text;
+                const details = m ? m[3] : '';
+                const title = `Hard Gates: ${file}`;
+                const body = `Total findings: ${total}\n\n${details}\n\nSee: docs/revisor/hard-gates-report.md`;
+                await createIssueSafe(title, body, ['hard-gates','qa']);
+              }
+            }
+            core.info(`Created ${created} issues.`);
+
+

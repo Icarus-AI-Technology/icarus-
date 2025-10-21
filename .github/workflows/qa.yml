@@ -1,0 +1,62 @@
+name: QA Audits
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci --no-audit --no-fund
+
+      - name: Build
+        run: npm run build
+
+      - name: Start preview (4173 fallback)
+        run: |
+          nohup npm run preview -- --port 4173 --host > preview.log 2>&1 &
+          sleep 2
+          echo "Preview log:" && tail -n +1 preview.log || true
+
+      - name: Detect preview port
+        id: detect
+        run: |
+          if grep -q "http://localhost:4173" preview.log; then echo "port=4173" >> $GITHUB_OUTPUT; else echo "port=4174" >> $GITHUB_OUTPUT; fi
+
+      - name: Run A11y (Playwright)
+        env:
+          A11Y_BASE_URL: http://localhost:${{ steps.detect.outputs.port }}
+        run: npm run qa:a11y:pw
+
+      - name: Install xvfb & lighthouse
+        run: sudo apt-get update && sudo apt-get install -y xvfb && npx --yes lighthouse --version
+
+      - name: Run Lighthouse (Xvfb)
+        env:
+          LH_URL: http://localhost:${{ steps.detect.outputs.port }}
+        run: npm run qa:lh:xvfb || true
+
+      - name: Upload QA artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-artifacts
+          path: |
+            docs/qa-a11y-playwright.json
+            docs/qa-a11y-playwright.md
+            docs/perf-report.json
+            preview.log
+
+

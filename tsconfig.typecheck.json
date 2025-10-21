@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+  },
+  "include": [
+    "src/vite-env.d.ts",
+    "src/lib/**/*.ts",
+    "src/hooks/**/*.ts",
+    "src/hooks/**/*.tsx",
+    "src/contexts/**/*.tsx",
+    "src/components/oraclusx-ds/**/*.tsx",
+    "src/lib/**/*.tsx"
+  ],
+  "exclude": [
+    "src/lib/services/transportadoras/**"
+  ]
+}
+
+

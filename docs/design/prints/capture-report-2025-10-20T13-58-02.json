@@ -1,0 +1,293 @@
+{
+  "timestamp": "2025-10-20T13:58:02.885Z",
+  "config": {
+    "baseUrl": "http://localhost:4173",
+    "viewport": {
+      "width": 1920,
+      "height": 1080
+    },
+    "totalRoutes": 15,
+    "themes": [
+      "light",
+      "dark"
+    ]
+  },
+  "summary": {
+    "total": 30,
+    "successful": 30,
+    "failed": 0,
+    "elapsedSeconds": 136.63
+  },
+  "results": [
+    {
+      "route": "welcome",
+      "theme": "light",
+      "filename": "welcome-light.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/welcome-light.png",
+      "url": "http://localhost:4173/",
+      "success": true,
+      "timestamp": "2025-10-20T13:55:52.156Z"
+    },
+    {
+      "route": "welcome",
+      "theme": "dark",
+      "filename": "welcome-dark.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/welcome-dark.png",
+      "url": "http://localhost:4173/",
+      "success": true,
+      "timestamp": "2025-10-20T13:55:56.560Z"
+    },
+    {
+      "route": "dashboard",
+      "theme": "light",
+      "filename": "dashboard-light.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/dashboard-light.png",
+      "url": "http://localhost:4173/dashboard",
+      "success": true,
+      "timestamp": "2025-10-20T13:56:00.906Z"
+    },
+    {
+      "route": "dashboard",
+      "theme": "dark",
+      "filename": "dashboard-dark.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/dashboard-dark.png",
+      "url": "http://localhost:4173/dashboard",
+      "success": true,
+      "timestamp": "2025-10-20T13:56:05.287Z"
+    },
+    {
+      "route": "cirurgias",
+      "theme": "light",
+      "filename": "cirurgias-light.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/cirurgias-light.png",
+      "url": "http://localhost:4173/cirurgias",
+      "success": true,
+      "timestamp": "2025-10-20T13:56:09.408Z"
+    },
+    {
+      "route": "cirurgias",
+      "theme": "dark",
+      "filename": "cirurgias-dark.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/cirurgias-dark.png",
+      "url": "http://localhost:4173/cirurgias",
+      "success": true,
+      "timestamp": "2025-10-20T13:56:13.499Z"
+    },
+    {
+      "route": "consignacao",
+      "theme": "light",
+      "filename": "consignacao-light.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/consignacao-light.png",
+      "url": "http://localhost:4173/consignacao",
+      "success": true,
+      "timestamp": "2025-10-20T13:56:17.628Z"
+    },
+    {
+      "route": "consignacao",
+      "theme": "dark",
+      "filename": "consignacao-dark.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/consignacao-dark.png",
+      "url": "http://localhost:4173/consignacao",
+      "success": true,
+      "timestamp": "2025-10-20T13:56:21.815Z"
+    },
+    {
+      "route": "estoque",
+      "theme": "light",
+      "filename": "estoque-light.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/estoque-light.png",
+      "url": "http://localhost:4173/estoque",
+      "success": true,
+      "timestamp": "2025-10-20T13:56:25.912Z"
+    },
+    {
+      "route": "estoque",
+      "theme": "dark",
+      "filename": "estoque-dark.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/estoque-dark.png",
+      "url": "http://localhost:4173/estoque",
+      "success": true,
+      "timestamp": "2025-10-20T13:56:30.248Z"
+    },
+    {
+      "route": "financeiro",
+      "theme": "light",
+      "filename": "financeiro-light.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/financeiro-light.png",
+      "url": "http://localhost:4173/financeiro",
+      "success": true,
+      "timestamp": "2025-10-20T13:56:34.481Z"
+    },
+    {
+      "route": "financeiro",
+      "theme": "dark",
+      "filename": "financeiro-dark.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/financeiro-dark.png",
+      "url": "http://localhost:4173/financeiro",
+      "success": true,
+      "timestamp": "2025-10-20T13:56:38.719Z"
+    },
+    {
+      "route": "cadastros",
+      "theme": "light",
+      "filename": "cadastros-light.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/cadastros-light.png",
+      "url": "http://localhost:4173/cadastros",
+      "success": true,
+      "timestamp": "2025-10-20T13:56:47.140Z"
+    },
+    {
+      "route": "cadastros",
+      "theme": "dark",
+      "filename": "cadastros-dark.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/cadastros-dark.png",
+      "url": "http://localhost:4173/cadastros",
+      "success": true,
+      "timestamp": "2025-10-20T13:56:54.462Z"
+    },
+    {
+      "route": "compras",
+      "theme": "light",
+      "filename": "compras-light.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/compras-light.png",
+      "url": "http://localhost:4173/compras",
+      "success": true,
+      "timestamp": "2025-10-20T13:56:58.662Z"
+    },
+    {
+      "route": "compras",
+      "theme": "dark",
+      "filename": "compras-dark.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/compras-dark.png",
+      "url": "http://localhost:4173/compras",
+      "success": true,
+      "timestamp": "2025-10-20T13:57:02.769Z"
+    },
+    {
+      "route": "contratos",
+      "theme": "light",
+      "filename": "contratos-light.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/contratos-light.png",
+      "url": "http://localhost:4173/contratos",
+      "success": true,
+      "timestamp": "2025-10-20T13:57:06.878Z"
+    },
+    {
+      "route": "contratos",
+      "theme": "dark",
+      "filename": "contratos-dark.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/contratos-dark.png",
+      "url": "http://localhost:4173/contratos",
+      "success": true,
+      "timestamp": "2025-10-20T13:57:10.981Z"
+    },
+    {
+      "route": "vendas",
+      "theme": "light",
+      "filename": "vendas-light.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/vendas-light.png",
+      "url": "http://localhost:4173/vendas",
+      "success": true,
+      "timestamp": "2025-10-20T13:57:15.092Z"
+    },
+    {
+      "route": "vendas",
+      "theme": "dark",
+      "filename": "vendas-dark.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/vendas-dark.png",
+      "url": "http://localhost:4173/vendas",
+      "success": true,
+      "timestamp": "2025-10-20T13:57:19.226Z"
+    },
+    {
+      "route": "compliance",
+      "theme": "light",
+      "filename": "compliance-light.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/compliance-light.png",
+      "url": "http://localhost:4173/compliance",
+      "success": true,
+      "timestamp": "2025-10-20T13:57:23.326Z"
+    },
+    {
+      "route": "compliance",
+      "theme": "dark",
+      "filename": "compliance-dark.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/compliance-dark.png",
+      "url": "http://localhost:4173/compliance",
+      "success": true,
+      "timestamp": "2025-10-20T13:57:27.473Z"
+    },
+    {
+      "route": "rastreabilidade",
+      "theme": "light",
+      "filename": "rastreabilidade-light.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/rastreabilidade-light.png",
+      "url": "http://localhost:4173/rastreabilidade",
+      "success": true,
+      "timestamp": "2025-10-20T13:57:31.575Z"
+    },
+    {
+      "route": "rastreabilidade",
+      "theme": "dark",
+      "filename": "rastreabilidade-dark.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/rastreabilidade-dark.png",
+      "url": "http://localhost:4173/rastreabilidade",
+      "success": true,
+      "timestamp": "2025-10-20T13:57:35.689Z"
+    },
+    {
+      "route": "analytics",
+      "theme": "light",
+      "filename": "analytics-light.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/analytics-light.png",
+      "url": "http://localhost:4173/analytics",
+      "success": true,
+      "timestamp": "2025-10-20T13:57:39.848Z"
+    },
+    {
+      "route": "analytics",
+      "theme": "dark",
+      "filename": "analytics-dark.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/analytics-dark.png",
+      "url": "http://localhost:4173/analytics",
+      "success": true,
+      "timestamp": "2025-10-20T13:57:44.280Z"
+    },
+    {
+      "route": "logistica",
+      "theme": "light",
+      "filename": "logistica-light.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/logistica-light.png",
+      "url": "http://localhost:4173/logistica",
+      "success": true,
+      "timestamp": "2025-10-20T13:57:49.235Z"
+    },
+    {
+      "route": "logistica",
+      "theme": "dark",
+      "filename": "logistica-dark.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/logistica-dark.png",
+      "url": "http://localhost:4173/logistica",
+      "success": true,
+      "timestamp": "2025-10-20T13:57:53.789Z"
+    },
+    {
+      "route": "ia-central",
+      "theme": "light",
+      "filename": "ia-central-light.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/ia-central-light.png",
+      "url": "http://localhost:4173/ia-central",
+      "success": true,
+      "timestamp": "2025-10-20T13:57:58.490Z"
+    },
+    {
+      "route": "ia-central",
+      "theme": "dark",
+      "filename": "ia-central-dark.png",
+      "filepath": "/Users/daxmeneghel/icarus-make/docs/design/prints/ia-central-dark.png",
+      "url": "http://localhost:4173/ia-central",
+      "success": true,
+      "timestamp": "2025-10-20T13:58:02.777Z"
+    }
+  ]
+}

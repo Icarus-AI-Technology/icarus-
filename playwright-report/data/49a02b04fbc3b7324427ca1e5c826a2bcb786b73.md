@@ -1,0 +1,151 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - link "Pular para conteúdo principal" [ref=e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner "Cabeçalho principal" [ref=e5]:
+    - generic [ref=e6]:
+      - button "Toggle Sidebar" [ref=e7] [cursor=pointer]:
+        - img [ref=e8]
+      - heading "Icarus Make" [level=1] [ref=e9]
+    - button "Toggle Dark Mode" [ref=e10] [cursor=pointer]:
+      - img [ref=e11]
+  - generic [ref=e13]:
+    - navigation "Menu lateral" [ref=e14]:
+      - navigation "Navegação principal" [ref=e15]:
+        - list [ref=e16]:
+          - listitem [ref=e17]:
+            - link "Home" [ref=e18] [cursor=pointer]:
+              - /url: /
+              - img [ref=e19]
+              - generic [ref=e22]: Home
+          - listitem [ref=e23]:
+            - link "Dashboard" [ref=e24] [cursor=pointer]:
+              - /url: /dashboard
+              - img [ref=e25]
+              - generic [ref=e30]: Dashboard
+          - listitem [ref=e31]:
+            - link "Módulos" [ref=e32] [cursor=pointer]:
+              - /url: /modules
+              - img [ref=e33]
+              - generic [ref=e35]: Módulos
+          - listitem [ref=e36]:
+            - link "Design System" [ref=e37] [cursor=pointer]:
+              - /url: /showcase
+              - img [ref=e38]
+              - generic [ref=e44]: Design System
+          - listitem [ref=e45]:
+            - link "Estoque IA" [ref=e46] [cursor=pointer]:
+              - /url: /estoque-ia
+              - img [ref=e47]
+              - generic [ref=e51]: Estoque IA
+          - listitem [ref=e52]:
+            - link "Cirurgias" [ref=e53] [cursor=pointer]:
+              - /url: /cirurgias
+              - img [ref=e54]
+              - generic [ref=e58]: Cirurgias
+          - listitem [ref=e59]:
+            - link "Financeiro" [active] [ref=e60] [cursor=pointer]:
+              - /url: /financeiro
+              - img [ref=e61]
+              - generic [ref=e63]: Financeiro
+          - listitem [ref=e64]:
+            - link "CRM & Vendas" [ref=e65] [cursor=pointer]:
+              - /url: /crm-vendas
+              - img [ref=e66]
+              - generic [ref=e69]: CRM & Vendas
+          - listitem [ref=e70]:
+            - button "Configurações" [ref=e71] [cursor=pointer]:
+              - img [ref=e72]
+              - generic [ref=e75]: Configurações
+    - main "Conteúdo principal" [ref=e76]:
+      - generic [ref=e78]:
+        - generic [ref=e80]:
+          - heading "Financeiro Avançado" [level=3] [ref=e81]
+          - paragraph [ref=e82]: DDA Bancário, SEFAZ, NFe e Conciliação Automática
+        - generic [ref=e83]:
+          - button "Dashboard" [ref=e84] [cursor=pointer]:
+            - img [ref=e86]
+            - generic [ref=e89]: Dashboard
+          - button "DDA Bancário" [ref=e90] [cursor=pointer]:
+            - img [ref=e92]
+            - generic [ref=e96]: DDA Bancário
+          - button "NFe/SEFAZ" [ref=e97] [cursor=pointer]:
+            - img [ref=e99]
+            - generic [ref=e102]: NFe/SEFAZ
+          - button "Conciliação" [ref=e103] [cursor=pointer]:
+            - img [ref=e105]
+            - generic [ref=e108]: Conciliação
+        - generic [ref=e109]:
+          - generic [ref=e110]:
+            - heading "Receitas" [level=3] [ref=e112]:
+              - img [ref=e113]
+              - text: Receitas
+            - generic [ref=e116]:
+              - paragraph [ref=e117]: R$ 78.211,25
+              - paragraph [ref=e118]: Este mês
+          - generic [ref=e119]:
+            - heading "Despesas" [level=3] [ref=e121]:
+              - img [ref=e122]
+              - text: Despesas
+            - generic [ref=e125]:
+              - paragraph [ref=e126]: R$ 31.600,25
+              - paragraph [ref=e127]: Este mês
+          - generic [ref=e128]:
+            - heading "Saldo" [level=3] [ref=e130]:
+              - img [ref=e131]
+              - text: Saldo
+            - generic [ref=e133]:
+              - paragraph [ref=e134]: R$ 46.611,00
+              - paragraph [ref=e135]: Líquido
+          - generic [ref=e136]:
+            - heading "Pendentes" [level=3] [ref=e138]:
+              - img [ref=e139]
+              - text: Pendentes
+            - generic [ref=e141]:
+              - paragraph [ref=e142]: "1"
+              - paragraph [ref=e143]: Transações
+        - generic [ref=e144]:
+          - img [ref=e146]
+          - searchbox "Buscar transação, fornecedor ou categoria..." [ref=e149]
+        - generic [ref=e150]:
+          - heading "Transações Recentes" [level=3] [ref=e152]
+          - table [ref=e155]:
+            - rowgroup [ref=e156]:
+              - row "Data Descrição Categoria Valor Status" [ref=e157]:
+                - cell "Data" [ref=e158]
+                - cell "Descrição" [ref=e159]
+                - cell "Categoria" [ref=e160]
+                - cell "Valor" [ref=e161]
+                - cell "Status" [ref=e162]
+            - rowgroup [ref=e163]:
+              - row "17/10/2025 Venda OPME - Hospital São Lucas Vendas + R$ 45.320,50 Pago" [ref=e164] [cursor=pointer]:
+                - cell "17/10/2025" [ref=e165]
+                - cell "Venda OPME - Hospital São Lucas" [ref=e166]
+                - cell "Vendas" [ref=e167]
+                - cell "+ R$ 45.320,50" [ref=e168]
+                - cell "Pago" [ref=e169]:
+                  - generic [ref=e170]: Pago
+              - row "19/10/2025 Fornecedor - Materiais Cirúrgicos Fornecedores - R$ 23.150,00 Pendente" [ref=e171] [cursor=pointer]:
+                - cell "19/10/2025" [ref=e172]
+                - cell "Fornecedor - Materiais Cirúrgicos" [ref=e173]
+                - cell "Fornecedores" [ref=e174]
+                - cell "- R$ 23.150,00" [ref=e175]
+                - cell "Pendente" [ref=e176]:
+                  - generic [ref=e177]: Pendente
+              - row "14/10/2025 Venda OPME - Hospital Adventista Vendas + R$ 32.890,75 Vencido" [ref=e178] [cursor=pointer]:
+                - cell "14/10/2025" [ref=e179]
+                - cell "Venda OPME - Hospital Adventista" [ref=e180]
+                - cell "Vendas" [ref=e181]
+                - cell "+ R$ 32.890,75" [ref=e182]
+                - cell "Vencido" [ref=e183]:
+                  - generic [ref=e184]: Vencido
+              - row "18/10/2025 Impostos - SEFAZ Impostos - R$ 8.450,25 Pago" [ref=e185] [cursor=pointer]:
+                - cell "18/10/2025" [ref=e186]
+                - cell "Impostos - SEFAZ" [ref=e187]
+                - cell "Impostos" [ref=e188]
+                - cell "- R$ 8.450,25" [ref=e189]
+                - cell "Pago" [ref=e190]:
+                  - generic [ref=e191]: Pago
+```

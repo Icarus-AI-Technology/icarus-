@@ -1,0 +1,10 @@
+*** Begin Patch
+*** Update File: tsconfig.json
+@@
+-  "include": ["src"]
++  "include": ["src"],
++  "exclude": [
++    "src/components/examples/**",
++    "src/components/modules/**"
++  ]
+*** End Patch

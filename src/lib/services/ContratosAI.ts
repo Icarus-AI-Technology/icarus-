@@ -1,0 +1,16 @@
+/**
+ * Stub seguro de ContratosAI para evitar quebra de build.
+ * Pode ser substituído por implementação real posteriormente.
+ */
+
+export interface ContratoResumoIA {
+  resumo: string;
+}
+
+export class ContratosAI {
+  async analisarContrato(_: unknown): Promise<ContratoResumoIA> {
+    return Promise.resolve({ resumo: 'Análise de IA indisponível no ambiente atual.' });
+  }
+}
+
+

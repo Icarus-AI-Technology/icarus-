@@ -1,0 +1,13 @@
+*** Begin Patch
+*** Update File: src/components/oraclusx-ds/Table.tsx
+@@
+-                  const value = row[column.key as keyof T];
+-                  const content = column.render ? column.render(value, row) : value;
++                  const value = row[column.key as keyof T];
++                  const renderValue = column.render ? column.render(value, row) : value;
++                  const content = (typeof renderValue === 'string' || typeof renderValue === 'number' || React.isValidElement(renderValue))
++                    ? renderValue as React.ReactNode
++                    : (renderValue === null || renderValue === undefined)
++                      ? null
++                      : String(renderValue);
+*** End Patch

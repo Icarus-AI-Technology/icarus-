@@ -1,0 +1,207 @@
+{
+  "generatedAt": "2025-10-20T23:02:16.802Z",
+  "summary": {
+    "currentMonthlyCost": 0,
+    "riskExposure": 40,
+    "totalAtRisk": 40,
+    "potentialAnnualSavings": {
+      "min": 3000,
+      "max": 9000
+    }
+  },
+  "services": {
+    "supabase": {
+      "category": "Database",
+      "currentPlan": "Free",
+      "estimatedCost": 0,
+      "usage": "Baixo (<500MB, <50k auth users)",
+      "riskUpgrade": "Médio (se crescer >500MB)",
+      "alternatives": [
+        {
+          "name": "Supabase Pro",
+          "cost": 25,
+          "notes": "Se passar 500MB storage ou 50k MAU"
+        },
+        {
+          "name": "Self-hosted PostgreSQL",
+          "cost": 0,
+          "notes": "Requer infra + manutenção (~$20-50/mês em VPS)"
+        }
+      ]
+    },
+    "openai": {
+      "category": "AI Services",
+      "currentPlan": "Pay-as-you-go",
+      "estimatedCost": 0,
+      "usage": "Desconhecido (11 serviços IA mencionados)",
+      "riskUpgrade": "ALTO (sem monitoramento)",
+      "alternatives": [
+        {
+          "name": "Ollama (local)",
+          "cost": 0,
+          "notes": "Modelos OSS locais (Llama 3, Mistral)"
+        },
+        {
+          "name": "Groq (API fast)",
+          "cost": 0.27,
+          "notes": "US$ 0.27/1M tokens (70% mais barato que GPT-4)"
+        },
+        {
+          "name": "Together.ai",
+          "cost": 0.2,
+          "notes": "US$ 0.20/1M tokens output"
+        }
+      ],
+      "recommendation": "⚠️ PRIORIDADE ALTA: Implementar rate limiting + caching + Ollama fallback"
+    },
+    "anthropic": {
+      "category": "AI Services",
+      "currentPlan": "Pay-as-you-go",
+      "estimatedCost": 0,
+      "usage": "Claude mencionado no README",
+      "riskUpgrade": "MÉDIO",
+      "alternatives": [
+        {
+          "name": "Ollama (local)",
+          "cost": 0,
+          "notes": "Para tarefas não-críticas"
+        }
+      ]
+    },
+    "search": {
+      "category": "Search",
+      "currentPlan": "N/A",
+      "estimatedCost": 0,
+      "usage": "Busca in-app (não identificada)",
+      "riskUpgrade": "Baixo",
+      "alternatives": [
+        {
+          "name": "Meilisearch (OSS)",
+          "cost": 0,
+          "notes": "Self-hosted, <10ms search"
+        },
+        {
+          "name": "Typesense (OSS)",
+          "cost": 0,
+          "notes": "Alternativa a Algolia"
+        }
+      ],
+      "recommendation": "✅ Implementar Meilisearch AGORA para buscas futuras"
+    },
+    "ocr": {
+      "category": "OCR",
+      "currentPlan": "N/A",
+      "estimatedCost": 0,
+      "usage": "Potencial uso para DANFE/NF-e",
+      "riskUpgrade": "Baixo",
+      "alternatives": [
+        {
+          "name": "Tesseract.js (OSS)",
+          "cost": 0,
+          "notes": "OCR local, treinável"
+        },
+        {
+          "name": "Google Vision API",
+          "cost": 1.5,
+          "notes": "US$ 1.50/1000 imagens (se precisar)"
+        }
+      ],
+      "recommendation": "✅ Preparar Tesseract para quando necessário"
+    },
+    "email": {
+      "category": "Email",
+      "currentPlan": "Desconhecido",
+      "estimatedCost": 0,
+      "usage": "CommunicationService existe",
+      "riskUpgrade": "Médio",
+      "alternatives": [
+        {
+          "name": "Resend",
+          "cost": 0,
+          "notes": "Free: 3k emails/mês, depois $20/mês (100k)"
+        },
+        {
+          "name": "AWS SES",
+          "cost": 0.1,
+          "notes": "US$ 0.10/1000 emails"
+        },
+        {
+          "name": "Postal (self-hosted)",
+          "cost": 0,
+          "notes": "OSS, requer VPS"
+        }
+      ],
+      "recommendation": "📊 Mapear volume atual antes de decidir"
+    },
+    "queues": {
+      "category": "Background Jobs",
+      "currentPlan": "N/A",
+      "estimatedCost": 0,
+      "usage": "Não identificado (oportunidade futura)",
+      "riskUpgrade": "Baixo",
+      "alternatives": [
+        {
+          "name": "BullMQ (OSS)",
+          "cost": 0,
+          "notes": "Redis-based, robusto"
+        },
+        {
+          "name": "Supabase Edge Functions",
+          "cost": 0,
+          "notes": "Até 500k invocações/mês (Free tier)"
+        }
+      ],
+      "recommendation": "✅ Usar BullMQ quando necessário"
+    },
+    "analytics": {
+      "category": "Analytics",
+      "currentPlan": "Desconhecido",
+      "estimatedCost": 0,
+      "usage": "Google Analytics 4, Hotjar, Mixpanel mencionados",
+      "riskUpgrade": "ALTO (pode gerar custos)",
+      "alternatives": [
+        {
+          "name": "PostHog (OSS)",
+          "cost": 0,
+          "notes": "Free: 1M events/mês, self-host gratuito"
+        },
+        {
+          "name": "Plausible (self-hosted)",
+          "cost": 0,
+          "notes": "Privacy-first"
+        },
+        {
+          "name": "Umami (OSS)",
+          "cost": 0,
+          "notes": "Simples e leve"
+        }
+      ],
+      "recommendation": "⚠️ PRIORIDADE MÉDIA: Migrar para PostHog OSS"
+    }
+  },
+  "savingsOpportunities": [],
+  "recommendations": {
+    "immediate": [
+      "⚠️ PRIORIDADE 1: Implementar rate limiting e caching para APIs de IA",
+      "⚠️ PRIORIDADE 2: Configurar Ollama local para reduzir chamadas externas",
+      "✅ PRIORIDADE 3: Implementar Meilisearch para busca interna"
+    ],
+    "shortTerm": [
+      "📊 Mapear volume real de uso de IA (logs/metrics)",
+      "📊 Auditar uso de e-mail/notificações",
+      "📊 Avaliar necessidade de analytics premium"
+    ],
+    "longTerm": [
+      "🔄 Migrar para PostHog (analytics) - Economia estimada: US$ 300-1k/ano",
+      "🔄 Implementar BullMQ (jobs) quando necessário",
+      "🔄 Considerar self-hosted para serviços críticos (se volume justificar)"
+    ]
+  },
+  "nextSteps": [
+    "1. Implementar monitoramento de custos de IA (logs de tokens)",
+    "2. Criar feature flag para testar Ollama em paralelo",
+    "3. Configurar Meilisearch em shadow mode",
+    "4. Benchmark: Ollama vs OpenAI (latência, qualidade)",
+    "5. Definir política de fallback (local → API externa)"
+  ]
+}

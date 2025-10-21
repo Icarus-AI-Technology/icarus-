@@ -1,0 +1,353 @@
+[
+  {
+    "id": "TC001",
+    "title": "Verify Neumorphic Design System UI Elements",
+    "description": "Check that all neumorphic components including cards, buttons, and inputs render correctly with the expected shadows and 3D effects in both light and dark modes.",
+    "category": "ui",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to pages containing neumorphic components (cards, buttons, inputs)."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that all neumorphic components display correct shadow effects and 3D styles."
+      },
+      {
+        "type": "action",
+        "description": "Toggle dark mode on and off."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify neumorphic styles adapt correctly to dark mode with consistent visual aesthetics."
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Dark Mode Toggle Persistence",
+    "description": "Ensure that the dark mode toggle switches theme and persists user preference across browser sessions and page reloads.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Toggle the dark mode on."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that the UI switches to dark theme with adapted neumorphic styles."
+      },
+      {
+        "type": "action",
+        "description": "Reload the page or close and reopen the browser."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that dark mode remains enabled and applied to the UI."
+      },
+      {
+        "type": "action",
+        "description": "Toggle the dark mode off and verify similar persistence on reload."
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Responsive Navigation Functionality",
+    "description": "Validate that the collapsible sidebar, hamburger menu, and dynamic React Router routes work correctly across different viewport sizes.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Open the application on desktop viewport (>1024px) and verify the sidebar is visible."
+      },
+      {
+        "type": "assertion",
+        "description": "The sidebar should be expanded with visible module names and icons."
+      },
+      {
+        "type": "action",
+        "description": "Collapse the sidebar and verify it reduces to icons only."
+      },
+      {
+        "type": "assertion",
+        "description": "Sidebar should toggle between expanded and collapsed states."
+      },
+      {
+        "type": "action",
+        "description": "Resize the viewport to tablet and mobile sizes (<768px)."
+      },
+      {
+        "type": "assertion",
+        "description": "Sidebar should be hidden and accessible via hamburger menu."
+      },
+      {
+        "type": "action",
+        "description": "Click hamburger menu to open navigation."
+      },
+      {
+        "type": "assertion",
+        "description": "Menu should slide or drop down with accessible navigation options."
+      },
+      {
+        "type": "action",
+        "description": "Navigate through various modules via the navigation menu."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify routes change correctly and corresponding content is loaded without page reload."
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Advanced Multi-tab Form Functionality and Validation",
+    "description": "Verify multi-tab forms for medical, patient, and financial data allow input, tab switching, data persistence, and show correct validation messages.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Open a multi-tab form from a module containing medical or patient data."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify all expected tabs are visible and accessible."
+      },
+      {
+        "type": "action",
+        "description": "Input valid data into required fields on the first tab."
+      },
+      {
+        "type": "action",
+        "description": "Switch to second tab without saving."
+      },
+      {
+        "type": "assertion",
+        "description": "Inputted data on the first tab should persist without loss."
+      },
+      {
+        "type": "action",
+        "description": "Input invalid or missing data in required fields."
+      },
+      {
+        "type": "action",
+        "description": "Attempt to submit the form."
+      },
+      {
+        "type": "assertion",
+        "description": "Appropriate validation error messages should be displayed for each invalid field."
+      },
+      {
+        "type": "action",
+        "description": "Correct the errors and submit the form."
+      },
+      {
+        "type": "assertion",
+        "description": "Form submission should succeed and data saved appropriately."
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Performance Benchmarks for Page Load and Lazy Loading",
+    "description": "Confirm that main pages and critical modules load under 2 seconds on typical network conditions and lazy loading of sub-modules works correctly.",
+    "category": "performance",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to main pages like Welcome, Dashboard, and Settings."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify page content is fully rendered within 2 seconds on average internet speed."
+      },
+      {
+        "type": "action",
+        "description": "Open modules with multiple sub-modules and verify lazy loading behavior."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that sub-modules load only when required upon navigation and do not block main UI."
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Accessibility Compliance for Keyboard Navigation and Contrast",
+    "description": "Ensure the application is fully accessible according to standards, supporting keyboard-only navigation and adequate color contrast in all themes.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate through the UI using keyboard tab, shift+tab and arrow keys."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify all interactive elements including menus, buttons, forms, and links are reachable and operable via keyboard."
+      },
+      {
+        "type": "action",
+        "description": "Enable screen reader mode and explore page content."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify all UI elements have proper ARIA labels and readable descriptions."
+      },
+      {
+        "type": "action",
+        "description": "Test color contrast of text and interactive elements in both light and dark modes."
+      },
+      {
+        "type": "assertion",
+        "description": "Contrast ratios meet or exceed WCAG AA standards."
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Centralized API Gateway Functionality and React Hooks Integration",
+    "description": "Verify that the API Gateway exposes all 19 configured endpoints and React hooks correctly fetch and handle backend data including error scenarios.",
+    "category": "integration",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Invoke each API endpoint via the provided React hooks."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify successful data retrieval and correct data structure is returned."
+      },
+      {
+        "type": "action",
+        "description": "Simulate API error responses such as 400, 404, 500."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify hooks handle errors gracefully and propagate error states to UI components."
+      },
+      {
+        "type": "action",
+        "description": "Check that API calls are documented and conform to specification."
+      },
+      {
+        "type": "assertion",
+        "description": "API documentation matches actual parameters and responses."
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Error Boundaries Handling and User Feedback",
+    "description": "Validate that unexpected UI errors in various modules are caught by error boundaries and user-friendly messages or fallback UIs are displayed.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Inject runtime errors or simulate exceptions in UI components during interaction."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify error boundaries capture errors without crashing the entire app."
+      },
+      {
+        "type": "assertion",
+        "description": "User-friendly fallback UIs or messages are displayed explaining the issue."
+      },
+      {
+        "type": "action",
+        "description": "Reload or navigate away to verify app recovers normally."
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Dashboard KPI Cards and Data Visualization Accuracy",
+    "description": "Ensure dashboards display up-to-date and accurate KPIs using neumorphic styled cards and Recharts visualizations with real-time data updates.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Load the Dashboard page."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify all KPI cards display correct metric values as per backend data."
+      },
+      {
+        "type": "assertion",
+        "description": "Recharts visualizations render correctly with appropriate scales, legends, and data points."
+      },
+      {
+        "type": "action",
+        "description": "Simulate data updates from backend in real-time."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify dashboard updates dynamically to reflect new data without page reload."
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Module and Sub-module Navigation Completeness",
+    "description": "Verify full accessibility and functional navigation for all 29 main modules and 100+ sub-modules ensuring each is reachable and displays expected content.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate through the sidebar and top navigation menus."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that all 29 main modules are listed and accessible."
+      },
+      {
+        "type": "action",
+        "description": "For each main module, navigate to all sub-modules accessible."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that sub-module pages load correct data and UI components."
+      },
+      {
+        "type": "assertion",
+        "description": "No broken links or navigation errors occur."
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Theme Persistence and Design Token Consistency",
+    "description": "Ensure usage of design tokens imported from Figma maintain color, typography, spacing, and shadow consistency across the application with respect to active theme.",
+    "category": "ui",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Inspect visual elements across multiple pages in both light and dark theme."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify colors, fonts, spacing, radius, and shadows align with design tokens specified."
+      },
+      {
+        "type": "action",
+        "description": "Modify theme toggle multiple times."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify design tokens adapt consistently without UI glitches."
+      }
+    ]
+  }
+]

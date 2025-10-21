@@ -1,0 +1,110 @@
+{
+  "global": {
+    "colors": {
+      "primary": {
+        "50": { "value": "#eff6ff", "type": "color" },
+        "100": { "value": "#dbeafe", "type": "color" },
+        "200": { "value": "#bfdbfe", "type": "color" },
+        "300": { "value": "#93c5fd", "type": "color" },
+        "400": { "value": "#60a5fa", "type": "color" },
+        "500": { "value": "#3b82f6", "type": "color" },
+        "600": { "value": "#2563eb", "type": "color" },
+        "700": { "value": "#1d4ed8", "type": "color" },
+        "800": { "value": "#1e40af", "type": "color" },
+        "900": { "value": "#1e3a8a", "type": "color" }
+      },
+      "neutral": {
+        "50": { "value": "#f9fafb", "type": "color" },
+        "100": { "value": "#f3f4f6", "type": "color" },
+        "200": { "value": "#e5e7eb", "type": "color" },
+        "300": { "value": "#d1d5db", "type": "color" },
+        "400": { "value": "#9ca3af", "type": "color" },
+        "500": { "value": "#6b7280", "type": "color" },
+        "600": { "value": "#4b5563", "type": "color" },
+        "700": { "value": "#374151", "type": "color" },
+        "800": { "value": "#1f2937", "type": "color" },
+        "900": { "value": "#111827", "type": "color" }
+      },
+      "neumorphic": {
+        "light": {
+          "bg": { "value": "#e0e5ec", "type": "color" },
+          "shadow-dark": { "value": "#a3b1c6", "type": "color" },
+          "shadow-light": { "value": "#ffffff", "type": "color" }
+        },
+        "dark": {
+          "bg": { "value": "#2d3748", "type": "color" },
+          "shadow-dark": { "value": "#1a202c", "type": "color" },
+          "shadow-light": { "value": "#3d4a5c", "type": "color" }
+        }
+      }
+    },
+    "typography": {
+      "fontFamily": {
+        "sans": { "value": "Inter, system-ui, -apple-system, sans-serif", "type": "fontFamilies" },
+        "mono": { "value": "JetBrains Mono, monospace", "type": "fontFamilies" }
+      },
+      "fontSize": {
+        "xs": { "value": "0.75rem", "type": "fontSizes" },
+        "sm": { "value": "0.875rem", "type": "fontSizes" },
+        "base": { "value": "1rem", "type": "fontSizes" },
+        "lg": { "value": "1.125rem", "type": "fontSizes" },
+        "xl": { "value": "1.25rem", "type": "fontSizes" },
+        "2xl": { "value": "1.5rem", "type": "fontSizes" },
+        "3xl": { "value": "1.875rem", "type": "fontSizes" },
+        "4xl": { "value": "2.25rem", "type": "fontSizes" }
+      },
+      "fontWeight": {
+        "normal": { "value": "400", "type": "fontWeights" },
+        "medium": { "value": "500", "type": "fontWeights" },
+        "semibold": { "value": "600", "type": "fontWeights" },
+        "bold": { "value": "700", "type": "fontWeights" }
+      }
+    },
+    "spacing": {
+      "xs": { "value": "0.25rem", "type": "spacing" },
+      "sm": { "value": "0.5rem", "type": "spacing" },
+      "md": { "value": "1rem", "type": "spacing" },
+      "lg": { "value": "1.5rem", "type": "spacing" },
+      "xl": { "value": "2rem", "type": "spacing" },
+      "2xl": { "value": "3rem", "type": "spacing" }
+    },
+    "borderRadius": {
+      "sm": { "value": "0.25rem", "type": "borderRadius" },
+      "md": { "value": "0.5rem", "type": "borderRadius" },
+      "lg": { "value": "0.75rem", "type": "borderRadius" },
+      "xl": { "value": "1rem", "type": "borderRadius" },
+      "full": { "value": "9999px", "type": "borderRadius" }
+    },
+    "shadows": {
+      "neumorphic": {
+        "default": { 
+          "value": "8px 8px 16px #bebebe, -8px -8px 16px #ffffff", 
+          "type": "boxShadow" 
+        },
+        "inset": { 
+          "value": "inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff", 
+          "type": "boxShadow" 
+        },
+        "hover": { 
+          "value": "12px 12px 24px #bebebe, -12px -12px 24px #ffffff", 
+          "type": "boxShadow" 
+        }
+      },
+      "neumorphic-dark": {
+        "default": { 
+          "value": "8px 8px 16px #0a0a0a, -8px -8px 16px #1a1a1a", 
+          "type": "boxShadow" 
+        },
+        "inset": { 
+          "value": "inset 5px 5px 10px #0a0a0a, inset -5px -5px 10px #1a1a1a", 
+          "type": "boxShadow" 
+        },
+        "hover": { 
+          "value": "12px 12px 24px #0a0a0a, -12px -12px 24px #1a1a1a", 
+          "type": "boxShadow" 
+        }
+      }
+    }
+  }
+}
+

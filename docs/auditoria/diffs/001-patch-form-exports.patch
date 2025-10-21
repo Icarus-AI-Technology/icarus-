@@ -1,0 +1,28 @@
+### Arquivo
+`src/components/oraclusx-ds/index.ts`
+
+### Problema detectado
+Exportações nomeadas (`Form`, `FormLabel`, `FormControl`, `FormMessage`) não existem no módulo `Form.tsx`. Também há duplicidade de `RadioProps`, quebrando o `tsc`.
+
+### Proposta (patch mínimo)
+```diff
+-export { Form, FormField, FormLabel, FormControl, FormMessage } from "./Form";
+-export type { FormFieldProps } from "./Form";
++export { FormField, TextInput, TextArea, Select, Checkbox, Radio, FormGroup } from "./Form";
++export type { FormFieldProps, TextInputProps, TextAreaProps, SelectProps, CheckboxProps, RadioProps, FormGroupProps } from "./Form";
+
+-export { Radio } from "./Radio";
+-export type { RadioProps, RadioProps } from "./Radio";
++export { Radio } from "./Radio";
++export type { RadioProps } from "./Radio";
+```
+
+### Racional técnico
+Os componentes reais exportados por `Form.tsx` são `FormField`, `TextInput`, etc. Ajustando as exportações, eliminamos referências inexistentes e a duplicidade de tipos, permitindo que o `tsc` avance.
+
+### Impacto & Risco
+Baixo: apenas corrige reexports incorretos, sem alterar comportamento dos componentes.
+
+### Rollback
+Restaurar `src/components/oraclusx-ds/index.ts` para a versão anterior (antes deste patch).
+

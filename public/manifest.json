@@ -1,0 +1,19 @@
+{
+  "name": "Icarus v5.0",
+  "short_name": "Icarus",
+  "description": "Gestão elevada pela IA",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#6366F1",
+  "background_color": "#E5E7EB",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/"
+}
+
