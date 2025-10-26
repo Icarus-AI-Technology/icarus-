@@ -1,0 +1,99 @@
+```bash
+# 🎯 VARIÁVEIS DE AMBIENTE PARA VERCEL - COPIE E COLE
+# ====================================================
+
+# -----------------------------------------------------------------------------
+# ✅ ESSENCIAIS (Mínimo para funcionar - OBRIGATÓRIO)
+# -----------------------------------------------------------------------------
+
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+VITE_APP_URL=https://your-app.vercel.app
+NODE_ENV=production
+
+# -----------------------------------------------------------------------------
+# 📊 ANALYTICS & MONITORING (Recomendado)
+# -----------------------------------------------------------------------------
+
+VITE_VERCEL_ANALYTICS_ID=
+VITE_ENABLE_ANALYTICS=true
+
+# -----------------------------------------------------------------------------
+# 🔌 INTEGRAÇÕES OPCIONAIS
+# -----------------------------------------------------------------------------
+
+# MeiliSearch (Busca Inteligente)
+VITE_MEILISEARCH_HOST=
+VITE_MEILISEARCH_API_KEY=
+
+# SendGrid (Email)
+SENDGRID_API_KEY=
+
+# Twilio (SMS/WhatsApp)
+TWILIO_ACCOUNT_SID=
+TWILIO_AUTH_TOKEN=
+TWILIO_PHONE_NUMBER=
+
+# OpenAI (GPT-4)
+OPENAI_API_KEY=
+
+# Anthropic (Claude)
+ANTHROPIC_API_KEY=
+
+# Sentry (Error Tracking)
+VITE_SENTRY_DSN=
+
+# -----------------------------------------------------------------------------
+# 🇧🇷 APIS BRASIL (Gratuitas - Recomendado)
+# -----------------------------------------------------------------------------
+
+VITE_BRASILAPI_URL=https://brasilapi.com.br/api
+VITE_VIACEP_URL=https://viacep.com.br/ws
+VITE_RECEITAWS_URL=https://www.receitaws.com.br/v1
+
+# -----------------------------------------------------------------------------
+# 🚚 TRANSPORTADORAS (Opcional)
+# -----------------------------------------------------------------------------
+
+CORREIOS_USER=
+CORREIOS_PASSWORD=
+JADLOG_TOKEN=
+TOTAL_EXPRESS_API_KEY=
+BRASPRESS_API_KEY=
+
+# -----------------------------------------------------------------------------
+# 🔒 SEGURANÇA & CORS
+# -----------------------------------------------------------------------------
+
+CORS_ORIGINS=https://your-app.vercel.app
+JWT_SECRET=
+
+# =============================================================================
+# 📝 INSTRUÇÕES
+# =============================================================================
+#
+# 1. Acesse: Vercel Dashboard → Seu Projeto → Settings → Environment Variables
+#
+# 2. Adicione as variáveis ESSENCIAIS (primeiras 4):
+#    - VITE_SUPABASE_URL
+#    - VITE_SUPABASE_ANON_KEY
+#    - VITE_APP_URL
+#    - NODE_ENV
+#
+# 3. Obtenha credenciais Supabase:
+#    - https://supabase.com/dashboard
+#    - Seu Projeto → Settings → API
+#    - Copie: Project URL e anon/public key
+#
+# 4. Configure VITE_APP_URL com a URL do seu deploy Vercel
+#    Exemplo: https://icarus-newortho.vercel.app
+#
+# 5. Adicione variáveis opcionais conforme necessidade
+#
+# 6. Após adicionar, faça REDEPLOY do projeto
+#
+# 📚 Guia completo: docs/VERCEL_ENV_GUIDE.md
+#
+# =============================================================================
+```
+
