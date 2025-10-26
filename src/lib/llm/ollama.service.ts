@@ -65,7 +65,8 @@ export class OllamaService {
 
       return response.data.message.content;
     } catch (error) {
-      console.error('[OllamaService] Chat error:', error);
+   const err = error as Error;
+      console.error('[OllamaService] Chat error:', err);
       throw new Error(`Ollama chat failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -94,7 +95,8 @@ export class OllamaService {
 
       return response.data.response;
     } catch (error) {
-      console.error('[OllamaService] Generate error:', error);
+   const err = error as Error;
+      console.error('[OllamaService] Generate error:', err);
       throw new Error(`Ollama generate failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -107,7 +109,8 @@ export class OllamaService {
       const response = await this.client.get<{ models: OllamaModel[] }>('/api/tags');
       return response.data.models;
     } catch (error) {
-      console.error('[OllamaService] List models error:', error);
+   const err = error as Error;
+      console.error('[OllamaService] List models error:', err);
       return [];
     }
   }
@@ -134,7 +137,8 @@ export class OllamaService {
         stream: false,
       });
     } catch (error) {
-      console.error('[OllamaService] Pull model error:', error);
+   const err = error as Error;
+      console.error('[OllamaService] Pull model error:', err);
       throw new Error(`Failed to pull model ${modelName}`);
     }
   }

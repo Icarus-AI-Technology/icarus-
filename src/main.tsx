@@ -1,6 +1,7 @@
 import { StrictMode } from"react";
 import { createRoot } from"react-dom/client";
 import App from"./App";
+import { AuthProvider } from"./contexts/AuthContext";
 import"./styles/globals.css";
 
 // Inicializar compatibilidade cross-browser
@@ -52,6 +53,7 @@ if (!features.fetch) {
 // ========================================
 
 const rootElement = document.getElementById("root");
+const isQAMode = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1';
 
 if (!rootElement) {
   throw new Error("Root element not found");
@@ -61,9 +63,11 @@ console.log("✅ Renderizando aplicação...");
 
 createRoot(rootElement).render(
   <StrictMode>
-    <App />
-    <Analytics />
-    <SpeedInsights />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+    {!isQAMode && <Analytics />}
+    {!isQAMode && <SpeedInsights />}
   </StrictMode>
 );
 

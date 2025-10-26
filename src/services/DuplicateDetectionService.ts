@@ -37,7 +37,7 @@ export interface DuplicateMatch {
   nome: string;
   score: number;
   motivo: string;
-  dados: any;
+  dados: Record<string, unknown>;
   detalhes?: {
     cpf?: boolean;
     cnpj?: boolean;
@@ -379,26 +379,32 @@ export class DuplicateDetectionService {
   /**
    * Extrair nome do registro baseado no tipo
    */
-  private getNomeFromRecord(record: any, tipo: TipoEntidade): string {
+  private getNomeFromRecord(record: Record<string, unknown>, tipo: TipoEntidade): string {
     switch (tipo) {
       case 'medico':
       case 'paciente':
-        return record.nome_completo || '';
+        return (record as { nome_completo?: string }).nome_completo || '';
       
       case 'hospital':
       case 'convenio':
       case 'fornecedor':
       case 'transportadora':
-        return record.razao_social || record.nome || '';
+        return (record as { razao_social?: string; nome?: string }).razao_social || (record as { nome?: string }).nome || '';
       
       case 'produto_opme':
-        return record.descricao || '';
+        return (record as { descricao?: string }).descricao || '';
       
       case 'equipe_medica':
-        return record.nome || '';
+        return (record as { nome?: string }).nome || '';
       
       default:
-        return record.nome || record.nome_completo || record.razao_social || record.descricao || '';
+        return (
+          (record as { nome?: string }).nome ||
+          (record as { nome_completo?: string }).nome_completo ||
+          (record as { razao_social?: string }).razao_social ||
+          (record as { descricao?: string }).descricao ||
+          ''
+        );
     }
   }
 

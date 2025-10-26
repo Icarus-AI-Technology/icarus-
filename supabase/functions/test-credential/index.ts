@@ -35,7 +35,7 @@ serve(async (req) => {
       );
     }
 
-    let testResult: { success: boolean; message: string; details?: any };
+    let testResult: { success: boolean; message: string; details?: Record<string, unknown> };
 
     // Testar baseado no serviço
     switch (servico.toLowerCase()) {
@@ -93,7 +93,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Erro ao testar credencial:', error);
     return new Response(
-      JSON.stringify({ success: false, error: error.message }),
+      JSON.stringify({ success: false, error: (error as Error).message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

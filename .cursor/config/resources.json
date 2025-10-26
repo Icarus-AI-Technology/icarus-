@@ -1,0 +1,44 @@
+{
+  "lockable_resources": [
+    {
+      "path": "src/components/oraclusx-ds/*",
+      "type": "read-write",
+      "description": "Design System components"
+    },
+    {
+      "path": "src/pages/*",
+      "type": "read-write",
+      "description": "Pages and routes"
+    },
+    {
+      "path": "src/hooks/*",
+      "type": "read-write",
+      "description": "Custom hooks"
+    },
+    {
+      "path": "src/services/*",
+      "type": "read-write",
+      "description": "Business logic services"
+    },
+    {
+      "path": "supabase/migrations/*",
+      "type": "read-only",
+      "description": "Database migrations"
+    },
+    {
+      "path": "package.json",
+      "type": "read-only",
+      "description": "Package configuration"
+    },
+    {
+      "path": "tsconfig.json",
+      "type": "read-only",
+      "description": "TypeScript configuration"
+    }
+  ],
+  "lock_policy": {
+    "read": "multiple_readers_allowed",
+    "write": "exclusive_lock_required",
+    "timeout_seconds": 30
+  }
+}

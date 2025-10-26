@@ -3,7 +3,7 @@
  * Exibe status em tempo real de todos os services OSS
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Activity, AlertCircle, CheckCircle, Clock, XCircle } from 'lucide-react';
 import { ollamaService } from '@/lib/llm/ollama.service';
 import { brasilAPIService } from '@/lib/integrations/brasilapi.service';
@@ -61,16 +61,7 @@ export default function MonitoringDashboard() {
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
   const [autoRefresh, setAutoRefresh] = useState<boolean>(true);
 
-  useEffect(() => {
-    checkAllServices();
-
-    if (autoRefresh) {
-      const interval = setInterval(checkAllServices, 60000); // Check a cada 1 minuto
-      return () => clearInterval(interval);
-    }
-  }, [autoRefresh]);
-
-  async function checkAllServices() {
+  const checkAllServices = useCallback(async () => {
     const checks = await Promise.all([
       checkOllama(),
       checkBrasilAPI(),
@@ -83,7 +74,16 @@ export default function MonitoringDashboard() {
 
     setServices(checks);
     setLastUpdate(new Date());
-  }
+  }, []);
+
+  useEffect(() => {
+    checkAllServices();
+
+    if (autoRefresh) {
+      const interval = setInterval(checkAllServices, 60000); // Check a cada 1 minuto
+      return () => clearInterval(interval);
+    }
+  }, [autoRefresh, checkAllServices]);
 
   async function checkOllama(): Promise<ServiceStatus> {
     const startTime = Date.now();
@@ -111,7 +111,7 @@ export default function MonitoringDashboard() {
           icon: <XCircle size={20} style={{ color: 'var(--orx-error)' }} />,
         };
       }
-    } catch (error) {
+    } catch {
       return {
         name: 'Ollama (LLM)',
         status: 'offline',
@@ -140,7 +140,7 @@ export default function MonitoringDashboard() {
           <XCircle size={20} style={{ color: 'var(--orx-error)' }} />
         ),
       };
-    } catch (error) {
+    } catch {
       return {
         name: 'BrasilAPI',
         status: 'offline',
@@ -169,7 +169,7 @@ export default function MonitoringDashboard() {
           <AlertCircle size={20} style={{ color: 'var(--orx-warning)' }} />
         ),
       };
-    } catch (error) {
+    } catch {
       return {
         name: 'Meilisearch',
         status: 'offline',
@@ -208,7 +208,7 @@ export default function MonitoringDashboard() {
           icon: <AlertCircle size={20} style={{ color: 'var(--orx-warning)' }} />,
         };
       }
-    } catch (error) {
+    } catch {
       return {
         name: 'BullMQ',
         status: 'degraded',
@@ -240,7 +240,7 @@ export default function MonitoringDashboard() {
         details: 'API key configurada',
         icon: <CheckCircle size={20} style={{ color: 'var(--orx-success)' }} />,
       };
-    } catch (error) {
+    } catch {
       return {
         name: 'Resend',
         status: 'offline',
@@ -272,7 +272,7 @@ export default function MonitoringDashboard() {
         details: 'Monitoramento ativo',
         icon: <CheckCircle size={20} style={{ color: 'var(--orx-success)' }} />,
       };
-    } catch (error) {
+    } catch {
       return {
         name: 'GlitchTip',
         status: 'offline',
@@ -304,7 +304,7 @@ export default function MonitoringDashboard() {
         details: 'Analytics ativo',
         icon: <CheckCircle size={20} style={{ color: 'var(--orx-success)' }} />,
       };
-    } catch (error) {
+    } catch {
       return {
         name: 'PostHog',
         status: 'offline',

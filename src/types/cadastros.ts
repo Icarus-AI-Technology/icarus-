@@ -26,7 +26,7 @@ export interface DadosBancarios {
 export interface Medico {
   id: string;
   nome_completo: string;
-  cpf: string;
+  cpf?: string;
   rg?: string;
   data_nascimento?: string;
   sexo?: string;
@@ -48,9 +48,7 @@ export interface Medico {
   updated_by?: string;
 }
 
-export interface MedicoFormData extends Omit<Medico, 'id' | 'created_at' | 'updated_at' | 'created_by' | 'updated_by'> {
-  // Form data não precisa de campos de auditoria
-}
+export type MedicoFormData = Omit<Medico, 'id' | 'created_at' | 'updated_at' | 'created_by' | 'updated_by'>;
 
 // Hospital
 export interface Hospital {
@@ -239,7 +237,7 @@ export interface DuplicateMatch {
   nome: string;
   score: number;
   motivo: string;
-  dados: any;
+  dados: unknown;
 }
 
 // Duplicate Detection Params

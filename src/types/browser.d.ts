@@ -56,14 +56,20 @@ interface Window {
   webkitSpeechRecognition?: {
     new (): SpeechRecognition;
   };
+  IntersectionObserver?: new (
+    callback: (entries: Array<{ isIntersecting: boolean }>, observer: IntersectionObserver) => void
+  ) => IntersectionObserver;
+  ResizeObserver?: new (
+    callback: (entries: Array<{ target: Element; contentRect: DOMRectReadOnly }>, observer: ResizeObserver) => void
+  ) => ResizeObserver;
 }
 
-declare var SpeechRecognition: {
+declare const SpeechRecognition: {
   prototype: SpeechRecognition;
   new (): SpeechRecognition;
 };
 
-declare let webkitSpeechRecognition: {
+declare const webkitSpeechRecognition: {
   prototype: SpeechRecognition;
   new (): SpeechRecognition;
 };

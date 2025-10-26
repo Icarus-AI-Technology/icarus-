@@ -1,0 +1,56 @@
+{
+  "base": "http://localhost:4173",
+  "ts": "2025-10-25T02:33:41.535Z",
+  "results": [
+    {
+      "route": "/qa/compras",
+      "url": "http://localhost:4173/qa/compras?qa=1",
+      "tableCount": 1,
+      "totalHeaders": 4,
+      "totalRows": 8,
+      "emptyStates": 0,
+      "loadingStates": 0,
+      "paginationControls": 2
+    },
+    {
+      "route": "/qa/financeiro",
+      "url": "http://localhost:4173/qa/financeiro?qa=1",
+      "tableCount": 1,
+      "totalHeaders": 4,
+      "totalRows": 8,
+      "emptyStates": 0,
+      "loadingStates": 0,
+      "paginationControls": 0
+    },
+    {
+      "route": "/qa/cadastros",
+      "url": "http://localhost:4173/qa/cadastros?qa=1",
+      "tableCount": 0,
+      "totalHeaders": 0,
+      "totalRows": 0,
+      "emptyStates": 0,
+      "loadingStates": 0,
+      "paginationControls": 0
+    },
+    {
+      "route": "/qa/cirurgias",
+      "url": "http://localhost:4173/qa/cirurgias?qa=1",
+      "tableCount": 0,
+      "totalHeaders": 0,
+      "totalRows": 0,
+      "emptyStates": 0,
+      "loadingStates": 0,
+      "paginationControls": 0
+    },
+    {
+      "route": "/qa/estoque",
+      "url": "http://localhost:4173/qa/estoque?qa=1",
+      "tableCount": 0,
+      "totalHeaders": 0,
+      "totalRows": 0,
+      "emptyStates": 0,
+      "loadingStates": 0,
+      "paginationControls": 0
+    }
+  ]
+}

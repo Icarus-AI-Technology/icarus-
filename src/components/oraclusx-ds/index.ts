@@ -152,3 +152,7 @@ export type { MiniBarChartProps, BarColorScheme } from './MiniBarChart';
 
 export { TrendIndicator, getTrendIcon, getTrendColor, formatTrend } from './TrendIndicator';
 export type { TrendIndicatorProps } from './TrendIndicator';
+
+// KPI Visuals
+export { RadialProgress } from './RadialProgress';
+export type { RadialProgressProps } from './RadialProgress';

@@ -45,7 +45,8 @@ export default function Signup() {
       setTimeout(() => {
         navigate("/login");
       }, 2000);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       setError(err instanceof Error ? err.message :"Erro ao criar conta");
     } finally {
       setLoading(false);

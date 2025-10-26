@@ -4,20 +4,9 @@
  */
 
 import { useState } from"react";
-import {
-  BarChart3,
-  TrendingUp,
-  TrendingDown,
-  PieChart,
-  DollarSign,
-  Package,
-  Users,
-  ShoppingCart,
-  Calendar,
-  Filter,
-  Download,
-  RefreshCw,
-} from"lucide-react";
+import { BarChart3, TrendingUp, TrendingDown, PieChart, DollarSign, Package, Users, ShoppingCart, Calendar, Download, RefreshCw } from"lucide-react";
+import { ModulePage } from "@/components/templates/ModulePage";
+import { Button } from "@/components/ui/button";
 
 export default function BIDashboardInterativo() {
   const [selectedPeriod, setSelectedPeriod] = useState<string>("mes_atual");
@@ -30,8 +19,8 @@ export default function BIDashboardInterativo() {
       trend:"+15.3%",
       trendUp: true,
       icon: DollarSign,
-      iconBg:"linear-gradient(135deg, var(--orx-success), #059669)",
-      color:"var(--orx-success)",
+      bgClass:"bg-gradient-to-br from-[var(--orx-success)] to-[#059669]",
+      textClass:"text-[var(--orx-success)]",
       periodo:"vs. mês anterior",
     },
     {
@@ -40,8 +29,8 @@ export default function BIDashboardInterativo() {
       trend:"+12.5%",
       trendUp: true,
       icon: ShoppingCart,
-      iconBg:"linear-gradient(135deg, var(--orx-primary), var(--orx-primary-hover))",
-      color:"var(--orx-primary)",
+      bgClass:"bg-gradient-to-br from-[var(--orx-primary)] to-[var(--orx-primary-hover)]",
+      textClass:"text-[var(--orx-primary)]",
       periodo:"vs. mês anterior",
     },
     {
@@ -50,8 +39,8 @@ export default function BIDashboardInterativo() {
       trend:"+2.3%",
       trendUp: true,
       icon: TrendingUp,
-      iconBg:"linear-gradient(135deg, var(--orx-purple-500), #7C3AED)",
-      color:"var(--orx-purple-500)",
+      bgClass:"bg-gradient-to-br from-[var(--orx-purple-500)] to-[#7C3AED]",
+      textClass:"text-[var(--orx-purple-500)]",
       periodo:"vs. mês anterior",
     },
     {
@@ -60,8 +49,8 @@ export default function BIDashboardInterativo() {
       trend:"-1.2%",
       trendUp: false,
       icon: PieChart,
-      iconBg:"linear-gradient(135deg, var(--orx-warning), #D97706)",
-      color:"var(--orx-warning)",
+      bgClass:"bg-gradient-to-br from-[var(--orx-warning)] to-[#D97706]",
+      textClass:"text-[var(--orx-warning)]",
       periodo:"vs. mês anterior",
     },
   ];
@@ -146,107 +135,45 @@ export default function BIDashboardInterativo() {
   };
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex items-start justify-between">
-          <div>
-            <h1
-              style={{
-                fontSize: '0.813rem',
-                fontFamily:"var(--orx-font-family)",
-                fontWeight: 600,
-                color:"var(--orx-text-primary)",
-                marginBottom:"0.5rem",
-              }}
-            >
-              Business Intelligence
-            </h1>
-            <p
-              style={{
-                fontSize: '0.813rem',
-                color:"var(--orx-text-secondary)",
-                fontFamily:"var(--orx-font-family)",
-              }}
-            >
-              Analytics avançado e insights estratégicos
-            </p>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex items-center gap-3">
-            <button
-              className="neumorphic-button flex items-center gap-2 px-6 py-3 rounded-xl"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                background:"var(--orx-bg-light)",
-                boxShadow:"0 2px 4px rgba(0, 0, 0, 0.1)",
-                color:"var(--orx-text-primary)",
-                fontWeight: 600,
-                fontSize: '0.813rem',
-                border:"1px solid rgba(99, 102, 241, 0.2)",
-                cursor:"pointer",
-              }}
-            >
-              <RefreshCw size={18} />
-              Atualizar
-            </button>
-            <button
-              className="neumorphic-button flex items-center gap-2 px-6 py-3 rounded-xl"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                background:"linear-gradient(135deg, var(--orx-primary), var(--orx-primary-hover))",
-                color:"white",
-                fontWeight: 600,
-                fontSize: '0.813rem',
-                border:"none",
-                boxShadow:"0 4px 12px rgba(99, 102, 241, 0.3)",
-              }}
-            >
-              <Download size={18} />
-              Exportar
-            </button>
-          </div>
+    <ModulePage
+      title="Business Intelligence"
+      description="Analytics avançado e insights estratégicos"
+      icon={<BarChart3 aria-hidden="true" className="h-5 w-5" />}
+      actions={
+        <div className="flex items-center gap-3">
+          <Button
+            variant="neumorphic"
+            size="default"
+            className="inline-flex items-center gap-2"
+            onClick={() => window.dispatchEvent(new CustomEvent('icarus:refresh-bi'))}
+          >
+            <RefreshCw size={18} strokeWidth={1.5} className="flex-shrink-0" />
+            <span>Atualizar</span>
+          </Button>
+          <Button
+            variant="neumorphic"
+            size="default"
+            className="inline-flex items-center gap-2"
+            onClick={() => window.dispatchEvent(new CustomEvent('icarus:export-bi'))}
+          >
+            <Download size={18} strokeWidth={1.5} className="flex-shrink-0" />
+            <span>Exportar</span>
+          </Button>
         </div>
-
+      }
+    >
+      <div className="space-y-6">
         {/* Filters */}
-        <div
-          className="neumorphic-card p-6 rounded-2xl"
-          style={{
-            background:"var(--orx-bg-light)",
-            boxShadow:"0 4px 16px rgba(0, 0, 0, 0.06)",
-          }}
-        >
+        <div className="neumorphic-card p-6 rounded-2xl bg-[var(--orx-bg-light)] shadow-orx-soft">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
-              <Filter size={20} style={{ color:"var(--orx-text-secondary)" }} />
-              <span
-                style={{
-                  fontSize: '0.813rem',
-                  fontWeight: 600,
-                  color:"var(--orx-text-primary)",
-                  fontFamily:"var(--orx-font-family)",
-                }}
-              >
-                Filtros:
-              </span>
+              <Calendar size={20} strokeWidth={1.5} className="text-[var(--orx-text-secondary)]" />
+              <span className="text-[0.813rem] font-semibold text-[var(--orx-text-primary)]">Filtros:</span>
             </div>
             <select
               value={selectedPeriod}
               onChange={(e) => setSelectedPeriod(e.target.value)}
-              className="px-4 py-3 rounded-xl"
-              style={{
-                background:"var(--orx-bg-light)",
-                boxShadow:"inset 2px 2px 4px rgba(0, 0, 0, 0.1)",
-                border:"1px solid rgba(99, 102, 241, 0.2)",
-                fontSize: '0.813rem',
-                fontFamily:"var(--orx-font-family)",
-                color:"var(--orx-text-primary)",
-              }}
+              className="px-4 py-3 rounded-xl bg-[var(--orx-bg-light)] text-[var(--orx-text-primary)] text-[0.813rem] shadow-inner-orx border border-[rgba(99,102,241,0.2)]"
             >
               <option value="hoje">Hoje</option>
               <option value="semana_atual">Semana Atual</option>
@@ -258,15 +185,7 @@ export default function BIDashboardInterativo() {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-4 py-3 rounded-xl"
-              style={{
-                background:"var(--orx-bg-light)",
-                boxShadow:"inset 2px 2px 4px rgba(0, 0, 0, 0.1)",
-                border:"1px solid rgba(99, 102, 241, 0.2)",
-                fontSize: '0.813rem',
-                fontFamily:"var(--orx-font-family)",
-                color:"var(--orx-text-primary)",
-              }}
+              className="px-4 py-3 rounded-xl bg-[var(--orx-bg-light)] text-[var(--orx-text-primary)] text-[0.813rem] shadow-inner-orx border border-[rgba(99,102,241,0.2)]"
             >
               <option value="geral">Geral</option>
               <option value="produtos">Produtos OPME</option>
@@ -282,176 +201,70 @@ export default function BIDashboardInterativo() {
           {kpis.map((kpi, index) => (
             <div
               key={index}
-              className="neumorphic-card p-6 rounded-2xl"
-              style={{
-                background:"var(--orx-bg-light)",
-                boxShadow:"0 4px 16px rgba(0, 0, 0, 0.06)",
-              }}
+              className="neumorphic-card p-6 rounded-2xl bg-[var(--orx-bg-light)] shadow-orx-soft"
             >
               <div className="flex items-start gap-4 mb-4">
-                <div
-                  className="flex items-center justify-center rounded-2xl"
-                  style={{
-                    width:"56px",
-                    height:"56px",
-                    background: kpi.iconBg,
-                    boxShadow:"0 4px 12px rgba(0, 0, 0, 0.1)",
-                  }}
-                >
-                  <kpi.icon size={24} color="#ffffff" strokeWidth={2} />
+                <div className={`flex items-center justify-center rounded-2xl w-14 h-14 shadow-orx-medium ${kpi.bgClass}`}>
+                  <kpi.icon size={24} color="#ffffff" strokeWidth={1.5} />
                 </div>
                 <div className="flex-1">
-                  <p
-                    style={{
-                      fontSize: '0.813rem',
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                      marginBottom:"0.25rem",
-                    }}
-                  >
-                    {kpi.title}
-                  </p>
+                  <p className="text-[0.813rem] text-[var(--orx-text-secondary)] mb-1">{kpi.title}</p>
                 </div>
               </div>
               <div className="mb-2">
-                <p
-                  style={{
-                    fontSize: '0.813rem',
-                    fontWeight: 700,
-                    color:"var(--orx-text-primary)",
-                    fontFamily:"var(--orx-font-family)",
-                    lineHeight: 1,
-                  }}
-                >
-                  {kpi.value}
-                </p>
+                <p className="text-[0.813rem] font-bold text-[var(--orx-text-primary)] leading-none">{kpi.value}</p>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1">
                   {kpi.trendUp ? (
-                    <TrendingUp size={16} style={{ color: kpi.color }} />
+                    <TrendingUp size={16} className={kpi.textClass} />
                   ) : (
-                    <TrendingDown size={16} style={{ color: kpi.color }} />
+                    <TrendingDown size={16} className={kpi.textClass} />
                   )}
-                  <span
-                    style={{
-                      fontSize: '0.813rem',
-                      fontWeight: 600,
-                      color: kpi.color,
-                      fontFamily:"var(--orx-font-family)",
-                    }}
-                  >
-                    {kpi.trend}
-                  </span>
+                  <span className={`text-[0.813rem] font-semibold ${kpi.textClass}`}>{kpi.trend}</span>
                 </div>
-                <span
-                  style={{
-                    fontSize: '0.813rem',
-                    color:"var(--orx-text-secondary)",
-                    fontFamily:"var(--orx-font-family)",
-                  }}
-                >
-                  {kpi.periodo}
-                </span>
+                <span className="text-[0.813rem] text-[var(--orx-text-secondary)]">{kpi.periodo}</span>
               </div>
             </div>
           ))}
         </div>
 
         {/* Top Produtos */}
-        <div
-          className="neumorphic-card p-6 rounded-2xl"
-          style={{
-            background:"var(--orx-bg-light)",
-            boxShadow:"0 4px 16px rgba(0, 0, 0, 0.06)",
-          }}
-        >
+        <div className="neumorphic-card p-6 rounded-2xl bg-[var(--orx-bg-light)] shadow-orx-soft">
           <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <div
-                className="flex items-center justify-center rounded-xl"
-                style={{
-                  width:"48px",
-                  height:"48px",
-                  background:"linear-gradient(135deg, var(--orx-warning), #D97706)",
-                  boxShadow:"0 4px 12px rgba(0, 0, 0, 0.1)",
-                }}
-              >
+              <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center rounded-xl w-12 h-12 shadow-orx-medium bg-gradient-to-br from-[var(--orx-warning)] to-[#D97706]">
                 <Package size={24} color="#ffffff" />
               </div>
-              <h2
-                style={{
-                  fontSize: '0.813rem',
-                  fontWeight: 600,
-                  color:"var(--orx-text-primary)",
-                  fontFamily:"var(--orx-font-family)",
-                }}
-              >
-                Top 4 Produtos OPME
-              </h2>
+              <h2 className="text-[0.813rem] font-semibold text-[var(--orx-text-primary)]">Top 4 Produtos OPME</h2>
             </div>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr style={{ borderBottom:"2px solid rgba(99, 102, 241, 0.1)" }}>
+                <tr className="border-b border-[rgba(99,102,241,0.1)]">
                   <th
-                    style={{
-                      padding:"1rem",
-                      textAlign:"left",
-                      fontSize: '0.813rem',
-                      fontWeight: 600,
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                    }}
+                    className="p-4 text-left text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Produto
                   </th>
                   <th
-                    style={{
-                      padding:"1rem",
-                      textAlign:"center",
-                      fontSize: '0.813rem',
-                      fontWeight: 600,
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                    }}
+                    className="p-4 text-center text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Vendas
                   </th>
                   <th
-                    style={{
-                      padding:"1rem",
-                      textAlign:"right",
-                      fontSize: '0.813rem',
-                      fontWeight: 600,
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                    }}
+                    className="p-4 text-right text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Receita
                   </th>
                   <th
-                    style={{
-                      padding:"1rem",
-                      textAlign:"center",
-                      fontSize: '0.813rem',
-                      fontWeight: 600,
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                    }}
+                    className="p-4 text-center text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Margem
                   </th>
                   <th
-                    style={{
-                      padding:"1rem",
-                      textAlign:"center",
-                      fontSize: '0.813rem',
-                      fontWeight: 600,
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                    }}
+                    className="p-4 text-center text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Variação
                   </th>
@@ -459,67 +272,30 @@ export default function BIDashboardInterativo() {
               </thead>
               <tbody>
                 {topProdutos.map((produto, index) => (
-                  <tr
-                    key={index}
-                    style={{ borderBottom:"1px solid rgba(99, 102, 241, 0.05)" }}
-                  >
+                  <tr key={index} className="border-b border-[rgba(99,102,241,0.05)]">
                     <td
-                      style={{
-                        padding:"1rem",
-                        fontSize: '0.813rem',
-                        fontFamily:"var(--orx-font-family)",
-                        color:"var(--orx-text-primary)",
-                        fontWeight: 600,
-                      }}
+                      className="p-4 text-[0.813rem] text-[var(--orx-text-primary)] font-semibold"
                     >
                       {produto.nome}
                     </td>
                     <td
-                      style={{
-                        padding:"1rem",
-                        textAlign:"center",
-                        fontSize: '0.813rem',
-                        fontFamily:"var(--orx-font-family)",
-                        color:"var(--orx-text-primary)",
-                      }}
+                      className="p-4 text-center text-[0.813rem] text-[var(--orx-text-primary)]"
                     >
                       {produto.vendas}
                     </td>
                     <td
-                      style={{
-                        padding:"1rem",
-                        textAlign:"right",
-                        fontSize: '0.813rem',
-                        fontFamily:"var(--orx-font-family)",
-                        color:"var(--orx-text-primary)",
-                        fontWeight: 600,
-                      }}
+                      className="p-4 text-right text-[0.813rem] text-[var(--orx-text-primary)] font-semibold"
                     >
                       {formatCurrency(produto.receita)}
                     </td>
                     <td
-                      style={{
-                        padding:"1rem",
-                        textAlign:"center",
-                        fontSize: '0.813rem',
-                        fontFamily:"var(--orx-font-family)",
-                        color:"var(--orx-success)",
-                        fontWeight: 600,
-                      }}
+                      className="p-4 text-center text-[0.813rem] text-[var(--orx-success)] font-semibold"
                     >
                       {produto.margem}%
                     </td>
-                    <td style={{ padding:"1rem", textAlign:"center" }}>
+                    <td className="p-4 text-center">
                       <span
-                        style={{
-                          display:"inline-flex",
-                          alignItems:"center",
-                          gap:"0.25rem",
-                          fontSize: '0.813rem',
-                          fontWeight: 600,
-                          fontFamily:"var(--orx-font-family)",
-                          color: produto.variacaoUp ?"var(--orx-success)" :"var(--orx-error)",
-                        }}
+                        className={`inline-flex items-center gap-1 text-[0.813rem] font-semibold ${produto.variacaoUp ? 'text-[var(--orx-success)]' : 'text-[var(--orx-error)]'}`}
                       >
                         {produto.variacaoUp ? (
                           <TrendingUp size={14} />
@@ -537,99 +313,41 @@ export default function BIDashboardInterativo() {
         </div>
 
         {/* Top Hospitais */}
-        <div
-          className="neumorphic-card p-6 rounded-2xl"
-          style={{
-            background:"var(--orx-bg-light)",
-            boxShadow:"0 4px 16px rgba(0, 0, 0, 0.06)",
-          }}
-        >
+        <div className="neumorphic-card p-6 rounded-2xl bg-[var(--orx-bg-light)] shadow-orx-soft">
           <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <div
-                className="flex items-center justify-center rounded-xl"
-                style={{
-                  width:"48px",
-                  height:"48px",
-                  background:"linear-gradient(135deg, var(--orx-primary), var(--orx-primary-hover))",
-                  boxShadow:"0 4px 12px rgba(0, 0, 0, 0.1)",
-                }}
-              >
+              <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center rounded-xl w-12 h-12 shadow-orx-medium bg-gradient-to-br from-[var(--orx-primary)] to-[var(--orx-primary-hover)]">
                 <Users size={24} color="#ffffff" />
               </div>
-              <h2
-                style={{
-                  fontSize: '0.813rem',
-                  fontWeight: 600,
-                  color:"var(--orx-text-primary)",
-                  fontFamily:"var(--orx-font-family)",
-                }}
-              >
-                Top 4 Hospitais por Faturamento
-              </h2>
+              <h2 className="text-[0.813rem] font-semibold text-[var(--orx-text-primary)]">Top 4 Hospitais por Faturamento</h2>
             </div>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr style={{ borderBottom:"2px solid rgba(99, 102, 241, 0.1)" }}>
+                <tr className="border-b border-[rgba(99,102,241,0.1)]">
                   <th
-                    style={{
-                      padding:"1rem",
-                      textAlign:"left",
-                      fontSize: '0.813rem',
-                      fontWeight: 600,
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                    }}
+                    className="p-4 text-left text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Hospital
                   </th>
                   <th
-                    style={{
-                      padding:"1rem",
-                      textAlign:"center",
-                      fontSize: '0.813rem',
-                      fontWeight: 600,
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                    }}
+                    className="p-4 text-center text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Pedidos
                   </th>
                   <th
-                    style={{
-                      padding:"1rem",
-                      textAlign:"right",
-                      fontSize: '0.813rem',
-                      fontWeight: 600,
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                    }}
+                    className="p-4 text-right text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Receita
                   </th>
                   <th
-                    style={{
-                      padding:"1rem",
-                      textAlign:"right",
-                      fontSize: '0.813rem',
-                      fontWeight: 600,
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                    }}
+                    className="p-4 text-right text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Ticket Médio
                   </th>
                   <th
-                    style={{
-                      padding:"1rem",
-                      textAlign:"center",
-                      fontSize: '0.813rem',
-                      fontWeight: 600,
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                    }}
+                    className="p-4 text-center text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Crescimento
                   </th>
@@ -637,66 +355,30 @@ export default function BIDashboardInterativo() {
               </thead>
               <tbody>
                 {topHospitais.map((hospital, index) => (
-                  <tr
-                    key={index}
-                    style={{ borderBottom:"1px solid rgba(99, 102, 241, 0.05)" }}
-                  >
+                  <tr key={index} className="border-b border-[rgba(99,102,241,0.05)]">
                     <td
-                      style={{
-                        padding:"1rem",
-                        fontSize: '0.813rem',
-                        fontFamily:"var(--orx-font-family)",
-                        color:"var(--orx-text-primary)",
-                        fontWeight: 600,
-                      }}
+                      className="p-4 text-[0.813rem] text-[var(--orx-text-primary)] font-semibold"
                     >
                       {hospital.nome}
                     </td>
                     <td
-                      style={{
-                        padding:"1rem",
-                        textAlign:"center",
-                        fontSize: '0.813rem',
-                        fontFamily:"var(--orx-font-family)",
-                        color:"var(--orx-text-primary)",
-                      }}
+                      className="p-4 text-center text-[0.813rem] text-[var(--orx-text-primary)]"
                     >
                       {hospital.pedidos}
                     </td>
                     <td
-                      style={{
-                        padding:"1rem",
-                        textAlign:"right",
-                        fontSize: '0.813rem',
-                        fontFamily:"var(--orx-font-family)",
-                        color:"var(--orx-text-primary)",
-                        fontWeight: 600,
-                      }}
+                      className="p-4 text-right text-[0.813rem] text-[var(--orx-text-primary)] font-semibold"
                     >
                       {formatCurrency(hospital.receita)}
                     </td>
                     <td
-                      style={{
-                        padding:"1rem",
-                        textAlign:"right",
-                        fontSize: '0.813rem',
-                        fontFamily:"var(--orx-font-family)",
-                        color:"var(--orx-text-secondary)",
-                      }}
+                      className="p-4 text-right text-[0.813rem] text-[var(--orx-text-secondary)]"
                     >
                       {formatCurrency(hospital.ticketMedio)}
                     </td>
-                    <td style={{ padding:"1rem", textAlign:"center" }}>
+                    <td className="p-4 text-center">
                       <span
-                        style={{
-                          display:"inline-flex",
-                          alignItems:"center",
-                          gap:"0.25rem",
-                          fontSize: '0.813rem',
-                          fontWeight: 600,
-                          fontFamily:"var(--orx-font-family)",
-                          color: hospital.crescimentoUp ?"var(--orx-success)" :"var(--orx-error)",
-                        }}
+                        className={`inline-flex items-center gap-1 text-[0.813rem] font-semibold ${hospital.crescimentoUp ? 'text-[var(--orx-success)]' : 'text-[var(--orx-error)]'}`}
                       >
                         {hospital.crescimentoUp ? (
                           <TrendingUp size={14} />
@@ -713,7 +395,7 @@ export default function BIDashboardInterativo() {
           </div>
         </div>
       </div>
-    </div>
+    </ModulePage>
   );
 }
 

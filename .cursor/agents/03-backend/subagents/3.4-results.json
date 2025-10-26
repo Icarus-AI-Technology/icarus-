@@ -1,0 +1,36 @@
+{
+  "documented_tables": 13,
+  "critical_policies": 11,
+  "important_policies": 2,
+  "helper_functions": 2,
+  "status": "documented",
+  "implementation_status": "pending_review",
+  "tables": {
+    "core": [
+      "profiles",
+      "empresas"
+    ],
+    "opme": [
+      "cirurgias",
+      "estoque",
+      "consignacao_materiais",
+      "produtos_opme",
+      "rastreabilidade_opme",
+      "compliance_requisitos_abbott"
+    ],
+    "financial": [
+      "contas_receber",
+      "contas_pagar",
+      "fluxo_caixa"
+    ],
+    "logistics": [
+      "transportadoras",
+      "rastreamento_entregas"
+    ]
+  },
+  "functions": [
+    "current_empresa_id",
+    "current_user_role"
+  ],
+  "score": 100
+}

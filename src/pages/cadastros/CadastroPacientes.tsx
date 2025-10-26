@@ -157,6 +157,7 @@ export default function CadastroPacientes() {
         toast.success("CPF validado com sucesso!");
       }
     } catch (error: unknown) {
+        const err = error as Error;
       setErrors((prev) => ({
         ...prev,
         cpf: error.message ||"Erro ao validar CPF.",
@@ -203,6 +204,7 @@ export default function CadastroPacientes() {
 
       toast.success("CEP encontrado e endereço preenchido!");
     } catch (error: unknown) {
+        const err = error as Error;
       setErrors((prev) => ({
         ...prev,
         cep: error.message ||"Erro ao buscar CEP.",
@@ -276,8 +278,9 @@ export default function CadastroPacientes() {
       toast.success(`Paciente ${novoPaciente.nome_completo} cadastrado com sucesso!`);
       navigate("/cadastros");
     } catch (error: unknown) {
+        const err = error as Error;
       toast.error(error.message ||"Erro ao cadastrar paciente.");
-      console.error("Erro ao cadastrar paciente:", error);
+      console.error("Erro ao cadastrar paciente:", err);
     } finally {
       setLoading(false);
     }

@@ -194,9 +194,10 @@ export class CirurgiasAI {
           mediaHospital: Math.round(mediaHospital),
         },
       };
-    } catch (_error) {
-      console.error('Erro ao prever duração:', _error);
-      throw _error;
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao prever duração:', err);
+      throw err;
     }
   }
 
@@ -279,9 +280,10 @@ export class CirurgiasAI {
       recomendacoes.sort((a, b) => b.probabilidade_uso - a.probabilidade_uso);
 
       return recomendacoes;
-    } catch (_error) {
-      console.error('Erro ao recomendar kit:', _error);
-      throw _error;
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao recomendar kit:', err);
+      throw err;
     }
   }
 
@@ -458,9 +460,10 @@ export class CirurgiasAI {
         motivosPotenciais,
         acoesPreventivas,
       };
-    } catch (_error) {
-      console.error('Erro ao prever glosas:', _error);
-      throw _error;
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao prever glosas:', err);
+      throw err;
     }
   }
 
@@ -508,9 +511,10 @@ export class CirurgiasAI {
         justificativa: `Horário otimizado com base em ${cirurgiasNoDia?.length || 0} cirurgias já agendadas`,
         conflitos: [],
       };
-    } catch (_error) {
-      console.error('Erro ao otimizar agenda:', _error);
-      throw _error;
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao otimizar agenda:', err);
+      throw err;
     }
   }
 
@@ -571,9 +575,10 @@ export class CirurgiasAI {
       }
 
       return anomalias;
-    } catch (_error) {
-      console.error('Erro ao detectar anomalias:', _error);
-      throw _error;
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao detectar anomalias:', err);
+      throw err;
     }
   }
 

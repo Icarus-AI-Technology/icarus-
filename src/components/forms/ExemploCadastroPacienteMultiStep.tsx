@@ -1,9 +1,4 @@
-/**
- * EXEMPLO: Cadastro de Paciente Multi-Step
- * Demonstração completa do sistema de formulários avançados
- * 100% Neumorphism 3D Premium + Lucide React SVG + OraclusX DS
- */
-
+import React, { useEffect, useState } from 'react';
 import { CompleteMultiStepForm } from '../MultiStepForm';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,13 +7,21 @@ import { Textarea } from '@/components/ui/textarea';
 import { useValidacaoCep } from '@/hooks/useValidacao';
 import { useValidacaoCPF } from '@/hooks/useValidacao';
 
-// ============================================
-// STEP 1: Dados Pessoais
-// ============================================
-
 function Step1DadosPessoais() {
   const [cpf, setCpf] = useState('');
-  const { data, loading, error, validate } = useValidacaoCPF();
+  const [form, setForm] = useState({
+    nome: '',
+    dataNascimento: '',
+    sexo: '',
+    estadoCivil: '',
+    email: '',
+    telefone: '',
+  });
+  const { data, loading: _loading, error, validate } = useValidacaoCPF();
+
+  const handleChange = (field: keyof typeof form) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setForm((prev) => ({ ...prev, [field]: event.target.value }));
+  };
 
   return (
     <div className="space-y-4">
@@ -29,6 +32,8 @@ function Step1DadosPessoais() {
             id="nome"
             placeholder="Digite o nome completo"
             required
+            value={form.nome}
+            onChange={handleChange('nome')}
           />
         </div>
         <div>
@@ -52,11 +57,13 @@ function Step1DadosPessoais() {
             id="dataNascimento"
             type="date"
             required
+            value={form.dataNascimento}
+            onChange={handleChange('dataNascimento')}
           />
         </div>
         <div>
           <Label htmlFor="sexo">Sexo *</Label>
-          <Select>
+          <Select value={form.sexo} onValueChange={(value) => setForm((prev) => ({ ...prev, sexo: value }))}>
             <SelectTrigger>
               <SelectValue placeholder="Selecione..." />
             </SelectTrigger>
@@ -69,7 +76,7 @@ function Step1DadosPessoais() {
         </div>
         <div>
           <Label htmlFor="estadoCivil">Estado Civil</Label>
-          <Select>
+          <Select value={form.estadoCivil} onValueChange={(value) => setForm((prev) => ({ ...prev, estadoCivil: value }))}>
             <SelectTrigger>
               <SelectValue placeholder="Selecione..." />
             </SelectTrigger>
@@ -90,6 +97,8 @@ function Step1DadosPessoais() {
             id="email"
             type="email"
             placeholder="email@exemplo.com"
+            value={form.email}
+            onChange={handleChange('email')}
           />
         </div>
         <div>
@@ -98,6 +107,8 @@ function Step1DadosPessoais() {
             id="telefone"
             placeholder="(00) 00000-0000"
             required
+            value={form.telefone}
+            onChange={handleChange('telefone')}
           />
         </div>
       </div>
@@ -105,13 +116,33 @@ function Step1DadosPessoais() {
   );
 }
 
-// ============================================
-// STEP 2: Endereço
-// ============================================
-
 function Step2Endereco() {
   const [cep, setCep] = useState('');
+  const [endereco, setEndereco] = useState({
+    logradouro: '',
+    numero: '',
+    complemento: '',
+    bairro: '',
+    cidade: '',
+    uf: '',
+  });
   const { data: cepData, loading, error, validate } = useValidacaoCep();
+
+  useEffect(() => {
+    if (cepData) {
+      setEndereco((prev) => ({
+        ...prev,
+        logradouro: cepData.logradouro ?? prev.logradouro,
+        bairro: cepData.bairro ?? prev.bairro,
+        cidade: cepData.localidade ?? prev.cidade,
+        uf: cepData.uf ?? prev.uf,
+      }));
+    }
+  }, [cepData]);
+
+  const handleChange = (field: keyof typeof endereco) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEndereco((prev) => ({ ...prev, [field]: event.target.value }));
+  };
 
   return (
     <div className="space-y-4">
@@ -133,7 +164,8 @@ function Step2Endereco() {
           <Input
             id="logradouro"
             placeholder="Rua, Avenida..."
-            value={cepData?.logradouro || ''}
+            value={endereco.logradouro}
+            onChange={handleChange('logradouro')}
             required
           />
         </div>
@@ -146,6 +178,8 @@ function Step2Endereco() {
             id="numero"
             placeholder="123"
             required
+            value={endereco.numero}
+            onChange={handleChange('numero')}
           />
         </div>
         <div className="md:col-span-2">
@@ -153,15 +187,13 @@ function Step2Endereco() {
           <Input
             id="complemento"
             placeholder="Apto, Sala..."
+            value={endereco.complemento}
+            onChange={handleChange('complemento')}
           />
         </div>
         <div>
           <Label htmlFor="uf">UF *</Label>
-          <Input
-            id="uf"
-            value={cepData?.uf || ''}
-            readOnly
-          />
+          <Input id="uf" value={endereco.uf} readOnly />
         </div>
       </div>
 
@@ -170,7 +202,8 @@ function Step2Endereco() {
           <Label htmlFor="bairro">Bairro *</Label>
           <Input
             id="bairro"
-            value={cepData?.bairro || ''}
+            value={endereco.bairro}
+            onChange={handleChange('bairro')}
             required
           />
         </div>
@@ -178,7 +211,8 @@ function Step2Endereco() {
           <Label htmlFor="cidade">Cidade *</Label>
           <Input
             id="cidade"
-            value={cepData?.localidade || ''}
+            value={endereco.cidade}
+            onChange={handleChange('cidade')}
             required
           />
         </div>
@@ -187,17 +221,26 @@ function Step2Endereco() {
   );
 }
 
-// ============================================
-// STEP 3: Informações Médicas
-// ============================================
-
 function Step3InfoMedicas() {
+  const [info, setInfo] = useState({
+    tipoSanguineo: '',
+    peso: '',
+    altura: '',
+    convenio: '',
+    alergias: '',
+    medicamentos: '',
+  });
+
+  const handleChange = (field: keyof typeof info) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setInfo((prev) => ({ ...prev, [field]: event.target.value }));
+  };
+
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <Label htmlFor="tipoSanguineo">Tipo Sanguíneo</Label>
-          <Select>
+          <Select value={info.tipoSanguineo} onValueChange={(value) => setInfo((prev) => ({ ...prev, tipoSanguineo: value }))}>
             <SelectTrigger>
               <SelectValue placeholder="Selecione..." />
             </SelectTrigger>
@@ -219,6 +262,8 @@ function Step3InfoMedicas() {
             id="peso"
             type="number"
             placeholder="70"
+            value={info.peso}
+            onChange={handleChange('peso')}
           />
         </div>
       </div>
@@ -230,11 +275,13 @@ function Step3InfoMedicas() {
             id="altura"
             type="number"
             placeholder="170"
+            value={info.altura}
+            onChange={handleChange('altura')}
           />
         </div>
         <div>
           <Label htmlFor="convenio">Convênio</Label>
-          <Select>
+          <Select value={info.convenio} onValueChange={(value) => setInfo((prev) => ({ ...prev, convenio: value }))}>
             <SelectTrigger>
               <SelectValue placeholder="Selecione..." />
             </SelectTrigger>
@@ -255,6 +302,8 @@ function Step3InfoMedicas() {
           id="alergias"
           placeholder="Liste alergias conhecidas..."
           rows={3}
+          value={info.alergias}
+          onChange={handleChange('alergias')}
         />
       </div>
 
@@ -264,17 +313,17 @@ function Step3InfoMedicas() {
           id="medicamentos"
           placeholder="Liste medicamentos de uso contínuo..."
           rows={3}
+          value={info.medicamentos}
+          onChange={handleChange('medicamentos')}
         />
       </div>
     </div>
   );
 }
 
-// ============================================
-// STEP 4: Observações
-// ============================================
-
 function Step4Observacoes() {
+  const [observacoes, setObservacoes] = useState('');
+
   return (
     <div className="space-y-4">
       <div>
@@ -283,6 +332,8 @@ function Step4Observacoes() {
           id="observacoes"
           placeholder="Informações adicionais relevantes..."
           rows={6}
+          value={observacoes}
+          onChange={(event) => setObservacoes(event.target.value)}
         />
       </div>
 
@@ -311,10 +362,6 @@ function Step4Observacoes() {
   );
 }
 
-// ============================================
-// FORMULÁRIO COMPLETO
-// ============================================
-
 export default function ExemploCadastroPacienteMultiStep() {
   const steps = [
     {
@@ -323,9 +370,8 @@ export default function ExemploCadastroPacienteMultiStep() {
       description: 'Informações básicas do paciente',
       component: <Step1DadosPessoais />,
       validate: () => {
-        // Validação customizada
-        const nome = document.getElementById('nome') as HTMLInputElement;
-        return nome?.value.length > 3;
+        const nome = document.getElementById('nome') as HTMLInputElement | null;
+        return (nome?.value ?? '').trim().length > 3;
       },
     },
     {
@@ -350,7 +396,6 @@ export default function ExemploCadastroPacienteMultiStep() {
 
   const handleComplete = () => {
     console.log('Cadastro concluído!');
-    // Enviar dados para o backend
   };
 
   return (
@@ -383,4 +428,3 @@ export default function ExemploCadastroPacienteMultiStep() {
     </div>
   );
 }
-

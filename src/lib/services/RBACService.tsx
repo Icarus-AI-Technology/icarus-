@@ -48,7 +48,7 @@ export class RBACService {
       }
 
       return data === true;
-    } catch (_error) {
+    } catch (error) {
       console.error('[RBAC] Erro ao verificar permissão:', error);
       return false;
     }
@@ -67,7 +67,7 @@ export class RBACService {
       if (error) throw error;
 
       return data || [];
-    } catch (_error) {
+    } catch (error) {
       console.error('[RBAC] Erro ao obter permissões do usuário:', error);
       return [];
     }
@@ -86,8 +86,10 @@ export class RBACService {
 
       if (error) throw error;
 
-      return data?.map((ur: any) => ur.role) || [];
-    } catch (_error) {
+      return (
+        data?.map((record) => record.role as Role | null).filter((role): role is Role => role !== null) || []
+      );
+    } catch (error) {
       console.error('[RBAC] Erro ao obter roles do usuário:', error);
       return [];
     }
@@ -106,8 +108,8 @@ export class RBACService {
 
       if (error) throw error;
 
-      return data?.some((ur: any) => ur.role.nome === roleName) || false;
-    } catch (_error) {
+      return data?.some((record) => record.role?.nome === roleName) || false;
+    } catch (error) {
       console.error('[RBAC] Erro ao verificar role:', error);
       return false;
     }
@@ -140,8 +142,9 @@ export class RBACService {
 
       return { success: true };
     } catch (error: unknown) {
-      console.error('[RBAC] Erro ao atribuir role:', error);
-      return { success: false, error: error.message };
+      const err = error as Error;
+      console.error('[RBAC] Erro ao atribuir role:', err.message ?? err);
+      return { success: false, error: err.message };
     }
   }
 
@@ -167,8 +170,9 @@ export class RBACService {
 
       return { success: true };
     } catch (error: unknown) {
-      console.error('[RBAC] Erro ao revogar role:', error);
-      return { success: false, error: error.message };
+      const err = error as Error;
+      console.error('[RBAC] Erro ao revogar role:', err.message ?? err);
+      return { success: false, error: err.message };
     }
   }
 
@@ -205,8 +209,9 @@ export class RBACService {
 
       return { success: true };
     } catch (error: unknown) {
-      console.error('[RBAC] Erro ao conceder override:', error);
-      return { success: false, error: error.message };
+      const err = error as Error;
+      console.error('[RBAC] Erro ao conceder override:', err.message ?? err);
+      return { success: false, error: err.message };
     }
   }
 
@@ -241,8 +246,9 @@ export class RBACService {
 
       return { success: true };
     } catch (error: unknown) {
-      console.error('[RBAC] Erro ao revogar override:', error);
-      return { success: false, error: error.message };
+      const err = error as Error;
+      console.error('[RBAC] Erro ao revogar override:', err.message ?? err);
+      return { success: false, error: err.message };
     }
   }
 
@@ -269,8 +275,13 @@ export class RBACService {
 
       return { success: true };
     } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('[RBAC] Erro ao criar sessão:', error);
+        return { success: false, error: error.message };
+      }
+
       console.error('[RBAC] Erro ao criar sessão:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Erro desconhecido ao criar sessão' };
     }
   }
 
@@ -297,8 +308,13 @@ export class RBACService {
 
       return { success: true };
     } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('[RBAC] Erro ao terminar sessão:', error);
+        return { success: false, error: error.message };
+      }
+
       console.error('[RBAC] Erro ao terminar sessão:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Erro desconhecido ao terminar sessão' };
     }
   }
 
@@ -315,8 +331,9 @@ export class RBACService {
       if (error) throw error;
 
       return data || [];
-    } catch (_error) {
-      console.error('[RBAC] Erro ao obter sessões ativas:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[RBAC] Erro ao obter sessões ativas:', err);
       return [];
     }
   }
@@ -332,8 +349,9 @@ export class RBACService {
 
       console.log(`[RBAC] ${data} sessões expiradas limpas`);
       return data || 0;
-    } catch (_error) {
-      console.error('[RBAC] Erro ao limpar sessões expiradas:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[RBAC] Erro ao limpar sessões expiradas:', err);
       return 0;
     }
   }
@@ -354,8 +372,9 @@ export class RBACService {
         user_agent: userAgent,
         motivo_falha: motivoFalha,
       });
-    } catch (_error) {
-      console.error('[RBAC] Erro ao registrar tentativa falha:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[RBAC] Erro ao registrar tentativa falha:', err);
     }
   }
 
@@ -377,8 +396,9 @@ export class RBACService {
       if (error) throw error;
 
       return data === true;
-    } catch (_error) {
-      console.error('[RBAC] Erro ao verificar bloqueio:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[RBAC] Erro ao verificar bloqueio:', err);
       return false;
     }
   }
@@ -390,19 +410,20 @@ export class RBACService {
     userId: string,
     acao: string,
     modulo: string,
-    detalhes?: any,
-    nivelSensibilidade: string = 'interno'
+    detalhes: Record<string, unknown> | null = null,
+    nivelSensibilidade: 'interno' | 'sensivel' | 'sigiloso' | 'critico' = 'interno'
   ): Promise<void> {
     try {
       await supabase.rpc('log_audit', {
         p_user_id: userId,
         p_acao: acao,
         p_modulo: modulo,
-        p_descricao: JSON.stringify(detalhes),
+        p_descricao: detalhes ? JSON.stringify(detalhes) : null,
         p_nivel_sensibilidade: nivelSensibilidade,
       });
-    } catch (_error) {
-      console.error('[RBAC] Erro ao registrar auditoria:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[RBAC] Erro ao registrar auditoria:', err);
     }
   }
 
@@ -447,8 +468,9 @@ export class RBACService {
       if (error) throw error;
 
       return data || [];
-    } catch (_error) {
-      console.error('[RBAC] Erro ao obter logs de auditoria:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[RBAC] Erro ao obter logs de auditoria:', err);
       return [];
     }
   }
@@ -479,7 +501,7 @@ export class RBACService {
           'IP',
           'Sensibilidade',
         ];
-        const rows = logs.map((log: any) => [
+        const rows = logs.map((log) => [
           log.id,
           log.created_at,
           log.user_email,
@@ -493,8 +515,9 @@ export class RBACService {
 
         return [headers, ...rows].map((row) => row.join(',')).join('\n');
       }
-    } catch (_error) {
-      console.error('[RBAC] Erro ao exportar logs:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[RBAC] Erro ao exportar logs:', err);
       return '';
     }
   }
@@ -527,11 +550,11 @@ export function usePermission(permissionCode: string): boolean {
 /**
  * Higher-Order Component para proteção de rotas
  */
-export function withPermission(
-  Component: React.ComponentType<any>,
+export function withPermission<P extends object>(
+  Component: React.ComponentType<P>,
   requiredPermission: string
 ) {
-  return function ProtectedComponent(props: any) {
+  return function ProtectedComponent(props: P) {
     const hasPermission = usePermission(requiredPermission);
 
     if (!hasPermission) {
@@ -548,7 +571,7 @@ export function withPermission(
       );
     }
 
-    return <Component {...props} />;
+    return <Component {...(props as P)} />;
   };
 }
 

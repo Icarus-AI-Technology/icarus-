@@ -364,7 +364,8 @@ export function useFeatureFlag(flagName: keyof FeatureFlagConfig): boolean {
           setIsEnabled(userHash < flag.rolloutPercentage);
         }
       } catch (error) {
-        console.error('Erro ao verificar feature flag:', error);
+   const err = error as Error;
+        console.error('Erro ao verificar feature flag:', err);
         setIsEnabled(false);
       } finally {
         setLoading(false);

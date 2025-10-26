@@ -60,7 +60,8 @@ export function useCEP(): UseCEPReturn {
         setError('CEP não encontrado');
         return null;
       }
-    } catch (err) {
+    } catch (error) {
+   const err = error as Error;
       const errorMessage = err instanceof Error ? err.message : 'Erro ao buscar CEP';
       setError(errorMessage);
       return null;
@@ -123,7 +124,8 @@ export function useCNPJ(): UseCNPJReturn {
         setError('CNPJ não encontrado na Receita Federal');
         return null;
       }
-    } catch (err) {
+    } catch (error) {
+   const err = error as Error;
       const errorMessage = err instanceof Error ? err.message : 'Erro ao buscar CNPJ';
       setError(errorMessage);
       return null;

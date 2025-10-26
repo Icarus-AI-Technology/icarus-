@@ -40,7 +40,6 @@ export function useFeatureFlag(
   } = options;
 
   const [isEnabled, setIsEnabled] = useState<boolean>(defaultValue);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     let mounted = true;
@@ -53,7 +52,6 @@ export function useFeatureFlag(
           if (cached && Date.now() - cached.timestamp < cacheDuration) {
             if (mounted) {
               setIsEnabled(cached.value);
-              setIsLoading(false);
             }
             return;
           }
@@ -64,7 +62,6 @@ export function useFeatureFlag(
 
         if (mounted) {
           setIsEnabled(enabled);
-          setIsLoading(false);
 
           // Atualizar cache
           if (enableCache) {
@@ -75,10 +72,10 @@ export function useFeatureFlag(
           }
         }
       } catch (error) {
-        console.error(`[useFeatureFlag] Error checking flag "${flagKey}":`, error);
+   const err = error as Error;
+        console.error(`[useFeatureFlag] Error checking flag "${flagKey}":`, err);
         if (mounted) {
           setIsEnabled(defaultValue);
-          setIsLoading(false);
         }
       }
     }
@@ -139,7 +136,8 @@ export function useFeatureFlagWithLoading(
           }
         }
       } catch (error) {
-        console.error(`[useFeatureFlagWithLoading] Error:`, error);
+   const err = error as Error;
+        console.error(`[useFeatureFlagWithLoading] Error:`, err);
         if (mounted) {
           setIsEnabled(defaultValue);
           setIsLoading(false);
@@ -181,7 +179,8 @@ export function useFeatureFlagVariant(
           setVariant(flagVariant || defaultVariant);
         }
       } catch (error) {
-        console.error(`[useFeatureFlagVariant] Error:`, error);
+   const err = error as Error;
+        console.error(`[useFeatureFlagVariant] Error:`, err);
         if (mounted) {
           setVariant(defaultVariant);
         }

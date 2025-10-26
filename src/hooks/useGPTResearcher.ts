@@ -220,7 +220,8 @@ export const useGPTResearcher = (config: GPTResearcherConfig = {}) => {
       });
 
       return result;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       if (err instanceof Error) {
         if (err.name === 'AbortError') {
           addLog({

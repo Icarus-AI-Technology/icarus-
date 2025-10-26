@@ -10,7 +10,7 @@ import { Card } from '@/components/ui/card';
 import { MaskedInput } from '@/components/ui/masked-input';
 import { useCNPJ } from '@/services/cnpj.service';
 import { useCEP } from '@/services/cep.service';
-import { Search, Building2, MapPin, Phone, Mail, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import { Search, Building2, MapPin, Phone, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export const CadastroPessoaJuridica = () => {
@@ -29,16 +29,18 @@ export const CadastroPessoaJuridica = () => {
       if (dados.endereco.cep) {
         await cepAPI.buscar(dados.endereco.cep);
       }
-    } catch (_error) {
-      console.error('Erro ao buscar CNPJ:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar CNPJ:', err);
     }
   };
 
   const handleBuscarCEP = async (cep: string) => {
     try {
       await cepAPI.buscar(cep);
-    } catch (_error) {
-      console.error('Erro ao buscar CEP:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar CEP:', err);
     }
   };
 

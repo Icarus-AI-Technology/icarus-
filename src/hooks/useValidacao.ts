@@ -37,7 +37,7 @@ const DEFAULT_TTL: Record<TipoValidacao, number> = {
 /**
  * Hook universal para validações com cache
  */
-export function useValidacao<T = any>(
+export function useValidacao<T = unknown>(
   tipo: TipoValidacao,
   cacheConfig: CacheConfig = { enabled: true, ttl: 0 }
 ) {
@@ -67,7 +67,8 @@ export function useValidacao<T = any>(
         }
 
         return data as T;
-      } catch (_error) {
+      } catch (error) {
+   const err = error as Error;
         console.warn('Erro ao acessar cache:', error);
         return null;
       }
@@ -88,12 +89,13 @@ export function useValidacao<T = any>(
         await supabase.rpc('set_validacao_cache', {
           p_tipo: tipo,
           p_chave: chave,
-          p_dados: dados as any,
+          p_dados: dados as unknown,
           p_fonte: fonte,
           p_ttl_seconds: ttl,
           p_sucesso: true,
         });
-      } catch (_error) {
+      } catch (error) {
+   const err = error as Error;
         console.warn('Erro ao salvar cache:', error);
         // Não propaga erro - cache é opcional
       }
@@ -126,41 +128,48 @@ export function useValidacao<T = any>(
         let fonte = '';
 
         switch (tipo) {
-          case 'cep':
+          case 'cep': {
             data = (await viaCepService.buscarPorCep(chave)) as T;
             fonte = 'viacep';
             break;
+          }
 
-          case 'cnpj':
+          case 'cnpj': {
             data = (await receitaFederalService.consultarCNPJ(chave)) as T;
             fonte = 'receita_federal';
             break;
+          }
 
-          case 'cpf':
+          case 'cpf': {
             // Apenas validação local para CPF
             const cpfValido = receitaFederalService.validarCPF(chave);
             data = { valido: cpfValido, cpf: chave } as T;
             fonte = 'local';
             break;
+          }
 
-          case 'crm':
+          case 'crm': {
             const [crm, uf] = chave.split('/');
             data = (await cfmService.consultarCRM(crm, uf)) as T;
             fonte = 'cfm';
             break;
+          }
 
-          case 'veiculo':
+          case 'veiculo': {
             data = (await veiculoService.consultarPlaca(chave)) as T;
             fonte = 'brasil_api';
             break;
+          }
 
-          case 'anvisa':
+          case 'anvisa': {
             data = (await anvisaService.consultarRegistro(chave)) as T;
             fonte = 'anvisa';
             break;
+          }
 
-          default:
+          default: {
             throw new Error(`Tipo de validação não suportado: ${tipo}`);
+          }
         }
 
         // 3. Salva no cache se encontrou dados
@@ -177,7 +186,8 @@ export function useValidacao<T = any>(
         });
 
         return data;
-      } catch (_error) {
+      } catch (error) {
+   const err = error as Error;
         const errorMessage =
           error instanceof Error ? error.message : 'Erro desconhecido';
 
@@ -263,8 +273,10 @@ export function useValidacaoANVISA() {
 /**
  * Hook para estatísticas de cache
  */
+type CacheStat = Record<string, unknown>;
+
 export function useCacheStats() {
-  const [stats, setStats] = useState<any[]>([]);
+  const [stats, setStats] = useState<CacheStat[]>([]);
   const [loading, setLoading] = useState(false);
 
   const fetchStats = useCallback(
@@ -282,8 +294,9 @@ export function useCacheStats() {
         if (error) throw error;
 
         setStats(data || []);
-      } catch (_error) {
-        console.error('Erro ao buscar estatísticas:', error);
+      } catch (error) {
+   const err = error as Error;
+        console.error('Erro ao buscar estatísticas:', err);
         setStats([]);
       } finally {
         setLoading(false);

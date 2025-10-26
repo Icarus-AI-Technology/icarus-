@@ -1,0 +1,11 @@
+import{j as e}from"./jsx-runtime-CqWLaiLC.js";import{r as i}from"./iframe-B7BhqHn-.js";import{c as u}from"./index-BwobEAja.js";import{c as l}from"./utils-CytzSlOG.js";import{c as x}from"./createLucideIcon-R6I7Myp-.js";import"./preload-helper-C1FmrZbK.js";/**
+ * @license lucide-react v0.436.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const f=x("CircleAlert",[["circle",{cx:"12",cy:"12",r:"10",key:"1mglay"}],["line",{x1:"12",x2:"12",y1:"8",y2:"12",key:"1pkeuh"}],["line",{x1:"12",x2:"12.01",y1:"16",y2:"16",key:"4dfq90"}]]),g=u("relative w-full rounded-lg border px-4 py-3 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground [&>svg~*]:pl-7",{variants:{variant:{default:"bg-background text-foreground",destructive:"border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive"}},defaultVariants:{variant:"default"}}),o=i.forwardRef(({className:r,variant:t,...s},v)=>e.jsx("div",{ref:v,role:"alert",className:l(g({variant:t}),r),...s}));o.displayName="Alert";const p=i.forwardRef(({className:r,...t},s)=>e.jsx("h5",{ref:s,className:l("mb-1 leading-none tracking-tight",r),...t}));p.displayName="AlertTitle";const c=i.forwardRef(({className:r,...t},s)=>e.jsx("div",{ref:s,className:l("text-sm [&_p]:leading-relaxed",r),...t}));c.displayName="AlertDescription";o.__docgenInfo={description:"",methods:[],displayName:"Alert"};p.__docgenInfo={description:"",methods:[],displayName:"AlertTitle"};c.__docgenInfo={description:"",methods:[],displayName:"AlertDescription"};const b={title:"OraclusX/UI/Alert",component:o},a={render:()=>e.jsxs(o,{variant:"destructive",children:[e.jsx(f,{className:"h-4 w-4"}),e.jsx(c,{children:"Erro ao salvar registro"})]})};var n,d,m;a.parameters={...a.parameters,docs:{...(n=a.parameters)==null?void 0:n.docs,source:{originalSource:`{
+  render: () => <Alert variant="destructive">
+      <AlertCircle className="h-4 w-4" />
+      <AlertDescription>Erro ao salvar registro</AlertDescription>
+    </Alert>
+}`,...(m=(d=a.parameters)==null?void 0:d.docs)==null?void 0:m.source}}};const k=["Destructive"];export{a as Destructive,k as __namedExportsOrder,b as default};

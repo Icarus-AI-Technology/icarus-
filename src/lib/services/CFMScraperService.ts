@@ -162,20 +162,21 @@ class CFMScraperService {
         especialidades: especialidades.filter((e) => e.nome),
         dataInscricao: dataInscricao || undefined,
       };
-    } catch (_error) {
-      console.error('[CFM Scraper] Erro ao consultar CRM:', _error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[CFM Scraper] Erro ao consultar CRM:', err);
       
       // Se erro for timeout ou navegação, retornar null
-      if (_error instanceof Error && (
-        _error.message.includes('timeout') ||
-        _error.message.includes('Navigation') ||
-        _error.message.includes('net::ERR')
+      if (err instanceof Error && (
+        err.message.includes('timeout') ||
+        err.message.includes('Navigation') ||
+        err.message.includes('net::ERR')
       )) {
         console.warn('[CFM Scraper] Portal CFM pode estar indisponível');
         return null;
       }
 
-      throw _error;
+      throw err;
     } finally {
       // Fecha página
       if (page) {
@@ -202,8 +203,9 @@ class CFMScraperService {
       await page.close();
 
       return response?.ok() || false;
-    } catch (_error) {
-      console.warn('[CFM Scraper] Portal CFM indisponível:', _error);
+    } catch (error) {
+   const err = error as Error;
+      console.warn('[CFM Scraper] Portal CFM indisponível:', err);
       return false;
     }
   }

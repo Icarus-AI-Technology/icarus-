@@ -88,7 +88,8 @@ export function useLeads() {
         loading: false,
         error: null,
       });
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         loading: false,
@@ -123,8 +124,9 @@ export function useLeads() {
             ? data.estagio
             : 'desqualificado',
       };
-    } catch (_error) {
-      console.error('Erro ao buscar lead:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar lead:', err);
       return null;
     }
   }, []);
@@ -170,7 +172,8 @@ export function useLeads() {
       }));
 
       return leadNormalizado;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao criar lead',
@@ -218,7 +221,8 @@ export function useLeads() {
       }));
 
       return leadNormalizado;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao atualizar lead',
@@ -243,7 +247,8 @@ export function useLeads() {
       }));
 
       return true;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao deletar lead',
@@ -278,8 +283,9 @@ export function useLeads() {
             ? lead.estagio
             : 'desqualificado',
       }));
-    } catch (_error) {
-      console.error('Erro ao buscar leads por status:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar leads por status:', err);
       return [];
     }
   }, [empresaAtual?.id]);
@@ -310,8 +316,9 @@ export function useLeads() {
             ? lead.estagio
             : 'desqualificado',
       }));
-    } catch (_error) {
-      console.error('Erro ao buscar leads por origem:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar leads por origem:', err);
       return [];
     }
   }, [empresaAtual?.id]);
@@ -335,8 +342,9 @@ export function useLeads() {
       }, {} as Record<string, { count: number; valor: number }>);
 
       return counts;
-    } catch (_error) {
-      console.error('Erro ao contar leads:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao contar leads:', err);
       return {};
     }
   }, [empresaAtual?.id]);
@@ -377,8 +385,9 @@ export function useLeads() {
         emAndamento,
         taxaConversao: total > 0 ? (ganhos / total) * 100 : 0,
       };
-    } catch (_error) {
-      console.error('Erro ao calcular taxa de conversão:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao calcular taxa de conversão:', err);
       return { total: 0, ganhos: 0, perdidos: 0, emAndamento: 0, taxaConversao: 0 };
     }
   }, [empresaAtual?.id]);

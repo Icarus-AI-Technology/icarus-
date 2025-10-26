@@ -115,13 +115,13 @@ export async function consultarNotaFiscal(
         nome: nfe.destinatario.nome,
       },
       
-      produtos: nfe.produtos.map((p: any) => ({
+      produtos: (nfe.produtos as Array<{ codigo: string; descricao: string; ncm: string; quantidade: string | number; valor_unitario: string | number; valor_total: string | number; cfop: string }>).map((p) => ({
         codigo: p.codigo,
         descricao: p.descricao,
         ncm: p.ncm,
-        quantidade: parseFloat(p.quantidade),
-        valorUnitario: parseFloat(p.valor_unitario),
-        valorTotal: parseFloat(p.valor_total),
+        quantidade: typeof p.quantidade === 'number' ? p.quantidade : parseFloat(p.quantidade),
+        valorUnitario: typeof p.valor_unitario === 'number' ? p.valor_unitario : parseFloat(p.valor_unitario),
+        valorTotal: typeof p.valor_total === 'number' ? p.valor_total : parseFloat(p.valor_total),
         cfop: p.cfop,
       })),
       
@@ -130,8 +130,9 @@ export async function consultarNotaFiscal(
       xml: nfe.xml,
     };
     
-  } catch (_error) {
-    console.error('Erro ao consultar SEFAZ:', error);
+  } catch (error) {
+   const err = error as Error;
+    console.error('Erro ao consultar SEFAZ:', err);
     throw new Error('Não foi possível consultar a Nota Fiscal. Verifique a chave e UF.');
   }
 }
@@ -193,8 +194,9 @@ export async function consultarPrecosProduto(
       estadosConsultados: dados.estados_encontrados || estados,
     };
     
-  } catch (_error) {
-    console.error('Erro ao consultar preços SEFAZ:', error);
+  } catch (error) {
+   const err = error as Error;
+    console.error('Erro ao consultar preços SEFAZ:', err);
     throw new Error('Não foi possível consultar preços. Tente novamente.');
   }
 }
@@ -228,7 +230,8 @@ export function useSEFAZ() {
       const resultado = await consultarNotaFiscal(chave, uf);
       setNotaFiscal(resultado);
       return resultado;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
       setError(errorMessage);
       throw err;
@@ -250,7 +253,8 @@ export function useSEFAZ() {
       const resultado = await consultarPrecosProduto(ncm, descricao, estados);
       setPrecos(resultado);
       return resultado;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
       setError(errorMessage);
       throw err;

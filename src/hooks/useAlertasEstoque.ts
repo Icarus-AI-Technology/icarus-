@@ -117,9 +117,10 @@ export const useAlertasEstoque = () => {
         
         setStats(stats);
       }
-    } catch (_err) {
+    } catch (error) {
+      const err = error as Error;
       console.error('Erro ao carregar alertas:', err);
-      setError(err instanceof Error ? err.message : 'Erro desconhecido');
+      setError(err.message ?? 'Erro desconhecido');
     } finally {
       setLoading(false);
     }
@@ -174,7 +175,8 @@ export const useAlertasEstoque = () => {
       await fetchAlertas();
       
       return data;
-    } catch (_err) {
+    } catch (error) {
+      const err = error as Error;
       console.error('Erro ao criar alerta:', err);
       throw err;
     }
@@ -201,9 +203,10 @@ export const useAlertasEstoque = () => {
       if (updateError) throw updateError;
       
       await fetchAlertas();
-    } catch (_err) {
+    } catch (error) {
+      const err = error as Error;
       console.error('Erro ao resolver alerta:', err);
-      setError(err instanceof Error ? err.message : 'Erro desconhecido');
+      setError(err.message ?? 'Erro desconhecido');
       throw err;
     } finally {
       setLoading(false);
@@ -227,9 +230,10 @@ export const useAlertasEstoque = () => {
       if (updateError) throw updateError;
       
       await fetchAlertas();
-    } catch (_err) {
+    } catch (error) {
+      const err = error as Error;
       console.error('Erro ao ignorar alerta:', err);
-      setError(err instanceof Error ? err.message : 'Erro desconhecido');
+      setError(err.message ?? 'Erro desconhecido');
       throw err;
     } finally {
       setLoading(false);
@@ -308,7 +312,8 @@ export const useAlertasEstoque = () => {
       
       // Recarregar alertas após criar novos
       await fetchAlertas();
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao verificar alertas automáticos:', err);
     }
   }, [criarAlerta, fetchAlertas]);

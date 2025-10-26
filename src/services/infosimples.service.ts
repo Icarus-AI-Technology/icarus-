@@ -39,7 +39,7 @@ export class InfoSimplesAPI {
   private async request<T>(
     endpoint: string,
     method: 'GET' | 'POST' = 'GET',
-    body?: any
+    body?: unknown
   ): Promise<T> {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), this.timeout);
@@ -69,7 +69,8 @@ export class InfoSimplesAPI {
       
       return result.data as T;
       
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       clearTimeout(timeoutId);
       
       if (error instanceof Error && error.name === 'AbortError') {
@@ -207,13 +208,13 @@ import { useState } from 'react';
 export function useInfoSimples(token?: string) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<unknown>(null);
   
   const api = new InfoSimplesAPI({ token });
   
   const consultar = async (
     type: 'cnpj' | 'cpf' | 'cnh' | 'veiculo' | 'anvisa' | 'nfe' | 'precos',
-    params: any
+    params: Record<string, unknown>
   ) => {
     setLoading(true);
     setError(null);
@@ -224,28 +225,28 @@ export function useInfoSimples(token?: string) {
       
       switch (type) {
         case 'cnpj':
-          resultado = await api.consultarCNPJ(params.cnpj);
+          resultado = await api.consultarCNPJ(String(params.cnpj));
           break;
         case 'cpf':
-          resultado = await api.consultarCPF(params.cpf, params.dataNascimento);
+          resultado = await api.consultarCPF(String(params.cpf), String(params.dataNascimento));
           break;
         case 'cnh':
-          resultado = await api.consultarCNH(params.numero, params.uf);
+          resultado = await api.consultarCNH(String(params.numero), String(params.uf));
           break;
         case 'veiculo':
-          resultado = await api.consultarVeiculo(params.placa, params.renavam);
+          resultado = await api.consultarVeiculo(String(params.placa), (params.renavam as string | undefined));
           break;
         case 'anvisa':
-          resultado = await api.consultarProdutoANVISA(params.registro);
+          resultado = await api.consultarProdutoANVISA(String(params.registro));
           break;
         case 'nfe':
-          resultado = await api.consultarNFe(params.chave, params.uf);
+          resultado = await api.consultarNFe(String(params.chave), String(params.uf));
           break;
         case 'precos':
           resultado = await api.consultarPrecosSEFAZ(
-            params.ncm,
-            params.estados,
-            params.periodoDias
+            String(params.ncm),
+            params.estados as string[] | undefined,
+            (params.periodoDias as number | undefined)
           );
           break;
         default:
@@ -255,7 +256,8 @@ export function useInfoSimples(token?: string) {
       setData(resultado);
       return resultado;
       
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
       setError(errorMessage);
       throw err;

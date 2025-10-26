@@ -90,7 +90,7 @@ export interface WorkflowInstance {
   createdAt: Date;
   updatedAt: Date;
   dueDate?: Date;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   history: WorkflowTransition[];
 }
 
@@ -106,7 +106,7 @@ export interface WorkflowTransition {
   executedByName: string;
   executedAt: Date;
   comment?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
@@ -122,6 +122,8 @@ export interface WorkflowNotificationRule {
   template: string;
   channels: Array<'email' | 'whatsapp' | 'push' | 'in_app'>;
 }
+
+export type NotificationRule = WorkflowNotificationRule;
 
 /**
  * Validação antes de transição

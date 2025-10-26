@@ -43,6 +43,15 @@ body,
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
 
+    /* Mapas de alias para variáveis utilitárias usadas nos componentes */
+    --text-primary: var(--orx-text-primary);
+    /* Força secondary/muted com contraste mínimo 4.5:1 em fundo escuro */
+    --text-secondary: #cbd5e1; /* slate-300 */
+    --text-muted: #9ca3af; /* slate-400 */
+    --bg-primary: var(--orx-bg-light);
+    --surface: rgba(255,255,255,0.04);
+    --surface-hover: rgba(255,255,255,0.08);
+
     /* Neuomorphic Design Variables - AJUSTADO */
     --neumorphic-bg: #d6dce6; /* Menos brilhante (era #e0e5ec) */
     --neumorphic-light: #f5f7fa; /* Menos intenso (era #ffffff) */
@@ -52,6 +61,13 @@ body,
   }
 
   .dark {
+    /* Aliases escuros */
+    --text-primary: var(--orx-text-primary);
+    --text-secondary: #d1d5db; /* cinza claro para contraste */
+    --text-muted: #9ca3af;
+    --bg-primary: var(--orx-bg-dark);
+    --surface: rgba(0,0,0,0.35);
+    --surface-hover: rgba(255,255,255,0.06);
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;

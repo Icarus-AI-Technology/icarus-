@@ -6,7 +6,42 @@
  */
 
 import { supabase } from '@/lib/supabase';
-import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import axios, {
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosResponseHeaders,
+  RawAxiosResponseHeaders,
+} from 'axios';
+
+type Primitive = string | number | boolean | null | undefined;
+
+type APIAuthConfig =
+  | {
+      type: 'api_key';
+      headerName?: string;
+      apiKey: string;
+    }
+  | {
+      type: 'bearer';
+      token: string;
+    }
+  | {
+      type: 'basic';
+      username: string;
+      password: string;
+    };
+
+interface APICacheEntry {
+  status: number;
+  body: unknown;
+  headers: Record<string, string> | null;
+}
+
+interface SerializedResponse {
+  status: number;
+  data: unknown;
+  headers: Record<string, string> | null;
+}
 
 export interface APIEndpoint {
   id: string;
@@ -16,8 +51,8 @@ export interface APIEndpoint {
   metodo: string;
   url_base: string;
   url_path: string;
-  auth_tipo?: string;
-  auth_config?: any;
+  auth_tipo?: string | null;
+  auth_config?: Record<string, unknown> | null;
   rate_limit_requests: number;
   rate_limit_window: number;
   circuit_breaker_enabled: boolean;
@@ -32,13 +67,13 @@ export interface APIEndpoint {
 
 export interface APIRequest {
   endpoint: string; // Nome do endpoint
-  params?: Record<string, any>; // Parâmetros de URL
-  query?: Record<string, any>; // Query string
-  body?: any; // Body da requisição
+  params?: Record<string, Primitive>; // Parâmetros de URL
+  query?: Record<string, Primitive>; // Query string
+  body?: unknown; // Body da requisição
   headers?: Record<string, string>; // Headers adicionais
 }
 
-export interface APIResponse<T = any> {
+export interface APIResponse<T = unknown> {
   success: boolean;
   data?: T;
   status?: number;
@@ -53,7 +88,7 @@ export class APIGatewayService {
   /**
    * Fazer requisição a API externa via Gateway
    */
-  static async request<T = any>(request: APIRequest): Promise<APIResponse<T>> {
+  static async request<T = unknown>(request: APIRequest): Promise<APIResponse<T>> {
     const startTime = Date.now();
     let endpoint: APIEndpoint | null = null;
     let retryAttempt = 0;
@@ -82,12 +117,19 @@ export class APIGatewayService {
         const cacheKey = this.generateCacheKey(endpoint, request);
         const cached = await this.getFromCache(endpoint.id, cacheKey);
         if (cached) {
-          await this.logRequest(endpoint, request, { status: cached.status, data: cached.body, headers: cached.headers }, true, 0, Date.now() - startTime);
+          await this.logRequest(
+            endpoint,
+            request,
+            { status: cached.status, data: cached.body, headers: cached.headers ?? null },
+            true,
+            0,
+            Date.now() - startTime
+          );
           return {
             success: true,
-            data: cached.body,
+            data: cached.body as T,
             status: cached.status,
-            headers: cached.headers,
+            headers: cached.headers ?? undefined,
             fromCache: true,
             responseTime: Date.now() - startTime,
           };
@@ -95,7 +137,7 @@ export class APIGatewayService {
       }
 
       // 5. Fazer requisição com retry
-      let response: AxiosResponse | null = null;
+      let response: AxiosResponse<unknown> | null = null;
       let lastError: Error | null = null;
 
       const maxAttempts = endpoint.retry_enabled ? endpoint.retry_max_attempts : 1;
@@ -104,8 +146,9 @@ export class APIGatewayService {
         try {
           response = await this.makeRequest(endpoint, request);
           break; // Sucesso, sair do loop
-        } catch (_error) {
-          lastError = _error as Error;
+        } catch (error) {
+          const err = error as Error;
+          lastError = err;
           if (retryAttempt < maxAttempts - 1) {
             // Esperar com backoff exponencial
             const backoff = endpoint.retry_backoff_ms * Math.pow(2, retryAttempt);
@@ -126,7 +169,7 @@ export class APIGatewayService {
           cacheKey,
           response.status,
           response.data,
-          response.headers as any,
+          this.normalizeHeaders(response.headers),
           endpoint.cache_ttl
         );
       }
@@ -135,18 +178,26 @@ export class APIGatewayService {
       await this.updateCircuitBreaker(endpoint.id, true);
 
       // 8. Log da requisição
-      await this.logRequest(endpoint, request, response, false, retryAttempt, Date.now() - startTime);
+      await this.logRequest(
+        endpoint,
+        request,
+        this.serializeResponse(response),
+        false,
+        retryAttempt,
+        Date.now() - startTime
+      );
 
       return {
         success: true,
-        data: response.data,
+        data: response.data as T,
         status: response.status,
-        headers: response.headers as any,
+        headers: this.normalizeHeaders(response.headers),
         fromCache: false,
         responseTime: Date.now() - startTime,
         retryAttempt,
       };
     } catch (error: unknown) {
+      const err = error as Error;
       const responseTime = Date.now() - startTime;
 
       // Atualizar circuit breaker (falha)
@@ -163,15 +214,15 @@ export class APIGatewayService {
           false,
           retryAttempt,
           responseTime,
-          _error.message
+          err.message
         );
       }
 
-      console.error('[APIGateway] Erro na requisição:', _error);
+      console.error('[APIGateway] Erro na requisição:', err);
 
       return {
         success: false,
-        error: _error.message || 'Erro desconhecido',
+        error: err.message || 'Erro desconhecido',
         responseTime,
         retryAttempt,
       };
@@ -184,14 +235,17 @@ export class APIGatewayService {
   private static async makeRequest(
     endpoint: APIEndpoint,
     request: APIRequest
-  ): Promise<AxiosResponse> {
+  ): Promise<AxiosResponse<unknown>> {
     // Montar URL
     let url = endpoint.url_base + endpoint.url_path;
 
     // Substituir parâmetros na URL
     if (request.params) {
       Object.keys(request.params).forEach((key) => {
-        url = url.replace(`{${key}}`, encodeURIComponent(request.params![key]));
+        const value = request.params ? request.params[key] : undefined;
+        if (value !== undefined) {
+          url = url.replace(`{${key}}`, encodeURIComponent(String(value)));
+        }
       });
     }
 
@@ -208,19 +262,19 @@ export class APIGatewayService {
     };
 
     // Adicionar autenticação
-    if (endpoint.auth_tipo && endpoint.auth_config) {
-      switch (endpoint.auth_tipo) {
+    const authConfig = this.parseAuthConfig(endpoint.auth_tipo, endpoint.auth_config);
+    if (authConfig) {
+      switch (authConfig.type) {
         case 'api_key':
-          config.headers![endpoint.auth_config.header_name || 'X-API-Key'] =
-            endpoint.auth_config.api_key;
+          config.headers![authConfig.headerName || 'X-API-Key'] = authConfig.apiKey;
           break;
         case 'bearer':
-          config.headers!['Authorization'] = `Bearer ${endpoint.auth_config.token}`;
+          config.headers!['Authorization'] = `Bearer ${authConfig.token}`;
           break;
         case 'basic':
           config.auth = {
-            username: endpoint.auth_config.username,
-            password: endpoint.auth_config.password,
+            username: authConfig.username,
+            password: authConfig.password,
           };
           break;
       }
@@ -244,8 +298,9 @@ export class APIGatewayService {
       if (error) throw error;
 
       return data;
-    } catch (_error) {
-      console.error('[APIGateway] Erro ao buscar endpoint:', _error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[APIGateway] Erro ao buscar endpoint:', err);
       return null;
     }
   }
@@ -265,8 +320,9 @@ export class APIGatewayService {
       if (error) throw error;
 
       return data === true;
-    } catch (_error) {
-      console.error('[APIGateway] Erro ao verificar rate limit:', _error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[APIGateway] Erro ao verificar rate limit:', err);
       return false;
     }
   }
@@ -299,8 +355,9 @@ export class APIGatewayService {
       }
 
       return data.state;
-    } catch (_error) {
-      console.error('[APIGateway] Erro ao obter circuit breaker:', _error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[APIGateway] Erro ao obter circuit breaker:', err);
       return 'closed';
     }
   }
@@ -314,8 +371,9 @@ export class APIGatewayService {
         p_endpoint_id: endpointId,
         p_success: success,
       });
-    } catch (_error) {
-      console.error('[APIGateway] Erro ao atualizar circuit breaker:', _error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[APIGateway] Erro ao atualizar circuit breaker:', err);
     }
   }
 
@@ -337,7 +395,7 @@ export class APIGatewayService {
   private static async getFromCache(
     endpointId: string,
     cacheKey: string
-  ): Promise<{ status: number; body: any; headers: any } | null> {
+  ): Promise<APICacheEntry | null> {
     try {
       const { data, error } = await supabase.rpc('get_from_cache', {
         p_endpoint_id: endpointId,
@@ -348,9 +406,15 @@ export class APIGatewayService {
         return null;
       }
 
-      return data;
-    } catch (_error) {
-      console.error('[APIGateway] Erro ao obter do cache:', _error);
+      const entry = data as APICacheEntry;
+      return {
+        status: entry.status,
+        body: entry.body,
+        headers: entry.headers ?? null,
+      };
+    } catch (error) {
+      const err = error as Error;
+      console.error('[APIGateway] Erro ao obter do cache:', err);
       return null;
     }
   }
@@ -362,8 +426,8 @@ export class APIGatewayService {
     endpointId: string,
     cacheKey: string,
     status: number,
-    body: any,
-    headers: any,
+    body: unknown,
+    headers: Record<string, string> | null,
     ttl: number
   ): Promise<void> {
     try {
@@ -375,8 +439,9 @@ export class APIGatewayService {
         p_response_headers: headers,
         p_ttl: ttl,
       });
-    } catch (_error) {
-      console.error('[APIGateway] Erro ao salvar no cache:', _error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[APIGateway] Erro ao salvar no cache:', err);
     }
   }
 
@@ -386,7 +451,7 @@ export class APIGatewayService {
   private static async logRequest(
     endpoint: APIEndpoint,
     request: APIRequest,
-    response: AxiosResponse | { status: number; data: any; headers: any } | null,
+    response: SerializedResponse | null,
     fromCache: boolean,
     retryAttempt: number,
     responseTime: number,
@@ -401,17 +466,19 @@ export class APIGatewayService {
         user_id: userId,
         request_method: endpoint.metodo,
         request_url: endpoint.url_base + endpoint.url_path,
-        request_params: request.params || {},
-        request_body: request.body || {},
-        response_status: response?.status || null,
-        response_body: response?.data || null,
+        request_params: request.params ?? null,
+        request_body: request.body ?? null,
+        response_status: response?.status ?? null,
+        response_body: response?.data ?? null,
         response_time_ms: responseTime,
         from_cache: fromCache,
         retry_attempt: retryAttempt,
         error_message: errorMessage || null,
+        response_headers: response?.headers ?? null,
       });
-    } catch (_error) {
-      console.error('[APIGateway] Erro ao registrar log:', _error);
+    } catch (error) {
+      const err = error as Error;
+      console.error('[APIGateway] Erro ao registrar log:', err);
     }
   }
 
@@ -425,15 +492,16 @@ export class APIGatewayService {
   /**
    * Obter métricas de endpoints
    */
-  static async getMetrics() {
+  static async getMetrics(): Promise<Record<string, unknown>[]> {
     try {
       const { data, error } = await supabase.from('vw_api_metrics').select('*');
 
-      if (error) throw _error;
+      if (error) throw error;
 
-      return data || [];
-    } catch (_error) {
-      console.error('[APIGateway] Erro ao obter métricas:', _error);
+  return (data as Record<string, unknown>[]) || [];
+    } catch (error) {
+      const err = error as Error;
+      console.error('[APIGateway] Erro ao obter métricas:', err);
       return [];
     }
   }
@@ -441,7 +509,7 @@ export class APIGatewayService {
   /**
    * Obter alertas ativos
    */
-  static async getActiveAlerts() {
+  static async getActiveAlerts(): Promise<Record<string, unknown>[]> {
     try {
       const { data, error } = await supabase
         .from('api_alerts')
@@ -449,11 +517,12 @@ export class APIGatewayService {
         .eq('is_resolved', false)
         .order('created_at', { ascending: false });
 
-      if (error) throw _error;
+      if (error) throw error;
 
-      return data || [];
-    } catch (_error) {
-      console.error('[APIGateway] Erro ao obter alertas:', _error);
+      return (data as Record<string, unknown>[]) || [];
+    } catch (error) {
+      const err = error as Error;
+      console.error('[APIGateway] Erro ao obter alertas:', err);
       return [];
     }
   }
@@ -474,12 +543,13 @@ export class APIGatewayService {
         })
         .eq('id', alertId);
 
-      if (error) throw _error;
+      if (error) throw error;
 
       return { success: true };
     } catch (error: unknown) {
-      console.error('[APIGateway] Erro ao resolver alerta:', _error);
-      return { success: false, error: _error.message };
+      const err = error as Error;
+      console.error('[APIGateway] Erro ao resolver alerta:', err);
+      return { success: false, error: err.message };
     }
   }
 
@@ -490,12 +560,13 @@ export class APIGatewayService {
     try {
       const { data, error } = await supabase.rpc('cleanup_expired_cache');
 
-      if (error) throw _error;
+      if (error) throw error;
 
       console.log(`[APIGateway] ${data} entradas de cache expiradas removidas`);
       return data || 0;
-    } catch (_error) {
-      console.error('[APIGateway] Erro ao limpar cache:', _error);
+    } catch (error) {
+      const err = error as Error;
+      console.error('[APIGateway] Erro ao limpar cache:', err);
       return 0;
     }
   }
@@ -514,12 +585,89 @@ export class APIGatewayService {
         })
         .eq('endpoint_id', endpointId);
 
-      if (error) throw _error;
+      if (error) throw error;
 
       return { success: true };
     } catch (error: unknown) {
-      console.error('[APIGateway] Erro ao resetar circuit breaker:', _error);
-      return { success: false, error: _error.message };
+      const err = error as Error;
+      console.error('[APIGateway] Erro ao resetar circuit breaker:', err);
+      return { success: false, error: err.message };
+    }
+  }
+
+  private static normalizeHeaders(
+    headers: AxiosResponse<unknown>['headers'] | undefined
+  ): Record<string, string> {
+    const result: Record<string, string> = {};
+    if (!headers) {
+      return result;
+    }
+
+    const rawHeaders = headers as AxiosResponseHeaders | RawAxiosResponseHeaders;
+    Object.entries(rawHeaders).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        result[key] = value.join(',');
+      } else if (value !== undefined) {
+        result[key] = String(value);
+      }
+    });
+
+    return result;
+  }
+
+  private static serializeResponse(response: AxiosResponse<unknown>): SerializedResponse {
+    return {
+      status: response.status,
+      data: response.data,
+      headers: this.normalizeHeaders(response.headers),
+    };
+  }
+
+  private static parseAuthConfig(
+    authType: string | null | undefined,
+    authConfig: Record<string, unknown> | null | undefined
+  ): APIAuthConfig | null {
+    if (!authType || !authConfig) {
+      return null;
+    }
+
+    switch (authType) {
+      case 'api_key': {
+        const headerName = typeof authConfig.header_name === 'string' ? authConfig.header_name : undefined;
+        const apiKey = typeof authConfig.api_key === 'string' ? authConfig.api_key : undefined;
+        if (!apiKey) {
+          return null;
+        }
+        return {
+          type: 'api_key',
+          headerName,
+          apiKey,
+        };
+      }
+      case 'bearer': {
+        const token = typeof authConfig.token === 'string' ? authConfig.token : undefined;
+        if (!token) {
+          return null;
+        }
+        return {
+          type: 'bearer',
+          token,
+        };
+      }
+      case 'basic': {
+        const username = typeof authConfig.username === 'string' ? authConfig.username : undefined;
+        const password = typeof authConfig.password === 'string' ? authConfig.password : undefined;
+        if (!username || !password) {
+          return null;
+        }
+        return {
+          type: 'basic',
+          username,
+          password,
+        };
+      }
+      default:
+        return null;
     }
   }
 }
@@ -532,7 +680,7 @@ export class APIGatewayService {
  * Wrapper para SEFAZ
  */
 export class SEFAZService {
-  static async emitirNFe(dadosNFe: any) {
+  static async emitirNFe<TPayload extends Record<string, unknown>>(dadosNFe: TPayload) {
     return APIGatewayService.request({
       endpoint: 'sefaz_nfe_emitir',
       body: dadosNFe,

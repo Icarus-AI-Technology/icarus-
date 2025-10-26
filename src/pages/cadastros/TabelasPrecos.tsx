@@ -14,32 +14,9 @@
  * @version 5.0.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  DollarSign,
-  FileText,
-  Building2,
-  Heart,
-  TrendingUp,
-  Calendar,
-  Upload,
-  Download,
-  Edit,
-  Eye,
-  Plus,
-  Search,
-  Filter,
-  RefreshCcw,
-  AlertTriangle,
-  CheckCircle,
-  Clock,
-  Copy,
-  Percent,
-  Package,
-  Users,
-  FileBarChart
-} from 'lucide-react';
+import { DollarSign, FileText, Building2, Heart, Download, Edit, Eye, Plus, Search, RefreshCcw, AlertTriangle, CheckCircle, Clock, Copy, Percent, Package, Users, FileBarChart } from 'lucide-react';
 import { tabelasPrecosService, TabelaPreco } from '@/lib/services/TabelasPrecosService';
 
 // ========================================
@@ -55,14 +32,10 @@ export const TabelasPrecos: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterTipo, setFilterTipo] = useState<string>('todos');
   const [filterStatus, setFilterStatus] = useState<string>('todos');
-  const [totalCount, setTotalCount] = useState(0);
+  const [_totalCount, setTotalCount] = useState(0);
 
   // Carregar tabelas
-  useEffect(() => {
-    carregarTabelas();
-  }, [filterTipo, filterStatus]);
-
-  const carregarTabelas = async () => {
+  const carregarTabelas = useCallback(async () => {
     setLoading(true);
     try {
       const { data, count } = await tabelasPrecosService.listarTabelas({
@@ -73,12 +46,18 @@ export const TabelasPrecos: React.FC = () => {
 
       setTabelas(data || []);
       setTotalCount(count || 0);
-    } catch (_error) {
-      console.error('Erro ao carregar tabelas:', _error);
+    } catch (error) {
+      console.error('Erro ao carregar tabelas:', error as Error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [filterTipo, filterStatus, searchQuery]);
+
+  useEffect(() => {
+    carregarTabelas();
+  }, [carregarTabelas]);
+
+  
 
   // Filtrar tabelas localmente
   const tabelasFiltradas = tabelas.filter(tabela => {
@@ -112,8 +91,9 @@ export const TabelasPrecos: React.FC = () => {
         link.download = `${tabelaNome.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.csv`;
         link.click();
       }
-    } catch (_error) {
-      console.error('Erro ao exportar tabela:', _error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao exportar tabela:', err);
     }
   };
 
@@ -122,59 +102,35 @@ export const TabelasPrecos: React.FC = () => {
       const novoNome = `${tabelaNome} - Cópia`;
       await tabelasPrecosService.duplicarTabela(tabelaId, novoNome);
       carregarTabelas();
-    } catch (_error) {
-      console.error('Erro ao duplicar tabela:', _error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao duplicar tabela:', err);
     }
   };
 
   return (
-    <div className="space-y-6" style={{ padding: '24px' }}>
+    <div className="space-y-6 p-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 
-            style={{ 
-              fontSize: '1.875rem',
-              fontWeight: 'var(--orx-font-weight-bold)',
-              color: 'var(--orx-text-primary)',
-              marginBottom: '8px'
-            }}
-          >
+          <h1 className="text-3xl font-bold text-[var(--orx-text-primary)] mb-2">
             Tabelas de Preços OPME
           </h1>
-          <p style={{ color: 'var(--orx-text-secondary)', fontSize: '0.938rem' }}>
+          <p className="text-[var(--orx-text-secondary)] text-[0.938rem]">
             Gerenciamento de preços por fabricante, hospital e convênio
           </p>
         </div>
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div className="flex gap-3">
           <button
-            className="neumorphic-button"
+            className="neumorphic-button inline-flex items-center gap-2 px-5 py-3 rounded-lg text-[0.813rem]"
             onClick={() => carregarTabelas()}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '12px 20px',
-              borderRadius: 'var(--orx-radius-lg)',
-              fontSize: '0.813rem'
-            }}
             title="Atualizar"
           >
             <RefreshCcw size={18} />
             <span>Atualizar</span>
           </button>
           <button
-            className="neumorphic-button"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '12px 20px',
-              borderRadius: 'var(--orx-radius-lg)',
-              fontSize: '0.813rem',
-              background: 'var(--orx-primary)',
-              color: '#fff'
-            }}
+            className="neumorphic-button inline-flex items-center gap-2 px-5 py-3 rounded-lg text-[0.813rem] bg-[var(--orx-primary)] text-white"
             onClick={() => navigate('/cadastros/tabelas-precos/nova')}
           >
             <Plus size={18} />
@@ -189,53 +145,43 @@ export const TabelasPrecos: React.FC = () => {
           label="Tabelas Ativas"
           value={kpis.tabelasAtivas}
           icon={<CheckCircle size={24} />}
-          color="var(--orx-success)"
+          bgClass="bg-[var(--orx-success)]/15"
+          textClass="text-[var(--orx-success)]"
         />
         <KPICard
           label="Tabelas Hospitais"
           value={kpis.tabelasHospitais}
           icon={<Building2 size={24} />}
-          color="var(--orx-primary)"
+          bgClass="bg-[var(--orx-primary)]/15"
+          textClass="text-[var(--orx-primary)]"
         />
         <KPICard
           label="Tabelas Convênios"
           value={kpis.tabelasConvenios}
           icon={<Heart size={24} />}
-          color="var(--orx-pink-500)"
+          bgClass="bg-[var(--orx-pink-500)]/15"
+          textClass="text-[var(--orx-pink-500)]"
         />
         <KPICard
           label="Valor Médio"
           value={`R$ ${kpis.valorTotalMedio.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
           icon={<DollarSign size={24} />}
-          color="var(--orx-teal-500)"
+          bgClass="bg-[var(--orx-teal-500)]/15"
+          textClass="text-[var(--orx-teal-500)]"
         />
       </div>
 
       {/* Filtros e Busca */}
       <div 
-        className="neumorphic-container"
-        style={{
-          padding: '24px',
-          borderRadius: 'var(--orx-radius-xl)'
-        }}
+        className="neumorphic-container p-6 rounded-2xl"
       >
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* Busca */}
-          <div style={{ gridColumn: '1 / 3' }}>
-            <div 
-              style={{
-                position: 'relative',
-                display: 'flex',
-                alignItems: 'center'
-              }}
-            >
+          <div className="md:[grid-column:1/3]">
+            <div className="relative flex items-center">
               <Search 
                 size={20} 
-                style={{ 
-                  position: 'absolute',
-                  left: '12px',
-                  color: 'var(--orx-text-secondary)'
-                }} 
+                className="absolute left-3 text-[var(--orx-text-secondary)]" 
               />
               <input
                 type="text"
@@ -243,15 +189,7 @@ export const TabelasPrecos: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && carregarTabelas()}
-                style={{
-                  width: '100%',
-                  padding: '12px 12px 12px 44px',
-                  borderRadius: 'var(--orx-radius-lg)',
-                  border: '1px solid var(--orx-border)',
-                  background: 'var(--orx-bg-light)',
-                  color: 'var(--orx-text-primary)',
-                  fontSize: '0.813rem'
-                }}
+                className="w-full py-3 pl-11 pr-3 rounded-lg border border-[var(--orx-border)] bg-[var(--orx-bg-light)] text-[var(--orx-text-primary)] text-[0.813rem]"
               />
             </div>
           </div>
@@ -261,15 +199,7 @@ export const TabelasPrecos: React.FC = () => {
             <select
               value={filterTipo}
               onChange={(e) => setFilterTipo(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '12px',
-                borderRadius: 'var(--orx-radius-lg)',
-                border: '1px solid var(--orx-border)',
-                background: 'var(--orx-bg-light)',
-                color: 'var(--orx-text-primary)',
-                fontSize: '0.813rem'
-              }}
+              className="w-full p-3 rounded-lg border border-[var(--orx-border)] bg-[var(--orx-bg-light)] text-[var(--orx-text-primary)] text-[0.813rem]"
             >
               <option value="todos">Todos os Tipos</option>
               <option value="fabricante">Fabricante</option>
@@ -287,15 +217,7 @@ export const TabelasPrecos: React.FC = () => {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '12px',
-                borderRadius: 'var(--orx-radius-lg)',
-                border: '1px solid var(--orx-border)',
-                background: 'var(--orx-bg-light)',
-                color: 'var(--orx-text-primary)',
-                fontSize: '0.813rem'
-              }}
+              className="w-full p-3 rounded-lg border border-[var(--orx-border)] bg-[var(--orx-bg-light)] text-[var(--orx-text-primary)] text-[0.813rem]"
             >
               <option value="todos">Todos os Status</option>
               <option value="ativa">Ativa</option>
@@ -309,44 +231,40 @@ export const TabelasPrecos: React.FC = () => {
 
       {/* Tabela de Dados */}
       <div 
-        className="neumorphic-container"
-        style={{
-          borderRadius: 'var(--orx-radius-xl)',
-          overflow: 'hidden'
-        }}
+        className="neumorphic-container rounded-2xl overflow-hidden"
       >
         {loading ? (
-          <div style={{ padding: '48px', textAlign: 'center' }}>
+          <div className="p-12 text-center">
             <RefreshCcw 
               size={48} 
-              style={{ color: 'var(--orx-primary)', margin: '0 auto 16px', animation: 'spin 1s linear infinite' }} 
+              className="mx-auto mb-4 text-[var(--orx-primary)] animate-spin" 
             />
-            <p style={{ color: 'var(--orx-text-secondary)' }}>Carregando tabelas...</p>
+            <p className="text-[var(--orx-text-secondary)]">Carregando tabelas...</p>
           </div>
         ) : (
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
               <thead>
-                <tr style={{ background: 'var(--orx-bg-light)', borderBottom: '2px solid var(--orx-border)' }}>
-                  <th style={{ padding: '16px', textAlign: 'left', color: 'var(--orx-text-primary)', fontWeight: 'var(--orx-font-weight-semibold)', fontSize: '0.813rem' }}>
+                <tr className="bg-[var(--orx-bg-light)] border-b-2 border-[var(--orx-border)]">
+                  <th className="p-4 text-left text-[var(--orx-text-primary)] font-semibold text-[0.813rem]">
                     Nome da Tabela
                   </th>
-                  <th style={{ padding: '16px', textAlign: 'left', color: 'var(--orx-text-primary)', fontWeight: 'var(--orx-font-weight-semibold)', fontSize: '0.813rem' }}>
+                  <th className="p-4 text-left text-[var(--orx-text-primary)] font-semibold text-[0.813rem]">
                     Tipo
                   </th>
-                  <th style={{ padding: '16px', textAlign: 'center', color: 'var(--orx-text-primary)', fontWeight: 'var(--orx-font-weight-semibold)', fontSize: '0.813rem' }}>
+                  <th className="p-4 text-center text-[var(--orx-text-primary)] font-semibold text-[0.813rem]">
                     Itens
                   </th>
-                  <th style={{ padding: '16px', textAlign: 'right', color: 'var(--orx-text-primary)', fontWeight: 'var(--orx-font-weight-semibold)', fontSize: '0.813rem' }}>
+                  <th className="p-4 text-right text-[var(--orx-text-primary)] font-semibold text-[0.813rem]">
                     Valor Total
                   </th>
-                  <th style={{ padding: '16px', textAlign: 'center', color: 'var(--orx-text-primary)', fontWeight: 'var(--orx-font-weight-semibold)', fontSize: '0.813rem' }}>
+                  <th className="p-4 text-center text-[var(--orx-text-primary)] font-semibold text-[0.813rem]">
                     Vigência
                   </th>
-                  <th style={{ padding: '16px', textAlign: 'center', color: 'var(--orx-text-primary)', fontWeight: 'var(--orx-font-weight-semibold)', fontSize: '0.813rem' }}>
+                  <th className="p-4 text-center text-[var(--orx-text-primary)] font-semibold text-[0.813rem]">
                     Status
                   </th>
-                  <th style={{ padding: '16px', textAlign: 'center', color: 'var(--orx-text-primary)', fontWeight: 'var(--orx-font-weight-semibold)', fontSize: '0.813rem' }}>
+                  <th className="p-4 text-center text-[var(--orx-text-primary)] font-semibold text-[0.813rem]">
                     Ações
                   </th>
                 </tr>
@@ -355,40 +273,30 @@ export const TabelasPrecos: React.FC = () => {
                 {tabelasFiltradas.map((tabela) => (
                   <tr 
                     key={tabela.id}
-                    style={{
-                      borderBottom: '1px solid var(--orx-border)',
-                      transition: 'background 0.2s',
-                      cursor: 'pointer'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'rgba(99, 102, 241, 0.05)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'transparent';
-                    }}
+                    className="border-b border-[var(--orx-border)] transition-colors hover:bg-[rgba(99,102,241,0.05)] cursor-pointer"
                   >
-                    <td style={{ padding: '16px' }}>
+                    <td className="p-4">
                       <div>
-                        <p style={{ color: 'var(--orx-text-primary)', fontWeight: 'var(--orx-font-weight-medium)', fontSize: '0.875rem' }}>
+                        <p className="text-[var(--orx-text-primary)] font-medium text-[0.875rem]">
                           {tabela.nome}
                         </p>
                         {tabela.codigo && (
-                          <p style={{ color: 'var(--orx-text-secondary)', fontSize: '0.813rem', marginTop: '4px' }}>
+                          <p className="text-[var(--orx-text-secondary)] text-[0.813rem] mt-1">
                             Código: {tabela.codigo}
                           </p>
                         )}
                       </div>
                     </td>
-                    <td style={{ padding: '16px' }}>
+                    <td className="p-4">
                       <TipoTabelaBadge tipo={tabela.tipo} />
                     </td>
-                    <td style={{ padding: '16px', textAlign: 'center', color: 'var(--orx-text-primary)', fontWeight: 'var(--orx-font-weight-medium)', fontSize: '0.875rem' }}>
+                    <td className="p-4 text-center text-[var(--orx-text-primary)] font-medium text-[0.875rem]">
                       {tabela.total_itens || 0}
                     </td>
-                    <td style={{ padding: '16px', textAlign: 'right', color: 'var(--orx-text-primary)', fontWeight: 'var(--orx-font-weight-semibold)', fontSize: '0.875rem' }}>
+                    <td className="p-4 text-right text-[var(--orx-text-primary)] font-semibold text-[0.875rem]">
                       R$ {(tabela.valor_total_estimado || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </td>
-                    <td style={{ padding: '16px', textAlign: 'center', color: 'var(--orx-text-secondary)', fontSize: '0.813rem' }}>
+                    <td className="p-4 text-center text-[var(--orx-text-secondary)] text-[0.813rem]">
                       {new Date(tabela.data_inicio).toLocaleDateString('pt-BR')}
                       {tabela.data_fim && (
                         <>
@@ -397,70 +305,38 @@ export const TabelasPrecos: React.FC = () => {
                         </>
                       )}
                     </td>
-                    <td style={{ padding: '16px', textAlign: 'center' }}>
+                    <td className="p-4 text-center">
                       <StatusBadge status={tabela.status} />
                     </td>
-                    <td style={{ padding: '16px' }}>
-                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                    <td className="p-4">
+                      <div className="flex gap-2 justify-center flex-wrap">
                         <button
-                          className="neumorphic-button"
+                          className="neumorphic-button inline-flex items-center gap-2 px-3 py-2 rounded-md text-[0.813rem]"
                           onClick={() => navigate(`/cadastros/tabelas-precos/${tabela.id}`)}
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            padding: '8px 12px',
-                            borderRadius: 'var(--orx-radius-md)',
-                            fontSize: '0.813rem'
-                          }}
                           title="Visualizar"
                         >
                           <Eye size={16} />
                           <span>Ver</span>
                         </button>
                         <button
-                          className="neumorphic-button"
+                          className="neumorphic-button inline-flex items-center gap-2 px-3 py-2 rounded-md text-[0.813rem]"
                           onClick={() => navigate(`/cadastros/tabelas-precos/${tabela.id}/editar`)}
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            padding: '8px 12px',
-                            borderRadius: 'var(--orx-radius-md)',
-                            fontSize: '0.813rem'
-                          }}
                           title="Editar"
                         >
                           <Edit size={16} />
                           <span>Editar</span>
                         </button>
                         <button
-                          className="neumorphic-button"
+                          className="neumorphic-button inline-flex items-center gap-2 px-3 py-2 rounded-md text-[0.813rem]"
                           onClick={() => handleDuplicar(tabela.id, tabela.nome)}
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            padding: '8px 12px',
-                            borderRadius: 'var(--orx-radius-md)',
-                            fontSize: '0.813rem'
-                          }}
                           title="Duplicar"
                         >
                           <Copy size={16} />
                           <span>Duplicar</span>
                         </button>
                         <button
-                          className="neumorphic-button"
+                          className="neumorphic-button inline-flex items-center gap-2 px-3 py-2 rounded-md text-[0.813rem]"
                           onClick={() => handleExportar(tabela.id, tabela.nome)}
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            padding: '8px 12px',
-                            borderRadius: 'var(--orx-radius-md)',
-                            fontSize: '0.813rem'
-                          }}
                           title="Exportar CSV"
                         >
                           <Download size={16} />
@@ -474,12 +350,12 @@ export const TabelasPrecos: React.FC = () => {
             </table>
 
             {tabelasFiltradas.length === 0 && !loading && (
-              <div style={{ padding: '48px', textAlign: 'center' }}>
-                <AlertTriangle size={48} style={{ color: 'var(--orx-text-secondary)', margin: '0 auto 16px' }} />
-                <p style={{ color: 'var(--orx-text-primary)', fontWeight: 'var(--orx-font-weight-medium)' }}>
+              <div className="p-12 text-center">
+                <AlertTriangle size={48} className="mx-auto mb-4 text-[var(--orx-text-secondary)]" />
+                <p className="text-[var(--orx-text-primary)] font-medium">
                   Nenhuma tabela encontrada
                 </p>
-                <p style={{ color: 'var(--orx-text-secondary)', fontSize: '0.813rem', marginTop: '8px' }}>
+                <p className="text-[var(--orx-text-secondary)] text-[0.813rem] mt-2">
                   Tente ajustar os filtros ou crie uma nova tabela de preços
                 </p>
               </div>
@@ -490,28 +366,15 @@ export const TabelasPrecos: React.FC = () => {
 
       {/* Informações Importantes */}
       <div 
-        className="neumorphic-container"
-        style={{
-          padding: '24px',
-          borderRadius: 'var(--orx-radius-xl)',
-          background: 'rgba(59, 130, 246, 0.05)',
-          border: '1px solid rgba(59, 130, 246, 0.2)'
-        }}
+        className="neumorphic-container p-6 rounded-2xl border border-[rgba(59,130,246,0.2)] bg-[rgba(59,130,246,0.05)]"
       >
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'start' }}>
-          <AlertTriangle size={20} style={{ color: 'var(--orx-info)', flexShrink: 0, marginTop: '2px' }} />
+        <div className="flex gap-3 items-start">
+          <AlertTriangle size={20} className="text-[var(--orx-info)] shrink-0 mt-[2px]" />
           <div>
-            <h3 
-              style={{ 
-                fontWeight: 'var(--orx-font-weight-semibold)',
-                color: 'var(--orx-text-primary)',
-                marginBottom: '8px',
-                fontSize: '0.938rem'
-              }}
-            >
+            <h3 className="font-semibold text-[var(--orx-text-primary)] mb-2 text-[0.938rem]">
               Sobre Tabelas de Preços OPME
             </h3>
-            <ul style={{ color: 'var(--orx-text-secondary)', fontSize: '0.813rem', lineHeight: '1.6', paddingLeft: '20px' }}>
+            <ul className="text-[var(--orx-text-secondary)] text-[0.813rem] leading-6 pl-5 list-disc">
               <li><strong>Fabricante</strong>: Preços de fábrica/custo base fornecidos pelos fabricantes</li>
               <li><strong>Distribuidor</strong>: Tabela padrão com margem de distribuição aplicada</li>
               <li><strong>Hospital</strong>: Preços negociados especificamente com cada hospital</li>
@@ -536,43 +399,19 @@ interface KPICardProps {
   label: string;
   value: string | number;
   icon: React.ReactNode;
-  color: string;
+  bgClass: string;
+  textClass: string;
 }
 
-const KPICard: React.FC<KPICardProps> = ({ label, value, icon, color }) => {
+const KPICard: React.FC<KPICardProps> = ({ label, value, icon, bgClass, textClass }) => {
   return (
-    <div
-      className="neumorphic-container"
-      style={{
-        padding: '24px',
-        borderRadius: 'var(--orx-radius-xl)',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '16px'
-      }}
-    >
-      <div
-        style={{
-          width: '56px',
-          height: '56px',
-          borderRadius: 'var(--orx-radius-lg)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: `${color}15`,
-          color: color,
-          flexShrink: 0
-        }}
-      >
+    <div className="neumorphic-container p-6 rounded-2xl flex items-center gap-4">
+      <div className={`w-14 h-14 rounded-xl flex items-center justify-center shrink-0 ${bgClass} ${textClass}`}>
         {icon}
       </div>
-      <div style={{ flex: 1 }}>
-        <p style={{ color: 'var(--orx-text-secondary)', fontSize: '0.813rem', marginBottom: '4px' }}>
-          {label}
-        </p>
-        <p style={{ color: 'var(--orx-text-primary)', fontSize: '1.5rem', fontWeight: 'var(--orx-font-weight-bold)' }}>
-          {value}
-        </p>
+      <div className="flex-1">
+        <p className="text-[var(--orx-text-secondary)] text-[0.813rem] mb-1">{label}</p>
+        <p className="text-[var(--orx-text-primary)] text-2xl font-bold">{value}</p>
       </div>
     </div>
   );
@@ -593,19 +432,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
   const { label, color, bg, icon } = config[status];
 
   return (
-    <span 
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '6px',
-        padding: '6px 12px',
-        borderRadius: 'var(--orx-radius-md)',
-        fontSize: '0.813rem',
-        fontWeight: 'var(--orx-font-weight-medium)',
-        background: bg,
-        color: color
-      }}
-    >
+    <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[0.813rem] font-medium bg-[${bg}] text-[${color}]`}>
       {icon}
       {label}
     </span>
@@ -630,19 +457,7 @@ const TipoTabelaBadge: React.FC<TipoTabelaBadgeProps> = ({ tipo }) => {
   const { label, color, bg, icon } = config[tipo];
 
   return (
-    <span 
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '6px',
-        padding: '6px 12px',
-        borderRadius: 'var(--orx-radius-md)',
-        fontSize: '0.813rem',
-        fontWeight: 'var(--orx-font-weight-medium)',
-        background: bg,
-        color: color
-      }}
-    >
+    <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[0.813rem] font-medium bg-[${bg}] text-[${color}]`}>
       {icon}
       {label}
     </span>

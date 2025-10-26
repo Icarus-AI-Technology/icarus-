@@ -1,0 +1,191 @@
+# ICARUS v5.0 - Cursor AI Rules
+
+## 🎯 Contexto do Projeto
+
+**Sistema:** ICARUS v5.0 - ERP para Distribuidores OPME  
+**Stack:** React 18 + TypeScript 5.6 + Vite + Supabase  
+**Design System:** OraclusX DS (Neumorphic 3D)  
+**Módulos:** 58 módulos funcionais  
+**Status:** Auditoria completa em andamento
+
+---
+
+## ⚠️ REGRA FUNDAMENTAL
+
+### **NUNCA MODIFICAR CÓDIGO SEM APROVAÇÃO EXPLÍCITA**
+
+Os agentes devem **APENAS**:
+- ✅ Auditar e analisar
+- ✅ Documentar gaps e issues
+- ✅ Gerar relatórios
+- ✅ Sugerir correções
+
+Os agentes **NUNCA** devem:
+- ❌ Modificar arquivos de código
+- ❌ Criar novos componentes
+- ❌ Alterar configurações
+- ❌ Aplicar correções automaticamente
+
+---
+
+## 📋 Protocolos de Execução
+
+### 1. Verificar STATUS.json
+Antes de iniciar qualquer tarefa, verificar:
+```json
+{
+  "status": "idle|running|completed|failed|blocked",
+  "progress": 0-100,
+  "locked_resources": []
+}
+```
+
+### 2. Adquirir Locks
+Para leitura de recursos críticos:
+```typescript
+const locked = await acquireLock('resource-path', 'agent-id');
+if (!locked) {
+  // Aguardar ou abortar
+}
+```
+
+### 3. Atualizar Progresso
+Durante execução, atualizar STATUS.json:
+```json
+{
+  "status": "running",
+  "progress": 45,
+  "current_task": "Auditando componentes..."
+}
+```
+
+### 4. Gerar Relatório
+Ao finalizar, criar REPORT.md com:
+- Resumo executivo
+- Detalhamento técnico
+- Gaps identificados
+- Recomendações
+
+---
+
+## 🎨 Padrões de Código
+
+### TypeScript
+- ✅ Strict mode habilitado
+- ✅ Props sempre tipadas
+- ✅ Evitar `any`
+- ✅ Usar tipos gerados do Supabase
+
+### Nomenclatura
+- Componentes: `PascalCase`
+- Variáveis: `camelCase`
+- Arquivos: `kebab-case.tsx`
+- Hooks: `useCamelCase`
+- Services: `PascalCaseService.ts`
+
+### Design System OraclusX DS
+- Usar **APENAS** componentes do DS
+- Cor primária: `#6366F1` (indigo)
+- Sombras neumórficas (4 tipos)
+- Dark/Light mode obrigatório
+- Acessibilidade WCAG 2.1 AA
+
+---
+
+## 🔧 Comandos Disponíveis
+
+```bash
+# Validação
+npm run type-check          # TypeScript check
+npm run lint                # ESLint
+npm run build               # Build production
+
+# Testes
+npm run test                # Unit tests
+npm run test:e2e            # E2E Playwright
+npm run qa:all              # QA completo
+
+# Agentes
+npm run setup:agents        # Criar estrutura
+npm run audit:full          # Executar todos os agentes
+npm run audit:agent -- 01   # Executar agente específico
+npm run report:generate     # Gerar relatório consolidado
+
+# Logs
+npm run logs:agent -- 01    # Ver logs de um agente
+npm run logs:all            # Ver todos os logs
+```
+
+---
+
+## 📚 Referências Principais
+
+- **Spec Completa:** `ICARUS_V5_SPEC_COMPLETO.md`
+- **Design System:** `ORACLUSX_DS_COMPLETO.md`
+- **Manual 58 Módulos:** `MANUAL_COMPLETO_58_MODULOS.md`
+- **Inventário:** `inventario.md`
+- **README:** `README.md`
+
+---
+
+## 🚫 Anti-Padrões (EVITAR)
+
+❌ Modificar código sem aprovação  
+❌ Ignorar erros TypeScript  
+❌ Usar inline styles  
+❌ Componentes fora do DS  
+❌ Commits sem mensagem semântica  
+❌ console.log em produção  
+❌ Hardcoded credentials  
+❌ Ignorar acessibilidade  
+❌ Quebrar convenções de nomenclatura  
+
+---
+
+## 📊 Métricas de Qualidade
+
+### Targets
+- TypeScript: 0 erros
+- ESLint: 0 erros
+- Bundle: < 280 KB
+- Build time: < 4s
+- Lighthouse: 90+
+- Test Coverage: 85%+
+- Acessibilidade: WCAG AA 100%
+
+---
+
+## 🎯 Sistema de Agentes
+
+### Grupos de Execução Paralela
+
+**Grupo 1:** (30-45 min)
+- 01 - Design System
+- 02 - Frontend
+- 07 - Segurança
+
+**Grupo 2:** (45-60 min)
+- 03 - Backend
+- 04 - Integrações
+
+**Grupo 3:** (60-90 min) - Aguarda Grupo 2
+- 05 - IA
+- 06 - Módulos
+
+**Sequential:** (30-45 min) - Aguarda todos
+- 08 - Testes
+- 09 - Deploy
+
+---
+
+## 📞 Suporte
+
+**Orquestrador:** `.cursor/agents/00-ORCHESTRATOR.md`  
+**Protocolos:** `.cursor/protocols/`  
+**Templates:** `.cursor/templates/`  
+
+---
+
+**Versão:** 5.0.0  
+**Data:** 2025-10-25T14:57:02.453Z  
+**Status:** Sistema de Auditoria Ativo

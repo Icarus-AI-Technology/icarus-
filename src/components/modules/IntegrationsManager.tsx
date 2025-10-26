@@ -5,6 +5,7 @@
  * Dashboard completo com logs, webhooks, health checks e configurações
  */
 
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   Card,
   Button,
@@ -15,16 +16,10 @@ import {
   TableHead,
   TableBody,
   TableCell,
-  Tabs,
   Input,
-  Textarea,
   Switch,
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
   Tooltip,
+  TooltipTrigger,
   TooltipContent,
   TooltipProvider,
 } from '@/components/oraclusx-ds';
@@ -35,29 +30,29 @@ import {
   CheckCircle,
   XCircle,
   Clock,
-  Zap,
   Settings,
-  Eye,
-  Download,
   RefreshCw,
   Plus,
   Edit,
   Trash2,
   Code,
-  Key,
-  Link as LinkIcon,
-  Webhook,
   History,
   BarChart3,
   Shield,
+  ShieldCheck,
   Globe,
   Server,
+  Eye,
+  Zap,
+  Download,
+  Webhook,
 } from 'lucide-react';
 import { useDocumentTitle } from '@/hooks';
 import { useToast } from '@/contexts/ToastContext';
 import { APIGatewayService } from '@/lib/services/APIGatewayService';
-import { formatNumber, formatPercent, formatDuration } from '@/lib/utils';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
+import { formatNumber } from '@/lib/utils';
+// import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
+// (Nenhum gráfico ativo aqui no momento; manter comentado até adicionar OrxLineChart quando necessário)
 
 interface Integration {
   id: string;
@@ -98,7 +93,7 @@ interface LogEntry {
   erro?: string;
 }
 
-const STATUS_COLORS: Record<string, { bg: string; text: string; icon: any }> = {
+const STATUS_COLORS: Record<string, { bg: string; text: string; icon: typeof CheckCircle | typeof XCircle | typeof AlertCircle | typeof Clock }> = {
   ativo: { bg: 'bg-success/20', text: 'text-success', icon: CheckCircle },
   inativo: { bg: 'bg-gray-200 dark:bg-gray-700', text: 'text-gray-600 dark:text-gray-400', icon: XCircle },
   erro: { bg: 'bg-error/20', text: 'text-error', icon: AlertCircle },
@@ -124,14 +119,10 @@ export default function IntegrationsManager() {
   const [integrations, setIntegrations] = useState<Integration[]>([]);
   const [webhooks, setWebhooks] = useState<Webhook[]>([]);
   const [logs, setLogs] = useState<LogEntry[]>([]);
-  const [selectedIntegration, setSelectedIntegration] = useState<Integration | null>(null);
-  const [isConfigDialogOpen, setIsConfigDialogOpen] = useState(false);
+  // const [selectedIntegration, setSelectedIntegration] = useState<Integration | null>(null);
+  // const [isConfigDialogOpen, setIsConfigDialogOpen] = useState(false);
 
-  useEffect(() => {
-    carregarDados();
-  }, []);
-
-  const carregarDados = async () => {
+  const carregarDados = useCallback(async () => {
     setLoading(true);
     try {
       await Promise.all([
@@ -140,33 +131,45 @@ export default function IntegrationsManager() {
         carregarLogs(),
       ]);
     } catch (error: unknown) {
-      addToast(`Erro ao carregar dados: ${error.message}`, 'error');
+      const err = error as Error;
+      addToast(`Erro ao carregar dados: ${err.message}`, 'error');
     } finally {
       setLoading(false);
     }
-  };
+  }, [addToast]);
+
+  useEffect(() => {
+    carregarDados();
+  }, [carregarDados]);
 
   const carregarIntegracoes = async () => {
     try {
       const metrics = await APIGatewayService.getMetrics();
       
-      const integrationsData: Integration[] = metrics.map((m: any) => ({
-        id: m.endpoint_id,
-        nome: m.endpoint_nome,
-        descricao: m.servico,
-        tipo: m.servico,
-        status: m.circuit_breaker_state === 'closed' ? 'ativo' : m.circuit_breaker_state === 'open' ? 'erro' : 'manutencao',
+      const integrationsData: Integration[] = metrics.map((m: Record<string, unknown>) => ({
+        id: String(m.endpoint_id ?? ''),
+        nome: String(m.endpoint_nome ?? ''),
+        descricao: String(m.servico ?? ''),
+        tipo: String(m.servico ?? 'custom'),
+        status: (m.circuit_breaker_state === 'closed'
+          ? 'ativo'
+          : m.circuit_breaker_state === 'open'
+          ? 'erro'
+          : 'manutencao') as Integration['status'],
         url: '-',
         auth_tipo: 'api_key',
         ultima_sincronizacao: new Date().toISOString(),
-        total_chamadas: m.total_requests || 0,
-        taxa_sucesso: m.total_requests > 0 ? (m.success_count / m.total_requests) * 100 : 0,
-        tempo_resposta_medio: m.avg_response_time_ms || 0,
+        total_chamadas: Number(m.total_requests ?? 0),
+        taxa_sucesso:
+          Number(m.total_requests ?? 0) > 0
+            ? (Number(m.success_count ?? 0) / Number(m.total_requests ?? 0)) * 100
+            : 0,
+        tempo_resposta_medio: Number(m.avg_response_time_ms ?? 0),
       }));
 
       setIntegrations(integrationsData);
-    } catch (_error) {
-      console.error('Erro ao carregar integrações:', error);
+    } catch (error) {
+      console.error('Erro ao carregar integrações:', error as Error);
       // Mock data
       setIntegrations([
         {
@@ -297,7 +300,7 @@ export default function IntegrationsManager() {
     ]);
   };
 
-  const handleTestarIntegracao = async (integrationId: string) => {
+  const handleTestarIntegracao = async (_integrationId: string) => {
     setLoading(true);
     try {
       // Implementar teste de integração
@@ -307,7 +310,8 @@ export default function IntegrationsManager() {
         setLoading(false);
       }, 2000);
     } catch (error: unknown) {
-      addToast(`Erro no teste: ${error.message}`, 'error');
+      const err = error as Error;
+      addToast(`Erro no teste: ${err.message}`, 'error');
       setLoading(false);
     }
   };
@@ -320,7 +324,8 @@ export default function IntegrationsManager() {
       ));
       addToast(`Webhook ${isAtivo ? 'ativado' : 'desativado'}!`, 'success');
     } catch (error: unknown) {
-      addToast(`Erro: ${error.message}`, 'error');
+      const err = error as Error;
+      addToast(`Erro: ${err.message}`, 'error');
     }
   };
 
@@ -346,44 +351,44 @@ export default function IntegrationsManager() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card className="p-6 neuro-raised bg-gradient-to-br from-emerald-500 to-emerald-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Integrações Ativas</h3>
+              <h3 className="opacity-90 text-[0.813rem] font-medium">Integrações Ativas</h3>
               <CheckCircle className="w-5 h-5 opacity-80" />
             </div>
-            <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{integracoesAtivas}/{integracoesTotal}</p>
-            <p className="opacity-80 mt-2" style={{ fontSize: '0.813rem' }}>{formatPercent((integracoesAtivas / integracoesTotal) * 100)} operacionais</p>
+            <p className="text-[0.813rem] font-bold">{integracoesAtivas}/{integracoesTotal}</p>
+            <p className="opacity-80 mt-2 text-[0.813rem]">{formatPercent((integracoesAtivas / integracoesTotal) * 100)} operacionais</p>
           </Card>
 
           <Card className="p-6 neuro-raised bg-gradient-to-br from-blue-500 to-blue-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Chamadas (24h)</h3>
+              <h3 className="opacity-90 text-[0.813rem] font-medium">Chamadas (24h)</h3>
               <Activity className="w-5 h-5 opacity-80" />
             </div>
-            <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{formatNumber(chamadas24h)}</p>
-            <p className="opacity-80 mt-2" style={{ fontSize: '0.813rem' }}>Média: {Math.round(chamadas24h / 24)}/hora</p>
+            <p className="text-[0.813rem] font-bold">{formatNumber(chamadas24h)}</p>
+            <p className="opacity-80 mt-2 text-[0.813rem]">Média: {Math.round(chamadas24h / 24)}/hora</p>
           </Card>
 
           <Card className="p-6 neuro-raised bg-gradient-to-br from-purple-500 to-purple-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Taxa de Sucesso</h3>
+              <h3 className="opacity-90 text-[0.813rem] font-medium">Taxa de Sucesso</h3>
               <BarChart3 className="w-5 h-5 opacity-80" />
             </div>
-            <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{taxaSucessoMedia.toFixed(1)}%</p>
-            <p className="opacity-80 mt-2" style={{ fontSize: '0.813rem' }}>Meta: ≥ 95%</p>
+            <p className="text-[0.813rem] font-bold">{taxaSucessoMedia.toFixed(1)}%</p>
+            <p className="opacity-80 mt-2 text-[0.813rem]">Meta: ≥ 95%</p>
           </Card>
 
           <Card className="p-6 neuro-raised bg-gradient-to-br from-orange-500 to-orange-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Tempo Médio</h3>
+              <h3 className="opacity-90 text-[0.813rem] font-medium">Tempo Médio</h3>
               <Clock className="w-5 h-5 opacity-80" />
             </div>
-            <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{Math.round(tempoMedio)}ms</p>
-            <p className="opacity-80 mt-2" style={{ fontSize: '0.813rem' }}>Meta: &lt; 1000ms</p>
+            <p className="text-[0.813rem] font-bold">{Math.round(tempoMedio)}ms</p>
+            <p className="opacity-80 mt-2 text-[0.813rem]">Meta: &lt; 1000ms</p>
           </Card>
         </div>
 
         {/* Status das Integrações */}
         <Card className="p-6 neuro-raised">
-          <h3 className="mb-4 flex items-center gap-2" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>
+          <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] font-semibold">
             <Plug className="w-5 h-5 text-[var(--primary)]" />
             Status das Integrações
           </h3>
@@ -399,8 +404,8 @@ export default function IntegrationsManager() {
                     <div className="flex items-center gap-3">
                       <TypeIcon className={`w-5 h-5 ${INTEGRATION_TYPES[integration.tipo as keyof typeof INTEGRATION_TYPES]?.color}`} />
                       <div>
-                        <h4 className style={{ fontWeight: 600 }}>{integration.nome}</h4>
-                        <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>{integration.descricao}</p>
+                        <h4 className="font-semibold">{integration.nome}</h4>
+                        <p className="text-[var(--text-secondary)] text-[0.813rem]">{integration.descricao}</p>
                       </div>
                     </div>
                     <Badge variant="default" className={`${statusConfig.bg} ${statusConfig.text}`}>
@@ -408,18 +413,18 @@ export default function IntegrationsManager() {
                       {integration.status}
                     </Badge>
                   </div>
-                  <div className="grid grid-cols-3 gap-2" style={{ fontSize: '0.813rem' }}>
+                  <div className="grid grid-cols-3 gap-2 text-[0.813rem]">
                     <div>
-                      <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>Chamadas</p>
-                      <p className style={{ fontWeight: 600 }}>{formatNumber(integration.total_chamadas)}</p>
+                      <p className="text-[var(--text-secondary)] text-[0.813rem]">Chamadas</p>
+                      <p className="font-semibold">{formatNumber(integration.total_chamadas)}</p>
                     </div>
                     <div>
-                      <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>Sucesso</p>
-                      <p className style={{ fontWeight: 600 }}>{integration.taxa_sucesso.toFixed(1)}%</p>
+                      <p className="text-[var(--text-secondary)] text-[0.813rem]">Sucesso</p>
+                      <p className="font-semibold">{integration.taxa_sucesso.toFixed(1)}%</p>
                     </div>
                     <div>
-                      <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>Tempo</p>
-                      <p className style={{ fontWeight: 600 }}>{integration.tempo_resposta_medio.toFixed(0)}ms</p>
+                      <p className="text-[var(--text-secondary)] text-[0.813rem]">Tempo</p>
+                      <p className="font-semibold">{integration.tempo_resposta_medio.toFixed(0)}ms</p>
                     </div>
                   </div>
                   <div className="flex gap-2 mt-3">
@@ -442,7 +447,7 @@ export default function IntegrationsManager() {
   const renderIntegrations = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Gerenciar Integrações</h2>
+        <h2 className="text-[0.813rem] font-semibold">Gerenciar Integrações</h2>
         <Button icon={<Plus />} onClick={() => setIsConfigDialogOpen(true)}>
           Nova Integração
         </Button>
@@ -468,7 +473,7 @@ export default function IntegrationsManager() {
 
               return (
                 <TableRow key={integration.id}>
-                  <TableCell className style={{ fontWeight: 500 }}>{integration.nome}</TableCell>
+                  <TableCell className="font-medium">{integration.nome}</TableCell>
                   <TableCell>
                     <Badge variant="default">{integration.tipo}</Badge>
                   </TableCell>
@@ -536,7 +541,7 @@ export default function IntegrationsManager() {
   const renderWebhooks = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Webhooks</h2>
+        <h2 className="text-[0.813rem] font-semibold">Webhooks</h2>
         <Button icon={<Plus />}>Novo Webhook</Button>
       </div>
 
@@ -547,13 +552,13 @@ export default function IntegrationsManager() {
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
                   <Webhook className="w-5 h-5 text-[var(--primary)]" />
-                  <h3 className style={{ fontWeight: 600 }}>{webhook.nome}</h3>
+                  <h3 className="font-semibold">{webhook.nome}</h3>
                   <Switch
                     checked={webhook.is_ativo}
                     onCheckedChange={(checked) => handleToggleWebhook(webhook.id, checked)}
                   />
                 </div>
-                <p className="text-[var(--text-secondary)] mb-2" style={{ fontSize: '0.813rem' }}>{webhook.url}</p>
+                <p className="text-[var(--text-secondary)] mb-2 text-[0.813rem]">{webhook.url}</p>
                 <div className="flex flex-wrap gap-2">
                   {webhook.eventos.map((evento, idx) => (
                     <Badge key={idx} variant="default" className="bg-[var(--primary)]/20 text-[var(--primary)]">
@@ -569,20 +574,20 @@ export default function IntegrationsManager() {
             </div>
             <div className="grid grid-cols-4 gap-4 pt-4 border-t border-[var(--text-secondary)]/20">
               <div>
-                <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>Total Chamadas</p>
-                <p className style={{ fontWeight: 600 }}>{webhook.total_chamadas}</p>
+                <p className="text-[var(--text-secondary)] text-[0.813rem]">Total Chamadas</p>
+                <p className="font-semibold">{webhook.total_chamadas}</p>
               </div>
               <div>
-                <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>Sucessos</p>
-                <p className="text-success" style={{ fontWeight: 600 }}>{webhook.total_sucessos}</p>
+                <p className="text-[var(--text-secondary)] text-[0.813rem]">Sucessos</p>
+                <p className="text-success font-semibold">{webhook.total_sucessos}</p>
               </div>
               <div>
-                <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>Falhas</p>
-                <p className="text-error" style={{ fontWeight: 600 }}>{webhook.total_falhas}</p>
+                <p className="text-[var(--text-secondary)] text-[0.813rem]">Falhas</p>
+                <p className="text-error font-semibold">{webhook.total_falhas}</p>
               </div>
               <div>
-                <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>Última Chamada</p>
-                <p className style={{ fontSize: '0.813rem' }}>
+                <p className="text-[var(--text-secondary)] text-[0.813rem]">Última Chamada</p>
+                <p className="text-[0.813rem]">
                   {webhook.ultima_chamada
                     ? new Date(webhook.ultima_chamada).toLocaleTimeString('pt-BR')
                     : 'Nunca'}
@@ -598,7 +603,7 @@ export default function IntegrationsManager() {
   const renderLogs = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Logs de Integrações</h2>
+        <h2 className="text-[0.813rem] font-semibold">Logs de Integrações</h2>
         <div className="flex gap-2">
           <Input placeholder="Buscar logs..." icon={<Code />} className="w-[300px]" />
           <Button variant="secondary" icon={<Download />} onClick={handleExportarLogs}>
@@ -628,7 +633,7 @@ export default function IntegrationsManager() {
                 <TableCell>
                   <Badge variant="default">{log.metodo}</Badge>
                 </TableCell>
-                <TableCell className="font-mono" style={{ fontSize: '0.813rem' }}>{log.endpoint}</TableCell>
+                <TableCell className="font-mono text-[0.813rem]">{log.endpoint}</TableCell>
                 <TableCell>
                   <Badge
                     variant="default"

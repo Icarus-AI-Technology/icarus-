@@ -14,15 +14,17 @@
  * Custo: $0 (self-hosted) vs $300-1,200/ano (Amplitude)
  */
 
+import posthog from 'posthog-js';
+
 export interface AnalyticsEvent {
   event: string;
-  properties?: Record<string, any>;
+  properties?: Record<string, unknown>;
   timestamp?: Date;
 }
 
 export interface UserProperties {
-  $set?: Record<string, any>;
-  $set_once?: Record<string, any>;
+  $set?: Record<string, unknown>;
+  $set_once?: Record<string, unknown>;
   $unset?: string[];
 }
 
@@ -30,7 +32,7 @@ export interface FeatureFlag {
   key: string;
   enabled: boolean;
   variant?: string;
-  payload?: any;
+  payload?: unknown;
 }
 
 export class PostHogService {
@@ -38,7 +40,7 @@ export class PostHogService {
   private host: string;
   private enabled: boolean;
   private userId?: string;
-  private userProperties: Record<string, any> = {};
+  private userProperties: Record<string, unknown> = {};
   private sessionId?: string;
 
   constructor(apiKey?: string, host?: string) {
@@ -51,6 +53,20 @@ export class PostHogService {
     }
 
     this.initSession();
+
+    // Initialize browser SDK when available and not in QA mode
+    try {
+      const isBrowser = typeof window !== 'undefined';
+      const isQAMode = isBrowser && new URLSearchParams(window.location.search).get('qa') === '1';
+      if (isBrowser && this.enabled && !isQAMode) {
+        posthog.init(this.apiKey, {
+          api_host: this.host,
+          autocapture: true,
+        });
+      }
+    } catch (_) {
+      // noop
+    }
   }
 
   /**
@@ -63,7 +79,7 @@ export class PostHogService {
   /**
    * Identifica usuário
    */
-  identify(userId: string, properties?: Record<string, any>): void {
+  identify(userId: string, properties?: Record<string, unknown>): void {
     this.userId = userId;
     if (properties) {
       this.userProperties = { ...this.userProperties, ...properties };
@@ -89,7 +105,7 @@ export class PostHogService {
   /**
    * Captura evento
    */
-  capture(event: string, properties?: Record<string, any>): void {
+  capture(event: string, properties?: Record<string, unknown>): void {
     if (!this.enabled) {
       console.debug('[PostHog] Disabled, skipping event:', event);
       return;
@@ -112,7 +128,7 @@ export class PostHogService {
   /**
    * Page view
    */
-  pageView(pageName?: string, properties?: Record<string, any>): void {
+  pageView(pageName?: string, properties?: Record<string, unknown>): void {
     this.capture('$pageview', {
       $current_url: window.location.href,
       $pathname: window.location.pathname,
@@ -144,7 +160,8 @@ export class PostHogService {
       const data = await response.json();
       return data.featureFlags?.[flagKey] === true;
     } catch (error) {
-      console.error('[PostHog] Feature flag check error:', error);
+   const err = error as Error;
+      console.error('[PostHog] Feature flag check error:', err);
       return false;
     }
   }
@@ -172,7 +189,8 @@ export class PostHogService {
       const data = await response.json();
       return data.featureFlagPayloads?.[flagKey] || null;
     } catch (error) {
-      console.error('[PostHog] Feature flag variant error:', error);
+   const err = error as Error;
+      console.error('[PostHog] Feature flag variant error:', err);
       return null;
     }
   }
@@ -195,7 +213,8 @@ export class PostHogService {
         }),
       });
     } catch (error) {
-      console.error('[PostHog] Send event error:', error);
+   const err = error as Error;
+      console.error('[PostHog] Send event error:', err);
     }
   }
 
@@ -238,7 +257,8 @@ export const analyticsService = new PostHogService();
  */
 
 // Track: Cirurgia criada
-export function trackCirurgiaCriada(cirurgiaId: string, data: any): void {
+type CirurgiaData = { medico_id?: string; hospital_id?: string; procedimento?: string; data_cirurgia?: string };
+export function trackCirurgiaCriada(cirurgiaId: string, data: CirurgiaData): void {
   analyticsService.capture('cirurgia_criada', {
     cirurgia_id: cirurgiaId,
     medico_id: data.medico_id,
@@ -265,7 +285,7 @@ export function trackNFeEmitida(nfeId: string, valor: number): void {
 }
 
 // Track: Relatório gerado
-export function trackRelatorioGerado(tipo: string, filtros: any): void {
+export function trackRelatorioGerado(tipo: string, filtros: Record<string, unknown>): void {
   analyticsService.capture('relatorio_gerado', {
     tipo,
     filtros,
@@ -281,7 +301,7 @@ export function trackLogin(userId: string, metodo: string): void {
 }
 
 // Track: Erro
-export function trackError(errorMessage: string, context?: any): void {
+export function trackError(errorMessage: string, context?: Record<string, unknown>): void {
   analyticsService.capture('error', {
     error_message: errorMessage,
     context,
@@ -289,7 +309,7 @@ export function trackError(errorMessage: string, context?: any): void {
 }
 
 // Track: Feature usado
-export function trackFeatureUsed(featureName: string, context?: any): void {
+export function trackFeatureUsed(featureName: string, context?: Record<string, unknown>): void {
   analyticsService.capture('feature_used', {
     feature: featureName,
     context,

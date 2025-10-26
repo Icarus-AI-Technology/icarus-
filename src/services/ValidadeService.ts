@@ -152,8 +152,9 @@ export class ValidadeService {
         vencendo_30_dias: vencendo30,
         vencendo_90_dias: vencendo90
       };
-    } catch (_error) {
-      console.error('Erro ao verificar vencimentos:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao verificar vencimentos:', err);
       throw error;
     }
   }
@@ -201,8 +202,9 @@ export class ValidadeService {
       }
 
       return lotesVencidos?.length || 0;
-    } catch (_error) {
-      console.error('Erro ao bloquear vencidos:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao bloquear vencidos:', err);
       throw error;
     }
   }
@@ -320,8 +322,9 @@ export class ValidadeService {
           localizacao: lote.estoque?.[0]?.localizacao?.codigo
         };
       });
-    } catch (_error) {
-      console.error('Erro ao obter ordem FEFO:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao obter ordem FEFO:', err);
       throw error;
     }
   }
@@ -376,8 +379,9 @@ export class ValidadeService {
         bloqueados,
         alertas_criados: alertasCriados
       };
-    } catch (_error) {
-      console.error('Erro na rotina automática:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro na rotina automática:', err);
       throw error;
     }
   }

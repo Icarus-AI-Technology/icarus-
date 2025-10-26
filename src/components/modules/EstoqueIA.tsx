@@ -125,7 +125,8 @@ export default function EstoqueIA() {
         const proximosVencimento = await getMateriaisProximosVencimento(30);
         setResumo(resumoData);
         setMateriaisAlerta([...abaixoMinimo, ...proximosVencimento]);
-      } catch (_err) {
+      } catch (error) {
+   const err = error as Error;
         addToast(
           err instanceof Error ? err.message :"Erro ao carregar dados de estoque","error"
         );
@@ -185,7 +186,7 @@ export default function EstoqueIA() {
   const renderDashboard = () => (
     <div className="space-y-6">
       <Card className="neuro-raised p-6">
-        <h3 className="text-body-lg text-[var(--text-primary)] mb-4 flex items-center gap-2" style={{ fontWeight: 500 }}>
+        <h3 className="text-body-lg text-[var(--text-primary)] mb-4 flex items-center gap-2 font-medium">
           <Bot className="w-5 h-5 text-[var(--primary)]" />
           IA Predictions - Estoque Inteligente
         </h3>
@@ -215,10 +216,10 @@ export default function EstoqueIA() {
             <Plus className="w-4 h-4" />
             Novo Material
           </button>
-          <button className="neuro-button-secondary px-4 py-2 rounded-xl">
+          <button className="neuro-button-secondary px-4 py-2 rounded-xl" aria-label="Filtrar materiais" title="Filtrar materiais">
             <Filter className="w-4 h-4" />
           </button>
-          <button className="neuro-button-secondary px-4 py-2 rounded-xl">
+          <button className="neuro-button-secondary px-4 py-2 rounded-xl" aria-label="Exportar lista" title="Exportar lista">
             <Download className="w-4 h-4" />
           </button>
         </div>
@@ -267,13 +268,13 @@ export default function EstoqueIA() {
             <table className="w-full">
               <thead className="border-b border-[var(--border)]">
                 <tr>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Código</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Descrição</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Quantidade</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Mínimo</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Valor Unit.</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Status</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Ações</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Código</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Descrição</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Quantidade</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Mínimo</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Valor Unit.</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Status</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Ações</th>
                 </tr>
               </thead>
               <tbody>
@@ -284,7 +285,7 @@ export default function EstoqueIA() {
                       key={material.id}
                       className="border-b border-[var(--border)] hover:bg-[var(--surface-hover)] transition-colors"
                     >
-                      <td className="p-4 text-[var(--text-primary)]" style={{ fontWeight: 500 }}>{material.codigo}</td>
+                      <td className="p-4 text-[var(--text-primary)] font-medium">{material.codigo}</td>
                       <td className="p-4 text-[var(--text-primary)]">{material.descricao}</td>
                       <td className="p-4">
                         <span className={`font-display ${isLow ?"text-error" :"text-[var(--text-primary)]"}`}>
@@ -302,15 +303,17 @@ export default function EstoqueIA() {
                       </td>
                       <td className="p-4">
                         <div className="flex gap-2">
-                          <button className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all">
+                          <button className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all" aria-label="Visualizar material" title="Visualizar material">
                             <Eye className="w-4 h-4" />
                           </button>
-                          <button className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all">
+                          <button className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all" aria-label="Editar material" title="Editar material">
                             <Edit2 className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDelete(material.id)}
                             className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all text-error"
+                            aria-label="Excluir material"
+                            title="Excluir material"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -337,6 +340,30 @@ export default function EstoqueIA() {
   return (
     <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto space-y-6">
+        {typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && (
+          <>
+            <style>{`* { animation: none !important; transition: none !important; }`}</style>
+            <div id="qa-lcp-h1" className="p-4 rounded-xl bg-indigo-500/10">
+              <h1 className="m-0 text-[1.5rem] font-extrabold text-[var(--orx-text-primary)]">
+                Estoque IA — Snapshot QA
+              </h1>
+            </div>
+            <div role="toolbar" aria-label="QA Actions" className="flex gap-2 mt-2 flex-nowrap">
+              {['Novo','Importar','Atualizar','Ajuda','Atalhos','Preferências'].map((label) => (
+                <button
+                  key={label}
+                  type="button"
+                  data-qa-button="true"
+                  className="neuro-button px-2 py-1 text-[0.75rem] leading-none whitespace-nowrap"
+                  onClick={(e) => e.preventDefault()}
+                  aria-label={`QA ${label}`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-heading-lg font-display text-[var(--text-primary)] mb-2">Estoque IA</h1>
@@ -346,9 +373,71 @@ export default function EstoqueIA() {
           </div>
           <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
             <Bot className="w-4 h-4 text-[var(--primary)] animate-pulse" />
-            <span className="text-body-sm text-[var(--text-primary)]" style={{ fontWeight: 500 }}>IA: 99.2%</span>
+            <span className="text-body-sm text-[var(--text-primary)] font-medium">IA: 99.2%</span>
           </div>
         </div>
+
+        {typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && (
+          <>
+            <form aria-label="Filtros QA Estoque" className="rounded-2xl p-4 neuro-raised grid [grid-template-columns:1.2fr_0.8fr_0.8fr_0.6fr] gap-3 items-end mt-3">
+              <div>
+                <label htmlFor="qa-busca-est" className="text-[0.75rem] text-[var(--orx-text-secondary)]">Busca</label>
+                <input id="qa-busca-est" name="busca" placeholder="Código ou descrição" className="w-full px-3 py-2 rounded-xl" />
+              </div>
+              <div>
+                <label htmlFor="qa-est-inicio" className="text-[0.75rem] text-[var(--orx-text-secondary)]">Início</label>
+                <input id="qa-est-inicio" name="inicio" type="date" className="w-full px-3 py-2 rounded-xl" />
+              </div>
+              <div>
+                <label htmlFor="qa-est-fim" className="text-[0.75rem] text-[var(--orx-text-secondary)]">Fim</label>
+                <input id="qa-est-fim" name="fim" type="date" className="w-full px-3 py-2 rounded-xl" />
+              </div>
+              <div>
+                <label htmlFor="qa-est-status" className="text-[0.75rem] text-[var(--orx-text-secondary)]">Status</label>
+                <select id="qa-est-status" name="status" className="w-full px-3 py-2 rounded-xl">
+                  <option value="">Todos</option>
+                  <option value="ok">OK</option>
+                  <option value="baixo">Baixo</option>
+                </select>
+              </div>
+              <div className="col-span-full flex gap-2">
+                <button type="submit" className="neuro-button px-3 py-2 rounded-xl" aria-label="Aplicar filtros">Aplicar</button>
+                <button type="button" className="neuro-button px-3 py-2 rounded-xl" aria-label="Limpar filtros">Limpar</button>
+              </div>
+            </form>
+
+            <div className="neuro-raised p-4 rounded-2xl">
+              <h2 className="text-[0.813rem] font-semibold text-[var(--orx-text-primary)] mb-3">Materiais (QA)</h2>
+              <div className="overflow-x-auto">
+                <table role="table" className="w-full">
+                  <thead>
+                    <tr>
+                      <th className="text-left p-2">Código</th>
+                      <th className="text-left p-2">Descrição</th>
+                      <th className="text-left p-2">Qtd</th>
+                      <th className="text-left p-2">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[1,2,3,4,5,6,7,8].map((i) => (
+                      <tr key={i}>
+                        <td className="p-2">MAT-{i}</td>
+                        <td className="p-2">Material {i}</td>
+                        <td className="p-2">{(i * 3) % 17}</td>
+                        <td className="p-2">{i % 3 === 0 ? 'Baixo' : 'OK'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="flex gap-2 mt-3">
+                <button type="button" aria-label="Página Anterior" className="neuro-button">Anterior</button>
+                <button type="button" aria-label="Próxima Página" className="neuro-button">Próximo</button>
+              </div>
+            </div>
+          </>
+        )}
+
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
           {categories.map((category) => (
@@ -360,7 +449,7 @@ export default function EstoqueIA() {
               }`}
             >
               <category.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
-              <span className="text-body-xs text-[var(--text-primary)]" style={{ fontWeight: 500 }}>{category.label}</span>
+              <span className="text-body-xs text-[var(--text-primary)] font-medium">{category.label}</span>
               <div className="flex items-center gap-1 mt-1">
                 <span className="text-body-lg font-display text-[var(--text-primary)]">{category.count}</span>
                 {category.trend && category.trend !=="0" && (

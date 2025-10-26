@@ -1,0 +1,204 @@
+{
+  "transportadoras": [
+    {
+      "name": "Correios",
+      "type": "nacional",
+      "has_service": true,
+      "has_tracking": true,
+      "has_quote": true,
+      "has_webhook": false,
+      "issues": [],
+      "service_path": "src/services/integrations/CorreiosService.ts"
+    },
+    {
+      "name": "Jadlog",
+      "type": "nacional",
+      "has_service": true,
+      "has_tracking": true,
+      "has_quote": true,
+      "has_webhook": false,
+      "issues": [],
+      "service_path": "src/services/integrations/JadlogService.ts"
+    },
+    {
+      "name": "TNT",
+      "type": "nacional",
+      "has_service": false,
+      "has_tracking": false,
+      "has_quote": false,
+      "has_webhook": false,
+      "issues": [
+        "Service não encontrado"
+      ]
+    },
+    {
+      "name": "TotalExpress",
+      "type": "nacional",
+      "has_service": true,
+      "has_tracking": true,
+      "has_quote": true,
+      "has_webhook": false,
+      "issues": [],
+      "service_path": "src/services/integrations/TotalExpressService.ts"
+    },
+    {
+      "name": "AzulCargo",
+      "type": "nacional",
+      "has_service": false,
+      "has_tracking": false,
+      "has_quote": false,
+      "has_webhook": false,
+      "issues": [
+        "Service não encontrado"
+      ]
+    },
+    {
+      "name": "LatamCargo",
+      "type": "nacional",
+      "has_service": false,
+      "has_tracking": false,
+      "has_quote": false,
+      "has_webhook": false,
+      "issues": [
+        "Service não encontrado"
+      ]
+    },
+    {
+      "name": "RapidaoCometa",
+      "type": "nacional",
+      "has_service": false,
+      "has_tracking": false,
+      "has_quote": false,
+      "has_webhook": false,
+      "issues": [
+        "Service não encontrado"
+      ]
+    },
+    {
+      "name": "Sequoia",
+      "type": "nacional",
+      "has_service": false,
+      "has_tracking": false,
+      "has_quote": false,
+      "has_webhook": false,
+      "issues": [
+        "Service não encontrado"
+      ]
+    },
+    {
+      "name": "Braspress",
+      "type": "nacional",
+      "has_service": true,
+      "has_tracking": true,
+      "has_quote": true,
+      "has_webhook": false,
+      "issues": [],
+      "service_path": "src/services/integrations/BraspressService.ts"
+    },
+    {
+      "name": "Jamef",
+      "type": "nacional",
+      "has_service": false,
+      "has_tracking": false,
+      "has_quote": false,
+      "has_webhook": false,
+      "issues": [
+        "Service não encontrado"
+      ]
+    },
+    {
+      "name": "Rodonaves",
+      "type": "nacional",
+      "has_service": false,
+      "has_tracking": false,
+      "has_quote": false,
+      "has_webhook": false,
+      "issues": [
+        "Service não encontrado"
+      ]
+    },
+    {
+      "name": "Direct",
+      "type": "nacional",
+      "has_service": false,
+      "has_tracking": false,
+      "has_quote": false,
+      "has_webhook": false,
+      "issues": [
+        "Service não encontrado"
+      ]
+    },
+    {
+      "name": "Patrus",
+      "type": "nacional",
+      "has_service": false,
+      "has_tracking": false,
+      "has_quote": false,
+      "has_webhook": false,
+      "issues": [
+        "Service não encontrado"
+      ]
+    },
+    {
+      "name": "Loggi",
+      "type": "nacional",
+      "has_service": false,
+      "has_tracking": false,
+      "has_quote": false,
+      "has_webhook": false,
+      "issues": [
+        "Service não encontrado"
+      ]
+    },
+    {
+      "name": "DHL",
+      "type": "internacional",
+      "has_service": false,
+      "has_tracking": false,
+      "has_quote": false,
+      "has_webhook": false,
+      "issues": [
+        "Service não encontrado"
+      ]
+    },
+    {
+      "name": "UPS",
+      "type": "internacional",
+      "has_service": false,
+      "has_tracking": false,
+      "has_quote": false,
+      "has_webhook": false,
+      "issues": [
+        "Service não encontrado"
+      ]
+    },
+    {
+      "name": "FedEx",
+      "type": "internacional",
+      "has_service": false,
+      "has_tracking": false,
+      "has_quote": false,
+      "has_webhook": false,
+      "issues": [
+        "Service não encontrado"
+      ]
+    },
+    {
+      "name": "DBSchenker",
+      "type": "internacional",
+      "has_service": false,
+      "has_tracking": false,
+      "has_quote": false,
+      "has_webhook": false,
+      "issues": [
+        "Service não encontrado"
+      ]
+    }
+  ],
+  "withService": 4,
+  "withTracking": 4,
+  "withQuote": 4,
+  "withWebhook": 0,
+  "total": 18,
+  "score": 22
+}

@@ -11,19 +11,20 @@
  * - CRUD completo
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
-  Package, DollarSign, CheckCircle, RefreshCcw, Target,
-  ArrowUpRight, ArrowDownRight, AlertCircle,
-  Building2, Download, Calculator, Plus,
-  BarChart3, Receipt, TrendingUp, TrendingDown
+  Package, DollarSign,
+  AlertCircle, Building2, Download, Calculator, Plus,
+  BarChart3, Receipt, Search, Filter, Eye, Edit
 } from 'lucide-react';
 import { useConsignacao } from '@/hooks';
-import { NeomorphicCard, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/oraclusx-ds/Card';
+import { CardHeader, CardTitle, CardDescription, CardContent } from '@/components/oraclusx-ds/Card';
 import { Button } from '@/components/oraclusx-ds/Button';
 import { Badge } from '@/components/oraclusx-ds/Badge';
 import { NavigationBar, NavigationTab } from '@/components/oraclusx-ds/NavigationBar';
 import { Modal } from '@/components/oraclusx-ds/Modal';
+import { Input } from '@/components/oraclusx-ds/Input';
+import { Select } from '@/components/oraclusx-ds/Form';
 import { cn } from '@/lib/utils';
 
 // ============================================
@@ -40,16 +41,27 @@ const NeomorphicCard: React.FC<{ children: React.ReactNode; className?: string }
 
 const NeomorphicIcon: React.FC<{ 
   icon: React.ComponentType<{ size?: number; className?: string }>;
-  color: string;
+  color: string; // ex.: 'text-indigo-500'
   size?: 'sm' | 'md' | 'lg';
 }> = ({ icon: Icon, color, size = 'md' }) => {
   const sizes = { sm: 'w-9 h-9', md: 'w-12 h-12', lg: 'w-14 h-14' };
   const iconSizes = { sm: 16, md: 20, lg: 24 };
-  
+  const bgByTextColor: Record<string, string> = {
+    'text-indigo-500': 'bg-indigo-500/20',
+    'text-blue-500': 'bg-blue-500/20',
+    'text-green-500': 'bg-green-500/20',
+    'text-purple-500': 'bg-purple-500/20',
+    'text-red-500': 'bg-red-500/20',
+    'text-yellow-500': 'bg-yellow-500/20',
+    'text-orange-500': 'bg-orange-500/20',
+  };
+
   return (
-    <div className={cn("neomorphic-icon-box flex items-center justify-center rounded-xl transition-all duration-300",
-      sizes[size]
-    )} style={{ backgroundColor: `${color}20` }}>
+    <div className={cn(
+      'neomorphic-icon-box flex items-center justify-center rounded-xl transition-all duration-300',
+      sizes[size],
+      bgByTextColor[color] || 'bg-surface'
+    )}>
       <Icon size={iconSizes[size]} className={color} />
     </div>
   );
@@ -70,7 +82,7 @@ const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
   const variant = variants[status] || variants.disponivel;
   
   return (
-    <Badge variant="default" className={cn(variant.bg, variant.color)} style={{ fontWeight: 500 }}>
+    <Badge variant="default" className={cn(variant.bg, variant.color, "font-medium")}>
       {variant.label}
     </Badge>
   );
@@ -110,15 +122,15 @@ export const ConsignacaoAvancada: React.FC = () => {
   ];
 
   // Format currency
-  const formatCurrency = (value: number) => {
+  const formatCurrency = useCallback((value: number) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL'
     }).format(value);
-  };
+  }, []);
 
   // Unique hospitals
-  const hospitaisUnicos = Array.from(new Set(materiais.map(m => m.hospital_nome)));
+  const hospitaisUnicos = useMemo(() => Array.from(new Set(materiais.map(m => m.hospital_nome))), [materiais]);
 
   // ============================================
   // RENDER: HEADER
@@ -127,7 +139,7 @@ export const ConsignacaoAvancada: React.FC = () => {
   const renderHeader = () => (
     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
       <div>
-        <h1 className="text-foreground" style={{ fontSize: '0.813rem', fontWeight: 700 }}>Consignação Avançada</h1>
+        <h1 className="text-foreground text-body-sm font-extrabold">Consignação Avançada</h1>
         <p className="text-muted-foreground mt-1">
           Gestão completa de materiais OPME em consignação com controle financeiro e logístico
         </p>
@@ -246,7 +258,7 @@ export const ConsignacaoAvancada: React.FC = () => {
         <NeomorphicCard className="border-l-4 border-red-500">
           <div className="flex items-center gap-3 mb-4">
             <AlertCircle className="w-5 h-5 text-red-500" />
-            <h3 className="text-foreground" style={{ fontWeight: 600 }}>Alertas de Conferência Semanal</h3>
+            <h3 className="text-foreground font-semibold">Alertas de Conferência Semanal</h3>
             <Badge variant="error" className="ml-auto">
               {alertas.filter(a => a.status === 'ativo').length} pendentes
             </Badge>
@@ -254,10 +266,10 @@ export const ConsignacaoAvancada: React.FC = () => {
           <div className="space-y-3">
             {alertas.slice(0, 3).map(alerta => (
               <div key={alerta.id} className="p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border-l-2 border-red-500">
-                <h4 className="text-foreground" style={{ fontWeight: 500, fontSize: '0.813rem' }}>{alerta.titulo}</h4>
-                <p className="text-muted-foreground mt-1" style={{ fontSize: '0.813rem' }}>{alerta.descricao}</p>
+                <h4 className="text-foreground text-body-sm font-medium">{alerta.titulo}</h4>
+                <p className="text-muted-foreground mt-1 text-body-sm">{alerta.descricao}</p>
                 <div className="flex gap-2 mt-2">
-                  <Badge variant="default" className="bg-red-100 text-red-800" style={{ fontSize: '0.813rem' }}>
+                  <Badge variant="default" className="bg-red-100 text-red-800 text-body-sm">
                     {alerta.severidade}
                   </Badge>
                 </div>
@@ -280,37 +292,37 @@ export const ConsignacaoAvancada: React.FC = () => {
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-700">
-                <th className="text-left p-3 text-foreground" style={{ fontSize: '0.813rem', fontWeight: 600 }}>Código</th>
-                <th className="text-left p-3 text-foreground" style={{ fontSize: '0.813rem', fontWeight: 600 }}>Material</th>
-                <th className="text-left p-3 text-foreground" style={{ fontSize: '0.813rem', fontWeight: 600 }}>Hospital</th>
-                <th className="text-right p-3 text-foreground" style={{ fontSize: '0.813rem', fontWeight: 600 }}>Quantidade</th>
-                <th className="text-right p-3 text-foreground" style={{ fontSize: '0.813rem', fontWeight: 600 }}>Valor Total</th>
-                <th className="text-center p-3 text-foreground" style={{ fontSize: '0.813rem', fontWeight: 600 }}>Status</th>
-                <th className="text-center p-3 text-foreground" style={{ fontSize: '0.813rem', fontWeight: 600 }}>Dias Estoque</th>
-                <th className="text-right p-3 text-foreground" style={{ fontSize: '0.813rem', fontWeight: 600 }}>Ações</th>
+                <th className="text-left p-3 text-foreground text-body-sm font-semibold">Código</th>
+                <th className="text-left p-3 text-foreground text-body-sm font-semibold">Material</th>
+                <th className="text-left p-3 text-foreground text-body-sm font-semibold">Hospital</th>
+                <th className="text-right p-3 text-foreground text-body-sm font-semibold">Quantidade</th>
+                <th className="text-right p-3 text-foreground text-body-sm font-semibold">Valor Total</th>
+                <th className="text-center p-3 text-foreground text-body-sm font-semibold">Status</th>
+                <th className="text-center p-3 text-foreground text-body-sm font-semibold">Dias Estoque</th>
+                <th className="text-right p-3 text-foreground text-body-sm font-semibold">Ações</th>
               </tr>
             </thead>
             <tbody>
               {materiais.slice(0, 10).map((material) => (
                 <tr key={material.id} className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                  <td className="p-3 text-foreground font-mono" style={{ fontSize: '0.813rem' }}>{material.codigo_interno}</td>
+                  <td className="p-3 text-foreground font-mono text-body-sm">{material.codigo_interno}</td>
                   <td className="p-3">
                     <div>
-                      <div className="text-foreground" style={{ fontSize: '0.813rem', fontWeight: 500 }}>{material.nome}</div>
+                      <div className="text-foreground text-body-sm font-medium">{material.nome}</div>
                       {material.lote && (
-                        <div className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>Lote: {material.lote}</div>
+                        <div className="text-muted-foreground text-body-sm">Lote: {material.lote}</div>
                       )}
                     </div>
                   </td>
-                  <td className="p-3 text-foreground" style={{ fontSize: '0.813rem' }}>{material.hospital_nome}</td>
-                  <td className="p-3 text-right text-foreground" style={{ fontSize: '0.813rem' }}>{material.quantidade}</td>
-                  <td className="p-3 text-right text-foreground" style={{ fontSize: '0.813rem', fontWeight: 500 }}>
+                  <td className="p-3 text-foreground text-body-sm">{material.hospital_nome}</td>
+                  <td className="p-3 text-right text-foreground text-body-sm">{material.quantidade}</td>
+                  <td className="p-3 text-right text-foreground text-body-sm font-medium">
                     {formatCurrency(material.valor_total)}
                   </td>
                   <td className="p-3 text-center">
                     <StatusBadge status={material.status} />
                   </td>
-                  <td className="p-3 text-center text-foreground" style={{ fontSize: '0.813rem' }}>
+                  <td className="p-3 text-center text-foreground text-body-sm">
                     {material.dias_estoque || 0} dias
                   </td>
                   <td className="p-3">
@@ -375,11 +387,11 @@ export const ConsignacaoAvancada: React.FC = () => {
                 <div key={fat.id} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="text-foreground" style={{ fontWeight: 500 }}>{fat.numero_fatura}</h4>
-                      <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>{fat.hospital_nome}</p>
+                      <h4 className="text-foreground font-medium">{fat.numero_fatura}</h4>
+                      <p className="text-muted-foreground text-body-sm">{fat.hospital_nome}</p>
                     </div>
                     <div className="text-right">
-                      <div className="text-foreground" style={{ fontWeight: 600 }}>{formatCurrency(fat.valor_liquido)}</div>
+                      <div className="text-foreground font-semibold">{formatCurrency(fat.valor_liquido)}</div>
                       <Badge variant={fat.status === 'pago' ? 'success' : 'warning'}>
                         {fat.status}
                       </Badge>
@@ -417,16 +429,16 @@ export const ConsignacaoAvancada: React.FC = () => {
         <CardContent>
           <div className="space-y-4">
             <div className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-              <span className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>Taxa de Utilização</span>
-              <span className="text-foreground" style={{ fontWeight: 600 }}>{metricas.taxaUtilizacao.toFixed(1)}%</span>
+              <span className="text-muted-foreground text-body-sm">Taxa de Utilização</span>
+              <span className="text-foreground font-semibold">{metricas.taxaUtilizacao.toFixed(1)}%</span>
             </div>
             <div className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-              <span className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>Dias Médio de Estoque</span>
-              <span className="text-foreground" style={{ fontWeight: 600 }}>{metricas.diasMedioEstoque} dias</span>
+              <span className="text-muted-foreground text-body-sm">Dias Médio de Estoque</span>
+              <span className="text-foreground font-semibold">{metricas.diasMedioEstoque} dias</span>
             </div>
             <div className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-              <span className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>Hospitais Ativos</span>
-              <span className="text-foreground" style={{ fontWeight: 600 }}>{metricas.hospitaisAtivos}</span>
+              <span className="text-muted-foreground text-body-sm">Hospitais Ativos</span>
+              <span className="text-foreground font-semibold">{metricas.hospitaisAtivos}</span>
             </div>
           </div>
         </CardContent>
@@ -450,24 +462,24 @@ export const ConsignacaoAvancada: React.FC = () => {
               <div className="flex items-start gap-3 mb-4">
                 <NeomorphicIcon icon={Building2} color="text-indigo-500" size="md" />
                 <div className="flex-1">
-                  <h3 className="text-foreground" style={{ fontWeight: 600 }}>{hospital}</h3>
-                  <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>
+                  <h3 className="text-foreground font-semibold">{hospital}</h3>
+                  <p className="text-muted-foreground text-body-sm">
                     {materiaisHospital.length} {materiaisHospital.length === 1 ? 'material' : 'materiais'}
                   </p>
                 </div>
               </div>
               <div className="space-y-2">
-                <div className="flex justify-between" style={{ fontSize: '0.813rem' }}>
+                <div className="flex justify-between text-body-sm">
                   <span className="text-muted-foreground">Valor Total</span>
-                  <span className="text-foreground" style={{ fontWeight: 600 }}>{formatCurrency(valorTotal)}</span>
+                  <span className="text-foreground font-semibold">{formatCurrency(valorTotal)}</span>
                 </div>
-                <div className="flex justify-between" style={{ fontSize: '0.813rem' }}>
+                <div className="flex justify-between text-body-sm">
                   <span className="text-muted-foreground">Disponíveis</span>
                   <span className="text-foreground">
                     {materiaisHospital.filter(m => m.status === 'disponivel').length}
                   </span>
                 </div>
-                <div className="flex justify-between" style={{ fontSize: '0.813rem' }}>
+                <div className="flex justify-between text-body-sm">
                   <span className="text-muted-foreground">Utilizados</span>
                   <span className="text-foreground">
                     {materiaisHospital.filter(m => m.status === 'utilizado').length}
@@ -581,7 +593,7 @@ export const ConsignacaoAvancada: React.FC = () => {
         description="Informações completas do material em consignação"
       >
         {/* Conteúdo detalhado comentado para futura implementação */}
-        <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>
+        <p className="text-muted-foreground text-body-sm">
           Em breve: detalhes completos do material selecionado (ID: {selectedMaterialId ?? 'N/A'}).
         </p>
       </Modal>

@@ -70,7 +70,8 @@ export const useLotes = () => {
       setLotesProximosVencimento(proximosVencimento);
       setLotesVencidos(vencidos);
       setError(null);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       handleError(err, 'Erro ao carregar lotes');
       setLotes([]);
     } finally {
@@ -94,7 +95,8 @@ export const useLotes = () => {
 
       await fetchLotes();
       return data as Lote;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       handleError(err, 'Erro ao criar lote');
       throw err;
     }
@@ -110,7 +112,8 @@ export const useLotes = () => {
       if (error) throw error;
 
       await fetchLotes();
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       handleError(err, 'Erro ao atualizar lote');
       throw err;
     }
@@ -145,7 +148,8 @@ export const useLotes = () => {
       if (error) throw error;
 
       await fetchLotes();
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       handleError(err, 'Erro ao consumir lote');
       throw err;
     }
@@ -165,7 +169,8 @@ export const useLotes = () => {
       if (error) throw error;
 
       return data as Lote;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       handleError(err, 'Erro ao buscar lote');
       throw err;
     }

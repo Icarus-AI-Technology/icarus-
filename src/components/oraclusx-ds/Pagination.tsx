@@ -98,9 +98,9 @@ export const Pagination: React.FC<PaginationProps> = ({
       {/* Items Info */}
       {totalItems !== undefined && (
         <div className="hidden sm:block text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]">
-          Mostrando <span style={{ fontWeight: 500 }}>{startItem}</span> a{""}
-          <span style={{ fontWeight: 500 }}>{endItem}</span> de{""}
-          <span style={{ fontWeight: 500 }}>{totalItems}</span> registros
+          Mostrando <span className="font-medium">{startItem}</span> a{" "}
+          <span className="font-medium">{endItem}</span> de{" "}
+          <span className="font-medium">{totalItems}</span> registros
         </div>
       )}
 

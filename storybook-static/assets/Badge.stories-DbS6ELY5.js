@@ -1,0 +1,8 @@
+import{j as e}from"./jsx-runtime-CqWLaiLC.js";import{c}from"./index-BwobEAja.js";import{c as u}from"./utils-CytzSlOG.js";import"./iframe-B7BhqHn-.js";import"./preload-helper-C1FmrZbK.js";const g=c("inline-flex items-center rounded-md border px-2.5 py-0.5 text-body-xs transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",{variants:{variant:{default:"border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",secondary:"border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",destructive:"border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",outline:"text-foreground"}},defaultVariants:{variant:"default"}});function r({className:o,variant:d,...i}){return e.jsx("div",{className:u(g({variant:d}),o),...i})}r.__docgenInfo={description:"",methods:[],displayName:"Badge",composes:["VariantProps"]};const x={title:"OraclusX/UI/Badge",component:r},a={render:()=>e.jsxs("div",{className:"flex gap-2",children:[e.jsx(r,{children:"Default"}),e.jsx(r,{variant:"secondary",children:"Secondary"}),e.jsx(r,{variant:"destructive",children:"Destructive"}),e.jsx(r,{variant:"outline",children:"Outline"})]})};var t,n,s;a.parameters={...a.parameters,docs:{...(t=a.parameters)==null?void 0:t.docs,source:{originalSource:`{
+  render: () => <div className="flex gap-2">
+      <Badge>Default</Badge>
+      <Badge variant="secondary">Secondary</Badge>
+      <Badge variant="destructive">Destructive</Badge>
+      <Badge variant="outline">Outline</Badge>
+    </div>
+}`,...(s=(n=a.parameters)==null?void 0:n.docs)==null?void 0:s.source}}};const y=["Variants"];export{a as Variants,y as __namedExportsOrder,x as default};

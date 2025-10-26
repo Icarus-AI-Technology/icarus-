@@ -100,7 +100,7 @@ describe('CFMService', () => {
       const ufs2 = cfmService.getUFsValidas();
       
       // Modificar ufs1 não deve afetar ufs2
-      ufs1.push('XX' as any);
+      ufs1.push('XX');
       
       expect(ufs2).toHaveLength(27);
     });

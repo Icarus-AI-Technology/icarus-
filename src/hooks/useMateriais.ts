@@ -66,7 +66,8 @@ export function useMateriais() {
         loading: false,
         error: null,
       });
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         loading: false,
@@ -85,8 +86,9 @@ export function useMateriais() {
 
       if (error) throw error;
       return data;
-    } catch (_error) {
-      console.error('Erro ao buscar material:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar material:', err);
       return null;
     }
   }, []);
@@ -108,7 +110,8 @@ export function useMateriais() {
       }));
 
       return data;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao criar material',
@@ -135,7 +138,8 @@ export function useMateriais() {
       }));
 
       return data;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao atualizar material',
@@ -160,7 +164,8 @@ export function useMateriais() {
       }));
 
       return true;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao deletar material',
@@ -179,8 +184,9 @@ export function useMateriais() {
 
       if (error) throw error;
       return data || [];
-    } catch (_error) {
-      console.error('Erro ao buscar materiais por tipo:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar materiais por tipo:', err);
       return [];
     }
   }, []);
@@ -194,8 +200,9 @@ export function useMateriais() {
 
       if (error) throw error;
       return data || [];
-    } catch (_error) {
-      console.error('Erro ao buscar materiais abaixo do mínimo:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar materiais abaixo do mínimo:', err);
       return [];
     }
   }, []);
@@ -214,8 +221,9 @@ export function useMateriais() {
 
       if (error) throw error;
       return data || [];
-    } catch (_error) {
-      console.error('Erro ao buscar materiais próximos ao vencimento:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar materiais próximos ao vencimento:', err);
       return [];
     }
   }, []);
@@ -249,8 +257,9 @@ export function useMateriais() {
         alertasEstoque: abaixoMinimo.length,
         alertasVencimento: proximosVencimento.length,
       } satisfies ResumoEstoque;
-    } catch (_error) {
-      console.error('Erro ao calcular resumo de estoque:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao calcular resumo de estoque:', err);
       return {
         totalItens: 0,
         totalAtivos: 0,
@@ -275,8 +284,9 @@ export function useMateriais() {
       }, {} as Record<string, number>);
 
       return counts;
-    } catch (_error) {
-      console.error('Erro ao contar materiais:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao contar materiais:', err);
       return {};
     }
   }, []);

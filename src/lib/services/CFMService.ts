@@ -78,9 +78,10 @@ class CFMService {
         dataConsulta: new Date().toISOString()
       };
       
-    } catch (_error) {
-      console.error('Erro ao consultar CRM:', _error);
-      throw _error;
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao consultar CRM:', err);
+      throw err;
     }
   }
   

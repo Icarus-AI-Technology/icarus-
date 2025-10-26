@@ -269,22 +269,22 @@ export default function LogisticaAvancada() {
             <table className="w-full">
               <thead className="border-b border-[var(--border)]">
                 <tr>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">
                     Código
                   </th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">
                     Destino
                   </th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">
                     Previsão
                   </th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">
                     Transportadora
                   </th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">
                     Status
                   </th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">
                     Ações
                   </th>
                 </tr>
@@ -297,7 +297,7 @@ export default function LogisticaAvancada() {
                   >
                     <td className="p-4">
                       <div>
-                        <p className="text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+                        <p className="text-[var(--text-primary)] font-medium">
                           {entrega.codigo_rastreio}
                         </p>
                         <p className="text-body-xs text-[var(--text-secondary)]">
@@ -374,7 +374,7 @@ export default function LogisticaAvancada() {
           </div>
           <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-success/50 animate-pulse" />
-            <span className="text-body-sm text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+            <span className="text-body-sm text-[var(--text-primary)] font-medium">
               {stats.emTransito} em trânsito
             </span>
           </div>
@@ -393,7 +393,7 @@ export default function LogisticaAvancada() {
               }`}
             >
               <category.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
-              <span className="text-body-xs text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+              <span className="text-body-xs text-[var(--text-primary)] font-medium">
                 {category.label}
               </span>
               <div className="flex items-center gap-1 mt-1">
@@ -443,7 +443,7 @@ export default function LogisticaAvancada() {
         {activeCategory ==="rotas" && (
           <Card className="neuro-raised p-12 text-center">
             <Route className="w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4" />
-            <h3 className="text-heading-sm text-[var(--text-primary)] mb-2" style={{ fontWeight: 500 }}>
+            <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 font-medium">
               Rotas Otimizadas IA
             </h3>
             <p className="text-[var(--text-secondary)]">
@@ -454,7 +454,7 @@ export default function LogisticaAvancada() {
         {activeCategory ==="motoristas" && (
           <Card className="neuro-raised p-12 text-center">
             <User className="w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4" />
-            <h3 className="text-heading-sm text-[var(--text-primary)] mb-2" style={{ fontWeight: 500 }}>
+            <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 font-medium">
               Gestão de Motoristas
             </h3>
             <p className="text-[var(--text-secondary)]">
@@ -464,7 +464,7 @@ export default function LogisticaAvancada() {
         )}
         {activeCategory ==="pendencias" && (
           <Card className="neuro-raised p-6">
-            <h3 className="text-body-lg text-[var(--text-primary)] mb-4 flex items-center gap-2" style={{ fontWeight: 500 }}>
+            <h3 className="text-body-lg text-[var(--text-primary)] mb-4 flex items-center gap-2 font-medium">
               <AlertCircle className="w-5 h-5 text-error" />
               Entregas Atrasadas ({entregasAtrasadas.length})
             </h3>
@@ -475,7 +475,7 @@ export default function LogisticaAvancada() {
                   className="p-4 rounded-xl neuro-inset flex items-center justify-between"
                 >
                   <div>
-                    <p className="text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+                    <p className="text-[var(--text-primary)] font-medium">
                       {entrega.codigo_rastreio}
                     </p>
                     <p className="text-body-sm text-[var(--text-secondary)]">
@@ -501,7 +501,7 @@ export default function LogisticaAvancada() {
         {(activeCategory ==="rastreamento" || activeCategory ==="relatorios") && (
           <Card className="neuro-raised p-12 text-center">
             <Download className="w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4" />
-            <h3 className="text-heading-sm text-[var(--text-primary)] mb-2" style={{ fontWeight: 500 }}>
+            <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 font-medium">
               {categories.find(c => c.id === activeCategory)?.label}
             </h3>
             <p className="text-[var(--text-secondary)]">

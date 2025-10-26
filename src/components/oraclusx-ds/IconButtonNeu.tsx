@@ -14,7 +14,7 @@ export interface IconButtonNeuProps
   variant?:"default" |"primary";
 }
 
-export const IconButtonNeu = React.forwardRef<
+const IconButtonNeuComponent = React.forwardRef<
   HTMLButtonElement,
   IconButtonNeuProps
 >(
@@ -35,8 +35,8 @@ export const IconButtonNeu = React.forwardRef<
     };
 
     const variantClasses = {
-      default:"orx-button",
-      primary:"orx-button-primary",
+      default: "orx-button dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700",
+      primary: "orx-button-primary dark:bg-[var(--orx-primary)] dark:hover:bg-[var(--orx-primary-hover)]",
     };
 
     return (
@@ -56,5 +56,7 @@ export const IconButtonNeu = React.forwardRef<
 );
 
 IconButtonNeu.displayName ="OraclusXIconButtonNeu";
+
+export const IconButtonNeu = React.memo(IconButtonNeuComponent);
 
 export default IconButtonNeu;

@@ -10,7 +10,7 @@ export class RiscoAI {
   static async analyzeRisks(params: {
     tipo: 'operacional' | 'financeiro' | 'regulatorio' | 'reputacional';
     entidade: string;
-    dados: Record<string, any>;
+    dados: Record<string, unknown>;
   }): Promise<{
     scoreGeral: number;
     classificacao: 'baixo' | 'moderado' | 'alto' | 'critico';

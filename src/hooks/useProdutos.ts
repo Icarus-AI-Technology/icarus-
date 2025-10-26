@@ -57,7 +57,8 @@ export const useProdutos = () => {
 
       setProdutos((data as ProdutoOPME[] | null) ?? []);
       setError(null);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message : 'Erro ao carregar produtos';
       setError(message);
       setProdutos([]);
@@ -82,7 +83,8 @@ export const useProdutos = () => {
 
       await fetchProdutos();
       return data as ProdutoOPME;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message : 'Erro ao criar produto';
       setError(message);
       throw err;
@@ -99,7 +101,8 @@ export const useProdutos = () => {
       if (error) throw error;
 
       await fetchProdutos();
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message : 'Erro ao atualizar produto';
       setError(message);
       throw err;
@@ -116,7 +119,8 @@ export const useProdutos = () => {
       if (error) throw error;
 
       await fetchProdutos();
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message : 'Erro ao deletar produto';
       setError(message);
       throw err;

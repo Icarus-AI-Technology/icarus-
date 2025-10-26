@@ -66,8 +66,9 @@ export async function consultarCEP(cep: string): Promise<EnderecoData> {
       ddd: data.ddd,
     };
     
-  } catch (_error) {
-    console.error('Erro ao consultar CEP:', error);
+  } catch (error) {
+   const err = error as Error;
+    console.error('Erro ao consultar CEP:', err);
     throw new Error('Não foi possível consultar o CEP. Verifique se está correto.');
   }
 }
@@ -91,7 +92,8 @@ export function useCEP() {
       const resultado = await consultarCEP(cep);
       setData(resultado);
       return resultado;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
       setError(errorMessage);
       throw err;

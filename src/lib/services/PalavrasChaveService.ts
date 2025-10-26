@@ -101,7 +101,7 @@ export class PalavrasChaveService {
     }
 
     const { data, error } = await query;
-    if (error) throw _error;
+    if (error) throw error;
     return data || [];
   }
 
@@ -112,7 +112,7 @@ export class PalavrasChaveService {
       .select()
       .single();
 
-    if (error) throw _error;
+    if (error) throw error;
     return data;
   }
 
@@ -124,7 +124,7 @@ export class PalavrasChaveService {
       .select()
       .single();
 
-    if (error) throw _error;
+    if (error) throw error;
     return data;
   }
 
@@ -134,7 +134,7 @@ export class PalavrasChaveService {
       .delete()
       .eq('id', id);
 
-    if (error) throw _error;
+    if (error) throw error;
   }
 
   // ============================================
@@ -164,15 +164,17 @@ export class PalavrasChaveService {
             confianca_ia: sugestao.confianca,
             ativo: true,
           });
-        } catch (_error) {
-          console.error('Erro ao salvar sugestão:', _error);
+        } catch (error) {
+   const err = error as Error;
+          console.error('Erro ao salvar sugestão:', err);
         }
       }
 
       return sugestoes;
-    } catch (_error) {
-      console.error('Erro ao sugerir palavras-chave com IA:', _error);
-      throw _error;
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao sugerir palavras-chave com IA:', err);
+      throw err;
     }
   }
 
@@ -282,7 +284,7 @@ Gere de 5 a 10 palavras-chave relevantes.
         .gte('total_buscas', 10)
         .eq('ativo', true);
 
-      if (error) throw _error;
+      if (error) throw error;
 
       for (const pc of palavrasChave || []) {
         const taxaSucesso = pc.taxa_sucesso;
@@ -302,9 +304,10 @@ Gere de 5 a 10 palavras-chave relevantes.
       }
 
       return resultado;
-    } catch (_error) {
-      console.error('Erro ao otimizar palavras-chave:', _error);
-      throw _error;
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao otimizar palavras-chave:', err);
+      throw err;
     }
   }
 
@@ -354,7 +357,7 @@ Gere de 5 a 10 palavras-chave relevantes.
       .order('data_cotacao', { ascending: false })
       .limit(100);
 
-    if (error) throw _error;
+    if (error) throw error;
 
     const novosTermos: string[] = [];
     const termosExistentes = new Set(
@@ -407,7 +410,7 @@ Gere de 5 a 10 palavras-chave relevantes.
       .select('*')
       .gte('total_buscas', 5); // Apenas com histórico significativo
 
-    if (error) throw _error;
+    if (error) throw error;
 
     const palavrasChave = todasPalavrasChave || [];
     const ativas = palavrasChave.filter((pc) => pc.ativo);

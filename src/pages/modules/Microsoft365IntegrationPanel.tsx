@@ -4,19 +4,9 @@
  */
 
 import { useState } from"react";
-import {
-  Video,
-  Calendar,
-  Mail,
-  FolderOpen,
-  Users,
-  Clock,
-  CheckCircle,
-  Plus,
-  Download,
-  Send,
-  TrendingUp,
-} from"lucide-react";
+import { Video, Calendar, Mail, FolderOpen, Users, Clock, Plus, Send, TrendingUp } from"lucide-react";
+import { ModulePage } from "@/components/templates/ModulePage";
+import { Button } from "@/components/ui/button";
 
 interface Meeting {
   id: string;
@@ -146,53 +136,23 @@ export default function Microsoft365IntegrationPanel() {
   };
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex items-start justify-between">
-          <div>
-            <h1
-              style={{
-                fontSize: '0.813rem',
-                fontFamily:"var(--orx-font-family)",
-                fontWeight: 600,
-                color:"var(--orx-text-primary)",
-                marginBottom:"0.5rem",
-              }}
-            >
-              Microsoft 365 Integration
-            </h1>
-            <p
-              style={{
-                fontSize: '0.813rem',
-                color:"var(--orx-text-secondary)",
-                fontFamily:"var(--orx-font-family)",
-              }}
-            >
-              Teams, Outlook, OneDrive integration
-            </p>
-          </div>
-
-          {/* Action Button */}
-          <button
-            className="neumorphic-button flex items-center gap-2 px-6 py-3 rounded-xl"
-            style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-              background:"linear-gradient(135deg, var(--orx-primary), var(--orx-primary-hover))",
-              color:"white",
-              fontWeight: 600,
-              fontSize: '0.813rem',
-              border:"none",
-              boxShadow:"0 4px 12px rgba(99, 102, 241, 0.3)",
-            }}
-          >
-            <Plus size={18} />
-            Nova Reunião Teams
-          </button>
-        </div>
-
+    <ModulePage
+      title="Microsoft 365 Integration"
+      description="Teams, Outlook, OneDrive integration"
+      icon={<Video aria-hidden="true" className="h-5 w-5" />}
+      actions={
+        <Button
+          variant="neumorphic"
+          size="default"
+          className="inline-flex items-center gap-2"
+          onClick={() => window.dispatchEvent(new CustomEvent('icarus:nova-reuniao-teams'))}
+        >
+          <Plus size={18} strokeWidth={1.5} className="flex-shrink-0" />
+          <span>Nova Reunião Teams</span>
+        </Button>
+      }
+    >
+      <div className="space-y-6">
         {/* KPIs Grid */}
         <div className="grid grid-cols-4 gap-6">
           {kpis.map((kpi, index) => (
@@ -214,7 +174,7 @@ export default function Microsoft365IntegrationPanel() {
                     boxShadow:"0 4px 12px rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  <kpi.icon size={24} color="#ffffff" strokeWidth={2} />
+                  <kpi.icon size={24} color="#ffffff" strokeWidth={1.5} />
                 </div>
                 <div className="flex-1">
                   <p
@@ -267,63 +227,33 @@ export default function Microsoft365IntegrationPanel() {
             boxShadow:"0 4px 16px rgba(0, 0, 0, 0.06)",
           }}
         >
-          <button
+          <Button
+            variant={selectedTab === "teams" ? "neumorphic" : "ghost"}
+            size="default"
+            className={`px-6 py-3 rounded-xl flex items-center gap-2 ${selectedTab === "teams" ? "neumorphic-button-active" : ""}`}
             onClick={() => setSelectedTab("teams")}
-            className="px-6 py-3 rounded-xl flex items-center gap-2"
-            style={{
-              background:
-                selectedTab ==="teams"
-                  ?"linear-gradient(135deg, var(--orx-primary), var(--orx-primary-hover))"
-                  :"transparent",
-              color: selectedTab ==="teams" ?"white" :"var(--orx-text-primary)",
-              fontWeight: 600,
-              fontSize: '0.813rem',
-              border:"none",
-              cursor:"pointer",
-              transition:"all 0.3s ease",
-            }}
           >
-            <Video size={18} />
-            Teams Meetings
-          </button>
-          <button
+            <Video size={18} strokeWidth={1.5} className="flex-shrink-0" />
+            <span>Teams</span>
+          </Button>
+          <Button
+            variant={selectedTab === "calendar" ? "neumorphic" : "ghost"}
+            size="default"
+            className={`px-6 py-3 rounded-xl flex items-center gap-2 ${selectedTab === "calendar" ? "neumorphic-button-active" : ""}`}
             onClick={() => setSelectedTab("calendar")}
-            className="px-6 py-3 rounded-xl flex items-center gap-2"
-            style={{
-              background:
-                selectedTab ==="calendar"
-                  ?"linear-gradient(135deg, var(--orx-primary), var(--orx-primary-hover))"
-                  :"transparent",
-              color: selectedTab ==="calendar" ?"white" :"var(--orx-text-primary)",
-              fontWeight: 600,
-              fontSize: '0.813rem',
-              border:"none",
-              cursor:"pointer",
-              transition:"all 0.3s ease",
-            }}
           >
-            <Calendar size={18} />
-            Calendário
-          </button>
-          <button
+            <Calendar size={18} strokeWidth={1.5} className="flex-shrink-0" />
+            <span>Calendário</span>
+          </Button>
+          <Button
+            variant={selectedTab === "email" ? "neumorphic" : "ghost"}
+            size="default"
+            className={`px-6 py-3 rounded-xl flex items-center gap-2 ${selectedTab === "email" ? "neumorphic-button-active" : ""}`}
             onClick={() => setSelectedTab("email")}
-            className="px-6 py-3 rounded-xl flex items-center gap-2"
-            style={{
-              background:
-                selectedTab ==="email"
-                  ?"linear-gradient(135deg, var(--orx-primary), var(--orx-primary-hover))"
-                  :"transparent",
-              color: selectedTab ==="email" ?"white" :"var(--orx-text-primary)",
-              fontWeight: 600,
-              fontSize: '0.813rem',
-              border:"none",
-              cursor:"pointer",
-              transition:"all 0.3s ease",
-            }}
           >
-            <Mail size={18} />
-            E-mail
-          </button>
+            <Mail size={18} strokeWidth={1.5} className="flex-shrink-0" />
+            <span>Outlook</span>
+          </Button>
         </div>
 
         {/* Teams Meetings */}
@@ -441,6 +371,15 @@ export default function Microsoft365IntegrationPanel() {
                       Entrar na Reunião
                     </button>
                   )}
+                  <Button
+                    variant="neumorphic"
+                    size="sm"
+                    className="inline-flex items-center gap-2"
+                    onClick={() => window.dispatchEvent(new CustomEvent('icarus:enviar-email', { detail: meeting.id }))}
+                  >
+                    <Send size={16} strokeWidth={1.5} className="flex-shrink-0" />
+                    <span>Enviar</span>
+                  </Button>
                 </div>
               </div>
             ))}
@@ -493,7 +432,7 @@ export default function Microsoft365IntegrationPanel() {
           </div>
         )}
       </div>
-    </div>
+    </ModulePage>
   );
 }
 

@@ -90,10 +90,11 @@ export class BrasilAPIService {
       const data = await response.json();
       return data as CNPJData;
     } catch (error) {
+   const err = error as Error;
       if (error instanceof Error && error.name === 'AbortError') {
         console.error('[BrasilAPI] Timeout na busca de CNPJ');
       } else {
-        console.error('[BrasilAPI] Erro ao buscar CNPJ:', error);
+        console.error('[BrasilAPI] Erro ao buscar CNPJ:', err);
       }
       return null;
     }
@@ -126,7 +127,8 @@ export class BrasilAPIService {
       const data = await response.json();
       return data as CEPData;
     } catch (error) {
-      console.error('[BrasilAPI] Erro ao buscar CEP:', error);
+   const err = error as Error;
+      console.error('[BrasilAPI] Erro ao buscar CEP:', err);
       return null;
     }
   }
@@ -152,7 +154,8 @@ export class BrasilAPIService {
       const data = await response.json();
       return data as BankData[];
     } catch (error) {
-      console.error('[BrasilAPI] Erro ao buscar bancos:', error);
+   const err = error as Error;
+      console.error('[BrasilAPI] Erro ao buscar bancos:', err);
       return [];
     }
   }
@@ -172,7 +175,8 @@ export class BrasilAPIService {
       const data = await response.json();
       return data as BankData;
     } catch (error) {
-      console.error('[BrasilAPI] Erro ao buscar banco:', error);
+   const err = error as Error;
+      console.error('[BrasilAPI] Erro ao buscar banco:', err);
       return null;
     }
   }
@@ -191,7 +195,8 @@ export class BrasilAPIService {
       const data = await response.json();
       return data as FeriadoData[];
     } catch (error) {
-      console.error('[BrasilAPI] Erro ao buscar feriados:', error);
+   const err = error as Error;
+      console.error('[BrasilAPI] Erro ao buscar feriados:', err);
       return [];
     }
   }

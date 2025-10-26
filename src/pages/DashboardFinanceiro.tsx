@@ -17,21 +17,16 @@
 
 import React, { useState, useMemo } from 'react';
 import {
-  Building2,
-  CreditCard,
   TrendingUp,
   TrendingDown,
   Plus,
   RefreshCcw,
-  Calendar,
-  Filter,
   Download,
   Eye,
   EyeOff,
   DollarSign,
   ArrowUpRight,
   ArrowDownRight,
-  Wallet,
 } from 'lucide-react';
 import { PluggyConnectWidget } from '@/components/pluggy/PluggyConnectWidget';
 
@@ -176,7 +171,7 @@ export const DashboardFinanceiro: React.FC = () => {
     // Em produção, usar datas reais
     
     return filtered;
-  }, [selectedAccount, selectedPeriod]);
+  }, [selectedAccount]);
   
   // Calcular receitas e despesas
   const { totalIncome, totalExpenses } = useMemo(() => {

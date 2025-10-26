@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 import {
@@ -9,7 +9,6 @@ import {
   Award,
   BarChart3,
   CheckCircle2,
-  XCircle,
   Play
 } from 'lucide-react';
 
@@ -45,13 +44,7 @@ export const TrainingReports: React.FC = () => {
   });
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (user) {
-      loadTrainingData();
-    }
-  }, [user]);
-
-  const loadTrainingData = async () => {
+  const loadTrainingData = useCallback(async () => {
     if (!user) return;
 
     setLoading(true);
@@ -113,11 +106,18 @@ export const TrainingReports: React.FC = () => {
         });
       }
     } catch (error) {
-      console.error('Erro ao carregar dados de treinamento:', error);
+   const err = error as Error;
+      console.error('Erro ao carregar dados de treinamento:', err);
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      loadTrainingData();
+    }
+  }, [user, loadTrainingData]);
 
   const getLessonIcon = (tipo: string) => {
     switch (tipo) {

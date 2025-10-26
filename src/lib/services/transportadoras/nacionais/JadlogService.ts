@@ -12,14 +12,14 @@
  * Cobertura: Principais capitais e regiões
  * Limite peso: 150kg
  */
-
+import {
   TransportadoraService,
   CotacaoParams,
   CotacaoResult,
   RastreamentoResult,
   StatusEntrega,
   AgendarColetaParams,
-  AgendarColetaResult
+  AgendarColetaResult,
 } from '../base/types';
 
 export class JadlogService implements TransportadoraService {
@@ -78,8 +78,9 @@ export class JadlogService implements TransportadoraService {
         prazo: service.deliveryTime,
         observacoes: service.description
       }));
-    } catch (_error) {
-      console.error('Erro ao cotar Jadlog:', _error);
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro ao cotar Jadlog:', err.message ?? err);
       return [];
     }
   }
@@ -121,9 +122,10 @@ export class JadlogService implements TransportadoraService {
         })),
         previsaoEntrega: data.estimatedDelivery ? new Date(data.estimatedDelivery) : null
       };
-    } catch (_error) {
-      console.error('Erro ao rastrear Jadlog:', _error);
-      throw _error;
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro ao rastrear Jadlog:', err.message ?? err);
+      throw err;
     }
   }
 
@@ -175,9 +177,10 @@ export class JadlogService implements TransportadoraService {
         dataColeta: new Date(`${params.dataColeta}T${params.horaColeta}`),
         observacoes: data.notes
       };
-    } catch (_error) {
-      console.error('Erro ao agendar coleta Jadlog:', _error);
-      throw _error;
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro ao agendar coleta Jadlog:', err.message ?? err);
+      throw err;
     }
   }
 

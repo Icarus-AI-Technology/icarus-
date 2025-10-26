@@ -12,6 +12,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
+import type { RealtimeChannel } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 
 // ============================================
@@ -170,7 +171,8 @@ export const useEstoque = () => {
       if (fetchError) throw fetchError;
       
       setEstoques(data || []);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao carregar estoque:', err);
       setError(err instanceof Error ? err.message : 'Erro desconhecido');
     } finally {
@@ -257,7 +259,8 @@ export const useEstoque = () => {
       await fetchEstoques();
       
       return movData;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao registrar movimentação:', err);
       setError(err instanceof Error ? err.message : 'Erro desconhecido');
       throw err;
@@ -281,7 +284,8 @@ export const useEstoque = () => {
       if (fetchError) throw fetchError;
       
       setReservas(data || []);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao carregar reservas:', err);
     }
   }, []);
@@ -323,7 +327,8 @@ export const useEstoque = () => {
       await fetchReservas();
       
       return data;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao criar reserva:', err);
       setError(err instanceof Error ? err.message : 'Erro desconhecido');
       throw err;
@@ -345,7 +350,8 @@ export const useEstoque = () => {
       if (cancelError) throw cancelError;
       
       await fetchReservas();
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao cancelar reserva:', err);
       setError(err instanceof Error ? err.message : 'Erro desconhecido');
       throw err;
@@ -375,7 +381,8 @@ export const useEstoque = () => {
       if (fetchError) throw fetchError;
       
       setMovimentacoes(data || []);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao carregar movimentações:', err);
     }
   }, []);

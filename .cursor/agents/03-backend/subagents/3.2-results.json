@@ -1,0 +1,1504 @@
+{
+  "rpcs": [
+    {
+      "function_name": "set_atualizado_em",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TRIGGER"
+    },
+    {
+      "function_name": "current_empresa",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "UUID",
+      "language": "SQL"
+    },
+    {
+      "function_name": "current_perfil",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "TEXT",
+      "language": "SQL"
+    },
+    {
+      "function_name": "current_user_id",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "UUID",
+      "language": "SQL"
+    },
+    {
+      "function_name": "handle_new_user",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "TRIGGER",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "refresh_mv_kpis",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "TRIGGER",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "compute_audit_hash",
+      "expected_parameters": [
+        "p_empresa_id",
+        "p_usuario_id",
+        "p_tabela",
+        "p_registro_id",
+        "p_acao",
+        "p_dados_antes",
+        "p_dados_depois",
+        "p_hash_anterior"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "TEXT",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "insert_audit_log",
+      "expected_parameters": [
+        "p_empresa_id",
+        "p_usuario_id",
+        "p_tabela",
+        "p_registro_id",
+        "p_acao",
+        "p_dados_antes",
+        "p_dados_depois"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "VOID",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "trigger_audit",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "TRIGGER",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "exportar_dados_usuario",
+      "expected_parameters": [
+        "p_usuario_id"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "JSONB",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "anonimizar_dados_usuario",
+      "expected_parameters": [
+        "p_usuario_id"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "VOID",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "validar_lote",
+      "expected_parameters": [
+        "p_lote_id"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "TABLE",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "bloquear_lotes_vencidos",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "INTEGER",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "reservar_kit",
+      "expected_parameters": [
+        "p_kit_id"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "BOOLEAN",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "consumir_kit",
+      "expected_parameters": [
+        "p_kit_id",
+        "p_quantidades_consumidas"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "BOOLEAN",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "verificar_integridade_audit_log",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "TABLE",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "validar_cirurgia",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "TRIGGER",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "validar_upload_arquivo",
+      "expected_parameters": [
+        "p_bucket",
+        "p_nome_arquivo",
+        "p_tamanho",
+        "p_mime_type"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "BOOLEAN",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "gerar_caminho_storage",
+      "expected_parameters": [
+        "p_empresa_id",
+        "p_entidade",
+        "p_registro_id",
+        "p_extensao"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "TEXT",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "validar_dpo_configurado",
+      "expected_parameters": [
+        "p_empresa_id"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "TABLE",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "check_dpo_on_insert",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "TRIGGER",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "update_updated_at_column",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada",
+        "Função sem linguagem especificada",
+        "Função sem linguagem especificada",
+        "Função sem linguagem especificada",
+        "Função sem linguagem especificada",
+        "Função sem linguagem especificada",
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TRIGGER"
+    },
+    {
+      "function_name": "buscar_conhecimento",
+      "expected_parameters": [
+        "query_text",
+        "limit_results",
+        "min_rank"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TABLE"
+    },
+    {
+      "function_name": "buscar_similar",
+      "expected_parameters": [
+        "query_text",
+        "min_similarity",
+        "limit_results"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TABLE"
+    },
+    {
+      "function_name": "buscar_legislacao",
+      "expected_parameters": [
+        "query_text",
+        "limit_results"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TABLE"
+    },
+    {
+      "function_name": "refresh_busca_cache",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "void"
+    },
+    {
+      "function_name": "sugerir_termos",
+      "expected_parameters": [
+        "prefix_text",
+        "limit_results"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TABLE"
+    },
+    {
+      "function_name": "calcular_custo_importacao",
+      "expected_parameters": [
+        "p_valor_fob",
+        "p_valor_frete",
+        "p_valor_seguro",
+        "p_aliquota_ii",
+        "--",
+        "p_aliquota_pis",
+        "p_aliquota_cofins",
+        "p_aliquota_icms"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "JSONB"
+    },
+    {
+      "function_name": "atualizar_perfil_comportamental",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TRIGGER"
+    },
+    {
+      "function_name": "criar_alerta_erro_critico",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TRIGGER"
+    },
+    {
+      "function_name": "buscar_atividades_usuario",
+      "expected_parameters": [
+        "p_usuario_email",
+        "p_dias_historico"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TABLE"
+    },
+    {
+      "function_name": "comparar_usuarios_handover",
+      "expected_parameters": [
+        "p_usuario_sainte_email",
+        "p_usuario_substituto_email"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TABLE"
+    },
+    {
+      "function_name": "detectar_comportamento_anomalo",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TABLE"
+    },
+    {
+      "function_name": "add_entrega_historico",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TRIGGER"
+    },
+    {
+      "function_name": "atualizar_estoque_material",
+      "expected_parameters": [
+        "p_material_id",
+        "p_quantidade"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "VOID"
+    },
+    {
+      "function_name": "calcular_taxa_sucesso_medico",
+      "expected_parameters": [
+        "p_medico_id"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "DECIMAL"
+    },
+    {
+      "function_name": "atualizar_updated_at",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TRIGGER"
+    },
+    {
+      "function_name": "incrementar_total_mensagens",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TRIGGER"
+    },
+    {
+      "function_name": "atualizar_scores_compliance",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "VOID"
+    },
+    {
+      "function_name": "gerar_alertas_ia",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "VOID"
+    },
+    {
+      "function_name": "atualizar_metricas_consignacao",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "VOID"
+    },
+    {
+      "function_name": "gerar_alertas_conferencia_semanal",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "VOID"
+    },
+    {
+      "function_name": "trigger_set_timestamp",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TRIGGER"
+    },
+    {
+      "function_name": "trg_contratos_set_updated_at",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TRIGGER"
+    },
+    {
+      "function_name": "get_dashboard_kpis",
+      "expected_parameters": [
+        "p_empresa_id",
+        "p_periodo",
+        "'week'",
+        "'month'",
+        "'year'"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "JSON",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "atualizar_quantidade_reservada",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TRIGGER"
+    },
+    {
+      "function_name": "produtos_abaixo_ponto_reposicao",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TABLE"
+    },
+    {
+      "function_name": "calcular_abc_xyz",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TABLE"
+    },
+    {
+      "function_name": "produtos_sem_movimento",
+      "expected_parameters": [
+        "dias"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TABLE"
+    },
+    {
+      "function_name": "atualizar_estatisticas_palavra_chave",
+      "expected_parameters": [
+        "p_palavra_chave_id",
+        "p_total_resultados"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "VOID"
+    },
+    {
+      "function_name": "limpar_cache_expirado",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "INTEGER"
+    },
+    {
+      "function_name": "atualizar_estatisticas_portal",
+      "expected_parameters": [
+        "p_portal",
+        "p_sucesso"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "VOID"
+    },
+    {
+      "function_name": "get_validacao_cache",
+      "expected_parameters": [
+        "p_tipo",
+        "p_chave"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "JSONB",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "set_validacao_cache",
+      "expected_parameters": [
+        "p_tipo",
+        "p_chave",
+        "p_dados",
+        "p_fonte",
+        "p_ttl_seconds",
+        "--"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "UUID",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "cleanup_validacoes_cache",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "INTEGER",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "get_validacoes_cache_stats",
+      "expected_parameters": [
+        "p_tipo",
+        "p_periodo_dias"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "TABLE",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "create_cirurgia_evento",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TRIGGER"
+    },
+    {
+      "function_name": "get_agenda_cirurgias",
+      "expected_parameters": [
+        "p_empresa_id",
+        "p_data_inicio",
+        "p_data_fim"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "TABLE",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "refresh_dashboard_kpis",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "VOID",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "usuario_tem_permissao",
+      "expected_parameters": [
+        "p_usuario_id",
+        "p_permissao_codigo"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "BOOLEAN"
+    },
+    {
+      "function_name": "obter_permissoes_usuario",
+      "expected_parameters": [
+        "p_usuario_id"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TABLE"
+    },
+    {
+      "function_name": "validar_login",
+      "expected_parameters": [
+        "p_email",
+        "p_senha"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TABLE"
+    },
+    {
+      "function_name": "atualizar_timestamp_tabelas_precos",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TRIGGER"
+    },
+    {
+      "function_name": "calcular_preco_final_item",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TRIGGER"
+    },
+    {
+      "function_name": "atualizar_totais_tabela_preco",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TRIGGER"
+    },
+    {
+      "function_name": "registrar_historico_preco",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TRIGGER"
+    },
+    {
+      "function_name": "obter_melhor_preco",
+      "expected_parameters": [
+        "p_produto_id",
+        "p_empresa_id",
+        "p_hospital_id",
+        "p_convenio_id",
+        "p_quantidade",
+        "p_data"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TABLE"
+    },
+    {
+      "function_name": "encrypt_credential",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TRIGGER"
+    },
+    {
+      "function_name": "decrypt_credential",
+      "expected_parameters": [
+        "encrypted_value"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TEXT"
+    },
+    {
+      "function_name": "get_decrypted_credential",
+      "expected_parameters": [
+        "p_nome",
+        "p_empresa_id"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TEXT"
+    },
+    {
+      "function_name": "test_api_credential",
+      "expected_parameters": [
+        "p_nome",
+        "p_servico",
+        "p_valor"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "JSONB"
+    },
+    {
+      "function_name": "log_credential_change",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TRIGGER"
+    },
+    {
+      "function_name": "criar_notificacao",
+      "expected_parameters": [
+        "p_user_id",
+        "p_tipo",
+        "p_canal",
+        "p_titulo",
+        "p_mensagem",
+        "p_contexto",
+        "p_contexto_id",
+        "p_prioridade"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "UUID",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "marcar_notificacao_lida",
+      "expected_parameters": [
+        "p_notificacao_id"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "VOID",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "log_audit",
+      "expected_parameters": [
+        "p_user_id",
+        "p_acao",
+        "p_modulo",
+        "p_entidade_tipo",
+        "p_entidade_id",
+        "p_descricao",
+        "p_dados_antes",
+        "p_dados_depois",
+        "p_sucesso",
+        "p_nivel_sensibilidade"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "UUID",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "criar_backup",
+      "expected_parameters": [
+        "p_nome",
+        "p_tipo",
+        "p_tabelas"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "UUID",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "check_rate_limit",
+      "expected_parameters": [
+        "p_endpoint_id",
+        "p_user_id"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "BOOLEAN",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "update_circuit_breaker",
+      "expected_parameters": [
+        "p_endpoint_id",
+        "p_success"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "VARCHAR",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "get_from_cache",
+      "expected_parameters": [
+        "p_endpoint_id",
+        "p_cache_key"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "JSONB",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "save_to_cache",
+      "expected_parameters": [
+        "p_endpoint_id",
+        "p_cache_key",
+        "p_response_status",
+        "p_response_body",
+        "p_response_headers",
+        "p_ttl"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "VOID",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "cleanup_expired_cache",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "INTEGER",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "populate_dimensao_tempo",
+      "expected_parameters": [
+        "p_ano_inicio",
+        "p_anos"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "INTEGER",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "calcular_metricas_agregadas",
+      "expected_parameters": [
+        "p_granularidade",
+        "p_periodo_inicio",
+        "p_periodo_fim",
+        "p_dimensoes"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "UUID",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "validar_partidas_dobradas",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TRIGGER"
+    },
+    {
+      "function_name": "gerar_dre",
+      "expected_parameters": [
+        "p_data_inicio",
+        "p_data_fim"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TABLE"
+    },
+    {
+      "function_name": "calcular_kpi",
+      "expected_parameters": [
+        "p_kpi_nome",
+        "p_data_referencia",
+        "p_periodo"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "UUID",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "calcular_todos_kpis_mes",
+      "expected_parameters": [
+        "p_data_referencia"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "INTEGER",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "calcular_taxa_sucesso_licitacoes",
+      "expected_parameters": [
+        "p_data_inicio",
+        "p_data_fim"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TABLE"
+    },
+    {
+      "function_name": "criar_evento_licitacao",
+      "expected_parameters": [
+        "p_licitacao_id",
+        "p_tipo",
+        "p_titulo",
+        "p_descricao",
+        "p_data_evento"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "UUID",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "limpar_tokens_expirados",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "INTEGER",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "usuario_tem_microsoft365",
+      "expected_parameters": [
+        "p_user_id"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "BOOLEAN",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "update_reuniao_teams_timestamp",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "TRIGGER",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "get_proximo_numero_nfe",
+      "expected_parameters": [
+        "p_serie"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "INTEGER",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "validar_rastreabilidade_anvisa",
+      "expected_parameters": [
+        "p_nfe_id"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "BOOLEAN",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "update_nfe_timestamp",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "TRIGGER",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "log_nfe_audit",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "TRIGGER",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "update_workflow_instance_updated_at",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TRIGGER"
+    },
+    {
+      "function_name": "mark_notification_read",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TRIGGER"
+    },
+    {
+      "function_name": "get_workflow_metrics",
+      "expected_parameters": [
+        "p_workflow_id"
+      ],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "TABLE"
+    },
+    {
+      "function_name": "user_has_permission",
+      "expected_parameters": [
+        "p_user_id",
+        "p_permission_code"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "BOOLEAN",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "cleanup_expired_sessions",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "INTEGER",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "check_failed_login_attempts",
+      "expected_parameters": [
+        "p_email",
+        "p_ip_address",
+        "p_time_window_minutes",
+        "p_max_attempts"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "BOOLEAN",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "gerar_relatorio_anvisa_rastreabilidade",
+      "expected_parameters": [
+        "p_data_inicio",
+        "p_data_fim",
+        "p_formato"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "UUID",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "gerar_sped_fiscal",
+      "expected_parameters": [
+        "p_mes",
+        "p_ano"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "UUID",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "executar_workflow",
+      "expected_parameters": [
+        "p_workflow_id",
+        "p_trigger_data"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "UUID",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "responder_aprovacao_workflow",
+      "expected_parameters": [
+        "p_aprovacao_id",
+        "p_aprovado",
+        "p_resposta"
+      ],
+      "found_in_migrations": true,
+      "issues": [],
+      "return_type": "VOID",
+      "language": "plpgsql"
+    },
+    {
+      "function_name": "set_current_timestamp_updated_at",
+      "expected_parameters": [],
+      "found_in_migrations": true,
+      "issues": [
+        "Função sem linguagem especificada"
+      ],
+      "return_type": "trigger"
+    }
+  ],
+  "views": [
+    {
+      "view_name": "view_empresas_sem_dpo",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 6,
+      "issues": []
+    },
+    {
+      "view_name": "v_cadastros_kpis",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 9,
+      "issues": []
+    },
+    {
+      "view_name": "v_compras_kpis",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 3,
+      "issues": []
+    },
+    {
+      "view_name": "view_medicos_stats",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 6,
+      "issues": []
+    },
+    {
+      "view_name": "view_dashboard_financeiro",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 4,
+      "issues": []
+    },
+    {
+      "view_name": "vw_score_abbott",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 5,
+      "issues": []
+    },
+    {
+      "view_name": "vw_estatisticas_auditorias",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 6,
+      "issues": []
+    },
+    {
+      "view_name": "vw_treinamentos_vencendo",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 6,
+      "issues": []
+    },
+    {
+      "view_name": "vw_consignacao_por_hospital",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 9,
+      "issues": []
+    },
+    {
+      "view_name": "vw_materiais_criticos_consignacao",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 3,
+      "issues": []
+    },
+    {
+      "view_name": "view_contratos_kpis",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 13,
+      "issues": []
+    },
+    {
+      "view_name": "view_contratos_alertas",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 3,
+      "issues": []
+    },
+    {
+      "view_name": "view_crm_funil",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 4,
+      "issues": []
+    },
+    {
+      "view_name": "view_crm_taxa_conversao",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 10,
+      "issues": []
+    },
+    {
+      "view_name": "view_crm_pipeline_resumo",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 4,
+      "issues": []
+    },
+    {
+      "view_name": "view_crm_campanhas_stats",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 6,
+      "issues": []
+    },
+    {
+      "view_name": "vw_cirurgias_proximas",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 15,
+      "issues": []
+    },
+    {
+      "view_name": "vw_cirurgia_kit_detalhado",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 18,
+      "issues": []
+    },
+    {
+      "view_name": "api_credentials_list",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 10,
+      "issues": []
+    },
+    {
+      "view_name": "vw_system_health_current",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 7,
+      "issues": []
+    },
+    {
+      "view_name": "vw_notificacoes_nao_lidas",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 4,
+      "issues": []
+    },
+    {
+      "view_name": "vw_slow_queries",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 5,
+      "issues": []
+    },
+    {
+      "view_name": "vw_api_metrics",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 18,
+      "issues": []
+    },
+    {
+      "view_name": "vw_bi_vendas_por_produto",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 10,
+      "issues": []
+    },
+    {
+      "view_name": "vw_bi_vendas_por_cliente",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 10,
+      "issues": []
+    },
+    {
+      "view_name": "vw_bi_performance_vendedores",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 11,
+      "issues": []
+    },
+    {
+      "view_name": "vw_bi_evolucao_mensal",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 12,
+      "issues": []
+    },
+    {
+      "view_name": "vw_cirurgias_segura",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 16,
+      "issues": []
+    },
+    {
+      "view_name": "vw_razao_contabil",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 14,
+      "issues": []
+    },
+    {
+      "view_name": "vw_balancete",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 10,
+      "issues": []
+    },
+    {
+      "view_name": "vw_kpi_dashboard_resumo",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 14,
+      "issues": []
+    },
+    {
+      "view_name": "vw_kpi_por_categoria",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 8,
+      "issues": []
+    },
+    {
+      "view_name": "vw_licitacoes_ativas",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 13,
+      "issues": []
+    },
+    {
+      "view_name": "vw_propostas_pendentes",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 14,
+      "issues": []
+    },
+    {
+      "view_name": "vw_proximas_reunioes_teams",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 14,
+      "issues": []
+    },
+    {
+      "view_name": "vw_estatisticas_emails_30d",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 7,
+      "issues": []
+    },
+    {
+      "view_name": "vw_produtos_vencendo",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 10,
+      "issues": []
+    },
+    {
+      "view_name": "vw_conformidade_anvisa_mensal",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 6,
+      "issues": []
+    },
+    {
+      "view_name": "unread_notifications",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 3,
+      "issues": []
+    },
+    {
+      "view_name": "workflows_by_state",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 5,
+      "issues": []
+    },
+    {
+      "view_name": "overdue_workflows",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 2,
+      "issues": []
+    },
+    {
+      "view_name": "pluggy_user_balance",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 5,
+      "issues": []
+    },
+    {
+      "view_name": "pluggy_recent_transactions",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 3,
+      "issues": []
+    },
+    {
+      "view_name": "vw_user_permissions",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 10,
+      "issues": []
+    },
+    {
+      "view_name": "vw_active_sessions",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 9,
+      "issues": []
+    },
+    {
+      "view_name": "vw_relatorios_pendentes",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 8,
+      "issues": []
+    },
+    {
+      "view_name": "vw_anvisa_rastreabilidade",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 19,
+      "issues": []
+    },
+    {
+      "view_name": "vw_workflows_ativos",
+      "is_materialized": false,
+      "found_in_migrations": true,
+      "columns": 9,
+      "issues": []
+    }
+  ],
+  "missingRPCs": [
+    "get_cirurgias_mes",
+    "calcular_comissao",
+    "get_estoque_baixo",
+    "atualizar_status_cirurgia",
+    "get_fluxo_caixa_projecao",
+    "get_top_produtos",
+    "validar_consignacao",
+    "calcular_abbott_score",
+    "get_compliance_status",
+    "search_cirurgias",
+    "get_rastreabilidade",
+    "get_metricas_financeiras",
+    "otimizar_rota",
+    "get_alertas_criticos"
+  ],
+  "rpcsWorking": 1,
+  "materializedViewsCount": 0,
+  "score": 24
+}

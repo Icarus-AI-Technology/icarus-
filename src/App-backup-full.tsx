@@ -25,7 +25,7 @@ import Microsoft365IntegrationPanel from"./pages/modules/Microsoft365Integration
 function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [unreadNotifications, setUnreadNotifications] = useState(3);
+  const [unreadNotifications, _setUnreadNotifications] = useState(3);
 
   const toggleDarkMode = () => {
     const newMode = !darkMode;

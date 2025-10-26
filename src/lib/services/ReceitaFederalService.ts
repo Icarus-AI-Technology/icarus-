@@ -107,9 +107,10 @@ class ReceitaFederalService {
       // Formata e retorna os dados
       return this.formatarDadosCNPJ(data);
       
-    } catch (_error) {
-      console.error('Erro ao consultar CNPJ:', _error);
-      throw _error;
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao consultar CNPJ:', err);
+      throw err;
     }
   }
   

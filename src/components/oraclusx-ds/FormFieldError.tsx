@@ -13,12 +13,7 @@ export const FormFieldError = ({ error }: FormFieldErrorProps) => {
 
   return (
     <p
-      style={{
-        color: 'var(--orx-error-dark)',
-        fontSize: '0.813rem',
-        marginTop: '0.25rem',
-        lineHeight: '1.5',
-      }}
+      className="text-[var(--orx-error-dark)] text-[0.813rem] mt-1 leading-6"
     >
       {error}
     </p>

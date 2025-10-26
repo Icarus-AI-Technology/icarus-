@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
+import type { Session as SupabaseSession, User as SupabaseUser } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 
 interface Profile {
@@ -22,10 +23,10 @@ interface Empresa {
 }
 
 export function useAuth() {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [empresaAtual, setEmpresaAtual] = useState<Empresa | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
+  const [session, setSession] = useState<SupabaseSession | null>(null);
   const [loading, setLoading] = useState(true);
 
   const loadEmpresa = useCallback(async (empresaId: string) => {
@@ -38,8 +39,9 @@ export function useAuth() {
 
       if (error) throw error;
       setEmpresaAtual(data as Empresa);
-    } catch (_error) {
-      console.error('Error loading empresa:', error);
+    } catch (error) {
+      const err = error as Error;
+      console.error('Error loading empresa:', err);
       setEmpresaAtual(null);
     }
   }, []);
@@ -59,8 +61,9 @@ export function useAuth() {
       } else {
         setEmpresaAtual(null);
       }
-    } catch (_error) {
-      console.error('Error loading profile:', error);
+    } catch (error) {
+      const err = error as Error;
+      console.error('Error loading profile:', err);
     } finally {
       setLoading(false);
     }
@@ -82,7 +85,8 @@ export function useAuth() {
     };
 
     loadSessionAndProfile().catch((error) => {
-      console.error('Error loading session:', error);
+      const err = error as Error;
+      console.error('Error loading session:', err);
       setLoading(false);
     });
 
@@ -94,7 +98,8 @@ export function useAuth() {
 
       if (sessionChanged?.user) {
         loadProfile(sessionChanged.user.id).catch((error) => {
-          console.error('Error loading profile:', error);
+          const err = error as Error;
+          console.error('Error loading profile:', err);
         });
       } else {
         setProfile(null);

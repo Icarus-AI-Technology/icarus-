@@ -104,6 +104,50 @@
 ✓ Componentes: 28/28 (100%)
 ```
 
+## 🆕 Tecnologias/Integrações Habilitadas (sessão atual)
+
+- Meilisearch (mock local: http://localhost:7700) — health OK
+- Ollama (mock local: http://localhost:11434) — tags OK
+- Email (health HTTP: http://localhost:8025/health) — OK
+- BullMQ (ping HTTP: http://localhost:9900/queue/ping) — OK
+- PostHog (analytics) — SKIP: defina `VITE_POSTHOG_API_KEY` para habilitar
+- Tesseract OCR — biblioteca carregada (bench disponível)
+
+### Comandos rápidos
+```bash
+# Iniciar mocks locais (Meili, Ollama, Email health, BullMQ ping)
+npm run mocks:start:bg
+
+# Executar validação de integrações
+VITE_POSTHOG_API_KEY=dev_key npm run qa:integrations
+
+# Finalizar mocks
+npm run mocks:stop
+```
+
+### Storybook
+```bash
+# Dev (porta 6007)
+npm run storybook
+# Abrir: http://localhost:6007
+
+# Build estático
+npm run build-storybook
+
+# CI
+# - PRs: artefato "storybook-static" anexado
+# - main: deploy automático no GitHub Pages
+```
+
+### Padrão de Tela de Login aplicado
+
+- Card central com efeito glass e gradiente indigo→purple
+- Ícone Icarus padrão (cruz estilizada), título `ICARUS v5.0` e subtítulo `Gestão elevada pela IA`
+- Campos com labels claras, foco visível, contraste adequado
+- Botão primário com gradiente e ícone de entrada
+- Links auxiliares (esqueci a senha / criar conta)
+- Responsivo e compatível com dark mode
+
 ---
 
 ## 🎯 CARACTERÍSTICAS DO DESIGN SYSTEM

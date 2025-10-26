@@ -35,7 +35,7 @@ export const DashboardContratos: React.FC = () => {
           <div className="flex items-center gap-2 px-4 py-2 bg-primary rounded-full">
             <Settings className="text-inverse animate-spin-slow" size={20} />
             <div className="text-left">
-              <p className="text-inverse text-body-sm" style={{ fontWeight: 500 }}>IA Analytics</p>
+              <p className="text-inverse text-body-sm font-medium">IA Analytics</p>
               <p className="text-indigo-100 text-body-xs">156 insights</p>
             </div>
           </div>
@@ -53,9 +53,9 @@ export const DashboardContratos: React.FC = () => {
                       <Icon size={24} />
                     </div>
                     <div className="text-center">
-                      <p className="text-body-xs mb-1" style={{ fontWeight: 500 }}>{category.label}</p>
+                      <p className="text-body-xs mb-1 font-medium">{category.label}</p>
                       <div className="flex items-center justify-center gap-2">
-                        <span className="text-heading font-display" style={{ fontSize: '0.813rem' }}>{category.count}</span>
+                        <span className="text-heading font-display text-[0.813rem]">{category.count}</span>
                         <span className={`text-body-xs ${isActive ?"text-inverse/80" :"text-secondary dark:text-muted"}`}>
                           {category.trend}
                         </span>
@@ -100,14 +100,14 @@ export const DashboardContratos: React.FC = () => {
                 <div>
                   <div className="flex justify-between mb-2">
                     <span className="text-body-sm text-secondary dark:text-muted">Taxa Renovação</span>
-                    <span className="text-body-sm" style={{ fontWeight: 500 }}>94.7%</span>
+                    <span className="text-body-sm font-medium">94.7%</span>
                   </div>
                   <Progress value={94.7} variant="success" />
                 </div>
                 <div>
                   <div className="flex justify-between mb-2">
                     <span className="text-body-sm text-secondary dark:text-muted">Satisfação Cliente</span>
-                    <span className="text-body-sm" style={{ fontWeight: 500 }}>91.2%</span>
+                    <span className="text-body-sm font-medium">91.2%</span>
                   </div>
                   <Progress value={91.2} variant="primary" />
                 </div>

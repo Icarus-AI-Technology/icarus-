@@ -140,7 +140,7 @@ export function GestaoEntregas({
         <div className="flex flex-wrap items-end gap-4">
           {/* Busca */}
           <div className="flex-1 min-w-[200px]">
-            <label className="block mb-2" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>
+            <label className="block mb-2 text-[0.813rem] font-medium">
               Buscar
             </label>
             <div className="relative">
@@ -161,12 +161,13 @@ export function GestaoEntregas({
 
           {/* Status */}
           <div className="w-[180px]">
-            <label className="block mb-2" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>
+            <label className="block mb-2 text-[0.813rem] font-medium">
               Status
             </label>
             <select
               value={filters.status}
               onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+              aria-label="Status"
               className="w-full px-4 py-2 rounded-lg
                 bg-surface-light dark:bg-surface-dark
                 border border-[var(--border)]
@@ -186,12 +187,13 @@ export function GestaoEntregas({
 
           {/* Transportadora */}
           <div className="w-[180px]">
-            <label className="block mb-2" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>
+            <label className="block mb-2 text-[0.813rem] font-medium">
               Transportadora
             </label>
             <select
               value={filters.transportadora}
               onChange={(e) => setFilters({ ...filters, transportadora: e.target.value })}
+              aria-label="Transportadora"
               className="w-full px-4 py-2 rounded-lg
                 bg-surface-light dark:bg-surface-dark
                 border border-[var(--border)]
@@ -209,12 +211,13 @@ export function GestaoEntregas({
 
           {/* Período */}
           <div className="w-[180px]">
-            <label className="block mb-2" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>
+            <label className="block mb-2 text-[0.813rem] font-medium">
               Período
             </label>
             <select
               value={filters.periodo}
               onChange={(e) => setFilters({ ...filters, periodo: e.target.value })}
+              aria-label="Período"
               className="w-full px-4 py-2 rounded-lg
                 bg-surface-light dark:bg-surface-dark
                 border border-[var(--border)]
@@ -271,7 +274,7 @@ export function GestaoEntregas({
 
       {/* Contador */}
       <div className="flex items-center justify-between">
-        <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+        <p className="text-[var(--text-secondary)] text-[0.813rem]">
           {entregasFiltradas.length} entrega(s) encontrada(s)
         </p>
       </div>
@@ -293,25 +296,25 @@ export function GestaoEntregas({
               <table className="w-full">
                 <thead className="border-b border-[var(--border)]">
                   <tr>
-                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>
+                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] font-medium">
                       Código
                     </th>
-                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>
+                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] font-medium">
                       Transportadora
                     </th>
-                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>
+                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] font-medium">
                       Destino
                     </th>
-                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>
+                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] font-medium">
                       Status
                     </th>
-                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>
+                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] font-medium">
                       Previsão
                     </th>
-                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>
+                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] font-medium">
                       Valor
                     </th>
-                    <th className="px-6 py-3 text-right text-[var(--text-secondary)] uppercase tracking-wider" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>
+                    <th className="px-6 py-3 text-right text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] font-medium">
                       Ações
                     </th>
                   </tr>
@@ -323,20 +326,20 @@ export function GestaoEntregas({
                       className="hover:bg-[var(--surface-hover)] transition-colors"
                     >
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <code className="font-mono text-[var(--text-primary)]" style={{ fontSize: '0.813rem' }}>
+                        <code className="font-mono text-[var(--text-primary)] text-[0.813rem]">
                           {entrega.codigo_rastreio || '-'}
                         </code>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center gap-2">
                           <Truck className="h-4 w-4 text-[var(--text-secondary)]" />
-                          <span className style={{ fontSize: '0.813rem' }}>
+                          <span className="text-[0.813rem]">
                             {entrega.transportadora || '-'}
                           </span>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className style={{ fontSize: '0.813rem' }}>
+                        <span className="text-[0.813rem]">
                           {entrega.destino_nome || '-'}
                         </span>
                       </td>
@@ -344,16 +347,16 @@ export function GestaoEntregas({
                         {getStatusBadge(entrega.status)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className style={{ fontSize: '0.813rem' }}>
+                        <span className="text-[0.813rem]">
                           {formatDate(entrega.data_previsao)}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>
+                        <span className="text-[0.813rem] font-medium">
                           {formatCurrency(entrega.valor_frete)}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-[0.813rem] font-medium">
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => onRastrear(entrega)}
@@ -400,7 +403,7 @@ export function GestaoEntregas({
             <div className="text-center">
               <MapIcon className="h-16 w-16 mb-4 opacity-50 mx-auto" />
               <p>Visualização de mapa</p>
-              <p className="mt-2" style={{ fontSize: '0.813rem' }}>Integração com Google Maps em desenvolvimento</p>
+              <p className="mt-2 text-[0.813rem]">Integração com Google Maps em desenvolvimento</p>
             </div>
           </div>
         </Card>

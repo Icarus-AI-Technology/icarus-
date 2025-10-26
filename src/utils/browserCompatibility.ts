@@ -14,10 +14,10 @@
 
 export const BrowserDetection = {
   isChrome: () => {
-    const isChromium = (window as any).chrome;
+    const isChromium = (window as unknown as { chrome?: unknown }).chrome;
     const winNav = window.navigator;
     const vendorName = winNav.vendor;
-    const isOpera = typeof (window as any).opr !== 'undefined';
+    const isOpera = typeof (window as unknown as { opr?: unknown }).opr !== 'undefined';
     const isIEedge = winNav.userAgent.indexOf('Edg') > -1;
     const isIOSChrome = winNav.userAgent.match('CriOS');
 
@@ -45,19 +45,19 @@ export const BrowserDetection = {
 
   isSafari: () => {
     const isSafari =
-      /constructor/i.test((window as any).HTMLElement) ||
-      ((p: any): boolean => {
-        return p.toString() === '[object SafariRemoteNotification]';
+      /constructor/i.test(String((window as unknown as { HTMLElement: unknown }).HTMLElement)) ||
+      ((p: unknown): boolean => {
+        return String(p) === '[object SafariRemoteNotification]';
       })(
-        !(window as any).safari ||
-          (typeof (window as any).safari !== 'undefined' &&
-            (window as any).safari.pushNotification)
+        !(window as unknown as { safari?: { pushNotification?: unknown } }).safari ||
+          (typeof (window as unknown as { safari?: { pushNotification?: unknown } }).safari !== 'undefined' &&
+            (window as unknown as { safari?: { pushNotification?: unknown } }).safari?.pushNotification)
       );
     return isSafari;
   },
 
   isOpera: () => {
-    return typeof (window as any).opr !== 'undefined';
+    return typeof (window as unknown as { opr?: unknown }).opr !== 'undefined';
   },
 
   getBrowserInfo: () => {
@@ -99,7 +99,7 @@ export const BrowserDetection = {
 // WEB SPEECH API - POLYFILL
 // ========================================
 
-export const initSpeechRecognition = (): any | null => {
+export const initSpeechRecognition = (): (new () => SpeechRecognition) | null => {
   // Chrome/Edge: SpeechRecognition
   // Safari: webkitSpeechRecognition
   // Firefox: Não suporta nativamente, usar polyfill
@@ -110,10 +110,9 @@ export const initSpeechRecognition = (): any | null => {
 
   // Tentar APIs nativas primeiro
   const SpeechRecognitionAPI =
-    (window as any).SpeechRecognition ||
-    (window as any).webkitSpeechRecognition ||
-    (window as any).mozSpeechRecognition ||
-    (window as any).msSpeechRecognition;
+    (window as unknown as { SpeechRecognition?: new () => SpeechRecognition }).SpeechRecognition ||
+    (window as unknown as { webkitSpeechRecognition?: new () => SpeechRecognition }).webkitSpeechRecognition ||
+    null;
 
   if (SpeechRecognitionAPI) {
     return SpeechRecognitionAPI;
@@ -154,13 +153,15 @@ export const copyToClipboard = async (text: string): Promise<boolean> => {
       const successful = document.execCommand('copy');
       document.body.removeChild(textArea);
       return successful;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       document.body.removeChild(textArea);
-      console.error('Fallback: Erro ao copiar texto:', _err);
+      console.error('Fallback: Erro ao copiar texto:', err);
       return false;
     }
-  } catch (_err) {
-    console.error('Erro ao copiar para clipboard:', _err);
+  } catch (error) {
+   const err = error as Error;
+    console.error('Erro ao copiar para clipboard:', err);
     return false;
   }
 };
@@ -176,8 +177,9 @@ export const readFromClipboard = async (): Promise<string | null> => {
     // Fallback não é possível para leitura por questões de segurança
     console.warn('Clipboard read não suportado neste navegador');
     return null;
-  } catch (_err) {
-    console.error('Erro ao ler clipboard:', _err);
+  } catch (error) {
+   const err = error as Error;
+    console.error('Erro ao ler clipboard:', err);
     return null;
   }
 };
@@ -199,23 +201,20 @@ export const initIntersectionObserver = () => {
   // Polyfill básico para navegadores antigos
   console.warn('IntersectionObserver não suportado. Usando polyfill básico.');
 
-  (window as any).IntersectionObserver = class IntersectionObserver {
-    constructor(callback: any) {
-      this.callback = callback;
+  class BasicIntersectionObserver {
+    private _callback: (entries: unknown[], observer: BasicIntersectionObserver) => void;
+    constructor(callback: (entries: unknown[], observer: BasicIntersectionObserver) => void) {
+      this._callback = callback;
     }
-
-    observe() {
-      // Simular observação imediata
+    observe(): void {
       setTimeout(() => {
-        this.callback([{ isIntersecting: true }], this);
+        this._callback([{ isIntersecting: true }], this);
       }, 0);
     }
-
-    unobserve() {}
-    disconnect() {}
-
-    private callback: any;
-  };
+    unobserve(): void {}
+    disconnect(): void {}
+  }
+  (window as unknown as { IntersectionObserver: unknown }).IntersectionObserver = BasicIntersectionObserver as unknown;
 };
 
 // ========================================
@@ -233,8 +232,8 @@ export const initResizeObserver = () => {
 
   console.warn('ResizeObserver não suportado. Usando polyfill básico.');
 
-  (window as any).ResizeObserver = class ResizeObserver {
-    constructor(callback: any) {
+  (window as unknown as { ResizeObserver: new (callback: (entries: Array<{ target: Element; contentRect: DOMRectReadOnly }>, observer: ResizeObserver) => void) => ResizeObserver }).ResizeObserver = class ResizeObserver {
+    constructor(callback: (entries: Array<{ target: Element; contentRect: DOMRectReadOnly }>, observer: ResizeObserver) => void) {
       this.callback = callback;
       this.elements = [];
     }
@@ -263,7 +262,7 @@ export const initResizeObserver = () => {
       this.elements = [];
     }
 
-    private callback: any;
+    private callback: (entries: Array<{ target: Element; contentRect: DOMRectReadOnly }>, observer: ResizeObserver) => void;
     private elements: Element[];
   };
 };
@@ -349,15 +348,17 @@ export const polyfillSmoothScroll = () => {
   console.warn('Smooth scroll não suportado. Usando polyfill.');
 
   // Override scrollTo
-  const originalScrollTo = Element.prototype.scrollTo;
+  const originalScrollTo = Element.prototype.scrollTo as (x: number, y: number) => void;
 
-  Element.prototype.scrollTo = function (options: any) {
-    if (typeof options === 'object' && options.behavior === 'smooth') {
-      smoothScroll(this as HTMLElement, options.top || 0, 300);
-    } else {
-      originalScrollTo.call(this, options, 0);
+  Element.prototype.scrollTo = function scrollToPolyfill(this: Element, options: ScrollToOptions | number, y?: number) {
+    if (typeof options === 'object' && (options as ScrollToOptions).behavior === 'smooth') {
+      smoothScroll(this as HTMLElement, (options as ScrollToOptions).top || 0, 300);
+    } else if (typeof options === 'number' && typeof y === 'number') {
+      originalScrollTo.call(this, options, y);
+    } else if (typeof options === 'object') {
+      originalScrollTo.call(this, (options as ScrollToOptions).left || 0, (options as ScrollToOptions).top || 0);
     }
-  };
+  } as unknown as typeof Element.prototype.scrollTo;
 };
 
 // ========================================
@@ -474,7 +475,7 @@ export const checkFeatureSupport = () => {
         return !!(
           canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
         );
-      } catch (_e) {
+      } catch {
         return false;
       }
     })(),

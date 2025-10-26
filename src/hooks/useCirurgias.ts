@@ -90,7 +90,8 @@ export function useCirurgias() {
 
       if (error) throw error;
       setCirurgias(data || []);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao carregar cirurgias');
     } finally {
       setLoading(false);
@@ -111,7 +112,8 @@ export function useCirurgias() {
 
       if (error) throw error;
       return data;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao buscar cirurgia');
       return null;
     }
@@ -129,7 +131,8 @@ export function useCirurgias() {
       
       setCirurgias((prev) => [...prev, data]);
       return data;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao criar cirurgia');
       throw err;
     }
@@ -150,7 +153,8 @@ export function useCirurgias() {
         prev.map((c) => (c.id === id ? data : c))
       );
       return data;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao atualizar cirurgia');
       throw err;
     }
@@ -166,7 +170,8 @@ export function useCirurgias() {
       if (error) throw error;
 
       setCirurgias((prev) => prev.filter((c) => c.id !== id));
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao deletar cirurgia');
       throw err;
     }

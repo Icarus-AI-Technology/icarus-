@@ -173,7 +173,7 @@ export default function NomeDoModulo() {
   const renderDashboard = () => (
     <div className="space-y-6">
       <Card className="neuro-raised p-6">
-        <h3 className="text-body-lg text-[var(--text-primary)] mb-4" style={{ fontWeight: 500 }}>
+        <h3 className="text-body-lg text-[var(--text-primary)] mb-4 font-medium">
           Dashboard Principal
         </h3>
         <p className="text-[var(--text-secondary)]">
@@ -226,16 +226,16 @@ export default function NomeDoModulo() {
             <table className="w-full">
               <thead className="border-b border-[var(--border)]">
                 <tr>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">
                     ID
                   </th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">
                     Nome
                   </th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">
                     Status
                   </th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">
                     Ações
                   </th>
                 </tr>
@@ -246,7 +246,7 @@ export default function NomeDoModulo() {
                   <td className="p-4 text-[var(--text-primary)]">001</td>
                   <td className="p-4 text-[var(--text-primary)]">Exemplo</td>
                   <td className="p-4">
-                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs bg-success/5 text-success" style={{ fontWeight: 500 }}>
+                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs bg-success/5 text-success font-medium">
                       <CheckCircle className="w-3 h-3" />
                       Ativo
                     </span>
@@ -295,7 +295,7 @@ export default function NomeDoModulo() {
           </div>
           <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-success/50 animate-pulse" />
-            <span className="text-body-sm text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+            <span className="text-body-sm text-[var(--text-primary)] font-medium">
               Realtime Sync
             </span>
           </div>
@@ -314,7 +314,7 @@ export default function NomeDoModulo() {
               }`}
             >
               <category.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
-              <span className="text-body-xs text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+              <span className="text-body-xs text-[var(--text-primary)] font-medium">
                 {category.label}
               </span>
               <div className="flex items-center gap-1 mt-1">
@@ -379,7 +379,7 @@ export default function NomeDoModulo() {
         {activeCategory ==="relatorios" && (
           <Card className="neuro-raised p-12 text-center">
             <Download className="w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4" />
-            <h3 className="text-heading-sm text-[var(--text-primary)] mb-2" style={{ fontWeight: 500 }}>
+            <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 font-medium">
               Relatórios
             </h3>
             <p className="text-[var(--text-secondary)]">

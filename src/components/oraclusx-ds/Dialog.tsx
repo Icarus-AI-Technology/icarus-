@@ -92,7 +92,7 @@ export const Dialog: React.FC<DialogProps> = ({
 
       {/* Dialog */}
       <div
-        className={cn("relative w-full max-w-md orx-card p-6","animate-in zoom-in-95 fade-in duration-200",
+        className={cn("relative w-full max-w-[90vw] md:max-w-md orx-card p-4 md:p-6","dark:bg-gray-800 dark:border-gray-700","animate-in zoom-in-95 fade-in duration-200",
           className,
         )}
       >
@@ -101,7 +101,7 @@ export const Dialog: React.FC<DialogProps> = ({
             <Icon className={color} size={24} />
           </div>
           <div className="flex-1">
-            <h2 className="text-heading-sm text-[var(--text-primary)] mb-2" style={{ fontWeight: 500 }}>
+            <h2 className="text-heading-sm text-[var(--text-primary)] mb-2 font-medium">
               {title}
             </h2>
             {description && (

@@ -1,0 +1,249 @@
+{
+  "subagent": "1.3",
+  "name": "Temas (Dark/Light)",
+  "status": "completed",
+  "componentsAudit": [
+    {
+      "component": "Button",
+      "usesCSSVariables": true,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": []
+    },
+    {
+      "component": "Input",
+      "usesCSSVariables": true,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": []
+    },
+    {
+      "component": "Card",
+      "usesCSSVariables": false,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": [
+        "Não usa CSS variables"
+      ]
+    },
+    {
+      "component": "Badge",
+      "usesCSSVariables": true,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": []
+    },
+    {
+      "component": "Tooltip",
+      "usesCSSVariables": false,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": [
+        "Não usa CSS variables"
+      ]
+    },
+    {
+      "component": "Modal",
+      "usesCSSVariables": false,
+      "usesDarkClasses": true,
+      "hasTransition": false,
+      "issues": [
+        "Não usa CSS variables",
+        "Sem transição de tema"
+      ]
+    },
+    {
+      "component": "Dialog",
+      "usesCSSVariables": true,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": []
+    },
+    {
+      "component": "Dropdown",
+      "usesCSSVariables": true,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": []
+    },
+    {
+      "component": "Tabs",
+      "usesCSSVariables": true,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": []
+    },
+    {
+      "component": "Accordion",
+      "usesCSSVariables": true,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": []
+    },
+    {
+      "component": "Progress",
+      "usesCSSVariables": false,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": [
+        "Não usa CSS variables"
+      ]
+    },
+    {
+      "component": "RadialProgress",
+      "usesCSSVariables": true,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": []
+    },
+    {
+      "component": "Slider",
+      "usesCSSVariables": true,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": []
+    },
+    {
+      "component": "Switch",
+      "usesCSSVariables": true,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": []
+    },
+    {
+      "component": "Radio",
+      "usesCSSVariables": false,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": [
+        "Não usa CSS variables"
+      ]
+    },
+    {
+      "component": "Checkbox",
+      "usesCSSVariables": true,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": []
+    },
+    {
+      "component": "Select",
+      "usesCSSVariables": true,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": []
+    },
+    {
+      "component": "Textarea",
+      "usesCSSVariables": true,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": []
+    },
+    {
+      "component": "SearchField",
+      "usesCSSVariables": false,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": [
+        "Não usa CSS variables"
+      ]
+    },
+    {
+      "component": "InputContainer",
+      "usesCSSVariables": false,
+      "usesDarkClasses": true,
+      "hasTransition": false,
+      "issues": [
+        "Não usa CSS variables",
+        "Sem transição de tema"
+      ]
+    },
+    {
+      "component": "DatePicker",
+      "usesCSSVariables": true,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": []
+    },
+    {
+      "component": "Avatar",
+      "usesCSSVariables": false,
+      "usesDarkClasses": true,
+      "hasTransition": false,
+      "issues": [
+        "Não usa CSS variables",
+        "Sem transição de tema"
+      ]
+    },
+    {
+      "component": "Toast",
+      "usesCSSVariables": true,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": []
+    },
+    {
+      "component": "NavigationBar",
+      "usesCSSVariables": false,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": [
+        "Não usa CSS variables"
+      ]
+    },
+    {
+      "component": "SubModulesNavigation",
+      "usesCSSVariables": false,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": [
+        "Não usa CSS variables"
+      ]
+    },
+    {
+      "component": "IconButtonNeu",
+      "usesCSSVariables": true,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": []
+    },
+    {
+      "component": "TopbarIconButton",
+      "usesCSSVariables": false,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": [
+        "Não usa CSS variables"
+      ]
+    },
+    {
+      "component": "SearchContainer",
+      "usesCSSVariables": true,
+      "usesDarkClasses": true,
+      "hasTransition": true,
+      "issues": []
+    }
+  ],
+  "contextAudit": {
+    "exists": true,
+    "issues": []
+  },
+  "score": 73,
+  "issues": [
+    "Card.tsx: Não usa CSS variables",
+    "Tooltip.tsx: Não usa CSS variables",
+    "Modal.tsx: Não usa CSS variables",
+    "Modal.tsx: Sem transição de tema",
+    "Progress.tsx: Não usa CSS variables",
+    "Radio.tsx: Não usa CSS variables",
+    "SearchField.tsx: Não usa CSS variables",
+    "InputContainer.tsx: Não usa CSS variables",
+    "InputContainer.tsx: Sem transição de tema",
+    "Avatar.tsx: Não usa CSS variables",
+    "Avatar.tsx: Sem transição de tema",
+    "NavigationBar.tsx: Não usa CSS variables",
+    "SubModulesNavigation.tsx: Não usa CSS variables",
+    "TopbarIconButton.tsx: Não usa CSS variables"
+  ]
+}

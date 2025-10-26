@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Check, Loader2, Calculator, Package } from 'lucide-react';
+import { ArrowLeft, Check, Loader2, Calculator } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface ProdutoOPMEFormData {
@@ -77,8 +77,9 @@ const CadastroProdutosOPME: React.FC = () => {
       await new Promise(resolve => setTimeout(resolve, 1500));
       console.log('Produto OPME salvo:', formData);
       navigate('/cadastros');
-    } catch (_error) {
-      console.error('Erro ao salvar:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao salvar:', err);
     } finally {
       setLoading(false);
     }
@@ -276,7 +277,7 @@ const CadastroProdutosOPME: React.FC = () => {
               </label>
               <select
                 value={formData.classe_risco || ''}
-                onChange={(e) => setFormData({ ...formData, classe_risco: e.target.value as any })}
+                onChange={(e) => setFormData({ ...formData, classe_risco: e.target.value as ProdutoOPMEFormData['classe_risco'] })}
                 style={{
                   width: '100%',
                   padding: '0.75rem',

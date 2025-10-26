@@ -10,6 +10,18 @@
 
 import { APIGatewayService, APIRequest } from './APIGatewayService';
 
+interface TwilioSMSResponse {
+  sid: string;
+}
+
+interface WhatsAppMessageResponse {
+  messages?: Array<{ id?: string }>;
+}
+
+interface MailchimpCampaignResponse {
+  id: string;
+}
+
 export interface SMSRequest {
   to: string; // Telefone no formato +5511999999999
   message: string;
@@ -22,6 +34,27 @@ export interface WhatsAppRequest {
   template?: string; // Nome do template aprovado
   templateParams?: Record<string, string>; // Parâmetros do template
 }
+
+type WhatsAppPayload =
+  | {
+      messaging_product: 'whatsapp';
+      to: string;
+      type: 'template';
+      template: {
+        name: string;
+        language: { code: string };
+        components?: Array<{
+          type: 'body';
+          parameters: Array<{ type: 'text'; text: string }>;
+        }>;
+      };
+    }
+  | {
+      messaging_product: 'whatsapp';
+      to: string;
+      type: 'text';
+      text: { body: string };
+    };
 
 export interface EmailRequest {
   to: string | string[]; // Email(s) do destinatário
@@ -73,7 +106,7 @@ export class CommunicationService {
       };
 
       // Fazer chamada via API Gateway
-      const response = await APIGatewayService.request(apiRequest);
+      const response = await APIGatewayService.request<TwilioSMSResponse>(apiRequest);
 
       if (response.success && response.data) {
         return {
@@ -87,10 +120,11 @@ export class CommunicationService {
         };
       }
     } catch (error) {
-      console.error('[Communication Service] Erro ao enviar SMS:', error);
+      const err = error as Error;
+      console.error('[Communication Service] Erro ao enviar SMS:', err);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Erro desconhecido'
+        error: err.message || 'Erro desconhecido'
       };
     }
   }
@@ -108,42 +142,46 @@ export class CommunicationService {
       const phone = this.formatPhoneNumber(request.to);
 
       // Construir payload baseado em template ou mensagem livre
-      const payload: any = {
-        messaging_product: 'whatsapp',
-        to: phone
-      };
+      let payload: WhatsAppPayload;
 
       if (request.template) {
         // Mensagem com template aprovado
-        payload.type = 'template';
-        payload.template = {
-          name: request.template,
-          language: { code: 'pt_BR' }
+        payload = {
+          messaging_product: 'whatsapp',
+          to: phone,
+          type: 'template',
+          template: {
+            name: request.template,
+            language: { code: 'pt_BR' },
+            ...(request.templateParams && {
+              components: [
+                {
+                  type: 'body',
+                  parameters: Object.values(request.templateParams).map((value) => ({
+                    type: 'text' as const,
+                    text: value,
+                  })),
+                },
+              ],
+            }),
+          },
         };
-
-        if (request.templateParams) {
-          payload.template.components = [
-            {
-              type: 'body',
-              parameters: Object.values(request.templateParams).map(value => ({
-                type: 'text',
-                text: value
-              }))
-            }
-          ];
-        }
       } else {
         // Mensagem de texto livre
-        payload.type = 'text';
-        payload.text = { body: request.message };
+        payload = {
+          messaging_product: 'whatsapp',
+          to: phone,
+          type: 'text',
+          text: { body: request.message },
+        };
       }
 
       const apiRequest: APIRequest = {
         endpoint: 'whatsapp_send_message',
-        body: payload
+        body: payload,
       };
 
-      const response = await APIGatewayService.request(apiRequest);
+      const response = await APIGatewayService.request<WhatsAppMessageResponse>(apiRequest);
 
       if (response.success && response.data) {
         return {
@@ -157,10 +195,11 @@ export class CommunicationService {
         };
       }
     } catch (error) {
-      console.error('[Communication Service] Erro ao enviar WhatsApp:', error);
+      const err = error as Error;
+      console.error('[Communication Service] Erro ao enviar WhatsApp:', err);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Erro desconhecido'
+        error: err.message || 'Erro desconhecido'
       };
     }
   }
@@ -217,10 +256,11 @@ export class CommunicationService {
         };
       }
     } catch (error) {
-      console.error('[Communication Service] Erro ao enviar email:', error);
+      const err = error as Error;
+      console.error('[Communication Service] Erro ao enviar email:', err);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Erro desconhecido'
+        error: err.message || 'Erro desconhecido'
       };
     }
   }
@@ -254,7 +294,7 @@ export class CommunicationService {
         body: createPayload
       };
 
-      const createResponse = await APIGatewayService.request(createRequest);
+      const createResponse = await APIGatewayService.request<MailchimpCampaignResponse>(createRequest);
 
       if (!createResponse.success || !createResponse.data?.id) {
         throw new Error('Falha ao criar campanha');
@@ -305,10 +345,11 @@ export class CommunicationService {
         campaignId
       };
     } catch (error) {
-      console.error('[Communication Service] Erro ao enviar campanha:', error);
+      const err = error as Error;
+      console.error('[Communication Service] Erro ao enviar campanha:', err);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Erro desconhecido'
+        error: err.message || 'Erro desconhecido'
       };
     }
   }
@@ -367,9 +408,10 @@ export class CommunicationService {
           : { success: false, error: 'Falha em ambos canais' };
       }
     } catch (error) {
+      const err = error as Error;
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Erro desconhecido'
+        error: err.message || 'Erro desconhecido'
       };
     }
   }

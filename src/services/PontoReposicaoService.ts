@@ -125,8 +125,9 @@ export class PontoReposicaoService {
         ponto_reposicao_atual: produto.ponto_reposicao || 0,
         sugestao_ajuste: Math.abs(pontoReposicaoCalculado - (produto.ponto_reposicao || 0)) > 5
       };
-    } catch (_error) {
-      console.error('Erro ao calcular ponto de reposição:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao calcular ponto de reposição:', err);
       throw error;
     }
   }
@@ -185,8 +186,9 @@ export class PontoReposicaoService {
         }
         return a.dias_ate_ruptura - b.dias_ate_ruptura;
       });
-    } catch (_error) {
-      console.error('Erro ao verificar pontos de reposição:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao verificar pontos de reposição:', err);
       throw error;
     }
   }
@@ -261,8 +263,9 @@ export class PontoReposicaoService {
       }
 
       return sugestoes;
-    } catch (_error) {
-      console.error('Erro ao sugerir compra automática:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao sugerir compra automática:', err);
       throw error;
     }
   }
@@ -287,8 +290,9 @@ export class PontoReposicaoService {
 
       const consumoTotal = movimentacoes?.reduce((sum, mov) => sum + mov.quantidade, 0) || 0;
       return consumoTotal / periodoDias;
-    } catch (_error) {
-      console.error('Erro ao calcular consumo médio:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao calcular consumo médio:', err);
       return 0;
     }
   }
@@ -350,8 +354,9 @@ export class PontoReposicaoService {
         maior_consumo_dia: Math.max(...valores, 0),
         menor_consumo_dia: Math.min(...valores, 0)
       };
-    } catch (_error) {
-      console.error('Erro ao gerar histórico de consumo:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao gerar histórico de consumo:', err);
       throw error;
     }
   }
@@ -372,8 +377,9 @@ export class PontoReposicaoService {
       if (error) throw error;
 
       console.log(`✅ Ponto de reposição atualizado: ${novoPonto}`);
-    } catch (_error) {
-      console.error('Erro ao atualizar ponto de reposição:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao atualizar ponto de reposição:', err);
       throw error;
     }
   }
@@ -416,8 +422,9 @@ export class PontoReposicaoService {
         total_produtos: produtos.length,
         atualizados
       };
-    } catch (_error) {
-      console.error('Erro ao recalcular pontos:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao recalcular pontos:', err);
       throw error;
     }
   }

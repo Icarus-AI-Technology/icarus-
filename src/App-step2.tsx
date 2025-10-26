@@ -2,8 +2,8 @@
  * APP STEP 2: Dashboard + Topbar + Sidebar (SEM rotas extras)
  */
 import { useState } from"react";
-import { BrowserRouter as Router, Routes, Route, Link } from"react-router-dom";
-import { BrainCircuit, Home } from"lucide-react";
+import { BrowserRouter as Router, Routes, Route } from"react-router-dom";
+import { BrainCircuit } from"lucide-react";
 import Dashboard from"./pages/DashboardPrincipal";
 import { IcarusTopbar } from"./components/layout/IcarusTopbar";
 import { IcarusSidebar } from"./components/layout/IcarusSidebar";

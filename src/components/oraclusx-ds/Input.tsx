@@ -15,7 +15,7 @@ export interface InputProps
   label?: string;
 }
 
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(
+const InputComponent = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
       className,
@@ -35,7 +35,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="block text-body-sm text-[var(--text-secondary)] mb-1" style={{ fontWeight: 500 }}
+            className="block text-body-sm text-[var(--text-secondary)] mb-1 font-medium"
           >
             {label}
           </label>
@@ -49,7 +49,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <input
             id={inputId}
             ref={ref}
-            className={cn("orx-input","w-full",
+            className={cn("orx-input","w-full","transition-colors duration-300","dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700",
               Icon && iconPosition ==="left" &&"pl-10",
               Icon && iconPosition ==="right" &&"pr-10",
               error &&"border-2 border-error",
@@ -70,5 +70,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 );
 
 Input.displayName ="OraclusXInput";
+
+export const Input = React.memo(InputComponent);
 
 export default Input;

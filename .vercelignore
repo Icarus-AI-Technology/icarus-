@@ -1,0 +1,12 @@
+node_modules
+playwright-report
+playwright-results.json
+test-results
+backups
+logs
+*.log
+*.tmp
+*.bak.*
+.gpt-researcher-env
+.playwright/**
+**/*.map

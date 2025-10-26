@@ -4,22 +4,7 @@
  */
 
 import { useState } from"react";
-import {
-  FileText,
-  Calendar,
-  DollarSign,
-  TrendingUp,
-  Clock,
-  CheckCircle,
-  XCircle,
-  AlertTriangle,
-  Upload,
-  Download,
-  Search,
-  Filter,
-  Plus,
-  Eye,
-} from"lucide-react";
+import { FileText, DollarSign, TrendingUp, Clock, CheckCircle, XCircle, AlertTriangle, Upload, Download, Search, Filter, Plus, Eye } from"lucide-react";
 
 interface Licitacao {
   id: string;

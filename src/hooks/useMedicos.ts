@@ -45,7 +45,8 @@ export function useMedicos() {
 
       if (error) throw error;
       setMedicos(data || []);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao carregar médicos');
     } finally {
       setLoading(false);
@@ -63,7 +64,8 @@ export function useMedicos() {
 
       if (error) throw error;
       return data;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao buscar médico');
       return null;
     }
@@ -83,7 +85,8 @@ export function useMedicos() {
       // Atualizar lista local
       setMedicos((prev) => [...prev, data]);
       return data;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao criar médico');
       throw err;
     }
@@ -106,7 +109,8 @@ export function useMedicos() {
         prev.map((m) => (m.id === id ? data : m))
       );
       return data;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao atualizar médico');
       throw err;
     }
@@ -124,7 +128,8 @@ export function useMedicos() {
 
       // Atualizar lista local
       setMedicos((prev) => prev.filter((m) => m.id !== id));
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao deletar médico');
       throw err;
     }
@@ -141,7 +146,8 @@ export function useMedicos() {
 
       if (error) throw error;
       return data || [];
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao buscar médicos');
       return [];
     }
@@ -158,7 +164,8 @@ export function useMedicos() {
 
       if (error) throw error;
       return data || [];
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao buscar médicos');
       return [];
     }

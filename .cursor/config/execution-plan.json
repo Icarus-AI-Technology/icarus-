@@ -1,0 +1,57 @@
+{
+  "version": "1.0.0",
+  "created_at": "2025-10-25T14:57:02.500Z",
+  "parallel_groups": [
+    {
+      "group_id": 1,
+      "agents": [
+        "01",
+        "02",
+        "07"
+      ],
+      "estimated_time_minutes": 40,
+      "dependencies": [],
+      "description": "Frontend, Design e Segurança (sem dependências BD)"
+    },
+    {
+      "group_id": 2,
+      "agents": [
+        "03",
+        "04"
+      ],
+      "estimated_time_minutes": 55,
+      "dependencies": [],
+      "description": "Backend e Integrações (independentes)"
+    },
+    {
+      "group_id": 3,
+      "agents": [
+        "05",
+        "06"
+      ],
+      "estimated_time_minutes": 75,
+      "dependencies": [
+        "03"
+      ],
+      "description": "IA e Módulos (dependem do schema BD)"
+    }
+  ],
+  "sequential": {
+    "agents": [
+      "08",
+      "09"
+    ],
+    "estimated_time_minutes": 40,
+    "dependencies": [
+      "01",
+      "02",
+      "03",
+      "04",
+      "05",
+      "06",
+      "07"
+    ],
+    "description": "Testes e Deploy (dependem de todos)"
+  },
+  "total_estimated_time_minutes": 210
+}

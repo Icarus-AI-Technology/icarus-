@@ -94,7 +94,7 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
       const files = Array.from(e.dataTransfer.files);
       processarArquivos(files);
     },
-    [documentos, onChange, maxFiles, maxSize, acceptedTypes, selectedTipo]
+    [processarArquivos]
   );
 
   const handleFileSelect = useCallback(
@@ -107,10 +107,10 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
       // Reset input
       e.target.value = '';
     },
-    [documentos, onChange, maxFiles, maxSize, acceptedTypes, selectedTipo]
+    [processarArquivos]
   );
 
-  const processarArquivos = (files: File[]) => {
+  const processarArquivos = useCallback((files: File[]) => {
     if (documentos.length + files.length > maxFiles) {
       alert(`Máximo de ${maxFiles} arquivos permitidos`);
       return;
@@ -142,7 +142,7 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
       }));
 
     onChange([...documentos, ...novosDocumentos]);
-  };
+  }, [acceptedTypes, documentos, maxFiles, maxSize, onChange, selectedTipo]);
 
   const removerDocumento = (id: string) => {
     onChange(documentos.filter((doc) => doc.id !== id));

@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -8,8 +8,8 @@ interface ActivityData {
   sub_modulo?: string;
   rota?: string;
   metodo?: 'CREATE' | 'READ' | 'UPDATE' | 'DELETE' | 'NAVIGATE' | 'SEARCH' | 'EXPORT' | 'IMPORT';
-  dados_entrada?: Record<string, any>;
-  dados_saida?: Record<string, any>;
+  dados_entrada?: Record<string, unknown>;
+  dados_saida?: Record<string, unknown>;
   tempo_execucao?: number;
   sucesso?: boolean;
   erro_mensagem?: string;
@@ -17,24 +17,25 @@ interface ActivityData {
 }
 
 export const useActivityTracker = () => {
-  const { user } = useAuth();
+  const { usuario } = useAuth();
 
   // Função para rastrear atividade
   const trackActivity = useCallback(async (activity: ActivityData) => {
-    if (!user) return;
+    if (!usuario) return;
 
     try {
       // Capturar informações do dispositivo
-      const userAgent = navigator.userAgent;
+      const userAgent = typeof navigator !== 'undefined' ? navigator.userAgent : '';
       const dispositivo = /Mobile|Android|iPhone/i.test(userAgent) ? 'mobile' : 'desktop';
+      const rota = activity.rota ?? (typeof window !== 'undefined' ? window.location.pathname : undefined);
 
       const { error } = await supabase.from('user_activities').insert({
-        usuario_id: user.id,
+        usuario_id: usuario.id,
         acao: activity.acao,
         modulo: activity.modulo,
         sub_modulo: activity.sub_modulo,
-        rota: activity.rota || window.location.pathname,
-        metodo: activity.metodo || 'READ',
+        rota,
+        metodo: activity.metodo ?? 'READ',
         dados_entrada: activity.dados_entrada,
         dados_saida: activity.dados_saida,
         tempo_execucao: activity.tempo_execucao,
@@ -46,12 +47,14 @@ export const useActivityTracker = () => {
       });
 
       if (error) {
-        console.error('Erro ao rastrear atividade:', error);
+        const err = error as Error;
+        console.error('Erro ao rastrear atividade:', err);
       }
-    } catch (err) {
+    } catch (error) {
+      const err = error as Error;
       console.error('Falha ao registrar atividade:', err);
     }
-  }, [user]);
+  }, [usuario]);
 
   // Função para rastrear navegação de página
   const trackPageView = useCallback((modulo: string, sub_modulo?: string) => {
@@ -67,18 +70,19 @@ export const useActivityTracker = () => {
   const trackCRUD = useCallback(async (
     metodo: 'CREATE' | 'UPDATE' | 'DELETE',
     modulo: string,
-    dados?: Record<string, any>,
+    dados?: Record<string, unknown>,
     sucesso: boolean = true,
     erro?: string
   ) => {
-    const startTime = performance.now();
-    
+    const supportsPerformance = typeof performance !== 'undefined';
+    const startTime = supportsPerformance ? performance.now() : 0;
+
     await trackActivity({
       acao: `${metodo.toLowerCase()}_registro`,
       modulo,
       metodo,
       dados_entrada: dados,
-      tempo_execucao: Math.round(performance.now() - startTime),
+      tempo_execucao: supportsPerformance ? Math.round(performance.now() - startTime) : undefined,
       sucesso,
       erro_mensagem: erro,
     });

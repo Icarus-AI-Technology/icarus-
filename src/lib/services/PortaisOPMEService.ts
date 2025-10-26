@@ -194,9 +194,10 @@ export class PortaisOPMEService {
         percentualEconomia,
         tempoExecucao,
       };
-    } catch (_error) {
-      console.error('Erro ao cotar em portais:', _error);
-      throw _error;
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao cotar em portais:', err);
+      throw err;
     }
   }
 
@@ -240,7 +241,8 @@ export class PortaisOPMEService {
         try {
           ofertas = await this.buscarNoPortal(portal, palavraChave, quantidade);
           break; // Sucesso
-        } catch (_error) {
+        } catch (error) {
+   const err = error as Error;
           ultimoErro = error as Error;
           tentativas++;
           if (tentativas < portal.retry_max) {
@@ -276,8 +278,9 @@ export class PortaisOPMEService {
         tempoResposta: Date.now() - inicio,
         fromCache: false,
       };
-    } catch (_error) {
-      const erroMsg = _error instanceof Error ? _error.message : 'Erro desconhecido';
+    } catch (error) {
+   const err = error as Error;
+      const erroMsg = err instanceof Error ? err.message : 'Erro desconhecido';
       
       // Salvar histórico de erro
       await this.salvarHistorico(cotacaoId, portal.portal, false, [], Date.now() - inicio, erroMsg);
@@ -460,7 +463,7 @@ export class PortaisOPMEService {
     }
 
     const { data, error } = await query;
-    if (error) throw _error;
+    if (error) throw error;
     return data || [];
   }
 

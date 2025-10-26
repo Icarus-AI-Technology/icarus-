@@ -6,9 +6,7 @@
 
 import { readFileSync, writeFileSync } from 'fs';
 
-const arquivosPriorit
-
-arios = [
+const arquivosPrioritarios = [
   'src/pages/Dashboard.tsx',
   'src/pages/Signup.tsx',
   'src/pages/GPTResearcherDemo.tsx',

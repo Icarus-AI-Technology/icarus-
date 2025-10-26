@@ -183,8 +183,9 @@ export class EstoqueAI {
         sazonalidade: this.detectarSazonalidade(demandaMensal),
         confianca: Math.min(demandaMensal.length * 8, 95) // Confiança baseada em histórico
       };
-    } catch (_error) {
-      console.error('Erro ao prever demanda:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao prever demanda:', err);
       throw error;
     }
   }
@@ -253,8 +254,9 @@ export class EstoqueAI {
       }
 
       return resultado;
-    } catch (_error) {
-      console.error('Erro ao analisar ABC/XYZ:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao analisar ABC/XYZ:', err);
       throw error;
     }
   }
@@ -315,8 +317,9 @@ export class EstoqueAI {
         custo_total_anual: Math.round(custoTotalAnual * 100) / 100,
         ponto_pedido: pontoPedido
       };
-    } catch (_error) {
-      console.error('Erro ao calcular EOQ:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao calcular EOQ:', err);
       throw error;
     }
   }
@@ -382,8 +385,9 @@ export class EstoqueAI {
         const severidadeOrder = { critica: 0, alta: 1, media: 2, baixa: 3 };
         return severidadeOrder[a.severidade] - severidadeOrder[b.severidade];
       });
-    } catch (_error) {
-      console.error('Erro ao detectar anomalias:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao detectar anomalias:', err);
       throw error;
     }
   }
@@ -466,8 +470,9 @@ export class EstoqueAI {
       }
 
       return otimizacoes.sort((a, b) => b.prioridade - a.prioridade);
-    } catch (_error) {
-      console.error('Erro ao otimizar estoque:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao otimizar estoque:', err);
       throw error;
     }
   }

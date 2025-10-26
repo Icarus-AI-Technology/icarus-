@@ -25,8 +25,9 @@ if (root) {
       </StrictMode>
     );
     console.log("✅ App rendered successfully");
-  } catch (_error) {
-    console.error("❌ Render error:", error);
+  } catch (error) {
+   const err = error as Error;
+    console.error("❌ Render error:", err);
     root.innerHTML = `
       <div style="padding: 2rem; font-family: sans-serif; color: var(--orx-error);">
         <h1>❌ Erro no Render</h1>

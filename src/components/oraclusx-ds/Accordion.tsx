@@ -73,6 +73,7 @@ export const Accordion: React.FC<AccordionProps> = ({
     <div className={cn("space-y-2", className)}>
       {items.map((item) => {
         const isExpanded = expandedIds.has(item.id);
+        const ariaExpandedProps = isExpanded ? { 'aria-expanded': 'true' as const } : { 'aria-expanded': 'false' as const };
 
         return (
           <div
@@ -85,7 +86,7 @@ export const Accordion: React.FC<AccordionProps> = ({
               onClick={() => handleToggle(item.id)}
               onKeyDown={(e) => handleKeyDown(e, item.id)}
               disabled={item.disabled}
-              aria-expanded={isExpanded}
+              {...ariaExpandedProps}
               aria-controls={`accordion-content-${item.id}`}
               className={cn("w-full px-4 py-3 flex items-center justify-between","text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]","hover:bg-[var(--surface-hover)] transition-colors","focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-inset",
                 item.disabled &&"opacity-50 cursor-not-allowed"
@@ -93,7 +94,7 @@ export const Accordion: React.FC<AccordionProps> = ({
             >
               <div className="flex items-center gap-3">
                 {item.icon && <span>{item.icon}</span>}
-                <span style={{ fontWeight: 500 }}>{item.title}</span>
+                <span className="font-medium">{item.title}</span>
               </div>
 
               <ChevronDown

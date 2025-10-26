@@ -4,23 +4,9 @@
  */
 
 import React from 'react';
-import {
-  LineChart,
-  Line,
-  BarChart,
-  Bar,
-  AreaChart,
-  Area,
-  PieChart,
-  Pie,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-} from 'recharts';
+import { OrxLineChart } from '@/components/charts/OrxLineChart';
+import { OrxBarChart } from '@/components/charts/OrxBarChart';
+import { OrxPieChart } from '@/components/charts/OrxPieChart';
 import { TrendingUp, TrendingDown, Activity } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -42,51 +28,7 @@ interface BaseChartProps {
   subtitle?: string;
 }
 
-// ============================================
-// CUSTOM TOOLTIP (Neumorphic)
-// ============================================
-
-interface CustomTooltipProps {
-  active?: boolean;
-  payload?: any[];
-  label?: string;
-}
-
-function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
-  if (!active || !payload || payload.length === 0) return null;
-
-  return (
-    <div className="neuro-raised rounded-xl p-4 bg-[var(--bg-primary)] border border-[var(--border)]">
-      <p
-        className="text-[var(--text-primary)] mb-2"
-        style={{
-          fontFamily: 'var(--font-body)',
-          fontSize: '0.813rem',
-          fontWeight: 600,
-        }}
-      >
-        {label}
-      </p>
-      {payload.map((entry, index) => (
-        <div key={index} className="flex items-center gap-2">
-          <div
-            className="w-3 h-3 rounded-full"
-            style={{ backgroundColor: entry.color }}
-          />
-          <span
-            className="text-[var(--text-secondary)]"
-            style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '0.813rem',
-            }}
-          >
-            {entry.name}: {entry.value}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
-}
+// (Removido tooltip custom do Recharts)
 
 // ============================================
 // CHART CONTAINER (Wrapper Neumorphic)
@@ -152,31 +94,19 @@ export function LineChartComponent({
   subtitle,
   className,
 }: LineChartComponentProps) {
+  const series = [
+    {
+      id: dataKey,
+      data: data.map((d) => {
+        const candidate = d[dataKey as keyof ChartData];
+        const y = typeof candidate === 'number' ? candidate : Number(d.value);
+        return { x: d.name, y };
+      }),
+    },
+  ];
   return (
     <ChartContainer title={title} subtitle={subtitle} className={className}>
-      <ResponsiveContainer width="100%" height={height}>
-        <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-          <XAxis
-            dataKey="name"
-            stroke="var(--text-secondary)"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '0.813rem' }}
-          />
-          <YAxis
-            stroke="var(--text-secondary)"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '0.813rem' }}
-          />
-          <Tooltip content={<CustomTooltip />} />
-          <Line
-            type="monotone"
-            dataKey={dataKey}
-            stroke={color}
-            strokeWidth={3}
-            dot={{ fill: color, r: 4 }}
-            activeDot={{ r: 6 }}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      <OrxLineChart data={series} height={height} colors={[color]} />
     </ChartContainer>
   );
 }
@@ -201,22 +131,14 @@ export function BarChartComponent({
 }: BarChartComponentProps) {
   return (
     <ChartContainer title={title} subtitle={subtitle} className={className}>
-      <ResponsiveContainer width="100%" height={height}>
-        <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-          <XAxis
-            dataKey="name"
-            stroke="var(--text-secondary)"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '0.813rem' }}
-          />
-          <YAxis
-            stroke="var(--text-secondary)"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '0.813rem' }}
-          />
-          <Tooltip content={<CustomTooltip />} />
-          <Bar dataKey={dataKey} fill={color} radius={[8, 8, 0, 0]} />
-        </BarChart>
-      </ResponsiveContainer>
+      <OrxBarChart
+        data={data}
+        keys={[dataKey]}
+        indexBy="name"
+        height={height}
+        colors={[color]}
+        groupMode="grouped"
+      />
     </ChartContainer>
   );
 }
@@ -239,37 +161,19 @@ export function AreaChartComponent({
   subtitle,
   className,
 }: AreaChartComponentProps) {
+  const series = [
+    {
+      id: dataKey,
+      data: data.map((d) => {
+        const candidate = d[dataKey as keyof ChartData];
+        const y = typeof candidate === 'number' ? candidate : Number(d.value);
+        return { x: d.name, y };
+      }),
+    },
+  ];
   return (
     <ChartContainer title={title} subtitle={subtitle} className={className}>
-      <ResponsiveContainer width="100%" height={height}>
-        <AreaChart data={data}>
-          <defs>
-            <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor={color} stopOpacity={0.8} />
-              <stop offset="95%" stopColor={color} stopOpacity={0.1} />
-            </linearGradient>
-          </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-          <XAxis
-            dataKey="name"
-            stroke="var(--text-secondary)"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '0.813rem' }}
-          />
-          <YAxis
-            stroke="var(--text-secondary)"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '0.813rem' }}
-          />
-          <Tooltip content={<CustomTooltip />} />
-          <Area
-            type="monotone"
-            dataKey={dataKey}
-            stroke={color}
-            strokeWidth={2}
-            fillOpacity={1}
-            fill="url(#colorValue)"
-          />
-        </AreaChart>
-      </ResponsiveContainer>
+      <OrxLineChart data={series} height={height} colors={[color]} enablePoints={false} />
     </ChartContainer>
   );
 }
@@ -292,33 +196,10 @@ export function PieChartComponent({
   subtitle,
   className,
 }: PieChartComponentProps) {
+  const pieData = data.map((d) => ({ id: d.name, value: Number(d.value) }));
   return (
     <ChartContainer title={title} subtitle={subtitle} className={className}>
-      <ResponsiveContainer width="100%" height={height}>
-        <PieChart>
-          <Pie
-            data={data}
-            cx="50%"
-            cy="50%"
-            labelLine={false}
-            label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-            outerRadius={80}
-            fill="#8884d8"
-            dataKey="value"
-          >
-            {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-            ))}
-          </Pie>
-          <Tooltip content={<CustomTooltip />} />
-          <Legend
-            wrapperStyle={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '0.813rem',
-            }}
-          />
-        </PieChart>
-      </ResponsiveContainer>
+      <OrxPieChart data={pieData} height={height} colors={colors} />
     </ChartContainer>
   );
 }

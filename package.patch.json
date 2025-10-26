@@ -1,0 +1,18 @@
+{
+  "scripts": {
+    "tsconfig:merge": "node tools/apply-tsconfig-patch.mjs --in tsconfig.json --patch tsconfig.patch.json --out tsconfig.json",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint .",
+    "build": "vite build",
+    "preview": "vite preview --port 5173",
+    "health:local": "node tools/healthcheck.js",
+    "package:merge": "node tools/merge-package.mjs",
+    "sql:scan": "bash tools/sql/scan-sql.sh /users/daxmeneghel/icarus-make",
+    "sql:validate": "node tools/sql/validate-sql-order.mjs /users/daxmeneghel/icarus-make",
+    "sql:run:dry": "DRY_RUN=1 node tools/sql/run-sql.mjs",
+    "sql:run": "node tools/sql/run-sql.mjs"
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  }
+}

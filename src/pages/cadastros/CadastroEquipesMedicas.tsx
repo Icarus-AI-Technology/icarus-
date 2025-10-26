@@ -85,8 +85,9 @@ const CadastroEquipesMedicas: React.FC = () => {
       await new Promise(resolve => setTimeout(resolve, 1500));
       console.log('Equipe Médica salva:', formData);
       navigate('/cadastros');
-    } catch (_error) {
-      console.error('Erro ao salvar:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao salvar:', err);
     } finally {
       setLoading(false);
     }

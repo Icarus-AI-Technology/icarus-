@@ -47,7 +47,7 @@ export const SearchContainer: React.FC<SearchContainerProps> = ({
       className={cn("flex items-center gap-2 w-full max-w-2xl", className)}
     >
       <div className="relative flex-1">
-        <div className="absolute left-4 top-1/2 transform -translate-y-1/2" style={{ color: 'var(--orx-text-secondary, var(--orx-gray-400))' }}>
+        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[var(--orx-text-secondary,var(--orx-gray-400))]">
           <Search size={20} />
         </div>
         <input
@@ -62,6 +62,7 @@ export const SearchContainer: React.FC<SearchContainerProps> = ({
             type="button"
             onClick={handleClear}
             className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted hover:text-secondary dark:hover:text-gray-300 transition-colors"
+            title="Limpar busca"
           >
             <X size={18} />
           </button>

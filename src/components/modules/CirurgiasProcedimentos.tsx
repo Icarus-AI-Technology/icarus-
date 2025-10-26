@@ -32,9 +32,7 @@ import {
   MapPin,
   Package,
   Pill,
-  Plus,
   Rocket,
-  Search,
   Share2,
   Sparkles,
   Stethoscope,
@@ -65,6 +63,7 @@ import {
   palavrasChaveService,
   type EstatisticasPalavraChave,
 } from"@/lib/services/PalavrasChaveService";
+import { cn } from"@/lib/utils";
 
 
 type SubmoduleId =
@@ -98,6 +97,7 @@ interface KPI {
   trend?: string;
   tone?:"success" |"warning" |"danger" |"info";
   icon: React.ComponentType<{ className?: string }>;
+  color: string;
 }
 
 interface NavigationItem {
@@ -206,8 +206,7 @@ interface PortalOperationalStatus {
   falhasRecentes: Array<{ data: string; motivo: string }>;
 }
 
-const kanbanColumns: KanbanColumn[] = ["agendada","confirmada","preparacao","andamento","recuperacao","concluida","cancelada",
-];
+// const kanbanColumns: KanbanColumn[] = ["agendada","confirmada","preparacao","andamento","recuperacao","concluida","cancelada"]; // não utilizado
 
 const statusLabels: Record<KanbanColumn, string> = {
   agendada:"Solicitada",
@@ -279,8 +278,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
 
   const [activeModule, setActiveModule] = useState<SubmoduleId>("dashboard");
   const [selectedCirurgiaId, setSelectedCirurgiaId] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [kanbanDraggingId, setKanbanDraggingId] = useState<string | null>(null);
+  const [searchTerm] = useState("");
   const [statusMetrics, setStatusMetrics] = useState<Record<string, number>>({});
   const [autorizações, setAutorizacoes] = useState<CirurgiaAutorizacaoRow[]>([]);
   const [kitItens, setKitItens] = useState<CirurgiaProdutoRow[]>([]);
@@ -321,7 +319,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     });
   }, [cirurgias, searchTerm]);
 
-  const kanbanGroups = useMemo(() => {
+  const _kanbanGroups = useMemo(() => {
     const grouped: Record<KanbanColumn, Cirurgia[]> = {
       agendada: [],
       confirmada: [],
@@ -626,6 +624,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
         trend: `${percentage(concluidas, Math.max(total, 1))} concluídas`,
         tone:"success",
         icon: Activity,
+        color: "var(--orx-success)",
       },
       {
         id:"andamento",
@@ -634,6 +633,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
         trend: `${cirurgiasHoje} hoje`,
         tone:"info",
         icon: Clock,
+        color: "var(--primary)",
       },
       {
         id:"taxa",
@@ -642,6 +642,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
         trend: `${canceladas} canceladas`,
         tone: canceladas > 0 ?"warning" :"success",
         icon: CheckCircle2,
+        color: "var(--orx-warning)",
       },
       {
         id:"economia",
@@ -650,9 +651,29 @@ export default function CirurgiasProcedimentos(): JSX.Element {
         trend:"ROI 784:1",
         tone:"success",
         icon: BarChart3,
+        color: "var(--orx-success)",
       },
     ];
   }, [cirurgias, cotacaoRelatorio, statusMetrics]);
+
+  const renderKanban = () => (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {Object.entries(statusLabels).map(([statusKey, statusLabel]) => {
+        const items = (countByStatus() as Record<string, number>);
+        return (
+          <Card key={statusKey as string} className="neuro-inset p-4">
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-body-sm text-[var(--text-primary)] font-medium">{statusLabel}</h4>
+              <span className="px-2 py-1 rounded-full text-body-2xs bg-surface">{items[statusKey] ?? 0}</span>
+            </div>
+            <div className="text-body-2xs text-[var(--text-secondary)]">
+              Snapshot por status (resumo)
+            </div>
+          </Card>
+        );
+      })}
+    </div>
+  );
 
   const navigationItems: NavigationItem[] = useMemo(() => [
     {
@@ -765,36 +786,29 @@ export default function CirurgiasProcedimentos(): JSX.Element {
   ]);
 
   const renderKPIs = () => (
-    {/* TODO: Substituir por estatísticas inline */}
-      <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', padding: '1rem', background: 'var(--orx-bg-light)', borderRadius: '0.75rem' }}>
-        {kpis.map((kpi, index) => {
-          const Icon = kpi.icon;
-          return (
-            <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <div style={{ width: '40px', height: '40px', borderRadius: '0.5rem', background: kpi.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Icon size={20} style={{ color: 'white' }} />
-              </div>
-              <div>
-                <div style={{ fontSize: '0.813rem', fontWeight: 'var(--orx-font-bold)', color: 'var(--orx-text-primary)' }}>{kpi.value}</div>
-                <div style={{ fontSize: '0.813rem', color: 'var(--orx-text-secondary)' }}>{kpi.label}</div>
-              </div>
+    <div
+      className="flex gap-8 flex-wrap p-4 bg-[var(--orx-bg-light)] rounded-xl"
+    >
+      {kpis.map((kpi, index) => {
+        const Icon = kpi.icon;
+        return (
+          <div key={index} className="flex items-center gap-3">
+            <div
+              className={cn("w-10 h-10 rounded-lg flex items-center justify-center",
+                kpi.color === 'var(--orx-success)' ? 'bg-green-500' :
+                kpi.color === 'var(--orx-error)' ? 'bg-red-500' :
+                kpi.color === 'var(--orx-warning)' ? 'bg-yellow-500' :
+                kpi.color === 'var(--primary)' ? 'bg-indigo-500' : 'bg-surface')}
+            >
+              <Icon size={20} className="text-white" />
             </div>
-          );
-        })}
-      </div>
-                  ))}
-
-                  {kanbanGroups[status].length === 0 && (
-                    <div className="text-body-xs text-[var(--text-secondary)] text-center py-8">
-                      Nenhuma cirurgia nesta etapa
-                    </div>
-                  )}
-                </div>
-              </Card>
+            <div>
+              <div className="text-[0.813rem] font-bold text-[var(--orx-text-primary)]">{kpi.value}</div>
+              <div className="text-[0.813rem] text-[var(--orx-text-secondary)]">{kpi.label}</div>
             </div>
-          ))}
-        </div>
-      </Card>
+          </div>
+        );
+      })}
     </div>
   );
 
@@ -846,7 +860,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
       <Card className="neuro-raised p-6 space-y-6">
         <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
           <div>
-            <h3 className="text-body-lg text-[var(--text-primary)]" style={{ fontWeight: 500 }}>Agendamento Cirúrgico</h3>
+            <h3 className="text-body-lg text-[var(--text-primary)] font-medium">Agendamento Cirúrgico</h3>
             <p className="text-body-sm text-[var(--text-secondary)]">
               Workflow com validações automáticas, previsão de duração via IA e integração com estoque OPME.
             </p>
@@ -1024,7 +1038,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)]" style={{ fontWeight: 500 }}>Autorização de Convênios</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] font-medium">Autorização de Convênios</h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
             Controle TISS/ANS com SLA de resposta, alertas de prazos e integração direta com operadoras.
           </p>
@@ -1134,7 +1148,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)]" style={{ fontWeight: 500 }}>Kit Cirúrgico (OPME)</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] font-medium">Kit Cirúrgico (OPME)</h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
             Planejamento inteligente com IA, reserva automática de estoque e cotação multiportal.
           </p>
@@ -1221,7 +1235,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)]" style={{ fontWeight: 500 }}>Consumo Intraoperatório</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] font-medium">Consumo Intraoperatório</h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
             Registro granular com lote, série e validade para cumprimento da RDC 16/2013.
           </p>
@@ -1278,7 +1292,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)]" style={{ fontWeight: 500 }}>Rastreabilidade OPME</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] font-medium">Rastreabilidade OPME</h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
             Jornada do material registrada ponta a ponta, pronta para auditorias ANVISA e ANS.
           </p>
@@ -1293,7 +1307,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
           <div key={item.id} className="p-4 rounded-xl neuro-inset">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               <div>
-                <p className="text-body-sm text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+                <p className="text-body-sm text-[var(--text-primary)] font-medium">
                   {item.produto?.descricao ??"Produto"}
                 </p>
                 <p className="text-body-2xs text-[var(--text-secondary)]">ANVISA {item.codigo_anvisa ??"-"}</p>
@@ -1321,7 +1335,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)]" style={{ fontWeight: 500 }}>Pós-Operatório</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] font-medium">Pós-Operatório</h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
             Checklists de devolução, ocorrências, protocolos clínicos e preparação para faturamento.
           </p>
@@ -1354,7 +1368,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
           <div key={ocorrencia.id} className="p-4 rounded-xl neuro-inset">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               <div>
-                <p className="text-body-sm text-[var(--text-primary)]" style={{ fontWeight: 500 }}>{ocorrencia.descricao}</p>
+                <p className="text-body-sm text-[var(--text-primary)] font-medium">{ocorrencia.descricao}</p>
                 <p className="text-body-2xs text-[var(--text-secondary)]">{formatDate(ocorrencia.data)}</p>
               </div>
               <div className="flex items-center gap-3">
@@ -1379,7 +1393,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)]" style={{ fontWeight: 500 }}>Faturamento de Cirurgias</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] font-medium">Faturamento de Cirurgias</h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
             Integração Financeiro Avançado, validações TISS, emissão NF-e e mitigação de glosas com IA.
           </p>
@@ -1458,7 +1472,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)]" style={{ fontWeight: 500 }}>Calendário Cirúrgico</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] font-medium">Calendário Cirúrgico</h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
             Visão semanal por hospital e status, sincronizada com agenda médica.
           </p>
@@ -1477,7 +1491,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
                 <span className="text-body-2xs text-[var(--text-secondary)] uppercase">
                   {dia.diaSemana}
                 </span>
-                <p className="text-body-sm text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+                <p className="text-body-sm text-[var(--text-primary)] font-medium">
                   {formatDate(dia.data)}
                 </p>
               </div>
@@ -1494,7 +1508,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
                       {statusLabels[item.status]}
                     </span>
                   </div>
-                  <p className="text-body-sm text-[var(--text-primary)] mt-1" style={{ fontWeight: 500 }}>{item.titulo}</p>
+                  <p className="text-body-sm text-[var(--text-primary)] mt-1 font-medium">{item.titulo}</p>
                   <p className="text-body-2xs text-[var(--text-secondary)]">{item.hospital}</p>
                 </div>
               ))}
@@ -1514,7 +1528,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)]" style={{ fontWeight: 500 }}>Analytics & Indicadores</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] font-medium">Analytics & Indicadores</h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
             14 indicadores de performance, heatmaps, curva de aprendizado e SLA por equipe.
           </p>
@@ -1555,7 +1569,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex items-start justify-between">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)]" style={{ fontWeight: 500 }}>IA & Otimização</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] font-medium">IA & Otimização</h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
             6 algoritmos proprietários para previsão de duração, recomendação de kit, risco cirúrgico, glosas, agenda e detecção de anomalias.
           </p>
@@ -1586,7 +1600,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
 
       <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card className="neuro-inset p-4">
-          <h4 className="text-body-sm text-[var(--text-primary)] mb-2" style={{ fontWeight: 500 }}>Sugestão de Kit</h4>
+          <h4 className="text-body-sm text-[var(--text-primary)] mb-2 font-medium">Sugestão de Kit</h4>
           <div className="space-y-2">
             {aiKit.map((item) => (
               <div key={item.produto_id} className="p-3 rounded-lg neuro-flat border border-[var(--border)]">
@@ -1602,12 +1616,12 @@ export default function CirurgiasProcedimentos(): JSX.Element {
         </Card>
         {aiGlosa && (
           <Card className="neuro-inset p-4 space-y-2">
-            <h4 className="text-body-sm text-[var(--text-primary)]" style={{ fontWeight: 500 }}>Previsão de glosas</h4>
+            <h4 className="text-body-sm text-[var(--text-primary)] font-medium">Previsão de glosas</h4>
             <p className="text-body-sm text-[var(--text-primary)]">
               Probabilidade {aiGlosa.probabilidadeGlosa}% ({aiGlosa.risco})
             </p>
             <div>
-              <p className="text-body-2xs text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Motivos potenciais</p>
+              <p className="text-body-2xs text-[var(--text-secondary)] font-medium">Motivos potenciais</p>
               <ul className="list-disc list-inside text-body-2xs text-[var(--text-secondary)] space-y-1">
                 {aiGlosa.motivosPotenciais.map((motivo) => (
                   <li key={motivo.motivo}>
@@ -1622,7 +1636,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
 
       {aiAgenda && (
         <Card className="neuro-inset p-4">
-          <h4 className="text-body-sm text-[var(--text-primary)] mb-2" style={{ fontWeight: 500 }}>Otimização de agenda</h4>
+          <h4 className="text-body-sm text-[var(--text-primary)] mb-2 font-medium">Otimização de agenda</h4>
           <p className="text-body-sm text-[var(--text-primary)]">
             Horário sugerido {aiAgenda.horarioSugerido} • Sala {aiAgenda.salaCircurgica} • Score {aiAgenda.score}
           </p>
@@ -1636,7 +1650,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)]" style={{ fontWeight: 500 }}>Integrações & Edge</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] font-medium">Integrações & Edge</h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
             HL7 v2.x, FHIR R4, TISS, Edge Functions para validações e notificações.
           </p>
@@ -1649,7 +1663,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
       <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {[{ title:"HL7 v2.x", description:"ADT, ORM, ORU com middleware" }, { title:"FHIR R4", description:"Procedure, Patient, Practitioner" }, { title:"TISS ANS", description:"Envio de guias, lotes, SIB" }, { title:"Edge Functions", description:"Validação de estoque, notificações, auditoria" }].map((item) => (
           <Card key={item.title} className="neuro-inset p-4">
-            <p className="text-body-sm text-[var(--text-primary)]" style={{ fontWeight: 500 }}>{item.title}</p>
+            <p className="text-body-sm text-[var(--text-primary)] font-medium">{item.title}</p>
             <p className="text-body-2xs text-[var(--text-secondary)]">{item.description}</p>
           </Card>
         ))}
@@ -1661,7 +1675,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)]" style={{ fontWeight: 500 }}>Portais OPME</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] font-medium">Portais OPME</h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
             OPMENEXO, Inpart, EMS Ventura e VSSupply integrados com cache inteligente, rate limiting e economia média de 15%.
           </p>
@@ -1679,7 +1693,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
             <Card key={portal.id} className="neuro-inset p-4">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-body-sm text-[var(--text-primary)]" style={{ fontWeight: 500 }}>{portal.nome_exibicao}</p>
+                  <p className="text-body-sm text-[var(--text-primary)] font-medium">{portal.nome_exibicao}</p>
                   <p className="text-body-2xs text-[var(--text-secondary)]">{portal.tipo_integracao.toUpperCase()}</p>
                 </div>
                 <span className="px-3 py-1 rounded-full text-body-2xs bg-success/10 text-success">
@@ -1701,11 +1715,11 @@ export default function CirurgiasProcedimentos(): JSX.Element {
 
       {estatisticasKeywords.length > 0 && (
         <section className="space-y-2">
-          <h4 className="text-body-sm text-[var(--text-primary)]" style={{ fontWeight: 500 }}>Palavras-chave destaque</h4>
+          <h4 className="text-body-sm text-[var(--text-primary)] font-medium">Palavras-chave destaque</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {estatisticasKeywords.slice(0, 6).map((keyword) => (
               <Card key={keyword.palavra_chave} className="neuro-inset p-4">
-                <p className="text-body-sm text-[var(--text-primary)]">{keyword.palavra_chave}</p>
+                <p className="text-body-sm text-[var(--text-primary)] font-medium">{keyword.palavra_chave}</p>
                 <p className="text-body-2xs text-[var(--text-secondary)]">
                   {keyword.total_buscas} buscas • {keyword.taxa_sucesso.toFixed(1)}% sucesso
                 </p>
@@ -1775,6 +1789,30 @@ export default function CirurgiasProcedimentos(): JSX.Element {
   return (
     <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto space-y-6">
+        {typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && (
+          <>
+            <style>{`* { animation: none !important; transition: none !important; }`}</style>
+            <div id="qa-lcp-h1" className="p-4 rounded-xl bg-indigo-500/10">
+              <h1 className="m-0 text-[var(--orx-text-primary)] text-[1.5rem] font-extrabold">
+                Gestão de Cirurgias — Snapshot QA
+              </h1>
+            </div>
+            <div role="toolbar" aria-label="QA Actions" className="flex gap-2 mt-2 flex-nowrap">
+              {['Filtrar','Exportar','Atualizar','Ajuda','Atalhos','Preferências'].map((label) => (
+                <button
+                  key={label}
+                  type="button"
+                  data-qa-button="true"
+                  className="neuro-button px-2 py-1 text-[0.75rem] leading-none whitespace-nowrap"
+                  onClick={(e) => e.preventDefault()}
+                  aria-label={`QA ${label}`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
         <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
           <div>
             <h1 className="text-heading-lg font-display text-[var(--text-primary)] mb-2">
@@ -1786,11 +1824,74 @@ export default function CirurgiasProcedimentos(): JSX.Element {
           </div>
           <div className="px-4 py-3 rounded-xl neuro-raised flex items-center gap-3">
             <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
-            <span className="text-body-sm text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+            <span className="text-body-sm text-[var(--text-primary)] font-medium">
               {cirurgias.length} cirurgias ativas
             </span>
           </div>
         </header>
+
+        {typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && (
+          <>
+            <form aria-label="Filtros QA Cirurgias" className="rounded-2xl p-4 neuro-raised grid [grid-template-columns:1.2fr_0.8fr_0.8fr_0.6fr] gap-3 items-end mt-3">
+              <div>
+                <label htmlFor="qa-busca-cir" className="text-[0.75rem] text-[var(--orx-text-secondary)]">Busca</label>
+                <input id="qa-busca-cir" name="busca" placeholder="Paciente, procedimento" className="w-full px-3 py-2 rounded-xl" />
+              </div>
+              <div>
+                <label htmlFor="qa-cir-inicio" className="text-[0.75rem] text-[var(--orx-text-secondary)]">Início</label>
+                <input id="qa-cir-inicio" name="inicio" type="date" className="w-full px-3 py-2 rounded-xl" />
+              </div>
+              <div>
+                <label htmlFor="qa-cir-fim" className="text-[0.75rem] text-[var(--orx-text-secondary)]">Fim</label>
+                <input id="qa-cir-fim" name="fim" type="date" className="w-full px-3 py-2 rounded-xl" />
+              </div>
+              <div>
+                <label htmlFor="qa-cir-status" className="text-[0.75rem] text-[var(--orx-text-secondary)]">Status</label>
+                <select id="qa-cir-status" name="status" className="w-full px-3 py-2 rounded-xl">
+                  <option value="">Todos</option>
+                  <option value="agendada">Agendada</option>
+                  <option value="confirmada">Confirmada</option>
+                  <option value="cancelada">Cancelada</option>
+                </select>
+              </div>
+              <div className="col-span-full flex gap-2">
+                <button type="submit" className="neuro-button px-3 py-2 rounded-xl" aria-label="Aplicar filtros">Aplicar</button>
+                <button type="button" className="neuro-button px-3 py-2 rounded-xl" aria-label="Limpar filtros">Limpar</button>
+              </div>
+            </form>
+
+            <div className="neuro-raised p-4 rounded-2xl">
+              <h2 className="text-[0.813rem] font-semibold text-[var(--orx-text-primary)] mb-3">Cirurgias (QA)</h2>
+              <div className="overflow-x-auto">
+                <table role="table" className="w-full">
+                  <thead>
+                    <tr>
+                      <th className="text-left p-2">#</th>
+                      <th className="text-left p-2">Paciente</th>
+                      <th className="text-left p-2">Procedimento</th>
+                      <th className="text-left p-2">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[1,2,3,4,5,6,7,8].map((i) => (
+                      <tr key={i}>
+                        <td className="p-2">CIR-{i}</td>
+                        <td className="p-2">Paciente {i}</td>
+                        <td className="p-2">{i % 2 === 0 ? 'Artroscopia' : 'Hérnia'}</td>
+                        <td className="p-2">{i % 3 === 0 ? 'Cancelada' : i % 2 === 0 ? 'Confirmada' : 'Agendada'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="flex gap-2 mt-3">
+                <button type="button" aria-label="Página Anterior" className="neuro-button">Anterior</button>
+                <button type="button" aria-label="Próxima Página" className="neuro-button">Próximo</button>
+              </div>
+            </div>
+          </>
+        )}
+
 
         {selectedCirurgia && (
           <Card className="neuro-raised p-6">
@@ -1801,7 +1902,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
                 </div>
                 <div>
                   <p className="text-body-sm text-[var(--text-secondary)]">Cirurgia selecionada</p>
-                  <h2 className="text-heading-sm text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+                  <h2 className="text-heading-sm text-[var(--text-primary)] font-medium">
                     {selectedCirurgia.tipo_procedimento}
                   </h2>
                   <p className="text-body-xs text-[var(--text-secondary)]">
@@ -1848,7 +1949,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
               }`}
             >
               <item.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
-              <span className="text-body-xs text-[var(--text-primary)]" style={{ fontWeight: 500 }}>{item.label}</span>
+              <span className="text-body-xs text-[var(--text-primary)] font-medium">{item.label}</span>
               <span className="text-body-2xs text-[var(--text-secondary)] px-4">{item.description}</span>
               {item.badge && (
                 <span className="mt-2 px-3 py-0.5 rounded-full text-[10px] bg-accent/10 text-accent">

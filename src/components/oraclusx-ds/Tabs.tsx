@@ -89,7 +89,7 @@ export const Tabs: React.FC<TabsProps> = ({
       {/* Tab List */}
       <div
         className={cn("relative","bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]","shadow-[var(--shadow-light-outer)] dark:shadow-[var(--shadow-dark-outer)]","rounded-lg",
-          variant ==="horizontal" ?"p-1 flex gap-1" :"p-2 flex flex-col gap-1 min-w-[200px]"
+          variant ==="horizontal" ?"p-1 flex gap-1 overflow-x-auto" :"p-2 flex flex-col gap-1 min-w-[160px] md:min-w-[200px]"
         )}
         role="tablist"
         aria-orientation={variant}

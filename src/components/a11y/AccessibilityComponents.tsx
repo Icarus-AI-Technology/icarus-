@@ -71,11 +71,13 @@ export function FocusTrap({ children, active = true, className }: FocusTrapProps
       }
     };
 
-    container.addEventListener('keydown', handleTabKey as any);
+    const handleKeyDown = (event: KeyboardEvent) => handleTabKey(event);
+
+    container.addEventListener('keydown', handleKeyDown);
     firstElement?.focus();
 
     return () => {
-      container.removeEventListener('keydown', handleTabKey as any);
+      container.removeEventListener('keydown', handleKeyDown);
     };
   }, [active]);
 

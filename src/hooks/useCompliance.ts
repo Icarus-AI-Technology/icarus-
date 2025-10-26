@@ -234,7 +234,8 @@ export const useCompliance = () => {
       if (error) throw error;
       
       setRequisitos(data || []);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao carregar requisitos:', err);
       setError(err instanceof Error ? err.message : 'Erro ao carregar requisitos');
     } finally {
@@ -255,7 +256,8 @@ export const useCompliance = () => {
 
       if (error) throw error;
       setAuditorias(data || []);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao carregar auditorias:', err);
     }
   }, []);
@@ -273,7 +275,8 @@ export const useCompliance = () => {
 
       if (error) throw error;
       setNaoConformidades(data || []);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao carregar não conformidades:', err);
     }
   }, []);
@@ -291,7 +294,8 @@ export const useCompliance = () => {
 
       if (error) throw error;
       setAgentesIA(data || []);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao carregar agentes IA:', err);
     }
   }, []);
@@ -310,7 +314,8 @@ export const useCompliance = () => {
 
       if (error) throw error;
       setAlertas(data || []);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao carregar alertas:', err);
     }
   }, []);
@@ -328,7 +333,8 @@ export const useCompliance = () => {
 
       if (error) throw error;
       setTreinamentos(data || []);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao carregar treinamentos:', err);
     }
   }, []);
@@ -453,7 +459,8 @@ export const useCompliance = () => {
       await fetchRequisitos();
       console.log('Requisito atualizado');
       return data;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao atualizar requisito:', err);
       throw err;
     }
@@ -476,7 +483,8 @@ export const useCompliance = () => {
       await fetchNaoConformidades();
       console.log('Não conformidade criada');
       return data;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao criar NC:', err);
       throw err;
     }
@@ -501,7 +509,8 @@ export const useCompliance = () => {
       await fetchNaoConformidades();
       console.log('NC resolvida');
       return data;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao resolver NC:', err);
       throw err;
     }
@@ -518,7 +527,8 @@ export const useCompliance = () => {
       
       await fetchAlertas();
       console.log('Alertas IA gerados');
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao gerar alertas:', err);
     }
   }, [fetchAlertas]);
@@ -534,7 +544,8 @@ export const useCompliance = () => {
       
       await fetchRequisitos();
       console.log('Scores atualizados');
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao atualizar scores:', err);
     }
   }, [fetchRequisitos]);

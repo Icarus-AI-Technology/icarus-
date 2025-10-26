@@ -1,0 +1,34 @@
+{
+  "timestamp": "2025-10-25T15:34:56.653Z",
+  "agent": "04-integrations",
+  "overallScore": 8,
+  "status": "NECESSITA ATENÇÃO",
+  "details": {
+    "APIs Externas": {
+      "score": 4,
+      "weight": 0.4,
+      "contribution": 2
+    },
+    "Supabase Services": {
+      "score": 25,
+      "weight": 0.25,
+      "contribution": 6
+    },
+    "Transportadoras": {
+      "score": 0,
+      "weight": 0.2,
+      "contribution": 0
+    },
+    "Webhooks & Queue": {
+      "score": 0,
+      "weight": 0.15,
+      "contribution": 0
+    }
+  },
+  "subagents": [
+    "APIs Externas",
+    "Supabase Services",
+    "Transportadoras",
+    "Webhooks & Queue"
+  ]
+}

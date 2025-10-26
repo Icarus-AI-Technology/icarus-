@@ -13,26 +13,9 @@
  * - Relatórios
  */
 
-import { useState, useEffect } from"react";
+import { useState, useEffect, useMemo, useCallback } from"react";
 import { Card } from"@/components/oraclusx-ds";
-import {
-  Users,
-  TrendingUp,
-  Target,
-  Phone,
-  Mail,
-  Plus,
-  Star,
-  Loader2,
-  Search,
-  DollarSign,
-  Edit2,
-  Eye,
-  Trash2,
-  CheckCircle,
-  Download,
-  FileText,
-} from"lucide-react";
+import { Users, TrendingUp, Target, Phone, Mail, Plus, Star, Loader2, Search, DollarSign, Edit2, Eye, Trash2, CheckCircle, Download, FileText } from"lucide-react";
 import { useDocumentTitle, useLeads } from"@/hooks";
 import { useToast } from"@/contexts/ToastContext";
 import type { Lead } from"@/hooks/useLeads";
@@ -74,17 +57,20 @@ export default function CRMVendas() {
   const [searchQuery, setSearchQuery] = useState("");
 
   // Categorias (7 navegação)
-  const stageByCategory: Record<string, Lead["estagio"]> = {
-    pipeline:"novo",
-    leads:"novo",
-    oportunidades:"qualificado",
-    propostas:"proposta",
-    negociacao:"negociacao",
-    ganhos:"ganho",
-    relatorios:"qualificado",
-  };
+  const stageByCategory = useMemo<Record<string, Lead["estagio"]>>(
+    () => ({
+      pipeline: "novo",
+      leads: "novo",
+      oportunidades: "qualificado",
+      propostas: "proposta",
+      negociacao: "negociacao",
+      ganhos: "ganho",
+      relatorios: "qualificado",
+    }),
+    []
+  );
 
-  const categories: Category[] = [
+  const categories: Category[] = useMemo(() => [
     {
       id:"pipeline",
       label:"Pipeline",
@@ -134,10 +120,10 @@ export default function CRMVendas() {
       count: 0,
       trend:"0",
     },
-  ];
+  ], [leads, stageByCategory]);
 
   // KPIs (4 cards - altura 140px)
-  const kpis: KPI[] = [
+  const kpis: KPI[] = useMemo(() => [
     {
       title:"Leads Ativos",
       value: leads.length,
@@ -166,7 +152,7 @@ export default function CRMVendas() {
       icon: CheckCircle,
       color:"green",
     },
-  ];
+  ], [leads, taxaConversao]);
 
   // Efeitos
   useEffect(() => {
@@ -186,7 +172,7 @@ export default function CRMVendas() {
   }, [error, addToast]);
 
   // Handlers
-  const handleDelete = async (id: string) => {
+  const handleDelete = useCallback(async (id: string) => {
     if (!confirm("Tem certeza que deseja excluir este lead?")) return;
     try {
       await deleteLead(id);
@@ -194,9 +180,9 @@ export default function CRMVendas() {
     } catch {
       addToast("Erro ao excluir lead","error");
     }
-  };
+  }, [deleteLead, addToast]);
 
-  const handleStageChange = async (
+  const handleStageChange = useCallback(async (
     id: string,
     newStage: Lead["estagio"]
   ) => {
@@ -206,10 +192,10 @@ export default function CRMVendas() {
     } catch {
       addToast("Erro ao atualizar estágio","error");
     }
-  };
+  }, [updateLead, addToast, getStageLabel]);
 
   // Helpers
-  const getStageColor = (estagio: Lead["estagio"]): string => {
+  const getStageColor = useCallback((estagio: Lead["estagio"]): string => {
     const colors: Partial<Record<Lead["estagio"], string>> = {
       novo:"text-[var(--text-secondary)] bg-surface",
       contato:"text-[var(--accent)] bg-[var(--accent)]/10",
@@ -221,9 +207,9 @@ export default function CRMVendas() {
       desqualificado:"text-[var(--text-secondary)] bg-surface",
     };
     return colors[estagio] ??"text-[var(--text-secondary)] bg-surface";
-  };
+  }, []);
 
-  const getStageLabel = (estagio: Lead["estagio"]): string => {
+  const getStageLabel = useCallback((estagio: Lead["estagio"]): string => {
     const labels: Partial<Record<Lead["estagio"], string>> = {
       novo:"Novo",
       contato:"Contato",
@@ -235,18 +221,18 @@ export default function CRMVendas() {
       desqualificado:"Desqualificado",
     };
     return labels[estagio] ?? estagio;
-  };
+  }, []);
 
-  const formatCurrency = (value?: number) => {
+  const formatCurrency = useCallback((value?: number) => {
     if (!value) return"R$ 0,00";
     return new Intl.NumberFormat("pt-BR", {
       style:"currency",
       currency:"BRL",
     }).format(value);
-  };
+  }, []);
 
   // Filtrar leads
-  const filteredLeads = leads.filter((lead) => {
+  const filteredLeads = useMemo(() => leads.filter((lead) => {
     const matchSearch =
       lead.nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (lead.empresa?.toLowerCase().includes(searchQuery.toLowerCase()) || false);
@@ -259,7 +245,7 @@ export default function CRMVendas() {
       false;
 
     return matchSearch && matchTab;
-  });
+  }), [leads, searchQuery, activeTab]);
 
   // Render Functions
   const renderPipeline = () => {
@@ -276,8 +262,8 @@ export default function CRMVendas() {
               <div key={estagio} className="flex-1 min-w-[280px]">
                 <Card className="neuro-raised p-4">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-[var(--text-primary)]" style={{ fontWeight: 500 }}>{getStageLabel(estagio)}</h3>
-                    <span className="px-3 py-1 rounded-full bg-surface text-body-sm" style={{ fontWeight: 500 }}>
+                    <h3 className="text-[var(--text-primary)] font-medium">{getStageLabel(estagio)}</h3>
+                    <span className="px-3 py-1 rounded-full bg-surface text-body-sm font-medium">
                       {leadsEstagio.length}
                     </span>
                   </div>
@@ -289,7 +275,7 @@ export default function CRMVendas() {
                         className="p-4 rounded-lg neuro-inset hover:neuro-raised transition-all cursor-pointer"
                       >
                         <div className="flex items-start justify-between mb-2">
-                          <h4 className="text-[var(--text-primary)] text-body-sm" style={{ fontWeight: 500 }}>{lead.nome}</h4>
+                          <h4 className="text-[var(--text-primary)] text-body-sm font-medium">{lead.nome}</h4>
                           <span className={`px-2 py-0.5 rounded-full text-body-xs ${getStageColor(lead.estagio)}`}>
                             {getStageLabel(lead.estagio)}
                           </span>
@@ -350,7 +336,7 @@ export default function CRMVendas() {
             <Plus className="w-4 h-4" />
             Novo Lead
           </button>
-          <button className="neuro-button-secondary px-4 py-2 rounded-xl">
+          <button className="neuro-button-secondary px-4 py-2 rounded-xl" aria-label="Exportar lista de leads" title="Exportar lista de leads">
             <Download className="w-4 h-4" />
           </button>
         </div>
@@ -403,13 +389,13 @@ export default function CRMVendas() {
             <table className="w-full">
               <thead className="border-b border-[var(--border)]">
                 <tr>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Nome</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Empresa</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Contato</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Valor Est.</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Prob.</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Estágio</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Ações</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Nome</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Empresa</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Contato</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Valor Est.</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Prob.</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Estágio</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Ações</th>
                 </tr>
               </thead>
               <tbody>
@@ -423,7 +409,7 @@ export default function CRMVendas() {
                         <div className="w-10 h-10 rounded-full neuro-inset flex items-center justify-center text-[var(--primary)] font-display">
                           {lead.nome[0]}
                         </div>
-                        <span className="text-[var(--text-primary)]" style={{ fontWeight: 500 }}>{lead.nome}</span>
+                        <span className="text-[var(--text-primary)] font-medium">{lead.nome}</span>
                       </div>
                     </td>
                     <td className="p-4 text-[var(--text-primary)]">{lead.empresa ||"N/A"}</td>
@@ -441,22 +427,24 @@ export default function CRMVendas() {
                     </td>
                     <td className="p-4 text-[var(--text-primary)]">{formatCurrency(lead.valor_estimado)}</td>
                     <td className="p-4 text-[var(--text-primary)]">{lead.probabilidade}%</td>
-                    <td className="p-4">
+                    <td className="p-4" aria-label="Estágio do lead">
                       <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs font-medium ${getStageColor(lead.estagio)}`}>
                         {getStageLabel(lead.estagio)}
                       </span>
                     </td>
                     <td className="p-4">
                       <div className="flex gap-2">
-                        <button className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all">
+                        <button className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all" aria-label="Visualizar lead" title="Visualizar lead">
                           <Eye className="w-4 h-4" />
                         </button>
-                        <button className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all">
+                        <button className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all" aria-label="Editar lead" title="Editar lead">
                           <Edit2 className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleDelete(lead.id)}
                           className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all text-error"
+                          aria-label="Excluir lead"
+                          title="Excluir lead"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -492,7 +480,7 @@ export default function CRMVendas() {
           </div>
           <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-success/50 animate-pulse" />
-            <span className="text-body-sm text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+            <span className="text-body-sm text-[var(--text-primary)] font-medium">
               {leads.length} leads ativos
             </span>
           </div>
@@ -509,7 +497,7 @@ export default function CRMVendas() {
               }`}
             >
               <category.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
-              <span className="text-body-xs text-[var(--text-primary)]" style={{ fontWeight: 500 }}>{category.label}</span>
+              <span className="text-body-xs text-[var(--text-primary)] font-medium">{category.label}</span>
               <div className="flex items-center gap-1 mt-1">
                 <span className="text-body-lg font-display text-[var(--text-primary)]">{category.count}</span>
                 {category.trend && category.trend !=="0" && (
@@ -550,7 +538,7 @@ export default function CRMVendas() {
         {activeCategory ==="relatorios" && (
           <Card className="neuro-raised p-12 text-center">
             <FileText className="w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4" />
-            <h3 className="text-heading-sm text-[var(--text-primary)] mb-2" style={{ fontWeight: 500 }}>Relatórios de Vendas</h3>
+            <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 font-medium">Relatórios de Vendas</h3>
             <p className="text-[var(--text-secondary)]">Módulo em desenvolvimento</p>
           </Card>
         )}

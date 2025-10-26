@@ -32,7 +32,7 @@ export interface IcarusTopbarProps {
 export const IcarusTopbar: React.FC<IcarusTopbarProps> = ({
   sidebarCollapsed,
   darkMode,
-  unreadCount = 0,
+  unreadCount: _unreadCount = 0,
   onToggleSidebar,
   onToggleDarkMode,
   onOpenNotifications,

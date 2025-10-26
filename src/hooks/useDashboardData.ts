@@ -172,7 +172,8 @@ export const useDashboardData = (useRealData = false) => {
           lastUpdate: new Date()
         });
       }
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao carregar KPIs:', err);
       setError(err instanceof Error ? err.message : 'Erro ao carregar dados');
       

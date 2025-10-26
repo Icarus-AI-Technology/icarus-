@@ -3,22 +3,10 @@
  * Emissão, consulta e gerenciamento de Notas Fiscais Eletrônicas
  */
 
-import { useState } from"react";
-import {
-  FileText,
-  Send,
-  Download,
-  CheckCircle,
-  XCircle,
-  Clock,
-  Search,
-  Filter,
-  Plus,
-  Printer,
-  Mail,
-  AlertTriangle,
-  TrendingUp,
-} from"lucide-react";
+import { useState } from "react";
+import { FileText, Download, CheckCircle, Clock, Search, Filter, Plus, Printer, RefreshCcw } from "lucide-react";
+import { ModulePage } from "@/components/templates/ModulePage";
+import { Button } from "@/components/ui/button";
 
 interface NFe {
   id: string;
@@ -82,32 +70,32 @@ export default function FaturamentoNFeCompleto() {
       value:"12",
       trend:"+3",
       icon: FileText,
-      iconBg:"linear-gradient(135deg, var(--orx-primary), var(--orx-primary-hover))",
-      color:"var(--orx-primary)",
+      bgClass:"bg-gradient-to-br from-[var(--orx-primary)] to-[var(--orx-primary-hover)]",
+      textClass:"text-[var(--orx-primary)]",
     },
     {
       title:"Autorizadas",
       value:"10",
       trend:"83%",
       icon: CheckCircle,
-      iconBg:"linear-gradient(135deg, var(--orx-success), #059669)",
-      color:"var(--orx-success)",
+      bgClass:"bg-gradient-to-br from-[var(--orx-success)] to-[#059669]",
+      textClass:"text-[var(--orx-success)]",
     },
     {
       title:"Aguardando",
       value:"2",
       trend:"17%",
       icon: Clock,
-      iconBg:"linear-gradient(135deg, var(--orx-warning), #D97706)",
-      color:"var(--orx-warning)",
+      bgClass:"bg-gradient-to-br from-[var(--orx-warning)] to-[#D97706]",
+      textClass:"text-[var(--orx-warning)]",
     },
     {
       title:"Valor Total",
       value:"R$ 186K",
       trend:"+12%",
       icon: TrendingUp,
-      iconBg:"linear-gradient(135deg, var(--orx-purple-500), #7C3AED)",
-      color:"var(--orx-purple-500)",
+      bgClass:"bg-gradient-to-br from-[var(--orx-purple-500)] to-[#7C3AED]",
+      textClass:"text-[var(--orx-purple-500)]",
     },
   ];
 
@@ -133,6 +121,17 @@ export default function FaturamentoNFeCompleto() {
     return labels[status as keyof typeof labels] || status;
   };
 
+  const getStatusBadgeClasses = (status: string) => {
+    const classes: Record<string, string> = {
+      autorizada: 'bg-success/10 text-success',
+      emitida: 'bg-warning/10 text-warning',
+      cancelada: 'bg-[var(--orx-gray-500)]/15 text-[var(--orx-gray-500)]',
+      denegada: 'bg-error/10 text-error',
+      rejeitada: 'bg-[var(--orx-error-dark)]/15 text-[var(--orx-error-dark)]',
+    };
+    return classes[status] || 'bg-[var(--orx-gray-500)]/15 text-[var(--orx-gray-500)]';
+  };
+
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("pt-BR", {
       style:"currency",
@@ -151,113 +150,54 @@ export default function FaturamentoNFeCompleto() {
   };
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex items-start justify-between">
-          <div>
-            <h1
-              style={{
-                fontSize: '0.813rem',
-                fontFamily:"var(--orx-font-family)",
-                fontWeight: 600,
-                color:"var(--orx-text-primary)",
-                marginBottom:"0.5rem",
-              }}
-            >
-              Faturamento NF-e
-            </h1>
-            <p
-              style={{
-                fontSize: '0.813rem',
-                color:"var(--orx-text-secondary)",
-                fontFamily:"var(--orx-font-family)",
-              }}
-            >
-              Emissão e gerenciamento de Notas Fiscais Eletrônicas
-            </p>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex items-center gap-3">
-            <button
-              className="neumorphic-button flex items-center gap-2 px-6 py-3 rounded-xl"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                background:"linear-gradient(135deg, var(--orx-primary), var(--orx-primary-hover))",
-                color:"white",
-                fontWeight: 600,
-                fontSize: '0.813rem',
-                border:"none",
-                boxShadow:"0 4px 12px rgba(99, 102, 241, 0.3)",
-              }}
-            >
-              <Plus size={18} />
-              Nova NF-e
-            </button>
-          </div>
+    <ModulePage
+      title="Faturamento NF-e Completo"
+      description="Emissão, consulta e gerenciamento de Notas Fiscais Eletrônicas"
+      icon={<FileText aria-hidden="true" className="h-5 w-5" />}
+      actions={
+        <div className="flex items-center gap-3">
+          <Button
+            variant="neumorphic"
+            size="default"
+            className="inline-flex items-center gap-2"
+            onClick={() => window.dispatchEvent(new CustomEvent('icarus:refresh-faturamento'))}
+          >
+            <RefreshCcw size={18} strokeWidth={1.5} className="flex-shrink-0" />
+            <span>Atualizar</span>
+          </Button>
+          <Button
+            variant="neumorphic"
+            size="default"
+            className="inline-flex items-center gap-2"
+            onClick={() => window.dispatchEvent(new CustomEvent('icarus:nova-nfe'))}
+          >
+            <Plus size={18} strokeWidth={1.5} className="flex-shrink-0" />
+            <span>Nova NF-e</span>
+          </Button>
         </div>
-
+      }
+    >
+      <div className="space-y-6">
         {/* KPIs Grid */}
         <div className="grid grid-cols-4 gap-6">
           {kpis.map((kpi, index) => (
             <div
               key={index}
-              className="neumorphic-card p-6 rounded-2xl"
-              style={{
-                background:"var(--orx-bg-light)",
-                boxShadow:"0 4px 16px rgba(0, 0, 0, 0.06)",
-              }}
+              className="neumorphic-card p-6 rounded-2xl bg-[var(--orx-bg-light)] shadow-orx-soft"
             >
               <div className="flex items-start gap-4 mb-4">
-                <div
-                  className="flex items-center justify-center rounded-2xl"
-                  style={{
-                    width:"56px",
-                    height:"56px",
-                    background: kpi.iconBg,
-                    boxShadow:"0 4px 12px rgba(0, 0, 0, 0.1)",
-                  }}
-                >
-                  <kpi.icon size={24} color="#ffffff" strokeWidth={2} />
+                <div className={`flex items-center justify-center rounded-2xl w-14 h-14 shadow-orx-medium ${kpi.bgClass}`}>
+                  <kpi.icon size={24} color="#ffffff" strokeWidth={1.5} />
                 </div>
                 <div className="flex-1">
-                  <p
-                    style={{
-                      fontSize: '0.813rem',
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                      marginBottom:"0.25rem",
-                    }}
-                  >
-                    {kpi.title}
-                  </p>
+                  <p className="text-[0.813rem] text-[var(--orx-text-secondary)] mb-1">{kpi.title}</p>
                 </div>
               </div>
               <div className="mb-2">
-                <p
-                  style={{
-                    fontSize: '0.813rem',
-                    fontWeight: 700,
-                    color:"var(--orx-text-primary)",
-                    fontFamily:"var(--orx-font-family)",
-                    lineHeight: 1,
-                  }}
-                >
-                  {kpi.value}
-                </p>
+                <p className="text-[0.813rem] font-bold text-[var(--orx-text-primary)] leading-none">{kpi.value}</p>
               </div>
               <div className="flex items-center gap-1">
-                <span
-                  style={{
-                    fontSize: '0.813rem',
-                    fontWeight: 600,
-                    color: kpi.color,
-                    fontFamily:"var(--orx-font-family)",
-                  }}
-                >
+                <span className={`text-[0.813rem] font-semibold ${kpi.textClass}`}>
                   {kpi.trend}
                 </span>
               </div>
@@ -266,53 +206,30 @@ export default function FaturamentoNFeCompleto() {
         </div>
 
         {/* Filters and Search */}
-        <div
-          className="neumorphic-card p-6 rounded-2xl"
-          style={{
-            background:"var(--orx-bg-light)",
-            boxShadow:"0 4px 16px rgba(0, 0, 0, 0.06)",
-          }}
-        >
+        <div className="neumorphic-card p-6 rounded-2xl bg-[var(--orx-bg-light)] shadow-orx-soft">
           <div className="flex items-center gap-4">
             {/* Search */}
             <div className="flex-1 relative">
               <Search
                 size={20}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2"
-                style={{ color:"var(--orx-text-secondary)" }}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--orx-text-secondary)]"
               />
               <input
                 type="text"
                 placeholder="Buscar por número, destinatário, CNPJ ou chave de acesso..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-xl"
-                style={{
-                  background:"var(--orx-bg-light)",
-                  boxShadow:"inset 2px 2px 4px rgba(0, 0, 0, 0.1)",
-                  border:"1px solid rgba(99, 102, 241, 0.2)",
-                  fontSize: '0.813rem',
-                  fontFamily:"var(--orx-font-family)",
-                  color:"var(--orx-text-primary)",
-                }}
+                className="w-full pl-12 pr-4 py-3 rounded-xl bg-[var(--orx-bg-light)] text-[var(--orx-text-primary)] text-[0.813rem] shadow-inner-orx border border-[rgba(99,102,241,0.2)]"
               />
             </div>
 
             {/* Status Filter */}
             <div className="flex items-center gap-2">
-              <Filter size={20} style={{ color:"var(--orx-text-secondary)" }} />
+              <Filter size={20} strokeWidth={1.5} className="text-[var(--orx-text-secondary)]" />
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
-                className="px-4 py-3 rounded-xl"
-                style={{
-                  background:"var(--orx-bg-light)",
-                  boxShadow:"inset 2px 2px 4px rgba(0, 0, 0, 0.1)",
-                  border:"1px solid rgba(99, 102, 241, 0.2)",
-                  fontSize: '0.813rem',
-                  fontFamily:"var(--orx-font-family)",
-                  color:"var(--orx-text-primary)",
-                }}
+                className="px-4 py-3 rounded-xl bg-[var(--orx-bg-light)] text-[var(--orx-text-primary)] text-[0.813rem] shadow-inner-orx border border-[rgba(99,102,241,0.2)]"
               >
                 <option value="todas">Todas</option>
                 <option value="autorizada">Autorizadas</option>
@@ -325,102 +242,43 @@ export default function FaturamentoNFeCompleto() {
         </div>
 
         {/* NF-e Table */}
-        <div
-          className="neumorphic-card p-6 rounded-2xl"
-          style={{
-            background:"var(--orx-bg-light)",
-            boxShadow:"0 4px 16px rgba(0, 0, 0, 0.06)",
-          }}
-        >
+        <div className="neumorphic-card p-6 rounded-2xl bg-[var(--orx-bg-light)] shadow-orx-soft">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr
-                  style={{
-                    borderBottom:"2px solid rgba(99, 102, 241, 0.1)",
-                  }}
-                >
+                <tr className="border-b border-[rgba(99,102,241,0.1)]">
                   <th
-                    style={{
-                      padding:"1rem",
-                      textAlign:"left",
-                      fontSize: '0.813rem',
-                      fontWeight: 600,
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                    }}
+                    className="p-4 text-left text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Número
                   </th>
                   <th
-                    style={{
-                      padding:"1rem",
-                      textAlign:"left",
-                      fontSize: '0.813rem',
-                      fontWeight: 600,
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                    }}
+                    className="p-4 text-left text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Destinatário
                   </th>
                   <th
-                    style={{
-                      padding:"1rem",
-                      textAlign:"left",
-                      fontSize: '0.813rem',
-                      fontWeight: 600,
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                    }}
+                    className="p-4 text-left text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
                   >
                     CNPJ
                   </th>
                   <th
-                    style={{
-                      padding:"1rem",
-                      textAlign:"right",
-                      fontSize: '0.813rem',
-                      fontWeight: 600,
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                    }}
+                    className="p-4 text-right text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Valor
                   </th>
                   <th
-                    style={{
-                      padding:"1rem",
-                      textAlign:"center",
-                      fontSize: '0.813rem',
-                      fontWeight: 600,
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                    }}
+                    className="p-4 text-center text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Status
                   </th>
                   <th
-                    style={{
-                      padding:"1rem",
-                      textAlign:"left",
-                      fontSize: '0.813rem',
-                      fontWeight: 600,
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                    }}
+                    className="p-4 text-left text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Emissão
                   </th>
                   <th
-                    style={{
-                      padding:"1rem",
-                      textAlign:"center",
-                      fontSize: '0.813rem',
-                      fontWeight: 600,
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                    }}
+                    className="p-4 text-center text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Ações
                   </th>
@@ -428,141 +286,72 @@ export default function FaturamentoNFeCompleto() {
               </thead>
               <tbody>
                 {nfes.map((nfe) => (
-                  <tr
-                    key={nfe.id}
-                    style={{
-                      borderBottom:"1px solid rgba(99, 102, 241, 0.05)",
-                    }}
-                  >
+                  <tr key={nfe.id} className="border-b border-[rgba(99,102,241,0.05)]">
                     <td
-                      style={{
-                        padding:"1rem",
-                        fontSize: '0.813rem',
-                        fontFamily:"var(--orx-font-family)",
-                        color:"var(--orx-text-primary)",
-                        fontWeight: 600,
-                      }}
+                      className="p-4 text-[0.813rem] text-[var(--orx-text-primary)] font-semibold"
                     >
                       {nfe.numero}
                     </td>
                     <td
-                      style={{
-                        padding:"1rem",
-                        fontSize: '0.813rem',
-                        fontFamily:"var(--orx-font-family)",
-                        color:"var(--orx-text-primary)",
-                      }}
+                      className="p-4 text-[0.813rem] text-[var(--orx-text-primary)]"
                     >
                       {nfe.destinatario}
                     </td>
                     <td
-                      style={{
-                        padding:"1rem",
-                        fontSize: '0.813rem',
-                        fontFamily:"var(--orx-font-family)",
-                        color:"var(--orx-text-secondary)",
-                      }}
+                      className="p-4 text-[0.813rem] text-[var(--orx-text-secondary)]"
                     >
                       {nfe.cnpj}
                     </td>
                     <td
-                      style={{
-                        padding:"1rem",
-                        textAlign:"right",
-                        fontSize: '0.813rem',
-                        fontFamily:"var(--orx-font-family)",
-                        color:"var(--orx-text-primary)",
-                        fontWeight: 600,
-                      }}
+                      className="p-4 text-right text-[0.813rem] text-[var(--orx-text-primary)] font-semibold"
                     >
                       {formatCurrency(nfe.valor)}
                     </td>
                     <td
-                      style={{
-                        padding:"1rem",
-                        textAlign:"center",
-                      }}
+                      className="p-4 text-center"
                     >
-                      <span
-                        style={{
-                          display:"inline-block",
-                          padding:"0.375rem 0.75rem",
-                          borderRadius:"0.5rem",
-                          fontSize: '0.813rem',
-                          fontWeight: 600,
-                          fontFamily:"var(--orx-font-family)",
-                          background: `${getStatusColor(nfe.status)}15`,
-                          color: getStatusColor(nfe.status),
-                        }}
-                      >
+                    <span
+                      className={`inline-block px-3 py-1.5 rounded-lg text-[0.813rem] font-semibold ${getStatusBadgeClasses(nfe.status)}`}
+                    >
                         {getStatusLabel(nfe.status)}
                       </span>
                     </td>
                     <td
-                      style={{
-                        padding:"1rem",
-                        fontSize: '0.813rem',
-                        fontFamily:"var(--orx-font-family)",
-                        color:"var(--orx-text-secondary)",
-                      }}
+                      className="p-4 text-[0.813rem] text-[var(--orx-text-secondary)]"
                     >
                       {formatDate(nfe.emissaoEm)}
                     </td>
                     <td
-                      style={{
-                        padding:"1rem",
-                        textAlign:"center",
-                      }}
+                      className="p-4 text-center"
                     >
                       <div className="flex items-center justify-center gap-2">
-                        <button
+                        <Button
+                          variant="neumorphic"
+                          size="icon"
+                          className="rounded-xl"
                           title="Imprimir DANFE"
-                          style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                            padding:"0.5rem",
-                            borderRadius:"0.5rem",
-                            background:"var(--orx-bg-light)",
-                            boxShadow:"0 2px 4px rgba(0, 0, 0, 0.1)",
-                            border:"none",
-                            cursor:"pointer",
-                          }}
+                          onClick={() => window.dispatchEvent(new CustomEvent('icarus:imprimir-danfe', { detail: nfe.id }))}
                         >
-                          <Printer size={16} style={{ color:"var(--orx-primary)" }} />
-                        </button>
-                        <button
+                          <Printer size={16} strokeWidth={1.5} className="text-[var(--orx-primary)]" />
+                        </Button>
+                        <Button
+                          variant="neumorphic"
+                          size="icon"
+                          className="rounded-xl"
                           title="Download XML"
-                          style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                            padding:"0.5rem",
-                            borderRadius:"0.5rem",
-                            background:"var(--orx-bg-light)",
-                            boxShadow:"0 2px 4px rgba(0, 0, 0, 0.1)",
-                            border:"none",
-                            cursor:"pointer",
-                          }}
+                          onClick={() => window.dispatchEvent(new CustomEvent('icarus:download-xml', { detail: nfe.id }))}
                         >
-                          <Download size={16} style={{ color:"var(--orx-success)" }} />
-                        </button>
-                        <button
+                          <Download size={16} strokeWidth={1.5} className="text-[var(--orx-success)]" />
+                        </Button>
+                        <Button
+                          variant="neumorphic"
+                          size="icon"
+                          className="rounded-xl"
                           title="Enviar por E-mail"
-                          style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                            padding:"0.5rem",
-                            borderRadius:"0.5rem",
-                            background:"var(--orx-bg-light)",
-                            boxShadow:"0 2px 4px rgba(0, 0, 0, 0.1)",
-                            border:"none",
-                            cursor:"pointer",
-                          }}
+                          onClick={() => window.dispatchEvent(new CustomEvent('icarus:enviar-email', { detail: nfe.id }))}
                         >
-                          <Mail size={16} style={{ color:"var(--orx-purple-500)" }} />
-                        </button>
+                          <Mail size={16} strokeWidth={1.5} className="text-[var(--orx-purple-500)]" />
+                        </Button>
                       </div>
                     </td>
                   </tr>
@@ -572,7 +361,7 @@ export default function FaturamentoNFeCompleto() {
           </div>
         </div>
       </div>
-    </div>
+    </ModulePage>
   );
 }
 

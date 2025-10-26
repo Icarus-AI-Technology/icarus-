@@ -12,7 +12,6 @@ import {
   Select,
   Badge,
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -26,10 +25,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
+  
 } from '@/components/oraclusx-ds';
 import {
   Users,
@@ -39,20 +35,14 @@ import {
   Edit,
   Trash2,
   Search,
-  Filter,
-  Lock,
-  Unlock,
   Clock,
   Activity,
-  AlertTriangle,
   CheckCircle,
   XCircle,
-  Eye,
-  EyeOff,
   RefreshCw,
   Download,
-  Settings,
   ShieldAlert,
+  Lock,
 } from 'lucide-react';
 import { useDocumentTitle } from '@/hooks';
 import { useToast } from '@/contexts/ToastContext';
@@ -138,13 +128,15 @@ export default function GestaoUsuariosPermissoes() {
   const [filterAuditModulo, setFilterAuditModulo] = useState<string>('todos');
   
   // Dialogs
-  const [showNovoUsuarioDialog, setShowNovoUsuarioDialog] = useState(false);
+  const [_, setShowNovoUsuarioDialog] = useState(false);
   const [showAtribuirRoleDialog, setShowAtribuirRoleDialog] = useState(false);
-  const [showNovaRoleDialog, setShowNovaRoleDialog] = useState(false);
+  const [__unusedShowNovaRoleDialog, setShowNovaRoleDialog] = useState(false);
 
   // Carregar dados iniciais
   useEffect(() => {
     carregarDados();
+    // carregarDados já usa activeTab internamente
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
 
   const carregarDados = async () => {
@@ -160,6 +152,7 @@ export default function GestaoUsuariosPermissoes() {
         await carregarAuditoria();
       }
     } catch (error: unknown) {
+        const err = error as Error;
       addToast(`Erro ao carregar dados: ${error.message}`, 'error');
     } finally {
       setLoading(false);
@@ -169,7 +162,18 @@ export default function GestaoUsuariosPermissoes() {
   const carregarUsuarios = async () => {
     const { data, error } = await supabase.auth.admin.listUsers();
     if (error) throw error;
-    setUsuarios(data.users as any);
+    setUsuarios(
+      data.users.map((u) => ({
+        id: u.id,
+        email: u.email ?? '',
+        created_at: u.created_at ?? new Date().toISOString(),
+        last_sign_in_at: (u.last_sign_in_at as unknown as string) ?? undefined,
+        user_metadata: {
+          nome: (u.user_metadata as Record<string, unknown>)?.nome as string | undefined,
+          telefone: (u.user_metadata as Record<string, unknown>)?.telefone as string | undefined,
+        },
+      }))
+    );
   };
 
   const carregarRoles = async () => {
@@ -216,7 +220,11 @@ export default function GestaoUsuariosPermissoes() {
       .select('*, permission:permissions(*)')
       .eq('role_id', roleId);
     if (error) throw error;
-    setPermissoesRole(data?.map((rp: any) => rp.permission) || []);
+    setPermissoesRole(
+      (data || [])
+        .map((rp) => (rp as unknown as { permission?: Permission }).permission)
+        .filter((p): p is Permission => !!p)
+    );
   };
 
   const handleSelecionarUsuario = async (usuario: User) => {
@@ -256,6 +264,7 @@ export default function GestaoUsuariosPermissoes() {
         carregarRolesUsuario(usuarioSelecionado.id);
       }
     } catch (error: unknown) {
+        const err = error as Error;
       addToast(`Erro ao atribuir role: ${error.message}`, 'error');
     }
   };
@@ -276,6 +285,7 @@ export default function GestaoUsuariosPermissoes() {
         carregarRolesUsuario(usuarioSelecionado.id);
       }
     } catch (error: unknown) {
+        const err = error as Error;
       addToast(`Erro ao revogar role: ${error.message}`, 'error');
     }
   };
@@ -325,7 +335,7 @@ export default function GestaoUsuariosPermissoes() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Lista de usuários */}
         <Card className="lg:col-span-1 p-4 neuro-raised">
-          <h3 className="mb-4 flex items-center gap-2" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>
+          <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] font-semibold">
             <Users className="w-5 h-5 text-[var(--primary)]" />
             Usuários ({usuariosFiltrados.length})
           </h3>
@@ -340,13 +350,13 @@ export default function GestaoUsuariosPermissoes() {
                     : 'neuro-flat hover:neuro-raised'
                 }`}
               >
-                <div className="truncate" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>{usuario.email}</div>
+                <div className="truncate text-[0.813rem] font-medium">{usuario.email}</div>
                 {usuario.user_metadata?.nome && (
-                  <div className="text-[var(--text-secondary)] truncate" style={{ fontSize: '0.813rem' }}>
+                  <div className="text-[var(--text-secondary)] truncate text-[0.813rem]">
                     {usuario.user_metadata.nome}
                   </div>
                 )}
-                <div className="text-[var(--text-secondary)] mt-1" style={{ fontSize: '0.813rem' }}>
+                <div className="text-[var(--text-secondary)] mt-1 text-[0.813rem]">
                   Cadastro: {formatDate(usuario.created_at)}
                 </div>
               </button>
@@ -360,7 +370,7 @@ export default function GestaoUsuariosPermissoes() {
             <div className="space-y-6">
               <div className="flex items-start justify-between">
                 <div>
-                  <h3 className="mb-1" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>{usuarioSelecionado.email}</h3>
+                  <h3 className="mb-1 text-[0.813rem] font-semibold">{usuarioSelecionado.email}</h3>
                   {usuarioSelecionado.user_metadata?.nome && (
                     <p className="text-[var(--text-secondary)]">{usuarioSelecionado.user_metadata.nome}</p>
                   )}
@@ -388,7 +398,7 @@ export default function GestaoUsuariosPermissoes() {
               {/* Roles do usuário */}
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <h4 className="flex items-center gap-2" style={{ fontWeight: 600 }}>
+                  <h4 className="flex items-center gap-2 font-semibold">
                     <Shield className="w-4 h-4 text-[var(--primary)]" />
                     Funções Atribuídas
                   </h4>
@@ -413,12 +423,12 @@ export default function GestaoUsuariosPermissoes() {
                         className="p-3 neuro-flat rounded-lg flex items-center justify-between"
                       >
                         <div className="flex-1">
-                          <div className style={{ fontWeight: 500 }}>{ur.role.nome}</div>
-                          <div className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+                          <div className="font-medium">{ur.role.nome}</div>
+                          <div className="text-[var(--text-secondary)] text-[0.813rem]">
                             {ur.role.descricao}
                           </div>
                           {ur.valid_until && (
-                            <div className="text-orange-500 mt-1 flex items-center gap-1" style={{ fontSize: '0.813rem' }}>
+                            <div className="text-orange-500 mt-1 flex items-center gap-1 text-[0.813rem]">
                               <Clock className="w-3 h-3" />
                               Expira em: {formatDate(ur.valid_until)}
                             </div>
@@ -439,12 +449,12 @@ export default function GestaoUsuariosPermissoes() {
               {/* Informações adicionais */}
               <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[var(--text-secondary)]/20">
                 <div className="neuro-inset p-3 rounded-lg">
-                  <div className="text-[var(--text-secondary)] mb-1" style={{ fontSize: '0.813rem' }}>Cadastrado em</div>
-                  <div className style={{ fontWeight: 500 }}>{formatDate(usuarioSelecionado.created_at)}</div>
+                  <div className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">Cadastrado em</div>
+                  <div className="font-medium">{formatDate(usuarioSelecionado.created_at)}</div>
                 </div>
                 <div className="neuro-inset p-3 rounded-lg">
-                  <div className="text-[var(--text-secondary)] mb-1" style={{ fontSize: '0.813rem' }}>Último acesso</div>
-                  <div className style={{ fontWeight: 500 }}>
+                  <div className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">Último acesso</div>
+                  <div className="font-medium">
                     {usuarioSelecionado.last_sign_in_at
                       ? formatDateTime(usuarioSelecionado.last_sign_in_at)
                       : 'Nunca'}
@@ -481,8 +491,8 @@ export default function GestaoUsuariosPermissoes() {
                 }}
                 className="w-full p-3 neuro-flat hover:neuro-raised rounded-lg transition-all text-left"
               >
-                <div className style={{ fontWeight: 500 }}>{role.nome}</div>
-                <div className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>{role.descricao}</div>
+                <div className="font-medium">{role.nome}</div>
+                <div className="text-[var(--text-secondary)] text-[0.813rem]">{role.descricao}</div>
                 <Badge variant="default" className="mt-2">
                   {role.tipo_role}
                 </Badge>
@@ -497,8 +507,8 @@ export default function GestaoUsuariosPermissoes() {
   const renderTabRoles = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Funções e Permissões</h2>
-        <Button icon={<Plus />} onClick={() => setShowNovaRoleDialog(true)}>
+        <h2 className="text-[0.813rem] font-semibold">Funções e Permissões</h2>
+        <Button icon={<UserPlus />} onClick={() => setShowNovaRoleDialog(true)}>
           Nova Função
         </Button>
       </div>
@@ -506,7 +516,7 @@ export default function GestaoUsuariosPermissoes() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Lista de roles */}
         <Card className="lg:col-span-1 p-4 neuro-raised">
-          <h3 className="mb-4" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Funções ({roles.length})</h3>
+          <h3 className="mb-4 text-[0.813rem] font-semibold">Funções ({roles.length})</h3>
           <div className="space-y-2">
             {roles.map((role) => (
               <button
@@ -519,15 +529,15 @@ export default function GestaoUsuariosPermissoes() {
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
-                  <span className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>{role.nome}</span>
+                  <span className="text-[0.813rem] font-medium">{role.nome}</span>
                   {!role.is_active && (
                     <Badge variant="default" className="bg-error/20 text-error">
                       Inativa
                     </Badge>
                   )}
                 </div>
-                <div className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>{role.descricao}</div>
-                <Badge variant="default" className="mt-2" style={{ fontSize: '0.813rem' }}>
+                <div className="text-[var(--text-secondary)] text-[0.813rem]">{role.descricao}</div>
+                <Badge variant="default" className="mt-2 text-[0.813rem]">
                   {role.tipo_role}
                 </Badge>
               </button>
@@ -541,7 +551,7 @@ export default function GestaoUsuariosPermissoes() {
             <div className="space-y-4">
               <div className="flex items-start justify-between">
                 <div>
-                  <h3 className style={{  fontSize: '0.813rem' , fontWeight: 600 }}>{roleSelecionada.nome}</h3>
+                  <h3 className="text-[0.813rem] font-semibold">{roleSelecionada.nome}</h3>
                   <p className="text-[var(--text-secondary)]">{roleSelecionada.descricao}</p>
                 </div>
                 <div className="flex gap-2">
@@ -553,7 +563,7 @@ export default function GestaoUsuariosPermissoes() {
               </div>
 
               <div>
-                <h4 className="mb-3" style={{ fontWeight: 600 }}>
+                <h4 className="mb-3 font-semibold">
                   Permissões ({permissoesRole.length})
                 </h4>
                 {permissoesRole.length === 0 ? (
@@ -569,8 +579,8 @@ export default function GestaoUsuariosPermissoes() {
                         className="p-3 neuro-flat rounded-lg flex items-center justify-between"
                       >
                         <div className="flex-1">
-                          <div className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>{perm.nome}</div>
-                          <div className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+                          <div className="text-[0.813rem] font-medium">{perm.nome}</div>
+                          <div className="text-[var(--text-secondary)] text-[0.813rem]">
                             {perm.modulo}.{perm.acao}
                           </div>
                         </div>
@@ -647,7 +657,7 @@ export default function GestaoUsuariosPermissoes() {
           <TableBody>
             {permissoesFiltradas.map((perm) => (
               <TableRow key={perm.id}>
-                <TableCell className="font-mono" style={{ fontSize: '0.813rem' }}>{perm.codigo}</TableCell>
+                <TableCell className="font-mono text-[0.813rem]">{perm.codigo}</TableCell>
                 <TableCell>{perm.nome}</TableCell>
                 <TableCell>
                   <Badge variant="default">{perm.modulo}</Badge>
@@ -718,15 +728,15 @@ export default function GestaoUsuariosPermissoes() {
           <TableBody>
             {auditLogsFiltrados.map((log) => (
               <TableRow key={log.id}>
-                <TableCell className style={{ fontSize: '0.813rem' }}>
+                <TableCell className="text-[0.813rem]">
                   {formatDateTime(log.created_at)}
                 </TableCell>
                 <TableCell>{log.user_email}</TableCell>
-                <TableCell className="font-mono" style={{ fontSize: '0.813rem' }}>{log.acao}</TableCell>
+                <TableCell className="font-mono text-[0.813rem]">{log.acao}</TableCell>
                 <TableCell>
                   <Badge variant="default">{log.modulo}</Badge>
                 </TableCell>
-                <TableCell className="max-w-[300px] truncate" style={{ fontSize: '0.813rem' }}>
+                <TableCell className="max-w-[300px] truncate text-[0.813rem]">
                   {log.descricao}
                 </TableCell>
                 <TableCell>
@@ -773,7 +783,7 @@ export default function GestaoUsuariosPermissoes() {
           </div>
           <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
             <Shield className="w-4 h-4 text-success" />
-            <span className="text-body-sm text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+            <span className="text-body-sm text-[var(--text-primary)] font-medium">
               Conformidade LGPD
             </span>
           </div>

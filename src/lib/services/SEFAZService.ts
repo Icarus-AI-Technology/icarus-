@@ -206,8 +206,9 @@ export class SEFAZService {
       });
 
       return true;
-    } catch (_err) {
-      console.error("Erro configurarCertificado:", _err);
+    } catch (error) {
+   const err = error as Error;
+      console.error("Erro configurarCertificado:", err);
       return false;
     }
   }
@@ -277,12 +278,13 @@ export class SEFAZService {
       } else {
         return resultado;
       }
-    } catch (_err) {
-      console.error("Erro emitirNFe:", _err);
+    } catch (error) {
+   const err = error as Error;
+      console.error("Erro emitirNFe:", err);
       return {
         sucesso: false,
-        mensagem: _err instanceof Error ? _err.message :"Erro ao emitir NF-e",
-        erros: [_err instanceof Error ? _err.message :"Erro desconhecido"],
+        mensagem: err instanceof Error ? err.message :"Erro ao emitir NF-e",
+        erros: [err instanceof Error ? err.message :"Erro desconhecido"],
       };
     }
   }
@@ -355,11 +357,12 @@ export class SEFAZService {
       } else {
         return resultado;
       }
-    } catch (_err) {
-      console.error("Erro cancelarNFe:", _err);
+    } catch (error) {
+   const err = error as Error;
+      console.error("Erro cancelarNFe:", err);
       return {
         sucesso: false,
-        mensagem: _err instanceof Error ? _err.message :"Erro ao cancelar NF-e",
+        mensagem: err instanceof Error ? err.message :"Erro ao cancelar NF-e",
       };
     }
   }
@@ -394,8 +397,9 @@ export class SEFAZService {
         protocolo: nfe.protocolo,
         mensagem: `NF-e ${nfe.status}`,
       };
-    } catch (_err) {
-      console.error("Erro consultarNFe:", _err);
+    } catch (error) {
+   const err = error as Error;
+      console.error("Erro consultarNFe:", err);
       return {
         sucesso: false,
         mensagem:"Erro ao consultar NF-e",

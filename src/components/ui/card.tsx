@@ -57,7 +57,7 @@ const CardTitle = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
  <h3
  ref={ref}
- className={cn('text-[var(--text-primary)]', className)}
+ className={cn('text-[var(--text-primary)]', 'orx-contrast-heading', className)}
  style={{
  fontFamily: 'var(--font-display)',
  fontSize: '0.813rem',

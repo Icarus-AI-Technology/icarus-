@@ -119,9 +119,10 @@ class ANVISAService {
         categoria: 'OPME',
         classeRisco: 'III',
       };
-    } catch (_error) {
-      console.error('[ANVISA Service] Erro ao consultar registro:', _error);
-      throw _error;
+    } catch (error) {
+   const err = error as Error;
+      console.error('[ANVISA Service] Erro ao consultar registro:', err);
+      throw err;
     }
   }
 

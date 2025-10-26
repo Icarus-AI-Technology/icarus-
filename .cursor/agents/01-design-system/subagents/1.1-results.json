@@ -1,0 +1,378 @@
+{
+  "subagent": "1.1",
+  "name": "Componentes",
+  "status": "completed",
+  "items_audited": 28,
+  "items_passed": 10,
+  "items_failed": 18,
+  "score": 31,
+  "issues": [
+    "Button.tsx: Props não tipadas ou ausentes",
+    "Input.tsx: Props não tipadas ou ausentes",
+    "Input.tsx: Não usa token primário (#6366F1 / var(--orx-primary))",
+    "Card.tsx: Props não tipadas ou ausentes",
+    "Badge.tsx: Props não tipadas ou ausentes",
+    "Tooltip.tsx: Não usa token primário (#6366F1 / var(--orx-primary))",
+    "Tabs.tsx: Não usa token primário (#6366F1 / var(--orx-primary))",
+    "Slider.tsx: Props não tipadas ou ausentes",
+    "Switch.tsx: Props não tipadas ou ausentes",
+    "Radio.tsx: Props não tipadas ou ausentes",
+    "Checkbox.tsx: Props não tipadas ou ausentes",
+    "Textarea.tsx: Props não tipadas ou ausentes",
+    "Textarea.tsx: Não usa token primário (#6366F1 / var(--orx-primary))",
+    "SearchField.tsx: Props não tipadas ou ausentes",
+    "SearchField.tsx: Não usa token primário (#6366F1 / var(--orx-primary))",
+    "InputContainer.tsx: Props não tipadas ou ausentes",
+    "InputContainer.tsx: Não usa token primário (#6366F1 / var(--orx-primary))",
+    "Avatar.tsx: Não usa token primário (#6366F1 / var(--orx-primary))",
+    "Toast.tsx: Não usa token primário (#6366F1 / var(--orx-primary))",
+    "IconButtonNeu.tsx: Props não tipadas ou ausentes",
+    "TopbarIconButton.tsx: Props não tipadas ou ausentes",
+    "TopbarIconButton.tsx: Não usa token primário (#6366F1 / var(--orx-primary))",
+    "SearchContainer.tsx: Não usa token primário (#6366F1 / var(--orx-primary))"
+  ],
+  "results": [
+    {
+      "name": "Button",
+      "exists": true,
+      "propsTyped": false,
+      "variants": [
+        "default"
+      ],
+      "darkModeSupport": true,
+      "usesPrimaryToken": true,
+      "inlineStylesFound": false,
+      "errors": [
+        "Props não tipadas ou ausentes"
+      ]
+    },
+    {
+      "name": "Input",
+      "exists": true,
+      "propsTyped": false,
+      "variants": [],
+      "darkModeSupport": true,
+      "usesPrimaryToken": false,
+      "inlineStylesFound": false,
+      "errors": [
+        "Props não tipadas ou ausentes",
+        "Não usa token primário (#6366F1 / var(--orx-primary))"
+      ]
+    },
+    {
+      "name": "Card",
+      "exists": true,
+      "propsTyped": false,
+      "variants": [
+        "default"
+      ],
+      "darkModeSupport": true,
+      "usesPrimaryToken": true,
+      "inlineStylesFound": false,
+      "errors": [
+        "Props não tipadas ou ausentes"
+      ]
+    },
+    {
+      "name": "Badge",
+      "exists": true,
+      "propsTyped": false,
+      "variants": [
+        "default"
+      ],
+      "darkModeSupport": true,
+      "usesPrimaryToken": true,
+      "inlineStylesFound": false,
+      "errors": [
+        "Props não tipadas ou ausentes"
+      ]
+    },
+    {
+      "name": "Tooltip",
+      "exists": true,
+      "propsTyped": true,
+      "variants": [],
+      "darkModeSupport": true,
+      "usesPrimaryToken": false,
+      "inlineStylesFound": false,
+      "errors": [
+        "Não usa token primário (#6366F1 / var(--orx-primary))"
+      ]
+    },
+    {
+      "name": "Modal",
+      "exists": true,
+      "propsTyped": true,
+      "variants": [
+        "primary"
+      ],
+      "darkModeSupport": true,
+      "usesPrimaryToken": true,
+      "inlineStylesFound": false,
+      "errors": []
+    },
+    {
+      "name": "Dialog",
+      "exists": true,
+      "propsTyped": true,
+      "variants": [
+        "default",
+        "primary"
+      ],
+      "darkModeSupport": true,
+      "usesPrimaryToken": true,
+      "inlineStylesFound": false,
+      "errors": []
+    },
+    {
+      "name": "Dropdown",
+      "exists": true,
+      "propsTyped": true,
+      "variants": [],
+      "darkModeSupport": true,
+      "usesPrimaryToken": true,
+      "inlineStylesFound": false,
+      "errors": []
+    },
+    {
+      "name": "Tabs",
+      "exists": true,
+      "propsTyped": true,
+      "variants": [
+        "horizontal"
+      ],
+      "darkModeSupport": true,
+      "usesPrimaryToken": false,
+      "inlineStylesFound": false,
+      "errors": [
+        "Não usa token primário (#6366F1 / var(--orx-primary))"
+      ]
+    },
+    {
+      "name": "Accordion",
+      "exists": true,
+      "propsTyped": true,
+      "variants": [],
+      "darkModeSupport": true,
+      "usesPrimaryToken": true,
+      "inlineStylesFound": false,
+      "errors": []
+    },
+    {
+      "name": "Progress",
+      "exists": true,
+      "propsTyped": true,
+      "variants": [
+        "primary"
+      ],
+      "darkModeSupport": true,
+      "usesPrimaryToken": true,
+      "inlineStylesFound": false,
+      "errors": []
+    },
+    {
+      "name": "RadialProgress",
+      "exists": true,
+      "propsTyped": true,
+      "variants": [],
+      "darkModeSupport": true,
+      "usesPrimaryToken": true,
+      "inlineStylesFound": false,
+      "errors": []
+    },
+    {
+      "name": "Slider",
+      "exists": true,
+      "propsTyped": false,
+      "variants": [],
+      "darkModeSupport": true,
+      "usesPrimaryToken": true,
+      "inlineStylesFound": false,
+      "errors": [
+        "Props não tipadas ou ausentes"
+      ]
+    },
+    {
+      "name": "Switch",
+      "exists": true,
+      "propsTyped": false,
+      "variants": [],
+      "darkModeSupport": true,
+      "usesPrimaryToken": true,
+      "inlineStylesFound": false,
+      "errors": [
+        "Props não tipadas ou ausentes"
+      ]
+    },
+    {
+      "name": "Radio",
+      "exists": true,
+      "propsTyped": false,
+      "variants": [],
+      "darkModeSupport": true,
+      "usesPrimaryToken": true,
+      "inlineStylesFound": false,
+      "errors": [
+        "Props não tipadas ou ausentes"
+      ]
+    },
+    {
+      "name": "Checkbox",
+      "exists": true,
+      "propsTyped": false,
+      "variants": [],
+      "darkModeSupport": true,
+      "usesPrimaryToken": true,
+      "inlineStylesFound": false,
+      "errors": [
+        "Props não tipadas ou ausentes"
+      ]
+    },
+    {
+      "name": "Select",
+      "exists": true,
+      "propsTyped": true,
+      "variants": [],
+      "darkModeSupport": true,
+      "usesPrimaryToken": true,
+      "inlineStylesFound": false,
+      "errors": []
+    },
+    {
+      "name": "Textarea",
+      "exists": true,
+      "propsTyped": false,
+      "variants": [],
+      "darkModeSupport": true,
+      "usesPrimaryToken": false,
+      "inlineStylesFound": false,
+      "errors": [
+        "Props não tipadas ou ausentes",
+        "Não usa token primário (#6366F1 / var(--orx-primary))"
+      ]
+    },
+    {
+      "name": "SearchField",
+      "exists": true,
+      "propsTyped": false,
+      "variants": [],
+      "darkModeSupport": true,
+      "usesPrimaryToken": false,
+      "inlineStylesFound": false,
+      "errors": [
+        "Props não tipadas ou ausentes",
+        "Não usa token primário (#6366F1 / var(--orx-primary))"
+      ]
+    },
+    {
+      "name": "InputContainer",
+      "exists": true,
+      "propsTyped": false,
+      "variants": [],
+      "darkModeSupport": true,
+      "usesPrimaryToken": false,
+      "inlineStylesFound": false,
+      "errors": [
+        "Props não tipadas ou ausentes",
+        "Não usa token primário (#6366F1 / var(--orx-primary))"
+      ]
+    },
+    {
+      "name": "DatePicker",
+      "exists": true,
+      "propsTyped": true,
+      "variants": [],
+      "darkModeSupport": true,
+      "usesPrimaryToken": true,
+      "inlineStylesFound": false,
+      "errors": []
+    },
+    {
+      "name": "Avatar",
+      "exists": true,
+      "propsTyped": true,
+      "variants": [],
+      "darkModeSupport": true,
+      "usesPrimaryToken": false,
+      "inlineStylesFound": false,
+      "errors": [
+        "Não usa token primário (#6366F1 / var(--orx-primary))"
+      ]
+    },
+    {
+      "name": "Toast",
+      "exists": true,
+      "propsTyped": true,
+      "variants": [],
+      "darkModeSupport": true,
+      "usesPrimaryToken": false,
+      "inlineStylesFound": false,
+      "errors": [
+        "Não usa token primário (#6366F1 / var(--orx-primary))"
+      ]
+    },
+    {
+      "name": "NavigationBar",
+      "exists": true,
+      "propsTyped": true,
+      "variants": [
+        "centered"
+      ],
+      "darkModeSupport": true,
+      "usesPrimaryToken": true,
+      "inlineStylesFound": false,
+      "errors": []
+    },
+    {
+      "name": "SubModulesNavigation",
+      "exists": true,
+      "propsTyped": true,
+      "variants": [],
+      "darkModeSupport": true,
+      "usesPrimaryToken": true,
+      "inlineStylesFound": false,
+      "errors": []
+    },
+    {
+      "name": "IconButtonNeu",
+      "exists": true,
+      "propsTyped": false,
+      "variants": [
+        "default"
+      ],
+      "darkModeSupport": true,
+      "usesPrimaryToken": true,
+      "inlineStylesFound": false,
+      "errors": [
+        "Props não tipadas ou ausentes"
+      ]
+    },
+    {
+      "name": "TopbarIconButton",
+      "exists": true,
+      "propsTyped": false,
+      "variants": [
+        "default"
+      ],
+      "darkModeSupport": true,
+      "usesPrimaryToken": false,
+      "inlineStylesFound": false,
+      "errors": [
+        "Props não tipadas ou ausentes",
+        "Não usa token primário (#6366F1 / var(--orx-primary))"
+      ]
+    },
+    {
+      "name": "SearchContainer",
+      "exists": true,
+      "propsTyped": true,
+      "variants": [],
+      "darkModeSupport": true,
+      "usesPrimaryToken": false,
+      "inlineStylesFound": false,
+      "errors": [
+        "Não usa token primário (#6366F1 / var(--orx-primary))"
+      ]
+    }
+  ]
+}

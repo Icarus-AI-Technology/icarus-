@@ -56,7 +56,8 @@ export const useFornecedores = () => {
 
       setFornecedores((data as Fornecedor[] | null) ?? []);
       setError(null);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao carregar fornecedores');
       setFornecedores([]);
     } finally {
@@ -76,7 +77,8 @@ export const useFornecedores = () => {
 
       await fetchFornecedores();
       return data as Fornecedor;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message : 'Erro ao criar fornecedor';
       setError(message);
       throw err;
@@ -93,7 +95,8 @@ export const useFornecedores = () => {
       if (error) throw error;
 
       await fetchFornecedores();
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message : 'Erro ao atualizar fornecedor';
       setError(message);
       throw err;
@@ -110,7 +113,8 @@ export const useFornecedores = () => {
       if (error) throw error;
 
       await fetchFornecedores();
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message : 'Erro ao deletar fornecedor';
       setError(message);
       throw err;

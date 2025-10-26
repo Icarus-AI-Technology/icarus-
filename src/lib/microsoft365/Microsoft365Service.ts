@@ -110,7 +110,7 @@ class MicrosoftTeamsService {
   /**
    * Criar reunião no Teams
    */
-  async criarReuniao(reuniao: TeamsReuniao): Promise<any> {
+  async criarReuniao(reuniao: TeamsReuniao): Promise<{ id: string }> {
     try {
       const evento = {
         subject: reuniao.assunto,
@@ -151,12 +151,13 @@ class MicrosoftTeamsService {
         }),
       };
 
-      const novoEvento = await this.graphClient.api('/me/events').post(evento);
+      const novoEvento = await this.graphClient.api('/me/events').post(evento) as { id: string };
       
       console.log('[MicrosoftTeams] Reunião criada:', novoEvento);
       return novoEvento;
-    } catch (_error) {
-      console.error('[MicrosoftTeams] Erro ao criar reunião:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[MicrosoftTeams] Erro ao criar reunião:', err);
       throw error;
     }
   }
@@ -164,7 +165,7 @@ class MicrosoftTeamsService {
   /**
    * Listar próximas reuniões
    */
-  async listarProximasReunioes(dias: number = 7): Promise<any[]> {
+  async listarProximasReunioes(dias: number = 7): Promise<Array<{ id?: string; subject: string; start: { dateTime: string }; end: { dateTime: string }; isOnlineMeeting?: boolean; onlineMeeting?: { joinUrl?: string } }>> {
     try {
       const dataInicio = new Date().toISOString();
       const dataFim = new Date(Date.now() + dias * 24 * 60 * 60 * 1000).toISOString();
@@ -174,11 +175,12 @@ class MicrosoftTeamsService {
         .filter(`start/dateTime ge '${dataInicio}' and end/dateTime le '${dataFim}'`)
         .select('subject,start,end,isOnlineMeeting,onlineMeeting')
         .orderby('start/dateTime')
-        .get();
+        .get() as { value: Array<{ id?: string; subject: string; start: { dateTime: string }; end: { dateTime: string }; isOnlineMeeting?: boolean; onlineMeeting?: { joinUrl?: string } }> };
 
       return eventos.value;
-    } catch (_error) {
-      console.error('[MicrosoftTeams] Erro ao listar reuniões:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[MicrosoftTeams] Erro ao listar reuniões:', err);
       throw error;
     }
   }
@@ -193,8 +195,9 @@ class MicrosoftTeamsService {
       });
       
       console.log('[MicrosoftTeams] Reunião cancelada:', eventoId);
-    } catch (_error) {
-      console.error('[MicrosoftTeams] Erro ao cancelar reunião:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[MicrosoftTeams] Erro ao cancelar reunião:', err);
       throw error;
     }
   }
@@ -247,8 +250,9 @@ class OutlookEmailService {
 
       await this.graphClient.api('/me/sendMail').post(mensagem);
       console.log('[OutlookEmail] Email enviado com sucesso');
-    } catch (_error) {
-      console.error('[OutlookEmail] Erro ao enviar email:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[OutlookEmail] Erro ao enviar email:', err);
       throw error;
     }
   }
@@ -334,8 +338,9 @@ class OutlookContatosService {
 
       await this.graphClient.api('/me/contacts').post(contatoOutlook);
       console.log('[OutlookContatos] Contato sincronizado:', contato.nome);
-    } catch (_error) {
-      console.error('[OutlookContatos] Erro ao sincronizar contato:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[OutlookContatos] Erro ao sincronizar contato:', err);
       throw error;
     }
   }
@@ -351,7 +356,8 @@ class OutlookContatosService {
       try {
         await this.sincronizarContato(contato);
         sucesso++;
-      } catch (_error) {
+      } catch (error) {
+   const err = error as Error;
         erro++;
       }
     }
@@ -374,16 +380,17 @@ class OneDriveService {
     nomeArquivo: string,
     conteudo: ArrayBuffer,
     pasta: string = 'ICARUS'
-  ): Promise<any> {
+  ): Promise<{ id: string }> {
     try {
       const resultado = await this.graphClient
         .api(`/me/drive/root:/${pasta}/${nomeArquivo}:/content`)
-        .put(conteudo);
+        .put(conteudo) as { id: string };
 
       console.log('[OneDrive] Arquivo enviado:', nomeArquivo);
       return resultado;
-    } catch (_error) {
-      console.error('[OneDrive] Erro ao enviar arquivo:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[OneDrive] Erro ao enviar arquivo:', err);
       throw error;
     }
   }
@@ -398,11 +405,12 @@ class OneDriveService {
         .post({
           type: 'view',
           scope: 'anonymous',
-        });
+        }) as { link: { webUrl: string } };
 
       return link.link.webUrl;
-    } catch (_error) {
-      console.error('[OneDrive] Erro ao criar link:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[OneDrive] Erro ao criar link:', err);
       throw error;
     }
   }
@@ -438,8 +446,9 @@ export class Microsoft365Integration {
       this.onedrive = new OneDriveService(this.graphClient);
 
       console.log('[Microsoft365] Login realizado com sucesso');
-    } catch (_error) {
-      console.error('[Microsoft365] Erro no login:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[Microsoft365] Erro no login:', err);
       throw error;
     }
   }
@@ -477,7 +486,8 @@ export class Microsoft365Integration {
       }
 
       return response.accessToken;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       if (error instanceof InteractionRequiredAuthError) {
         // Token expirado, fazer login novamente
         await this.login();
@@ -496,8 +506,9 @@ export class Microsoft365Integration {
       await msalInstance.logoutPopup();
       this.graphClient = null;
       console.log('[Microsoft365] Logout realizado');
-    } catch (_error) {
-      console.error('[Microsoft365] Erro no logout:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[Microsoft365] Erro no logout:', err);
       throw error;
     }
   }

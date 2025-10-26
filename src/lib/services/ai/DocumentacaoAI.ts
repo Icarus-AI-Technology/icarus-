@@ -9,7 +9,7 @@ export class DocumentacaoAI {
 
   static async generateDocumentation(params: {
     tipo: 'produto' | 'processo' | 'procedimento' | 'treinamento';
-    dados: Record<string, any>;
+    dados: Record<string, unknown>;
     template?: string;
   }): Promise<{
     conteudo: string;

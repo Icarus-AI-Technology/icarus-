@@ -62,9 +62,7 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
   const availableActions = currentState?.actions || [];
   
   // Verificar se pode fazer transição
-  const canTransition = (toStateId: string): boolean => {
-    return currentState?.allowedTransitions.includes(toStateId) || false;
-  };
+  // const canTransition = (toStateId: string): boolean => currentState?.allowedTransitions.includes(toStateId) || false; // não utilizado
   
   // Obter transição para um estado
   const getTransitionForState = (stateId: string) => {
@@ -160,7 +158,7 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
               const transition = getTransitionForState(state.id);
               const isInitial = state.isInitial;
               const isFinal = state.isFinal;
-              const canGoTo = canTransition(state.id);
+              // const canGoTo = canTransition(state.id); // não utilizado
               
               return (
                 <div

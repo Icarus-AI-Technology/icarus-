@@ -21,7 +21,7 @@ export const InputContainer = React.forwardRef<
   return (
     <div ref={ref} className={cn("mb-4", className)} {...props}>
       {label && (
-        <label className="block text-body-sm text-secondary dark:text-muted mb-2" style={{ fontWeight: 500 }}>
+        <label className="block text-body-sm text-secondary dark:text-muted mb-2 font-medium">
           {label}
           {required && <span className="text-error ml-1">*</span>}
         </label>

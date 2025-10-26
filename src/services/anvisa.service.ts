@@ -83,8 +83,9 @@ export async function consultarProdutoANVISA(
       cnpjDetentor: result.data.cnpj_detentor,
     };
     
-  } catch (_error) {
-    console.error('Erro InfoSimples, tentando API oficial ANVISA:', error);
+  } catch (error) {
+   const err = error as Error;
+    console.error('Erro InfoSimples, tentando API oficial ANVISA:', err);
     
     // Fallback: API oficial ANVISA Datavisa
     try {
@@ -139,7 +140,8 @@ export function useANVISA(token?: string) {
       const resultado = await consultarProdutoANVISA(registro, token);
       setData(resultado);
       return resultado;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
       setError(errorMessage);
       throw err;

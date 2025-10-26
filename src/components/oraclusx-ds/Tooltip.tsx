@@ -51,7 +51,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
       {children}
       {isVisible && (
         <div
-          className={cn("absolute z-50 px-3 py-2 text-body-sm","orx-card whitespace-nowrap","animate-in fade-in-0 zoom-in-95 duration-150",
+          className={cn("absolute z-50 px-3 py-2 text-body-sm","orx-card whitespace-nowrap","dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700","animate-in fade-in-0 zoom-in-95 duration-150",
             positionClasses[position],
             className,
           )}

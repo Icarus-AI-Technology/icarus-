@@ -12,7 +12,7 @@
  * Cobertura: 100% municípios brasileiros
  * Limite peso: 30kg (SEDEX), 50kg (PAC)
  */
-
+import {
   TransportadoraService,
   CotacaoParams,
   CotacaoResult,
@@ -20,7 +20,7 @@
   StatusEntrega,
   TipoEventoRastreamento,
   AgendarColetaParams,
-  AgendarColetaResult
+  AgendarColetaResult,
 } from '../base/types';
 
 export class CorreiosService implements TransportadoraService {
@@ -131,8 +131,9 @@ export class CorreiosService implements TransportadoraService {
         entregaSabado: data.EntregaSabado === 'S',
         observacoes: data.ObsFim || undefined
       };
-    } catch (_error) {
-      console.error(`Erro ao cotar Correios ${params.codServico}:`, _error);
+    } catch (error) {
+      const err = error as Error;
+      console.error(`Erro ao cotar Correios ${params.codServico}:`, err.message ?? err);
       return null;
     }
   }
@@ -185,9 +186,10 @@ export class CorreiosService implements TransportadoraService {
           descricao: data.localizacao.descricao
         } : undefined
       };
-    } catch (_error) {
-      console.error('Erro ao rastrear Correios:', _error);
-      throw _error;
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro ao rastrear Correios:', err.message ?? err);
+      throw err;
     }
   }
 

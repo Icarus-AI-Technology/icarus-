@@ -128,26 +128,26 @@ class VeiculoService {
         ano: data.ano_modelo,
         cor: data.cor,
       };
-    } catch (_error) {
-      console.error('[Veículo Service] Erro ao consultar placa:', _error);
+    } catch (error) {
+      console.error('[Veículo Service] Erro ao consultar placa:', error);
 
       // Se erro for de rede/fetch, retornar apenas validação local
-      if (__error instanceof Error) {
-        if (
-          __error.message.includes('fetch') ||
-          __error.message.includes('Network') ||
-          __error.message.includes('ECONNREFUSED')
-        ) {
-          const validacao = this.validarPlaca(placa);
-          return {
-            placa: validacao.placa,
-            tipo: validacao.tipo,
-            valida: validacao.valida,
-          };
-        }
+      const message = error instanceof Error ? error.message.toLowerCase() : '';
+      if (
+        message.includes('fetch') ||
+        message.includes('network') ||
+        message.includes('econnrefused')
+      ) {
+        console.warn('Tentando fallback para dados mockados (offline mode)');
+        const limpo = placa.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+        const validacao = this.validarPlaca(limpo);
+        return {
+          placa: this.formatarPlaca(limpo),
+          tipo: validacao.tipo,
+          valida: validacao.valida,
+        };
       }
-
-      throw _error;
+      throw error;
     }
   }
 

@@ -45,7 +45,7 @@ export const ChatbotFABWithPrompt: React.FC<ChatbotFABWithPromptProps> = ({
       {isExpanded ? (
         <div className="orx-card p-4 w-80 mb-4 animate-in slide-in-from-bottom-5 fade-in duration-300">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-primary dark:text-gray-100" style={{ fontWeight: 500 }}>
+            <h3 className="text-primary dark:text-gray-100 font-medium">
               Em que posso ajudar?
             </h3>
             <button
@@ -54,6 +54,7 @@ export const ChatbotFABWithPrompt: React.FC<ChatbotFABWithPromptProps> = ({
                 onClose?.();
               }}
               className="p-1 hover:bg-surface dark:hover:bg-gray-700 rounded transition-colors"
+              title="Fechar"
             >
               <X size={18} />
             </button>
@@ -84,6 +85,7 @@ export const ChatbotFABWithPrompt: React.FC<ChatbotFABWithPromptProps> = ({
               onClick={handleSend}
               disabled={!message.trim()}
               className="orx-button-primary p-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Enviar"
             >
               <Send size={18} />
             </button>

@@ -61,6 +61,10 @@ export default defineConfig({
   /* Servidor dev */
   webServer: {
     command: 'npm run dev',
+    env: {
+      VITE_SUPABASE_URL: 'http://localhost:54321',
+      VITE_SUPABASE_ANON_KEY: 'test-anon-key',
+    },
     url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,

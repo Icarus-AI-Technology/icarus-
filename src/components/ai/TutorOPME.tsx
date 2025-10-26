@@ -15,9 +15,6 @@ import {
   MessageSquare, 
   Upload, 
   FileText, 
-  Search, 
-  CheckCircle2, 
-  AlertTriangle,
   Sparkles,
   Image as ImageIcon,
   Send,
@@ -68,7 +65,12 @@ export function TutorOPME() {
   // BUSCA NA BASE DE CONHECIMENTO
   // ============================================
   
-  const searchKnowledge = async (query: string): Promise<any[]> => {
+  interface KnowledgeDoc {
+    categoria: string;
+    conteudo_texto: string;
+  }
+
+  const searchKnowledge = async (query: string): Promise<KnowledgeDoc[]> => {
     try {
       const { data, error } = await supabase
         .rpc('buscar_conhecimento', {
@@ -78,9 +80,10 @@ export function TutorOPME() {
         });
 
       if (error) throw error;
-      return data || [];
+      return (data as KnowledgeDoc[]) || [];
     } catch (error) {
-      console.error('Erro ao buscar conhecimento:', error);
+   const err = error as Error;
+      console.error('Erro ao buscar conhecimento:', err);
       return [];
     }
   };
@@ -141,7 +144,8 @@ RESPOSTA:`;
       return data.response;
 
     } catch (error) {
-      console.error('Erro ao gerar resposta:', error);
+   const err = error as Error;
+      console.error('Erro ao gerar resposta:', err);
       return `Desculpe, não consegui processar sua pergunta no momento. 
 
 **Possíveis soluções:**
@@ -167,7 +171,7 @@ RESPOSTA:`;
       // Tentar extrair campos estruturados (etiquetas OPME)
       const fields = await ocrService.extractFields(file, {
         lote: /Lote[:\s]*(\w+)/i,
-        validade: /Val(?:idade)?[:\s]*([\d\/\-]+)/i,
+        validade: /Val(?:idade)?[:\s]*([\d-]+)/i,
         registro: /(?:Reg(?:istro)?|MS)[:\s]*(\d{13})/i,
         fabricante: /Fabricante[:\s]*(.+?)(?:\n|$)/i,
         ref: /(?:REF|Ref(?:erência)?)[:\s]*(\w+)/i,
@@ -179,7 +183,8 @@ RESPOSTA:`;
         fields
       };
     } catch (error) {
-      console.error('Erro no OCR:', error);
+   const err = error as Error;
+      console.error('Erro no OCR:', err);
       throw error;
     } finally {
       setIsLoading(false);
@@ -243,7 +248,8 @@ RESPOSTA:`;
       setMessages(prev => [...prev, assistantMessage]);
 
     } catch (error) {
-      console.error('Erro:', error);
+   const err = error as Error;
+      console.error('Erro:', err);
       setMessages(prev => [...prev, {
         id: (Date.now() + 1).toString(),
         role: 'assistant',

@@ -18,34 +18,15 @@ import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  Tabs,
+  Progress,
 } from '@/components/oraclusx-ds';
-import {
-  Activity,
-  AlertTriangle,
-  CheckCircle,
-  XCircle,
-  Clock,
-  TrendingUp,
-  TrendingDown,
-  Zap,
-  Shield,
-  Database,
-  RefreshCw,
-  AlertCircle,
-  Power,
-  Gauge,
-  Network,
-  Server,
-  GitBranch,
-  Eye,
-  Download,
-} from 'lucide-react';
+import { Server, CheckCircle, AlertTriangle, Database, GitBranch, Power, Activity, Clock } from 'lucide-react';
 import { useDocumentTitle } from '@/hooks';
 import { useToast } from '@/contexts/ToastContext';
 import { APIGatewayService } from '@/lib/services/APIGatewayService';
-import { formatNumber, formatPercent, formatDuration } from '@/lib/utils';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from 'recharts';
+import { formatNumber, formatPercent } from '@/lib/utils';
+// import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from 'recharts';
+import { OrxBarChart } from '@/components/charts/OrxBarChart';
 
 interface APIMetric {
   endpoint_id: string;
@@ -79,24 +60,24 @@ export default function APIGatewayDashboard() {
   const { addToast } = useToast();
 
   const [activeTab, setActiveTab] = useState<'overview' | 'endpoints' | 'alerts' | 'performance'>('overview');
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [metrics, setMetrics] = useState<APIMetric[]>([]);
   const [alerts, setAlerts] = useState<APIAlert[]>([]);
   const [autoRefresh, setAutoRefresh] = useState(false);
 
   useEffect(() => {
     carregarDados();
-  }, []);
+  }, [carregarDados]);
 
   useEffect(() => {
     if (autoRefresh) {
       const interval = setInterval(carregarDados, 30000); // 30 segundos
       return () => clearInterval(interval);
     }
-  }, [autoRefresh]);
+  }, [autoRefresh, carregarDados]);
 
-  const carregarDados = async () => {
-    setLoading(true);
+  const carregarDados = useCallback(async () => {
+    setIsLoading(true);
     try {
       const [metricsData, alertsData] = await Promise.all([
         APIGatewayService.getMetrics(),
@@ -105,14 +86,16 @@ export default function APIGatewayDashboard() {
 
       setMetrics(metricsData);
       setAlerts(alertsData);
-    } catch (error: unknown) {
-      addToast(`Erro ao carregar dados: ${error.message}`, 'error');
+    } catch (error) {
+      const err = error as Error;
+      console.error('[API_GATEWAY] Erro ao carregar métricas', err);
+      addToast(`Erro ao carregar dados: ${err.message}`, 'error');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
-  };
+  }, [addToast]);
 
-  const handleResolverAlerta = async (alertId: string) => {
+  const handleResolverAlerta = useCallback(async (alertId: string) => {
     const result = await APIGatewayService.resolveAlert(alertId);
     if (result.success) {
       addToast('Alerta resolvido com sucesso!', 'success');
@@ -120,9 +103,9 @@ export default function APIGatewayDashboard() {
     } else {
       addToast('Erro ao resolver alerta', 'error');
     }
-  };
+  }, [addToast, carregarDados]);
 
-  const handleResetCircuitBreaker = async (endpointId: string) => {
+  const handleResetCircuitBreaker = useCallback(async (endpointId: string) => {
     if (!confirm('Tem certeza que deseja resetar o circuit breaker deste endpoint?')) return;
 
     const result = await APIGatewayService.resetCircuitBreaker(endpointId);
@@ -132,19 +115,18 @@ export default function APIGatewayDashboard() {
     } else {
       addToast('Erro ao resetar circuit breaker', 'error');
     }
-  };
+  }, [addToast, carregarDados]);
 
-  const handleLimparCache = async () => {
+  const handleLimparCache = useCallback(async () => {
     if (!confirm('Tem certeza que deseja limpar o cache expirado?')) return;
 
     const deleted = await APIGatewayService.cleanupCache();
     addToast(`${deleted} entradas de cache removidas`, 'success');
-  };
+  }, [addToast]);
 
   // Calcular estatísticas gerais
   const totalRequests = metrics.reduce((sum, m) => sum + m.total_requests, 0);
   const totalSuccess = metrics.reduce((sum, m) => sum + m.success_count, 0);
-  const totalErrors = metrics.reduce((sum, m) => sum + m.error_count, 0);
   const avgResponseTime = metrics.length > 0
     ? metrics.reduce((sum, m) => sum + m.avg_response_time_ms, 0) / metrics.length
     : 0;
@@ -200,7 +182,7 @@ export default function APIGatewayDashboard() {
     {
       title: 'Alertas Ativos',
       value: alerts.filter(a => !a.is_resolved).length,
-      icon: AlertCircle,
+      icon: AlertTriangle,
       color: criticalAlerts > 0 ? 'red' : highAlerts > 0 ? 'orange' : 'green',
       trend: criticalAlerts > 0 ? `${criticalAlerts} críticos` : 'Normal',
     },
@@ -210,47 +192,56 @@ export default function APIGatewayDashboard() {
     <div className="space-y-6">
       {/* KPIs */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {kpis.map((kpi, index) => (
-          <Card
-            key={index}
-            className={`p-6 neuro-raised flex flex-col justify-between h-[160px] ${
-              kpi.color === 'blue'
-                ? 'bg-[var(--orx-primary)] text-white'
-                : kpi.color === 'green'
-                ? 'bg-emerald-600 text-white'
-                : kpi.color === 'orange'
-                ? 'bg-orange-500 text-white'
-                : kpi.color === 'red'
-                ? 'bg-red-600 text-white'
-                : kpi.color === 'indigo'
-                ? 'bg-indigo-600 text-white'
-                : 'bg-surface-light dark:bg-surface-dark text-[var(--text-primary)]'
-            }`}
-          >
-            <div className="flex items-center justify-between">
-              <h3 className="opacity-80" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>{kpi.title}</h3>
-              <kpi.icon className="w-5 h-5 opacity-80" />
-            </div>
-            <div className="mt-4" style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{kpi.value}</div>
-            {kpi.trend && <p className="opacity-70 mt-2" style={{ fontSize: '0.813rem' }}>{kpi.trend}</p>}
-          </Card>
-        ))}
+        {isLoading ? (
+          <div className="flex items-center gap-2 text-[var(--text-secondary)]">
+            <span className="animate-spin">⏳</span>
+            <span>Carregando métricas...</span>
+          </div>
+        ) : (
+          <div className="grid gap-4 lg:grid-cols-4 sm:grid-cols-2">
+            {kpis.map((kpi) => (
+              <Card
+                key={kpi.title}
+                className={`p-6 neuro-raised flex flex-col justify-between h-[160px] ${
+                  kpi.color === 'blue'
+                    ? 'bg-[var(--orx-primary)] text-white'
+                    : kpi.color === 'green'
+                    ? 'bg-emerald-600 text-white'
+                    : kpi.color === 'orange'
+                    ? 'bg-orange-500 text-white'
+                    : kpi.color === 'red'
+                    ? 'bg-red-600 text-white'
+                    : kpi.color === 'indigo'
+                    ? 'bg-indigo-600 text-white'
+                    : 'bg-surface-light dark:bg-surface-dark text-[var(--text-primary)]'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <h3 className="opacity-80 text-[0.813rem] font-medium">{kpi.title}</h3>
+                  <kpi.icon className="w-5 h-5 opacity-80" />
+                </div>
+                <div className="mt-4 text-[0.813rem] font-bold">{kpi.value}</div>
+                {kpi.trend && <p className="opacity-70 mt-2 text-[0.813rem]">{kpi.trend}</p>}
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Alertas Críticos */}
-      {alerts.filter(a => !a.is_resolved && a.severidade === 'critica').length > 0 && (
+      {alerts.filter((alert) => !alert.is_resolved && alert.severidade === 'critica').length > 0 && (
         <Card className="p-4 neuro-inset bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700">
           <div className="flex items-center gap-3 text-red-700 dark:text-red-300">
             <AlertTriangle className="w-5 h-5" />
-            <h4 className style={{ fontWeight: 500 }}>Alertas Críticos</h4>
+            <h4 className="font-medium">Alertas Críticos</h4>
           </div>
           <div className="mt-3 space-y-2">
             {alerts
-              .filter(a => !a.is_resolved && a.severidade === 'critica')
+              .filter((alert) => !alert.is_resolved && alert.severidade === 'critica')
               .slice(0, 3)
               .map((alert) => (
                 <div key={alert.id} className="flex items-center justify-between p-2 bg-red-100 dark:bg-red-800 rounded-lg">
-                  <span className style={{ fontSize: '0.813rem' }}>{alert.endpoint_nome}: {alert.mensagem}</span>
+                  <span className="text-[0.813rem]">{`${alert.endpoint_nome}: ${alert.mensagem}`}</span>
                   <Button size="sm" onClick={() => handleResolverAlerta(alert.id)}>
                     Resolver
                   </Button>
@@ -262,24 +253,15 @@ export default function APIGatewayDashboard() {
 
       {/* Gráfico de Sucesso vs Erros */}
       <Card className="p-6 neuro-raised">
-        <h3 className="mb-4" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Performance por Endpoint</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={metrics.slice(0, 10)}>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--text-secondary)" opacity={0.1} />
-            <XAxis dataKey="endpoint_nome" stroke="var(--text-secondary)" />
-            <YAxis stroke="var(--text-secondary)" />
-            <RechartsTooltip
-              contentStyle={{
-                background: 'var(--bg-light)',
-                border: '1px solid var(--text-secondary)',
-                borderRadius: '8px',
-              }}
-            />
-            <Legend />
-            <Bar dataKey="success_count" fill="var(--orx-success)" name="Sucesso" />
-            <Bar dataKey="error_count" fill="var(--orx-error)" name="Erro" />
-          </BarChart>
-        </ResponsiveContainer>
+        <h3 className="mb-4 text-[0.813rem] font-semibold">Performance por Endpoint</h3>
+        <OrxBarChart
+          data={metrics.slice(0, 10).map(m => ({ name: m.endpoint_nome, sucesso: m.success_count, erro: m.error_count }))}
+          keys={["sucesso", "erro"]}
+          indexBy="name"
+          height={300}
+          colors={["var(--orx-success)", "var(--orx-error)"]}
+          groupMode="grouped"
+        />
       </Card>
     </div>
   );
@@ -303,7 +285,7 @@ export default function APIGatewayDashboard() {
           <TableBody>
             {metrics.map((metric) => (
               <TableRow key={metric.endpoint_id}>
-                <TableCell className style={{ fontWeight: 500 }}>{metric.endpoint_nome}</TableCell>
+                <TableCell className="font-medium">{metric.endpoint_nome}</TableCell>
                 <TableCell>
                   <Badge variant="default">{metric.servico}</Badge>
                 </TableCell>
@@ -338,7 +320,7 @@ export default function APIGatewayDashboard() {
                 </TableCell>
                 <TableCell>
                   {formatPercent(metric.cache_hit_rate_percent || 0)}
-                  <span className="text-[var(--text-secondary)] ml-1" style={{ fontSize: '0.813rem' }}>
+                  <span className="text-[var(--text-secondary)] ml-1 text-[0.813rem]">
                     ({metric.cache_hits})
                   </span>
                 </TableCell>
@@ -398,13 +380,13 @@ export default function APIGatewayDashboard() {
   const renderAlerts = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Alertas Ativos ({alerts.filter(a => !a.is_resolved).length})</h2>
+        <h2 className="text-[0.813rem] font-semibold">Alertas Ativos ({alerts.filter((alert) => !alert.is_resolved).length})</h2>
         <Button variant="secondary" icon={<RefreshCw />} onClick={carregarDados}>
           Atualizar
         </Button>
       </div>
 
-      {alerts.filter(a => !a.is_resolved).length === 0 ? (
+      {alerts.filter((alert) => !alert.is_resolved).length === 0 ? (
         <Card className="p-8 text-center neuro-flat">
           <CheckCircle className="w-12 h-12 mx-auto mb-3 text-success" />
           <p className="text-[var(--text-secondary)]">Nenhum alerta ativo no momento</p>
@@ -440,12 +422,12 @@ export default function APIGatewayDashboard() {
                         {alert.severidade}
                       </Badge>
                       <Badge variant="default">{alert.tipo}</Badge>
-                      <span className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+                      <span className="text-[var(--text-secondary)] text-[0.813rem]">
                         {alert.endpoint_nome}
                       </span>
                     </div>
-                    <p className="mb-1" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>{alert.mensagem}</p>
-                    <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+                    <p className="mb-1 text-[0.813rem] font-medium">{alert.mensagem}</p>
+                    <p className="text-[var(--text-secondary)] text-[0.813rem]">
                       {new Date(alert.created_at).toLocaleString('pt-BR')}
                     </p>
                   </div>
@@ -463,27 +445,19 @@ export default function APIGatewayDashboard() {
   const renderPerformance = () => (
     <div className="space-y-6">
       <Card className="p-6 neuro-raised">
-        <h3 className="mb-4" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Tempo de Resposta por Endpoint</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={metrics.slice(0, 10)}>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--text-secondary)" opacity={0.1} />
-            <XAxis dataKey="endpoint_nome" stroke="var(--text-secondary)" />
-            <YAxis stroke="var(--text-secondary)" label={{ value: 'ms', angle: -90, position: 'insideLeft' }} />
-            <RechartsTooltip
-              contentStyle={{
-                background: 'var(--bg-light)',
-                border: '1px solid var(--text-secondary)',
-                borderRadius: '8px',
-              }}
-            />
-            <Bar dataKey="avg_response_time_ms" fill="var(--orx-primary)" name="Tempo Médio (ms)" />
-          </BarChart>
-        </ResponsiveContainer>
+        <h3 className="mb-4 text-[0.813rem] font-semibold">Tempo de Resposta por Endpoint</h3>
+        <OrxBarChart
+          data={metrics.slice(0, 10).map(m => ({ name: m.endpoint_nome, tempo: m.avg_response_time_ms }))}
+          keys={["tempo"]}
+          indexBy="name"
+          height={300}
+          colors={["var(--orx-primary)"]}
+        />
       </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card className="p-6 neuro-raised">
-          <h3 className="mb-4 flex items-center gap-2" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>
+          <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] font-semibold">
             <Database className="w-5 h-5 text-[var(--primary)]" />
             Cache Performance
           </h3>
@@ -493,7 +467,7 @@ export default function APIGatewayDashboard() {
               .slice(0, 5)
               .map((metric) => (
                 <div key={metric.endpoint_id} className="flex items-center justify-between p-3 neuro-flat rounded-lg">
-                  <span className style={{ fontSize: '0.813rem' }}>{metric.endpoint_nome}</span>
+                  <span className="text-[0.813rem]">{metric.endpoint_nome}</span>
                   <Badge variant="default" className="bg-[var(--primary)]/20 text-[var(--primary)]">
                     {formatPercent(metric.cache_hit_rate_percent)}
                   </Badge>
@@ -506,57 +480,42 @@ export default function APIGatewayDashboard() {
         </Card>
 
         <Card className="p-6 neuro-raised">
-          <h3 className="mb-4 flex items-center gap-2" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>
+          <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] font-semibold">
             <GitBranch className="w-5 h-5 text-[var(--primary)]" />
             Circuit Breaker Status
           </h3>
           <div className="space-y-3">
             <div className="p-4 neuro-inset rounded-lg">
-              <div className="flex items-center justify-between mb-2">
-                <span className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Fechados (Normal)</span>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[0.813rem] font-medium">Fechados (Normal)</span>
                 <Badge variant="default" className="bg-success/20 text-success">
                   {endpointsHealthy}
                 </Badge>
               </div>
-              <div className="w-full bg-[var(--bg-light)] dark:bg-[var(--bg-dark)] h-2 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-success"
-                  style={{ width: `${(endpointsHealthy / metrics.length) * 100}%` }}
-                />
-              </div>
+              <Progress value={Math.min((endpointsHealthy / metrics.length) * 100, 100)} />
             </div>
 
             {endpointsWarning > 0 && (
               <div className="p-4 neuro-inset rounded-lg">
                 <div className="flex items-center justify-between mb-2">
-                  <span className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Meio-Abertos (Teste)</span>
+                  <span className="text-[0.813rem] font-medium">Meio-Abertos (Teste)</span>
                   <Badge variant="default" className="bg-warning/20 text-warning">
                     {endpointsWarning}
                   </Badge>
                 </div>
-                <div className="w-full bg-[var(--bg-light)] dark:bg-[var(--bg-dark)] h-2 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-warning"
-                    style={{ width: `${(endpointsWarning / metrics.length) * 100}%` }}
-                  />
-                </div>
+                <Progress value={Math.min((endpointsWarning / metrics.length) * 100, 100)} />
               </div>
             )}
 
             {endpointsDown > 0 && (
               <div className="p-4 neuro-inset rounded-lg">
                 <div className="flex items-center justify-between mb-2">
-                  <span className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Abertos (Offline)</span>
+                  <span className="text-[0.813rem] font-medium">Abertos (Offline)</span>
                   <Badge variant="default" className="bg-error/20 text-error">
                     {endpointsDown}
                   </Badge>
                 </div>
-                <div className="w-full bg-[var(--bg-light)] dark:bg-[var(--bg-dark)] h-2 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-error"
-                    style={{ width: `${(endpointsDown / metrics.length) * 100}%` }}
-                  />
-                </div>
+                <Progress value={Math.min((endpointsDown / metrics.length) * 100, 100)} />
               </div>
             )}
           </div>

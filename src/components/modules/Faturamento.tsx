@@ -1,5 +1,5 @@
 import { useState, useEffect } from"react";
-import { Card } from"@/components/oraclusx-ds";
+import { Card, Progress } from"@/components/oraclusx-ds";
 import {
   FileText,
   Download,
@@ -206,52 +206,43 @@ export default function Faturamento() {
       {/* Gráfico de Status */}
       {!loading && (
         <Card className="neuro-raised p-6">
-          <h3 className="text-body-lg text-[var(--text-primary)] mb-4" style={{ fontWeight: 500 }}>
+          <h3 className="text-body-lg text-[var(--text-primary)] mb-4 font-medium">
             Distribuição de Status
           </h3>
           <div className="space-y-3">
             <div>
               <div className="flex justify-between text-body-sm mb-1">
                 <span className="text-[var(--text-secondary)]">Autorizadas</span>
-                <span className="text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+                <span className="text-[var(--text-primary)] font-medium">
                   {resumo.emitidas} ({resumo.totalFaturas > 0 ? ((resumo.emitidas / resumo.totalFaturas) * 100).toFixed(0) : 0}%)
                 </span>
               </div>
-              <div className="h-2 bg-[var(--surface)] rounded-full overflow-hidden neuro-inset">
-                <div
-                  className="h-full bg-success/50 transition-all"
-                  style={{ width: `${resumo.totalFaturas > 0 ? (resumo.emitidas / resumo.totalFaturas) * 100 : 0}%` }}
-                />
+              <div className="h-2">
+                <Progress value={Math.min(resumo.totalFaturas > 0 ? (resumo.emitidas / resumo.totalFaturas) * 100 : 0, 100)} />
               </div>
             </div>
 
             <div>
               <div className="flex justify-between text-body-sm mb-1">
                 <span className="text-[var(--text-secondary)]">Pendentes</span>
-                <span className="text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+                <span className="text-[var(--text-primary)] font-medium">
                   {resumo.pendentes} ({resumo.totalFaturas > 0 ? ((resumo.pendentes / resumo.totalFaturas) * 100).toFixed(0) : 0}%)
                 </span>
               </div>
-              <div className="h-2 bg-[var(--surface)] rounded-full overflow-hidden neuro-inset">
-                <div
-                  className="h-full bg-warning/50 transition-all"
-                  style={{ width: `${resumo.totalFaturas > 0 ? (resumo.pendentes / resumo.totalFaturas) * 100 : 0}%` }}
-                />
+              <div className="h-2">
+                <Progress value={Math.min(resumo.totalFaturas > 0 ? (resumo.pendentes / resumo.totalFaturas) * 100 : 0, 100)} />
               </div>
             </div>
 
             <div>
               <div className="flex justify-between text-body-sm mb-1">
                 <span className="text-[var(--text-secondary)]">Pagas</span>
-                <span className="text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+                <span className="text-[var(--text-primary)] font-medium">
                   {resumo.pagas} ({resumo.taxaPagamento.toFixed(0)}%)
                 </span>
               </div>
-              <div className="h-2 bg-[var(--surface)] rounded-full overflow-hidden neuro-inset">
-                <div
-                  className="h-full bg-emerald-500 transition-all"
-                  style={{ width: `${resumo.taxaPagamento}%` }}
-                />
+              <div className="h-2">
+                <Progress value={Math.min(resumo.taxaPagamento, 100)} />
               </div>
             </div>
           </div>
@@ -269,7 +260,7 @@ export default function Faturamento() {
             <Plus className="w-4 h-4" />
             Nova NF-e
           </button>
-          <button className="neuro-button-secondary px-4 py-2 rounded-xl">
+          <button className="neuro-button-secondary px-4 py-2 rounded-xl" aria-label="Filtrar NF-e">
             <Filter className="w-4 h-4" />
           </button>
         </div>
@@ -300,22 +291,22 @@ export default function Faturamento() {
             <table className="w-full">
               <thead className="border-b border-[var(--border)]">
                 <tr>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">
                     Número
                   </th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">
                     Cliente
                   </th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">
                     Data Emissão
                   </th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">
                     Valor
                   </th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">
                     Status
                   </th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">
                     Ações
                   </th>
                 </tr>
@@ -328,7 +319,7 @@ export default function Faturamento() {
                   >
                     <td className="p-4">
                       <div>
-                        <p className="text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+                        <p className="text-[var(--text-primary)] font-medium">
                           {fatura.numero_nfe}
                         </p>
                         <p className="text-body-xs text-[var(--text-secondary)]">
@@ -347,7 +338,7 @@ export default function Faturamento() {
                     <td className="p-4 text-[var(--text-primary)]">
                       {formatDate(fatura.data_emissao)}
                     </td>
-                    <td className="p-4 text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+                    <td className="p-4 text-[var(--text-primary)] font-medium">
                       {formatCurrency(fatura.valor_total)}
                     </td>
                     <td className="p-4">
@@ -412,7 +403,7 @@ export default function Faturamento() {
   const renderDDA = () => (
     <Card className="neuro-raised p-12 text-center">
       <Calendar className="w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4" />
-      <h3 className="text-heading-sm text-[var(--text-primary)] mb-2" style={{ fontWeight: 500 }}>
+      <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 font-medium">
         DDA - Débito Direto Autorizado
       </h3>
       <p className="text-[var(--text-secondary)]">
@@ -424,7 +415,7 @@ export default function Faturamento() {
   const renderPluggy = () => (
     <Card className="neuro-raised p-12 text-center">
       <AlertCircle className="w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4" />
-      <h3 className="text-heading-sm text-[var(--text-primary)] mb-2" style={{ fontWeight: 500 }}>
+      <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 font-medium">
         Integração Pluggy
       </h3>
       <p className="text-[var(--text-secondary)]">
@@ -448,7 +439,7 @@ export default function Faturamento() {
           </div>
           <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-success/50 animate-pulse" />
-            <span className="text-body-sm text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+            <span className="text-body-sm text-[var(--text-primary)] font-medium">
               Realtime Sync
             </span>
           </div>

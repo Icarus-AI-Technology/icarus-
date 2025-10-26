@@ -142,6 +142,7 @@ export default function CadastroConvenios() {
         }
       }
     } catch (error: unknown) {
+        const err = error as Error;
       setErrors((prev) => ({
         ...prev,
         cnpj: error.message ||"Erro ao validar CNPJ.",
@@ -206,8 +207,9 @@ export default function CadastroConvenios() {
       toast.success(`Convênio ${novoConvenio.nome} cadastrado com sucesso!`);
       navigate("/cadastros");
     } catch (error: unknown) {
+        const err = error as Error;
       toast.error(error.message ||"Erro ao cadastrar convênio.");
-      console.error("Erro ao cadastrar convênio:", error);
+      console.error("Erro ao cadastrar convênio:", err);
     } finally {
       setLoading(false);
     }

@@ -1,0 +1,10 @@
+Always Rules (ICARUS Docs)
+
+Linguagem: pt-BR; tom objetivo.
+
+Não expor segredos; usar variáveis de ambiente.
+
+Manter links relativos entre docs/* e docs/REPORTS/*.
+
+Ao gerar relatórios, escrever também um sumário executivo para diretoria.
+

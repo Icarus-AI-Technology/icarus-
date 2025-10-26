@@ -10,9 +10,9 @@
  * @version 5.0.0
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { cadastrosService } from '@/services/CadastrosService';
-import { duplicateDetectionService, DuplicateMatch } from '@/services/DuplicateDetectionService';
+import type { DuplicateMatch } from '@/services/DuplicateDetectionService';
 
 // ========================================
 // INTERFACES
@@ -97,11 +97,7 @@ export const useCadastrosKPIs = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadKPIs();
-  }, []);
-
-  const loadKPIs = async () => {
+  const loadKPIs = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -154,13 +150,17 @@ export const useCadastrosKPIs = () => {
       // TODO: Implementar query real de duplicatas detectadas
       setDuplicatas([]);
 
-    } catch (_err) {
-      console.error('Erro ao carregar KPIs:', err);
+    } catch (error) {
+      console.error('Erro ao carregar KPIs:', error as Error);
       setError('Erro ao carregar dados do dashboard');
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadKPIs();
+  }, [loadKPIs]);
 
   const refresh = () => {
     loadKPIs();
@@ -186,7 +186,7 @@ function generateMockEvolucao(): EvolucaoCadastro[] {
     'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
   ];
 
-  return meses.map((mes, idx) => ({
+  return meses.map((mes) => ({
     mes,
     medicos: Math.floor(Math.random() * 20) + 10,
     hospitais: Math.floor(Math.random() * 5) + 2,
@@ -313,11 +313,7 @@ export const useAlertasCadastros = () => {
   const [alertas, setAlertas] = useState<AlertaCadastro[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadAlertas();
-  }, []);
-
-  const loadAlertas = async () => {
+  const loadAlertas = useCallback(async () => {
     try {
       setLoading(true);
       
@@ -330,12 +326,16 @@ export const useAlertasCadastros = () => {
       });
       
       setAlertas(mockAlertas);
-    } catch (_error) {
-      console.error('Erro ao carregar alertas:', error);
+    } catch (error) {
+      console.error('Erro ao carregar alertas:', error as Error);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadAlertas();
+  }, [loadAlertas]);
 
   const dismissAlerta = (id: string) => {
     setAlertas(prev => prev.filter(a => a.id !== id));
@@ -357,23 +357,23 @@ export const useDuplicatasDetectadas = () => {
   const [duplicatas, setDuplicatas] = useState<DuplicateMatch[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadDuplicatas();
-  }, []);
-
-  const loadDuplicatas = async () => {
+  const loadDuplicatas = useCallback(async () => {
     try {
       setLoading(true);
       
       // TODO: Implementar query real de duplicatas armazenadas
       // Por ora, retorna array vazio
       setDuplicatas([]);
-    } catch (_error) {
-      console.error('Erro ao carregar duplicatas:', error);
+    } catch (error) {
+      console.error('Erro ao carregar duplicatas:', error as Error);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadDuplicatas();
+  }, [loadDuplicatas]);
 
   const ignoreDuplicata = (id: string) => {
     setDuplicatas(prev => prev.filter(d => d.id !== id));

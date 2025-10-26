@@ -55,7 +55,7 @@ export function FormMedico({
   const [statusCRM, setStatusCRM] = useState<'ativo' | 'inativo' | null>(null);
   const [especialidades, setEspecialidades] = useState<string[]>([]);
   
-  const { data: dadosCrm, loading: buscandoCrm, cached, error, validate: buscarCrm } = useValidacaoCRM();
+  const { data: _dadosCrm, loading: buscandoCrm, cached, error, validate: buscarCrm } = useValidacaoCRM();
 
   const form = useForm<MedicoFormData>({
     resolver: zodResolver(medicoSchema),

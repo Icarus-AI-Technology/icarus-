@@ -3,12 +3,12 @@
  * Chatbot avançado com capacidade de pesquisa profunda
  */
 
-import React, { useState, useEffect, useMemo, useCallback, useRef } from"react";
-import { MessageCircle, Send, X, Loader2, Bot, ExternalLink, ChevronDown, ChevronUp, Paperclip, Mic, MicOff } from"lucide-react";
-import { cn } from"@/lib/utils";
-import { useGPTResearcher } from"@/hooks/useGPTResearcher";
-import { initSpeechRecognition } from"@/utils/browserCompatibility";
-import { supabase } from"@/lib/supabase";
+import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { MessageCircle, Send, X, Loader2, Bot, ExternalLink, Paperclip, Mic, MicOff } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useGPTResearcher } from "@/hooks/useGPTResearcher";
+import { initSpeechRecognition } from "@/utils/browserCompatibility";
+import { supabase } from "@/lib/supabase";
 
 export interface Message {
   id: string;
@@ -32,12 +32,12 @@ export const ChatbotWithResearch: React.FC<ChatbotWithResearchProps> = ({
   researcherHost,
   onMessageSent,
 }) => {
+  const isQAMode = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1';
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
-  const [showLogs, setShowLogs] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [recognition, setRecognition] = useState<any | null>(null);
+  const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const { isConnected, isResearching, logs, error, research, clearError } = useGPTResearcher({
@@ -72,13 +72,13 @@ export const ChatbotWithResearch: React.FC<ChatbotWithResearchProps> = ({
         recognitionInstance.interimResults = false;
         recognitionInstance.lang = 'pt-BR';
 
-        recognitionInstance.onresult = (event: any) => {
+        recognitionInstance.onresult = (event: SpeechRecognitionEvent) => {
           const transcript = event.results[0][0].transcript;
           setInputMessage(transcript);
           setIsListening(false);
         };
 
-        recognitionInstance.onerror = (event: any) => {
+        recognitionInstance.onerror = (event: SpeechRecognitionErrorEvent) => {
           console.error('Speech recognition error:', event.error);
           setIsListening(false);
         };
@@ -149,7 +149,7 @@ export const ChatbotWithResearch: React.FC<ChatbotWithResearchProps> = ({
   // BUSCA NA BASE DE CONHECIMENTO LOCAL (RAG)
   // ============================================
   
-  const searchLocalKnowledge = async (query: string): Promise<any[]> => {
+  const searchLocalKnowledge = async (query: string): Promise<Array<{ categoria: string; conteudo_texto: string; modulo?: string }>> => {
     try {
       const { data, error } = await supabase
         .rpc('buscar_conhecimento', {
@@ -161,7 +161,8 @@ export const ChatbotWithResearch: React.FC<ChatbotWithResearchProps> = ({
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error('Erro ao buscar conhecimento local:', error);
+   const err = error as Error;
+      console.error('Erro ao buscar conhecimento local:', err);
       return [];
     }
   };
@@ -170,7 +171,7 @@ export const ChatbotWithResearch: React.FC<ChatbotWithResearchProps> = ({
   // BUSCAR ATIVIDADES DE USUÁRIO
   // ============================================
 
-  const searchUserActivities = async (userEmail: string, days: number = 30): Promise<any[]> => {
+  const searchUserActivities = async (userEmail: string, days: number = 30): Promise<Array<{ modulo: string; total_acoes: number; acoes_unicas: string[]; taxa_sucesso: number; tempo_medio_ms: number }>> => {
     try {
       const { data, error } = await supabase
         .rpc('buscar_atividades_usuario', {
@@ -181,12 +182,13 @@ export const ChatbotWithResearch: React.FC<ChatbotWithResearchProps> = ({
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error('Erro ao buscar atividades do usuário:', error);
+   const err = error as Error;
+      console.error('Erro ao buscar atividades do usuário:', err);
       return [];
     }
   };
 
-  const compareUsersForHandover = async (userEmailLeaving: string, userEmailReplacing: string): Promise<any[]> => {
+  const compareUsersForHandover = async (userEmailLeaving: string, userEmailReplacing: string): Promise<Array<{ modulo: string; precisa_treinamento: boolean; experiencia_sainte: number; experiencia_substituto: number; diferenca_experiencia: number }>> => {
     try {
       const { data, error } = await supabase
         .rpc('comparar_usuarios_handover', {
@@ -197,12 +199,13 @@ export const ChatbotWithResearch: React.FC<ChatbotWithResearchProps> = ({
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error('Erro ao comparar usuários:', error);
+   const err = error as Error;
+      console.error('Erro ao comparar usuários:', err);
       return [];
     }
   };
 
-  const detectUserQuery = (query: string): { type: string; params: any } | null => {
+  const detectUserQuery = (query: string): { type: 'user_activities' | 'user_handover'; params: Record<string, string> } | null => {
     const lowerQuery = query.toLowerCase();
 
     // Detectar consulta de atividades: "o que [usuário] fez"
@@ -223,7 +226,7 @@ export const ChatbotWithResearch: React.FC<ChatbotWithResearchProps> = ({
     return null;
   };
 
-  const generateLocalResponse = async (query: string, context: any[]): Promise<string> => {
+  const generateLocalResponse = async (query: string, context: Array<{ categoria: string; conteudo_texto: string; modulo?: string }>): Promise<string> => {
     if (context.length === 0) {
       return ''; // Sem contexto local, usar pesquisa web
     }
@@ -420,8 +423,9 @@ RESPOSTA:`;
       try {
         recognition.start();
         setIsListening(true);
-      } catch (_error) {
-        console.error('Error starting recognition:', error);
+      } catch (error) {
+   const err = error as Error;
+        console.error('Error starting recognition:', err);
         setIsListening(false);
       }
     }
@@ -430,56 +434,27 @@ RESPOSTA:`;
   const suggestions = ["Ver alertas ativos","Iniciar treinamento","Como registrar um novo OPME?",
   ];
 
+  if (isQAMode) {
+    return null;
+  }
+
   return (
     <div className={cn("fixed z-50", positionClasses[position], className)}>
       {/* Chat Window */}
       {isOpen && (
         <div 
-          className="w-96 h-[600px] mb-4 flex flex-col animate-in slide-in-from-bottom-5 fade-in duration-300"
-          style={{
-            background: 'var(--orx-bg-light)', // Paleta do sistema (adaptável dark/light)
-            borderRadius: '1.25rem',
-            boxShadow: 'var(--orx-shadow-light-1), var(--orx-shadow-light-2)', // Neumorphism
-            border: '1px solid rgba(255, 255, 255, 0.1)'
-          }}
+          className="w-96 h-[600px] mb-4 flex flex-col animate-in slide-in-from-bottom-5 fade-in duration-300 bg-[var(--orx-bg-light)] rounded-[1.25rem] shadow-[var(--orx-shadow-light-1),_var(--orx-shadow-light-2)] border border-white/10"
         >
           {/* Header */}
           <div 
-            className="flex items-center justify-between p-4"
-            style={{
-              borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
-              borderTopLeftRadius: '1.25rem',
-              borderTopRightRadius: '1.25rem'
-            }}
+            className="flex items-center justify-between p-4 border-b border-b-[rgba(0,0,0,0.05)] rounded-t-[1.25rem]"
           >
             <div className="flex items-center gap-2">
-              <div 
-                className="p-2 rounded-lg"
-                style={{
-                  background: 'rgba(99, 102, 241, 0.85)', // MESMO INDIGO do Icarus/Chatbot button
-                  backdropFilter: 'blur(12px) saturate(180%)',
-                  WebkitBackdropFilter: 'blur(12px) saturate(180%)',
-                  border: '1px solid rgba(255, 255, 255, 0.18)',
-                  boxShadow: `
-                    4px 4px 8px rgba(99, 102, 241, 0.2),
-                    -2px -2px 6px rgba(255, 255, 255, 0.05),
-                    inset 1px 1px 4px rgba(0, 0, 0, 0.1)
-                  `
-                }}
-              >
-                <Bot className="w-5 h-5" style={{ color: 'white' }} />
+              <div className="p-2 rounded-lg bg-[rgba(99,102,241,0.85)] backdrop-blur-[12px] backdrop-saturate-[180%] border border-white/20 shadow-[4px_4px_8px_rgba(99,102,241,0.2),_-2px_-2px_6px_rgba(255,255,255,0.05),_inset_1px_1px_4px_rgba(0,0,0,0.1)]">
+                <Bot className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h3 
-                  style={{
-                    fontSize: '0.813rem', // Reduzido de 1rem para 0.875rem
-                    fontFamily: 'var(--orx-font-family)',
-                    color: 'var(--orx-text-primary)',
-                    lineHeight: '1.2',
-                    fontWeight: 600,
-                    margin: 0
-                  }}
-                >
+                <h3 className="text-[0.813rem] text-[var(--orx-text-primary)] leading-[1.2] font-semibold m-0">
                   ICARUS AI Assistant
                 </h3>
                 <div className="flex items-center gap-1">
@@ -488,10 +463,7 @@ RESPOSTA:`;
                       isConnected ?"bg-success/50" :"bg-destructive/50"
                     )}
                   />
-                  <span style={{ 
-                    color: 'var(--orx-text-secondary)',
-                    fontSize: '0.813rem' // Reduzido de 0.75rem para 0.6875rem
-                  }}>
+                  <span className="text-[var(--orx-text-secondary)] text-[0.813rem]">
                     {isConnected ?"Online • Pronto para ajudar" :"Desconectado"}
                   </span>
                 </div>
@@ -499,22 +471,9 @@ RESPOSTA:`;
             </div>
             <div className="flex items-center gap-2">
               <button
-                className="p-1.5 rounded-lg transition-all"
+                className="p-1.5 rounded-lg transition-all bg-transparent text-[var(--orx-text-secondary)] hover:bg-[rgba(99,102,241,0.1)]"
                 title="Expandir"
                 aria-label="Expandir"
-                style={{
-                  border: 'none',
-                  outline: 'none',
-                  color: 'var(--orx-text-secondary)',
-                  background: 'transparent',
-                  cursor: 'pointer'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(99, 102, 241, 0.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent';
-                }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
@@ -522,22 +481,9 @@ RESPOSTA:`;
               </button>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1.5 rounded-lg transition-all"
+                className="p-1.5 rounded-lg transition-all bg-transparent text-[var(--orx-text-secondary)] hover:bg-[rgba(239,68,68,0.1)]"
                 title="Fechar chatbot"
                 aria-label="Fechar chatbot"
-                style={{
-                  border: 'none',
-                  outline: 'none',
-                  color: 'var(--orx-text-secondary)',
-                  background: 'transparent',
-                  cursor: 'pointer'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent';
-                }}
               >
                 <X size={18} />
               </button>
@@ -545,70 +491,31 @@ RESPOSTA:`;
           </div>
 
           {/* Messages */}
-          <div 
-            className="flex-1 overflow-y-auto space-y-3"
-            style={{
-              padding: '1rem 1rem 1rem 0', // Remove padding esquerdo, mantém os outros
-            }}
-          >
+          <div className="flex-1 overflow-y-auto space-y-3 pt-4 pr-4 pb-4 pl-0">
             {messages.map((message) => (
               <div
                 key={message.id}
                 className={cn("flex",
-                  message.type ==="user" ?"justify-end" :"justify-start"
+                  message.type ==="user" ?"justify-end pr-0 pl-4" :"justify-start pr-4 pl-4"
                 )}
-                style={{
-                  paddingLeft: '1rem', // Adiciona padding esquerdo apenas nos itens
-                  paddingRight: message.type ==="user" ? '0' : '1rem', // Remove padding direito em mensagens do usuário
-                }}
               >
                 <div
-                  className={cn("rounded-lg p-3")}
-                  style={{
-                    maxWidth: message.type ==="user" ? '90%' : '95%', // Aumentado de 80% para ocupar mais espaço
-                    background: message.type ==="user"
-                      ? 'rgba(99, 102, 241, 0.85)' // Indigo Liquid Glass para mensagem do usuário
-                      : message.type ==="research"
-                      ? 'rgba(251, 191, 36, 0.15)' // Amarelo translúcido para pesquisa
-                      : 'var(--orx-bg-light)', // Background do sistema para bot
-                    color: message.type ==="user"
-                      ? 'white'
-                      : 'var(--orx-text-primary)',
-                    boxShadow: message.type ==="user"
-                      ? `
-                        4px 4px 8px rgba(99, 102, 241, 0.2),
-                        -2px -2px 6px rgba(255, 255, 255, 0.05),
-                        inset 1px 1px 4px rgba(0, 0, 0, 0.1)
-                      `
-                      : 'var(--orx-shadow-light-1), var(--orx-shadow-light-2)', // Neumorphism para mensagens do bot
-                    backdropFilter: message.type ==="user" ? 'blur(12px) saturate(180%)' : undefined,
-                    WebkitBackdropFilter: message.type ==="user" ? 'blur(12px) saturate(180%)' : undefined,
-                    border: message.type ==="user" ? '1px solid rgba(255, 255, 255, 0.18)' : undefined,
-                  }}
+                  className={cn(
+                    "rounded-lg p-3 max-w-[95%] text-[var(--orx-text-primary)]",
+                    message.type === "user" && "max-w-[90%] text-white bg-[rgba(99,102,241,0.85)] backdrop-blur-[12px] backdrop-saturate-[180%] border border-white/20 shadow-[4px_4px_8px_rgba(99,102,241,0.2),_-2px_-2px_6px_rgba(255,255,255,0.05),_inset_1px_1px_4px_rgba(0,0,0,0.1)]",
+                    message.type === "research" && "bg-[rgba(251,191,36,0.15)]",
+                    message.type === "bot" && "bg-[var(--orx-bg-light)] shadow-[var(--orx-shadow-light-1),_var(--orx-shadow-light-2)]"
+                  )}
                 >
                   <p 
-                    className="whitespace-pre-wrap"
-                    style={{
-                      fontSize: '0.813rem', // Reduzido
-                      fontFamily: 'var(--orx-font-family)',
-                      lineHeight: '1.5',
-                      margin: 0
-                    }}
+                    className="whitespace-pre-wrap text-[0.813rem] leading-[1.5] m-0"
                   >
                     {message.content}
                   </p>
                   {message.sources && message.sources.length > 0 && (
-                    <div 
-                      className="mt-2 pt-2"
-                      style={{
-                        borderTop: '1px solid rgba(0, 0, 0, 0.1)'
-                      }}
-                    >
+                    <div className="mt-2 pt-2 border-t border-t-[rgba(0,0,0,0.1)]">
                       <p 
-                        className="mb-1" style={{ 
-                          fontSize: '0.813rem',
-                          color: 'var(--orx-text-secondary)'
-                        , fontWeight: 500 }}
+                        className="mb-1 text-[0.813rem] text-[var(--orx-text-secondary)] font-medium"
                       >
                         Fontes:
                       </p>
@@ -618,11 +525,7 @@ RESPOSTA:`;
                           href={source}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-1 hover:underline"
-                          style={{
-                            fontSize: '0.813rem',
-                            color: 'rgba(99, 102, 241, 1)'
-                          }}
+                          className="flex items-center gap-1 hover:underline text-[0.813rem] text-[rgba(99,102,241,1)]"
                         >
                           <ExternalLink size={12} />
                           {source}
@@ -631,11 +534,7 @@ RESPOSTA:`;
                     </div>
                   )}
                   <p 
-                    className="opacity-70 mt-1"
-                    style={{
-                      fontSize: '0.813rem',
-                      color: message.type ==="user" ? 'rgba(255, 255, 255, 0.8)' : 'var(--orx-text-secondary)'
-                    }}
+                    className={cn("opacity-70 mt-1 text-[0.813rem]", message.type === "user" ? "text-[rgba(255,255,255,0.8)]" : "text-[var(--orx-text-secondary)]")}
                   >
                     {message.timestamp.toLocaleTimeString()}
                   </p>
@@ -645,15 +544,10 @@ RESPOSTA:`;
             {isResearching && (
               <div className="flex justify-start">
                 <div 
-                  className="rounded-lg p-3"
-                  style={{
-                    background: 'var(--orx-bg-light)',
-                    boxShadow: 'var(--orx-shadow-light-1), var(--orx-shadow-light-2)'
-                  }}
+                  className="rounded-lg p-3 bg-[var(--orx-bg-light)] shadow-[var(--orx-shadow-light-1),_var(--orx-shadow-light-2)]"
                 >
                   <Loader2 
-                    className="w-5 h-5 animate-spin"
-                    style={{ color: 'rgba(99, 102, 241, 1)' }}
+                    className="w-5 h-5 animate-spin text-[rgba(99,102,241,1)]"
                   />
                 </div>
               </div>
@@ -663,20 +557,8 @@ RESPOSTA:`;
 
           {/* Suggestions (when no messages) */}
           {messages.length <= 1 && (
-            <div 
-              className="pb-2 space-y-2"
-              style={{
-                paddingLeft: '1rem', // Alinhado com as mensagens
-                paddingRight: '1rem',
-              }}
-            >
-              <p style={{
-                fontSize: '0.813rem', // Reduzido de 0.8125rem
-                fontFamily: 'var(--orx-font-family)',
-                color: 'var(--orx-text-primary)',
-                marginBottom: '0.5rem',
-                fontWeight: 500
-              }}>
+            <div className="pb-2 space-y-2 px-4">
+              <p className="text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium">
                 Sugestões:
               </p>
               {suggestions.map((suggestion, idx) => (
@@ -685,63 +567,7 @@ RESPOSTA:`;
                   onClick={() => {
                     setInputMessage(suggestion);
                   }}
-                  className="w-full text-left px-4 py-3 rounded-lg transition-all"
-                  style={{
-                    fontSize: '0.813rem', // Reduzido de 0.8125rem
-                    fontFamily: 'var(--orx-font-family)',
-                    color: 'var(--orx-text-primary)',
-                    background: 'var(--orx-bg-light)',
-                    border: 'none',
-                    cursor: 'pointer',
-                    // NEUMORPHISM COM BORDA ESCURA (sombras invertidas)
-                    boxShadow: `
-                      4px 4px 8px rgba(0, 0, 0, 0.18),
-                      -2px -2px 6px rgba(0, 0, 0, 0.1),
-                      inset 1px 1px 2px rgba(255, 255, 255, 0.3),
-                      inset -1px -1px 2px rgba(0, 0, 0, 0.1)
-                    `,
-                    fontWeight: 500
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)'; // Elevação mais pronunciada
-                    e.currentTarget.style.boxShadow = `
-                      6px 6px 12px rgba(0, 0, 0, 0.25),
-                      -3px -3px 8px rgba(0, 0, 0, 0.15),
-                      inset 1px 1px 3px rgba(255, 255, 255, 0.4),
-                      inset -1px -1px 3px rgba(0, 0, 0, 0.12),
-                      0 3px 12px rgba(99, 102, 241, 0.12)
-                    `;
-                    e.currentTarget.style.color = 'rgba(99, 102, 241, 1)'; // Texto muda para indigo
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                    e.currentTarget.style.boxShadow = `
-                      4px 4px 8px rgba(0, 0, 0, 0.18),
-                      -2px -2px 6px rgba(0, 0, 0, 0.1),
-                      inset 1px 1px 2px rgba(255, 255, 255, 0.3),
-                      inset -1px -1px 2px rgba(0, 0, 0, 0.1)
-                    `;
-                    e.currentTarget.style.color = 'var(--orx-text-primary)';
-                  }}
-                  onMouseDown={(e) => {
-                    // Efeito de pressão (afundado)
-                    e.currentTarget.style.transform = 'translateY(0) scale(0.98)';
-                    e.currentTarget.style.boxShadow = `
-                      inset 2px 2px 5px rgba(0, 0, 0, 0.2),
-                      inset -2px -2px 4px rgba(0, 0, 0, 0.15)
-                    `;
-                  }}
-                  onMouseUp={(e) => {
-                    // Volta ao estado hover
-                    e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
-                    e.currentTarget.style.boxShadow = `
-                      6px 6px 12px rgba(0, 0, 0, 0.25),
-                      -3px -3px 8px rgba(0, 0, 0, 0.15),
-                      inset 1px 1px 3px rgba(255, 255, 255, 0.4),
-                      inset -1px -1px 3px rgba(0, 0, 0, 0.12),
-                      0 3px 12px rgba(99, 102, 241, 0.12)
-                    `;
-                  }}
+                  className="w-full text-left px-4 py-3 rounded-lg transition-all text-[0.813rem] text-[var(--orx-text-primary)] bg-[var(--orx-bg-light)] shadow-[4px_4px_8px_rgba(0,0,0,0.18),_-2px_-2px_6px_rgba(0,0,0,0.1),_inset_1px_1px_2px_rgba(255,255,255,0.3),_inset_-1px_-1px_2px_rgba(0,0,0,0.1)] font-medium hover:-translate-y-[3px] hover:scale-[1.02] hover:shadow-[6px_6px_12px_rgba(0,0,0,0.25),_-3px_-3px_8px_rgba(0,0,0,0.15),_inset_1px_1px_3px_rgba(255,255,255,0.4),_inset_-1px_-1px_3px_rgba(0,0,0,0.12),_0_3px_12px_rgba(99,102,241,0.12)] hover:text-[rgba(99,102,241,1)] active:scale-[0.98]"
                 >
                   {suggestion}
                 </button>
@@ -752,25 +578,14 @@ RESPOSTA:`;
           {/* Error Display */}
           {error && (
             <div 
-              className="px-4 py-2"
-              style={{
-                background: 'rgba(239, 68, 68, 0.1)',
-                color: 'var(--orx-error-dark)',
-                fontSize: '0.813rem'
-              }}
+              className="px-4 py-2 bg-[rgba(239,68,68,0.1)] text-[var(--orx-error-dark)] text-[0.813rem]"
             >
               {error}
               <button
                 onClick={clearError}
-                className="ml-2 underline"
+                className="ml-2 underline bg-transparent text-[var(--orx-error-dark)]"
                 title="Fechar mensagem de erro"
                 aria-label="Fechar mensagem de erro"
-                style={{
-                  border: 'none',
-                  background: 'transparent',
-                  color: 'var(--orx-error-dark)',
-                  cursor: 'pointer'
-                }}
               >
                 Fechar
               </button>
@@ -779,33 +594,14 @@ RESPOSTA:`;
 
           {/* Input */}
           <div 
-            className="p-4"
-            style={{
-              borderTop: '1px solid rgba(0, 0, 0, 0.05)'
-            }}
+            className="p-4 border-t border-t-[rgba(0,0,0,0.05)]"
           >
             <div className="flex items-center gap-2">
               {/* Botão Anexar Arquivos */}
               <button
-                className="p-2 rounded-lg transition-all"
+                className="p-2 rounded-lg transition-all bg-[var(--orx-bg-light)] shadow-[var(--orx-shadow-light-1),_var(--orx-shadow-light-2)] text-[var(--orx-text-secondary)] hover:-translate-y-[1px] hover:shadow-[0_2px_8px_rgba(99,102,241,0.15)]"
                 title="Anexar arquivo"
                 aria-label="Anexar arquivo"
-                style={{
-                  border: 'none',
-                  outline: 'none',
-                  background: 'var(--orx-bg-light)',
-                  boxShadow: 'var(--orx-shadow-light-1), var(--orx-shadow-light-2)',
-                  color: 'var(--orx-text-secondary)',
-                  cursor: 'pointer'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-1px)';
-                  e.currentTarget.style.boxShadow = '0 2px 8px rgba(99, 102, 241, 0.15)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'var(--orx-shadow-light-1), var(--orx-shadow-light-2)';
-                }}
               >
                 <Paperclip size={18} />
               </button>
@@ -813,39 +609,12 @@ RESPOSTA:`;
               {/* Botão Comando por Voz */}
               <button
                 onClick={toggleVoiceRecognition}
-                className="p-2 rounded-lg transition-all"
+                className={cn("p-2 rounded-lg transition-all",
+                  isListening ? "bg-[rgba(239,68,68,0.85)] text-white animate-pulse shadow-[4px_4px_8px_rgba(239,68,68,0.3),_-2px_-2px_6px_rgba(255,255,255,0.05),_inset_1px_1px_4px_rgba(0,0,0,0.1),_0_0_20px_rgba(239,68,68,0.4)]" :
+                  "bg-[var(--orx-bg-light)] text-[var(--orx-text-secondary)] shadow-[var(--orx-shadow-light-1),_var(--orx-shadow-light-2)] hover:-translate-y-[1px] hover:shadow-[0_2px_8px_rgba(99,102,241,0.15)]"
+                )}
                 title={isListening ?"Parar gravação" :"Comando por voz"}
                 aria-label={isListening ?"Parar gravação" :"Comando por voz"}
-                style={{
-                  border: 'none',
-                  outline: 'none',
-                  background: isListening 
-                    ? 'rgba(239, 68, 68, 0.85)' // Vermelho quando está ouvindo
-                    : 'var(--orx-bg-light)',
-                  boxShadow: isListening
-                    ? `
-                      4px 4px 8px rgba(239, 68, 68, 0.3),
-                      -2px -2px 6px rgba(255, 255, 255, 0.05),
-                      inset 1px 1px 4px rgba(0, 0, 0, 0.1),
-                      0 0 20px rgba(239, 68, 68, 0.4)
-                    `
-                    : 'var(--orx-shadow-light-1), var(--orx-shadow-light-2)',
-                  color: isListening ? 'white' : 'var(--orx-text-secondary)',
-                  cursor: 'pointer',
-                  animation: isListening ? 'pulse 1.5s ease-in-out infinite' : 'none'
-                }}
-                onMouseEnter={(e) => {
-                  if (!isListening) {
-                    e.currentTarget.style.transform = 'translateY(-1px)';
-                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(99, 102, 241, 0.15)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isListening) {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = 'var(--orx-shadow-light-1), var(--orx-shadow-light-2)';
-                  }
-                }}
               >
                 {isListening ? <MicOff size={18} /> : <Mic size={18} />}
               </button>
@@ -858,47 +627,14 @@ RESPOSTA:`;
                 onKeyPress={(e) => e.key ==="Enter" && handleSendMessage()}
                 placeholder="Digite sua pergunta..."
                 disabled={isResearching}
-                className="flex-1 px-3 py-2 rounded-lg transition-all"
-                style={{
-                  fontSize: '0.813rem',
-                  fontFamily: 'var(--orx-font-family)',
-                  color: 'var(--orx-text-primary)',
-                  background: 'var(--orx-bg-light)',
-                  border: 'none',
-                  outline: 'none',
-                  boxShadow: 'inset 2px 2px 5px rgba(0, 0, 0, 0.1), inset -2px -2px 5px rgba(255, 255, 255, 0.7)' // Neumorphism inset
-                }}
+                className="flex-1 px-3 py-2 rounded-lg transition-all text-[0.813rem] text-[var(--orx-text-primary)] bg-[var(--orx-bg-light)] outline-none shadow-[inset_2px_2px_5px_rgba(0,0,0,0.1),_inset_-2px_-2px_5px_rgba(255,255,255,0.7)]"
               />
 
               {/* Botão Enviar */}
               <button
                 onClick={handleSendMessage}
                 disabled={!inputMessage.trim() || isResearching}
-                className="p-2 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{
-                  border: 'none',
-                  outline: 'none',
-                  background: 'rgba(99, 102, 241, 0.85)',
-                  backdropFilter: 'blur(12px) saturate(180%)',
-                  WebkitBackdropFilter: 'blur(12px) saturate(180%)',
-                  color: 'white',
-                  cursor: 'pointer',
-                  boxShadow: `
-                    4px 4px 8px rgba(99, 102, 241, 0.2),
-                    -2px -2px 6px rgba(255, 255, 255, 0.05),
-                    inset 1px 1px 4px rgba(0, 0, 0, 0.1)
-                  `
-                }}
-                onMouseEnter={(e) => {
-                  if (!isResearching && inputMessage.trim()) {
-                    e.currentTarget.style.transform = 'translateY(-1px)';
-                    e.currentTarget.style.background = 'rgba(99, 102, 241, 0.95)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.background = 'rgba(99, 102, 241, 0.85)';
-                }}
+                className="p-2 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed bg-[rgba(99,102,241,0.85)] text-white backdrop-blur-[12px] backdrop-saturate-[180%] shadow-[4px_4px_8px_rgba(99,102,241,0.2),_-2px_-2px_6px_rgba(255,255,255,0.05),_inset_1px_1px_4px_rgba(0,0,0,0.1)] hover:-translate-y-[1px] hover:bg-[rgba(99,102,241,0.95)]"
               >
                 {isResearching ? (
                   <Loader2 size={18} className="animate-spin" />
@@ -911,19 +647,9 @@ RESPOSTA:`;
 
           {/* Footer - Powered by ICARUS AI */}
           <div 
-            className="px-4 pb-3 pt-2 border-t"
-            style={{
-              borderTopColor: 'rgba(229, 231, 235, 0.5)'
-            }}
+            className="px-4 pb-3 pt-2 border-t border-t-[rgba(229,231,235,0.5)]"
           >
-            <p style={{
-              fontSize: '0.813rem',
-              fontFamily: 'var(--orx-font-family)',
-              color: 'var(--orx-text-secondary)',
-              margin: 0,
-              opacity: 0.6,
-              textAlign: 'center'
-            }}>
+            <p className="text-[0.813rem] text-[var(--orx-text-secondary)] m-0 opacity-60 text-center">
               Powered by ICARUS AI • 11 serviços integrados • OCR ativado
             </p>
           </div>
@@ -933,27 +659,9 @@ RESPOSTA:`;
       {/* Frase"Em que posso ajudar?" - Acima do botão flutuante */}
       {!isOpen && (
         <div 
-          className="absolute mb-2"
-          style={{
-            bottom: '105px', // Acima do botão flutuante (88px + espaço)
-            right: '0',
-            background: 'rgba(255, 255, 255, 0.7)', // Branco com 70% opacidade (modo claro)
-            backdropFilter: 'blur(12px)', // Blur mais forte
-            WebkitBackdropFilter: 'blur(12px)', // Safari
-            padding: '12px 20px',
-            borderRadius: '12px',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-            whiteSpace: 'nowrap',
-            border: '1px solid rgba(255, 255, 255, 0.3)'
-          }}
+          className="absolute mb-2 right-0 bottom-[105px] bg-[rgba(255,255,255,0.7)] backdrop-blur-[12px] px-5 py-3 rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.1)] whitespace-nowrap border border-white/30"
         >
-          <p style={{
-            fontSize: '0.813rem',
-            fontFamily: 'var(--orx-font-family)',
-            color: '#4B5563', // Cinza escuro (Gray-600)
-            margin: 0,
-            fontWeight: 500
-          }}>
+          <p className="text-[0.813rem] text-[#4B5563] m-0 font-medium">
             Em que posso ajudar?
           </p>
         </div>
@@ -962,69 +670,22 @@ RESPOSTA:`;
       {/* FAB Button - 20% maior (88px) com Liquid Glass + Gradiente */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={cn("rounded-full","flex items-center justify-center","relative"
+        className={cn(
+          "rounded-full",
+          "flex items-center justify-center",
+          "relative",
+          "w-[88px] h-[88px] bg-[rgba(99,102,241,0.85)] text-white backdrop-blur-[12px] backdrop-saturate-[180%] border border-white/20",
+          "shadow-[12px_12px_24px_rgba(99,102,241,0.3),_-6px_-6px_16px_rgba(255,255,255,0.05),_inset_2px_2px_8px_rgba(0,0,0,0.15),_inset_-2px_-2px_8px_rgba(255,255,255,0.1),_0_8px_32px_0_rgba(31,38,135,0.37)]",
+          "transition-all duration-300 ease-out hover:scale-[1.05] hover:-translate-y-[2px] hover:bg-[rgba(99,102,241,0.95)]",
+          "hover:backdrop-blur-[16px] hover:backdrop-saturate-[200%]",
+          "hover:shadow-[16px_16px_32px_rgba(99,102,241,0.35),_-8px_-8px_20px_rgba(255,255,255,0.08),_inset_2px_2px_10px_rgba(0,0,0,0.18),_inset_-2px_-2px_10px_rgba(255,255,255,0.12),_0_12px_40px_0_rgba(31,38,135,0.45)]",
+          "active:scale-[0.95]"
         )}
-        style={{
-          width: '88px', // 73px * 1.2 = 87.6px ≈ 88px (aumento de 20%)
-          height: '88px',
-          background: 'rgba(99, 102, 241, 0.85)', // Indigo com 85% opacidade (Liquid Glass)
-          backdropFilter: 'blur(12px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(12px) saturate(180%)',
-          border: '1px solid rgba(255, 255, 255, 0.18)',
-          outline: 'none',
-          color: 'white',
-          boxShadow: `
-            12px 12px 24px rgba(99, 102, 241, 0.3),
-            -6px -6px 16px rgba(255, 255, 255, 0.05),
-            inset 2px 2px 8px rgba(0, 0, 0, 0.15),
-            inset -2px -2px 8px rgba(255, 255, 255, 0.1),
-            0 8px 32px 0 rgba(31, 38, 135, 0.37)
-          `,
-          transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
-          cursor: 'pointer',
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = 'scale(1.05) translateY(-2px)';
-          e.currentTarget.style.background = 'rgba(99, 102, 241, 0.95)';
-          e.currentTarget.style.backdropFilter = 'blur(16px) saturate(200%)';
-          e.currentTarget.style.setProperty('-webkit-backdrop-filter', 'blur(16px) saturate(200%)');
-          e.currentTarget.style.boxShadow = `
-            16px 16px 32px rgba(99, 102, 241, 0.35),
-            -8px -8px 20px rgba(255, 255, 255, 0.08),
-            inset 2px 2px 10px rgba(0, 0, 0, 0.18),
-            inset -2px -2px 10px rgba(255, 255, 255, 0.12),
-            0 12px 40px 0 rgba(31, 38, 135, 0.45)
-          `;
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = 'scale(1)';
-          e.currentTarget.style.background = 'rgba(99, 102, 241, 0.85)';
-          e.currentTarget.style.backdropFilter = 'blur(12px) saturate(180%)';
-          e.currentTarget.style.setProperty('-webkit-backdrop-filter', 'blur(12px) saturate(180%)');
-          e.currentTarget.style.boxShadow = `
-            12px 12px 24px rgba(99, 102, 241, 0.3),
-            -6px -6px 16px rgba(255, 255, 255, 0.05),
-            inset 2px 2px 8px rgba(0, 0, 0, 0.15),
-            inset -2px -2px 8px rgba(255, 255, 255, 0.1),
-            0 8px 32px 0 rgba(31, 38, 135, 0.37)
-          `;
-        }}
-        onMouseDown={(e) => {
-          e.currentTarget.style.transform = 'scale(0.95)';
-        }}
-        onMouseUp={(e) => {
-          e.currentTarget.style.transform = 'scale(1.05) translateY(-2px)';
-        }}
-        aria-label="Abrir Assistente de Pesquisa"
+         aria-label="Abrir Assistente de Pesquisa"
       >
         <MessageCircle size={37} /> {/* 31 * 1.2 ≈ 37 (aumento de 20%) */}
         <span 
-          className="absolute -top-1 -right-1 flex items-center justify-center min-w-[20px] h-[20px] px-1 text-white rounded-full" style={{ 
-            background: 'var(--orx-error)',
-            fontSize: '0.813rem',
-            border: 'none',
-            boxShadow: '0 2px 4px rgba(239, 68, 68, 0.3)'
-          , fontWeight: 700 }}
+          className="absolute -top-1 -right-1 flex items-center justify-center min-w-[20px] h-[20px] px-1 text-white rounded-full bg-[var(--orx-error)] text-[0.813rem] shadow-[0_2px_4px_rgba(239,68,68,0.3)] font-bold"
         >
           3
         </span>

@@ -3,19 +3,19 @@
  * Contabilidade completa + DRE + Plano de Contas
  */
 
-import { useState } from"react";
+import { useState } from "react";
 import {
   Calculator,
   TrendingUp,
   TrendingDown,
   DollarSign,
-  FileText,
   PieChart,
   BarChart3,
   Download,
   Calendar,
-  Filter,
-} from"lucide-react";
+} from "lucide-react";
+import { ModulePage } from "@/components/templates/ModulePage";
+import { Button } from "@/components/ui/button";
 
 interface DREItem {
   grupo: string;
@@ -106,76 +106,46 @@ export default function GestaoContabil() {
   };
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex items-start justify-between">
-          <div>
-            <h1
+    <ModulePage
+      title="Gestão Contábil"
+      description="Contabilidade completa + DRE + Plano de Contas"
+      icon={<Calculator aria-hidden="true" className="h-5 w-5" />}
+      actions={
+        <div className="flex items-center gap-3">
+          <div className="inline-flex items-center gap-2">
+            <Calendar size={20} strokeWidth={1.5} className="flex-shrink-0 text-[var(--orx-text-secondary)]" />
+            <select
+              value={selectedPeriod}
+              onChange={(e) => setSelectedPeriod(e.target.value)}
+              className="px-4 py-2 rounded-xl"
               style={{
-                fontSize: '0.813rem',
+                background:"var(--orx-bg-light)",
+                boxShadow:"0 2px 4px rgba(0, 0, 0, 0.1)",
+                border:"1px solid rgba(99, 102, 241, 0.2)",
+                fontSize:"0.813rem",
                 fontFamily:"var(--orx-font-family)",
-                fontWeight: 600,
                 color:"var(--orx-text-primary)",
-                marginBottom:"0.5rem",
               }}
             >
-              Gestão Contábil
-            </h1>
-            <p
-              style={{
-                fontSize: '0.813rem',
-                color:"var(--orx-text-secondary)",
-                fontFamily:"var(--orx-font-family)",
-              }}
-            >
-              Contabilidade completa + DRE + Plano de Contas
-            </p>
+              <option value="mes_atual">Mês Atual</option>
+              <option value="trimestre">Trimestre</option>
+              <option value="semestre">Semestre</option>
+              <option value="ano">Ano</option>
+            </select>
           </div>
-
-          {/* Action Buttons */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <Calendar size={20} style={{ color:"var(--orx-text-secondary)" }} />
-              <select
-                value={selectedPeriod}
-                onChange={(e) => setSelectedPeriod(e.target.value)}
-                className="px-4 py-3 rounded-xl"
-                style={{
-                  background:"var(--orx-bg-light)",
-                  boxShadow:"0 2px 4px rgba(0, 0, 0, 0.1)",
-                  border:"1px solid rgba(99, 102, 241, 0.2)",
-                  fontSize: '0.813rem',
-                  fontFamily:"var(--orx-font-family)",
-                  color:"var(--orx-text-primary)",
-                }}
-              >
-                <option value="mes_atual">Mês Atual</option>
-                <option value="trimestre">Trimestre</option>
-                <option value="semestre">Semestre</option>
-                <option value="ano">Ano</option>
-              </select>
-            </div>
-            <button
-              className="neumorphic-button flex items-center gap-2 px-6 py-3 rounded-xl"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                background:"linear-gradient(135deg, var(--orx-primary), var(--orx-primary-hover))",
-                color:"white",
-                fontWeight: 600,
-                fontSize: '0.813rem',
-                border:"none",
-                boxShadow:"0 4px 12px rgba(99, 102, 241, 0.3)",
-              }}
-            >
-              <Download size={18} />
-              Exportar DRE
-            </button>
-          </div>
+          <Button
+            variant="neumorphic"
+            size="default"
+            className="inline-flex items-center gap-2"
+            onClick={() => window.dispatchEvent(new CustomEvent('icarus:export-dre'))}
+          >
+            <Download size={18} strokeWidth={1.5} className="flex-shrink-0" />
+            <span>Exportar DRE</span>
+          </Button>
         </div>
-
+      }
+    >
+      <div className="space-y-6">
         {/* KPIs Grid */}
         <div className="grid grid-cols-4 gap-6">
           {kpis.map((kpi, index) => (
@@ -197,7 +167,7 @@ export default function GestaoContabil() {
                     boxShadow:"0 4px 12px rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  <kpi.icon size={24} color="#ffffff" strokeWidth={2} />
+                  <kpi.icon size={24} color="#ffffff" strokeWidth={1.5} />
                 </div>
                 <div className="flex-1">
                   <p
@@ -442,7 +412,7 @@ export default function GestaoContabil() {
           </div>
         </div>
       </div>
-    </div>
+    </ModulePage>
   );
 }
 

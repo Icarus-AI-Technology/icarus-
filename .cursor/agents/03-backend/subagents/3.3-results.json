@@ -1,0 +1,4575 @@
+{
+  "triggers": [
+    {
+      "trigger_name": "trg_empresas_atualizado",
+      "table_name": "empresas",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "set_atualizado_em"
+    },
+    {
+      "trigger_name": "trg_usuarios_atualizado",
+      "table_name": "usuarios",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "set_atualizado_em"
+    },
+    {
+      "trigger_name": "trg_produtos_atualizado",
+      "table_name": "produtos",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "set_atualizado_em"
+    },
+    {
+      "trigger_name": "trg_lotes_atualizado",
+      "table_name": "lotes",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "set_atualizado_em"
+    },
+    {
+      "trigger_name": "trg_medicos_atualizado",
+      "table_name": "medicos",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "set_atualizado_em"
+    },
+    {
+      "trigger_name": "trg_hospitais_atualizado",
+      "table_name": "hospitais",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "set_atualizado_em"
+    },
+    {
+      "trigger_name": "trg_cirurgias_atualizado",
+      "table_name": "cirurgias",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "set_atualizado_em"
+    },
+    {
+      "trigger_name": "trg_kits_atualizado",
+      "table_name": "kits",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "set_atualizado_em"
+    },
+    {
+      "trigger_name": "trg_itens_kit_atualizado",
+      "table_name": "itens_kit",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "set_atualizado_em"
+    },
+    {
+      "trigger_name": "trg_leads_atualizado",
+      "table_name": "leads",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "set_atualizado_em"
+    },
+    {
+      "trigger_name": "trg_transacoes_atualizado",
+      "table_name": "transacoes",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "set_atualizado_em"
+    },
+    {
+      "trigger_name": "trg_fornecedores_atualizado",
+      "table_name": "fornecedores",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "set_atualizado_em"
+    },
+    {
+      "trigger_name": "trg_pedidos_atualizado",
+      "table_name": "pedidos_compra",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "set_atualizado_em"
+    },
+    {
+      "trigger_name": "trg_faturas_atualizado",
+      "table_name": "faturas",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "set_atualizado_em"
+    },
+    {
+      "trigger_name": "trg_auth_user_created",
+      "table_name": "auth",
+      "event": "INSERT",
+      "timing": "AFTER",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "handle_new_user"
+    },
+    {
+      "trigger_name": "trg_validar_cirurgia",
+      "table_name": "cirurgias",
+      "event": "INSERT",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "validar_cirurgia"
+    },
+    {
+      "trigger_name": "trg_validar_cirurgia",
+      "table_name": "cirurgias",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "validar_cirurgia"
+    },
+    {
+      "trigger_name": "trg_check_dpo_empresas",
+      "table_name": "empresas",
+      "event": "INSERT",
+      "timing": "AFTER",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "check_dpo_on_insert"
+    },
+    {
+      "trigger_name": "update_feature_flags_updated_at",
+      "table_name": "feature_flags",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "update_conhecimento_updated_at",
+      "table_name": "conhecimento_base",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "update_legislacao_updated_at",
+      "table_name": "legislacao_updates",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "pacientes_updated_at",
+      "table_name": "pacientes",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "convenios_updated_at",
+      "table_name": "convenios",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "equipes_medicas_updated_at",
+      "table_name": "equipes_medicas",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "transportadoras_updated_at",
+      "table_name": "transportadoras",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "solicitacoes_compra_updated_at",
+      "table_name": "solicitacoes_compra",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "cotacoes_updated_at",
+      "table_name": "cotacoes",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "compras_internacionais_updated_at",
+      "table_name": "compras_internacionais",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "notas_compra_updated_at",
+      "table_name": "notas_compra",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trigger_atualizar_perfil",
+      "table_name": "user_activities",
+      "event": "INSERT",
+      "timing": "AFTER",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "atualizar_perfil_comportamental"
+    },
+    {
+      "trigger_name": "trigger_alerta_erro",
+      "table_name": "system_errors",
+      "event": "INSERT",
+      "timing": "AFTER",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "criar_alerta_erro_critico"
+    },
+    {
+      "trigger_name": "update_entregas_updated_at",
+      "table_name": "entregas",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "entrega_status_history",
+      "table_name": "entregas",
+      "event": "INSERT",
+      "timing": "AFTER",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "add_entrega_historico"
+    },
+    {
+      "trigger_name": "entrega_status_history",
+      "table_name": "entregas",
+      "event": "UPDATE",
+      "timing": "AFTER",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "add_entrega_historico"
+    },
+    {
+      "trigger_name": "update_faturas_updated_at",
+      "table_name": "faturas",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "update_profiles_updated_at",
+      "table_name": "profiles",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "update_medicos_updated_at",
+      "table_name": "medicos",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "update_hospitais_updated_at",
+      "table_name": "hospitais",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "update_cirurgias_updated_at",
+      "table_name": "cirurgias",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "update_materiais_opme_updated_at",
+      "table_name": "materiais_opme",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "update_leads_updated_at",
+      "table_name": "leads",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "update_transacoes_updated_at",
+      "table_name": "transacoes",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "update_fornecedores_updated_at",
+      "table_name": "fornecedores",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "update_pedidos_compra_updated_at",
+      "table_name": "pedidos_compra",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "on_auth_user_created",
+      "table_name": "auth",
+      "event": "INSERT",
+      "timing": "AFTER",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "public"
+    },
+    {
+      "trigger_name": "trigger_chatbot_conversas_updated_at",
+      "table_name": "chatbot_conversas",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "atualizar_updated_at"
+    },
+    {
+      "trigger_name": "trigger_chatbot_intencoes_updated_at",
+      "table_name": "chatbot_intencoes",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "atualizar_updated_at"
+    },
+    {
+      "trigger_name": "trigger_incrementar_mensagens",
+      "table_name": "chatbot_mensagens",
+      "event": "INSERT",
+      "timing": "AFTER",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "incrementar_total_mensagens"
+    },
+    {
+      "trigger_name": "set_timestamp_compliance_requisitos",
+      "table_name": "compliance_requisitos",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "trigger_set_timestamp"
+    },
+    {
+      "trigger_name": "set_timestamp_auditorias_internas",
+      "table_name": "auditorias_internas",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "trigger_set_timestamp"
+    },
+    {
+      "trigger_name": "set_timestamp_nao_conformidades",
+      "table_name": "nao_conformidades",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "trigger_set_timestamp"
+    },
+    {
+      "trigger_name": "set_timestamp_treinamentos_certificacoes",
+      "table_name": "treinamentos_certificacoes",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "trigger_set_timestamp"
+    },
+    {
+      "trigger_name": "set_timestamp_contratos_consignacao",
+      "table_name": "contratos_consignacao",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "trigger_set_timestamp"
+    },
+    {
+      "trigger_name": "set_timestamp_materiais_consignados",
+      "table_name": "materiais_consignados",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "trigger_set_timestamp"
+    },
+    {
+      "trigger_name": "set_timestamp_faturamento_consignacao",
+      "table_name": "faturamento_consignacao",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "trigger_set_timestamp"
+    },
+    {
+      "trigger_name": "contratos_set_updated_at",
+      "table_name": "contratos",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "trg_contratos_set_updated_at"
+    },
+    {
+      "trigger_name": "oportunidades_set_updated_at",
+      "table_name": "oportunidades",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trigger_atualizar_reservas",
+      "table_name": "estoque_reservas",
+      "event": "INSERT",
+      "timing": "AFTER",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "atualizar_quantidade_reservada"
+    },
+    {
+      "trigger_name": "trigger_atualizar_reservas",
+      "table_name": "estoque_reservas",
+      "event": "UPDATE",
+      "timing": "AFTER",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "atualizar_quantidade_reservada"
+    },
+    {
+      "trigger_name": "update_estoque_updated_at",
+      "table_name": "estoque",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "update_armazens_updated_at",
+      "table_name": "estoque_armazens",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "update_lotes_updated_at",
+      "table_name": "estoque_lotes",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "update_inventarios_updated_at",
+      "table_name": "estoque_inventarios",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "update_reservas_updated_at",
+      "table_name": "estoque_reservas",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "update_portais_config_updated_at",
+      "table_name": "portais_opme_config",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "update_palavras_chave_updated_at",
+      "table_name": "portais_opme_palavras_chave",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "update_cirurgia_materiais_updated_at",
+      "table_name": "cirurgia_materiais",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "auto_create_cirurgia_evento",
+      "table_name": "cirurgias",
+      "event": "INSERT",
+      "timing": "AFTER",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "create_cirurgia_evento"
+    },
+    {
+      "trigger_name": "trg_pacientes_updated",
+      "table_name": "pacientes",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_convenios_updated",
+      "table_name": "convenios",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_cirurgia_materiais_updated",
+      "table_name": "cirurgia_materiais",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_estoque_updated",
+      "table_name": "estoque",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_contratos_consignacao_updated",
+      "table_name": "contratos_consignacao",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_notas_fiscais_updated",
+      "table_name": "notas_fiscais",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_profiles_updated",
+      "table_name": "profiles",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_solicitacoes_compra_updated",
+      "table_name": "solicitacoes_compra",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_itens_pedido_compra_updated",
+      "table_name": "itens_pedido_compra",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_cotacoes_updated",
+      "table_name": "cotacoes",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_itens_cotacao_updated",
+      "table_name": "itens_cotacao",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_fornecedores_produtos_updated",
+      "table_name": "fornecedores_produtos",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_oportunidades_updated",
+      "table_name": "oportunidades",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_propostas_updated",
+      "table_name": "propostas",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_itens_proposta_updated",
+      "table_name": "itens_proposta",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_negociacoes_updated",
+      "table_name": "negociacoes",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_atividades_crm_updated",
+      "table_name": "atividades_crm",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_contas_pagar_updated",
+      "table_name": "contas_pagar",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_contas_receber_updated",
+      "table_name": "contas_receber",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_fluxo_caixa_updated",
+      "table_name": "fluxo_caixa",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_bancos_updated",
+      "table_name": "bancos",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_centros_custo_updated",
+      "table_name": "centros_custo",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_lancamentos_contabeis_updated",
+      "table_name": "lancamentos_contabeis",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_remessas_consignacao_updated",
+      "table_name": "remessas_consignacao",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_itens_consignacao_updated",
+      "table_name": "itens_consignacao",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_devolucoes_consignacao_updated",
+      "table_name": "devolucoes_consignacao",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_estoque_reservas_updated",
+      "table_name": "estoque_reservas",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_compliance_requisitos_updated",
+      "table_name": "compliance_requisitos",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_compliance_evidencias_updated",
+      "table_name": "compliance_evidencias",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_auditorias_updated",
+      "table_name": "auditorias",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_auditorias_itens_updated",
+      "table_name": "auditorias_itens",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_nao_conformidades_updated",
+      "table_name": "nao_conformidades",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_acoes_corretivas_updated",
+      "table_name": "acoes_corretivas",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_portais_opme_config_updated",
+      "table_name": "portais_opme_config",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_portais_opme_solicitacoes_updated",
+      "table_name": "portais_opme_solicitacoes",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_portais_opme_respostas_updated",
+      "table_name": "portais_opme_respostas",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_licitacoes_updated",
+      "table_name": "licitacoes",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_licitacoes_itens_updated",
+      "table_name": "licitacoes_itens",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_propostas_licitacao_updated",
+      "table_name": "propostas_licitacao",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_documentos_licitacao_updated",
+      "table_name": "documentos_licitacao",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_entregas_updated",
+      "table_name": "entregas",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_chatbot_sessoes_updated",
+      "table_name": "chatbot_sessoes",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_chatbot_conversas_updated",
+      "table_name": "chatbot_conversas",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_pesquisas_gpt_updated",
+      "table_name": "pesquisas_gpt",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_workflows_updated",
+      "table_name": "workflows",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_workflows_etapas_updated",
+      "table_name": "workflows_etapas",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_workflows_execucoes_updated",
+      "table_name": "workflows_execucoes",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_api_endpoints_updated",
+      "table_name": "api_endpoints",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_api_keys_updated",
+      "table_name": "api_keys",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_api_rate_limits_updated",
+      "table_name": "api_rate_limits",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_dashboards_updated",
+      "table_name": "dashboards",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_widgets_updated",
+      "table_name": "widgets",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_kpi_metas_updated",
+      "table_name": "kpi_metas",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_roles_updated",
+      "table_name": "roles",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_permission_groups_updated",
+      "table_name": "permission_groups",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_system_alerts_updated",
+      "table_name": "system_alerts",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_relatorios_regulatorios_updated",
+      "table_name": "relatorios_regulatorios",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_relatorios_templates_updated",
+      "table_name": "relatorios_templates",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_relatorios_agendamentos_updated",
+      "table_name": "relatorios_agendamentos",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_pluggy_connections_updated",
+      "table_name": "pluggy_connections",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_pluggy_accounts_updated",
+      "table_name": "pluggy_accounts",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_comentarios_updated",
+      "table_name": "comentarios",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_materiais_updated",
+      "table_name": "materiais",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_itens_remessa_updated",
+      "table_name": "itens_remessa_consignacao",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_itens_solicitacao_updated",
+      "table_name": "itens_solicitacao_compra",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_workflow_etapas_updated",
+      "table_name": "workflow_etapas",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_workflow_execucoes_updated",
+      "table_name": "workflow_execucoes",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trigger_atualizar_tabelas_precos",
+      "table_name": "tabelas_precos",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "atualizar_timestamp_tabelas_precos"
+    },
+    {
+      "trigger_name": "trigger_atualizar_tabelas_precos_itens",
+      "table_name": "tabelas_precos_itens",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "atualizar_timestamp_tabelas_precos"
+    },
+    {
+      "trigger_name": "trigger_calcular_preco_final",
+      "table_name": "tabelas_precos_itens",
+      "event": "INSERT",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "calcular_preco_final_item"
+    },
+    {
+      "trigger_name": "trigger_calcular_preco_final",
+      "table_name": "tabelas_precos_itens",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "calcular_preco_final_item"
+    },
+    {
+      "trigger_name": "trigger_registrar_historico",
+      "table_name": "tabelas_precos_itens",
+      "event": "UPDATE",
+      "timing": "AFTER",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "registrar_historico_preco"
+    },
+    {
+      "trigger_name": "trg_bi_dimensoes_updated",
+      "table_name": "bi_dimensoes",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_bi_dashboards_updated",
+      "table_name": "bi_dashboards",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_bi_relatorios_updated",
+      "table_name": "bi_relatorios",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "trg_bi_fontes_updated",
+      "table_name": "bi_fontes_dados",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "encrypt_credential_trigger",
+      "table_name": "api_credentials",
+      "event": "INSERT",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "encrypt_credential"
+    },
+    {
+      "trigger_name": "encrypt_credential_trigger",
+      "table_name": "api_credentials",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "encrypt_credential"
+    },
+    {
+      "trigger_name": "trg_validar_partidas",
+      "table_name": "partidas_contabeis",
+      "event": "INSERT",
+      "timing": "AFTER",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "validar_partidas_dobradas"
+    },
+    {
+      "trigger_name": "trg_validar_partidas",
+      "table_name": "partidas_contabeis",
+      "event": "UPDATE",
+      "timing": "AFTER",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "validar_partidas_dobradas"
+    },
+    {
+      "trigger_name": "trigger_update_reuniao_teams_timestamp",
+      "table_name": "reunioes_teams",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_reuniao_teams_timestamp"
+    },
+    {
+      "trigger_name": "trigger_update_nfe_timestamp",
+      "table_name": "nfes",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_nfe_timestamp"
+    },
+    {
+      "trigger_name": "workflow_instances_updated_at",
+      "table_name": "workflow_instances",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_workflow_instance_updated_at"
+    },
+    {
+      "trigger_name": "notifications_mark_read",
+      "table_name": "notifications",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "mark_notification_read"
+    },
+    {
+      "trigger_name": "pluggy_items_updated_at",
+      "table_name": "pluggy_items",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "pluggy_accounts_updated_at",
+      "table_name": "pluggy_accounts",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "pluggy_payments_updated_at",
+      "table_name": "pluggy_payments",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "pluggy_investments_updated_at",
+      "table_name": "pluggy_investments",
+      "event": "UPDATE",
+      "timing": "BEFORE",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "update_updated_at_column"
+    },
+    {
+      "trigger_name": "set_updated_at",
+      "table_name": "ml_vectors",
+      "event": "update",
+      "timing": "before",
+      "found_in_migrations": true,
+      "issues": [],
+      "function_name": "public"
+    }
+  ],
+  "constraints": [
+    {
+      "constraint_name": "empresas_check_0",
+      "table_name": "empresas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (LENGTH(estado)",
+      "issues": []
+    },
+    {
+      "constraint_name": "empresas_check_1",
+      "table_name": "empresas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativa', 'inativa', 'suspensa')",
+      "issues": []
+    },
+    {
+      "constraint_name": "usuarios_check_0",
+      "table_name": "usuarios",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (perfil IN ('admin', 'operador', 'comercial', 'financeiro', 'estoque')",
+      "issues": []
+    },
+    {
+      "constraint_name": "produtos_unique_0",
+      "table_name": "produtos",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, codigo_sku)",
+      "issues": []
+    },
+    {
+      "constraint_name": "produtos_check_0",
+      "table_name": "produtos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativo', 'inativo', 'descontinuado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "lotes_unique_0",
+      "table_name": "lotes",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(produto_id, numero_lote, numero_serie)",
+      "issues": []
+    },
+    {
+      "constraint_name": "lotes_check_0",
+      "table_name": "lotes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('disponivel', 'reservado', 'consumido', 'vencido', 'bloqueado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "medicos_unique_0",
+      "table_name": "medicos",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, crm, crm_uf)",
+      "issues": []
+    },
+    {
+      "constraint_name": "medicos_check_0",
+      "table_name": "medicos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (LENGTH(crm_uf)",
+      "issues": []
+    },
+    {
+      "constraint_name": "medicos_check_1",
+      "table_name": "medicos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativo', 'inativo', 'suspenso')",
+      "issues": []
+    },
+    {
+      "constraint_name": "hospitais_unique_0",
+      "table_name": "hospitais",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, cnpj)",
+      "issues": []
+    },
+    {
+      "constraint_name": "hospitais_check_0",
+      "table_name": "hospitais",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (LENGTH(estado)",
+      "issues": []
+    },
+    {
+      "constraint_name": "hospitais_check_1",
+      "table_name": "hospitais",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('hospital', 'clinica', 'centro_cirurgico')",
+      "issues": []
+    },
+    {
+      "constraint_name": "hospitais_check_2",
+      "table_name": "hospitais",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativo', 'inativo')",
+      "issues": []
+    },
+    {
+      "constraint_name": "cirurgias_unique_0",
+      "table_name": "cirurgias",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, codigo_interno)",
+      "issues": []
+    },
+    {
+      "constraint_name": "cirurgias_check_0",
+      "table_name": "cirurgias",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('agendada', 'confirmada', 'preparacao', 'andamento', 'recuperacao', 'concluida', 'cancelada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "cirurgias_check_1",
+      "table_name": "cirurgias",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (prioridade IN ('baixa', 'media', 'alta', 'urgente')",
+      "issues": []
+    },
+    {
+      "constraint_name": "kits_check_0",
+      "table_name": "kits",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('planejamento', 'reservado', 'montado', 'despachado', 'consumido', 'devolvido', 'cancelado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "itens_kit_unique_0",
+      "table_name": "itens_kit",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(kit_id, produto_id, lote_id)",
+      "issues": []
+    },
+    {
+      "constraint_name": "leads_check_0",
+      "table_name": "leads",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (estagio IN ('prospeccao', 'qualificacao', 'proposta', 'negociacao', 'fechamento', 'perdido')",
+      "issues": []
+    },
+    {
+      "constraint_name": "leads_check_1",
+      "table_name": "leads",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (probabilidade >= 0 AND probabilidade <= 100)",
+      "issues": []
+    },
+    {
+      "constraint_name": "leads_check_2",
+      "table_name": "leads",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (rating >= 1 AND rating <= 5)",
+      "issues": []
+    },
+    {
+      "constraint_name": "transacoes_check_0",
+      "table_name": "transacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('receita', 'despesa')",
+      "issues": []
+    },
+    {
+      "constraint_name": "transacoes_check_1",
+      "table_name": "transacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('pendente', 'pago', 'vencido', 'cancelado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "fornecedores_unique_0",
+      "table_name": "fornecedores",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, cnpj)",
+      "issues": []
+    },
+    {
+      "constraint_name": "fornecedores_check_0",
+      "table_name": "fornecedores",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (rating >= 0 AND rating <= 5)",
+      "issues": []
+    },
+    {
+      "constraint_name": "fornecedores_check_1",
+      "table_name": "fornecedores",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativo', 'inativo', 'bloqueado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "pedidos_compra_unique_0",
+      "table_name": "pedidos_compra",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, numero)",
+      "issues": []
+    },
+    {
+      "constraint_name": "pedidos_compra_check_0",
+      "table_name": "pedidos_compra",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('rascunho', 'aguardando', 'aprovado', 'processando', 'entregue', 'cancelado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "pedidos_compra_check_1",
+      "table_name": "pedidos_compra",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (urgencia IN ('normal', 'urgente', 'critico')",
+      "issues": []
+    },
+    {
+      "constraint_name": "faturas_unique_0",
+      "table_name": "faturas",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, numero_nfe, serie)",
+      "issues": []
+    },
+    {
+      "constraint_name": "faturas_check_0",
+      "table_name": "faturas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('nfe', 'nfse', 'cte', 'mdfe')",
+      "issues": []
+    },
+    {
+      "constraint_name": "faturas_check_1",
+      "table_name": "faturas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (cliente_tipo IN ('medico', 'hospital', 'outro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "faturas_check_2",
+      "table_name": "faturas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('rascunho', 'pendente', 'emitida', 'autorizada', 'cancelada', 'paga')",
+      "issues": []
+    },
+    {
+      "constraint_name": "audit_log_check_0",
+      "table_name": "audit_log",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (acao IN ('INSERT', 'UPDATE', 'DELETE', 'SELECT')",
+      "issues": []
+    },
+    {
+      "constraint_name": "feature_flags_check_0",
+      "table_name": "feature_flags",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (rollout_percentage >= 0 AND rollout_percentage <= 100)",
+      "issues": []
+    },
+    {
+      "constraint_name": "tutor_logs_check_0",
+      "table_name": "tutor_logs",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (feedback >= 1 AND feedback <= 5)",
+      "issues": []
+    },
+    {
+      "constraint_name": "pacientes_unique_0",
+      "table_name": "pacientes",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE (numero_carteirinha, convenio_id)",
+      "issues": []
+    },
+    {
+      "constraint_name": "pacientes_check_0",
+      "table_name": "pacientes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (sexo IN ('M', 'F', 'Outro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "pacientes_check_1",
+      "table_name": "pacientes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (estado_civil IN ('solteiro', 'casado', 'divorciado', 'viuvo', 'uniao_estavel')",
+      "issues": []
+    },
+    {
+      "constraint_name": "pacientes_check_2",
+      "table_name": "pacientes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo_atendimento IN ('ambulatorial', 'hospitalar', 'completo')",
+      "issues": []
+    },
+    {
+      "constraint_name": "convenios_unique_0",
+      "table_name": "convenios",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE (empresa_id, nome)",
+      "issues": []
+    },
+    {
+      "constraint_name": "convenios_check_0",
+      "table_name": "convenios",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('plano_saude', 'seguros', 'publico')",
+      "issues": []
+    },
+    {
+      "constraint_name": "convenios_check_1",
+      "table_name": "convenios",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (forma_pagamento IN ('ted', 'boleto', 'pix', 'cheque')",
+      "issues": []
+    },
+    {
+      "constraint_name": "equipes_medicas_unique_0",
+      "table_name": "equipes_medicas",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE (empresa_id, nome)",
+      "issues": []
+    },
+    {
+      "constraint_name": "membros_equipe_unique_0",
+      "table_name": "membros_equipe",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE (equipe_id, medico_id)",
+      "issues": []
+    },
+    {
+      "constraint_name": "membros_equipe_check_0",
+      "table_name": "membros_equipe",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (funcao IN ('cirurgiao_principal', 'cirurgiao_auxiliar', 'anestesista', 'instrumentador', 'auxiliar_enfermagem')",
+      "issues": []
+    },
+    {
+      "constraint_name": "transportadoras_unique_0",
+      "table_name": "transportadoras",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE (empresa_id, nome)",
+      "issues": []
+    },
+    {
+      "constraint_name": "transportadoras_check_0",
+      "table_name": "transportadoras",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('rodoviario', 'aereo', 'courier', 'multimodal')",
+      "issues": []
+    },
+    {
+      "constraint_name": "transportadoras_check_1",
+      "table_name": "transportadoras",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (api_auth_type IN ('bearer', 'basic', 'api_key', 'oauth2')",
+      "issues": []
+    },
+    {
+      "constraint_name": "transportadoras_check_2",
+      "table_name": "transportadoras",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (avaliacao >= 0 AND avaliacao <= 5)",
+      "issues": []
+    },
+    {
+      "constraint_name": "grupos_produtos_unique_0",
+      "table_name": "grupos_produtos",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE (empresa_id, nome)",
+      "issues": []
+    },
+    {
+      "constraint_name": "solicitacoes_compra_unique_0",
+      "table_name": "solicitacoes_compra",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE (empresa_id, numero)",
+      "issues": []
+    },
+    {
+      "constraint_name": "solicitacoes_compra_check_0",
+      "table_name": "solicitacoes_compra",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (urgencia IN ('normal', 'urgente', 'emergencia')",
+      "issues": []
+    },
+    {
+      "constraint_name": "solicitacoes_compra_check_1",
+      "table_name": "solicitacoes_compra",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('rascunho', 'aguardando_aprovacao', 'aprovada', 'rejeitada', 'cancelada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "cotacoes_unique_0",
+      "table_name": "cotacoes",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE (empresa_id, numero)",
+      "issues": []
+    },
+    {
+      "constraint_name": "cotacoes_check_0",
+      "table_name": "cotacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('rascunho', 'enviada', 'em_analise', 'concluida', 'cancelada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "cotacoes_fornecedores_unique_0",
+      "table_name": "cotacoes_fornecedores",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE (cotacao_id, fornecedor_id)",
+      "issues": []
+    },
+    {
+      "constraint_name": "cotacoes_fornecedores_check_0",
+      "table_name": "cotacoes_fornecedores",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('aguardando', 'respondida', 'nao_respondeu', 'recusada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "propostas_cotacao_unique_0",
+      "table_name": "propostas_cotacao",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE (cotacao_fornecedor_id, item_cotacao_id)",
+      "issues": []
+    },
+    {
+      "constraint_name": "compras_internacionais_unique_0",
+      "table_name": "compras_internacionais",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE (empresa_id, numero)",
+      "issues": []
+    },
+    {
+      "constraint_name": "compras_internacionais_check_0",
+      "table_name": "compras_internacionais",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('analise_viabilidade', 'aprovado', 'licenca_importacao', 'embarque', 'desembaraco', 'entregue', 'cancelado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "notas_compra_unique_0",
+      "table_name": "notas_compra",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE (chave_acesso)",
+      "issues": []
+    },
+    {
+      "constraint_name": "notas_compra_check_0",
+      "table_name": "notas_compra",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('pendente', 'conferida', 'divergencia', 'entrada_efetuada', 'cancelada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "user_activities_check_0",
+      "table_name": "user_activities",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (metodo IN ('CREATE', 'READ', 'UPDATE', 'DELETE', 'NAVIGATE', 'SEARCH', 'EXPORT', 'IMPORT')",
+      "issues": []
+    },
+    {
+      "constraint_name": "user_handovers_check_0",
+      "table_name": "user_handovers",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (motivo IN ('ferias', 'licenca', 'demissao', 'transferencia', 'outro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "user_handovers_check_1",
+      "table_name": "user_handovers",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativo', 'concluido', 'cancelado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "system_errors_check_0",
+      "table_name": "system_errors",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('erro_aplicacao', 'erro_validacao', 'erro_permissao', 'erro_rede', 'erro_banco', 'erro_integracao')",
+      "issues": []
+    },
+    {
+      "constraint_name": "system_errors_check_1",
+      "table_name": "system_errors",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (severidade IN ('baixa', 'media', 'alta', 'critica')",
+      "issues": []
+    },
+    {
+      "constraint_name": "system_alerts_check_0",
+      "table_name": "system_alerts",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('prazo_vencendo', 'erro_recorrente', 'comportamento_anomalo', 'performance_baixa', 'tentativa_acesso_nao_autorizado', 'predicao_erro', 'autocorrecao')",
+      "issues": []
+    },
+    {
+      "constraint_name": "system_alerts_check_1",
+      "table_name": "system_alerts",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (severidade IN ('info', 'atencao', 'urgente', 'critico')",
+      "issues": []
+    },
+    {
+      "constraint_name": "user_training_check_0",
+      "table_name": "user_training",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('tutorial', 'video', 'documentacao', 'quiz', 'pratico')",
+      "issues": []
+    },
+    {
+      "constraint_name": "entregas_check_0",
+      "table_name": "entregas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (origem_tipo IN ('deposito', 'fornecedor', 'hospital')",
+      "issues": []
+    },
+    {
+      "constraint_name": "entregas_check_1",
+      "table_name": "entregas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (destino_tipo IN ('hospital', 'medico', 'clinica', 'deposito')",
+      "issues": []
+    },
+    {
+      "constraint_name": "entregas_check_2",
+      "table_name": "entregas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('pendente', 'coletado', 'em_transito', 'saiu_entrega', 'entregue', 'devolvido', 'cancelado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "entregas_check_3",
+      "table_name": "entregas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo_entrega IN ('normal', 'expressa', 'urgente')",
+      "issues": []
+    },
+    {
+      "constraint_name": "faturas_check_0",
+      "table_name": "faturas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('nfe', 'nfse', 'cte', 'mdfe')",
+      "issues": []
+    },
+    {
+      "constraint_name": "faturas_check_1",
+      "table_name": "faturas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (cliente_tipo IN ('medico', 'hospital', 'outro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "faturas_check_2",
+      "table_name": "faturas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('rascunho', 'pendente', 'emitida', 'autorizada', 'cancelada', 'paga')",
+      "issues": []
+    },
+    {
+      "constraint_name": "profiles_check_0",
+      "table_name": "profiles",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (role IN ('admin', 'medico', 'financeiro', 'estoque', 'vendas')",
+      "issues": []
+    },
+    {
+      "constraint_name": "medicos_unique_0",
+      "table_name": "medicos",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(crm, crm_uf)",
+      "issues": []
+    },
+    {
+      "constraint_name": "medicos_check_0",
+      "table_name": "medicos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (LENGTH(crm_uf)",
+      "issues": []
+    },
+    {
+      "constraint_name": "medicos_check_1",
+      "table_name": "medicos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativo', 'inativo', 'suspenso')",
+      "issues": []
+    },
+    {
+      "constraint_name": "hospitais_check_0",
+      "table_name": "hospitais",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('hospital', 'clinica', 'centro_cirurgico')",
+      "issues": []
+    },
+    {
+      "constraint_name": "hospitais_check_1",
+      "table_name": "hospitais",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativo', 'inativo')",
+      "issues": []
+    },
+    {
+      "constraint_name": "cirurgias_check_0",
+      "table_name": "cirurgias",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('agendada', 'confirmada', 'preparacao', 'andamento', 'recuperacao', 'concluida', 'cancelada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "cirurgias_check_1",
+      "table_name": "cirurgias",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (prioridade IN ('baixa', 'media', 'alta', 'urgente')",
+      "issues": []
+    },
+    {
+      "constraint_name": "materiais_opme_check_0",
+      "table_name": "materiais_opme",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativo', 'inativo', 'descontinuado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "cirurgia_materiais_unique_0",
+      "table_name": "cirurgia_materiais",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(cirurgia_id, material_id)",
+      "issues": []
+    },
+    {
+      "constraint_name": "leads_check_0",
+      "table_name": "leads",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (estagio IN ('prospeccao', 'qualificacao', 'proposta', 'negociacao', 'fechamento', 'perdido')",
+      "issues": []
+    },
+    {
+      "constraint_name": "leads_check_1",
+      "table_name": "leads",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (probabilidade >= 0 AND probabilidade <= 100)",
+      "issues": []
+    },
+    {
+      "constraint_name": "leads_check_2",
+      "table_name": "leads",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (rating >= 1 AND rating <= 5)",
+      "issues": []
+    },
+    {
+      "constraint_name": "transacoes_check_0",
+      "table_name": "transacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('receita', 'despesa')",
+      "issues": []
+    },
+    {
+      "constraint_name": "transacoes_check_1",
+      "table_name": "transacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('pendente', 'pago', 'vencido', 'cancelado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "fornecedores_check_0",
+      "table_name": "fornecedores",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (rating >= 0 AND rating <= 5)",
+      "issues": []
+    },
+    {
+      "constraint_name": "fornecedores_check_1",
+      "table_name": "fornecedores",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativo', 'inativo', 'bloqueado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "pedidos_compra_check_0",
+      "table_name": "pedidos_compra",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('aguardando', 'aprovado', 'processando', 'entregue', 'cancelado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "pedidos_compra_check_1",
+      "table_name": "pedidos_compra",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (urgencia IN ('normal', 'urgente', 'critico')",
+      "issues": []
+    },
+    {
+      "constraint_name": "chatbot_conversas_check_0",
+      "table_name": "chatbot_conversas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativa', 'finalizada', 'abandonada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "chatbot_conversas_check_1",
+      "table_name": "chatbot_conversas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (satisfacao_usuario BETWEEN 1 AND 5)",
+      "issues": []
+    },
+    {
+      "constraint_name": "chatbot_mensagens_check_0",
+      "table_name": "chatbot_mensagens",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('usuario', 'assistente', 'sistema')",
+      "issues": []
+    },
+    {
+      "constraint_name": "chatbot_metricas_unique_0",
+      "table_name": "chatbot_metricas",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(data)",
+      "issues": []
+    },
+    {
+      "constraint_name": "chatbot_feedback_check_0",
+      "table_name": "chatbot_feedback",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo_feedback IN ('positivo', 'negativo', 'neutro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "compliance_requisitos_check_0",
+      "table_name": "compliance_requisitos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (categoria IN ('qualidade', 'rastreabilidade', 'armazenamento', 'transporte', 'documentacao', 'treinamento', 'etica')",
+      "issues": []
+    },
+    {
+      "constraint_name": "compliance_requisitos_check_1",
+      "table_name": "compliance_requisitos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (fabricante IN ('abbott', 'medtronic', 'jnj', 'stryker', 'boston_scientific', 'anvisa', 'iso', 'todos')",
+      "issues": []
+    },
+    {
+      "constraint_name": "compliance_requisitos_check_2",
+      "table_name": "compliance_requisitos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('conforme', 'nao_conforme', 'parcial', 'nao_aplicavel')",
+      "issues": []
+    },
+    {
+      "constraint_name": "compliance_requisitos_check_3",
+      "table_name": "compliance_requisitos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (score_conformidade BETWEEN 0 AND 100)",
+      "issues": []
+    },
+    {
+      "constraint_name": "auditorias_internas_check_0",
+      "table_name": "auditorias_internas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('iso_13485', 'anvisa', 'fabricante', 'bpd', 'interna')",
+      "issues": []
+    },
+    {
+      "constraint_name": "auditorias_internas_check_1",
+      "table_name": "auditorias_internas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (fabricante_alvo IN ('abbott', 'medtronic', 'jnj', 'stryker', 'boston_scientific', 'todos')",
+      "issues": []
+    },
+    {
+      "constraint_name": "auditorias_internas_check_2",
+      "table_name": "auditorias_internas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('planejada', 'em_andamento', 'concluida', 'cancelada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "auditorias_internas_check_3",
+      "table_name": "auditorias_internas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (score_global BETWEEN 0 AND 100)",
+      "issues": []
+    },
+    {
+      "constraint_name": "checklist_auditoria_check_0",
+      "table_name": "checklist_auditoria",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (criticidade IN ('critica', 'maior', 'menor')",
+      "issues": []
+    },
+    {
+      "constraint_name": "nao_conformidades_check_0",
+      "table_name": "nao_conformidades",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (severidade IN ('critica', 'maior', 'menor', 'observacao')",
+      "issues": []
+    },
+    {
+      "constraint_name": "nao_conformidades_check_1",
+      "table_name": "nao_conformidades",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (origem IN ('auditoria_interna', 'auditoria_externa', 'cliente', 'fornecedor', 'autoinspecao')",
+      "issues": []
+    },
+    {
+      "constraint_name": "nao_conformidades_check_2",
+      "table_name": "nao_conformidades",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('aberta', 'em_analise', 'em_correcao', 'aguardando_verificacao', 'verificada', 'fechada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "treinamentos_certificacoes_check_0",
+      "table_name": "treinamentos_certificacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('inicial', 'reciclagem', 'especializacao', 'compliance', 'tecnico')",
+      "issues": []
+    },
+    {
+      "constraint_name": "treinamentos_certificacoes_check_1",
+      "table_name": "treinamentos_certificacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (fabricante IN ('abbott', 'medtronic', 'jnj', 'stryker', 'boston_scientific', 'geral')",
+      "issues": []
+    },
+    {
+      "constraint_name": "treinamentos_certificacoes_check_2",
+      "table_name": "treinamentos_certificacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (categoria IN ('opme', 'qualidade', 'regulatorio', 'etica', 'seguranca', 'operacional')",
+      "issues": []
+    },
+    {
+      "constraint_name": "treinamentos_certificacoes_check_3",
+      "table_name": "treinamentos_certificacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (modalidade IN ('presencial', 'online', 'hibrido')",
+      "issues": []
+    },
+    {
+      "constraint_name": "treinamentos_certificacoes_check_4",
+      "table_name": "treinamentos_certificacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('agendado', 'em_andamento', 'concluido', 'cancelado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "rastreabilidade_opme_compliance_check_0",
+      "table_name": "rastreabilidade_opme_compliance",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('estoque', 'consignado', 'implantado', 'devolvido', 'descartado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "agentes_ia_compliance_check_0",
+      "table_name": "agentes_ia_compliance",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('compliance', 'documentacao', 'auditoria', 'treinamento', 'risco')",
+      "issues": []
+    },
+    {
+      "constraint_name": "agentes_ia_compliance_check_1",
+      "table_name": "agentes_ia_compliance",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativo', 'inativo', 'processando', 'erro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "agentes_ia_compliance_check_2",
+      "table_name": "agentes_ia_compliance",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (taxa_acerto BETWEEN 0 AND 100)",
+      "issues": []
+    },
+    {
+      "constraint_name": "agentes_ia_compliance_check_3",
+      "table_name": "agentes_ia_compliance",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (frequencia_analise IN ('tempo_real', 'horaria', 'diaria', 'semanal')",
+      "issues": []
+    },
+    {
+      "constraint_name": "agentes_ia_compliance_check_4",
+      "table_name": "agentes_ia_compliance",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (nivel_sensibilidade IN ('baixo', 'medio', 'alto', 'critico')",
+      "issues": []
+    },
+    {
+      "constraint_name": "alertas_compliance_check_0",
+      "table_name": "alertas_compliance",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('vencimento_certificacao', 'treinamento_vencido', 'auditoria_programada', 'nao_conformidade', 'documento_revisao', 'calibracao_vencida')",
+      "issues": []
+    },
+    {
+      "constraint_name": "alertas_compliance_check_1",
+      "table_name": "alertas_compliance",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (severidade IN ('aviso', 'urgente', 'critico')",
+      "issues": []
+    },
+    {
+      "constraint_name": "alertas_compliance_check_2",
+      "table_name": "alertas_compliance",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (prioridade BETWEEN 1 AND 5)",
+      "issues": []
+    },
+    {
+      "constraint_name": "alertas_compliance_check_3",
+      "table_name": "alertas_compliance",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('novo', 'visualizado', 'em_acao', 'resolvido', 'ignorado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "documentacao_tecnica_check_0",
+      "table_name": "documentacao_tecnica",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('manual', 'pop', 'procedimento', 'formulario', 'politica', 'certificado', 'relatorio')",
+      "issues": []
+    },
+    {
+      "constraint_name": "documentacao_tecnica_check_1",
+      "table_name": "documentacao_tecnica",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('rascunho', 'em_revisao', 'aprovado', 'vigente', 'obsoleto')",
+      "issues": []
+    },
+    {
+      "constraint_name": "contratos_consignacao_check_0",
+      "table_name": "contratos_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativo', 'suspenso', 'cancelado', 'vencido')",
+      "issues": []
+    },
+    {
+      "constraint_name": "materiais_consignados_check_0",
+      "table_name": "materiais_consignados",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (categoria IN ('implantes', 'instrumentais', 'descartaveis', 'equipamentos', 'outros')",
+      "issues": []
+    },
+    {
+      "constraint_name": "materiais_consignados_check_1",
+      "table_name": "materiais_consignados",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('disponivel', 'reservado', 'utilizado', 'devolvido', 'vencido', 'danificado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "materiais_consignados_check_2",
+      "table_name": "materiais_consignados",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (rotatividade IN ('alta', 'media', 'baixa')",
+      "issues": []
+    },
+    {
+      "constraint_name": "movimentacoes_consignacao_check_0",
+      "table_name": "movimentacoes_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('entrada', 'saida', 'utilizacao', 'devolucao', 'transferencia', 'ajuste')",
+      "issues": []
+    },
+    {
+      "constraint_name": "faturamento_consignacao_check_0",
+      "table_name": "faturamento_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('pendente', 'faturado', 'pago', 'vencido', 'cancelado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "alertas_consignacao_check_0",
+      "table_name": "alertas_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('conferencia_semanal', 'material_vencendo', 'material_parado', 'faturamento_pendente', 'contrato_vencendo')",
+      "issues": []
+    },
+    {
+      "constraint_name": "alertas_consignacao_check_1",
+      "table_name": "alertas_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (severidade IN ('baixa', 'media', 'alta', 'critica')",
+      "issues": []
+    },
+    {
+      "constraint_name": "alertas_consignacao_check_2",
+      "table_name": "alertas_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativo', 'lido', 'resolvido', 'ignorado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "conferencias_consignacao_check_0",
+      "table_name": "conferencias_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('agendada', 'em_andamento', 'concluida', 'cancelada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "conferencias_consignacao_check_1",
+      "table_name": "conferencias_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status_conferencia IN ('urgente', 'atencao', 'normal')",
+      "issues": []
+    },
+    {
+      "constraint_name": "leads_estagio_check",
+      "table_name": "leads",
+      "constraint_type": "CHECK",
+      "definition": "estagio IN (\n    'novo',\n    'contato',\n    'qualificado',\n    'proposta',\n    'negociacao',\n    'ganho',\n    'perdido',\n    'desqualificado'\n  ",
+      "issues": []
+    },
+    {
+      "constraint_name": "contratos_unique_0",
+      "table_name": "contratos",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE (empresa_id, numero_contrato)",
+      "issues": []
+    },
+    {
+      "constraint_name": "contratos_check_0",
+      "table_name": "contratos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN (\n    'fornecimento_produtos',\n    'prestacao_servicos',\n    'opme_hospital',\n    'locacao',\n    'parceria',\n    'seguro',\n    'outro'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "contratos_check_1",
+      "table_name": "contratos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN (\n    'rascunho',\n    'em_aprovacao',\n    'ativo',\n    'renovacao',\n    'encerrado',\n    'cancelado'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "contratos_check_2",
+      "table_name": "contratos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (indice_reajuste IN ('nenhum','ipca','igpm','inpc','percentual_fixo')",
+      "issues": []
+    },
+    {
+      "constraint_name": "contratos_check_3",
+      "table_name": "contratos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (periodicidade_reajuste IS NULL OR periodicidade_reajuste IN ('anual','semestral')",
+      "issues": []
+    },
+    {
+      "constraint_name": "contratos_aprovacoes_check_0",
+      "table_name": "contratos_aprovacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (nivel IN ('juridico','financeiro','diretoria','comercial','operacional')",
+      "issues": []
+    },
+    {
+      "constraint_name": "contratos_aprovacoes_check_1",
+      "table_name": "contratos_aprovacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('pendente','aprovado','rejeitado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "contratos_alertas_check_0",
+      "table_name": "contratos_alertas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('vencimento','renovacao','sla','inadimplencia','assinatura')",
+      "issues": []
+    },
+    {
+      "constraint_name": "contratos_alertas_check_1",
+      "table_name": "contratos_alertas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (severidade IN ('info','warning','critical')",
+      "issues": []
+    },
+    {
+      "constraint_name": "oportunidades_check_0",
+      "table_name": "oportunidades",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (etapa IN (\n    'prospeccao',\n    'contato_inicial',\n    'qualificacao',\n    'apresentacao',\n    'proposta',\n    'negociacao',\n    'fechamento',\n    'ganho',\n    'perdido'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "oportunidades_check_1",
+      "table_name": "oportunidades",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('aberta','fechada_ganho','fechada_perdido','congelada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "oportunidades_check_2",
+      "table_name": "oportunidades",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (probabilidade BETWEEN 0 AND 100)",
+      "issues": []
+    },
+    {
+      "constraint_name": "oportunidade_interacoes_check_0",
+      "table_name": "oportunidade_interacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('email','ligacao','reuniao','whatsapp','video','outro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "oportunidade_tarefas_check_0",
+      "table_name": "oportunidade_tarefas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('pendente','em_andamento','concluida','cancelada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "oportunidade_propostas_check_0",
+      "table_name": "oportunidade_propostas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('rascunho','enviada','aceita','rejeitada','cancelada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "campanhas_marketing_check_0",
+      "table_name": "campanhas_marketing",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('email','whatsapp','sms','ads','outro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "campanhas_marketing_check_1",
+      "table_name": "campanhas_marketing",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('rascunho','agendada','em_andamento','finalizada','pausada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "crm_clientes_check_0",
+      "table_name": "crm_clientes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativo','inativo','prospect')",
+      "issues": []
+    },
+    {
+      "constraint_name": "estoque_localizacoes_unique_0",
+      "table_name": "estoque_localizacoes",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(armazem_id, codigo)",
+      "issues": []
+    },
+    {
+      "constraint_name": "estoque_unique_0",
+      "table_name": "estoque",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(produto_id, armazem_id, lote, serie)",
+      "issues": []
+    },
+    {
+      "constraint_name": "estoque_lotes_unique_0",
+      "table_name": "estoque_lotes",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(produto_id, lote, serie)",
+      "issues": []
+    },
+    {
+      "constraint_name": "portais_opme_config_check_0",
+      "table_name": "portais_opme_config",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo_integracao IN ('api_rest', 'api_graphql', 'scraping', 'hibrida')",
+      "issues": []
+    },
+    {
+      "constraint_name": "portais_opme_palavras_chave_unique_0",
+      "table_name": "portais_opme_palavras_chave",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(produto_id, palavra_chave, portal)",
+      "issues": []
+    },
+    {
+      "constraint_name": "portais_opme_palavras_chave_check_0",
+      "table_name": "portais_opme_palavras_chave",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('principal', 'sinonimo', 'variacao', 'codigo')",
+      "issues": []
+    },
+    {
+      "constraint_name": "portais_opme_cotacoes_check_0",
+      "table_name": "portais_opme_cotacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('processando', 'concluida', 'erro', 'cancelada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "portais_opme_cache_unique_0",
+      "table_name": "portais_opme_cache",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(portal, palavra_chave, quantidade)",
+      "issues": []
+    },
+    {
+      "constraint_name": "validacoes_cache_unique_0",
+      "table_name": "validacoes_cache",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE (tipo, chave)",
+      "issues": []
+    },
+    {
+      "constraint_name": "validacoes_cache_check_0",
+      "table_name": "validacoes_cache",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('cep', 'cnpj', 'cpf', 'crm', 'veiculo', 'anvisa')",
+      "issues": []
+    },
+    {
+      "constraint_name": "pacientes_check_0",
+      "table_name": "pacientes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (sexo IN ('M', 'F', 'outro', 'nao_informado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "pacientes_check_1",
+      "table_name": "pacientes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (LENGTH(estado)",
+      "issues": []
+    },
+    {
+      "constraint_name": "pacientes_check_2",
+      "table_name": "pacientes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo_sanguineo IN ('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-')",
+      "issues": []
+    },
+    {
+      "constraint_name": "pacientes_check_3",
+      "table_name": "pacientes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativo', 'inativo', 'bloqueado', 'anonimizado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "convenios_unique_0",
+      "table_name": "convenios",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, cnpj)",
+      "issues": []
+    },
+    {
+      "constraint_name": "convenios_check_0",
+      "table_name": "convenios",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('plano_saude', 'operadora', 'autogestao', 'cooperativa', 'particular')",
+      "issues": []
+    },
+    {
+      "constraint_name": "convenios_check_1",
+      "table_name": "convenios",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (LENGTH(estado)",
+      "issues": []
+    },
+    {
+      "constraint_name": "convenios_check_2",
+      "table_name": "convenios",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativo', 'inativo', 'suspenso', 'em_negociacao')",
+      "issues": []
+    },
+    {
+      "constraint_name": "cirurgia_materiais_check_0",
+      "table_name": "cirurgia_materiais",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('solicitado', 'separado', 'entregue', 'utilizado', 'devolvido', 'faturado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "cirurgia_materiais_check_1",
+      "table_name": "cirurgia_materiais",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo_origem IN ('estoque', 'consignacao', 'compra_direta')",
+      "issues": []
+    },
+    {
+      "constraint_name": "cirurgia_eventos_check_0",
+      "table_name": "cirurgia_eventos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN (\n    'agendamento', 'confirmacao', 'alteracao_data', 'cancelamento',\n    'inicio_cirurgia', 'fim_cirurgia', 'alta_paciente',\n    'material_solicitado', 'material_entregue', 'material_usado',\n    'complicacao', 'intercorrencia', 'observacao', 'outro'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "estoque_unique_0",
+      "table_name": "estoque",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, produto_id, lote_id, localizacao)",
+      "issues": []
+    },
+    {
+      "constraint_name": "estoque_check_0",
+      "table_name": "estoque",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (quantidade_disponivel >= 0)",
+      "issues": []
+    },
+    {
+      "constraint_name": "estoque_check_1",
+      "table_name": "estoque",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (quantidade_reservada >= 0)",
+      "issues": []
+    },
+    {
+      "constraint_name": "estoque_check_2",
+      "table_name": "estoque",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativo', 'bloqueado', 'inventario', 'vencido')",
+      "issues": []
+    },
+    {
+      "constraint_name": "estoque_movimentacoes_check_0",
+      "table_name": "estoque_movimentacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN (\n    'entrada_compra', 'entrada_devolucao', 'entrada_transferencia', 'entrada_ajuste',\n    'saida_venda', 'saida_consignacao', 'saida_transferencia', 'saida_perda', 'saida_ajuste',\n    'reserva', 'liberacao_reserva', 'inventario'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "contratos_consignacao_unique_0",
+      "table_name": "contratos_consignacao",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, numero_contrato)",
+      "issues": []
+    },
+    {
+      "constraint_name": "contratos_consignacao_check_0",
+      "table_name": "contratos_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('consignacao_pura', 'consignacao_venda_garantida', 'comodato')",
+      "issues": []
+    },
+    {
+      "constraint_name": "contratos_consignacao_check_1",
+      "table_name": "contratos_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('rascunho', 'ativo', 'suspenso', 'encerrado', 'cancelado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "notas_fiscais_unique_0",
+      "table_name": "notas_fiscais",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, tipo, numero, serie)",
+      "issues": []
+    },
+    {
+      "constraint_name": "notas_fiscais_check_0",
+      "table_name": "notas_fiscais",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('entrada', 'saida', 'devolucao')",
+      "issues": []
+    },
+    {
+      "constraint_name": "notas_fiscais_check_1",
+      "table_name": "notas_fiscais",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status_sefaz IN ('pendente', 'autorizada', 'cancelada', 'denegada', 'rejeitada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "notas_fiscais_check_2",
+      "table_name": "notas_fiscais",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('rascunho', 'emitida', 'recebida', 'cancelada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "profiles_check_0",
+      "table_name": "profiles",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tema IN ('light', 'dark', 'auto')",
+      "issues": []
+    },
+    {
+      "constraint_name": "profiles_check_1",
+      "table_name": "profiles",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (idioma IN ('pt-BR', 'en-US', 'es-ES')",
+      "issues": []
+    },
+    {
+      "constraint_name": "notificacoes_check_0",
+      "table_name": "notificacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN (\n    'info', 'sucesso', 'aviso', 'erro', 'alerta',\n    'tarefa', 'lembrete', 'aprovacao', 'sistema'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "notificacoes_check_1",
+      "table_name": "notificacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (prioridade IN ('baixa', 'media', 'alta', 'urgente')",
+      "issues": []
+    },
+    {
+      "constraint_name": "solicitacoes_compra_unique_0",
+      "table_name": "solicitacoes_compra",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, numero)",
+      "issues": []
+    },
+    {
+      "constraint_name": "solicitacoes_compra_check_0",
+      "table_name": "solicitacoes_compra",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('normal', 'urgente', 'programada', 'consignacao')",
+      "issues": []
+    },
+    {
+      "constraint_name": "solicitacoes_compra_check_1",
+      "table_name": "solicitacoes_compra",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('rascunho', 'pendente', 'aprovada', 'rejeitada', 'convertida', 'cancelada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "itens_pedido_compra_check_0",
+      "table_name": "itens_pedido_compra",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (quantidade > 0)",
+      "issues": []
+    },
+    {
+      "constraint_name": "itens_pedido_compra_check_1",
+      "table_name": "itens_pedido_compra",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (quantidade_recebida >= 0)",
+      "issues": []
+    },
+    {
+      "constraint_name": "itens_pedido_compra_check_2",
+      "table_name": "itens_pedido_compra",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('pendente', 'parcial', 'recebido', 'cancelado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "cotacoes_unique_0",
+      "table_name": "cotacoes",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, numero)",
+      "issues": []
+    },
+    {
+      "constraint_name": "cotacoes_check_0",
+      "table_name": "cotacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('preco', 'proposta', 'orcamento')",
+      "issues": []
+    },
+    {
+      "constraint_name": "cotacoes_check_1",
+      "table_name": "cotacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('rascunho', 'enviada', 'em_analise', 'finalizada', 'cancelada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "itens_cotacao_unique_0",
+      "table_name": "itens_cotacao",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(cotacao_id, fornecedor_id, produto_id)",
+      "issues": []
+    },
+    {
+      "constraint_name": "itens_cotacao_check_0",
+      "table_name": "itens_cotacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (quantidade > 0)",
+      "issues": []
+    },
+    {
+      "constraint_name": "itens_cotacao_check_1",
+      "table_name": "itens_cotacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (pontuacao_qualidade BETWEEN 1 AND 5)",
+      "issues": []
+    },
+    {
+      "constraint_name": "itens_cotacao_check_2",
+      "table_name": "itens_cotacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (pontuacao_preco BETWEEN 1 AND 5)",
+      "issues": []
+    },
+    {
+      "constraint_name": "itens_cotacao_check_3",
+      "table_name": "itens_cotacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (pontuacao_prazo BETWEEN 1 AND 5)",
+      "issues": []
+    },
+    {
+      "constraint_name": "itens_cotacao_check_4",
+      "table_name": "itens_cotacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('aguardando', 'respondido', 'selecionado', 'rejeitado', 'sem_resposta')",
+      "issues": []
+    },
+    {
+      "constraint_name": "fornecedores_produtos_unique_0",
+      "table_name": "fornecedores_produtos",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, fornecedor_id, produto_id)",
+      "issues": []
+    },
+    {
+      "constraint_name": "fornecedores_produtos_check_0",
+      "table_name": "fornecedores_produtos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (ultima_avaliacao BETWEEN 1 AND 5)",
+      "issues": []
+    },
+    {
+      "constraint_name": "oportunidades_unique_0",
+      "table_name": "oportunidades",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, numero)",
+      "issues": []
+    },
+    {
+      "constraint_name": "oportunidades_check_0",
+      "table_name": "oportunidades",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (origem IN ('inbound', 'outbound', 'indicacao', 'evento', 'website', 'midia_social', 'outro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "oportunidades_check_1",
+      "table_name": "oportunidades",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('nova_venda', 'upsell', 'cross_sell', 'renovacao')",
+      "issues": []
+    },
+    {
+      "constraint_name": "oportunidades_check_2",
+      "table_name": "oportunidades",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (estagio IN ('qualificacao', 'apresentacao', 'proposta', 'negociacao', 'fechamento', 'ganho', 'perdido')",
+      "issues": []
+    },
+    {
+      "constraint_name": "oportunidades_check_3",
+      "table_name": "oportunidades",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (probabilidade BETWEEN 0 AND 100)",
+      "issues": []
+    },
+    {
+      "constraint_name": "propostas_unique_0",
+      "table_name": "propostas",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, numero, versao)",
+      "issues": []
+    },
+    {
+      "constraint_name": "propostas_check_0",
+      "table_name": "propostas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('rascunho', 'enviada', 'em_analise', 'aprovada', 'rejeitada', 'aceita', 'expirada', 'cancelada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "itens_proposta_unique_0",
+      "table_name": "itens_proposta",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(proposta_id, numero_item)",
+      "issues": []
+    },
+    {
+      "constraint_name": "itens_proposta_check_0",
+      "table_name": "itens_proposta",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('produto', 'servico', 'taxa', 'desconto')",
+      "issues": []
+    },
+    {
+      "constraint_name": "negociacoes_check_0",
+      "table_name": "negociacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('email', 'telefone', 'reuniao', 'videoconferencia', 'whatsapp', 'presencial', 'outro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "negociacoes_check_1",
+      "table_name": "negociacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (resultado IN ('positivo', 'neutro', 'negativo', 'pendente')",
+      "issues": []
+    },
+    {
+      "constraint_name": "atividades_crm_check_0",
+      "table_name": "atividades_crm",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('tarefa', 'ligacao', 'email', 'reuniao', 'lembrete', 'acompanhamento', 'outro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "atividades_crm_check_1",
+      "table_name": "atividades_crm",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (prioridade IN ('baixa', 'media', 'alta', 'urgente')",
+      "issues": []
+    },
+    {
+      "constraint_name": "atividades_crm_check_2",
+      "table_name": "atividades_crm",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('pendente', 'em_andamento', 'concluida', 'cancelada', 'atrasada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "contas_pagar_unique_0",
+      "table_name": "contas_pagar",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, numero)",
+      "issues": []
+    },
+    {
+      "constraint_name": "contas_pagar_check_0",
+      "table_name": "contas_pagar",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('fornecedor', 'folha', 'tributo', 'servico', 'aluguel', 'financiamento', 'outro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "contas_pagar_check_1",
+      "table_name": "contas_pagar",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (forma_pagamento IN ('dinheiro', 'pix', 'boleto', 'transferencia', 'cartao_credito', 'cartao_debito', 'cheque')",
+      "issues": []
+    },
+    {
+      "constraint_name": "contas_pagar_check_2",
+      "table_name": "contas_pagar",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('pendente', 'agendado', 'pago', 'atrasado', 'cancelado', 'parcial')",
+      "issues": []
+    },
+    {
+      "constraint_name": "contas_receber_unique_0",
+      "table_name": "contas_receber",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, numero)",
+      "issues": []
+    },
+    {
+      "constraint_name": "contas_receber_check_0",
+      "table_name": "contas_receber",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('venda', 'servico', 'consignacao', 'aluguel', 'outro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "contas_receber_check_1",
+      "table_name": "contas_receber",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (forma_recebimento IN ('dinheiro', 'pix', 'boleto', 'transferencia', 'cartao_credito', 'cartao_debito', 'cheque')",
+      "issues": []
+    },
+    {
+      "constraint_name": "contas_receber_check_2",
+      "table_name": "contas_receber",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('pendente', 'recebido', 'atrasado', 'cancelado', 'parcial', 'protesto')",
+      "issues": []
+    },
+    {
+      "constraint_name": "fluxo_caixa_check_0",
+      "table_name": "fluxo_caixa",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('entrada', 'saida', 'transferencia')",
+      "issues": []
+    },
+    {
+      "constraint_name": "fluxo_caixa_check_1",
+      "table_name": "fluxo_caixa",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (valor > 0)",
+      "issues": []
+    },
+    {
+      "constraint_name": "fluxo_caixa_check_2",
+      "table_name": "fluxo_caixa",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (forma IN ('dinheiro', 'pix', 'boleto', 'transferencia', 'cartao_credito', 'cartao_debito', 'cheque')",
+      "issues": []
+    },
+    {
+      "constraint_name": "fluxo_caixa_check_3",
+      "table_name": "fluxo_caixa",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('pendente', 'confirmado', 'cancelado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "bancos_unique_0",
+      "table_name": "bancos",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, codigo_banco, agencia, conta)",
+      "issues": []
+    },
+    {
+      "constraint_name": "bancos_check_0",
+      "table_name": "bancos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo_conta IN ('corrente', 'poupanca', 'investimento')",
+      "issues": []
+    },
+    {
+      "constraint_name": "bancos_check_1",
+      "table_name": "bancos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo_chave_pix IN ('cpf', 'cnpj', 'email', 'telefone', 'aleatoria')",
+      "issues": []
+    },
+    {
+      "constraint_name": "centros_custo_unique_0",
+      "table_name": "centros_custo",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, codigo)",
+      "issues": []
+    },
+    {
+      "constraint_name": "centros_custo_check_0",
+      "table_name": "centros_custo",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('receita', 'despesa', 'investimento')",
+      "issues": []
+    },
+    {
+      "constraint_name": "lancamentos_contabeis_check_0",
+      "table_name": "lancamentos_contabeis",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('debito', 'credito')",
+      "issues": []
+    },
+    {
+      "constraint_name": "lancamentos_contabeis_check_1",
+      "table_name": "lancamentos_contabeis",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (valor > 0)",
+      "issues": []
+    },
+    {
+      "constraint_name": "lancamentos_contabeis_check_2",
+      "table_name": "lancamentos_contabeis",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('provisorio', 'definitivo', 'cancelado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "remessas_consignacao_unique_0",
+      "table_name": "remessas_consignacao",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, numero)",
+      "issues": []
+    },
+    {
+      "constraint_name": "remessas_consignacao_check_0",
+      "table_name": "remessas_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('envio', 'reposicao', 'transferencia')",
+      "issues": []
+    },
+    {
+      "constraint_name": "remessas_consignacao_check_1",
+      "table_name": "remessas_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN (\n    'preparacao', 'enviada', 'em_transito', 'entregue', \n    'parcialmente_devolvida', 'totalmente_devolvida', \n    'faturada', 'cancelada'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "itens_consignacao_check_0",
+      "table_name": "itens_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (quantidade_enviada > 0)",
+      "issues": []
+    },
+    {
+      "constraint_name": "itens_consignacao_check_1",
+      "table_name": "itens_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (quantidade_utilizada >= 0)",
+      "issues": []
+    },
+    {
+      "constraint_name": "itens_consignacao_check_2",
+      "table_name": "itens_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (quantidade_devolvida >= 0)",
+      "issues": []
+    },
+    {
+      "constraint_name": "itens_consignacao_check_3",
+      "table_name": "itens_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (condicao_devolucao IN ('perfeito', 'avariado', 'vencido', 'incompleto')",
+      "issues": []
+    },
+    {
+      "constraint_name": "itens_consignacao_check_4",
+      "table_name": "itens_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN (\n    'disponivel', 'reservado', 'utilizado', \n    'devolvido', 'faturado', 'perdido'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "devolucoes_consignacao_unique_0",
+      "table_name": "devolucoes_consignacao",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, numero)",
+      "issues": []
+    },
+    {
+      "constraint_name": "devolucoes_consignacao_check_0",
+      "table_name": "devolucoes_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (motivo IN (\n    'nao_utilizado', 'excedente', 'vencimento_proximo', \n    'troca', 'avaria', 'outro'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "devolucoes_consignacao_check_1",
+      "table_name": "devolucoes_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN (\n    'rascunho', 'aguardando_coleta', 'em_transito', \n    'recebida_fornecedor', 'conferida', 'cancelada'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "estoque_reservas_check_0",
+      "table_name": "estoque_reservas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (quantidade > 0)",
+      "issues": []
+    },
+    {
+      "constraint_name": "estoque_reservas_check_1",
+      "table_name": "estoque_reservas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (quantidade_consumida >= 0)",
+      "issues": []
+    },
+    {
+      "constraint_name": "estoque_reservas_check_2",
+      "table_name": "estoque_reservas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo_reserva IN (\n    'cirurgia', 'pedido_venda', 'transferencia', \n    'manutencao', 'demonstracao', 'outro'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "estoque_reservas_check_3",
+      "table_name": "estoque_reservas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN (\n    'ativa', 'consumida', 'liberada', 'expirada', 'cancelada'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "estoque_reservas_check_4",
+      "table_name": "estoque_reservas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (prioridade IN ('baixa', 'media', 'alta', 'urgente')",
+      "issues": []
+    },
+    {
+      "constraint_name": "compliance_requisitos_unique_0",
+      "table_name": "compliance_requisitos",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, codigo)",
+      "issues": []
+    },
+    {
+      "constraint_name": "compliance_requisitos_check_0",
+      "table_name": "compliance_requisitos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN (\n    'anvisa', 'rdc', 'iso', 'lgpd', 'trabalhista', \n    'ambiental', 'qualidade', 'seguranca', 'outro'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "compliance_requisitos_check_1",
+      "table_name": "compliance_requisitos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (criticidade IN ('baixa', 'media', 'alta', 'critica')",
+      "issues": []
+    },
+    {
+      "constraint_name": "compliance_requisitos_check_2",
+      "table_name": "compliance_requisitos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (frequencia_verificacao IN (\n    'diaria', 'semanal', 'quinzenal', 'mensal', \n    'trimestral', 'semestral', 'anual', 'sob_demanda'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "compliance_requisitos_check_3",
+      "table_name": "compliance_requisitos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativo', 'inativo', 'obsoleto', 'em_revisao')",
+      "issues": []
+    },
+    {
+      "constraint_name": "compliance_evidencias_check_0",
+      "table_name": "compliance_evidencias",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN (\n    'documento', 'foto', 'video', 'relatorio', \n    'planilha', 'certificado', 'laudo', 'ata', 'outro'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "auditorias_unique_0",
+      "table_name": "auditorias",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, numero)",
+      "issues": []
+    },
+    {
+      "constraint_name": "auditorias_check_0",
+      "table_name": "auditorias",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('interna', 'externa', 'certificacao', 'vigilancia', 'inspetoria')",
+      "issues": []
+    },
+    {
+      "constraint_name": "auditorias_check_1",
+      "table_name": "auditorias",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN (\n    'planejada', 'em_andamento', 'concluida', \n    'relatorio_pendente', 'finalizada', 'cancelada'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "auditorias_itens_check_0",
+      "table_name": "auditorias_itens",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (metodo_verificacao IN (\n    'entrevista', 'observacao', 'analise_documental', \n    'medicao', 'teste', 'outro'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "auditorias_itens_check_1",
+      "table_name": "auditorias_itens",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (resultado IN (\n    'conforme', 'nao_conforme_maior', 'nao_conforme_menor', \n    'observacao', 'oportunidade_melhoria', 'nao_aplicavel'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "auditorias_itens_check_2",
+      "table_name": "auditorias_itens",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (criticidade IN ('baixa', 'media', 'alta', 'critica')",
+      "issues": []
+    },
+    {
+      "constraint_name": "nao_conformidades_unique_0",
+      "table_name": "nao_conformidades",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, numero)",
+      "issues": []
+    },
+    {
+      "constraint_name": "nao_conformidades_check_0",
+      "table_name": "nao_conformidades",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (origem IN (\n    'auditoria_interna', 'auditoria_externa', 'inspetoria', \n    'reclamacao_cliente', 'auto_inspecao', 'evento_adverso', 'outro'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "nao_conformidades_check_1",
+      "table_name": "nao_conformidades",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('maior', 'menor', 'observacao', 'risco')",
+      "issues": []
+    },
+    {
+      "constraint_name": "nao_conformidades_check_2",
+      "table_name": "nao_conformidades",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (criticidade IN ('baixa', 'media', 'alta', 'critica')",
+      "issues": []
+    },
+    {
+      "constraint_name": "nao_conformidades_check_3",
+      "table_name": "nao_conformidades",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN (\n    'aberta', 'em_analise', 'em_tratamento', \n    'aguardando_verificacao', 'fechada', 'cancelada'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "acoes_corretivas_unique_0",
+      "table_name": "acoes_corretivas",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, numero)",
+      "issues": []
+    },
+    {
+      "constraint_name": "acoes_corretivas_check_0",
+      "table_name": "acoes_corretivas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('corretiva', 'preventiva', 'melhoria')",
+      "issues": []
+    },
+    {
+      "constraint_name": "acoes_corretivas_check_1",
+      "table_name": "acoes_corretivas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (categoria IN (\n    'imediata', 'correcao', 'analise_causa', \n    'acao_corretiva', 'acao_preventiva'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "acoes_corretivas_check_2",
+      "table_name": "acoes_corretivas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN (\n    'planejada', 'em_andamento', 'concluida', \n    'verificada', 'eficaz', 'nao_eficaz', 'cancelada'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "acoes_corretivas_check_3",
+      "table_name": "acoes_corretivas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (progresso BETWEEN 0 AND 100)",
+      "issues": []
+    },
+    {
+      "constraint_name": "portais_opme_config_unique_0",
+      "table_name": "portais_opme_config",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, codigo)",
+      "issues": []
+    },
+    {
+      "constraint_name": "portais_opme_config_check_0",
+      "table_name": "portais_opme_config",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('hospital', 'convenio', 'operadora', 'marketplace')",
+      "issues": []
+    },
+    {
+      "constraint_name": "portais_opme_config_check_1",
+      "table_name": "portais_opme_config",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (metodo_integracao IN (\n    'api_rest', 'api_soap', 'sftp', 'email', 'portal_web', 'outro'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "portais_opme_solicitacoes_unique_0",
+      "table_name": "portais_opme_solicitacoes",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, numero_interno)",
+      "issues": []
+    },
+    {
+      "constraint_name": "portais_opme_solicitacoes_check_0",
+      "table_name": "portais_opme_solicitacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (urgencia IN ('eletiva', 'urgencia', 'emergencia')",
+      "issues": []
+    },
+    {
+      "constraint_name": "portais_opme_solicitacoes_check_1",
+      "table_name": "portais_opme_solicitacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (metodo_envio IN ('api', 'portal_web', 'email', 'manual')",
+      "issues": []
+    },
+    {
+      "constraint_name": "portais_opme_solicitacoes_check_2",
+      "table_name": "portais_opme_solicitacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN (\n    'rascunho', 'enviada', 'em_analise', \n    'aprovada', 'aprovada_parcial', 'negada', \n    'expirada', 'cancelada'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "portais_opme_respostas_check_0",
+      "table_name": "portais_opme_respostas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo_resposta IN (\n    'aprovacao', 'aprovacao_parcial', 'negacao', \n    'pendencia', 'informacao', 'cancelamento'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "portais_opme_respostas_check_1",
+      "table_name": "portais_opme_respostas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (origem IN ('portal', 'email', 'telefone', 'manual')",
+      "issues": []
+    },
+    {
+      "constraint_name": "portais_opme_logs_check_0",
+      "table_name": "portais_opme_logs",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (operacao IN (\n    'envio_solicitacao', 'consulta_status', 'recebimento_resposta',\n    'sincronizacao', 'autenticacao', 'download_documento', 'outro'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "portais_opme_logs_check_1",
+      "table_name": "portais_opme_logs",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (metodo_http IN ('GET', 'POST', 'PUT', 'PATCH', 'DELETE')",
+      "issues": []
+    },
+    {
+      "constraint_name": "licitacoes_unique_0",
+      "table_name": "licitacoes",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, numero_processo)",
+      "issues": []
+    },
+    {
+      "constraint_name": "licitacoes_check_0",
+      "table_name": "licitacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (modalidade IN (\n    'pregao_eletronico', 'pregao_presencial', 'concorrencia', \n    'tomada_precos', 'convite', 'leilao', 'dispensa', \n    'inexigibilidade', 'rdc', 'dialogo_competitivo'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "licitacoes_check_1",
+      "table_name": "licitacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo_contratacao IN (\n    'menor_preco', 'melhor_tecnica', 'tecnica_preco', \n    'maior_desconto', 'maior_lance'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "licitacoes_check_2",
+      "table_name": "licitacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (orgao_esfera IN ('federal', 'estadual', 'municipal', 'privado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "licitacoes_check_3",
+      "table_name": "licitacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status_participacao IN (\n    'identificada', 'em_analise', 'participando', \n    'proposta_enviada', 'vencedora', 'perdedora', \n    'desistiu', 'inabilitada', 'nao_participou'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "propostas_licitacao_unique_0",
+      "table_name": "propostas_licitacao",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, licitacao_id, numero_proposta, versao)",
+      "issues": []
+    },
+    {
+      "constraint_name": "propostas_licitacao_check_0",
+      "table_name": "propostas_licitacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('comercial', 'tecnica', 'habilitacao', 'completa')",
+      "issues": []
+    },
+    {
+      "constraint_name": "propostas_licitacao_check_1",
+      "table_name": "propostas_licitacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (fase IN ('inicial', 'lance', 'melhor_oferta', 'negociacao', 'final')",
+      "issues": []
+    },
+    {
+      "constraint_name": "propostas_licitacao_check_2",
+      "table_name": "propostas_licitacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (metodo_envio IN ('portal', 'email', 'presencial', 'correios')",
+      "issues": []
+    },
+    {
+      "constraint_name": "propostas_licitacao_check_3",
+      "table_name": "propostas_licitacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN (\n    'rascunho', 'enviada', 'em_analise', \n    'habilitada', 'inabilitada', 'classificada', \n    'desclassificada', 'vencedora', 'perdedora'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "documentos_licitacao_check_0",
+      "table_name": "documentos_licitacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN (\n    'edital', 'adendo', 'esclarecimento', 'impugnacao',\n    'certidao_federal', 'certidao_estadual', 'certidao_municipal',\n    'certidao_trabalhista', 'certidao_falencia', 'certidao_negativa',\n    'balanco_patrimonial', 'demonstrativo_financeiro', 'contrato_social',\n    'licenca_funcionamento', 'registro_anvisa', 'certificado_qualidade',\n    'atestado_capacidade', 'declaracao', 'procuracao', 'outro'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "documentos_licitacao_check_1",
+      "table_name": "documentos_licitacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (origem IN ('empresa', 'orgao', 'terceiro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "entregas_unique_0",
+      "table_name": "entregas",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, numero)",
+      "issues": []
+    },
+    {
+      "constraint_name": "entregas_check_0",
+      "table_name": "entregas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN (\n    'venda', 'consignacao', 'devolucao', 'transferencia', \n    'demonstracao', 'garantia', 'outro'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "entregas_check_1",
+      "table_name": "entregas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (remetente_tipo IN ('empresa', 'fornecedor', 'hospital', 'outro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "entregas_check_2",
+      "table_name": "entregas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (destinatario_tipo IN ('hospital', 'medico', 'cliente', 'fornecedor', 'outro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "entregas_check_3",
+      "table_name": "entregas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo_transporte IN (\n    'proprio', 'transportadora', 'correios', 'motoboy', 'outro'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "entregas_check_4",
+      "table_name": "entregas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN (\n    'agendada', 'preparacao', 'em_transito', \n    'saiu_entrega', 'tentativa_falha', 'entregue', \n    'nao_entregue', 'devolvida', 'cancelada'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "entregas_check_5",
+      "table_name": "entregas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (prioridade IN ('baixa', 'media', 'alta', 'urgente')",
+      "issues": []
+    },
+    {
+      "constraint_name": "entregas_check_6",
+      "table_name": "entregas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (avaliacao_entrega BETWEEN 1 AND 5)",
+      "issues": []
+    },
+    {
+      "constraint_name": "chatbot_sessoes_check_0",
+      "table_name": "chatbot_sessoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (contexto_tipo IN (\n    'geral', 'cirurgia', 'compras', 'vendas', \n    'estoque', 'financeiro', 'compliance', 'outro'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "chatbot_sessoes_check_1",
+      "table_name": "chatbot_sessoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (temperatura BETWEEN 0 AND 2)",
+      "issues": []
+    },
+    {
+      "constraint_name": "chatbot_sessoes_check_2",
+      "table_name": "chatbot_sessoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (modo IN ('assistente', 'pesquisador', 'especialista', 'tutor')",
+      "issues": []
+    },
+    {
+      "constraint_name": "chatbot_sessoes_check_3",
+      "table_name": "chatbot_sessoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (avaliacao BETWEEN 1 AND 5)",
+      "issues": []
+    },
+    {
+      "constraint_name": "chatbot_conversas_check_0",
+      "table_name": "chatbot_conversas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativa', 'pausada', 'encerrada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "chatbot_mensagens_check_0",
+      "table_name": "chatbot_mensagens",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo_remetente IN ('usuario', 'assistente', 'sistema')",
+      "issues": []
+    },
+    {
+      "constraint_name": "chatbot_mensagens_check_1",
+      "table_name": "chatbot_mensagens",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (sentimento IN ('positivo', 'neutro', 'negativo')",
+      "issues": []
+    },
+    {
+      "constraint_name": "pesquisas_gpt_check_0",
+      "table_name": "pesquisas_gpt",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN (\n    'web', 'documentos_internos', 'banco_dados', \n    'hibrida', 'especializada'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "pesquisas_gpt_check_1",
+      "table_name": "pesquisas_gpt",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (profundidade IN ('rapida', 'normal', 'profunda')",
+      "issues": []
+    },
+    {
+      "constraint_name": "pesquisas_gpt_check_2",
+      "table_name": "pesquisas_gpt",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN (\n    'pendente', 'em_andamento', 'concluida', \n    'erro', 'cancelada'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "pesquisas_gpt_check_3",
+      "table_name": "pesquisas_gpt",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (progresso BETWEEN 0 AND 100)",
+      "issues": []
+    },
+    {
+      "constraint_name": "pesquisas_gpt_check_4",
+      "table_name": "pesquisas_gpt",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (avaliacao BETWEEN 1 AND 5)",
+      "issues": []
+    },
+    {
+      "constraint_name": "workflows_unique_0",
+      "table_name": "workflows",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, codigo)",
+      "issues": []
+    },
+    {
+      "constraint_name": "workflows_check_0",
+      "table_name": "workflows",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (categoria IN (\n    'aprovacao', 'notificacao', 'automacao', \n    'integracao', 'agendamento', 'validacao', 'outro'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "workflows_check_1",
+      "table_name": "workflows",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (trigger_tipo IN (\n    'manual', 'evento', 'agendado', 'webhook', 'condicional'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "workflows_check_2",
+      "table_name": "workflows",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (prioridade BETWEEN 1 AND 10)",
+      "issues": []
+    },
+    {
+      "constraint_name": "workflows_etapas_check_0",
+      "table_name": "workflows_etapas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo_acao IN (\n    'aprovacao_manual', 'notificacao_email', 'notificacao_push',\n    'webhook', 'funcao_edge', 'query_database', \n    'criar_registro', 'atualizar_registro', 'enviar_api',\n    'aguardar', 'condicional', 'loop', 'paralelo', 'outro'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "workflows_etapas_check_1",
+      "table_name": "workflows_etapas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (executar_se IN ('sempre', 'sucesso_anterior', 'erro_anterior', 'condicional')",
+      "issues": []
+    },
+    {
+      "constraint_name": "workflows_etapas_check_2",
+      "table_name": "workflows_etapas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (acao_erro IN ('parar', 'continuar', 'retry', 'pular', 'rollback')",
+      "issues": []
+    },
+    {
+      "constraint_name": "workflows_execucoes_check_0",
+      "table_name": "workflows_execucoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (disparado_por IN ('manual', 'automatico', 'evento', 'agendado', 'webhook')",
+      "issues": []
+    },
+    {
+      "constraint_name": "workflows_execucoes_check_1",
+      "table_name": "workflows_execucoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN (\n    'iniciando', 'em_andamento', 'aguardando_aprovacao',\n    'pausado', 'concluido', 'erro', 'cancelado', 'timeout'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "workflows_logs_check_0",
+      "table_name": "workflows_logs",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN (\n    'info', 'debug', 'warning', 'error', \n    'etapa_iniciada', 'etapa_concluida', 'etapa_erro',\n    'aprovacao_solicitada', 'aprovacao_concedida', 'aprovacao_negada',\n    'retry', 'timeout', 'cancelamento', 'webhook_chamado'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "workflows_logs_check_1",
+      "table_name": "workflows_logs",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (severidade BETWEEN 1 AND 5)",
+      "issues": []
+    },
+    {
+      "constraint_name": "api_endpoints_unique_0",
+      "table_name": "api_endpoints",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, codigo, versao)",
+      "issues": []
+    },
+    {
+      "constraint_name": "api_endpoints_check_0",
+      "table_name": "api_endpoints",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (metodo IN ('GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS')",
+      "issues": []
+    },
+    {
+      "constraint_name": "api_endpoints_check_1",
+      "table_name": "api_endpoints",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (categoria IN (\n    'publico', 'privado', 'interno', 'webhook', 'integracao'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "api_endpoints_check_2",
+      "table_name": "api_endpoints",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo_autenticacao IN (\n    'api_key', 'bearer_token', 'basic_auth', 'oauth2', 'nenhuma'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "api_keys_check_0",
+      "table_name": "api_keys",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('producao', 'teste', 'desenvolvimento')",
+      "issues": []
+    },
+    {
+      "constraint_name": "api_keys_check_1",
+      "table_name": "api_keys",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (escopo IN ('full', 'readonly', 'limitado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "api_rate_limits_unique_0",
+      "table_name": "api_rate_limits",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(chave_limite, janela_inicio)",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_dimensao_tempo_check_0",
+      "table_name": "bi_dimensao_tempo",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (trimestre BETWEEN 1 AND 4)",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_dimensao_tempo_check_1",
+      "table_name": "bi_dimensao_tempo",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (mes BETWEEN 1 AND 12)",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_dimensao_tempo_check_2",
+      "table_name": "bi_dimensao_tempo",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (semana BETWEEN 1 AND 53)",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_dimensao_tempo_check_3",
+      "table_name": "bi_dimensao_tempo",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (dia BETWEEN 1 AND 31)",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_dimensao_tempo_check_4",
+      "table_name": "bi_dimensao_tempo",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (dia_semana BETWEEN 0 AND 6)",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_dimensao_tempo_check_5",
+      "table_name": "bi_dimensao_tempo",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (dia_ano BETWEEN 1 AND 366)",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_dimensao_produto_unique_0",
+      "table_name": "bi_dimensao_produto",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(produto_id)",
+      "issues": []
+    },
+    {
+      "constraint_name": "dashboards_check_0",
+      "table_name": "dashboards",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('operacional', 'gerencial', 'executivo', 'personalizado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "widgets_check_0",
+      "table_name": "widgets",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('grafico', 'tabela', 'kpi', 'mapa', 'lista', 'texto')",
+      "issues": []
+    },
+    {
+      "constraint_name": "kpi_metas_unique_0",
+      "table_name": "kpi_metas",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, codigo)",
+      "issues": []
+    },
+    {
+      "constraint_name": "kpi_metas_check_0",
+      "table_name": "kpi_metas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (categoria IN ('financeiro', 'operacional', 'qualidade', 'vendas', 'estoque', 'compliance')",
+      "issues": []
+    },
+    {
+      "constraint_name": "kpi_metas_check_1",
+      "table_name": "kpi_metas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo_metrica IN ('percentual', 'valor', 'quantidade', 'tempo', 'taxa')",
+      "issues": []
+    },
+    {
+      "constraint_name": "kpi_metas_check_2",
+      "table_name": "kpi_metas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (periodicidade IN ('diaria', 'semanal', 'mensal', 'trimestral', 'anual')",
+      "issues": []
+    },
+    {
+      "constraint_name": "kpi_metas_check_3",
+      "table_name": "kpi_metas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (sentido IN ('crescente', 'decrescente', 'neutro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "kpi_realizacoes_check_0",
+      "table_name": "kpi_realizacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('abaixo', 'proximo', 'atingido', 'superado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "kpi_realizacoes_check_1",
+      "table_name": "kpi_realizacoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tendencia IN ('piorando', 'estavel', 'melhorando')",
+      "issues": []
+    },
+    {
+      "constraint_name": "roles_unique_0",
+      "table_name": "roles",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, codigo)",
+      "issues": []
+    },
+    {
+      "constraint_name": "permissions_unique_0",
+      "table_name": "permissions",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, codigo)",
+      "issues": []
+    },
+    {
+      "constraint_name": "permissions_check_0",
+      "table_name": "permissions",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (acao IN ('create', 'read', 'update', 'delete', 'execute', 'manage', 'all')",
+      "issues": []
+    },
+    {
+      "constraint_name": "role_permissions_unique_0",
+      "table_name": "role_permissions",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(role_id, permission_id)",
+      "issues": []
+    },
+    {
+      "constraint_name": "user_roles_unique_0",
+      "table_name": "user_roles",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(usuario_id, role_id)",
+      "issues": []
+    },
+    {
+      "constraint_name": "permission_groups_unique_0",
+      "table_name": "permission_groups",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, codigo)",
+      "issues": []
+    },
+    {
+      "constraint_name": "system_health_metrics_check_0",
+      "table_name": "system_health_metrics",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (categoria IN ('performance', 'disponibilidade', 'seguranca', 'recursos', 'negocio')",
+      "issues": []
+    },
+    {
+      "constraint_name": "system_health_metrics_check_1",
+      "table_name": "system_health_metrics",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ok', 'warning', 'critical', 'unknown')",
+      "issues": []
+    },
+    {
+      "constraint_name": "system_alerts_check_0",
+      "table_name": "system_alerts",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('info', 'warning', 'error', 'critical')",
+      "issues": []
+    },
+    {
+      "constraint_name": "system_logs_check_0",
+      "table_name": "system_logs",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (nivel IN ('debug', 'info', 'warning', 'error', 'fatal')",
+      "issues": []
+    },
+    {
+      "constraint_name": "relatorios_regulatorios_unique_0",
+      "table_name": "relatorios_regulatorios",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, codigo)",
+      "issues": []
+    },
+    {
+      "constraint_name": "relatorios_regulatorios_check_0",
+      "table_name": "relatorios_regulatorios",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('anvisa', 'ans', 'receita_federal', 'vigilancia', 'trabalho', 'ambiental', 'outro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "relatorios_regulatorios_check_1",
+      "table_name": "relatorios_regulatorios",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (periodicidade IN ('mensal', 'trimestral', 'semestral', 'anual', 'sob_demanda')",
+      "issues": []
+    },
+    {
+      "constraint_name": "relatorios_regulatorios_check_2",
+      "table_name": "relatorios_regulatorios",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('rascunho', 'gerando', 'concluido', 'enviado', 'erro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "relatorios_templates_unique_0",
+      "table_name": "relatorios_templates",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, codigo)",
+      "issues": []
+    },
+    {
+      "constraint_name": "relatorios_templates_check_0",
+      "table_name": "relatorios_templates",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (formato IN ('pdf', 'xlsx', 'csv', 'xml', 'json')",
+      "issues": []
+    },
+    {
+      "constraint_name": "pluggy_connections_check_0",
+      "table_name": "pluggy_connections",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativa', 'atualizando', 'erro', 'desconectada', 'expirada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "pluggy_transactions_check_0",
+      "table_name": "pluggy_transactions",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('credito', 'debito')",
+      "issues": []
+    },
+    {
+      "constraint_name": "tags_unique_0",
+      "table_name": "tags",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, nome, entidade_tipo)",
+      "issues": []
+    },
+    {
+      "constraint_name": "favoritos_unique_0",
+      "table_name": "favoritos",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(usuario_id, entidade_tipo, entidade_id)",
+      "issues": []
+    },
+    {
+      "constraint_name": "materiais_unique_0",
+      "table_name": "materiais",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, codigo)",
+      "issues": []
+    },
+    {
+      "constraint_name": "itens_remessa_consignacao_check_0",
+      "table_name": "itens_remessa_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (quantidade > 0)",
+      "issues": []
+    },
+    {
+      "constraint_name": "itens_remessa_consignacao_check_1",
+      "table_name": "itens_remessa_consignacao",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('enviado', 'em_uso', 'devolvido', 'faturado')",
+      "issues": []
+    },
+    {
+      "constraint_name": "itens_solicitacao_compra_check_0",
+      "table_name": "itens_solicitacao_compra",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (quantidade > 0)",
+      "issues": []
+    },
+    {
+      "constraint_name": "workflow_etapas_check_0",
+      "table_name": "workflow_etapas",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo_acao IN ('aprovar', 'notificar', 'executar', 'validar', 'aguardar')",
+      "issues": []
+    },
+    {
+      "constraint_name": "workflow_execucoes_check_0",
+      "table_name": "workflow_execucoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('iniciado', 'em_andamento', 'concluido', 'cancelado', 'erro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "tabelas_precos_check_0",
+      "table_name": "tabelas_precos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN (\n    'fabricante',        -- Preço de fábrica/fabricante\n    'distribuidor',      -- Tabela do distribuidor (com margem)",
+      "issues": []
+    },
+    {
+      "constraint_name": "tabelas_precos_check_1",
+      "table_name": "tabelas_precos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('ativa', 'inativa', 'em_revisao', 'expirada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "tabelas_precos_itens_unique_0",
+      "table_name": "tabelas_precos_itens",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(tabela_preco_id, produto_id, quantidade_minima)",
+      "issues": []
+    },
+    {
+      "constraint_name": "historico_precos_check_0",
+      "table_name": "historico_precos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (motivo IN (\n    'reajuste',\n    'promocao',\n    'negociacao',\n    'correcao',\n    'alteracao_custo',\n    'atualizacao_tabela',\n    'outro'\n  )",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_dimensoes_unique_0",
+      "table_name": "bi_dimensoes",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, nome)",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_dimensoes_check_0",
+      "table_name": "bi_dimensoes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('tempo', 'produto', 'cliente', 'fornecedor', 'regiao', 'equipe', 'custom')",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_fatos_unique_0",
+      "table_name": "bi_fatos",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, nome)",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_fatos_check_0",
+      "table_name": "bi_fatos",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (periodicidade_atualizacao IN ('tempo_real', 'horaria', 'diaria', 'semanal', 'mensal')",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_widgets_check_0",
+      "table_name": "bi_widgets",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('grafico_linha', 'grafico_barra', 'grafico_pizza', 'grafico_area', 'tabela', 'kpi', 'mapa', 'heatmap', 'gauge', 'texto')",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_widgets_check_1",
+      "table_name": "bi_widgets",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (largura > 0)",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_widgets_check_2",
+      "table_name": "bi_widgets",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (altura > 0)",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_relatorios_check_0",
+      "table_name": "bi_relatorios",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (formato IN ('pdf', 'excel', 'csv', 'html', 'json')",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_fontes_dados_unique_0",
+      "table_name": "bi_fontes_dados",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, nome)",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_fontes_dados_check_0",
+      "table_name": "bi_fontes_dados",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('postgresql', 'mysql', 'mssql', 'api_rest', 'api_graphql', 'csv', 'excel', 'custom')",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_fontes_dados_check_1",
+      "table_name": "bi_fontes_dados",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('conectada', 'desconectada', 'erro', 'sincronizando')",
+      "issues": []
+    },
+    {
+      "constraint_name": "api_credentials_unique_0",
+      "table_name": "api_credentials",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(empresa_id, nome)",
+      "issues": []
+    },
+    {
+      "constraint_name": "api_credentials_check_0",
+      "table_name": "api_credentials",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (categoria IN ('comunicacao', 'opme', 'apis', 'outros')",
+      "issues": []
+    },
+    {
+      "constraint_name": "api_credentials_check_1",
+      "table_name": "api_credentials",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo IN ('text', 'password', 'api_key', 'oauth2')",
+      "issues": []
+    },
+    {
+      "constraint_name": "api_endpoints_check_0",
+      "table_name": "api_endpoints",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (metodo IN ('GET', 'POST', 'PUT', 'DELETE', 'PATCH')",
+      "issues": []
+    },
+    {
+      "constraint_name": "api_endpoints_check_1",
+      "table_name": "api_endpoints",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (auth_tipo IN ('none', 'api_key', 'bearer', 'basic', 'oauth2', 'certificate')",
+      "issues": []
+    },
+    {
+      "constraint_name": "api_endpoints_check_2",
+      "table_name": "api_endpoints",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (criticidade IN ('baixa', 'media', 'alta', 'critica')",
+      "issues": []
+    },
+    {
+      "constraint_name": "api_rate_limits_unique_0",
+      "table_name": "api_rate_limits",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(endpoint_id, user_id)",
+      "issues": []
+    },
+    {
+      "constraint_name": "api_circuit_breaker_check_0",
+      "table_name": "api_circuit_breaker",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (state IN ('closed', 'open', 'half_open')",
+      "issues": []
+    },
+    {
+      "constraint_name": "api_cache_unique_0",
+      "table_name": "api_cache",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(endpoint_id, cache_key)",
+      "issues": []
+    },
+    {
+      "constraint_name": "api_alerts_check_0",
+      "table_name": "api_alerts",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (severidade IN ('baixa', 'media', 'alta', 'critica')",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_dimensao_tempo_check_0",
+      "table_name": "bi_dimensao_tempo",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (trimestre BETWEEN 1 AND 4)",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_dimensao_tempo_check_1",
+      "table_name": "bi_dimensao_tempo",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (mes BETWEEN 1 AND 12)",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_dimensao_tempo_check_2",
+      "table_name": "bi_dimensao_tempo",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (semana BETWEEN 1 AND 53)",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_dimensao_tempo_check_3",
+      "table_name": "bi_dimensao_tempo",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (dia BETWEEN 1 AND 31)",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_dimensao_tempo_check_4",
+      "table_name": "bi_dimensao_tempo",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (dia_semana BETWEEN 0 AND 6)",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_dimensao_tempo_check_5",
+      "table_name": "bi_dimensao_tempo",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (dia_ano BETWEEN 1 AND 366)",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_dimensao_produto_check_0",
+      "table_name": "bi_dimensao_produto",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (classe_abc IN ('A', 'B', 'C')",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_dimensao_produto_check_1",
+      "table_name": "bi_dimensao_produto",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (classe_xyz IN ('X', 'Y', 'Z')",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_dimensao_cliente_check_0",
+      "table_name": "bi_dimensao_cliente",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (score_credito BETWEEN 0 AND 1000)",
+      "issues": []
+    },
+    {
+      "constraint_name": "bi_previsao_demanda_check_0",
+      "table_name": "bi_previsao_demanda",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (confianca_percentual BETWEEN 0 AND 100)",
+      "issues": []
+    },
+    {
+      "constraint_name": "partidas_contabeis_check_0",
+      "table_name": "partidas_contabeis",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (valor > 0)",
+      "issues": []
+    },
+    {
+      "constraint_name": "kpi_valores_historico_unique_0",
+      "table_name": "kpi_valores_historico",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(kpi_meta_id, data_referencia, periodo)",
+      "issues": []
+    },
+    {
+      "constraint_name": "microsoft_tokens_unique_0",
+      "table_name": "microsoft_tokens",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(user_id)",
+      "issues": []
+    },
+    {
+      "constraint_name": "reunioes_teams_check_0",
+      "table_name": "reunioes_teams",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('agendada', 'realizada', 'cancelada', 'remarcada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "reunioes_teams_check_1",
+      "table_name": "reunioes_teams",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (entidade_tipo IN ('hospital', 'plano_saude', 'industria')",
+      "issues": []
+    },
+    {
+      "constraint_name": "emails_enviados_check_0",
+      "table_name": "emails_enviados",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('enviado', 'erro', 'bounce')",
+      "issues": []
+    },
+    {
+      "constraint_name": "microsoft_contatos_sync_check_0",
+      "table_name": "microsoft_contatos_sync",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('em_progresso', 'concluida', 'erro')",
+      "issues": []
+    },
+    {
+      "constraint_name": "microsoft_onedrive_files_unique_0",
+      "table_name": "microsoft_onedrive_files",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(item_id)",
+      "issues": []
+    },
+    {
+      "constraint_name": "nfes_unique_0",
+      "table_name": "nfes",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(numero, serie)",
+      "issues": []
+    },
+    {
+      "constraint_name": "nfes_unique_1",
+      "table_name": "nfes",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(chave_acesso)",
+      "issues": []
+    },
+    {
+      "constraint_name": "nfes_check_0",
+      "table_name": "nfes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (status IN ('rascunho', 'processando', 'autorizada', 'rejeitada', 'cancelada', 'denegada')",
+      "issues": []
+    },
+    {
+      "constraint_name": "nfes_check_1",
+      "table_name": "nfes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (destinatario_tipo IN ('J', 'F')",
+      "issues": []
+    },
+    {
+      "constraint_name": "nfes_check_2",
+      "table_name": "nfes",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (modalidade_frete IN ('0', '1', '2', '3', '4', '9')",
+      "issues": []
+    },
+    {
+      "constraint_name": "nfes_audit_log_check_0",
+      "table_name": "nfes_audit_log",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (acao IN ('INSERT', 'UPDATE', 'DELETE', 'CANCELAMENTO', 'AUTORIZACAO')",
+      "issues": []
+    },
+    {
+      "constraint_name": "roles_check_0",
+      "table_name": "roles",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo_role IN ('system', 'comercial', 'financeiro', 'logistica', 'compliance', 'ti', 'custom')",
+      "issues": []
+    },
+    {
+      "constraint_name": "permissions_check_0",
+      "table_name": "permissions",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (nivel_criticidade IN ('baixo', 'medio', 'alto', 'critico')",
+      "issues": []
+    },
+    {
+      "constraint_name": "role_permissions_unique_0",
+      "table_name": "role_permissions",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(role_id, permission_id)",
+      "issues": []
+    },
+    {
+      "constraint_name": "user_roles_unique_0",
+      "table_name": "user_roles",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(user_id, role_id)",
+      "issues": []
+    },
+    {
+      "constraint_name": "user_permissions_override_unique_0",
+      "table_name": "user_permissions_override",
+      "constraint_type": "UNIQUE",
+      "definition": "UNIQUE(user_id, permission_id)",
+      "issues": []
+    },
+    {
+      "constraint_name": "user_permissions_override_check_0",
+      "table_name": "user_permissions_override",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (tipo_override IN ('grant', 'revoke')",
+      "issues": []
+    },
+    {
+      "constraint_name": "user_2fa_check_0",
+      "table_name": "user_2fa",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (metodo IN ('totp', 'sms', 'email')",
+      "issues": []
+    },
+    {
+      "constraint_name": "audit_log_check_0",
+      "table_name": "audit_log",
+      "constraint_type": "CHECK",
+      "definition": "CHECK (nivel_sensibilidade IN ('publico', 'interno', 'confidencial', 'restrito')",
+      "issues": []
+    }
+  ],
+  "missingTriggers": [
+    "update_updated_at",
+    "audit_log_insert",
+    "audit_log_update",
+    "audit_log_delete",
+    "calcular_total_cirurgia",
+    "atualizar_estoque",
+    "validar_consignacao",
+    "atualizar_fluxo_caixa",
+    "calcular_abbott_score",
+    "notificar_estoque_baixo",
+    "rastrear_opme",
+    "validar_rastreabilidade"
+  ],
+  "triggersWorking": 0,
+  "pkCount": 0,
+  "fkCount": 0,
+  "uniqueCount": 87,
+  "checkCount": 361,
+  "score": 40
+}

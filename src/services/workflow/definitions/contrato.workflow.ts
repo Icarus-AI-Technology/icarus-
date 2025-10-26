@@ -335,7 +335,7 @@ export const CONTRATO_WORKFLOW: WorkflowDefinition = {
         const aprovadores = instance.metadata?.aprovadores || [];
         
         if (valorTotal > 100000) {
-          return aprovadores.some((a: any) => a.cargo === 'presidente');
+          return (aprovadores as Array<{ cargo?: string }>).some((a) => a.cargo === 'presidente');
         }
         return true;
       },
@@ -345,8 +345,8 @@ export const CONTRATO_WORKFLOW: WorkflowDefinition = {
       type: 'required_fields',
       message: 'Todas as partes devem assinar o contrato',
       validator: async (instance) => {
-        const assinaturas = instance.metadata?.assinaturas || [];
-        return assinaturas.every((a: any) => !!a.assinadoEm);
+        const assinaturas = (instance.metadata?.assinaturas as Array<{ assinadoEm?: string }> | undefined) || [];
+        return assinaturas.every((a) => !!a.assinadoEm);
       },
     },
   ],

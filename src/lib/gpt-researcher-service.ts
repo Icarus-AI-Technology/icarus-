@@ -88,8 +88,9 @@ export class GPTResearcherService {
         tone: query.tone,
         queryDomains: query.queryDomains
       });
-    } catch (_error) {
-      console.error('Erro durante pesquisa:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro durante pesquisa:', err);
       throw error;
     }
   }

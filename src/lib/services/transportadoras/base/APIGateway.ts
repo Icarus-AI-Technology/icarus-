@@ -9,13 +9,13 @@
  * - Logs e monitoramento
  * - Timeout por transportadora
  */
-
-  CotacaoParams, 
-  CotacaoResult, 
+import {
+  CotacaoParams,
+  CotacaoResult,
   RastreamentoResult,
   AgendarColetaParams,
   AgendarColetaResult,
-  TransportadoraService 
+  TransportadoraService,
 } from './types';
 
 interface CircuitBreakerState {
@@ -61,8 +61,9 @@ export class TransportadorasAPIGateway {
           async () => await service.cotarFrete(params),
           service.constructor.name
         );
-      } catch (_error) {
-        console.error(`Erro em ${service.constructor.name}:`, _error);
+      } catch (error) {
+        const err = error as Error;
+        console.error(`Erro em ${service.constructor.name}:`, err.message ?? err);
         return [];
       }
     });
@@ -158,10 +159,14 @@ export class TransportadorasAPIGateway {
         breaker.lastFailure = null;
         
         return result;
-      } catch (_error) {
-        lastError = error as Error;
-        
-        console.warn(`Tentativa ${attempt}/${maxRetries} falhou para ${serviceName}:`, _error);
+      } catch (error) {
+        const err = error as Error;
+        lastError = err;
+
+        console.warn(
+          `Tentativa ${attempt}/${maxRetries} falhou para ${serviceName}:`,
+          err.message ?? err
+        );
         
         // Aguardar antes de retry (exponential backoff)
         if (attempt < maxRetries) {

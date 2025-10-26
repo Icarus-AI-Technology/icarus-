@@ -6,7 +6,7 @@
  * Design: OraclusX DS
  */
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 
 export type BarColorScheme = 'error' | 'success' | 'accent';
@@ -47,18 +47,28 @@ export const MiniBarChart: React.FC<MiniBarChartProps> = ({
 }) => {
   // Garantir 8 valores
   const normalizedData = data.length === 8 ? data : [...data, ...Array(8 - data.length).fill(0)];
+  const barRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   const getColorClass = (value: number): string => {
     const colorIndex = Math.min(Math.floor(value / 25), 3) as 0 | 1 | 2 | 3;
     return COLOR_VARIANTS[colorScheme][colorIndex];
   };
 
+  useEffect(() => {
+    normalizedData.forEach((value, index) => {
+      const el = barRefs.current[index];
+      if (el) {
+        el.style.height = `${Math.max(value, 5)}%`;
+        el.style.animationDelay = `${index * 0.05}s`;
+      }
+    });
+  }, [normalizedData]);
+
   return (
     <div className={cn('mt-4', className)}>
       {/* Barras */}
       <div 
-        className="flex items-end justify-between gap-1 mb-2 mini-bar-chart" 
-        style={{ height: '32px' }}
+        className="flex items-end justify-between gap-1 mb-2 mini-bar-chart h-[32px]" 
         role="img"
         aria-label={`Gráfico de barras mostrando dados dos ${label}`}
       >
@@ -68,13 +78,10 @@ export const MiniBarChart: React.FC<MiniBarChartProps> = ({
             className={cn(
               'rounded-t transition-all duration-300 bar',
               'hover:opacity-80 hover:scale-y-105 cursor-pointer',
-              getColorClass(value)
+              getColorClass(value),
+              'w-[12px]'
             )}
-            style={{ 
-              width: '12px', 
-              height: `${Math.max(value, 5)}%`,
-              animationDelay: `${index * 0.05}s`
-            }}
+            ref={(el) => { barRefs.current[index] = el; }}
             title={`Dia ${index + 1}: ${value}%`}
             role="graphics-symbol"
             aria-label={`Dia ${index + 1}: ${value}%`}
@@ -83,7 +90,7 @@ export const MiniBarChart: React.FC<MiniBarChartProps> = ({
       </div>
       
       {/* Label */}
-      <div className="text-muted-foreground text-center" style={{ fontSize: '0.813rem' }}>
+      <div className="text-muted-foreground text-center text-[0.813rem]">
         {label}
       </div>
     </div>

@@ -77,7 +77,8 @@ export class ResendService {
         success: true,
       };
     } catch (error) {
-      console.error('[ResendService] Send error:', error);
+   const err = error as Error;
+      console.error('[ResendService] Send error:', err);
       return {
         id: '',
         success: false,

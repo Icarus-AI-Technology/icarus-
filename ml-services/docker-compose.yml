@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  ml-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - TRANSFORMERS_CACHE=/models/cache
+      - OLLAMA_URL=http://ollama:11434
+    volumes:
+      - ./models:/models
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+
+volumes:
+  ollama-data:

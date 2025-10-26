@@ -1,0 +1,23 @@
+{
+  "agent_id": "XX",
+  "agent_name": "nome",
+  "emoji": "❓",
+  "status": "idle",
+  "start_time": null,
+  "end_time": null,
+  "duration_seconds": null,
+  "progress": 0,
+  "current_task": null,
+  "locked_resources": [],
+  "errors": [],
+  "warnings": [],
+  "metadata": {
+    "total_tasks": 0,
+    "completed_tasks": 0,
+    "total_subagents": 0,
+    "completed_subagents": 0,
+    "critical_issues": 0,
+    "important_issues": 0,
+    "suggestions": 0
+  }
+}

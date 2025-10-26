@@ -72,8 +72,9 @@ export async function consultarCRM(crm: string, uf: string): Promise<CRMData> {
     
     return result.data;
     
-  } catch (_error) {
-    console.error('Erro ao consultar CRM:', error);
+  } catch (error) {
+   const err = error as Error;
+    console.error('Erro ao consultar CRM:', err);
     
     // Fallback: API pública do CFM (se disponível)
     try {
@@ -157,7 +158,8 @@ export function useCRM() {
       const resultado = await consultarCRM(crm, uf);
       setData(resultado);
       return resultado;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
       setError(errorMessage);
       throw err;

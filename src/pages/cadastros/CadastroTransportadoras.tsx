@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Check, Loader2, Truck, Link as LinkIcon } from 'lucide-react';
+import { ArrowLeft, Check, Loader2, Link as LinkIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface TransportadoraFormData {
@@ -41,8 +41,9 @@ const CadastroTransportadoras: React.FC = () => {
       await new Promise(resolve => setTimeout(resolve, 1500));
       console.log('Transportadora salva:', formData);
       navigate('/cadastros');
-    } catch (_error) {
-      console.error('Erro ao salvar:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao salvar:', err);
     } finally {
       setLoading(false);
     }
@@ -141,7 +142,7 @@ const CadastroTransportadoras: React.FC = () => {
               </label>
               <select
                 value={formData.tipo}
-                onChange={(e) => setFormData({ ...formData, tipo: e.target.value as any })}
+                onChange={(e) => setFormData({ ...formData, tipo: e.target.value as TransportadoraFormData['tipo'] })}
                 required
                 style={{
                   width: '100%',
@@ -426,7 +427,7 @@ const CadastroTransportadoras: React.FC = () => {
                 </label>
                 <select
                   value={formData.api_auth_type || ''}
-                  onChange={(e) => setFormData({ ...formData, api_auth_type: e.target.value as any })}
+                onChange={(e) => setFormData({ ...formData, api_auth_type: e.target.value as TransportadoraFormData['api_auth_type'] })}
                   style={{
                     width: '100%',
                     padding: '0.75rem',

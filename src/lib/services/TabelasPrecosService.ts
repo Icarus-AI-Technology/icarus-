@@ -178,9 +178,9 @@ class TabelasPrecosService {
       }
 
       return { data: data as TabelaPreco[], count: count || 0 };
-    } catch (_error) {
-      console.error('[TabelasPrecos] Erro ao listar tabelas:', _error);
-      return { data: [], count: 0, error: _error };
+    } catch (error) {
+      console.error('[TabelasPrecos] Erro ao listar tabelas:', error);
+      return { data: [], count: 0, error: error as Error };
     }
   }
 
@@ -202,9 +202,9 @@ class TabelasPrecosService {
       }
 
       return { data: data as TabelaPreco };
-    } catch (_error) {
-      console.error('[TabelasPrecos] Erro ao buscar tabela:', _error);
-      return { data: null, error: _error };
+    } catch (error) {
+      console.error('[TabelasPrecos] Erro ao buscar tabela:', error);
+      return { data: null, error: error as Error };
     }
   }
 
@@ -232,9 +232,9 @@ class TabelasPrecosService {
       }
 
       return { data: data as TabelaPreco };
-    } catch (_error) {
-      console.error('[TabelasPrecos] Erro ao criar tabela:', _error);
-      return { data: null, error: _error };
+    } catch (error) {
+      console.error('[TabelasPrecos] Erro ao criar tabela:', error);
+      return { data: null, error: error as Error };
     }
   }
 
@@ -256,9 +256,9 @@ class TabelasPrecosService {
       }
 
       return { data: data as TabelaPreco };
-    } catch (_error) {
-      console.error('[TabelasPrecos] Erro ao atualizar tabela:', _error);
-      return { data: null, error: _error };
+    } catch (error) {
+      console.error('[TabelasPrecos] Erro ao atualizar tabela:', error);
+      return { data: null, error: error as Error };
     }
   }
 
@@ -278,9 +278,9 @@ class TabelasPrecosService {
       }
 
       return { success: true };
-    } catch (_error) {
-      console.error('[TabelasPrecos] Erro ao deletar tabela:', _error);
-      return { success: false, error: _error };
+    } catch (error) {
+      console.error('[TabelasPrecos] Erro ao deletar tabela:', error);
+      return { success: false, error: error as Error };
     }
   }
 
@@ -318,9 +318,9 @@ class TabelasPrecosService {
       }
 
       return { data: data as TabelaPrecoItem[] };
-    } catch (_error) {
-      console.error('[TabelasPrecos] Erro ao listar itens:', _error);
-      return { data: [], error: _error };
+    } catch (error) {
+      console.error('[TabelasPrecos] Erro ao listar itens:', error);
+      return { data: [], error: error as Error };
     }
   }
 
@@ -348,9 +348,9 @@ class TabelasPrecosService {
       }
 
       return { data: data as TabelaPrecoItem };
-    } catch (_error) {
-      console.error('[TabelasPrecos] Erro ao adicionar item:', _error);
-      return { data: null, error: _error };
+    } catch (error) {
+      console.error('[TabelasPrecos] Erro ao adicionar item:', error);
+      return { data: null, error: error as Error };
     }
   }
 
@@ -372,9 +372,9 @@ class TabelasPrecosService {
       }
 
       return { data: data as TabelaPrecoItem };
-    } catch (_error) {
-      console.error('[TabelasPrecos] Erro ao atualizar item:', _error);
-      return { data: null, error: _error };
+    } catch (error) {
+      console.error('[TabelasPrecos] Erro ao atualizar item:', error);
+      return { data: null, error: error as Error };
     }
   }
 
@@ -394,9 +394,9 @@ class TabelasPrecosService {
       }
 
       return { success: true };
-    } catch (_error) {
-      console.error('[TabelasPrecos] Erro ao remover item:', _error);
-      return { success: false, error: _error };
+    } catch (error) {
+      console.error('[TabelasPrecos] Erro ao remover item:', error);
+      return { success: false, error: error as Error };
     }
   }
 
@@ -425,10 +425,10 @@ class TabelasPrecosService {
         return { data: null, error };
       }
 
-      return { data: data as MelhorPrecoResult[] };
-    } catch (_error) {
-      console.error('[TabelasPrecos] Erro ao obter melhor preço:', _error);
-      return { data: null, error: _error };
+      return { data: (data || null) as MelhorPrecoResult[] | null };
+    } catch (error) {
+      console.error('[TabelasPrecos] Erro ao obter melhor preço:', error);
+      return { data: null, error: error as Error };
     }
   }
 
@@ -450,9 +450,9 @@ class TabelasPrecosService {
       }
 
       return { data: data as HistoricoPreco[] };
-    } catch (_error) {
-      console.error('[TabelasPrecos] Erro ao buscar histórico:', _error);
-      return { data: [], error: _error };
+    } catch (error) {
+      console.error('[TabelasPrecos] Erro ao buscar histórico:', error);
+      return { data: [], error: error as Error };
     }
   }
 
@@ -510,16 +510,16 @@ class TabelasPrecosService {
       }
 
       return { data: novaTabela };
-    } catch (_error) {
-      console.error('[TabelasPrecos] Erro ao duplicar tabela:', _error);
-      return { data: null, error: _error };
+    } catch (error) {
+      console.error('[TabelasPrecos] Erro ao duplicar tabela:', error);
+      return { data: null, error: error as Error };
     }
   }
 
   /**
    * Aplicar reajuste em massa
    */
-  async aplicarReajuste(tabelaPrecoId: string, percentual: number, motivo?: string) {
+  async aplicarReajuste(tabelaPrecoId: string, percentual: number, _motivo?: string) {
     try {
       // Buscar todos os itens
       const { data: itens, error: errorItens } = await this.listarItens(tabelaPrecoId, { ativo: true });
@@ -538,9 +538,9 @@ class TabelasPrecosService {
       await Promise.all(atualizacoes);
 
       return { success: true, itensAtualizados: itens.length };
-    } catch (_error) {
-      console.error('[TabelasPrecos] Erro ao aplicar reajuste:', _error);
-      return { success: false, error: _error };
+    } catch (error) {
+      console.error('[TabelasPrecos] Erro ao aplicar reajuste:', error);
+      return { success: false, error: error as Error };
     }
   }
 
@@ -574,22 +574,25 @@ class TabelasPrecosService {
       ];
 
       // Linhas CSV
-      const linhas = itens.map((item: any) => [
-        item.produto?.codigo_sku || '',
-        item.produto?.descricao || '',
-        item.produto?.fabricante || '',
-        item.produto?.categoria || '',
-        item.preco_custo?.toFixed(2) || '',
-        item.preco_base.toFixed(2),
-        item.desconto_percentual.toFixed(2),
-        item.desconto_valor.toFixed(2),
-        item.preco_final.toFixed(2),
-        item.margem_percentual?.toFixed(2) || '',
-        item.margem_valor?.toFixed(2) || '',
-        item.quantidade_minima,
-        item.quantidade_maxima || '',
-        item.observacoes || ''
-      ]);
+      const linhas = itens.map((item) => {
+        const produto = (item as unknown as { produto?: { codigo_sku?: string; descricao?: string; fabricante?: string; categoria?: string } }).produto;
+        return [
+          produto?.codigo_sku || '',
+          produto?.descricao || '',
+          produto?.fabricante || '',
+          produto?.categoria || '',
+          item.preco_custo !== undefined && item.preco_custo !== null ? item.preco_custo.toFixed(2) : '',
+          item.preco_base.toFixed(2),
+          item.desconto_percentual.toFixed(2),
+          item.desconto_valor.toFixed(2),
+          item.preco_final.toFixed(2),
+          item.margem_percentual !== undefined && item.margem_percentual !== null ? item.margem_percentual.toFixed(2) : '',
+          item.margem_valor !== undefined && item.margem_valor !== null ? item.margem_valor.toFixed(2) : '',
+          item.quantidade_minima,
+          item.quantidade_maxima || '',
+          item.observacoes || ''
+        ];
+      });
 
       // Gerar CSV
       const csv = [
@@ -598,8 +601,9 @@ class TabelasPrecosService {
       ].join('\n');
 
       return csv;
-    } catch (_error) {
-      console.error('[TabelasPrecos] Erro ao exportar tabela:', _error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[TabelasPrecos] Erro ao exportar tabela:', err);
       return '';
     }
   }

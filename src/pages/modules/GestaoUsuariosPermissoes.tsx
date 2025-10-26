@@ -4,22 +4,9 @@
  */
 
 import { useState } from"react";
-import {
-  Users,
-  Shield,
-  Lock,
-  Unlock,
-  Plus,
-  Search,
-  Filter,
-  Edit,
-  Trash2,
-  CheckCircle,
-  XCircle,
-  Key,
-  UserPlus,
-  Activity,
-} from"lucide-react";
+import { Users, Shield, Lock, Search, Filter, Edit, Trash2, Key, UserPlus, Activity } from"lucide-react";
+import { ModulePage } from "@/components/templates/ModulePage";
+import { Button } from "@/components/ui/button";
 
 interface User {
   id: string;
@@ -198,55 +185,23 @@ export default function GestaoUsuariosPermissoes() {
   };
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex items-start justify-between">
-          <div>
-            <h1
-              style={{
-                fontSize: '0.813rem',
-                fontFamily:"var(--orx-font-family)",
-                fontWeight: 600,
-                color:"var(--orx-text-primary)",
-                marginBottom:"0.5rem",
-              }}
-            >
-              Gestão de Usuários e Permissões
-            </h1>
-            <p
-              style={{
-                fontSize: '0.813rem',
-                color:"var(--orx-text-secondary)",
-                fontFamily:"var(--orx-font-family)",
-              }}
-            >
-              Controle de acesso baseado em papéis (RBAC)
-            </p>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex items-center gap-3">
-            <button
-              className="neumorphic-button flex items-center gap-2 px-6 py-3 rounded-xl"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                background:"linear-gradient(135deg, var(--orx-primary), var(--orx-primary-hover))",
-                color:"white",
-                fontWeight: 600,
-                fontSize: '0.813rem',
-                border:"none",
-                boxShadow:"0 4px 12px rgba(99, 102, 241, 0.3)",
-              }}
-            >
-              <UserPlus size={18} />
-              Novo Usuário
-            </button>
-          </div>
-        </div>
-
+    <ModulePage
+      title="Gestão de Usuários e Permissões"
+      description="Controle de acesso baseado em papéis (RBAC)"
+      icon={<Shield aria-hidden="true" className="h-5 w-5" />}
+      actions={
+        <Button
+          variant="neumorphic"
+          size="default"
+          className="inline-flex items-center gap-2"
+          onClick={() => window.dispatchEvent(new CustomEvent('icarus:novo-usuario'))}
+        >
+          <UserPlus size={18} strokeWidth={1.5} className="flex-shrink-0" />
+          <span>Novo Usuário</span>
+        </Button>
+      }
+    >
+      <div className="space-y-6">
         {/* KPIs Grid */}
         <div className="grid grid-cols-4 gap-6">
           {kpis.map((kpi, index) => (
@@ -268,7 +223,7 @@ export default function GestaoUsuariosPermissoes() {
                     boxShadow:"0 4px 12px rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  <kpi.icon size={24} color="#ffffff" strokeWidth={2} />
+                  <kpi.icon size={24} color="#ffffff" strokeWidth={1.5} />
                 </div>
                 <div className="flex-1">
                   <p
@@ -320,44 +275,24 @@ export default function GestaoUsuariosPermissoes() {
             boxShadow:"0 4px 16px rgba(0, 0, 0, 0.06)",
           }}
         >
-          <button
+          <Button
+            variant={activeTab === "usuarios" ? "neumorphic" : "ghost"}
+            size="default"
+            className={`px-6 py-3 rounded-xl flex items-center gap-2 ${activeTab === "usuarios" ? "neumorphic-button-active" : ""}`}
             onClick={() => setActiveTab("usuarios")}
-            className="px-6 py-3 rounded-xl flex items-center gap-2"
-            style={{
-              background:
-                activeTab ==="usuarios"
-                  ?"linear-gradient(135deg, var(--orx-primary), var(--orx-primary-hover))"
-                  :"transparent",
-              color: activeTab ==="usuarios" ?"white" :"var(--orx-text-primary)",
-              fontWeight: 600,
-              fontSize: '0.813rem',
-              border:"none",
-              cursor:"pointer",
-              transition:"all 0.3s ease",
-            }}
           >
-            <Users size={18} />
-            Usuários
-          </button>
-          <button
+            <Users size={18} strokeWidth={1.5} className="flex-shrink-0" />
+            <span>Usuários</span>
+          </Button>
+          <Button
+            variant={activeTab === "roles" ? "neumorphic" : "ghost"}
+            size="default"
+            className={`px-6 py-3 rounded-xl flex items-center gap-2 ${activeTab === "roles" ? "neumorphic-button-active" : ""}`}
             onClick={() => setActiveTab("roles")}
-            className="px-6 py-3 rounded-xl flex items-center gap-2"
-            style={{
-              background:
-                activeTab ==="roles"
-                  ?"linear-gradient(135deg, var(--orx-primary), var(--orx-primary-hover))"
-                  :"transparent",
-              color: activeTab ==="roles" ?"white" :"var(--orx-text-primary)",
-              fontWeight: 600,
-              fontSize: '0.813rem',
-              border:"none",
-              cursor:"pointer",
-              transition:"all 0.3s ease",
-            }}
           >
-            <Shield size={18} />
-            Papéis (Roles)
-          </button>
+            <Shield size={18} strokeWidth={1.5} className="flex-shrink-0" />
+            <span>Papéis (Roles)</span>
+          </Button>
         </div>
 
         {/* Search and Filters */}
@@ -372,8 +307,8 @@ export default function GestaoUsuariosPermissoes() {
             <div className="flex-1 relative">
               <Search
                 size={20}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2"
-                style={{ color:"var(--orx-text-secondary)" }}
+                strokeWidth={1.5}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--orx-text-secondary)]"
               />
               <input
                 type="text"
@@ -398,7 +333,7 @@ export default function GestaoUsuariosPermissoes() {
 
             {activeTab ==="usuarios" && (
               <div className="flex items-center gap-2">
-                <Filter size={20} style={{ color:"var(--orx-text-secondary)" }} />
+                <Filter size={20} strokeWidth={1.5} className="text-[var(--orx-text-secondary)]" />
                 <select
                   value={selectedRole}
                   onChange={(e) => setSelectedRole(e.target.value)}
@@ -424,7 +359,7 @@ export default function GestaoUsuariosPermissoes() {
         </div>
 
         {/* Content - Usuários */}
-        {activeTab ==="usuarios" && (
+        {activeTab === "usuarios" && (
           <div
             className="neumorphic-card p-6 rounded-2xl"
             style={{
@@ -511,9 +446,9 @@ export default function GestaoUsuariosPermissoes() {
                   </tr>
                 </thead>
                 <tbody>
-                  {usuarios.map((user) => (
+                  {usuarios.map((usuario) => (
                     <tr
-                      key={user.id}
+                      key={usuario.id}
                       style={{ borderBottom:"1px solid rgba(99, 102, 241, 0.05)" }}
                     >
                       <td style={{ padding:"1rem" }}>
@@ -527,7 +462,7 @@ export default function GestaoUsuariosPermissoes() {
                               marginBottom:"0.25rem",
                             }}
                           >
-                            {user.nome}
+                            {usuario.nome}
                           </p>
                           <p
                             style={{
@@ -536,7 +471,7 @@ export default function GestaoUsuariosPermissoes() {
                               color:"var(--orx-text-secondary)",
                             }}
                           >
-                            {user.email}
+                            {usuario.email}
                           </p>
                         </div>
                       </td>
@@ -548,7 +483,7 @@ export default function GestaoUsuariosPermissoes() {
                           color:"var(--orx-text-primary)",
                         }}
                       >
-                        {user.cargo}
+                        {usuario.cargo}
                       </td>
                       <td style={{ padding:"1rem" }}>
                         <span
@@ -566,7 +501,7 @@ export default function GestaoUsuariosPermissoes() {
                           }}
                         >
                           <Shield size={14} />
-                          {user.role}
+                          {usuario.role}
                         </span>
                       </td>
                       <td style={{ padding:"1rem", textAlign:"center" }}>
@@ -578,11 +513,11 @@ export default function GestaoUsuariosPermissoes() {
                             fontSize: '0.813rem',
                             fontWeight: 600,
                             fontFamily:"var(--orx-font-family)",
-                            background: `${getStatusColor(user.status)}15`,
-                            color: getStatusColor(user.status),
+                            background: `${getStatusColor(usuario.status)}15`,
+                            color: getStatusColor(usuario.status),
                           }}
                         >
-                          {getStatusLabel(user.status)}
+                          {getStatusLabel(usuario.status)}
                         </span>
                       </td>
                       <td
@@ -593,58 +528,37 @@ export default function GestaoUsuariosPermissoes() {
                           color:"var(--orx-text-secondary)",
                         }}
                       >
-                        {formatDate(user.ultimoAcesso)}
+                        {formatDate(usuario.ultimoAcesso)}
                       </td>
                       <td style={{ padding:"1rem", textAlign:"center" }}>
                         <div className="flex items-center justify-center gap-2">
-                          <button
-                            title="Editar usuário"
-                            style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                              padding:"0.5rem",
-                              borderRadius:"0.5rem",
-                              background:"var(--orx-bg-light)",
-                              boxShadow:"0 2px 4px rgba(0, 0, 0, 0.1)",
-                              border:"none",
-                              cursor:"pointer",
-                            }}
+                          <Button
+                            variant="neumorphic"
+                            size="sm"
+                            className="inline-flex items-center gap-2"
+                            onClick={() => window.dispatchEvent(new CustomEvent('icarus:editar-usuario', { detail: usuario.id }))}
                           >
-                            <Edit size={16} style={{ color:"var(--orx-primary)" }} />
-                          </button>
-                          <button
-                            title="Gerenciar permissões"
-                            style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                              padding:"0.5rem",
-                              borderRadius:"0.5rem",
-                              background:"var(--orx-bg-light)",
-                              boxShadow:"0 2px 4px rgba(0, 0, 0, 0.1)",
-                              border:"none",
-                              cursor:"pointer",
-                            }}
+                            <Edit size={16} strokeWidth={1.5} className="flex-shrink-0" />
+                            <span>Editar</span>
+                          </Button>
+                          <Button
+                            variant="neumorphic"
+                            size="sm"
+                            className="inline-flex items-center gap-2 text-[var(--orx-success)]"
+                            onClick={() => window.dispatchEvent(new CustomEvent('icarus:gerenciar-permissoes', { detail: usuario.id }))}
                           >
-                            <Key size={16} style={{ color:"var(--orx-success)" }} />
-                          </button>
-                          <button
-                            title="Excluir usuário"
-                            style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                              padding:"0.5rem",
-                              borderRadius:"0.5rem",
-                              background:"var(--orx-bg-light)",
-                              boxShadow:"0 2px 4px rgba(0, 0, 0, 0.1)",
-                              border:"none",
-                              cursor:"pointer",
-                            }}
+                            <Key size={16} strokeWidth={1.5} className="flex-shrink-0" />
+                            <span>Permissões</span>
+                          </Button>
+                          <Button
+                            variant="neumorphic"
+                            size="sm"
+                            className="inline-flex items-center gap-2 text-[var(--orx-error)]"
+                            onClick={() => window.dispatchEvent(new CustomEvent('icarus:remover-usuario', { detail: usuario.id }))}
                           >
-                            <Trash2 size={16} style={{ color:"var(--orx-error)" }} />
-                          </button>
+                            <Trash2 size={16} strokeWidth={1.5} className="flex-shrink-0" />
+                            <span>Remover</span>
+                          </Button>
                         </div>
                       </td>
                     </tr>
@@ -656,7 +570,7 @@ export default function GestaoUsuariosPermissoes() {
         )}
 
         {/* Content - Roles */}
-        {activeTab ==="roles" && (
+        {activeTab === "roles" && (
           <div className="grid grid-cols-2 gap-6">
             {roles.map((role) => (
               <div
@@ -702,22 +616,15 @@ export default function GestaoUsuariosPermissoes() {
                       </p>
                     </div>
                   </div>
-                  <button
-                    title="Editar papel"
-                    style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                      padding:"0.5rem",
-                      borderRadius:"0.5rem",
-                      background:"var(--orx-bg-light)",
-                      boxShadow:"0 2px 4px rgba(0, 0, 0, 0.1)",
-                      border:"none",
-                      cursor:"pointer",
-                    }}
+                  <Button
+                    variant="neumorphic"
+                    size="sm"
+                    className="inline-flex items-center gap-2"
+                    onClick={() => window.dispatchEvent(new CustomEvent('icarus:editar-role', { detail: role.id }))}
                   >
-                    <Edit size={16} style={{ color:"var(--orx-primary)" }} />
-                  </button>
+                    <Edit size={16} strokeWidth={1.5} className="flex-shrink-0" />
+                    <span>Editar</span>
+                  </Button>
                 </div>
                 <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                   <div className="flex items-center gap-4">
@@ -772,7 +679,7 @@ export default function GestaoUsuariosPermissoes() {
           </div>
         )}
       </div>
-    </div>
+    </ModulePage>
   );
 }
 

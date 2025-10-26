@@ -3,19 +3,16 @@
  * ANVISA, SEFAZ, ANS - Compliance automático
  */
 
-import { useState } from"react";
 import {
-  FileText,
   Shield,
   AlertTriangle,
   CheckCircle,
   Download,
   Send,
-  Calendar,
-  Filter,
   Clock,
-  TrendingUp,
 } from"lucide-react";
+import { ModulePage } from "@/components/templates/ModulePage";
+import { Button } from "@/components/ui/button";
 
 interface Relatorio {
   id: string;
@@ -29,7 +26,6 @@ interface Relatorio {
 }
 
 export default function RelatoriosRegulatorios() {
-  const [selectedOrgao, setSelectedOrgao] = useState<string>("todos");
 
   const relatorios: Relatorio[] = [
     {
@@ -173,57 +169,34 @@ export default function RelatoriosRegulatorios() {
   };
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex items-start justify-between">
-          <div>
-            <h1
-              style={{
-                fontSize: '0.813rem',
-                fontFamily:"var(--orx-font-family)",
-                fontWeight: 600,
-                color:"var(--orx-text-primary)",
-                marginBottom:"0.5rem",
-              }}
-            >
-              Relatórios Regulatórios
-            </h1>
-            <p
-              style={{
-                fontSize: '0.813rem',
-                color:"var(--orx-text-secondary)",
-                fontFamily:"var(--orx-font-family)",
-              }}
-            >
-              ANVISA, SEFAZ, ANS - Compliance automático
-            </p>
-          </div>
-
-          {/* Filter */}
-          <div className="flex items-center gap-2">
-            <Filter size={20} style={{ color:"var(--orx-text-secondary)" }} />
-            <select
-              value={selectedOrgao}
-              onChange={(e) => setSelectedOrgao(e.target.value)}
-              className="px-4 py-3 rounded-xl"
-              style={{
-                background:"var(--orx-bg-light)",
-                boxShadow:"0 2px 4px rgba(0, 0, 0, 0.1)",
-                border:"1px solid rgba(99, 102, 241, 0.2)",
-                fontSize: '0.813rem',
-                fontFamily:"var(--orx-font-family)",
-                color:"var(--orx-text-primary)",
-              }}
-            >
-              <option value="todos">Todos os órgãos</option>
-              <option value="ANVISA">ANVISA</option>
-              <option value="SEFAZ">SEFAZ</option>
-              <option value="ANS">ANS</option>
-            </select>
-          </div>
+    <ModulePage
+      title="Relatórios Regulatórios"
+      description="ANVISA, SEFAZ, ANS - Compliance automático"
+      icon={Shield}
+      actions={
+        <div className="flex items-center gap-3">
+          <Button
+            variant="neumorphic"
+            size="default"
+            className="inline-flex items-center gap-2"
+            onClick={() => window.dispatchEvent(new CustomEvent('icarus:baixar-relatorios'))}
+          >
+            <Download size={18} strokeWidth={1.5} className="flex-shrink-0" />
+            <span>Baixar Todos</span>
+          </Button>
+          <Button
+            variant="neumorphic"
+            size="default"
+            className="inline-flex items-center gap-2"
+            onClick={() => window.dispatchEvent(new CustomEvent('icarus:enviar-relatorios'))}
+          >
+            <Send size={18} strokeWidth={1.5} className="flex-shrink-0" />
+            <span>Enviar Lotes</span>
+          </Button>
         </div>
-
+      }
+    >
+      <div className="space-y-6">
         {/* KPIs Grid */}
         <div className="grid grid-cols-4 gap-6">
           {kpis.map((kpi, index) => (
@@ -245,7 +218,7 @@ export default function RelatoriosRegulatorios() {
                     boxShadow:"0 4px 12px rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  <kpi.icon size={24} color="#ffffff" strokeWidth={2} />
+                  <kpi.icon size={24} color="#ffffff" strokeWidth={1.5} />
                 </div>
                 <div className="flex-1">
                   <p
@@ -466,29 +439,31 @@ export default function RelatoriosRegulatorios() {
                     <Send size={16} />
                     Gerar e Enviar
                   </button>
-                  <button
-                    title="Download do último arquivo"
-                    style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                      padding:"0.625rem",
-                      borderRadius:"0.75rem",
-                      background:"var(--orx-bg-light)",
-                      boxShadow:"0 2px 4px rgba(0, 0, 0, 0.1)",
-                      border:"1px solid rgba(99, 102, 241, 0.2)",
-                      cursor:"pointer",
-                    }}
+                  <Button
+                    variant="neumorphic"
+                    size="sm"
+                    className="inline-flex items-center gap-2"
+                    onClick={() => window.dispatchEvent(new CustomEvent('icarus:download-relatorio', { detail: relatorio.id }))}
                   >
-                    <Download size={16} style={{ color:"var(--orx-primary)" }} />
-                  </button>
+                    <Download size={16} strokeWidth={1.5} className="flex-shrink-0" />
+                    <span>Download</span>
+                  </Button>
+                  <Button
+                    variant="neumorphic"
+                    size="sm"
+                    className="inline-flex items-center gap-2"
+                    onClick={() => window.dispatchEvent(new CustomEvent('icarus:enviar-relatorio', { detail: relatorio.id }))}
+                  >
+                    <Send size={16} strokeWidth={1.5} className="flex-shrink-0" />
+                    <span>Enviar</span>
+                  </Button>
                 </div>
               </div>
             );
           })}
         </div>
       </div>
-    </div>
+    </ModulePage>
   );
 }
 

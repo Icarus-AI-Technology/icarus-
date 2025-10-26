@@ -61,8 +61,9 @@ export class ComplianceAutomaticoAI {
       await this.registrarExecucao(alertas.length);
 
       return alertas;
-    } catch (_error) {
-      console.error('Erro na análise de compliance:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro na análise de compliance:', err);
       return [];
     }
   }
@@ -108,8 +109,9 @@ export class ComplianceAutomaticoAI {
           prazo_acao: new Date(hoje.getTime() + (diasRestantes / 2) * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
         });
       });
-    } catch (_error) {
-      console.error('Erro ao verificar certificações:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao verificar certificações:', err);
     }
 
     return alertas;
@@ -173,8 +175,9 @@ export class ComplianceAutomaticoAI {
           prazo_acao: new Date(hoje.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
         });
       });
-    } catch (_error) {
-      console.error('Erro ao verificar treinamentos:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao verificar treinamentos:', err);
     }
 
     return alertas;
@@ -221,8 +224,9 @@ export class ComplianceAutomaticoAI {
           prazo_acao: new Date(dataRevisao.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
         });
       });
-    } catch (_error) {
-      console.error('Erro ao verificar documentos:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao verificar documentos:', err);
     }
 
     return alertas;
@@ -245,8 +249,9 @@ export class ComplianceAutomaticoAI {
           taxa_acerto: this.TAXA_ACERTO
         })
         .eq('codigo', 'AI-COMP-001');
-    } catch (_error) {
-      console.error('Erro ao registrar execução:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao registrar execução:', err);
     }
   }
 
@@ -263,8 +268,9 @@ export class ComplianceAutomaticoAI {
 
       if (error) throw error;
       return data;
-    } catch (_error) {
-      console.error('Erro ao obter estatísticas:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao obter estatísticas:', err);
       return null;
     }
   }

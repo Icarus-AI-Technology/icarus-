@@ -25,10 +25,10 @@ export interface NotificationPayload {
   subject?: string;
   message: string;
   templateId?: string;
-  templateData?: Record<string, any>;
+  templateData?: Record<string, unknown>;
   priority?: 'low' | 'medium' | 'high' | 'urgent';
   scheduledFor?: Date;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface NotificationResult {
@@ -327,8 +327,9 @@ export class NotificationService {
         default:
           throw new Error(`Canal não suportado: ${payload.channel}`);
       }
-    } catch (_error) {
-      console.error('[NotificationService] Erro ao enviar notificação:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[NotificationService] Erro ao enviar notificação:', err);
       
       // Tentar novamente para notificações críticas
       if (payload.priority === 'urgent' || payload.priority === 'high') {
@@ -476,8 +477,9 @@ export class NotificationService {
         notificationId: data.id,
         sentAt: new Date(),
       };
-    } catch (_error) {
-      console.error('[NotificationService] Erro ao salvar notificação in-app:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[NotificationService] Erro ao salvar notificação in-app:', err);
       return {
         success: false,
         channel: 'IN_APP',
@@ -496,7 +498,7 @@ export class NotificationService {
   /**
    * Aplicar template com variáveis
    */
-  private static applyTemplate(template: string, data: Record<string, any>): string {
+  private static applyTemplate(template: string, data: Record<string, unknown>): string {
     let result = template;
     
     // Substituir variáveis simples {{variable}}
@@ -507,7 +509,7 @@ export class NotificationService {
     
     // Remover blocos condicionais vazios {{#key}}...{{/key}}
     result = result.replace(/{{#(\w+)}}[\s\S]*?{{\/\1}}/g, (match, key) => {
-      return data[key] ? match.replace(/{{#\w+}}|{{\/\w+}}/g, '') : '';
+      return (data as Record<string, unknown>)[key] ? match.replace(/{{#\w+}}|{{\/\w+}}/g, '') : '';
     });
     
     return result.trim();
@@ -540,7 +542,7 @@ export class NotificationService {
     
     // Salvar no Supabase para persistência
     await supabase.from('notification_queue').insert({
-      payload: payload,
+      payload: payload as unknown,
       scheduled_for: payload.scheduledFor,
       created_at: new Date().toISOString(),
     });
@@ -554,7 +556,7 @@ export class NotificationService {
     const retryAt = new Date(Date.now() + 5 * 60 * 1000);
     
     await supabase.from('notification_retry').insert({
-      payload: payload,
+      payload: payload as unknown,
       retry_at: retryAt,
       attempts: 1,
       created_at: new Date().toISOString(),
@@ -618,8 +620,9 @@ export class NotificationService {
           }
         }
       }
-    } catch (_error) {
-      console.error('[NotificationService] Erro ao processar fila:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('[NotificationService] Erro ao processar fila:', err);
     } finally {
       this.processing = false;
     }

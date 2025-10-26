@@ -106,7 +106,8 @@ export function useOportunidades() {
         oportunidades: (data as Oportunidade[] | null) ?? [],
         loading: false,
       }));
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message :"Erro ao carregar oportunidades",

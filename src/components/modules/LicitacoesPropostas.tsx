@@ -15,6 +15,7 @@
  * - Taxa de sucesso
  */
 
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   Card,
   Button,
@@ -25,48 +26,18 @@ import {
   TableHead,
   TableBody,
   TableCell,
-  Input,
-  Textarea,
-  Select,
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
   Tooltip,
+  TooltipTrigger,
   TooltipContent,
   TooltipProvider,
   Progress,
 } from '@/components/oraclusx-ds';
-import {
-  FileText,
-  Award,
-  TrendingUp,
-  TrendingDown,
-  Clock,
-  CheckCircle,
-  XCircle,
-  AlertTriangle,
-  Plus,
-  Eye,
-  Send,
-  Download,
-  RefreshCw,
-  Building2,
-  FileCheck,
-  Calendar,
-  DollarSign,
-  Target,
-  ThumbsUp,
-  ThumbsDown,
-  Timer,
-  Upload,
-} from 'lucide-react';
+import { FileText, Award, Clock, XCircle, AlertTriangle, Plus, Eye, Send, RefreshCw, FileCheck, Target, ThumbsUp, Timer } from 'lucide-react';
 import { useDocumentTitle } from '@/hooks';
 import { useToast } from '@/contexts/ToastContext';
 import { supabase } from '@/lib/supabase';
-import { formatCurrency, formatNumber, formatDate, formatPercent } from '@/lib/utils';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip } from 'recharts';
+import { formatCurrency } from '@/lib/utils';
+import { OrxPieChart } from '@/components/charts/OrxPieChart';
 
 interface Licitacao {
   id: string;
@@ -116,7 +87,7 @@ const TIPO_LICITACAO = {
   dispensa: { label: 'Dispensa', color: 'text-gray-600' },
 };
 
-const STATUS_CONFIG: Record<string, { bg: string; text: string; icon: any }> = {
+const STATUS_CONFIG: Record<string, { bg: string; text: string; icon: typeof FileText | typeof Clock | typeof Send | typeof AlertTriangle | typeof Award | typeof XCircle }> = {
   publicada: { bg: 'bg-blue-500/20', text: 'text-blue-600', icon: FileText },
   em_elaboracao: { bg: 'bg-yellow-500/20', text: 'text-yellow-600', icon: Clock },
   enviada: { bg: 'bg-purple-500/20', text: 'text-purple-600', icon: Send },
@@ -138,9 +109,9 @@ export default function LicitacoesPropostas() {
 
   useEffect(() => {
     carregarDados();
-  }, []);
+  }, [carregarDados]);
 
-  const carregarDados = async () => {
+  const carregarDados = useCallback(async () => {
     setLoading(true);
     try {
       await Promise.all([
@@ -149,11 +120,12 @@ export default function LicitacoesPropostas() {
         carregarTaxaSucesso(),
       ]);
     } catch (error: unknown) {
-      addToast(`Erro ao carregar dados: ${error.message}`, 'error');
+      const err = error as Error;
+      addToast(`Erro ao carregar dados: ${err.message}`, 'error');
     } finally {
       setLoading(false);
     }
-  };
+  }, [addToast]);
 
   const carregarLicitacoes = async () => {
     try {
@@ -164,8 +136,9 @@ export default function LicitacoesPropostas() {
 
       if (error) throw error;
       setLicitacoes(data || []);
-    } catch (_error) {
-      console.error('Erro ao carregar licitações:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao carregar licitações:', err);
       // Mock data
       setLicitacoes([
         {
@@ -209,8 +182,9 @@ export default function LicitacoesPropostas() {
 
       if (error) throw error;
       setPropostas(data || []);
-    } catch (_error) {
-      console.error('Erro ao carregar propostas:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao carregar propostas:', err);
       // Mock data
       setPropostas([
         {
@@ -240,8 +214,9 @@ export default function LicitacoesPropostas() {
 
       if (error) throw error;
       setTaxaSucesso(data[0] || null);
-    } catch (_error) {
-      console.error('Erro ao carregar taxa de sucesso:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao carregar taxa de sucesso:', err);
       // Mock data
       setTaxaSucesso({
         total_participadas: 45,
@@ -267,6 +242,7 @@ export default function LicitacoesPropostas() {
       addToast(`Proposta aprovada pelo ${nivel}!`, 'success');
       await carregarPropostas();
     } catch (error: unknown) {
+        const err = error as Error;
       addToast(`Erro ao aprovar: ${error.message}`, 'error');
     } finally {
       setLoading(false);
@@ -279,10 +255,10 @@ export default function LicitacoesPropostas() {
       (p) => !p.aprovada_comercial || !p.aprovada_financeiro || !p.aprovada_diretoria
     ).length;
 
-    // Dados para o gráfico de pizza
+    // Dados para o gráfico de pizza (Nivo)
     const chartData = [
-      { name: 'Vencidas', value: taxaSucesso?.total_vencidas || 0, color: 'var(--orx-success)' },
-      { name: 'Perdidas', value: taxaSucesso?.total_perdidas || 0, color: 'var(--orx-error)' },
+      { id: 'Vencidas', value: taxaSucesso?.total_vencidas || 0 },
+      { id: 'Perdidas', value: taxaSucesso?.total_perdidas || 0 },
     ];
 
     return (
@@ -291,42 +267,42 @@ export default function LicitacoesPropostas() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card className="p-6 neuro-raised bg-gradient-to-br from-blue-500 to-blue-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Licitações Ativas</h3>
+              <h3 className="opacity-90 text-[0.813rem] font-medium">Licitações Ativas</h3>
               <FileText className="w-5 h-5 opacity-80" />
             </div>
-            <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{licitacoesAbertas}</p>
-            <p className="opacity-80 mt-2" style={{ fontSize: '0.813rem' }}>Participando ativamente</p>
+            <p className="text-[0.813rem] font-bold">{licitacoesAbertas}</p>
+            <p className="opacity-80 mt-2 text-[0.813rem]">Participando ativamente</p>
           </Card>
 
           <Card className="p-6 neuro-raised bg-gradient-to-br from-orange-500 to-orange-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Propostas Pendentes</h3>
+              <h3 className="opacity-90 text-[0.813rem] font-medium">Propostas Pendentes</h3>
               <Clock className="w-5 h-5 opacity-80" />
             </div>
-            <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{propostasPendentes}</p>
-            <p className="opacity-80 mt-2" style={{ fontSize: '0.813rem' }}>Aguardando aprovação</p>
+            <p className="text-[0.813rem] font-bold">{propostasPendentes}</p>
+            <p className="opacity-80 mt-2 text-[0.813rem]">Aguardando aprovação</p>
           </Card>
 
           <Card className="p-6 neuro-raised bg-gradient-to-br from-emerald-500 to-emerald-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Taxa de Sucesso</h3>
+              <h3 className="opacity-90 text-[0.813rem] font-medium">Taxa de Sucesso</h3>
               <Target className="w-5 h-5 opacity-80" />
             </div>
-            <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{taxaSucesso?.taxa_sucesso.toFixed(1)}%</p>
-            <p className="opacity-80 mt-2" style={{ fontSize: '0.813rem' }}>
+            <p className="text-[0.813rem] font-bold">{taxaSucesso?.taxa_sucesso.toFixed(1)}%</p>
+            <p className="opacity-80 mt-2 text-[0.813rem]">
               {taxaSucesso?.total_vencidas} de {taxaSucesso?.total_participadas} licitações
             </p>
           </Card>
 
           <Card className="p-6 neuro-raised bg-gradient-to-br from-purple-500 to-purple-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Valor Vencido (Ano)</h3>
+              <h3 className="opacity-90 text-[0.813rem] font-medium">Valor Vencido (Ano)</h3>
               <Award className="w-5 h-5 opacity-80" />
             </div>
-            <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>
+            <p className="text-[0.813rem] font-bold">
               {formatCurrency(taxaSucesso?.valor_total_vencido || 0)}
             </p>
-            <p className="opacity-80 mt-2" style={{ fontSize: '0.813rem' }}>Contratos ganhos</p>
+            <p className="opacity-80 mt-2 text-[0.813rem]">Contratos ganhos</p>
           </Card>
         </div>
 
@@ -334,47 +310,23 @@ export default function LicitacoesPropostas() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Gráfico de Sucesso */}
           <Card className="p-6 neuro-raised">
-            <h3 className="mb-4" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Performance (Últimos 12 meses)</h3>
-            <ResponsiveContainer width="100%" height={250}>
-              <PieChart>
-                <Pie
-                  data={chartData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={90}
-                  paddingAngle={5}
-                  dataKey="value"
-                >
-                  {chartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <RechartsTooltip
-                  contentStyle={{
-                    backgroundColor: 'var(--bg-primary)',
-                    border: '1px solid var(--text-secondary)',
-                    borderRadius: '8px',
-                  }}
-                  formatter={(value: any) => `${value} licitações`}
-                />
-              </PieChart>
-            </ResponsiveContainer>
+            <h3 className="mb-4 text-[0.813rem] font-semibold">Performance (Últimos 12 meses)</h3>
+            <OrxPieChart data={chartData} height={250} colors={["var(--orx-success)", "var(--orx-error)"]} />
             <div className="flex justify-center gap-6 mt-4">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-success"></div>
-                <span className style={{ fontSize: '0.813rem' }}>Vencidas ({taxaSucesso?.total_vencidas})</span>
+                <span className="text-[0.813rem]">Vencidas ({taxaSucesso?.total_vencidas})</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-error"></div>
-                <span className style={{ fontSize: '0.813rem' }}>Perdidas ({taxaSucesso?.total_perdidas})</span>
+                <span className="text-[0.813rem]">Perdidas ({taxaSucesso?.total_perdidas})</span>
               </div>
             </div>
           </Card>
 
           {/* Próximas Aberturas */}
           <Card className="p-6 neuro-raised">
-            <h3 className="mb-4" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Próximas Aberturas</h3>
+            <h3 className="mb-4 text-[0.813rem] font-semibold">Próximas Aberturas</h3>
             <div className="space-y-3">
               {licitacoes.slice(0, 5).map((lic) => (
                 <div
@@ -382,8 +334,8 @@ export default function LicitacoesPropostas() {
                   className="p-4 neuro-flat rounded-lg flex items-center justify-between"
                 >
                   <div className="flex-1">
-                    <p className style={{  fontSize: '0.813rem' , fontWeight: 600 }}>{lic.titulo}</p>
-                    <p className="text-[var(--text-secondary)] mt-1" style={{ fontSize: '0.813rem' }}>
+                    <p className="text-[0.813rem] font-semibold">{lic.titulo}</p>
+                    <p className="text-[var(--text-secondary)] mt-1 text-[0.813rem]">
                       {lic.orgao_comprador_nome} - {lic.orgao_comprador_uf}
                     </p>
                   </div>
@@ -411,7 +363,7 @@ export default function LicitacoesPropostas() {
   const renderLicitacoes = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Licitações Ativas</h2>
+        <h2 className="text-[0.813rem] font-semibold">Licitações Ativas</h2>
         <Button icon={<Plus />}>Nova Licitação</Button>
       </div>
 
@@ -437,12 +389,12 @@ export default function LicitacoesPropostas() {
 
               return (
                 <TableRow key={lic.id}>
-                  <TableCell className="font-mono" style={{ fontSize: '0.813rem' }}>{lic.numero_edital}</TableCell>
+                  <TableCell className="font-mono text-[0.813rem]">{lic.numero_edital}</TableCell>
                   <TableCell>
                     <div>
-                      <p className style={{ fontWeight: 500 }}>{lic.titulo}</p>
+                      <p className="font-medium">{lic.titulo}</p>
                       {(lic.dias_para_abertura || 0) <= 7 && (
-                        <Badge variant="default" className="bg-warning/20 text-warning mt-1" style={{ fontSize: '0.813rem' }}>
+                        <Badge variant="default" className="bg-warning/20 text-warning mt-1 text-[0.813rem]">
                           <Timer className="w-3 h-3 mr-1" />
                           {lic.dias_para_abertura} dias
                         </Badge>
@@ -458,13 +410,13 @@ export default function LicitacoesPropostas() {
                     <div className="flex items-center gap-2">
                       <Building2 className="w-4 h-4 text-[var(--text-secondary)]" />
                       <div>
-                        <p className style={{ fontSize: '0.813rem' }}>{lic.orgao_comprador_nome}</p>
-                        <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>{lic.orgao_comprador_uf}</p>
+                        <p className="text-[0.813rem]">{lic.orgao_comprador_nome}</p>
+                        <p className="text-[var(--text-secondary)] text-[0.813rem]">{lic.orgao_comprador_uf}</p>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell>{new Date(lic.data_abertura).toLocaleDateString('pt-BR')}</TableCell>
-                  <TableCell className="text-right" style={{ fontWeight: 600 }}>
+                  <TableCell className="text-right font-semibold">
                     {formatCurrency(lic.valor_estimado)}
                   </TableCell>
                   <TableCell>
@@ -505,7 +457,7 @@ export default function LicitacoesPropostas() {
   const renderPropostas = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Propostas Pendentes de Aprovação</h2>
+        <h2 className="text-[0.813rem] font-semibold">Propostas Pendentes de Aprovação</h2>
       </div>
 
       <div className="space-y-4">
@@ -515,7 +467,7 @@ export default function LicitacoesPropostas() {
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
                   <FileCheck className="w-5 h-5 text-[var(--primary)]" />
-                  <h3 className style={{  fontSize: '0.813rem' , fontWeight: 600 }}>{prop.numero_proposta}</h3>
+                  <h3 className="text-[0.813rem] font-semibold">{prop.numero_proposta}</h3>
                   <Badge
                     variant="default"
                     className={
@@ -527,15 +479,15 @@ export default function LicitacoesPropostas() {
                     Abre em {prop.dias_para_abertura} dias
                   </Badge>
                 </div>
-                <p className="text-[var(--text-secondary)] mb-1" style={{ fontSize: '0.813rem' }}>
+                <p className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">
                   {prop.licitacao_titulo}
                 </p>
-                <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+                <p className="text-[var(--text-secondary)] text-[0.813rem]">
                   {prop.orgao_comprador_nome}
                 </p>
               </div>
               <div className="text-right">
-                <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{formatCurrency(prop.valor_total)}</p>
+                <p className="text-[0.813rem] font-bold">{formatCurrency(prop.valor_total)}</p>
                 <div className="flex gap-2 mt-2">
                   <Badge variant="default" className="bg-success/20 text-success">
                     MB: {prop.margem_bruta_percentual}%
@@ -557,7 +509,7 @@ export default function LicitacoesPropostas() {
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <p className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Comercial</p>
+                  <p className="text-[0.813rem] font-medium">Comercial</p>
                   {prop.aprovada_comercial ? (
                     <ThumbsUp className="w-5 h-5 text-success" />
                   ) : (
@@ -583,7 +535,7 @@ export default function LicitacoesPropostas() {
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <p className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Financeiro</p>
+                  <p className="text-[0.813rem] font-medium">Financeiro</p>
                   {prop.aprovada_financeiro ? (
                     <ThumbsUp className="w-5 h-5 text-success" />
                   ) : (
@@ -609,7 +561,7 @@ export default function LicitacoesPropostas() {
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <p className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Diretoria</p>
+                  <p className="text-[0.813rem] font-medium">Diretoria</p>
                   {prop.aprovada_diretoria ? (
                     <ThumbsUp className="w-5 h-5 text-success" />
                   ) : (
@@ -631,8 +583,8 @@ export default function LicitacoesPropostas() {
             {/* Progresso */}
             <div className="mt-4">
               <div className="flex items-center justify-between mb-2">
-                <p className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Progresso de Aprovação</p>
-                <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+                <p className="text-[0.813rem] font-medium">Progresso de Aprovação</p>
+                <p className="text-[var(--text-secondary)] text-[0.813rem]">
                   {[prop.aprovada_comercial, prop.aprovada_financeiro, prop.aprovada_diretoria].filter(
                     Boolean
                   ).length}{' '}

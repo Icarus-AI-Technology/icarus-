@@ -11,7 +11,8 @@
     "src/hooks/**/*.tsx",
     "src/contexts/**/*.tsx",
     "src/components/oraclusx-ds/**/*.tsx",
-    "src/lib/**/*.tsx"
+    "src/lib/**/*.tsx",
+    "types/**/*.d.ts"
   ],
   "exclude": [
     "src/lib/services/transportadoras/**"

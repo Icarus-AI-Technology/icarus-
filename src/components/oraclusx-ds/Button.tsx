@@ -16,7 +16,7 @@ export interface ButtonProps
   isLoading?: boolean;
 }
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       className,
@@ -32,17 +32,17 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref,
   ) => {
     const sizeClasses = {
-      sm:"text-body-sm px-3 py-1.5",
-      md:"text-body px-4 py-2",
-      lg:"text-body-lg px-6 py-3",
+      sm:"text-body-sm px-2.5 py-1.5 md:px-3 md:py-1.5",
+      md:"text-body px-3 py-1.5 md:px-4 md:py-2",
+      lg:"text-body-lg px-5 py-2.5 md:px-6 md:py-3",
     };
 
     const variantClasses = {
-      default:"orx-button",
-      primary:"orx-button-primary",
-      success:"bg-[var(--color-success)]/80 hover:bg-[var(--color-success)] text-[var(--inverse)]",
-      warning:"bg-[var(--color-warning)]/80 hover:bg-[var(--color-warning)] text-[var(--inverse)]",
-      error:"bg-[var(--color-error)]/80 hover:bg-[var(--color-error)] text-[var(--inverse)]",
+      default: "orx-button dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700",
+      primary: "orx-button-primary dark:bg-[var(--orx-primary)] dark:hover:bg-[var(--orx-primary-hover)]",
+      success: "bg-[var(--color-success)]/80 hover:bg-[var(--color-success)] text-[var(--inverse)] dark:bg-green-600 dark:hover:bg-green-700",
+      warning: "bg-[var(--color-warning)]/80 hover:bg-[var(--color-warning)] text-[var(--inverse)] dark:bg-yellow-600 dark:hover:bg-yellow-700",
+      error: "bg-[var(--color-error)]/80 hover:bg-[var(--color-error)] text-[var(--inverse)] dark:bg-red-600 dark:hover:bg-red-700",
     } as const;
 
     return (
@@ -70,6 +70,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   },
 );
 
-Button.displayName ="OraclusXButton";
+ButtonComponent.displayName ="OraclusXButton";
+
+export const Button = React.memo(ButtonComponent);
 
 export default Button;

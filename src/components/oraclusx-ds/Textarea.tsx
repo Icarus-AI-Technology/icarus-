@@ -15,7 +15,7 @@ export interface TextareaProps
   showCount?: boolean;
 }
 
-export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
+const TextareaComponent = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   (
     {
       className,
@@ -38,7 +38,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         {label && (
           <label
             htmlFor={textareaId}
-            className="block text-body-sm text-[var(--text-secondary)] mb-1" style={{ fontWeight: 500 }}
+            className="block text-body-sm text-[var(--text-secondary)] mb-1 font-medium"
           >
             {label}
           </label>
@@ -48,7 +48,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           ref={ref}
           value={value}
           maxLength={maxLength}
-          className={cn("orx-input w-full min-h-[100px] resize-y",
+          className={cn("orx-input w-full min-h-[100px] resize-y","transition-colors duration-300","dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700",
             error &&"border-2 border-error",
             className,
           )}
@@ -78,7 +78,9 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   },
 );
 
-Textarea.displayName ="OraclusXTextarea";
+TextareaComponent.displayName ="OraclusXTextarea";
+
+export const Textarea = React.memo(TextareaComponent);
 
 export default Textarea;
 

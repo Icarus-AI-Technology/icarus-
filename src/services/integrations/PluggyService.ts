@@ -13,21 +13,83 @@
  * @see docs/PLUGGY_SETUP_GUIDE.md
  */
 
-import type {
-  PluggyConfig,
-  PluggyConnectToken,
-  PluggyItem,
-  PluggyAccount,
-  PluggyTransaction,
-  TransactionListResponse,
-  PluggyPayment,
-  CreatePaymentRequest,
-  PluggyInvestment,
-  PluggyIdentity,
-  PluggyWebhook,
-  PLUGGY_DEFAULT_CONFIG,
-  PLUGGY_DEFAULT_FEATURES,
-} from '@/types/pluggy';
+// Minimal inline types for template mode (replace with '@/types/pluggy' when integrating)
+type PluggyConnectToken = { accessToken: string; expiresAt: Date };
+type PluggyItem = {
+  id: string;
+  connector: { id: number; name: string; imageUrl?: string; primaryColor?: string; type?: string; country?: string; hasMFA?: boolean; supportsPaymentInitiation?: boolean };
+  status: string;
+  error: string | null;
+  executionStatus: string;
+  lastUpdatedAt: string;
+  createdAt: string;
+};
+type PluggyAccount = {
+  id: string;
+  itemId: string;
+  type: 'BANK' | 'CREDIT' | string;
+  subtype?: string;
+  number?: string;
+  name?: string;
+  marketingName?: string;
+  balance: number;
+  currencyCode?: string;
+  bankData?: { transferNumber?: string; closingBalance?: number };
+  creditData?: { level?: string; brand?: string; balanceCloseDate?: string; balanceDueDate?: string; availableCreditLimit?: number; creditLimit?: number; minimumPayment?: number };
+  owner?: string;
+  taxNumber?: string;
+};
+type PluggyTransaction = {
+  id: string;
+  accountId: string;
+  date: string;
+  description: string;
+  amount: number;
+  balance?: number;
+  currencyCode?: string;
+  type: 'CREDIT' | 'DEBIT' | string;
+  status?: string;
+  category?: string;
+  merchant?: { name?: string; businessName?: string; cnpj?: string };
+};
+type TransactionListResponse = { results: PluggyTransaction[]; page: number; total: number; totalPages: number };
+type PluggyPayment = {
+  id: string;
+  itemId: string;
+  accountId: string;
+  recipient: { pixKey: string; name?: string };
+  amount: number;
+  description?: string;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED' | string;
+  scheduledDate?: string;
+  createdAt: string;
+  approvedAt?: string;
+};
+type CreatePaymentRequest = {
+  itemId: string;
+  accountId: string;
+  recipient: { pixKey: string; name?: string };
+  amount: number;
+  description?: string;
+  scheduledDate?: string;
+};
+type PluggyInvestment = {
+  id: string;
+  itemId: string;
+  type: string;
+  balance: number;
+  name?: string;
+  code?: string;
+  issuer?: string;
+  rate?: number;
+  amount?: number;
+  amountProfit?: number;
+  dueDate?: string;
+  purchaseDate?: string;
+  currencyCode?: string;
+  owner?: string;
+};
+type PluggyWebhook = { event: string; data: Record<string, unknown> };
 
 // ============================================
 // CONFIGURAÇÃO
@@ -41,7 +103,16 @@ import type {
 //   clientSecret: import.meta.env.VITE_PLUGGY_CLIENT_SECRET || '',
 // });
 
-const PLUGGY_ENABLED = import.meta.env.VITE_PLUGGY_ENABLED === 'true';
+const runtimeEnv: Record<string, string | undefined> =
+  // Vite runtime
+  typeof import.meta !== 'undefined' && typeof (import.meta as unknown as { env?: Record<string, string | undefined> }).env !== 'undefined'
+    ? ((import.meta as unknown as { env: Record<string, string | undefined> }).env)
+    : // Node/PM2
+      (typeof process !== 'undefined' ? (process.env as Record<string, string | undefined>) : {});
+
+const getRuntimeEnv = (key: string): string | undefined => runtimeEnv?.[key];
+
+const PLUGGY_ENABLED = getRuntimeEnv('VITE_PLUGGY_ENABLED') === 'true';
 
 console.log('🔌 Pluggy Service:', PLUGGY_ENABLED ? '✅ ATIVADO' : '⏸️ MODO TEMPLATE (Mock Data)');
 
@@ -228,9 +299,10 @@ export class PluggyService {
     //     accessToken: connectToken.accessToken,
     //     expiresAt: new Date(Date.now() + 3600000),
     //   };
-    // } catch (_error) {
-    //   console.error('Error creating Connect Token:', error);
-    //   throw new Error(`Erro ao criar Connect Token: ${error.message}`);
+    // } catch (error) {
+    // const err = error as Error;
+    //   console.error('Error creating Connect Token:', err);
+    //   throw new Error(`Erro ao criar Connect Token: ${err.message}`);
     // }
     
     throw new Error('Pluggy não está habilitado. Configure VITE_PLUGGY_ENABLED=true');
@@ -254,8 +326,9 @@ export class PluggyService {
     //   });
     //   
     //   return items.results;
-    // } catch (_error) {
-    //   throw new Error(`Erro ao listar items: ${error.message}`);
+    // } catch (error) {
+    // const err = error as Error;
+    //   throw new Error(`Erro ao listar items: ${err.message}`);
     // }
     
     throw new Error('Pluggy não está habilitado');
@@ -282,8 +355,9 @@ export class PluggyService {
     // try {
     //   const item = await pluggy.updateItem(itemId);
     //   return item;
-    // } catch (_error) {
-    //   throw new Error(`Erro ao atualizar item: ${error.message}`);
+    // } catch (error) {
+    // const err = error as Error;
+    //   throw new Error(`Erro ao atualizar item: ${err.message}`);
     // }
     
     throw new Error('Pluggy não está habilitado');
@@ -304,8 +378,9 @@ export class PluggyService {
     // try {
     //   await pluggy.deleteItem(itemId);
     //   return { success: true };
-    // } catch (_error) {
-    //   throw new Error(`Erro ao deletar item: ${error.message}`);
+    // } catch (error) {
+    // const err = error as Error;
+    //   throw new Error(`Erro ao deletar item: ${err.message}`);
     // }
     
     throw new Error('Pluggy não está habilitado');
@@ -330,8 +405,9 @@ export class PluggyService {
     // try {
     //   const accounts = await pluggy.fetchAccounts(itemId);
     //   return accounts.results;
-    // } catch (_error) {
-    //   throw new Error(`Erro ao buscar contas: ${error.message}`);
+    // } catch (error) {
+    // const err = error as Error;
+    //   throw new Error(`Erro ao buscar contas: ${err.message}`);
     // }
     
     throw new Error('Pluggy não está habilitado');
@@ -359,8 +435,9 @@ export class PluggyService {
     //   }
     //   
     //   return allAccounts;
-    // } catch (_error) {
-    //   throw new Error(`Erro ao buscar todas as contas: ${error.message}`);
+    // } catch (error) {
+    // const err = error as Error;
+    //   throw new Error(`Erro ao buscar todas as contas: ${err.message}`);
     // }
     
     throw new Error('Pluggy não está habilitado');
@@ -406,8 +483,9 @@ export class PluggyService {
     //   });
     //   
     //   return transactions;
-    // } catch (_error) {
-    //   throw new Error(`Erro ao buscar transações: ${error.message}`);
+    // } catch (error) {
+    // const err = error as Error;
+    //   throw new Error(`Erro ao buscar transações: ${err.message}`);
     // }
     
     throw new Error('Pluggy não está habilitado');
@@ -444,8 +522,9 @@ export class PluggyService {
     // try {
     //   const payment = await pluggy.createPayment(dados);
     //   return payment;
-    // } catch (_error) {
-    //   throw new Error(`Erro ao criar pagamento: ${error.message}`);
+    // } catch (error) {
+    // const err = error as Error;
+    //   throw new Error(`Erro ao criar pagamento: ${err.message}`);
     // }
     
     throw new Error('Pluggy não está habilitado');
@@ -481,8 +560,9 @@ export class PluggyService {
     // try {
     //   const payment = await pluggy.fetchPayment(paymentId);
     //   return payment;
-    // } catch (_error) {
-    //   throw new Error(`Erro ao buscar pagamento: ${error.message}`);
+    // } catch (error) {
+    // const err = error as Error;
+    //   throw new Error(`Erro ao buscar pagamento: ${err.message}`);
     // }
     
     throw new Error('Pluggy não está habilitado');
@@ -524,8 +604,9 @@ export class PluggyService {
     // try {
     //   const investments = await pluggy.fetchInvestments(itemId);
     //   return investments.results;
-    // } catch (_error) {
-    //   throw new Error(`Erro ao buscar investimentos: ${error.message}`);
+    // } catch (error) {
+    // const err = error as Error;
+    //   throw new Error(`Erro ao buscar investimentos: ${err.message}`);
     // }
     
     throw new Error('Pluggy não está habilitado');
@@ -601,20 +682,17 @@ export class PluggyService {
   ): Promise<Array<{ category: string; total: number; count: number }>> {
     const { results } = await this.fetchTransactions(accountId, { from, to });
     
-    const expenses = results.filter(tx => tx.type === 'DEBIT');
+    const expenses = results.filter((tx) => tx.type === 'DEBIT');
     
-    const categories = expenses.reduce((acc, tx) => {
+    const categories = expenses.reduce<Record<string, { category: string; total: number; count: number }>>((acc, tx) => {
       const category = tx.category || 'Outros';
-      
       if (!acc[category]) {
         acc[category] = { category, total: 0, count: 0 };
       }
-      
       acc[category].total += Math.abs(tx.amount);
       acc[category].count += 1;
-      
       return acc;
-    }, {} as Record<string, { category: string; total: number; count: number }>);
+    }, {});
     
     return Object.values(categories).sort((a, b) => b.total - a.total);
   }

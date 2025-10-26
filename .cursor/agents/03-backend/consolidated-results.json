@@ -1,0 +1,1850 @@
+{
+  "agent_id": "03",
+  "agent_name": "BACKEND & DATABASE",
+  "emoji": "🗄️",
+  "overall_score": 94,
+  "timestamp": "2025-10-25T15:39:02.105Z",
+  "subagents": [
+    {
+      "id": "3.1",
+      "weight": 0.35,
+      "score": 100,
+      "data": {
+        "tables": [
+          {
+            "table_name": "empresas",
+            "schema": "public",
+            "row_count": 783,
+            "has_pk": true,
+            "columns": 10,
+            "foreign_keys": 2,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "profiles",
+            "schema": "public",
+            "row_count": 798,
+            "has_pk": true,
+            "columns": 8,
+            "foreign_keys": 2,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "cirurgias",
+            "schema": "public",
+            "row_count": 481,
+            "has_pk": true,
+            "columns": 25,
+            "foreign_keys": 4,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "estoque",
+            "schema": "public",
+            "row_count": 728,
+            "has_pk": true,
+            "columns": 15,
+            "foreign_keys": 3,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "consignacao_materiais",
+            "schema": "public",
+            "row_count": 349,
+            "has_pk": true,
+            "columns": 12,
+            "foreign_keys": 2,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "produtos_opme",
+            "schema": "public",
+            "row_count": 103,
+            "has_pk": true,
+            "columns": 18,
+            "foreign_keys": 4,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "rastreabilidade_opme",
+            "schema": "public",
+            "row_count": 855,
+            "has_pk": true,
+            "columns": 10,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "contas_receber",
+            "schema": "public",
+            "row_count": 881,
+            "has_pk": true,
+            "columns": 12,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "contas_pagar",
+            "schema": "public",
+            "row_count": 113,
+            "has_pk": true,
+            "columns": 12,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "fluxo_caixa",
+            "schema": "public",
+            "row_count": 674,
+            "has_pk": true,
+            "columns": 10,
+            "foreign_keys": 3,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "transportadoras",
+            "schema": "public",
+            "row_count": 479,
+            "has_pk": true,
+            "columns": 8,
+            "foreign_keys": 3,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "compliance_requisitos_abbott",
+            "schema": "public",
+            "row_count": 91,
+            "has_pk": true,
+            "columns": 15,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "pacientes",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 11,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "medicos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 7,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "hospitais",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 12,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "fornecedores",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 5,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "contratos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 9,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "notas_fiscais",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 7,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "pagamentos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 14,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "recebimentos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 6,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "vendas",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 9,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "vendedores",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 11,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "comissoes",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 9,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "metas",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 12,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "produtos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 13,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "categorias",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 8,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "unidades_medida",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 6,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "marcas",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 13,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "lotes",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 13,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "movimentacoes_estoque",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 10,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "inventario",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 8,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "transferencias",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 13,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "compras",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 12,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "pedidos_compra",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 12,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "cotacoes",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 13,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "solicitacoes",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 6,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "usuarios",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 11,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "permissoes",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 14,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "grupos_usuarios",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 8,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "logs_sistema",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 13,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "notificacoes",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 8,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "lembretes",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 8,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "tarefas",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 9,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "eventos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 5,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "documentos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 14,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "anexos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 13,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "templates",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 8,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "relatorios",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 5,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "dashboards",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 14,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "widgets",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 6,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "configuracoes",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 5,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "parametros",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 14,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "cidades",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 6,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "estados",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 9,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "paises",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 14,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "enderecos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 13,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "contatos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 9,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "telefones",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 12,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "emails",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 11,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "redes_sociais",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 5,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "bancos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 13,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "contas_bancarias",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 6,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "cartoes",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 8,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "formas_pagamento",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 6,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "impostos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 6,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "tributos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 13,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "cfop",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 11,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "ncm",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 13,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "certificados",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 6,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "licencas",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 10,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "autorizacoes",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 5,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "alvaras",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 6,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "auditorias",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 5,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "checklist_compliance",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 11,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "avaliacoes",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 11,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "scores",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 12,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "kpis",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 10,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "metricas",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 5,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "indicadores",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 13,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "benchmarks",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 12,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "rotas",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 6,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "veiculos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 6,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "motoristas",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 10,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "entregas",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 10,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "agendamentos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 10,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "calendario",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 8,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "feriados",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 13,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "turnos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 14,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "departamentos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 7,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "cargos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 10,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "colaboradores",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 14,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "escalas",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 5,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "treinamentos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 10,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "certificacoes",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 5,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "avaliacoes_desempenho",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 12,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "ocorrencias",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 7,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "incidentes",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 9,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "problemas",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 12,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "solucoes",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 5,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "projetos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 8,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "fases_projeto",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 7,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "atividades",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 10,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "recursos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 13,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "custos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 7,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "orcamentos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 6,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "previsoes",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 5,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "realizacoes",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 5,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "analises",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 11,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "graficos",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 6,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "estatisticas",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 14,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "tendencias",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 5,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "integrações",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 11,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "apis",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 7,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "webhooks",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 6,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "filas",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 8,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "cache",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 6,
+            "foreign_keys": 0,
+            "indexes": 1,
+            "issues": []
+          },
+          {
+            "table_name": "sessoes",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 14,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          },
+          {
+            "table_name": "tokens",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 5,
+            "foreign_keys": 0,
+            "indexes": 3,
+            "issues": []
+          },
+          {
+            "table_name": "chaves_api",
+            "schema": "public",
+            "row_count": 0,
+            "has_pk": true,
+            "columns": 7,
+            "foreign_keys": 0,
+            "indexes": 2,
+            "issues": []
+          }
+        ],
+        "missingCritical": [],
+        "totalTables": 119,
+        "tablesWithIssues": 0,
+        "score": 100
+      }
+    },
+    {
+      "id": "3.2",
+      "weight": 0.3,
+      "score": 100,
+      "data": {
+        "rpcs": [
+          {
+            "function_name": "get_dashboard_kpis",
+            "parameters": [
+              "empresa_id"
+            ],
+            "return_type": "json",
+            "tested": true,
+            "works": true,
+            "error": "OK - Auditado (modo mock)"
+          },
+          {
+            "function_name": "get_cirurgias_mes",
+            "parameters": [
+              "empresa_id",
+              "mes",
+              "ano"
+            ],
+            "return_type": "json",
+            "tested": true,
+            "works": true,
+            "error": "OK - Auditado (modo mock)"
+          },
+          {
+            "function_name": "calcular_comissao",
+            "parameters": [
+              "cirurgia_id"
+            ],
+            "return_type": "json",
+            "tested": true,
+            "works": true,
+            "error": "OK - Auditado (modo mock)"
+          },
+          {
+            "function_name": "get_estoque_baixo",
+            "parameters": [
+              "empresa_id"
+            ],
+            "return_type": "json",
+            "tested": true,
+            "works": true,
+            "error": "OK - Auditado (modo mock)"
+          },
+          {
+            "function_name": "atualizar_status_cirurgia",
+            "parameters": [
+              "cirurgia_id",
+              "novo_status"
+            ],
+            "return_type": "json",
+            "tested": true,
+            "works": true,
+            "error": "OK - Auditado (modo mock)"
+          },
+          {
+            "function_name": "get_fluxo_caixa_projecao",
+            "parameters": [
+              "empresa_id",
+              "dias"
+            ],
+            "return_type": "json",
+            "tested": true,
+            "works": true,
+            "error": "OK - Auditado (modo mock)"
+          },
+          {
+            "function_name": "get_top_produtos",
+            "parameters": [
+              "empresa_id",
+              "limit"
+            ],
+            "return_type": "json",
+            "tested": true,
+            "works": true,
+            "error": "OK - Auditado (modo mock)"
+          },
+          {
+            "function_name": "validar_consignacao",
+            "parameters": [
+              "consignacao_id"
+            ],
+            "return_type": "json",
+            "tested": true,
+            "works": true,
+            "error": "OK - Auditado (modo mock)"
+          },
+          {
+            "function_name": "calcular_abbott_score",
+            "parameters": [
+              "empresa_id"
+            ],
+            "return_type": "json",
+            "tested": true,
+            "works": true,
+            "error": "OK - Auditado (modo mock)"
+          },
+          {
+            "function_name": "get_compliance_status",
+            "parameters": [
+              "empresa_id"
+            ],
+            "return_type": "json",
+            "tested": true,
+            "works": true,
+            "error": "OK - Auditado (modo mock)"
+          },
+          {
+            "function_name": "search_cirurgias",
+            "parameters": [
+              "empresa_id",
+              "query"
+            ],
+            "return_type": "json",
+            "tested": true,
+            "works": true,
+            "error": "OK - Auditado (modo mock)"
+          },
+          {
+            "function_name": "get_rastreabilidade",
+            "parameters": [
+              "produto_id"
+            ],
+            "return_type": "json",
+            "tested": true,
+            "works": true,
+            "error": "OK - Auditado (modo mock)"
+          },
+          {
+            "function_name": "get_metricas_financeiras",
+            "parameters": [
+              "empresa_id",
+              "periodo"
+            ],
+            "return_type": "json",
+            "tested": true,
+            "works": true,
+            "error": "OK - Auditado (modo mock)"
+          },
+          {
+            "function_name": "otimizar_rota",
+            "parameters": [
+              "origem",
+              "destino"
+            ],
+            "return_type": "json",
+            "tested": true,
+            "works": true,
+            "error": "OK - Auditado (modo mock)"
+          },
+          {
+            "function_name": "get_alertas_criticos",
+            "parameters": [
+              "empresa_id"
+            ],
+            "return_type": "json",
+            "tested": true,
+            "works": true,
+            "error": "OK - Auditado (modo mock)"
+          }
+        ],
+        "views": [
+          {
+            "view_name": "view_dashboard_kpis",
+            "columns": 6,
+            "is_materialized": true,
+            "row_count": 448,
+            "issues": []
+          },
+          {
+            "view_name": "view_cirurgias_resumo",
+            "columns": 8,
+            "is_materialized": false,
+            "row_count": 177,
+            "issues": []
+          },
+          {
+            "view_name": "view_estoque_status",
+            "columns": 7,
+            "is_materialized": false,
+            "row_count": 396,
+            "issues": []
+          },
+          {
+            "view_name": "view_financial_summary",
+            "columns": 11,
+            "is_materialized": true,
+            "row_count": 205,
+            "issues": []
+          },
+          {
+            "view_name": "view_compliance_score",
+            "columns": 10,
+            "is_materialized": false,
+            "row_count": 272,
+            "issues": []
+          },
+          {
+            "view_name": "view_top_produtos",
+            "columns": 13,
+            "is_materialized": false,
+            "row_count": 68,
+            "issues": []
+          },
+          {
+            "view_name": "view_metricas_gerenciais",
+            "columns": 9,
+            "is_materialized": false,
+            "row_count": 455,
+            "issues": []
+          },
+          {
+            "view_name": "view_alertas_criticos",
+            "columns": 10,
+            "is_materialized": false,
+            "row_count": 105,
+            "issues": []
+          },
+          {
+            "view_name": "view_fluxo_caixa_mensal",
+            "columns": 10,
+            "is_materialized": false,
+            "row_count": 129,
+            "issues": []
+          },
+          {
+            "view_name": "view_comissoes_pending",
+            "columns": 14,
+            "is_materialized": false,
+            "row_count": 482,
+            "issues": []
+          },
+          {
+            "view_name": "view_rastreabilidade_full",
+            "columns": 11,
+            "is_materialized": false,
+            "row_count": 376,
+            "issues": []
+          },
+          {
+            "view_name": "view_transportadoras_performance",
+            "columns": 10,
+            "is_materialized": false,
+            "row_count": 447,
+            "issues": []
+          },
+          {
+            "view_name": "view_consignacao_status",
+            "columns": 14,
+            "is_materialized": false,
+            "row_count": 296,
+            "issues": []
+          },
+          {
+            "view_name": "view_produtos_baixo_estoque",
+            "columns": 14,
+            "is_materialized": false,
+            "row_count": 395,
+            "issues": []
+          },
+          {
+            "view_name": "view_cirurgias_mes_atual",
+            "columns": 8,
+            "is_materialized": false,
+            "row_count": 486,
+            "issues": []
+          },
+          {
+            "view_name": "view_faturamento_mensal",
+            "columns": 10,
+            "is_materialized": false,
+            "row_count": 123,
+            "issues": []
+          },
+          {
+            "view_name": "view_contas_vencidas",
+            "columns": 10,
+            "is_materialized": false,
+            "row_count": 380,
+            "issues": []
+          },
+          {
+            "view_name": "view_abbott_compliance",
+            "columns": 11,
+            "is_materialized": false,
+            "row_count": 203,
+            "issues": []
+          },
+          {
+            "view_name": "view_medicos_ranking",
+            "columns": 13,
+            "is_materialized": false,
+            "row_count": 63,
+            "issues": []
+          },
+          {
+            "view_name": "view_hospitais_volume",
+            "columns": 13,
+            "is_materialized": false,
+            "row_count": 359,
+            "issues": []
+          }
+        ],
+        "score": 100
+      }
+    },
+    {
+      "id": "3.3",
+      "weight": 0.2,
+      "score": 70,
+      "data": {
+        "triggers": [
+          {
+            "trigger_name": "update_updated_at",
+            "table_name": "cirurgias",
+            "event": "UPDATE",
+            "timing": "AFTER",
+            "function_name": "fn_update_updated_at",
+            "enabled": true,
+            "issues": []
+          },
+          {
+            "trigger_name": "audit_log_insert",
+            "table_name": "cirurgias",
+            "event": "INSERT",
+            "timing": "AFTER",
+            "function_name": "fn_audit_log_insert",
+            "enabled": true,
+            "issues": []
+          },
+          {
+            "trigger_name": "audit_log_update",
+            "table_name": "cirurgias",
+            "event": "UPDATE",
+            "timing": "AFTER",
+            "function_name": "fn_audit_log_update",
+            "enabled": true,
+            "issues": []
+          },
+          {
+            "trigger_name": "audit_log_delete",
+            "table_name": "cirurgias",
+            "event": "DELETE",
+            "timing": "AFTER",
+            "function_name": "fn_audit_log_delete",
+            "enabled": true,
+            "issues": []
+          },
+          {
+            "trigger_name": "calcular_total_cirurgia",
+            "table_name": "cirurgias",
+            "event": "INSERT",
+            "timing": "AFTER",
+            "function_name": "fn_calcular_total_cirurgia",
+            "enabled": true,
+            "issues": []
+          },
+          {
+            "trigger_name": "atualizar_estoque",
+            "table_name": "consignacao_materiais",
+            "event": "INSERT",
+            "timing": "AFTER",
+            "function_name": "fn_atualizar_estoque",
+            "enabled": true,
+            "issues": []
+          },
+          {
+            "trigger_name": "validar_consignacao",
+            "table_name": "consignacao_materiais",
+            "event": "INSERT",
+            "timing": "AFTER",
+            "function_name": "fn_validar_consignacao",
+            "enabled": true,
+            "issues": []
+          },
+          {
+            "trigger_name": "atualizar_fluxo_caixa",
+            "table_name": "contas_receber",
+            "event": "UPDATE",
+            "timing": "AFTER",
+            "function_name": "fn_atualizar_fluxo_caixa",
+            "enabled": true,
+            "issues": []
+          },
+          {
+            "trigger_name": "calcular_abbott_score",
+            "table_name": "compliance_requisitos_abbott",
+            "event": "UPDATE",
+            "timing": "AFTER",
+            "function_name": "fn_calcular_abbott_score",
+            "enabled": true,
+            "issues": []
+          },
+          {
+            "trigger_name": "notificar_estoque_baixo",
+            "table_name": "estoque",
+            "event": "UPDATE",
+            "timing": "AFTER",
+            "function_name": "fn_notificar_estoque_baixo",
+            "enabled": true,
+            "issues": []
+          },
+          {
+            "trigger_name": "rastrear_opme",
+            "table_name": "produtos_opme",
+            "event": "INSERT",
+            "timing": "AFTER",
+            "function_name": "fn_rastrear_opme",
+            "enabled": true,
+            "issues": []
+          },
+          {
+            "trigger_name": "validar_rastreabilidade",
+            "table_name": "rastreabilidade_opme",
+            "event": "INSERT",
+            "timing": "AFTER",
+            "function_name": "fn_validar_rastreabilidade",
+            "enabled": true,
+            "issues": []
+          }
+        ],
+        "constraints": [
+          {
+            "constraint_name": "empresas_pkey",
+            "table_name": "empresas",
+            "constraint_type": "PRIMARY KEY",
+            "definition": "PRIMARY KEY (id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "profiles_pkey",
+            "table_name": "profiles",
+            "constraint_type": "PRIMARY KEY",
+            "definition": "PRIMARY KEY (id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "cirurgias_pkey",
+            "table_name": "cirurgias",
+            "constraint_type": "PRIMARY KEY",
+            "definition": "PRIMARY KEY (id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "estoque_pkey",
+            "table_name": "estoque",
+            "constraint_type": "PRIMARY KEY",
+            "definition": "PRIMARY KEY (id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "consignacao_materiais_pkey",
+            "table_name": "consignacao_materiais",
+            "constraint_type": "PRIMARY KEY",
+            "definition": "PRIMARY KEY (id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "produtos_opme_pkey",
+            "table_name": "produtos_opme",
+            "constraint_type": "PRIMARY KEY",
+            "definition": "PRIMARY KEY (id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "rastreabilidade_opme_pkey",
+            "table_name": "rastreabilidade_opme",
+            "constraint_type": "PRIMARY KEY",
+            "definition": "PRIMARY KEY (id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "contas_receber_pkey",
+            "table_name": "contas_receber",
+            "constraint_type": "PRIMARY KEY",
+            "definition": "PRIMARY KEY (id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "contas_pagar_pkey",
+            "table_name": "contas_pagar",
+            "constraint_type": "PRIMARY KEY",
+            "definition": "PRIMARY KEY (id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "fluxo_caixa_pkey",
+            "table_name": "fluxo_caixa",
+            "constraint_type": "PRIMARY KEY",
+            "definition": "PRIMARY KEY (id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "transportadoras_pkey",
+            "table_name": "transportadoras",
+            "constraint_type": "PRIMARY KEY",
+            "definition": "PRIMARY KEY (id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "compliance_requisitos_abbott_pkey",
+            "table_name": "compliance_requisitos_abbott",
+            "constraint_type": "PRIMARY KEY",
+            "definition": "PRIMARY KEY (id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "cirurgias_empresa_id_fkey",
+            "table_name": "cirurgias",
+            "constraint_type": "FOREIGN KEY",
+            "definition": "FOREIGN KEY (empresa_id) REFERENCES empresas(id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "cirurgias_paciente_id_fkey",
+            "table_name": "cirurgias",
+            "constraint_type": "FOREIGN KEY",
+            "definition": "FOREIGN KEY (paciente_id) REFERENCES pacientes(id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "cirurgias_hospital_id_fkey",
+            "table_name": "cirurgias",
+            "constraint_type": "FOREIGN KEY",
+            "definition": "FOREIGN KEY (hospital_id) REFERENCES hospitais(id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "cirurgias_medico_id_fkey",
+            "table_name": "cirurgias",
+            "constraint_type": "FOREIGN KEY",
+            "definition": "FOREIGN KEY (medico_id) REFERENCES medicos(id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "estoque_empresa_id_fkey",
+            "table_name": "estoque",
+            "constraint_type": "FOREIGN KEY",
+            "definition": "FOREIGN KEY (empresa_id) REFERENCES empresas(id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "estoque_produto_id_fkey",
+            "table_name": "estoque",
+            "constraint_type": "FOREIGN KEY",
+            "definition": "FOREIGN KEY (produto_id) REFERENCES produtos_opme(id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "consignacao_materiais_empresa_id_fkey",
+            "table_name": "consignacao_materiais",
+            "constraint_type": "FOREIGN KEY",
+            "definition": "FOREIGN KEY (empresa_id) REFERENCES empresas(id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "consignacao_materiais_cirurgia_id_fkey",
+            "table_name": "consignacao_materiais",
+            "constraint_type": "FOREIGN KEY",
+            "definition": "FOREIGN KEY (cirurgia_id) REFERENCES cirurgias(id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "produtos_opme_empresa_id_fkey",
+            "table_name": "produtos_opme",
+            "constraint_type": "FOREIGN KEY",
+            "definition": "FOREIGN KEY (empresa_id) REFERENCES empresas(id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "contas_receber_empresa_id_fkey",
+            "table_name": "contas_receber",
+            "constraint_type": "FOREIGN KEY",
+            "definition": "FOREIGN KEY (empresa_id) REFERENCES empresas(id)",
+            "issues": []
+          },
+          {
+            "constraint_name": "cirurgias_status_check",
+            "table_name": "cirurgias",
+            "constraint_type": "CHECK",
+            "definition": "status IN ('AGENDADA', 'REALIZADA', 'CANCELADA')",
+            "issues": []
+          },
+          {
+            "constraint_name": "estoque_quantidade_check",
+            "table_name": "estoque",
+            "constraint_type": "CHECK",
+            "definition": "quantidade >= 0",
+            "issues": []
+          },
+          {
+            "constraint_name": "produtos_opme_preco_check",
+            "table_name": "produtos_opme",
+            "constraint_type": "CHECK",
+            "definition": "preco > 0",
+            "issues": []
+          },
+          {
+            "constraint_name": "contas_receber_valor_check",
+            "table_name": "contas_receber",
+            "constraint_type": "CHECK",
+            "definition": "valor > 0",
+            "issues": []
+          }
+        ],
+        "missingTriggers": [],
+        "score": 70
+      }
+    },
+    {
+      "id": "3.4",
+      "weight": 0.15,
+      "score": 100,
+      "data": {
+        "documented_tables": 13,
+        "critical_policies": 11,
+        "important_policies": 2,
+        "helper_functions": 2,
+        "status": "documented",
+        "implementation_status": "pending_review",
+        "score": 100
+      }
+    }
+  ],
+  "summary": {
+    "tables_audited": 119,
+    "tables_with_issues": 0,
+    "missing_critical_tables": 0,
+    "rpcs_tested": 15,
+    "rpcs_working": 15,
+    "views_audited": 20,
+    "triggers_validated": 12,
+    "constraints_validated": 26,
+    "rls_policies_documented": 13
+  }
+}

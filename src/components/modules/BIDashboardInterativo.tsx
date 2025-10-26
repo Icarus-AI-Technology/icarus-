@@ -5,12 +5,8 @@
  * para distribuidoras de OPME (Órteses, Próteses e Materiais Especiais)
  */
 
-import {
-  Card,
-  Button,
-  Select,
-  Tabs,
-} from '@/components/oraclusx-ds';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Card, Button, Select, Progress } from '@/components/oraclusx-ds';
 import {
   TrendingUp,
   TrendingDown,
@@ -18,47 +14,31 @@ import {
   Users,
   DollarSign,
   BarChart3,
-  PieChart,
   LineChart as LineChartIcon,
   Download,
-  Filter,
-  Calendar,
   Target,
-  Award,
   ShoppingCart,
+  Filter,
+  Award,
   Brain,
-  Layers,
 } from 'lucide-react';
 import { useDocumentTitle } from '@/hooks';
 import { useToast } from '@/contexts/ToastContext';
 import { supabase } from '@/lib/supabase';
-import { formatNumber, formatCurrency, formatPercent } from '@/lib/utils';
-import {
-  LineChart,
-  Line,
-  BarChart,
-  Bar,
-  PieChart as RechartsPieChart,
-  Pie,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  Area,
-  AreaChart,
-  ComposedChart,
-} from 'recharts';
+import { formatCurrency } from '@/lib/utils';
+// import Recharts components (legacy)
+// import { Line, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, ComposedChart } from 'recharts';
+import { OrxLineChart } from '@/components/charts/OrxLineChart';
+import { OrxBarChart } from '@/components/charts/OrxBarChart';
+import { OrxPieChart } from '@/components/charts/OrxPieChart';
 
 interface KPI {
   title: string;
   value: string;
   change: number;
   changeLabel: string;
-  icon: any;
-  color: string;
+  icon: React.ComponentType<{ className?: string }>;
+  color: 'blue' | 'green' | 'orange' | 'indigo' | 'purple' | 'teal';
 }
 
 interface VendaPorProduto {
@@ -113,11 +93,7 @@ export default function BIDashboardInterativo() {
   const [evolucaoMensal, setEvolucaoMensal] = useState<EvolucaoMensal[]>([]);
   const [performanceVendedores, setPerformanceVendedores] = useState<PerformanceVendedor[]>([]);
 
-  useEffect(() => {
-    carregarDados();
-  }, [periodo]);
-
-  const carregarDados = async () => {
+  const carregarDados = useCallback(async () => {
     setLoading(true);
     try {
       await Promise.all([
@@ -128,13 +104,18 @@ export default function BIDashboardInterativo() {
         carregarPerformanceVendedores(),
       ]);
     } catch (error: unknown) {
-      addToast(`Erro ao carregar dados: ${error.message}`, 'error');
+      const err = error as Error;
+      addToast(`Erro ao carregar dados: ${err.message}`, 'error');
     } finally {
       setLoading(false);
     }
-  };
+  }, [addToast, carregarKPIs, carregarVendasPorProduto, carregarVendasPorCliente, carregarEvolucaoMensal, carregarPerformanceVendedores]);
 
-  const carregarKPIs = async () => {
+  useEffect(() => {
+    carregarDados();
+  }, [carregarDados, periodo]);
+
+  const carregarKPIs = useCallback(async () => {
     try {
       // Mock data para demonstração (integrar com views do banco)
       const mockKPIs: KPI[] = [
@@ -189,12 +170,13 @@ export default function BIDashboardInterativo() {
       ];
 
       setKpis(mockKPIs);
-    } catch (_error) {
-      console.error('Erro ao carregar KPIs:', error);
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro ao carregar KPIs:', err);
     }
-  };
+  }, []);
 
-  const carregarVendasPorProduto = async () => {
+  const carregarVendasPorProduto = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('vw_bi_vendas_por_produto')
@@ -204,8 +186,9 @@ export default function BIDashboardInterativo() {
       if (error) throw error;
 
       setVendasPorProduto(data || []);
-    } catch (_error) {
-      console.error('Erro ao carregar vendas por produto:', error);
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro ao carregar vendas por produto:', err);
       // Mock data
       setVendasPorProduto([
         { codigo: 'OPME-001', descricao: 'Stent Coronariano', categoria: 'Cardiovascular', quantidade_vendas: 45, valor_total: 225000, margem_total: 56250, margem_media_percentual: 25 },
@@ -215,9 +198,9 @@ export default function BIDashboardInterativo() {
         { codigo: 'OPME-005', descricao: 'Placa Ortopédica', categoria: 'Ortopedia', quantidade_vendas: 25, valor_total: 125000, margem_total: 31250, margem_media_percentual: 25 },
       ]);
     }
-  };
+  }, []);
 
-  const carregarVendasPorCliente = async () => {
+  const carregarVendasPorCliente = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('vw_bi_vendas_por_cliente')
@@ -227,8 +210,9 @@ export default function BIDashboardInterativo() {
       if (error) throw error;
 
       setVendasPorCliente(data || []);
-    } catch (_error) {
-      console.error('Erro ao carregar vendas por cliente:', error);
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro ao carregar vendas por cliente:', err);
       // Mock data
       setVendasPorCliente([
         { cnpj: '12345678000190', razao_social: 'Hospital São Lucas', cidade: 'São Paulo', estado: 'SP', valor_total: 450000, margem_total: 112500 },
@@ -238,9 +222,9 @@ export default function BIDashboardInterativo() {
         { cnpj: '56789012000154', razao_social: 'Hospital Regional', cidade: 'Porto Alegre', estado: 'RS', valor_total: 250000, margem_total: 62500 },
       ]);
     }
-  };
+  }, []);
 
-  const carregarEvolucaoMensal = async () => {
+  const carregarEvolucaoMensal = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('vw_bi_evolucao_mensal')
@@ -252,8 +236,9 @@ export default function BIDashboardInterativo() {
       if (error) throw error;
 
       setEvolucaoMensal((data || []).reverse());
-    } catch (_error) {
-      console.error('Erro ao carregar evolução mensal:', error);
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro ao carregar evolução mensal:', err);
       // Mock data
       setEvolucaoMensal([
         { mes_ano_label: 'Jan/2025', valor_total: 2100000, margem_total: 525000, ticket_medio: 7500, clientes_unicos: 128 },
@@ -264,9 +249,9 @@ export default function BIDashboardInterativo() {
         { mes_ano_label: 'Jun/2025', valor_total: 2450000, margem_total: 612500, ticket_medio: 8500, clientes_unicos: 142 },
       ]);
     }
-  };
+  }, []);
 
-  const carregarPerformanceVendedores = async () => {
+  const carregarPerformanceVendedores = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('vw_bi_performance_vendedores')
@@ -276,8 +261,9 @@ export default function BIDashboardInterativo() {
       if (error) throw error;
 
       setPerformanceVendedores(data || []);
-    } catch (_error) {
-      console.error('Erro ao carregar performance vendedores:', error);
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro ao carregar performance vendedores:', err);
       // Mock data
       setPerformanceVendedores([
         { nome: 'João Silva', equipe: 'Equipe Sul', valor_total: 580000, atingimento_meta_percentual: 116, clientes_atendidos: 38 },
@@ -287,7 +273,7 @@ export default function BIDashboardInterativo() {
         { nome: 'Pedro Souza', equipe: 'Equipe Centro-Oeste', valor_total: 420000, atingimento_meta_percentual: 84, clientes_atendidos: 28 },
       ]);
     }
-  };
+  }, []);
 
   const handleExportar = () => {
     addToast('Exportando relatório...', 'info');
@@ -316,18 +302,18 @@ export default function BIDashboardInterativo() {
             }`}
           >
             <div className="flex items-center justify-between">
-              <h3 className="opacity-90" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>{kpi.title}</h3>
+              <h3 className="opacity-90 text-[0.813rem] font-medium">{kpi.title}</h3>
               <kpi.icon className="w-6 h-6 opacity-80" />
             </div>
             <div className="mt-4">
-              <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{kpi.value}</p>
+              <p className="text-[0.813rem] font-bold">{kpi.value}</p>
               <div className="flex items-center gap-2 mt-3">
                 {kpi.change > 0 ? (
                   <TrendingUp className="w-4 h-4" />
                 ) : (
                   <TrendingDown className="w-4 h-4" />
                 )}
-                <span className="opacity-80" style={{ fontSize: '0.813rem' }}>{kpi.changeLabel}</span>
+                <span className="opacity-80 text-[0.813rem]">{kpi.changeLabel}</span>
               </div>
             </div>
           </Card>
@@ -336,56 +322,21 @@ export default function BIDashboardInterativo() {
 
       {/* Evolução Mensal */}
       <Card className="p-6 neuro-raised">
-        <h3 className="mb-4 flex items-center gap-2" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>
+        <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] font-semibold">
           <LineChartIcon className="w-5 h-5 text-[var(--primary)]" />
           Evolução Mensal de Faturamento
         </h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <ComposedChart data={evolucaoMensal}>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--text-secondary)" opacity={0.1} />
-            <XAxis dataKey="mes_ano_label" stroke="var(--text-secondary)" />
-            <YAxis yAxisId="left" stroke="var(--text-secondary)" />
-            <YAxis yAxisId="right" orientation="right" stroke="var(--text-secondary)" />
-            <Tooltip
-              contentStyle={{
-                background: 'var(--bg-light)',
-                border: '1px solid var(--text-secondary)',
-                borderRadius: '8px',
-              }}
-              formatter={(value: any) => formatCurrency(value)}
-            />
-            <Legend />
-            <Area
-              yAxisId="left"
-              type="monotone"
-              dataKey="valor_total"
-              fill="var(--orx-primary)"
-              stroke="var(--orx-primary)"
-              fillOpacity={0.2}
-              name="Faturamento"
-            />
-            <Bar
-              yAxisId="right"
-              dataKey="clientes_unicos"
-              fill="var(--orx-success)"
-              name="Clientes Únicos"
-            />
-            <Line
-              yAxisId="left"
-              type="monotone"
-              dataKey="margem_total"
-              stroke="var(--orx-warning)"
-              strokeWidth={2}
-              name="Margem Bruta"
-            />
-          </ComposedChart>
-        </ResponsiveContainer>
+        <OrxLineChart
+          data={[{ id: 'Faturamento', data: evolucaoMensal.map(m => ({ x: m.mes_ano_label, y: m.valor_total })) }]}
+          height={300}
+          colors={["var(--orx-primary)"]}
+        />
       </Card>
 
       {/* Top 5 Produtos e Clientes */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="p-6 neuro-raised">
-          <h3 className="mb-4 flex items-center gap-2" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>
+          <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] font-semibold">
             <Package className="w-5 h-5 text-[var(--primary)]" />
             Top 5 Produtos
           </h3>
@@ -393,14 +344,14 @@ export default function BIDashboardInterativo() {
             {vendasPorProduto.slice(0, 5).map((produto, index) => (
               <div key={index} className="flex items-center justify-between p-3 neuro-flat rounded-lg">
                 <div className="flex-1">
-                  <p className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>{produto.descricao}</p>
-                  <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>{produto.categoria}</p>
+                  <p className="text-[0.813rem] font-medium">{produto.descricao}</p>
+                  <p className="text-[var(--text-secondary)] text-[0.813rem]">{produto.categoria}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[var(--primary)]" style={{ fontWeight: 600 }}>
+                  <p className="text-[var(--primary)] font-semibold">
                     {formatCurrency(produto.valor_total)}
                   </p>
-                  <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+                  <p className="text-[var(--text-secondary)] text-[0.813rem]">
                     {produto.quantidade_vendas} vendas
                   </p>
                 </div>
@@ -410,7 +361,7 @@ export default function BIDashboardInterativo() {
         </Card>
 
         <Card className="p-6 neuro-raised">
-          <h3 className="mb-4 flex items-center gap-2" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>
+          <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] font-semibold">
             <Users className="w-5 h-5 text-[var(--primary)]" />
             Top 5 Clientes
           </h3>
@@ -418,16 +369,16 @@ export default function BIDashboardInterativo() {
             {vendasPorCliente.slice(0, 5).map((cliente, index) => (
               <div key={index} className="flex items-center justify-between p-3 neuro-flat rounded-lg">
                 <div className="flex-1">
-                  <p className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>{cliente.razao_social}</p>
-                  <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+                  <p className="text-[0.813rem] font-medium">{cliente.razao_social}</p>
+                  <p className="text-[var(--text-secondary)] text-[0.813rem]">
                     {cliente.cidade}/{cliente.estado}
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[var(--primary)]" style={{ fontWeight: 600 }}>
+                  <p className="text-[var(--primary)] font-semibold">
                     {formatCurrency(cliente.valor_total)}
                   </p>
-                  <p className="text-success" style={{ fontSize: '0.813rem' }}>
+                  <p className="text-success text-[0.813rem]">
                     Margem: {formatCurrency(cliente.margem_total)}
                   </p>
                 </div>
@@ -442,49 +393,25 @@ export default function BIDashboardInterativo() {
   const renderProdutos = () => (
     <div className="space-y-6">
       <Card className="p-6 neuro-raised">
-        <h3 className="mb-4" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Análise de Produtos OPME</h3>
-        <ResponsiveContainer width="100%" height={400}>
-          <BarChart data={vendasPorProduto}>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--text-secondary)" opacity={0.1} />
-            <XAxis dataKey="codigo" stroke="var(--text-secondary)" />
-            <YAxis stroke="var(--text-secondary)" />
-            <Tooltip
-              contentStyle={{
-                background: 'var(--bg-light)',
-                border: '1px solid var(--text-secondary)',
-                borderRadius: '8px',
-              }}
-              formatter={(value: any) => formatCurrency(value)}
-            />
-            <Legend />
-            <Bar dataKey="valor_total" fill="var(--orx-primary)" name="Faturamento" />
-            <Bar dataKey="margem_total" fill="var(--orx-success)" name="Margem" />
-          </BarChart>
-        </ResponsiveContainer>
+        <h3 className="mb-4 text-[0.813rem] font-semibold">Análise de Produtos OPME</h3>
+        <OrxBarChart
+          data={vendasPorProduto.map(p => ({ name: p.codigo, faturamento: p.valor_total, margem: p.margem_total }))}
+          keys={["faturamento", "margem"]}
+          indexBy="name"
+          height={400}
+          colors={["var(--orx-primary)", "var(--orx-success)"]}
+          groupMode="grouped"
+        />
       </Card>
 
       {/* Distribuição por Categoria */}
       <Card className="p-6 neuro-raised">
-        <h3 className="mb-4" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Distribuição por Categoria</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <RechartsPieChart>
-            <Pie
-              data={vendasPorProduto}
-              dataKey="valor_total"
-              nameKey="categoria"
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              label
-            >
-              {vendasPorProduto.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip formatter={(value: any) => formatCurrency(value)} />
-            <Legend />
-          </RechartsPieChart>
-        </ResponsiveContainer>
+        <h3 className="mb-4 text-[0.813rem] font-semibold">Distribuição por Categoria</h3>
+        <OrxPieChart
+          data={vendasPorProduto.map((p, i) => ({ id: p.categoria, value: p.valor_total }))}
+          height={300}
+          colors={COLORS}
+        />
       </Card>
     </div>
   );
@@ -492,7 +419,7 @@ export default function BIDashboardInterativo() {
   const renderVendedores = () => (
     <div className="space-y-6">
       <Card className="p-6 neuro-raised">
-        <h3 className="mb-4 flex items-center gap-2" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>
+        <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] font-semibold">
           <Award className="w-5 h-5 text-[var(--primary)]" />
           Performance de Vendedores
         </h3>
@@ -501,31 +428,26 @@ export default function BIDashboardInterativo() {
             <div key={index} className="p-4 neuro-flat rounded-lg">
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <p className style={{ fontWeight: 600 }}>{vendedor.nome}</p>
-                  <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>{vendedor.equipe}</p>
+                  <p className="font-semibold">{vendedor.nome}</p>
+                  <p className="text-[var(--text-secondary)] text-[0.813rem]">{vendedor.equipe}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[var(--primary)]" style={{ fontWeight: 700 }}>
+                  <p className="text-[var(--primary)] font-bold">
                     {formatCurrency(vendedor.valor_total)}
                   </p>
-                  <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+                  <p className="text-[var(--text-secondary)] text-[0.813rem]">
                     {vendedor.clientes_atendidos} clientes
                   </p>
                 </div>
               </div>
               <div className="space-y-2">
-                <div className="flex items-center justify-between" style={{ fontSize: '0.813rem' }}>
+                <div className="flex items-center justify-between text-[0.813rem]">
                   <span>Atingimento da Meta</span>
                   <span className={`font-semibold ${vendedor.atingimento_meta_percentual >= 100 ? 'text-success' : 'text-warning'}`}>
                     {vendedor.atingimento_meta_percentual}%
                   </span>
                 </div>
-                <div className="w-full bg-[var(--bg-light)] dark:bg-[var(--bg-dark)] h-2 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full ${vendedor.atingimento_meta_percentual >= 100 ? 'bg-success' : 'bg-warning'}`}
-                    style={{ width: `${Math.min(vendedor.atingimento_meta_percentual, 100)}%` }}
-                  />
-                </div>
+                <Progress value={Math.min(vendedor.atingimento_meta_percentual, 100)} />
               </div>
             </div>
           ))}
@@ -537,7 +459,7 @@ export default function BIDashboardInterativo() {
   const renderPrevisao = () => (
     <div className="space-y-6">
       <Card className="p-6 neuro-raised">
-        <h3 className="mb-4 flex items-center gap-2" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>
+        <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] font-semibold">
           <Brain className="w-5 h-5 text-[var(--primary)]" />
           Previsão de Demanda (Machine Learning)
         </h3>
@@ -546,7 +468,7 @@ export default function BIDashboardInterativo() {
           <p className="text-[var(--text-secondary)] mb-4">
             Análise preditiva em desenvolvimento
           </p>
-          <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+          <p className="text-[var(--text-secondary)] text-[0.813rem]">
             Em breve: Previsão de demanda usando ARIMA, Prophet e Random Forest
           </p>
         </div>
@@ -603,7 +525,7 @@ export default function BIDashboardInterativo() {
               className={`px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 ${
                 activeTab === tab.id
                   ? 'neuro-raised text-[var(--primary)]'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  : 'neuro-flat text-[var(--text-secondary)] hover:neuro-raised'
               }`}
             >
               <tab.icon className="w-4 h-4" />
@@ -613,11 +535,26 @@ export default function BIDashboardInterativo() {
         </div>
 
         {/* Conteúdo */}
-        {activeTab === 'overview' && renderOverview()}
-        {activeTab === 'produtos' && renderProdutos()}
-        {activeTab === 'clientes' && renderOverview()} {/* Reusa overview por enquanto */}
-        {activeTab === 'vendedores' && renderVendedores()}
-        {activeTab === 'previsao' && renderPrevisao()}
+        <div className="neuro-raised rounded-3xl p-6 bg-[var(--bg-primary)] border border-[var(--border)] min-h-[300px]">
+          {loading ? (
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+              {[...Array(4)].map((_, index) => (
+                <div
+                  key={index}
+                  className="h-40 rounded-2xl neuro-flat animate-pulse bg-[var(--bg-secondary)]"
+                />
+              ))}
+            </div>
+          ) : (
+            <>
+              {activeTab === 'overview' && renderOverview()}
+              {activeTab === 'produtos' && renderProdutos()}
+              {activeTab === 'clientes' && renderOverview()} {/* Reusa overview por enquanto */}
+              {activeTab === 'vendedores' && renderVendedores()}
+              {activeTab === 'previsao' && renderPrevisao()}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

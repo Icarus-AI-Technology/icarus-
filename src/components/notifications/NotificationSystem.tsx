@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 import {
@@ -27,7 +27,7 @@ export const NotificationSystem: React.FC = () => {
   const [unreadCount, setUnreadCount] = useState(0);
 
   // Carregar notificações
-  const loadNotifications = async () => {
+  const loadNotifications = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -44,9 +44,9 @@ export const NotificationSystem: React.FC = () => {
         setUnreadCount(data.filter(n => !n.lido).length);
       }
     } catch (error) {
-      console.error('Erro ao carregar notificações:', error);
+      console.error('Erro ao carregar notificações:', error as Error);
     }
-  };
+  }, [user]);
 
   // Subscrever a notificações em tempo real
   useEffect(() => {
@@ -93,7 +93,7 @@ export const NotificationSystem: React.FC = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user]);
+  }, [user, loadNotifications]);
 
   // Marcar como lida
   const markAsRead = async (notificationId: string) => {
@@ -108,7 +108,8 @@ export const NotificationSystem: React.FC = () => {
       );
       setUnreadCount(prev => Math.max(0, prev - 1));
     } catch (error) {
-      console.error('Erro ao marcar como lida:', error);
+   const err = error as Error;
+      console.error('Erro ao marcar como lida:', err);
     }
   };
 
@@ -123,7 +124,8 @@ export const NotificationSystem: React.FC = () => {
       setNotifications(prev => prev.filter(n => n.id !== notificationId));
       loadNotifications();
     } catch (error) {
-      console.error('Erro ao resolver notificação:', error);
+   const err = error as Error;
+      console.error('Erro ao resolver notificação:', err);
     }
   };
 
@@ -140,18 +142,7 @@ export const NotificationSystem: React.FC = () => {
     }
   };
 
-  const getSeverityColor = (severidade: string) => {
-    switch (severidade) {
-      case 'critico':
-        return 'bg-red-50 border-red-200';
-      case 'urgente':
-        return 'bg-orange-50 border-orange-200';
-      case 'atencao':
-        return 'bg-yellow-50 border-yellow-200';
-      default:
-        return 'bg-blue-50 border-blue-200';
-    }
-  };
+  // getSeverityColor removido (não utilizado)
 
   return (
     <div className="relative">

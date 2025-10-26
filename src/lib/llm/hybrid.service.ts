@@ -101,7 +101,8 @@ export class HybridLLMService {
         return await this.processWithRemoteLLM(request, startTime);
       }
     } catch (error) {
-      console.error('[HybridLLM] Error:', error);
+   const err = error as Error;
+      console.error('[HybridLLM] Error:', err);
 
       // Fallback para remoto se Ollama falhar
       if (useOllama && this.fallbackToRemote) {
@@ -115,28 +116,66 @@ export class HybridLLMService {
 
   /**
    * Processa com LLM remoto (GPT-4 ou Claude)
-   * TODO: Implementar integração real com OpenAI/Anthropic quando necessário
    */
   private async processWithRemoteLLM(
     request: LLMRequest,
     startTime: number
   ): Promise<LLMResponse> {
-    const { prompt, complexity } = request;
+    const { prompt, context, complexity, systemPrompt } = request;
 
-    // Simular resposta (substituir por integração real)
-    console.warn('[HybridLLM] Remote LLM not implemented, using mock response');
+    try {
+      // Escolher provider baseado na complexidade e disponibilidade
+      // GPT-4 para casos muito complexos, Claude para análises detalhadas
+      const useGPT4 = complexity === 'complex' || Math.random() > 0.5;
 
-    // Estimar custo baseado em tokens (~750 palavras = 1000 tokens)
-    const estimatedTokens = prompt.length / 4;
-    const costPer1MTokens = complexity === 'complex' ? 30 : 10; // GPT-4 pricing
-    const estimatedCost = (estimatedTokens / 1000000) * costPer1MTokens;
+      if (useGPT4) {
+        // Tentar GPT-4
+        const { openaiService } = await import('./openai.service');
+        const fullPrompt = context ? `${context}\n\n${prompt}` : prompt;
+        const response = await openaiService.generate(
+          fullPrompt,
+          systemPrompt,
+          { temperature: 0.7, max_tokens: 1000 }
+        );
 
-    return {
-      content: `[MOCK] Esta é uma resposta simulada. Implemente integração real com OpenAI ou Claude aqui.\n\nPrompt recebido: ${prompt.substring(0, 100)}...`,
-      model: 'gpt-4-turbo (mock)',
-      cost: estimatedCost,
-      duration: Date.now() - startTime,
-    };
+        return {
+          content: response.content,
+          model: 'gpt-4-turbo',
+          cost: response.cost,
+          duration: Date.now() - startTime,
+        };
+      } else {
+        // Usar Claude 3.5
+        const { claudeService } = await import('./claude.service');
+        const fullPrompt = context ? `${context}\n\n${prompt}` : prompt;
+        const response = await claudeService.generate(
+          fullPrompt,
+          systemPrompt,
+          { temperature: 0.7, max_tokens: 1000 }
+        );
+
+        return {
+          content: response.content,
+          model: 'claude-3.5-sonnet',
+          cost: response.cost,
+          duration: Date.now() - startTime,
+        };
+      }
+    } catch (error) {
+      console.error('[HybridLLM] Remote LLM error:', error);
+
+      // Fallback: resposta de erro
+      const estimatedTokens = prompt.length / 4;
+      const costPer1MTokens = complexity === 'complex' ? 30 : 10;
+      const estimatedCost = (estimatedTokens / 1000000) * costPer1MTokens;
+
+      return {
+        content: `Erro ao processar com LLM remoto: ${error instanceof Error ? error.message : 'Unknown error'}. Por favor, configure VITE_OPENAI_API_KEY ou VITE_ANTHROPIC_API_KEY no .env`,
+        model: 'error',
+        cost: estimatedCost,
+        duration: Date.now() - startTime,
+      };
+    }
   }
 
   /**

@@ -15,7 +15,7 @@
 
 export interface SearchDocument {
   id: string;
-  [key: string]: any;
+  [key: string]: string | number | boolean | null | string[] | number[] | boolean[] | Record<string, unknown> | undefined;
 }
 
 export interface SearchOptions {
@@ -29,7 +29,7 @@ export interface SearchOptions {
   matchingStrategy?: 'all' | 'last';
 }
 
-export interface SearchResult<T = any> {
+export interface SearchResult<T = Record<string, unknown>> {
   hits: T[];
   query: string;
   processingTimeMs: number;
@@ -56,7 +56,7 @@ export class MeilisearchService {
   /**
    * Busca em um índice
    */
-  async search<T = any>(
+  async search<T = Record<string, unknown>>(
     indexName: string,
     query: string,
     options: SearchOptions = {}
@@ -99,7 +99,8 @@ export class MeilisearchService {
 
       return (await response.json()) as SearchResult<T>;
     } catch (error) {
-      console.error('[Meilisearch] Search error:', error);
+   const err = error as Error;
+      console.error('[Meilisearch] Search error:', err);
       throw error;
     }
   }
@@ -126,7 +127,8 @@ export class MeilisearchService {
 
       console.log(`[Meilisearch] Added ${documents.length} documents to ${indexName}`);
     } catch (error) {
-      console.error('[Meilisearch] Add documents error:', error);
+   const err = error as Error;
+      console.error('[Meilisearch] Add documents error:', err);
       throw error;
     }
   }
@@ -151,7 +153,8 @@ export class MeilisearchService {
         throw new Error(`Meilisearch error: ${response.status}`);
       }
     } catch (error) {
-      console.error('[Meilisearch] Update documents error:', error);
+   const err = error as Error;
+      console.error('[Meilisearch] Update documents error:', err);
       throw error;
     }
   }
@@ -177,7 +180,8 @@ export class MeilisearchService {
         throw new Error(`Meilisearch error: ${response.status}`);
       }
     } catch (error) {
-      console.error('[Meilisearch] Delete document error:', error);
+   const err = error as Error;
+      console.error('[Meilisearch] Delete document error:', err);
       throw error;
     }
   }
@@ -208,7 +212,8 @@ export class MeilisearchService {
 
       console.log(`[Meilisearch] Index ${indexName} created`);
     } catch (error) {
-      console.error('[Meilisearch] Create index error:', error);
+   const err = error as Error;
+      console.error('[Meilisearch] Create index error:', err);
       throw error;
     }
   }
@@ -245,7 +250,8 @@ export class MeilisearchService {
 
       console.log(`[Meilisearch] Index ${indexName} configured`);
     } catch (error) {
-      console.error('[Meilisearch] Configure index error:', error);
+   const err = error as Error;
+      console.error('[Meilisearch] Configure index error:', err);
       throw error;
     }
   }

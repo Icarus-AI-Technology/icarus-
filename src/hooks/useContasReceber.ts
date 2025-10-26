@@ -134,7 +134,8 @@ export function useContasReceber() {
 
       if (fetchError) throw fetchError;
       setContas((data as ContaReceber[] | null) ?? []);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao carregar contas a receber";
       setError(message);
       console.error("Erro useContasReceber:", err);
@@ -155,7 +156,8 @@ export function useContasReceber() {
 
       if (createError) throw createError;
       return data as ContaReceber;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao criar conta a receber";
       setError(message);
       console.error("Erro createConta:", err);
@@ -176,7 +178,8 @@ export function useContasReceber() {
 
       if (updateError) throw updateError;
       return data as ContaReceber;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao atualizar conta a receber";
       setError(message);
       console.error("Erro updateConta:", err);
@@ -195,7 +198,8 @@ export function useContasReceber() {
 
       if (deleteError) throw deleteError;
       return true;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao excluir conta a receber";
       setError(message);
       console.error("Erro deleteConta:", err);
@@ -260,7 +264,8 @@ export function useContasReceber() {
 
       if (updateError) throw updateError;
       return data as ContaReceber;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao baixar conta";
       setError(message);
       console.error("Erro baixarConta:", err);
@@ -277,7 +282,8 @@ export function useContasReceber() {
  
        if (resumoError) throw resumoError;
        return data as ContasReceberResumo | null;
-     } catch (_err) {
+     } catch (error) {
+   const err = error as Error;
        const message = err instanceof Error ? err.message :"Erro ao carregar resumo de contas a receber";
        setError(message);
        console.error("Erro getResumo:", err);

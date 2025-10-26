@@ -1,0 +1,782 @@
+{
+  "agent_id": "04",
+  "agent_name": "Integrações & APIs",
+  "timestamp": "2025-10-25T16:01:11.241Z",
+  "overall_score": 23,
+  "status": "RUIM",
+  "subagents": {
+    "4.1-external-apis": {
+      "score": 25,
+      "weight": 0.4,
+      "summary": {
+        "total": 32,
+        "configured": 8,
+        "functional": 8
+      }
+    },
+    "4.2-supabase-services": {
+      "score": 20,
+      "weight": 0.25,
+      "summary": {
+        "total": 5,
+        "configured": 1,
+        "functional": 1
+      }
+    },
+    "4.3-transportadoras": {
+      "score": 0,
+      "weight": 0.2,
+      "summary": {
+        "total": 18,
+        "withService": 0,
+        "withTracking": 0,
+        "withQuote": 0,
+        "withWebhook": 0
+      }
+    },
+    "4.4-webhooks-queue": {
+      "score": 55,
+      "weight": 0.15,
+      "summary": {
+        "total_webhooks": 6,
+        "webhooks_configured": 3,
+        "webhooks_complete": 3,
+        "queue_configured": false,
+        "queue_workers": true,
+        "queue_retry": true,
+        "queue_dlq": true
+      }
+    }
+  },
+  "recommendations": [
+    {
+      "priority": "ALTA",
+      "area": "APIs Externas",
+      "issue": "Apenas 8/32 APIs estão configuradas",
+      "action": "Implementar services faltantes, especialmente transportadoras e comunicação"
+    },
+    {
+      "priority": "CRÍTICA",
+      "area": "Supabase",
+      "issue": "Variáveis de ambiente não configuradas",
+      "action": "Criar arquivo .env com VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY"
+    },
+    {
+      "priority": "ALTA",
+      "area": "Transportadoras",
+      "issue": "Nenhum serviço de transportadora implementado",
+      "action": "Implementar pelo menos Correios, Jadlog e DHL para cobertura básica"
+    },
+    {
+      "priority": "MÉDIA",
+      "area": "Queue System",
+      "issue": "Sistema de filas não configurado",
+      "action": "Instalar BullMQ/Redis para processar jobs assíncronos"
+    }
+  ],
+  "detailed_results": {
+    "4.1-external-apis": {
+      "apis": [
+        {
+          "name": "BrasilAPI CNPJ",
+          "category": "Governo",
+          "endpoint": "https://brasilapi.com.br/api/cnpj/v1/00000000000191",
+          "status": "ok",
+          "has_credentials": false,
+          "has_error_handling": true,
+          "has_retry_logic": false,
+          "response_time_ms": 76
+        },
+        {
+          "name": "ReceitaWS",
+          "category": "Governo",
+          "endpoint": "https://receitaws.com.br/v1/cnpj/00000000000191",
+          "status": "ok",
+          "has_credentials": false,
+          "has_error_handling": true,
+          "has_retry_logic": false,
+          "response_time_ms": 168
+        },
+        {
+          "name": "ViaCEP",
+          "category": "Governo",
+          "endpoint": "https://viacep.com.br/ws/01310100/json/",
+          "status": "ok",
+          "has_credentials": false,
+          "has_error_handling": true,
+          "has_retry_logic": false,
+          "response_time_ms": 446
+        },
+        {
+          "name": "SEFAZ",
+          "category": "Governo",
+          "endpoint": "https://www.sefaz.rs.gov.br/nfe",
+          "status": "ok",
+          "has_credentials": false,
+          "has_error_handling": true,
+          "has_retry_logic": false
+        },
+        {
+          "name": "ANVISA",
+          "category": "Governo",
+          "endpoint": "https://consultas.anvisa.gov.br",
+          "status": "ok",
+          "has_credentials": false,
+          "has_error_handling": true,
+          "has_retry_logic": false
+        },
+        {
+          "name": "TISS/ANS",
+          "category": "Saúde",
+          "endpoint": "https://www.ans.gov.br/prestadores/tiss",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "CFM",
+          "category": "Saúde",
+          "endpoint": "https://portal.cfm.org.br/api/medicos",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "ANVISA Produtos",
+          "category": "Saúde",
+          "endpoint": "https://consultas.anvisa.gov.br/api",
+          "status": "ok",
+          "has_credentials": false,
+          "has_error_handling": true,
+          "has_retry_logic": false
+        },
+        {
+          "name": "Correios",
+          "category": "Transportadora",
+          "endpoint": "https://api.correios.com.br/sro/v1",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "Jadlog",
+          "category": "Transportadora",
+          "endpoint": "https://jadlog.com.br/api/rastreamento",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "TNT",
+          "category": "Transportadora",
+          "endpoint": "https://www.tnt.com/api/track",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "Total Express",
+          "category": "Transportadora",
+          "endpoint": "https://www.totalexpress.com.br/api/track",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "Azul Cargo",
+          "category": "Transportadora",
+          "endpoint": "https://www.azulcargo.com.br/api/track",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "Latam Cargo",
+          "category": "Transportadora",
+          "endpoint": "https://www.latamcargo.com/api/track",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "Rapidão Cometa",
+          "category": "Transportadora",
+          "endpoint": "https://www.rapidaocometa.com.br/api/track",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "Sequoia",
+          "category": "Transportadora",
+          "endpoint": "https://www.sequoialog.com.br/api/track",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "Braspress",
+          "category": "Transportadora",
+          "endpoint": "https://www.braspress.com.br/api/track",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "Jamef",
+          "category": "Transportadora",
+          "endpoint": "https://www.jamef.com.br/api/track",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "Rodonaves",
+          "category": "Transportadora",
+          "endpoint": "https://www.rodonaves.com.br/api/track",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "Direct",
+          "category": "Transportadora",
+          "endpoint": "https://www.directlog.com.br/api/track",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "Patrus",
+          "category": "Transportadora",
+          "endpoint": "https://www.patrus.com.br/api/track",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "Loggi",
+          "category": "Transportadora",
+          "endpoint": "https://www.loggi.com/api/track",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "DHL",
+          "category": "Transportadora Int",
+          "endpoint": "https://api.dhl.com/track",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "UPS",
+          "category": "Transportadora Int",
+          "endpoint": "https://onlinetools.ups.com/track/v1",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "FedEx",
+          "category": "Transportadora Int",
+          "endpoint": "https://api.fedex.com/track/v1",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "DB Schenker",
+          "category": "Transportadora Int",
+          "endpoint": "https://api.dbschenker.com/track",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "Pluggy",
+          "category": "Financeiro",
+          "endpoint": "https://api.pluggy.ai",
+          "status": "ok",
+          "has_credentials": false,
+          "has_error_handling": true,
+          "has_retry_logic": false
+        },
+        {
+          "name": "Banco do Brasil",
+          "category": "Financeiro",
+          "endpoint": "https://oauth.bb.com.br",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "Itaú",
+          "category": "Financeiro",
+          "endpoint": "https://api.itau.com.br",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "Twilio",
+          "category": "Comunicação",
+          "endpoint": "https://api.twilio.com",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "SendGrid",
+          "category": "Comunicação",
+          "endpoint": "https://api.sendgrid.com",
+          "status": "not_configured",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false,
+          "error": "Service file não encontrado"
+        },
+        {
+          "name": "ML Service",
+          "category": "ML/AI",
+          "endpoint": "http://localhost:8765",
+          "status": "ok",
+          "has_credentials": false,
+          "has_error_handling": false,
+          "has_retry_logic": false
+        }
+      ],
+      "byCategory": {
+        "Governo": {
+          "total": 5,
+          "ok": 5,
+          "error": 0
+        },
+        "Saúde": {
+          "total": 3,
+          "ok": 1,
+          "error": 0
+        },
+        "Transportadora": {
+          "total": 14,
+          "ok": 0,
+          "error": 0
+        },
+        "Transportadora Int": {
+          "total": 4,
+          "ok": 0,
+          "error": 0
+        },
+        "Financeiro": {
+          "total": 3,
+          "ok": 1,
+          "error": 0
+        },
+        "Comunicação": {
+          "total": 2,
+          "ok": 0,
+          "error": 0
+        },
+        "ML/AI": {
+          "total": 1,
+          "ok": 1,
+          "error": 0
+        }
+      },
+      "totalOk": 8,
+      "totalConfigured": 8,
+      "score": 25
+    },
+    "4.2-supabase-services": {
+      "auth": {
+        "service": "Auth",
+        "configured": false,
+        "functional": false,
+        "details": {},
+        "issues": [
+          "Variáveis de ambiente não configuradas"
+        ]
+      },
+      "storage": {
+        "service": "Storage",
+        "configured": false,
+        "functional": false,
+        "details": {},
+        "issues": [
+          "Variáveis de ambiente não configuradas"
+        ]
+      },
+      "realtime": {
+        "service": "Realtime",
+        "configured": false,
+        "functional": false,
+        "details": {},
+        "issues": [
+          "Variáveis de ambiente não configuradas"
+        ]
+      },
+      "edgeFunctions": {
+        "service": "Edge Functions",
+        "configured": true,
+        "functional": true,
+        "details": {
+          "functions": [
+            "consulta_anvisa_produto",
+            "create-admin",
+            "ml-job",
+            "ml-vectors",
+            "recalcular_kpis",
+            "test-credential",
+            "valida_crm_cfm",
+            "vector-benchmark"
+          ]
+        },
+        "issues": []
+      },
+      "database": {
+        "service": "Database",
+        "configured": false,
+        "functional": false,
+        "details": {},
+        "issues": [
+          "Variáveis de ambiente não configuradas"
+        ]
+      },
+      "score": 20,
+      "summary": {
+        "total": 5,
+        "configured": 1,
+        "functional": 1
+      }
+    },
+    "4.3-transportadoras": {
+      "transportadoras": [
+        {
+          "name": "Correios",
+          "type": "nacional",
+          "has_service": false,
+          "has_tracking": false,
+          "has_quote": false,
+          "has_webhook": false,
+          "issues": [
+            "Service não encontrado"
+          ]
+        },
+        {
+          "name": "Jadlog",
+          "type": "nacional",
+          "has_service": false,
+          "has_tracking": false,
+          "has_quote": false,
+          "has_webhook": false,
+          "issues": [
+            "Service não encontrado"
+          ]
+        },
+        {
+          "name": "TNT",
+          "type": "nacional",
+          "has_service": false,
+          "has_tracking": false,
+          "has_quote": false,
+          "has_webhook": false,
+          "issues": [
+            "Service não encontrado"
+          ]
+        },
+        {
+          "name": "Total Express",
+          "type": "nacional",
+          "has_service": false,
+          "has_tracking": false,
+          "has_quote": false,
+          "has_webhook": false,
+          "issues": [
+            "Service não encontrado"
+          ]
+        },
+        {
+          "name": "Azul Cargo",
+          "type": "nacional",
+          "has_service": false,
+          "has_tracking": false,
+          "has_quote": false,
+          "has_webhook": false,
+          "issues": [
+            "Service não encontrado"
+          ]
+        },
+        {
+          "name": "Latam Cargo",
+          "type": "nacional",
+          "has_service": false,
+          "has_tracking": false,
+          "has_quote": false,
+          "has_webhook": false,
+          "issues": [
+            "Service não encontrado"
+          ]
+        },
+        {
+          "name": "Rapidão Cometa",
+          "type": "nacional",
+          "has_service": false,
+          "has_tracking": false,
+          "has_quote": false,
+          "has_webhook": false,
+          "issues": [
+            "Service não encontrado"
+          ]
+        },
+        {
+          "name": "Sequoia",
+          "type": "nacional",
+          "has_service": false,
+          "has_tracking": false,
+          "has_quote": false,
+          "has_webhook": false,
+          "issues": [
+            "Service não encontrado"
+          ]
+        },
+        {
+          "name": "Braspress",
+          "type": "nacional",
+          "has_service": false,
+          "has_tracking": false,
+          "has_quote": false,
+          "has_webhook": false,
+          "issues": [
+            "Service não encontrado"
+          ]
+        },
+        {
+          "name": "Jamef",
+          "type": "nacional",
+          "has_service": false,
+          "has_tracking": false,
+          "has_quote": false,
+          "has_webhook": false,
+          "issues": [
+            "Service não encontrado"
+          ]
+        },
+        {
+          "name": "Rodonaves",
+          "type": "nacional",
+          "has_service": false,
+          "has_tracking": false,
+          "has_quote": false,
+          "has_webhook": false,
+          "issues": [
+            "Service não encontrado"
+          ]
+        },
+        {
+          "name": "Direct",
+          "type": "nacional",
+          "has_service": false,
+          "has_tracking": false,
+          "has_quote": false,
+          "has_webhook": false,
+          "issues": [
+            "Service não encontrado"
+          ]
+        },
+        {
+          "name": "Patrus",
+          "type": "nacional",
+          "has_service": false,
+          "has_tracking": false,
+          "has_quote": false,
+          "has_webhook": false,
+          "issues": [
+            "Service não encontrado"
+          ]
+        },
+        {
+          "name": "Loggi",
+          "type": "nacional",
+          "has_service": false,
+          "has_tracking": false,
+          "has_quote": false,
+          "has_webhook": false,
+          "issues": [
+            "Service não encontrado"
+          ]
+        },
+        {
+          "name": "DHL",
+          "type": "internacional",
+          "has_service": false,
+          "has_tracking": false,
+          "has_quote": false,
+          "has_webhook": false,
+          "issues": [
+            "Service não encontrado"
+          ]
+        },
+        {
+          "name": "UPS",
+          "type": "internacional",
+          "has_service": false,
+          "has_tracking": false,
+          "has_quote": false,
+          "has_webhook": false,
+          "issues": [
+            "Service não encontrado"
+          ]
+        },
+        {
+          "name": "FedEx",
+          "type": "internacional",
+          "has_service": false,
+          "has_tracking": false,
+          "has_quote": false,
+          "has_webhook": false,
+          "issues": [
+            "Service não encontrado"
+          ]
+        },
+        {
+          "name": "DB Schenker",
+          "type": "internacional",
+          "has_service": false,
+          "has_tracking": false,
+          "has_quote": false,
+          "has_webhook": false,
+          "issues": [
+            "Service não encontrado"
+          ]
+        }
+      ],
+      "summary": {
+        "total": 18,
+        "withService": 0,
+        "withTracking": 0,
+        "withQuote": 0,
+        "withWebhook": 0
+      },
+      "score": 0
+    },
+    "4.4-webhooks-queue": {
+      "webhooks": [
+        {
+          "service": "stripe-payment",
+          "registered": true,
+          "has_handler": true,
+          "has_verification": true,
+          "issues": []
+        },
+        {
+          "service": "twilio-sms",
+          "registered": true,
+          "has_handler": true,
+          "has_verification": true,
+          "issues": []
+        },
+        {
+          "service": "sendgrid-email",
+          "registered": true,
+          "has_handler": true,
+          "has_verification": true,
+          "issues": []
+        },
+        {
+          "service": "transportadora-status",
+          "registered": false,
+          "has_handler": false,
+          "has_verification": false,
+          "issues": [
+            "Handler não encontrado"
+          ]
+        },
+        {
+          "service": "supabase-auth",
+          "registered": false,
+          "has_handler": false,
+          "has_verification": false,
+          "issues": [
+            "Handler não encontrado"
+          ]
+        },
+        {
+          "service": "supabase-storage",
+          "registered": false,
+          "has_handler": false,
+          "has_verification": false,
+          "issues": [
+            "Handler não encontrado"
+          ]
+        }
+      ],
+      "queue": {
+        "system": "BullMQ/Redis",
+        "configured": false,
+        "has_workers": true,
+        "has_retry": true,
+        "has_dlq": true,
+        "issues": [
+          "BullMQ/Bull não instalado"
+        ]
+      },
+      "summary": {
+        "total_webhooks": 6,
+        "webhooks_configured": 3,
+        "webhooks_complete": 3,
+        "queue_configured": false,
+        "queue_workers": true,
+        "queue_retry": true,
+        "queue_dlq": true
+      },
+      "score": 55
+    }
+  }
+}

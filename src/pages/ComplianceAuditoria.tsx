@@ -12,12 +12,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import {
-  ShieldCheck, FileCheck, AlertTriangle, GraduationCap,
-  Brain, Download, Plus, BarChart3, Award,
-  CheckCircle, Clock, TrendingUp, Target,
-  Activity, Sparkles, XCircle, AlertCircle
-} from 'lucide-react';
+import { ShieldCheck, FileCheck, AlertTriangle, GraduationCap, Brain, Download, Plus, BarChart3, Award, CheckCircle, Clock, Activity, Sparkles, AlertCircle } from 'lucide-react';
 import { useCompliance } from '@/hooks';
 import { NeomorphicCard, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/oraclusx-ds/Card';
 import { Button } from '@/components/oraclusx-ds/Button';
@@ -124,7 +119,7 @@ export const ComplianceAuditoria: React.FC = () => {
   const renderHeader = () => (
     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
       <div>
-        <h1 className="text-foreground" style={{ fontWeight: 700 }} style={{ fontSize: '0.813rem' }}>Compliance & Auditoria Avançado</h1>
+        <h1 className="text-foreground" style={{ fontWeight: 700, fontSize: '0.813rem' }}>Compliance & Auditoria Avançado</h1>
         <p className="text-muted-foreground mt-1">
           Gestão regulatória completa com compliance Abbott, ISO 13485 e ANVISA
         </p>
@@ -161,9 +156,9 @@ export const ComplianceAuditoria: React.FC = () => {
       <NeomorphicCard className="border-l-4 border-indigo-500">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-foreground mb-2" style={{ fontWeight: 600 }} style={{ fontSize: '0.813rem' }}>Score Global Abbott Brasil</h3>
+            <h3 className="text-foreground mb-2" style={{ fontWeight: 600, fontSize: '0.813rem' }}>Score Global Abbott Brasil</h3>
             <div className="flex items-baseline gap-2">
-              <span className="text-indigo-600" style={{ fontWeight: 700 }} style={{ fontSize: '0.813rem' }}>{scoreAbbott.score.toFixed(1)}%</span>
+              <span className="text-indigo-600" style={{ fontWeight: 700, fontSize: '0.813rem' }}>{scoreAbbott.score.toFixed(1)}%</span>
               <Badge variant="success" className style={{ fontSize: '0.813rem' }}>
                 Distribuidor Platinum
               </Badge>
@@ -214,10 +209,10 @@ export const ComplianceAuditoria: React.FC = () => {
               )}>
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <h4 className="text-foreground" style={{ fontWeight: 500 }} style={{ fontSize: '0.813rem' }}>{alerta.titulo}</h4>
+                    <h4 className="text-foreground" style={{ fontWeight: 500, fontSize: '0.813rem' }}>{alerta.titulo}</h4>
                     <p className="text-muted-foreground mt-1" style={{ fontSize: '0.813rem' }}>{alerta.descricao}</p>
                     {alerta.acao_sugerida && (
-                      <p className="text-foreground mt-2" style={{ fontWeight: 500 }} style={{ fontSize: '0.813rem' }}>
+                      <p className="text-foreground mt-2" style={{ fontWeight: 500, fontSize: '0.813rem' }}>
                         💡 {alerta.acao_sugerida}
                       </p>
                     )}
@@ -253,9 +248,9 @@ export const ComplianceAuditoria: React.FC = () => {
     <div className="space-y-6">
       {/* Score Global */}
       <NeomorphicCard>
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h3 className="text-foreground" style={{ fontWeight: 700 }} style={{ fontSize: '0.813rem' }}>
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h3 className="text-foreground" style={{ fontWeight: 700, fontSize: '0.813rem' }}>
               Score Global: {scoreAbbott.score.toFixed(1)}%
             </h3>
             <p className="text-muted-foreground">
@@ -281,12 +276,12 @@ export const ComplianceAuditoria: React.FC = () => {
                     <Badge variant="default" className="bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300">
                       {req.codigo}
                     </Badge>
-                    <h3 className="text-foreground" style={{ fontWeight: 600 }} style={{ fontSize: '0.813rem' }}>{req.titulo}</h3>
+                    <h3 className="text-foreground" style={{ fontWeight: 600, fontSize: '0.813rem' }}>{req.titulo}</h3>
                   </div>
                   <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>{req.descricao}</p>
                 </div>
                 <div className="text-right ml-4">
-                  <div className="text-foreground" style={{ fontWeight: 700 }} style={{ fontSize: '0.813rem' }}>{req.score_conformidade.toFixed(1)}%</div>
+                  <div className="text-foreground" style={{ fontWeight: 700, fontSize: '0.813rem' }}>{req.score_conformidade.toFixed(1)}%</div>
                   <StatusBadge status={req.status} />
                 </div>
               </div>
@@ -300,7 +295,7 @@ export const ComplianceAuditoria: React.FC = () => {
               {/* Detalhes */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <div>
-                  <h4 className="text-muted-foreground uppercase mb-2" style={{ fontWeight: 600 }} style={{ fontSize: '0.813rem' }}>Evidências</h4>
+                  <h4 className="text-muted-foreground uppercase mb-2" style={{ fontWeight: 600, fontSize: '0.813rem' }}>Evidências</h4>
                   {req.evidencias && req.evidencias.length > 0 ? (
                     <ul className="space-y-1">
                       {req.evidencias.map((ev, i) => (
@@ -315,14 +310,14 @@ export const ComplianceAuditoria: React.FC = () => {
                   )}
                 </div>
                 <div>
-                  <h4 className="text-muted-foreground uppercase mb-2" style={{ fontWeight: 600 }} style={{ fontSize: '0.813rem' }}>Responsável</h4>
+                  <h4 className="text-muted-foreground uppercase mb-2" style={{ fontWeight: 600, fontSize: '0.813rem' }}>Responsável</h4>
                   <p className="text-foreground" style={{ fontSize: '0.813rem' }}>{req.responsavel || 'Não atribuído'}</p>
                   {req.responsavel_cargo && (
                     <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>{req.responsavel_cargo}</p>
                   )}
                   {req.proxima_auditoria && (
                     <div className="mt-3">
-                      <h4 className="text-muted-foreground uppercase mb-1" style={{ fontWeight: 600 }} style={{ fontSize: '0.813rem' }}>Próxima Auditoria</h4>
+                      <h4 className="text-muted-foreground uppercase mb-1" style={{ fontWeight: 600, fontSize: '0.813rem' }}>Próxima Auditoria</h4>
                       <p className="text-foreground flex items-center gap-2" style={{ fontSize: '0.813rem' }}>
                         <Clock size={14} />
                         {new Date(req.proxima_auditoria).toLocaleDateString('pt-BR')}
@@ -335,7 +330,7 @@ export const ComplianceAuditoria: React.FC = () => {
               {/* Ações Corretivas */}
               {req.acoes_corretivas && req.acoes_corretivas.length > 0 && (
                 <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <h4 className="text-muted-foreground uppercase mb-2" style={{ fontWeight: 600 }} style={{ fontSize: '0.813rem' }}>Ações Corretivas</h4>
+                  <h4 className="text-muted-foreground uppercase mb-2" style={{ fontWeight: 600, fontSize: '0.813rem' }}>Ações Corretivas</h4>
                   <ul className="space-y-1">
                     {req.acoes_corretivas.map((acao, i) => (
                       <li key={i} className="text-orange-600 dark:text-orange-400 flex items-start gap-2" style={{ fontSize: '0.813rem' }}>
@@ -571,11 +566,11 @@ export const ComplianceAuditoria: React.FC = () => {
               <div className="grid grid-cols-2 gap-4 pt-3">
                 <div>
                   <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>Alertas Gerados</p>
-                  <p className="text-foreground" style={{ fontWeight: 600 }} style={{ fontSize: '0.813rem' }}>{agente.alertas_gerados}</p>
+                  <p className="text-foreground" style={{ fontWeight: 600, fontSize: '0.813rem' }}>{agente.alertas_gerados}</p>
                 </div>
                 <div>
                   <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>Ações Sugeridas</p>
-                  <p className="text-foreground" style={{ fontWeight: 600 }} style={{ fontSize: '0.813rem' }}>{agente.acoes_sugeridas}</p>
+                  <p className="text-foreground" style={{ fontWeight: 600, fontSize: '0.813rem' }}>{agente.acoes_sugeridas}</p>
                 </div>
               </div>
 

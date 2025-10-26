@@ -124,7 +124,8 @@ export function useConciliacaoBancaria() {
 
       if (fetchError) throw fetchError;
       setExtratos((data as ExtratoBancario[]) || []);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao carregar extratos bancários";
       setError(message);
       console.error("Erro useConciliacaoBancaria:", err);
@@ -153,7 +154,8 @@ export function useConciliacaoBancaria() {
       await fetchExtratos();
       
       return (data as ExtratoBancario[]).length;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao importar OFX";
       setError(message);
       console.error("Erro importarOFX:", err);
@@ -179,7 +181,8 @@ export function useConciliacaoBancaria() {
       const sugestoes = await conciliacaoBancariaService.buscarSugestoesConciliacao(extrato as ExtratoBancario);
       
       return sugestoes;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error("Erro buscarSugestoes:", err);
       return [];
     }
@@ -219,7 +222,8 @@ export function useConciliacaoBancaria() {
         .eq("id", contaFinanceiraId);
 
       return extrato as ExtratoBancario;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao conciliar manualmente";
       setError(message);
       console.error("Erro conciliarManual:", err);
@@ -263,7 +267,8 @@ export function useConciliacaoBancaria() {
       await fetchExtratos();
 
       return totalConciliado;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro na conciliação automática";
       setError(message);
       console.error("Erro conciliarAutomatico:", err);
@@ -292,7 +297,8 @@ export function useConciliacaoBancaria() {
 
       if (updateError) throw updateError;
       return extrato as ExtratoBancario;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao desconciliar";
       setError(message);
       console.error("Erro desconciliar:", err);
@@ -332,7 +338,8 @@ export function useConciliacaoBancaria() {
         valor_pendente: valorPendente,
         media_match_score: mediaScore,
       };
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error("Erro getResumo:", err);
       return {
         total_extratos: 0,
@@ -355,7 +362,8 @@ export function useConciliacaoBancaria() {
       // Por ora, retorna URL de simulação
       const pluggyURL = `https://pluggy.ai/connect?client_id=YOUR_CLIENT_ID&bank=${bancoId}`;
       return pluggyURL;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao conectar Pluggy";
       setError(message);
       console.error("Erro conectarPluggy:", err);

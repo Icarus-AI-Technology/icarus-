@@ -10,7 +10,7 @@ import { kv } from '@vercel/kv';
 export interface JobData {
   id: string;
   type: string;
-  data: any;
+  data: unknown;
   priority?: number;
   createdAt: number;
 }
@@ -164,7 +164,7 @@ export async function queueProcessNFe(params: {
 // Job: Gerar relatório
 export async function queueGenerateReport(params: {
   reportType: string;
-  filters: Record<string, any>;
+  filters: Record<string, unknown>;
   userId: string;
 }): Promise<string> {
   return vercelKVQueue.addJob({

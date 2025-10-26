@@ -13,22 +13,44 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const BASE_URL = process.env.PREVIEW_URL || 'http://localhost:3002';
-const OUTPUT_DIR = path.join(__dirname, '../../docs/design/prints');
+const BASE_URL = process.env.PREVIEW_URL || 'http://localhost:4173';
+const OUTPUT_DIR = path.join(__dirname, '../../docs/screenshots');
 
 // Garantir que o diretório existe
 if (!fs.existsSync(OUTPUT_DIR)) {
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 }
 
+// Rotas e alvos de arquivo (para substituir placeholders do manual)
 const ROUTES = [
-  { path: '/', name: 'dashboard-principal' },
-  { path: '/dashboard', name: 'dashboard-alias' },
-  { path: '/cadastros', name: 'cadastros-dashboard' },
-  { path: '/cadastros/medicos', name: 'cadastros-medicos' },
-  { path: '/cadastros/hospitais', name: 'cadastros-hospitais' },
-  { path: '/cadastros/produtos', name: 'cadastros-produtos' },
-  { path: '/compras/cotacoes', name: 'compras-cotacoes' },
+  { path: '/', shots: [{ file: 'dashboard/dashboard-principal' }] },
+  { path: '/dashboard', shots: [{ file: 'dashboard/dashboard-alias' }] },
+  { path: '/cadastros', shots: [{ file: 'cadastros/cadastros-dashboard' }] },
+  { path: '/cadastros/medicos', shots: [{ file: 'cadastros/cadastros-medicos' }] },
+  { path: '/cadastros/hospitais', shots: [{ file: 'cadastros/cadastros-hospitais' }] },
+  { path: '/cadastros/produtos', shots: [{ file: 'cadastros/cadastros-produtos' }] },
+  // Compras
+  { path: '/compras/cotacoes', shots: [
+    { file: 'compras/cotacao-comparativo' },
+    { file: 'compras/pedido-detalhe' }
+  ]},
+  { path: '/compras/notas', shots: [
+    { file: 'compras/notas-importacao' },
+    { file: 'compras/notas-impostos' },
+    { file: 'compras/recebimento-conferencia' }
+  ]},
+  // Financeiro
+  { path: '/financeiro', shots: [
+    { file: 'financeiro/fluxo-conciliacao' },
+    { file: 'financeiro/projecao-90d' },
+    { file: 'financeiro/score-inadimplencia' }
+  ]},
+  // Consignação
+  { path: '/consignacao', shots: [
+    { file: 'consignacao/kpis' },
+    { file: 'consignacao/conferencia' },
+    { file: 'consignacao/faturamento-uso' }
+  ]},
 ];
 
 async function captureScreenshots() {
@@ -93,7 +115,7 @@ async function captureMode(browser, mode) {
   
   for (const route of ROUTES) {
     try {
-      console.log(`  📸 ${route.name} (${mode})...`);
+      console.log(`  📸 ${route.path} (${mode})...`);
       
       try {
         await page.goto(`${BASE_URL}${route.path}`, { 
@@ -110,16 +132,15 @@ async function captureMode(browser, mode) {
       // Aguardar animações e renderização
       await page.waitForTimeout(2000);
       
-      // Capturar screenshot
-      const filename = `${route.name}-${mode}.png`;
-      const filepath = path.join(OUTPUT_DIR, filename);
-      
-      await page.screenshot({
-        path: filepath,
-        fullPage: false, // Viewport apenas
-      });
-      
-      console.log(`     ✓ Salvo: ${filename}`);
+      // Capturar múltiplos alvos por rota
+      for (const shot of route.shots) {
+        const filename = `${shot.file}-${mode}.png`;
+        const dir = path.dirname(path.join(OUTPUT_DIR, filename));
+        if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+        const filepath = path.join(OUTPUT_DIR, filename);
+        await page.screenshot({ path: filepath, fullPage: false });
+        console.log(`     ✓ Salvo: ${path.relative(OUTPUT_DIR, filepath)}`);
+      }
       
     } catch (error) {
       console.error(`     ✗ Erro em ${route.name}: ${error.message}`);

@@ -113,10 +113,11 @@ export class GPTResearcher {
         });
         return false;
       }
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       this.log({
         type: 'error',
-        message: `Erro ao conectar: ${_error instanceof Error ? _error.message : 'Desconhecido'}`,
+        message: `Erro ao conectar: ${err instanceof Error ? err.message : 'Desconhecido'}`,
         timestamp: new Date().toISOString(),
       });
       return false;
@@ -197,8 +198,9 @@ export class GPTResearcher {
           language,
         },
       };
-    } catch (_error) {
-      const errorMessage = _error instanceof Error ? _error.message : 'Erro desconhecido';
+    } catch (error) {
+   const err = error as Error;
+      const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
 
       this.log({
         type: 'error',

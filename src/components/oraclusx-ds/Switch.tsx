@@ -12,7 +12,7 @@ export interface SwitchProps
   description?: string;
 }
 
-export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
+const SwitchComponent = React.forwardRef<HTMLInputElement, SwitchProps>(
   ({ className, label, description, id, ...props }, ref) => {
     const switchId = id || `switch-${Math.random().toString(36).substr(2, 9)}`;
 
@@ -28,7 +28,7 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
           />
           <label
             htmlFor={switchId}
-            className={cn("w-11 h-6 rounded-full cursor-pointer relative","orx-card","peer-checked:bg-primary","peer-disabled:opacity-50 peer-disabled:cursor-not-allowed","transition-all duration-200",
+            className={cn("w-11 h-6 rounded-full cursor-pointer relative","orx-card","dark:bg-gray-700","peer-checked:bg-primary","peer-disabled:opacity-50 peer-disabled:cursor-not-allowed","transition-all duration-200",
             )}
           >
             <div
@@ -42,7 +42,7 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
             {label && (
               <label
                 htmlFor={switchId}
-                className="text-body-sm text-[var(--text-primary)] cursor-pointer" style={{ fontWeight: 500 }}
+                className="text-body-sm text-[var(--text-primary)] cursor-pointer font-medium"
               >
                 {label}
               </label>
@@ -60,6 +60,8 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
 );
 
 Switch.displayName ="OraclusXSwitch";
+
+export const Switch = React.memo(SwitchComponent);
 
 export default Switch;
 

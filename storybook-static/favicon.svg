@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Left brain (organic) -->
+  <path d="M9.5 2c-1.8 0-3.5 1.5-3.5 3.5 0 1.8 1.5 3.5 3.5 3.5"/>
+  <path d="M9.5 9c-1.8 0-3.5 1.5-3.5 3.5s1.5 3.5 3.5 3.5"/>
+  <path d="M9.5 16c-1.8 0-3.5 1.5-3.5 3.5S7.7 23 9.5 23"/>
+  
+  <!-- Right brain (circuit) -->
+  <circle cx="14.5" cy="5.5" r="1.5"/>
+  <circle cx="18.5" cy="9.5" r="1.5"/>
+  <circle cx="14.5" cy="12.5" r="1.5"/>
+  <circle cx="18.5" cy="16.5" r="1.5"/>
+  <circle cx="14.5" cy="19.5" r="1.5"/>
+  
+  <!-- Circuit connections -->
+  <line x1="14.5" y1="7" x2="14.5" y2="11"/>
+  <line x1="14.5" y1="14" x2="14.5" y2="18"/>
+  <line x1="16" y1="12.5" x2="17" y2="12.5"/>
+  <line x1="14.5" y1="5.5" x2="17" y2="9.5"/>
+  <line x1="14.5" y1="19.5" x2="17" y2="16.5"/>
+  
+  <!-- Central divider -->
+  <line x1="12" y1="2" x2="12" y2="23"/>
+</svg>
+

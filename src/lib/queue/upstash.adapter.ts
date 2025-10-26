@@ -21,7 +21,7 @@ export class UpstashRedisAdapter {
   /**
    * Execute Redis command via REST API
    */
-  private async execute(command: string[]): Promise<any> {
+  private async execute<T = unknown>(command: string[]): Promise<T> {
     const response = await fetch(this.url, {
       method: 'POST',
       headers: {
@@ -35,7 +35,7 @@ export class UpstashRedisAdapter {
       throw new Error(`Upstash Redis error: ${response.statusText}`);
     }
 
-    const data = await response.json();
+    const data = (await response.json()) as { result: T };
     return data.result;
   }
 
@@ -54,21 +54,21 @@ export class UpstashRedisAdapter {
    * Get value by key
    */
   async get(key: string): Promise<string | null> {
-    return await this.execute(['GET', key]);
+    return await this.execute<string | null>(['GET', key]);
   }
 
   /**
    * Delete key
    */
   async del(key: string): Promise<number> {
-    return await this.execute(['DEL', key]);
+    return await this.execute<number>(['DEL', key]);
   }
 
   /**
    * Check if key exists
    */
   async exists(key: string): Promise<boolean> {
-    const result = await this.execute(['EXISTS', key]);
+    const result = await this.execute<number>(['EXISTS', key]);
     return result === 1;
   }
 
@@ -76,35 +76,35 @@ export class UpstashRedisAdapter {
    * Add to list (queue)
    */
   async lpush(key: string, value: string): Promise<number> {
-    return await this.execute(['LPUSH', key, value]);
+    return await this.execute<number>(['LPUSH', key, value]);
   }
 
   /**
    * Pop from list (queue)
    */
   async rpop(key: string): Promise<string | null> {
-    return await this.execute(['RPOP', key]);
+    return await this.execute<string | null>(['RPOP', key]);
   }
 
   /**
    * Get list length
    */
   async llen(key: string): Promise<number> {
-    return await this.execute(['LLEN', key]);
+    return await this.execute<number>(['LLEN', key]);
   }
 
   /**
    * Increment counter
    */
   async incr(key: string): Promise<number> {
-    return await this.execute(['INCR', key]);
+    return await this.execute<number>(['INCR', key]);
   }
 
   /**
    * Set expiry
    */
   async expire(key: string, seconds: number): Promise<boolean> {
-    const result = await this.execute(['EXPIRE', key, seconds.toString()]);
+    const result = await this.execute<number>(['EXPIRE', key, seconds.toString()]);
     return result === 1;
   }
 
@@ -112,7 +112,7 @@ export class UpstashRedisAdapter {
    * Get keys by pattern
    */
   async keys(pattern: string): Promise<string[]> {
-    return await this.execute(['KEYS', pattern]);
+    return await this.execute<string[]>(['KEYS', pattern]);
   }
 
   /**
@@ -120,7 +120,7 @@ export class UpstashRedisAdapter {
    */
   async ping(): Promise<boolean> {
     try {
-      const result = await this.execute(['PING']);
+      const result = await this.execute<string>(['PING']);
       return result === 'PONG';
     } catch {
       return false;

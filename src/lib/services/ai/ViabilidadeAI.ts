@@ -174,9 +174,21 @@ export class ViabilidadeAI {
     };
   }
 
-  static async compareImportOptions(produtos: Array<any>): Promise<{
-    maisViavel: any;
-    comparativo: any[];
+  static async compareImportOptions(produtos: Array<{
+    produto: {
+      nome: string;
+      descricao: string;
+      codigoHs: string;
+      valorFob: number;
+      peso: number;
+      fabricante: string;
+      paisOrigem: string;
+    };
+    fornecedor: { nome: string; pais: string; incoterm: string };
+    destino: { porto: string; cidade: string; estado: string };
+  }>): Promise<{
+    maisViavel: unknown;
+    comparativo: unknown[];
   }> {
     // Mock implementation
     return {

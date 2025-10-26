@@ -24,7 +24,7 @@
  * - ✅ SEFAZ Nota Técnica 2021.001
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card } from '@/components/oraclusx-ds';
 import {
   FileText,
@@ -34,7 +34,6 @@ import {
   Clock,
   Download,
   Eye,
-  Edit2,
   Trash2,
   AlertCircle,
   TrendingUp,
@@ -42,9 +41,6 @@ import {
   Package,
   Loader2,
   Search,
-  Filter,
-  Calendar,
-  Building2,
   ShieldCheck,
 } from 'lucide-react';
 import { useDocumentTitle } from '@/hooks';
@@ -200,14 +196,7 @@ export default function FaturamentoNFeCompleto() {
   });
   
   // Carregar dados
-  useEffect(() => {
-    if (activeTab === 'dashboard' || activeTab === 'consultar') {
-      loadNFes();
-      loadKPIs();
-    }
-  }, [activeTab]);
-  
-  const loadNFes = async () => {
+  const loadNFes = useCallback(async () => {
     setLoading(true);
     try {
       // Buscar NF-es do Supabase
@@ -222,15 +211,16 @@ export default function FaturamentoNFeCompleto() {
       
       if (error) throw error;
       setNfes(data || []);
-    } catch (_error) {
-      console.error('Erro ao carregar NF-es:', error);
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro ao carregar NF-es:', err);
       addToast('Erro ao carregar NF-es', 'error');
     } finally {
       setLoading(false);
     }
-  };
-  
-  const loadKPIs = async () => {
+  }, [addToast]);
+
+  const loadKPIs = useCallback(async () => {
     try {
       // Calcular KPIs do mês atual
       const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
@@ -261,10 +251,19 @@ export default function FaturamentoNFeCompleto() {
         conformidade_anvisa,
         taxa_autorizacao,
       });
-    } catch (_error) {
-      console.error('Erro ao calcular KPIs:', error);
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro ao calcular KPIs:', err);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (activeTab === 'dashboard' || activeTab === 'consultar') {
+      loadNFes();
+      loadKPIs();
+    }
+  }, [activeTab, loadNFes, loadKPIs]);
+  
   
   /**
    * EMITIR NF-E via SEFAZ
@@ -280,6 +279,7 @@ export default function FaturamentoNFeCompleto() {
    * 8. Enviar email para hospital
    * 9. Registrar em Contas a Receber
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const emitirNFe = async (nfeData: Partial<NFe>) => {
     setLoading(true);
     try {
@@ -399,8 +399,9 @@ export default function FaturamentoNFeCompleto() {
       loadKPIs();
       
       return resultadoSEFAZ;
-    } catch (_error) {
-      console.error('Erro ao emitir NF-e:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao emitir NF-e:', err);
       addToast(`Erro ao emitir NF-e: ${error.message}`, 'error');
       throw error;
     } finally {
@@ -450,8 +451,9 @@ export default function FaturamentoNFeCompleto() {
       addToast('NF-e cancelada com sucesso', 'success');
       loadNFes();
       loadKPIs();
-    } catch (_error) {
-      console.error('Erro ao cancelar NF-e:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao cancelar NF-e:', err);
       addToast(`Erro ao cancelar NF-e: ${error.message}`, 'error');
     } finally {
       setLoading(false);
@@ -472,9 +474,9 @@ export default function FaturamentoNFeCompleto() {
               <FileText className="w-7 h-7 text-white" />
             </div>
             <div className="flex-1 ml-4">
-              <p className="text-white/80 mb-1" style={{ fontSize: '0.813rem' }}>NF-es Mês</p>
-              <p className="text-white" style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{kpis.total_mes}</p>
-              <div className="flex items-center gap-1 mt-2 text-green-300" style={{ fontSize: '0.813rem' }}>
+              <p className="text-white/80 mb-1 text-[0.813rem]">NF-es Mês</p>
+              <p className="text-white text-[0.813rem] font-bold">{kpis.total_mes}</p>
+              <div className="flex items-center gap-1 mt-2 text-green-300 text-[0.813rem]">
                 <TrendingUp size={16} />
                 <span>{kpis.autorizadas} autorizadas</span>
               </div>
@@ -488,15 +490,15 @@ export default function FaturamentoNFeCompleto() {
               <DollarSign className="w-7 h-7 text-white" />
             </div>
             <div className="flex-1 ml-4">
-              <p className="text-white/80 mb-1" style={{ fontSize: '0.813rem' }}>Valor Total</p>
-              <p className="text-white" style={{  fontSize: '0.813rem' , fontWeight: 700 }}>
+              <p className="text-white/80 mb-1 text-[0.813rem]">Valor Total</p>
+              <p className="text-white text-[0.813rem] font-bold">
                 {new Intl.NumberFormat('pt-BR', {
                   style: 'currency',
                   currency: 'BRL',
                   minimumFractionDigits: 0,
                 }).format(kpis.valor_total_mes)}
               </p>
-              <div className="flex items-center gap-1 mt-2 text-green-300" style={{ fontSize: '0.813rem' }}>
+              <div className="flex items-center gap-1 mt-2 text-green-300 text-[0.813rem]">
                 <TrendingUp size={16} />
                 <span>+12%</span>
               </div>
@@ -510,11 +512,11 @@ export default function FaturamentoNFeCompleto() {
               <CheckCircle className="w-7 h-7 text-white" />
             </div>
             <div className="flex-1 ml-4">
-              <p className="text-white/80 mb-1" style={{ fontSize: '0.813rem' }}>Taxa Autorização</p>
-              <p className="text-white" style={{  fontSize: '0.813rem' , fontWeight: 700 }}>
+              <p className="text-white/80 mb-1 text-[0.813rem]">Taxa Autorização</p>
+              <p className="text-white text-[0.813rem] font-bold">
                 {kpis.taxa_autorizacao.toFixed(1)}%
               </p>
-              <div className="flex items-center gap-1 mt-2" style={{ fontSize: '0.813rem' }}>
+              <div className="flex items-center gap-1 mt-2 text-[0.813rem]">
                 {kpis.rejeitadas > 0 ? (
                   <>
                     <XCircle size={16} className="text-red-300" />
@@ -534,11 +536,11 @@ export default function FaturamentoNFeCompleto() {
               <ShieldCheck className="w-7 h-7 text-white" />
             </div>
             <div className="flex-1 ml-4">
-              <p className="text-white/80 mb-1" style={{ fontSize: '0.813rem' }}>Conformidade ANVISA</p>
-              <p className="text-white" style={{  fontSize: '0.813rem' , fontWeight: 700 }}>
+              <p className="text-white/80 mb-1 text-[0.813rem]">Conformidade ANVISA</p>
+              <p className="text-white text-[0.813rem] font-bold">
                 {kpis.conformidade_anvisa.toFixed(1)}%
               </p>
-              <div className="flex items-center gap-1 mt-2" style={{ fontSize: '0.813rem' }}>
+              <div className="flex items-center gap-1 mt-2 text-[0.813rem]">
                 {kpis.conformidade_anvisa >= 95 ? (
                   <span className="text-green-300">✓ Dentro do padrão</span>
                 ) : (
@@ -556,10 +558,10 @@ export default function FaturamentoNFeCompleto() {
           <div className="flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-yellow-500 mt-0.5" />
             <div>
-              <h3 className="text-yellow-800 dark:text-yellow-200" style={{ fontWeight: 500 }}>
+              <h3 className="text-yellow-800 dark:text-yellow-200 font-medium">
                 Alertas de Conformidade
               </h3>
-              <ul className="mt-2 space-y-1 text-yellow-700 dark:text-yellow-300" style={{ fontSize: '0.813rem' }}>
+              <ul className="mt-2 space-y-1 text-yellow-700 dark:text-yellow-300 text-[0.813rem]">
                 {kpis.conformidade_anvisa < 95 && (
                   <li>• Rastreabilidade ANVISA abaixo de 95%: Verifique lotes e validades</li>
                 )}
@@ -574,7 +576,7 @@ export default function FaturamentoNFeCompleto() {
       
       {/* Lista de NF-es Recentes */}
       <Card className="p-6">
-        <h2 className="mb-4" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>NF-es Recentes</h2>
+        <h2 className="mb-4 text-[0.813rem] font-semibold">NF-es Recentes</h2>
         
         {loading ? (
           <div className="flex items-center justify-center py-12">
@@ -603,15 +605,15 @@ export default function FaturamentoNFeCompleto() {
                   
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className style={{ fontWeight: 500 }}>NF-e {nfe.numero}</span>
-                      <span className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+                      <span className="font-medium">NF-e {nfe.numero}</span>
+                      <span className="text-[var(--text-secondary)] text-[0.813rem]">
                         Série {nfe.serie}
                       </span>
                     </div>
-                    <div className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+                    <div className="text-[var(--text-secondary)] text-[0.813rem]">
                       {nfe.destinatario.razao_social}
                     </div>
-                    <div className="text-[var(--text-secondary)] mt-1" style={{ fontSize: '0.813rem' }}>
+                    <div className="text-[var(--text-secondary)] mt-1 text-[0.813rem]">
                       {new Date(nfe.data_emissao).toLocaleDateString('pt-BR')}
                     </div>
                   </div>
@@ -619,13 +621,13 @@ export default function FaturamentoNFeCompleto() {
                 
                 <div className="flex items-center gap-4">
                   <div className="text-right">
-                    <div className style={{ fontWeight: 500 }}>
+                    <div className="font-medium">
                       {new Intl.NumberFormat('pt-BR', {
                         style: 'currency',
                         currency: 'BRL',
                       }).format(nfe.valor_total)}
                     </div>
-                    <div className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+                    <div className="text-[var(--text-secondary)] text-[0.813rem]">
                       {nfe.rastreabilidade_anvisa.percentual_conformidade.toFixed(0)}% ANVISA
                     </div>
                   </div>
@@ -671,11 +673,11 @@ export default function FaturamentoNFeCompleto() {
   
   const renderEmitir = () => (
     <Card className="p-6">
-      <h2 className="mb-4" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Emitir Nova NF-e</h2>
+      <h2 className="mb-4 text-[0.813rem] font-semibold">Emitir Nova NF-e</h2>
       <p className="text-[var(--text-secondary)] mb-4">
         Formulário de emissão será implementado na próxima iteração com:
       </p>
-      <ul className="space-y-2 text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+      <ul className="space-y-2 text-[var(--text-secondary)] text-[0.813rem]">
         <li>• Seleção de hospital/clínica (destinatário)</li>
         <li>• Seleção de produtos OPME do estoque</li>
         <li>• Validação automática de rastreabilidade ANVISA</li>
@@ -704,7 +706,7 @@ export default function FaturamentoNFeCompleto() {
           
           <select
             value={filterStatus}
-            onChange={e => setFilterStatus(e.target.value as any)}
+            onChange={e => setFilterStatus((e.target.value as NFe['status']) || 'todos')}
             className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-[var(--orx-primary)] focus:border-transparent"
           >
             <option value="todos">Todos Status</option>
@@ -724,13 +726,13 @@ export default function FaturamentoNFeCompleto() {
   
   const renderRastreabilidade = () => (
     <Card className="p-6">
-      <h2 className="mb-4" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Rastreabilidade ANVISA</h2>
+      <h2 className="mb-4 text-[0.813rem] font-semibold">Rastreabilidade ANVISA</h2>
       <div className="space-y-4">
         <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-          <h3 className="text-blue-800 dark:text-blue-200 mb-2" style={{ fontWeight: 500 }}>
+          <h3 className="text-blue-800 dark:text-blue-200 mb-2 font-medium">
             RDC ANVISA 157/2017
           </h3>
-          <p className="text-blue-700 dark:text-blue-300" style={{ fontSize: '0.813rem' }}>
+          <p className="text-blue-700 dark:text-blue-300 text-[0.813rem]">
             Todos os dispositivos médicos (OPME) comercializados devem ter rastreabilidade 
             completa: número de registro ANVISA, lote, data de fabricação e validade.
           </p>
@@ -740,12 +742,12 @@ export default function FaturamentoNFeCompleto() {
           <div className="p-4 neuro-flat rounded-lg">
             <div className="flex items-center gap-2 mb-2">
               <Package className="w-5 h-5 text-[var(--orx-primary)]" />
-              <span className style={{ fontWeight: 500 }} style={{ fontSize: '0.813rem' }}>Produtos Rastreados</span>
+              <span className="font-medium text-[0.813rem]">Produtos Rastreados</span>
             </div>
-            <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>
+            <p className="text-[0.813rem] font-bold">
               {kpis.conformidade_anvisa.toFixed(1)}%
             </p>
-            <p className="text-[var(--text-secondary)] mt-1" style={{ fontSize: '0.813rem' }}>
+            <p className="text-[var(--text-secondary)] mt-1 text-[0.813rem]">
               Dos produtos vendidos
             </p>
           </div>
@@ -753,12 +755,12 @@ export default function FaturamentoNFeCompleto() {
           <div className="p-4 neuro-flat rounded-lg">
             <div className="flex items-center gap-2 mb-2">
               <AlertCircle className="w-5 h-5 text-yellow-500" />
-              <span className style={{ fontWeight: 500 }}>Alertas Validade</span>
+              <span className="font-medium">Alertas Validade</span>
             </div>
-            <p className="text-yellow-600" style={{  fontSize: '0.813rem' , fontWeight: 700 }}>
+            <p className="text-yellow-600 text-[0.813rem] font-bold">
               12
             </p>
-            <p className="text-[var(--text-secondary)] mt-1" style={{ fontSize: '0.813rem' }}>
+            <p className="text-[var(--text-secondary)] mt-1 text-[0.813rem]">
               Produtos vencendo em 30 dias
             </p>
           </div>
@@ -766,12 +768,12 @@ export default function FaturamentoNFeCompleto() {
           <div className="p-4 neuro-flat rounded-lg">
             <div className="flex items-center gap-2 mb-2">
               <CheckCircle className="w-5 h-5 text-green-500" />
-              <span className style={{ fontWeight: 500 }}>Conformidade</span>
+              <span className="font-medium">Conformidade</span>
             </div>
-            <p className="text-green-600" style={{  fontSize: '0.813rem' , fontWeight: 700 }}>
+            <p className="text-green-600 text-[0.813rem] font-bold">
               {kpis.conformidade_anvisa >= 95 ? 'OK' : 'Atenção'}
             </p>
-            <p className="text-[var(--text-secondary)] mt-1" style={{ fontSize: '0.813rem' }}>
+            <p className="text-[var(--text-secondary)] mt-1 text-[0.813rem]">
               Meta: ≥ 95%
             </p>
           </div>
@@ -787,7 +789,7 @@ export default function FaturamentoNFeCompleto() {
         {/* Header */}
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-[var(--text-primary)] mb-2" style={{  fontSize: '0.813rem' , fontWeight: 700 }}>
+            <h1 className="text-[var(--text-primary)] mb-2 text-[0.813rem] font-bold">
               Faturamento NF-e Completo
             </h1>
             <p className="text-[var(--text-secondary)]">
@@ -798,14 +800,14 @@ export default function FaturamentoNFeCompleto() {
           <div className="flex items-center gap-4">
             <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-green-500" />
-              <span className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>
+              <span className="text-[0.813rem] font-medium">
                 Compliance OK
               </span>
             </div>
             
             <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>
+              <span className="text-[0.813rem] font-medium">
                 SEFAZ Online
               </span>
             </div>
@@ -822,7 +824,7 @@ export default function FaturamentoNFeCompleto() {
           ].map(tab => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => setActiveTab(tab.id as 'dashboard' | 'emitir' | 'consultar' | 'rastreabilidade')}
               className={`
                 px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2
                 ${activeTab === tab.id

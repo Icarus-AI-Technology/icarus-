@@ -123,7 +123,8 @@ export function useCentroCustos() {
 
       if (fetchError) throw fetchError;
       setCentros((data as CentroCusto[]) || []);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao carregar centros de custo";
       setError(message);
       console.error("Erro useCentroCustos:", err);
@@ -144,7 +145,8 @@ export function useCentroCustos() {
 
       if (createError) throw createError;
       return data as CentroCusto;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao criar centro de custo";
       setError(message);
       console.error("Erro createCentro:", err);
@@ -165,7 +167,8 @@ export function useCentroCustos() {
 
       if (updateError) throw updateError;
       return data as CentroCusto;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao atualizar centro de custo";
       setError(message);
       console.error("Erro updateCentro:", err);
@@ -184,7 +187,8 @@ export function useCentroCustos() {
 
       if (deleteError) throw deleteError;
       return true;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao excluir centro de custo";
       setError(message);
       console.error("Erro deleteCentro:", err);
@@ -252,7 +256,8 @@ export function useCentroCustos() {
         ticket_medio: despesas && despesas.length > 0 ? totalRealizado / despesas.length : 0,
         status,
       };
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error("Erro getRealizadoPorCentro:", err);
       return null;
     }
@@ -277,7 +282,8 @@ export function useCentroCustos() {
       }
 
       return realizados;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error("Erro getTodosRealizados:", err);
       return [];
     }
@@ -320,7 +326,8 @@ export function useCentroCustos() {
         percentual_utilizado: percentualUtilizado,
         centros_acima_orcamento: centrosAcimaOrcamento,
       };
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error("Erro getResumo:", err);
       return {
         total_centros: 0,
@@ -346,7 +353,8 @@ export function useCentroCustos() {
 
       if (fetchError) throw fetchError;
       return (data as CentroCusto[]) || [];
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error("Erro getHierarquia:", err);
       return [];
     }

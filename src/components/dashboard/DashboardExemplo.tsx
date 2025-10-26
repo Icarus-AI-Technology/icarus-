@@ -4,7 +4,7 @@
  * 100% Neumorphism 3D Premium + Lucide React SVG + OraclusX DS
  */
 
-import { DollarSign, Users, Activity, TrendingUp, Package, AlertCircle } from 'lucide-react';
+import { DollarSign, Users, Activity, TrendingUp } from 'lucide-react';
 import { Container, Grid } from '@/components/layout';
 import { StatCard, LineChartComponent, BarChartComponent, AreaChartComponent, PieChartComponent } from './Charts';
 

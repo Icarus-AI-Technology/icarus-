@@ -32,7 +32,7 @@ export default function NotFound() {
           </div>
 
           {/* Título */}
-          <h1 className="md:  mb-4 text-text-primary-light dark:text-text-primary-dark" style={{ fontWeight: 700 }} style={{ fontSize: '0.813rem' }} style={{ fontSize: '0.813rem' }}>
+           <h1 className="md:  mb-4 text-text-primary-light dark:text-text-primary-dark" style={{ fontWeight: 700, fontSize: '0.813rem' }}>
             Página Não Encontrada
           </h1>
 

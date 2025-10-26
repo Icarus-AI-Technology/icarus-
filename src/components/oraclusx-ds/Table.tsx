@@ -10,7 +10,7 @@
  * ✅ TypeScript strict
  */
 
-import React, { useState, useMemo } from"react";
+import React, { useState, useMemo, useEffect, useRef } from"react";
 import { ChevronUp, ChevronDown, ChevronsUpDown } from"lucide-react";
 import { cn } from"@/lib/utils";
 
@@ -57,6 +57,23 @@ export function Table<T extends Record<string, unknown>>({
   const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set());
   const [sortColumn, setSortColumn] = useState<string | null>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const headerRefs = useRef<Array<HTMLTableCellElement | null>>([]);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.style.maxHeight = maxHeight;
+    }
+  }, [maxHeight]);
+
+  useEffect(() => {
+    columns.forEach((column, idx) => {
+      const el = headerRefs.current[idx];
+      if (el && column.width) {
+        el.style.width = String(column.width);
+      }
+    });
+  }, [columns]);
 
   // Sort logic
   const sortedData = useMemo(() => {
@@ -136,7 +153,7 @@ export function Table<T extends Record<string, unknown>>({
       className={cn("overflow-x-auto rounded-lg","bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]","shadow-[var(--shadow-light-outer)] dark:shadow-[var(--shadow-dark-outer)]",
         className
       )}
-      style={{ maxHeight }}
+      ref={containerRef}
     >
       <table
         className="w-full border-collapse"
@@ -171,16 +188,12 @@ export function Table<T extends Record<string, unknown>>({
                   column.align ==="right" &&"text-right",
                   column.sortable &&"cursor-pointer select-none hover:bg-[var(--surface-hover)] transition-colors"
                 )}
-                style={{ width: column.width }}
+                ref={(el) => { headerRefs.current[idx] = el; }}
                 onClick={() => handleSort(column)}
                 role="columnheader"
-                aria-sort={
-                  sortColumn === (column.key ?? column.accessor)
-                    ? sortDirection ==="asc"
-                      ?"ascending"
-                      :"descending"
-                    :"none"
-                }
+                {...(sortColumn === (column.key ?? column.accessor)
+                  ? { 'aria-sort': (sortDirection === 'asc' ? 'ascending' : 'descending') as 'ascending' | 'descending' }
+                  : { 'aria-sort': 'none' as const })}
               >
                 <div className="flex items-center gap-2">
                   <span>{column.header}</span>

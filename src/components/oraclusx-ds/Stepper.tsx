@@ -97,7 +97,7 @@ export const Stepper: React.FC<StepperProps> = ({
                   {status ==="completed" ? (
                     <Check size={20} />
                   ) : (
-                    <span style={{ fontSize: '0.813rem' }}>{index + 1}</span>
+                    <span className="text-[0.813rem]">{index + 1}</span>
                   )}
                 </button>
 

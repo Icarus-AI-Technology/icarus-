@@ -20,7 +20,7 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   onRemove?: () => void;
 }
 
-export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
+const BadgeComponent = React.forwardRef<HTMLSpanElement, BadgeProps>(
   (
     {
       className,
@@ -41,7 +41,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
 
     const variantClasses = {
       default:"bg-surface text-primary dark:bg-muted dark:text-muted",
-      primary:"bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300",
+      primary:"bg-[var(--orx-primary-lighter)] text-[var(--orx-primary)] dark:bg-[var(--orx-primary)]/30 dark:text-[var(--orx-primary-light)]",
       success:"bg-success/10 text-green-800 dark:bg-green-900/30 dark:text-green-300",
       warning:"bg-warning/10 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300",
       error:"bg-destructive/10 text-red-800 dark:bg-red-900/30 dark:text-red-300",
@@ -74,7 +74,9 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   },
 );
 
-Badge.displayName ="OraclusXBadge";
+BadgeComponent.displayName ="OraclusXBadge";
+
+export const Badge = React.memo(BadgeComponent);
 
 export default Badge;
 

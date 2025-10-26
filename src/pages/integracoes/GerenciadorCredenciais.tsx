@@ -220,7 +220,8 @@ export default function GerenciadorCredenciais() {
 
       setCredenciais(credenciaisCompletas);
     } catch (error) {
-      console.error('Erro ao carregar credenciais:', error);
+   const err = error as Error;
+      console.error('Erro ao carregar credenciais:', err);
     } finally {
       setLoading(false);
     }
@@ -257,7 +258,8 @@ export default function GerenciadorCredenciais() {
 
       alert('✅ Credencial salva com sucesso!');
     } catch (error) {
-      console.error('Erro ao salvar credencial:', error);
+   const err = error as Error;
+      console.error('Erro ao salvar credencial:', err);
       alert('❌ Erro ao salvar credencial');
     } finally {
       setSaving(false);
@@ -295,7 +297,8 @@ export default function GerenciadorCredenciais() {
         alert('❌ Credencial inválida');
       }
     } catch (error) {
-      console.error('Erro ao testar credencial:', error);
+   const err = error as Error;
+      console.error('Erro ao testar credencial:', err);
       alert('⚠️ Erro ao testar credencial');
     } finally {
       setTesting(null);

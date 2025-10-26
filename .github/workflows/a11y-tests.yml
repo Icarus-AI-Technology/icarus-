@@ -1,0 +1,49 @@
+name: Accessibility Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  a11y-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      
+      - name: Install dependencies
+        run: pnpm install
+      
+      - name: Build project
+        run: pnpm build
+      
+      - name: Start preview server
+        run: |
+          pnpm preview --port 4174 &
+          sleep 10
+      
+      - name: Run axe-core tests
+        run: |
+          npx -y @axe-core/cli http://localhost:4174/ \
+            --tags wcag2a,wcag2aa \
+            --save ./axe-report.json \
+            --exit
+      
+      - name: Upload accessibility report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: axe-accessibility-report
+          path: axe-report.json

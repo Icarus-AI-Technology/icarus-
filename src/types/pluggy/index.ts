@@ -270,7 +270,7 @@ export type WebhookEvent =
 
 export interface PluggyWebhook {
   event: WebhookEvent;
-  data: any;
+  data: unknown;
   webhookId: string;
   createdAt: string;
 }
@@ -303,8 +303,8 @@ export interface PluggyAccountCache {
   name: string;
   balance: number;
   currency_code: string;
-  bank_data?: any;
-  credit_data?: any;
+  bank_data?: AccountBankData;
+  credit_data?: AccountCreditData;
   owner?: string;
   tax_number?: string;
   updated_at: Date;
@@ -322,8 +322,8 @@ export interface PluggyTransactionCache {
   type: TransactionType;
   status: TransactionStatus;
   category?: string;
-  merchant?: any;
-  payment_data?: any;
+  merchant?: { name?: string; businessName?: string; cnpj?: string };
+  payment_data?: TransactionPaymentData;
   created_at: Date;
 }
 
@@ -333,7 +333,7 @@ export interface PluggyPaymentCache {
   user_id: string;
   item_id: string;
   account_id: string;
-  recipient: any;
+  recipient: PaymentRecipient;
   amount: number;
   description?: string;
   status: PaymentStatus;

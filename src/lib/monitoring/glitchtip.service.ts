@@ -35,19 +35,19 @@ export interface ErrorEvent {
     ip_address?: string;
   };
   tags?: Record<string, string>;
-  extra?: Record<string, any>;
+  extra?: Record<string, unknown>;
   breadcrumbs?: Array<{
     timestamp: number;
     message: string;
     category?: string;
     level?: string;
-    data?: Record<string, any>;
+    data?: Record<string, unknown>;
   }>;
   request?: {
     url: string;
     method: string;
     headers?: Record<string, string>;
-    data?: any;
+    data?: unknown;
   };
 }
 
@@ -57,7 +57,7 @@ export interface PerformanceTransaction {
   startTimestamp: number;
   endTimestamp?: number;
   tags?: Record<string, string>;
-  data?: Record<string, any>;
+  data?: Record<string, unknown>;
   spans?: Array<{
     description: string;
     op: string;
@@ -67,12 +67,14 @@ export interface PerformanceTransaction {
   }>;
 }
 
+type BreadcrumbEntry = NonNullable<ErrorEvent['breadcrumbs']>[number];
+
 export class GlitchTipService {
   private dsn: string;
   private environment: string;
   private release?: string;
   private enabled: boolean;
-  private breadcrumbs: ErrorEvent['breadcrumbs'] = [];
+  private breadcrumbs: BreadcrumbEntry[] = [];
 
   constructor(config?: {
     dsn?: string;
@@ -129,7 +131,7 @@ export class GlitchTipService {
     error: Error,
     context?: {
       tags?: Record<string, string>;
-      extra?: Record<string, any>;
+      extra?: Record<string, unknown>;
       user?: ErrorEvent['user'];
       level?: ErrorEvent['level'];
     }
@@ -139,6 +141,7 @@ export class GlitchTipService {
       return 'mock-event-id';
     }
 
+    const parsedStacktrace = error.stack ? this.parseStackTrace(error.stack) : undefined;
     const event: ErrorEvent = {
       message: error.message,
       level: context?.level || 'error',
@@ -146,7 +149,7 @@ export class GlitchTipService {
       exception: {
         type: error.name,
         value: error.message,
-        stacktrace: this.parseStackTrace(error.stack || ''),
+        ...(parsedStacktrace ? { stacktrace: parsedStacktrace } : {}),
       },
       tags: {
         environment: this.environment,
@@ -155,7 +158,7 @@ export class GlitchTipService {
       },
       extra: context?.extra,
       user: context?.user,
-      breadcrumbs: [...this.breadcrumbs],
+      breadcrumbs: [...(this.breadcrumbs || [])],
     };
 
     this.sendEvent(event);
@@ -170,7 +173,7 @@ export class GlitchTipService {
     level: ErrorEvent['level'] = 'info',
     context?: {
       tags?: Record<string, string>;
-      extra?: Record<string, any>;
+      extra?: Record<string, unknown>;
     }
   ): string {
     if (!this.enabled) {
@@ -187,7 +190,7 @@ export class GlitchTipService {
         ...context?.tags,
       },
       extra: context?.extra,
-      breadcrumbs: [...this.breadcrumbs],
+      breadcrumbs: [...(this.breadcrumbs || [])],
     };
 
     this.sendEvent(event);
@@ -201,15 +204,17 @@ export class GlitchTipService {
     message: string;
     category?: string;
     level?: 'fatal' | 'error' | 'warning' | 'info' | 'debug';
-    data?: Record<string, any>;
+    data?: Record<string, unknown>;
   }): void {
-    this.breadcrumbs.push({
+    const entry: BreadcrumbEntry = {
       timestamp: Date.now(),
       message: breadcrumb.message,
       category: breadcrumb.category || 'default',
       level: breadcrumb.level || 'info',
       data: breadcrumb.data,
-    });
+    };
+
+    this.breadcrumbs.push(entry);
 
     // Keep only last 100 breadcrumbs
     if (this.breadcrumbs.length > 100) {
@@ -239,7 +244,7 @@ export class GlitchTipService {
   ): {
     finish: () => void;
     setTag: (key: string, value: string) => void;
-    setData: (key: string, value: any) => void;
+    setData: (key: string, value: unknown) => void;
   } {
     const transaction: PerformanceTransaction = {
       name,
@@ -261,7 +266,7 @@ export class GlitchTipService {
         if (!transaction.tags) transaction.tags = {};
         transaction.tags[key] = value;
       },
-      setData: (key: string, value: any) => {
+      setData: (key: string, value: unknown) => {
         if (!transaction.data) transaction.data = {};
         transaction.data[key] = value;
       },
@@ -290,7 +295,8 @@ export class GlitchTipService {
         body: JSON.stringify(event),
       });
     } catch (error) {
-      console.error('[GlitchTip] Failed to send event:', error);
+   const err = error as Error;
+      console.error('[GlitchTip] Failed to send event:', err);
     }
   }
 
@@ -305,7 +311,7 @@ export class GlitchTipService {
   /**
    * Parse stack trace
    */
-  private parseStackTrace(stack: string): ErrorEvent['exception']['stacktrace'] {
+  private parseStackTrace(stack: string): NonNullable<ErrorEvent['exception']>['stacktrace'] | undefined {
     const lines = stack.split('\n').slice(1); // Skip first line (error message)
     const frames = lines
       .map((line) => {
@@ -323,7 +329,9 @@ export class GlitchTipService {
       })
       .filter((frame): frame is NonNullable<typeof frame> => frame !== null);
 
-    return { frames };
+    return frames.length > 0
+      ? { frames }
+      : undefined;
   }
 
   /**
@@ -343,6 +351,6 @@ export const glitchTipService = new GlitchTipService();
 
 // Export as global for console usage
 if (typeof window !== 'undefined') {
-  (window as any).GlitchTip = glitchTipService;
+  (window as unknown as { GlitchTip?: GlitchTipService }).GlitchTip = glitchTipService;
 }
 

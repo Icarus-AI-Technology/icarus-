@@ -1,0 +1,334 @@
+{
+  "apis": [
+    {
+      "name": "BrasilAPI CNPJ",
+      "category": "Governo",
+      "endpoint": "https://brasilapi.com.br/api/cnpj/v1/00000000000191",
+      "status": "ok",
+      "has_credentials": false,
+      "has_error_handling": true,
+      "has_retry_logic": false,
+      "response_time_ms": 511
+    },
+    {
+      "name": "ReceitaWS",
+      "category": "Governo",
+      "endpoint": "https://receitaws.com.br/v1/cnpj/00000000000191",
+      "status": "ok",
+      "has_credentials": false,
+      "has_error_handling": true,
+      "has_retry_logic": true
+    },
+    {
+      "name": "ViaCEP",
+      "category": "Governo",
+      "endpoint": "https://viacep.com.br/ws/01310100/json/",
+      "status": "ok",
+      "has_credentials": false,
+      "has_error_handling": true,
+      "has_retry_logic": false
+    },
+    {
+      "name": "SEFAZ",
+      "category": "Governo",
+      "endpoint": "https://www.sefaz.ba.gov.br",
+      "status": "ok",
+      "has_credentials": false,
+      "has_error_handling": true,
+      "has_retry_logic": false
+    },
+    {
+      "name": "ANVISA",
+      "category": "Governo",
+      "endpoint": "https://consultas.anvisa.gov.br",
+      "status": "ok",
+      "has_credentials": false,
+      "has_error_handling": true,
+      "has_retry_logic": false
+    },
+    {
+      "name": "TISS/ANS",
+      "category": "Saúde",
+      "endpoint": "https://www.ans.gov.br/prestadores/tiss",
+      "status": "not_configured",
+      "has_credentials": false,
+      "has_error_handling": false,
+      "has_retry_logic": false,
+      "error": "Service file não encontrado"
+    },
+    {
+      "name": "CFM",
+      "category": "Saúde",
+      "endpoint": "https://portal.cfm.org.br/api/medicos",
+      "status": "ok",
+      "has_credentials": false,
+      "has_error_handling": true,
+      "has_retry_logic": false
+    },
+    {
+      "name": "ANVISA Produtos",
+      "category": "Saúde",
+      "endpoint": "https://consultas.anvisa.gov.br/api/produtos",
+      "status": "not_configured",
+      "has_credentials": false,
+      "has_error_handling": false,
+      "has_retry_logic": false,
+      "error": "Service file não encontrado"
+    },
+    {
+      "name": "Correios",
+      "category": "Transportadora",
+      "endpoint": "https://api.correios.com.br/sro/v1",
+      "status": "ok",
+      "has_credentials": true,
+      "has_error_handling": true,
+      "has_retry_logic": true
+    },
+    {
+      "name": "Jadlog",
+      "category": "Transportadora",
+      "endpoint": "https://jadlog.com.br/api/rastreamento",
+      "status": "ok",
+      "has_credentials": true,
+      "has_error_handling": true,
+      "has_retry_logic": false
+    },
+    {
+      "name": "TNT",
+      "category": "Transportadora",
+      "endpoint": "https://www.tnt.com/api/track",
+      "status": "not_configured",
+      "has_credentials": false,
+      "has_error_handling": false,
+      "has_retry_logic": false,
+      "error": "Service file não encontrado"
+    },
+    {
+      "name": "Total Express",
+      "category": "Transportadora",
+      "endpoint": "https://www.totalexpress.com.br/api/track",
+      "status": "ok",
+      "has_credentials": true,
+      "has_error_handling": true,
+      "has_retry_logic": false
+    },
+    {
+      "name": "Azul Cargo",
+      "category": "Transportadora",
+      "endpoint": "https://www.azulcargo.com.br/api/track",
+      "status": "not_configured",
+      "has_credentials": false,
+      "has_error_handling": false,
+      "has_retry_logic": false,
+      "error": "Service file não encontrado"
+    },
+    {
+      "name": "Latam Cargo",
+      "category": "Transportadora",
+      "endpoint": "https://www.latamcargo.com/api/track",
+      "status": "not_configured",
+      "has_credentials": false,
+      "has_error_handling": false,
+      "has_retry_logic": false,
+      "error": "Service file não encontrado"
+    },
+    {
+      "name": "Rapidão Cometa",
+      "category": "Transportadora",
+      "endpoint": "https://www.rapidaocometa.com.br/api/track",
+      "status": "not_configured",
+      "has_credentials": false,
+      "has_error_handling": false,
+      "has_retry_logic": false,
+      "error": "Service file não encontrado"
+    },
+    {
+      "name": "Sequoia",
+      "category": "Transportadora",
+      "endpoint": "https://www.sequoialog.com.br/api/track",
+      "status": "not_configured",
+      "has_credentials": false,
+      "has_error_handling": false,
+      "has_retry_logic": false,
+      "error": "Service file não encontrado"
+    },
+    {
+      "name": "Braspress",
+      "category": "Transportadora",
+      "endpoint": "https://www.braspress.com.br/api/track",
+      "status": "ok",
+      "has_credentials": true,
+      "has_error_handling": true,
+      "has_retry_logic": false
+    },
+    {
+      "name": "Jamef",
+      "category": "Transportadora",
+      "endpoint": "https://www.jamef.com.br/api/track",
+      "status": "not_configured",
+      "has_credentials": false,
+      "has_error_handling": false,
+      "has_retry_logic": false,
+      "error": "Service file não encontrado"
+    },
+    {
+      "name": "Rodonaves",
+      "category": "Transportadora",
+      "endpoint": "https://www.rodonaves.com.br/api/track",
+      "status": "not_configured",
+      "has_credentials": false,
+      "has_error_handling": false,
+      "has_retry_logic": false,
+      "error": "Service file não encontrado"
+    },
+    {
+      "name": "Direct",
+      "category": "Transportadora",
+      "endpoint": "https://www.directlog.com.br/api/track",
+      "status": "not_configured",
+      "has_credentials": false,
+      "has_error_handling": false,
+      "has_retry_logic": false,
+      "error": "Service file não encontrado"
+    },
+    {
+      "name": "Patrus",
+      "category": "Transportadora",
+      "endpoint": "https://www.patrus.com.br/api/track",
+      "status": "not_configured",
+      "has_credentials": false,
+      "has_error_handling": false,
+      "has_retry_logic": false,
+      "error": "Service file não encontrado"
+    },
+    {
+      "name": "Loggi",
+      "category": "Transportadora",
+      "endpoint": "https://www.loggi.com/api/track",
+      "status": "not_configured",
+      "has_credentials": false,
+      "has_error_handling": false,
+      "has_retry_logic": false,
+      "error": "Service file não encontrado"
+    },
+    {
+      "name": "DHL",
+      "category": "Transportadora Int",
+      "endpoint": "https://api.dhl.com/track",
+      "status": "not_configured",
+      "has_credentials": false,
+      "has_error_handling": false,
+      "has_retry_logic": false,
+      "error": "Service file não encontrado"
+    },
+    {
+      "name": "UPS",
+      "category": "Transportadora Int",
+      "endpoint": "https://onlinetools.ups.com/track/v1",
+      "status": "not_configured",
+      "has_credentials": false,
+      "has_error_handling": false,
+      "has_retry_logic": false,
+      "error": "Service file não encontrado"
+    },
+    {
+      "name": "FedEx",
+      "category": "Transportadora Int",
+      "endpoint": "https://api.fedex.com/track/v1",
+      "status": "not_configured",
+      "has_credentials": false,
+      "has_error_handling": false,
+      "has_retry_logic": false,
+      "error": "Service file não encontrado"
+    },
+    {
+      "name": "DB Schenker",
+      "category": "Transportadora Int",
+      "endpoint": "https://api.dbschenker.com/track",
+      "status": "not_configured",
+      "has_credentials": false,
+      "has_error_handling": false,
+      "has_retry_logic": false,
+      "error": "Service file não encontrado"
+    },
+    {
+      "name": "Pluggy",
+      "category": "Financeiro",
+      "endpoint": "https://api.pluggy.ai",
+      "status": "ok",
+      "has_credentials": true,
+      "has_error_handling": true,
+      "has_retry_logic": false
+    },
+    {
+      "name": "Banco do Brasil",
+      "category": "Financeiro",
+      "endpoint": "https://api.bb.com.br",
+      "status": "not_configured",
+      "has_credentials": false,
+      "has_error_handling": false,
+      "has_retry_logic": false,
+      "error": "Service file não encontrado"
+    },
+    {
+      "name": "Twilio",
+      "category": "Comunicação",
+      "endpoint": "https://api.twilio.com",
+      "status": "ok",
+      "has_credentials": false,
+      "has_error_handling": true,
+      "has_retry_logic": false
+    },
+    {
+      "name": "SendGrid",
+      "category": "Comunicação",
+      "endpoint": "https://api.sendgrid.com",
+      "status": "ok",
+      "has_credentials": true,
+      "has_error_handling": true,
+      "has_retry_logic": false
+    }
+  ],
+  "byCategory": {
+    "Governo": {
+      "total": 5,
+      "ok": 5,
+      "error": 0,
+      "not_configured": 0
+    },
+    "Saúde": {
+      "total": 3,
+      "ok": 1,
+      "error": 0,
+      "not_configured": 2
+    },
+    "Transportadora": {
+      "total": 14,
+      "ok": 4,
+      "error": 0,
+      "not_configured": 10
+    },
+    "Transportadora Int": {
+      "total": 4,
+      "ok": 0,
+      "error": 0,
+      "not_configured": 4
+    },
+    "Financeiro": {
+      "total": 2,
+      "ok": 1,
+      "error": 0,
+      "not_configured": 1
+    },
+    "Comunicação": {
+      "total": 2,
+      "ok": 2,
+      "error": 0,
+      "not_configured": 0
+    }
+  },
+  "totalOk": 13,
+  "totalConfigured": 13,
+  "totalApis": 30,
+  "score": 43
+}

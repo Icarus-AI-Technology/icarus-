@@ -2,7 +2,7 @@
 
 **Data**: 20/10/2025  
 **Versão**: 5.0.0  
-**Status**: ✅ 100% Implementado e Funcional  
+**Status**: ✅ 100% Implementado e Funcional (alinhado ao estado atual)  
 **Autor**: Equipe OraclusX DS  
 **Ambiente**: http://localhost:3000
 
@@ -18,7 +18,7 @@ Sistema enterprise completo para gestão de OPME (Órteses, Próteses e Materiai
 Total de Módulos: 58
 Linhas de Código: 19.981 (somente componentes)
 Componentes Premium: 50+
-Design System: OraclusX DS Neumorphic 3D
+Design System: OraclusX DS Neumorphic 3D (incl. RadialProgress)
 Framework: React 18.3 + TypeScript 5.6
 Backend: Supabase PostgreSQL
 Autenticação: Supabase Auth + RLS
@@ -29,7 +29,7 @@ Styling: Tailwind CSS v3.4
 Icons: Lucide React (450+ ícones)
 Forms: React Hook Form + Zod
 Routing: React Router DOM v6
-Charts: Recharts
+Charts: Recharts/Nivo (OrxLineChart/OrxBarChart/OrxPieChart)
 Testing: Playwright + Vitest
 CI/CD: GitHub Actions ready
 Deployment: Vercel/Netlify ready
@@ -97,6 +97,9 @@ Edge Functions:
   - Serverless
   - Validações
   - Notificações
+  - Vetores: ml-vectors (persistência)
+  - ML Job: ml-job (enqueue)
+  - Benchmark: vector-benchmark (comparação FAISS vs pgvector)
 ```
 
 #### Design System (OraclusX DS)
@@ -120,6 +123,7 @@ Componentes:
   - Tabs
   - Accordions
   - Progress bars
+  - RadialProgress (novo)
   - Sliders
   - Switches
   - Radio/Checkbox
@@ -138,6 +142,12 @@ Temas:
   - Transições suaves
   - Persistência localStorage
 ```
+
+Conformidade Global (OraclusX DS em 58 módulos)
+- Todos os módulos utilizam componentes DS (cards, badges, progress, toast) para placeholders e métricas.
+- Módulos de demonstração com placeholders: System Health, Workflow Builder, Campanhas.
+- Toasts disponíveis via `contexts/ToastContext.tsx`.
+ - Inline styles removidos do DS e migração completa para utilitários OraclusX (v4).
 
 ---
 
@@ -270,6 +280,9 @@ Temas:
 - `PortaisOPMEService.ts` (400 linhas)
 - `CotacaoAutomaticaService.ts` (350 linhas)
 - `PalavrasChaveService.ts` (200 linhas)
+
+Feature Flags relevantes:
+- `FF_AI_TUTOR_CIRURGIAS` (Tutor IA por módulo)
 
 ---
 
@@ -416,6 +429,24 @@ Temas:
 - Telefonia: Asterisk, 3CX
 
 **Hooks**:
+---
+
+#### 1.6.1 IA Vendas Dashboard ⭐ NOVO
+**Rota**: `/vendas`  
+**Arquivo**: `src/components/modules/IAVendasDashboard.tsx`  
+**Linhas**: 280
+
+**Sessões**:
+- Diretor: Vendas Departamento, Metas Trimestre, Pipeline, Budget
+- Gerente: Vendas Equipe, Metas Atingidas, Pedidos Pendentes, Prazo Entrega
+- Operador: Tarefas Dia, Documentos Processados, Tempo Resposta, Satisfação
+
+**UI/Charts**:
+- KPIs circulares com `RadialProgress` (gradientes únicos por métrica, pulse crítico)
+- Shine hover nos cards
+- Sparkline (linhas) e Barras por canal
+
+---
 - `useLeads()`
 - `useOportunidades()`
 - `usePropostas()`
@@ -773,8 +804,21 @@ Temas:
 3. **Chat Enterprise**
 4. **Sistema Notificações**
 5. **Autenticação Avançada**
-6. **Configurações Sistema**
+6. **Configurações Sistema** / **Admin Configurações (novo)**
 7. **API Gateway**
+#### Admin Configurações (novo)
+**Rota**: `/configuracoes`  
+**Arquivo**: `src/components/modules/AdminConfiguracoes.tsx`
+
+**Funcionalidades**:
+- Upload Certificado Digital (.pfx A1/A3), área 400x200, senha validada (cliente)
+- Upload de Logo (PNG/JPG/SVG) com validação dimensões 200x60 e preview light/dark
+- Cadastro Empresa via CNPJ (auto-preenchimento stub Receita)
+- Templates Documentos: editor visual (toolbar básica, variáveis `{{variable}}`) e preview
+- Auto-correção/Padronização: uppercase, trims, indicadores de estado (corrigindo, padronizado, inválido)
+
+**A11y**:
+- Aria-labels para botões/inputs, contrastes em conformidade
 
 ---
 
@@ -863,6 +907,9 @@ Temas:
 ```
 
 #### Spacing (8px base)
+### Componentes Novos
+- `RadialProgress`: progresso circular por SVG com gradient stops e rótulo central
+
 ```css
 --space-1: 0.5rem;   /* 8px */
 --space-2: 1rem;     /* 16px */
@@ -945,6 +992,52 @@ const hasPermission = usePermission('cirurgias.create');
 
 // HOC
 export default withPermission(CirurgiasPage, 'cirurgias.view');
+```
+
+#### Bootstrap Admin & usuario_id (Supabase)
+
+Para garantir o admin e preencher `usuario_id`/FK em todas as tabelas públicas:
+
+```bash
+# 1) Criar/garantir admin via Admin API + backfill/FK + fallback SQL
+npm run admin:recover
+
+# 2) (Opcional) Rodar também a suíte com QA de integrações
+npm run admin:all
+
+# 3) Execução contínua (PM2)
+npm run pm2:admin:start
+npm run pm2:admin:logs
+```
+
+Critérios de aceite:
+- Admin presente em `auth.users` (`dax@newortho.com.br`).
+- Todas as tabelas públicas com coluna `usuario_id uuid`.
+- Backfill aplicado (registros existentes com `usuario_id` não-nulo).
+- FK criada: `FOREIGN KEY (usuario_id) REFERENCES auth.users(id) ON DELETE SET NULL`.
+- Logs do PM2 sem erros.
+
+---
+
+### Tela de Login (Separada)
+
+Rota dedicada de autenticação seguindo o OraclusX DS.
+
+- Rota pública: `/login` (e `/signup` quando habilitado)
+- Rotas do sistema protegidas via `PrivateRoute` (redireciona para `/login` se não autenticado)
+- Título: `ICARUS v5.0`
+- Subtítulo: `Gestão elevada pela IA`
+- Ícone: Icarus padrão (cruz estilizada em círculo)
+- Layout: card central com glass/gradiente indigo→purple, sombras suaves e borda translúcida
+- Acessibilidade: foco visível, labels, auto-complete
+
+Comandos úteis
+```bash
+# Desenvolvedor: abrir login diretamente
+http://localhost:3000/login
+
+# Após login bem-sucedido
+→ redireciona para /dashboard
 ```
 
 ---
@@ -1286,6 +1379,32 @@ RETURNS NUMERIC ...
 
 ---
 
+### Busca Vetorial Unificada
+
+Endpoint unificado com backend selecionável via env.
+
+- API: `server/api/ml/vector-search.ts`
+- Env: `VECTOR_BACKEND=pgvector|faiss|milvus|weaviate|qdrant`
+- Backends e envs:
+  - pgvector (Supabase): `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`
+  - faiss (FastAPI): `ML_API_URL`
+  - milvus: `MILVUS_ENDPOINT`
+  - weaviate: `WEAVIATE_URL`
+  - qdrant: `QDRANT_URL`, `QDRANT_COLLECTION`
+
+Funções relacionadas:
+- Persistência: `supabase/functions/ml-vectors`
+- Enfileirar: `supabase/functions/ml-job`
+- Benchmark: `supabase/functions/vector-benchmark`
+
+### Módulos Voice/Video com Feature Flags
+
+- Voice Analytics — Rota: `/modules/VoiceAnalyticsDashboard` — Flag: `FF_VOICE_ANALYTICS`
+- Voice Biometrics — Rota: `/modules/VoiceBiometricsManager` — Flag: `FF_VOICE_BIOMETRICS`
+- Voice Macros — Rota: `/modules/VoiceMacrosManager` — Flag: `FF_VOICE_MACROS`
+- Voice Commands — Rota: `/modules/VoiceCommandsManager` — Flag: `FF_VOICE_COMMANDS`
+- Video Calls — Rota: `/modules/VideoCallsManager` — Flag: `FF_VIDEO_CALLS`
+
 ## 📊 RELATÓRIOS & ANALYTICS
 
 ### Tipos de Relatórios (50+)
@@ -1374,6 +1493,50 @@ PWA: 80+
 
 ---
 
+### QA & Benchmarks (Scripts)
+
+Scripts disponíveis (QA/bench/health/report):
+
+```json
+{
+  "scripts": {
+    "check:fe-bd": "node tools/qa/check-map-fe-bd.js",
+    "check:forms": "node tools/qa/check-forms.js",
+    "check:buttons": "node tools/qa/check-buttons.js",
+    "check:tables": "node tools/qa/check-tables.js",
+    "qa:buttons:topbar": "node tools/qa/check-buttons-topbar.cjs",
+
+    "check:meili": "node tools/qa/integrations/check-meili.js",
+    "check:tesseract": "node tools/qa/integrations/check-tesseract.js",
+    "check:ollama": "node tools/qa/integrations/check-ollama.js",
+    "check:email": "node tools/qa/integrations/check-email.js",
+    "check:bull": "node tools/qa/integrations/check-bullmq.js",
+    "check:posthog": "node tools/qa/integrations/check-posthog.js",
+
+    "bench:meili": "node tools/bench/meili.js",
+    "bench:ollama": "node tools/bench/ollama.js",
+    "bench:tesseract": "node tools/bench/tesseract.js",
+    "bench:tesseract:strict": "node tools/bench/tesseract-strict.js",
+    "bench:vector": "tsx tools/bench/vector-compare.ts",
+
+    "qa:integrations": "npm-run-all -s check:meili check:tesseract check:ollama check:email check:bull check:posthog",
+    "qa:ui": "npm-run-all -s check:forms check:buttons check:tables",
+    "qa:map": "node tools/qa/check-map-fe-bd.js",
+    "qa:manual": "tsx tools/audit/manual-coverage.ts",
+    "qa:all": "npm-run-all -s qa:map qa:ui qa:integrations",
+
+    "health:vector": "tsx tools/health/vector-endpoints.ts",
+    "rollback:integrations": "node tools/ops/rollback-integrations.js",
+    "report:qa": "node tools/reports/gen-qa-report.js"
+  }
+}
+```
+
+Feature Flags usadas em QA/bench:
+- `FF_SYSTEM_HEALTH`, `FF_WORKFLOW_BUILDER`, `FF_MARKETING_CAMPANHAS`
+- `FF_AI_TUTOR_CIRURGIAS`, `FF_ML_QUEUE`
+- `FF_VOICE_ANALYTICS`, `FF_VOICE_BIOMETRICS`, `FF_VOICE_MACROS`, `FF_VOICE_COMMANDS`, `FF_VIDEO_CALLS`
+
 ## 🚀 DEPLOYMENT
 
 ### Build Production
@@ -1394,14 +1557,45 @@ npm run build
 
 ### Variáveis de Ambiente
 ```bash
-# .env.production
-VITE_SUPABASE_URL=https://xxx.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJxxx...
-VITE_API_GATEWAY_URL=https://api.empresa.com
+# Frontend (Vite)
+VITE_SUPABASE_URL=https://<ref>.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJ...
 VITE_ENVIRONMENT=production
-VITE_GTM_ID=GTM-XXXXXXX
-VITE_SENTRY_DSN=https://xxx@sentry.io/xxx
+VITE_API_GATEWAY_URL=https://app.icarus.pro
+
+# Feature Flags (rollout)
+FF_SYSTEM_HEALTH=1
+FF_WORKFLOW_BUILDER=1
+FF_MARKETING_CAMPANHAS=0
+FF_AI_TUTOR_CIRURGIAS=1
+FF_ML_QUEUE=1
+FF_VOICE_ANALYTICS=0
+FF_VOICE_BIOMETRICS=0
+FF_VOICE_MACROS=0
+FF_VOICE_COMMANDS=0
+FF_VIDEO_CALLS=0
+
+# Vetores / Benchmarks
+VECTOR_BACKEND=pgvector
+ML_API_URL=http://localhost:8000
+SUPABASE_URL=https://<ref>.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=eyJ...
+WEAVIATE_URL=http://localhost:8080
+QDRANT_URL=http://localhost:6333
+QDRANT_COLLECTION=ml_vectors
+MILVUS_ENDPOINT=http://localhost:19530
+
+# Integrações
+VITE_MEILISEARCH_URL=http://localhost:7700
+VITE_OLLAMA_URL=http://localhost:11434
+SMTP_HOST=localhost
+SMTP_PORT=8025
+POSTHOG_API_KEY=
+VITE_POSTHOG_API_KEY=
+VITE_POSTHOG_HOST=https://app.posthog.com
 ```
+
+Observação: QA integration para PostHog é marcado como SKIP quando a API key não está definida.
 
 ---
 
@@ -1495,6 +1689,7 @@ src/
 │   └── oraclusx-ds.css         // Design system tokens
 ├── components/
 │   ├── oraclusx-ds/            // 50+ componentes premium
+│   ├── ui/                     // Wrappers DS (Card, Badge, Progress)
 │   └── modules/                // 58 módulos (19.981 linhas)
 ├── pages/
 │   ├── Dashboard.tsx
@@ -1521,6 +1716,7 @@ src/
 │   └── AuthContext.tsx
 ├── lib/
 │   ├── supabase.ts             // Supabase client
+│   ├── flags.ts                // Feature flags helper
 │   └── utils.ts                // Utilities
 └── types/
     └── database.types.ts       // Supabase generated types
@@ -1538,6 +1734,9 @@ supabase/
 │   ├── 20251019_portais_opme.sql
 │   └── ...
 └── functions/                  // Edge Functions
+    ├── ml-vectors/             // Persistência de vetores
+    ├── ml-job/                 // Enqueue de jobs ML
+    └── vector-benchmark/       // Comparação FAISS vs pgvector
 ```
 
 ---
@@ -1799,3 +1998,30 @@ npm run qa:perf
 
 © 2025 ICARUS v5.0 - Sistema Enterprise OPME  
 Desenvolvido com ❤️ pela Equipe OraclusX DS
+
+---
+
+## 📚 Storybook CI & Preview
+
+### Local
+```bash
+npm run storybook  # porta 6007
+# http://localhost:6007
+```
+
+### CI (GitHub Actions)
+- PRs: Storybook é construído e publicado como artefato `storybook-static`.
+- main: Deploy automático para GitHub Pages (Pages → Source: GitHub Actions).
+
+Workflow: `.github/workflows/storybook.yml`.
+
+## 🔌 Integrações (mocks → produção)
+- Mocks locais: `npm run mocks:start:bg` (Meili:7700, Ollama:11434, Email:8025, BullMQ:9900)
+- QA validações: `npm run qa:integrations`
+- Produção: defina envs reais
+  - `VITE_MEILISEARCH_URL=...`
+  - `VITE_OLLAMA_URL=...`
+  - `SMTP_HOST`/`SMTP_PORT`
+  - `BULL_HTTP_URL`
+  - `VITE_POSTHOG_API_KEY` (opcional; se ausente, check = SKIP)
+

@@ -1,0 +1,4 @@
+-- Cabeçalho padrão de migração (idempotente)
+-- Título: <NOME>
+-- Data: <YYYY-MM-DD>
+-- Objetivo: <...>

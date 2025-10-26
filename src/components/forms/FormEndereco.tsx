@@ -4,7 +4,7 @@
  * Integrado com ViaCEP Service + Cache Supabase
  */
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -45,7 +45,7 @@ export function FormEndereco({
   description = 'Preencha o CEP para buscar automaticamente o endereço',
 }: FormEnderecoProps) {
   const [cepBuscado, setCepBuscado] = useState(false);
-  const { data: dadosCep, loading: buscandoCep, cached, validate: buscarCep } = useValidacaoCep();
+  const { data: _dadosCep, loading: buscandoCep, cached, validate: buscarCep } = useValidacaoCep();
 
   const form = useForm<EnderecoFormData>({
     resolver: zodResolver(enderecoSchema),

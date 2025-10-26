@@ -13,8 +13,8 @@
  * - Dark mode support
  */
 
-import React, { useState, useEffect } from 'react';
-import { X, Loader2, CheckCircle, AlertCircle, Building2, CreditCard } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { X, Loader2, CheckCircle, AlertCircle, Building2 } from 'lucide-react';
 import { PluggyService } from '@/services/integrations/PluggyService';
 
 interface PluggyConnectWidgetProps {
@@ -54,11 +54,7 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
   
   const pluggyEnabled = import.meta.env.VITE_PLUGGY_ENABLED === 'true';
   
-  useEffect(() => {
-    initializeWidget();
-  }, []);
-  
-  const initializeWidget = async () => {
+  const initializeWidget = useCallback(async () => {
     setLoading(true);
     setError(null);
     
@@ -69,9 +65,9 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
         setConnectToken(token.accessToken);
         
         // Inicializar Pluggy Connect Widget
-        // @ts-expect-error - SDK será carregado externamente
+        // @ts-expect-error Pluggy Connect SDK é injetado via script externo no runtime
         if (window.PluggyConnect) {
-          // @ts-expect-error
+          // @ts-expect-error Instância global de PluggyConnect criada pelo SDK externo
           const pluggyConnect = new window.PluggyConnect({
             connectToken: token.accessToken,
             onSuccess: handlePluggySuccess,
@@ -86,16 +82,22 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
         // Modo MOCK: Simular carregamento
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
-    } catch (_err) {
+    } catch (error) {
+      const err = error as Error;
       const errorMessage = err instanceof Error ? err.message : 'Erro ao inicializar widget';
       setError(errorMessage);
       onError?.(err instanceof Error ? err : new Error(errorMessage));
     } finally {
       setLoading(false);
     }
-  };
+  }, [pluggyEnabled, userId, onClose, onError, handlePluggyError, handlePluggySuccess]);
+
+  useEffect(() => {
+    initializeWidget();
+  }, [initializeWidget]);
   
-  const handlePluggySuccess = (itemData: any) => {
+  
+  const handlePluggySuccess = useCallback((itemData: { item: { id: string } }) => {
     setSuccess(true);
     onSuccess?.(itemData.item.id);
     
@@ -103,13 +105,13 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
     setTimeout(() => {
       onClose?.();
     }, 2000);
-  };
+  }, [onClose, onSuccess]);
   
-  const handlePluggyError = (error: any) => {
-    const errorMessage = error.message || 'Erro ao conectar banco';
+  const handlePluggyError = useCallback((error: unknown) => {
+    const errorMessage = (error as { message?: string })?.message || 'Erro ao conectar banco';
     setError(errorMessage);
     onError?.(new Error(errorMessage));
-  };
+  }, [onError]);
   
   // MOCK: Selecionar banco
   const handleSelectBank = (bankId: number) => {
@@ -143,7 +145,8 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
       } else {
         throw new Error('Credenciais inválidas (mock)');
       }
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao conectar');
       setStep('credentials');
       onError?.(err instanceof Error ? err : new Error('Erro ao conectar'));

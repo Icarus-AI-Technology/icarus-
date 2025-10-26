@@ -11,7 +11,13 @@
  * ACURÁCIA ESPERADA: 90-95%
  */
 
-import { supabase } from"@/lib/supabase";
+import { supabase } from '@/lib/supabase';
+
+import type { FluxoCaixaDia, ProjecaoFluxo, CenarioFluxo } from '@/types/finance';
+
+type Tendencia = 'crescente' | 'estável' | 'decrescente';
+
+// interface RegistroPagamento { data_pagamento: string | null; valor_pago: number | null } // não utilizado
 
 export class FluxoCaixaAI {
   /**
@@ -74,8 +80,9 @@ export class FluxoCaixaAI {
       }
 
       return projecoes;
-    } catch (_err) {
-      console.error("Erro projetarFluxo:", _err);
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro projetarFluxo:', err);
       return this.gerarProjecaoVazia(diasFuturos);
     }
   }
@@ -83,26 +90,27 @@ export class FluxoCaixaAI {
   /**
    * Analisa a tendência do fluxo de caixa
    */
-  async analisarTendencia(): Promise<"crescente" |"estável" |"decrescente"> {
+  async analisarTendencia(): Promise<Tendencia> {
     try {
       const historico = await this.buscarHistorico(30);
 
       if (historico.length < 2) {
-        return"estável";
+        return 'estável';
       }
 
       const tendencia = this.calcularTendencia(historico);
 
       if (tendencia.inclinacao > 1000) {
-        return"crescente";
+        return 'crescente';
       } else if (tendencia.inclinacao < -1000) {
-        return"decrescente";
+        return 'decrescente';
       } else {
-        return"estável";
+        return 'estável';
       }
-    } catch (_err) {
-      console.error("Erro analisarTendencia:", _err);
-      return"estável";
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro analisarTendencia:', err);
+      return 'estável';
     }
   }
 
@@ -116,7 +124,7 @@ export class FluxoCaixaAI {
 
       // Cenário Otimista: +20% nas entradas, -10% nas saídas
       const cenarioOtimista: CenarioFluxo = {
-        tipo:"otimista",
+        tipo: 'otimista',
         projecao: projecaoBase.map((p) => ({
           ...p,
           valor_projetado: p.valor_projetado * 1.15, // 15% melhor
@@ -124,22 +132,30 @@ export class FluxoCaixaAI {
           confianca_inferior: p.confianca_inferior * 1.15,
         })),
         saldo_final_projetado: projecaoBase[projecaoBase.length - 1]?.valor_projetado * 1.15 || 0,
-        premissas: ["Recebimentos 20% acima do esperado","Despesas 10% abaixo do planejado","Zero inadimplência","Novas vendas concretizadas",
+        premissas: [
+          'Recebimentos 20% acima do esperado',
+          'Despesas 10% abaixo do planejado',
+          'Zero inadimplência',
+          'Novas vendas concretizadas',
         ],
       };
 
       // Cenário Realista: projeção base
       const cenarioRealista: CenarioFluxo = {
-        tipo:"realista",
+        tipo: 'realista',
         projecao: projecaoBase,
         saldo_final_projetado: projecaoBase[projecaoBase.length - 1]?.valor_projetado || 0,
-        premissas: ["Recebimentos conforme histórico","Despesas conforme planejado","Taxa de inadimplência histórica","Sem eventos extraordinários",
+        premissas: [
+          'Recebimentos conforme histórico',
+          'Despesas conforme planejado',
+          'Taxa de inadimplência histórica',
+          'Sem eventos extraordinários',
         ],
       };
 
       // Cenário Pessimista: -20% nas entradas, +10% nas saídas
       const cenarioPessimista: CenarioFluxo = {
-        tipo:"pessimista",
+        tipo: 'pessimista',
         projecao: projecaoBase.map((p) => ({
           ...p,
           valor_projetado: p.valor_projetado * 0.85, // 15% pior
@@ -147,13 +163,18 @@ export class FluxoCaixaAI {
           confianca_inferior: p.confianca_inferior * 0.85,
         })),
         saldo_final_projetado: projecaoBase[projecaoBase.length - 1]?.valor_projetado * 0.85 || 0,
-        premissas: ["Recebimentos 20% abaixo do esperado","Despesas 10% acima do planejado","Aumento de inadimplência","Perda de clientes/vendas",
+        premissas: [
+          'Recebimentos 20% abaixo do esperado',
+          'Despesas 10% acima do planejado',
+          'Aumento de inadimplência',
+          'Perda de clientes/vendas',
         ],
       };
 
       return [cenarioOtimista, cenarioRealista, cenarioPessimista];
-    } catch (_err) {
-      console.error("Erro simularCenarios:", _err);
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro simularCenarios:', err);
       return [];
     }
   }
@@ -172,19 +193,19 @@ export class FluxoCaixaAI {
 
       // Buscar entradas
       const { data: entradas } = await supabase
-        .from("contas_receber")
-        .select("data_pagamento, valor_pago")
-        .eq("status","pago")
-        .gte("data_pagamento", dataInicioStr)
-        .lte("data_pagamento", dataFimStr);
+        .from('contas_receber')
+        .select('data_pagamento, valor_pago')
+        .eq('status', 'pago')
+        .gte('data_pagamento', dataInicioStr)
+        .lte('data_pagamento', dataFimStr);
 
       // Buscar saídas
       const { data: saidas } = await supabase
-        .from("contas_pagar")
-        .select("data_pagamento, valor_pago")
-        .eq("status","pago")
-        .gte("data_pagamento", dataInicioStr)
-        .lte("data_pagamento", dataFimStr);
+        .from('contas_pagar')
+        .select('data_pagamento, valor_pago')
+        .eq('status', 'pago')
+        .gte('data_pagamento', dataInicioStr)
+        .lte('data_pagamento', dataFimStr);
 
       // Agrupar por dia
       const fluxoPorDia = new Map<string, FluxoCaixaDia>();
@@ -236,8 +257,9 @@ export class FluxoCaixaAI {
       });
 
       return fluxoOrdenado;
-    } catch (_err) {
-      console.error("Erro buscarHistorico:", _err);
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro buscarHistorico:', err);
       return [];
     }
   }
@@ -289,11 +311,16 @@ export class FluxoCaixaAI {
     historico.forEach((dia) => {
       const data = new Date(dia.data);
       const diaSemana = data.getDay();
-      saldoPorDiaSemana[diaSemana].push(dia.saldo_final - dia.saldo_inicial);
+      const saldoInicial = dia.saldo_inicial ?? dia.saldo_final;
+      saldoPorDiaSemana[diaSemana].push(dia.saldo_final - saldoInicial);
     });
 
     // Calcular média por dia da semana
-    const mediaGeral = historico.reduce((sum, dia) => sum + (dia.saldo_final - dia.saldo_inicial), 0) / historico.length;
+    const mediaGeral =
+      historico.reduce((sum, dia) => {
+        const saldoInicial = dia.saldo_inicial ?? dia.saldo_final;
+        return sum + (dia.saldo_final - saldoInicial);
+      }, 0) / historico.length;
 
     const sazonalidade: Record<number, number> = {};
     for (let i = 0; i <= 6; i++) {
@@ -317,11 +344,14 @@ export class FluxoCaixaAI {
       return 0;
     }
 
-    const variações = historico.map((dia) => dia.saldo_final - dia.saldo_inicial);
-    const media = variações.reduce((sum, v) => sum + v, 0) / variações.length;
+    const variacoes = historico.map((dia) => {
+      const saldoInicial = dia.saldo_inicial ?? dia.saldo_final;
+      return dia.saldo_final - saldoInicial;
+    });
+    const media = variacoes.reduce((sum, v) => sum + v, 0) / variacoes.length;
 
-    const somaQuadrados = variações.reduce((sum, v) => sum + Math.pow(v - media, 2), 0);
-    const variancia = somaQuadrados / (variações.length - 1);
+    const somaQuadrados = variacoes.reduce((sum, v) => sum + Math.pow(v - media, 2), 0);
+    const variancia = somaQuadrados / (variacoes.length - 1);
     const desvioPadrao = Math.sqrt(variancia);
 
     return desvioPadrao;

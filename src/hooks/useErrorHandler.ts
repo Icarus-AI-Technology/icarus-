@@ -8,19 +8,19 @@ interface ErrorData {
   modulo: string;
   mensagem: string;
   stack_trace?: string;
-  contexto?: Record<string, any>;
+  contexto?: Record<string, unknown>;
   impacto?: string;
   solucao_sugerida?: string;
 }
 
 export const useErrorHandler = () => {
-  const { user } = useAuth();
+  const { usuario } = useAuth();
 
   // Função para registrar erro
   const logError = useCallback(async (errorData: ErrorData) => {
     try {
       const { error } = await supabase.from('system_errors').insert({
-        usuario_id: user?.id,
+        usuario_id: usuario?.id,
         tipo: errorData.tipo,
         severidade: errorData.severidade,
         modulo: errorData.modulo,
@@ -32,12 +32,14 @@ export const useErrorHandler = () => {
       });
 
       if (error) {
-        console.error('Erro ao registrar erro no sistema:', error);
+        const err = error as Error;
+        console.error('Erro ao registrar erro no sistema:', err);
       }
-    } catch (err) {
+    } catch (error) {
+      const err = error as Error;
       console.error('Falha crítica ao registrar erro:', err);
     }
-  }, [user]);
+  }, [usuario]);
 
   // Handler global de erros não capturados
   useEffect(() => {
@@ -76,7 +78,7 @@ export const useErrorHandler = () => {
   }, [logError]);
 
   // Wrapper para try-catch com auto-logging
-  const withErrorHandler = useCallback(<T extends any[], R>(
+  const withErrorHandler = useCallback(<T extends unknown[], R>(
     fn: (...args: T) => R | Promise<R>,
     modulo: string,
     severidade: ErrorData['severidade'] = 'media'
@@ -84,13 +86,14 @@ export const useErrorHandler = () => {
     return async (...args: T): Promise<R | null> => {
       try {
         return await fn(...args);
-      } catch (error: any) {
+      } catch (error) {
+        const err = error as Error;
         await logError({
           tipo: 'erro_aplicacao',
           severidade,
           modulo,
-          mensagem: error.message || 'Erro desconhecido',
-          stack_trace: error.stack,
+          mensagem: err.message || 'Erro desconhecido',
+          stack_trace: err.stack,
           contexto: { args },
         });
         return null;

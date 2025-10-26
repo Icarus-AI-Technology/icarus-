@@ -5,10 +5,12 @@
  * Com alertas inteligentes e comparação com metas
  */
 
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   Button,
   Badge,
+  Progress,
 } from '@/components/oraclusx-ds';
 import {
   TrendingUp,
@@ -18,13 +20,10 @@ import {
   CheckCircle2,
   XCircle,
   AlertTriangle,
-  Zap,
   Target,
   Activity,
   DollarSign,
   Package,
-  Users,
-  Clock,
   ShieldCheck,
   RefreshCw,
   Bell,
@@ -64,14 +63,14 @@ interface Alerta {
   created_at: string;
 }
 
-const CATEGORIA_ICONS: Record<string, any> = {
+const CATEGORIA_ICONS: Record<string, typeof DollarSign | typeof BarChart2 | typeof Package | typeof ShieldCheck> = {
   vendas: DollarSign,
   financeiro: BarChart2,
   operacoes: Package,
   compliance: ShieldCheck,
 };
 
-const STATUS_COLORS: Record<string, { bg: string; text: string; icon: any }> = {
+const STATUS_COLORS: Record<string, { bg: string; text: string; icon: typeof CheckCircle2 | typeof AlertTriangle | typeof XCircle }> = {
   excelente: { bg: 'bg-gradient-to-br from-blue-500 to-blue-600', text: 'text-white', icon: CheckCircle2 },
   ok: { bg: 'bg-gradient-to-br from-emerald-500 to-emerald-600', text: 'text-white', icon: CheckCircle2 },
   alerta: { bg: 'bg-gradient-to-br from-orange-500 to-orange-600', text: 'text-white', icon: AlertTriangle },
@@ -97,6 +96,8 @@ export default function KPIDashboardConsolidado() {
         supabase.removeChannel(realtimeChannel);
       }
     };
+    // setup and cleanup run once on mount/unmount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setupRealtime = () => {
@@ -137,7 +138,8 @@ export default function KPIDashboardConsolidado() {
     try {
       await Promise.all([carregarKPIs(), carregarAlertas()]);
     } catch (error: unknown) {
-      addToast(`Erro ao carregar dados: ${error.message}`, 'error');
+      const err = error as Error;
+      addToast(`Erro ao carregar dados: ${err.message}`, 'error');
     } finally {
       setLoading(false);
     }
@@ -153,8 +155,8 @@ export default function KPIDashboardConsolidado() {
       if (error) throw error;
 
       setKpis(data || []);
-    } catch (_error) {
-      console.error('Erro ao carregar KPIs:', error);
+    } catch (error) {
+      console.error('Erro ao carregar KPIs:', error as Error);
       // Mock data para demonstração
       setKpis([
         {
@@ -277,13 +279,18 @@ export default function KPIDashboardConsolidado() {
       if (error) throw error;
 
       setAlertas(
-        (data || []).map((a: any) => ({
-          ...a,
+        (data || []).map((a: { id: string; severidade: string; tipo: string; mensagem: string; acao_recomendada: string; created_at: string; kpi_metas?: { nome?: string } }) => ({
+          id: a.id,
+          severidade: a.severidade,
+          tipo: a.tipo,
+          mensagem: a.mensagem,
+          acao_recomendada: a.acao_recomendada,
+          created_at: a.created_at,
           kpi_nome: a.kpi_metas?.nome || 'N/A',
         }))
       );
-    } catch (_error) {
-      console.error('Erro ao carregar alertas:', error);
+    } catch (error) {
+      console.error('Erro ao carregar alertas:', error as Error);
       // Mock data
       setAlertas([
         {
@@ -411,7 +418,7 @@ export default function KPIDashboardConsolidado() {
           <Card className="p-4 neuro-inset bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700">
             <div className="flex items-center gap-3 mb-3">
               <AlertCircle className="w-6 h-6 text-red-600" />
-              <h3 className="text-red-700 dark:text-red-300" style={{ fontWeight: 600 }}>
+              <h3 className="text-red-700 dark:text-red-300 font-semibold">
                 {alertas.filter((a) => a.severidade === 'critico').length} Alertas Críticos
               </h3>
             </div>
@@ -424,8 +431,8 @@ export default function KPIDashboardConsolidado() {
                     className="flex items-start justify-between p-3 bg-red-100 dark:bg-red-800 rounded-lg"
                   >
                     <div className="flex-1">
-                      <p className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>{alerta.mensagem}</p>
-                      <p className="text-[var(--text-secondary)] mt-1" style={{ fontSize: '0.813rem' }}>
+                      <p className="text-[0.813rem] font-medium">{alerta.mensagem}</p>
+                      <p className="text-[var(--text-secondary)] mt-1 text-[0.813rem]">
                         💡 {alerta.acao_recomendada}
                       </p>
                     </div>
@@ -458,19 +465,19 @@ export default function KPIDashboardConsolidado() {
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <Icon className="w-5 h-5 text-[var(--primary)]" />
-                    <h3 className="capitalize" style={{ fontWeight: 600 }}>{est.categoria}</h3>
+                    <h3 className="capitalize font-semibold">{est.categoria}</h3>
                   </div>
                   <Badge variant="default">{est.total} KPIs</Badge>
                 </div>
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between" style={{ fontSize: '0.813rem' }}>
+                  <div className="flex items-center justify-between text-[0.813rem]">
                     <span className="text-success">✓ Saudáveis</span>
-                    <span className style={{ fontWeight: 600 }}>{totalOk}</span>
+                    <span className="font-semibold">{totalOk}</span>
                   </div>
                   {totalProblemas > 0 && (
-                    <div className="flex items-center justify-between" style={{ fontSize: '0.813rem' }}>
+                    <div className="flex items-center justify-between text-[0.813rem]">
                       <span className="text-error">⚠ Problemas</span>
-                      <span className style={{ fontWeight: 600 }}>{totalProblemas}</span>
+                      <span className="font-semibold">{totalProblemas}</span>
                     </div>
                   )}
                 </div>
@@ -491,37 +498,30 @@ export default function KPIDashboardConsolidado() {
                 className={`p-6 neuro-raised flex flex-col justify-between h-[220px] ${statusConfig.bg} ${statusConfig.text}`}
               >
                 <div>
-                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
-                      <h3 className="opacity-90 mb-1" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>{kpi.descricao}</h3>
-                      <Badge variant="default" className="bg-white/20 text-white" style={{ fontSize: '0.813rem' }}>
+                      <h3 className="opacity-90 mb-1 text-[0.813rem] font-medium">{kpi.descricao}</h3>
+                      <Badge variant="default" className="bg-white/20 text-white text-[0.813rem]">
                         {kpi.categoria}
                       </Badge>
                     </div>
                     <StatusIcon className="w-6 h-6 opacity-90" />
                   </div>
-                  <div className="mb-2" style={{  fontSize: '0.813rem' , fontWeight: 700 }}>
+                  <div className="mb-2 text-[0.813rem] font-bold">
                     {formatarValor(kpi.valor_atual, kpi.unidade)}
                   </div>
-                  <div className="opacity-80" style={{ fontSize: '0.813rem' }}>
+                  <div className="opacity-80 text-[0.813rem]">
                     Meta: {formatarValor(kpi.valor_meta, kpi.unidade)}
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between opacity-90" style={{ fontSize: '0.813rem' }}>
+                  <div className="flex items-center justify-between opacity-90 text-[0.813rem]">
                     <span>Atingimento</span>
-                    <span className style={{ fontWeight: 600 }}>{kpi.atingimento_percentual.toFixed(1)}%</span>
+                    <span className="font-semibold">{kpi.atingimento_percentual.toFixed(1)}%</span>
                   </div>
-                  <div className="w-full bg-white/20 h-2 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-white"
-                      style={{
-                        width: `${Math.min(kpi.atingimento_percentual, 100)}%`,
-                      }}
-                    />
-                  </div>
-                  <div className="flex items-center gap-2 opacity-80" style={{ fontSize: '0.813rem' }}>
+                  <Progress value={Math.min(kpi.atingimento_percentual, 100)} />
+                  <div className="flex items-center gap-2 opacity-80 text-[0.813rem]">
                     {kpi.tendencia === 'crescimento' ? (
                       <TrendingUp className="w-4 h-4" />
                     ) : kpi.tendencia === 'queda' ? (
@@ -549,7 +549,7 @@ export default function KPIDashboardConsolidado() {
         {/* Lista de Alertas */}
         {alertas.length > 0 && (
           <Card className="p-6 neuro-raised">
-            <h3 className="mb-4 flex items-center gap-2" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>
+            <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] font-semibold">
               <Bell className="w-5 h-5 text-[var(--primary)]" />
               Alertas Ativos ({alertas.length})
             </h3>
@@ -569,10 +569,10 @@ export default function KPIDashboardConsolidado() {
                         >
                           {alerta.severidade}
                         </Badge>
-                        <span className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>{alerta.kpi_nome}</span>
+                        <span className="text-[0.813rem] font-medium">{alerta.kpi_nome}</span>
                       </div>
-                      <p className="mb-2" style={{ fontSize: '0.813rem' }}>{alerta.mensagem}</p>
-                      <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+                      <p className="mb-2 text-[0.813rem]">{alerta.mensagem}</p>
+                      <p className="text-[var(--text-secondary)] text-[0.813rem]">
                         💡 {alerta.acao_recomendada}
                       </p>
                     </div>

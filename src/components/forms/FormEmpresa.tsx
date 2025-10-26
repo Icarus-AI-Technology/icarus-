@@ -53,7 +53,7 @@ export function FormEmpresa({
   const [cnpjBuscado, setCnpjBuscado] = useState(false);
   const [statusEmpresa, setStatusEmpresa] = useState<'ativa' | 'inativa' | null>(null);
   
-  const { data: dadosCnpj, loading: buscandoCnpj, cached, error, validate: buscarCnpj } = useValidacaoCNPJ();
+  const { data: _dadosCnpj, loading: buscandoCnpj, cached, error, validate: buscarCnpj } = useValidacaoCNPJ();
 
   const form = useForm<EmpresaFormData>({
     resolver: zodResolver(empresaSchema),

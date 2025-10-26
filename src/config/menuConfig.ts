@@ -4,6 +4,7 @@
  */
 
 import { useAuth } from '@/contexts/AuthContext';
+import type { ComponentType, SVGProps } from 'react';
 import {
   LayoutDashboard,
   Activity,
@@ -14,7 +15,6 @@ import {
   Users,
   Settings,
   BarChart3,
-  Shield,
   Truck,
   ClipboardCheck,
   MessageSquare,
@@ -23,7 +23,7 @@ import {
 export interface MenuItem {
   id: string;
   titulo: string;
-  icone: any;
+  icone: ComponentType<SVGProps<SVGSVGElement>>;
   rota: string;
   permissao?: string;
   recurso?: string;
@@ -153,6 +153,30 @@ export const menuItems: MenuItem[] = [
     icone: BarChart3,
     rota: '/relatorios',
     recurso: 'relatorios',
+    acao: 'read',
+  },
+  {
+    id: 'workflow-builder',
+    titulo: 'Workflow Builder',
+    icone: Activity,
+    rota: '/modules/workflow-builder',
+    recurso: 'workflows',
+    acao: 'manage',
+  },
+  {
+    id: 'campanhas',
+    titulo: 'Campanhas',
+    icone: MessageSquare,
+    rota: '/modules/campanhas',
+    recurso: 'marketing',
+    acao: 'manage',
+  },
+  {
+    id: 'system-health',
+    titulo: 'System Health',
+    icone: Activity,
+    rota: '/modules/system-health',
+    recurso: 'observability',
     acao: 'read',
   },
   {

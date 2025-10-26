@@ -1,0 +1,51 @@
+{
+  "auth": {
+    "service": "Auth",
+    "configured": false,
+    "functional": false,
+    "details": {},
+    "issues": [
+      "Credenciais Supabase não configuradas"
+    ]
+  },
+  "storage": {
+    "service": "Storage",
+    "configured": false,
+    "functional": false,
+    "details": {},
+    "issues": [
+      "Credenciais Supabase não configuradas"
+    ]
+  },
+  "realtime": {
+    "service": "Realtime",
+    "configured": false,
+    "functional": false,
+    "details": {},
+    "issues": [
+      "Credenciais Supabase não configuradas"
+    ]
+  },
+  "edgeFunctions": {
+    "service": "Edge Functions",
+    "configured": true,
+    "functional": true,
+    "details": {
+      "functions": [
+        "consulta_anvisa_produto",
+        "create-admin",
+        "ml-job",
+        "ml-vectors",
+        "recalcular_kpis",
+        "test-credential",
+        "valida_crm_cfm",
+        "vector-benchmark"
+      ]
+    },
+    "issues": []
+  },
+  "score": 25,
+  "configured": 1,
+  "functional": 1,
+  "total": 4
+}

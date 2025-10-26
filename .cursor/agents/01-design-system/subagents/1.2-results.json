@@ -1,0 +1,22 @@
+{
+  "subagent": "1.2",
+  "name": "Responsividade & A11y",
+  "status": "completed",
+  "responsive": {
+    "breakpoints": [
+      "sm",
+      "md",
+      "lg",
+      "xl",
+      "2xl"
+    ],
+    "responsiveClasses": 0,
+    "pass": false
+  },
+  "a11y": {
+    "violations": -1,
+    "pass": false
+  },
+  "score": 0,
+  "issues": []
+}

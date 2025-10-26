@@ -129,7 +129,8 @@ export function useConvenios() {
 
       if (fetchError) throw fetchError;
       setConvenios((data as Convenio[]) || []);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao carregar convênios";
       setError(message);
       console.error("Erro useConvenios:", err);
@@ -150,7 +151,8 @@ export function useConvenios() {
 
       if (createError) throw createError;
       return data as Convenio;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao criar convênio";
       setError(message);
       console.error("Erro createConvenio:", err);
@@ -171,7 +173,8 @@ export function useConvenios() {
 
       if (updateError) throw updateError;
       return data as Convenio;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao atualizar convênio";
       setError(message);
       console.error("Erro updateConvenio:", err);
@@ -190,7 +193,8 @@ export function useConvenios() {
 
       if (deleteError) throw deleteError;
       return true;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao excluir convênio";
       setError(message);
       console.error("Erro deleteConvenio:", err);
@@ -235,7 +239,8 @@ export function useConvenios() {
         total_glosas: totalGlosas,
         taxa_glosa: taxaGlosa,
       };
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error("Erro getEstatisticasConvenio:", err);
       return {
         total_faturado: 0,
@@ -276,7 +281,8 @@ export function useConvenios() {
         taxa_glosa_media: taxaGlosaMedia,
         ticket_medio_convenio: ativos.length > 0 ? valorFaturado / ativos.length : 0,
       };
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error("Erro getResumo:", err);
       return {
         total_convenios: 0,

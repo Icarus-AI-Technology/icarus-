@@ -23,12 +23,9 @@ import {
   TableHead,
   TableBody,
   TableCell,
-  Tabs,
   Input,
-  Textarea,
   Select,
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -46,24 +43,20 @@ import {
   AlertCircle,
   FileCheck,
   Shield,
-  Database,
   FileSpreadsheet,
   FileCog,
   Plus,
-  Eye,
   RefreshCw,
-  Filter,
-  Mail,
   Settings,
   History,
-  Package,
-  TrendingUp,
   FileBarChart,
+  Mail,
+  Eye,
 } from 'lucide-react';
 import { useDocumentTitle } from '@/hooks';
 import { useToast } from '@/contexts/ToastContext';
 import { supabase } from '@/lib/supabase';
-import { formatNumber, formatCurrency, formatDate } from '@/lib/utils';
+import { formatNumber } from '@/lib/utils';
 
 interface Relatorio {
   id: string;
@@ -78,7 +71,7 @@ interface Relatorio {
   formato: string;
   arquivo_url?: string;
   total_registros: number;
-  resumo?: any;
+  resumo?: unknown;
   gerado_em?: string;
   enviado_em?: string;
   protocolo_envio?: string;
@@ -114,14 +107,14 @@ const ORGAOS = [
   { value: 'CFM', label: 'CFM', icon: FileText, color: 'text-orange-600' },
 ];
 
-const STATUS_CONFIG: Record<string, { bg: string; text: string; icon: any }> = {
+const STATUS_CONFIG: Record<string, { bg: string; text: string; icon: typeof Clock | typeof CheckCircle | typeof Send | typeof AlertCircle }> = {
   gerando: { bg: 'bg-blue-500/20', text: 'text-blue-600', icon: Clock },
   gerado: { bg: 'bg-success/20', text: 'text-success', icon: CheckCircle },
   enviado: { bg: 'bg-purple-500/20', text: 'text-purple-600', icon: Send },
   erro: { bg: 'bg-error/20', text: 'text-error', icon: AlertCircle },
 };
 
-const FORMATO_ICONS: Record<string, any> = {
+const FORMATO_ICONS: Record<string, typeof FileText | typeof FileSpreadsheet | typeof FileCog> = {
   PDF: FileText,
   Excel: FileSpreadsheet,
   XML: FileCog,
@@ -148,6 +141,7 @@ export default function RelatoriosRegulatorios() {
 
   useEffect(() => {
     carregarDados();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const carregarDados = async () => {
@@ -159,7 +153,8 @@ export default function RelatoriosRegulatorios() {
         carregarAgendamentos(),
       ]);
     } catch (error: unknown) {
-      addToast(`Erro ao carregar dados: ${error.message}`, 'error');
+      const err = error as Error;
+      addToast(`Erro ao carregar dados: ${err.message}`, 'error');
     } finally {
       setLoading(false);
     }
@@ -213,24 +208,21 @@ export default function RelatoriosRegulatorios() {
     setLoading(true);
     try {
       // Chamar função RPC baseada no tipo
-      let relatorioId: string;
 
       if (selectedTemplate.tipo === 'anvisa_rastreabilidade') {
-        const { data, error } = await supabase.rpc('gerar_relatorio_anvisa_rastreabilidade', {
+        const { error } = await supabase.rpc('gerar_relatorio_anvisa_rastreabilidade', {
           p_data_inicio: formDataInicio,
           p_data_fim: formDataFim,
           p_formato: formFormato,
         });
         if (error) throw error;
-        relatorioId = data;
       } else if (selectedTemplate.tipo === 'sefaz_sped_fiscal') {
         const dataInicio = new Date(formDataInicio);
-        const { data, error } = await supabase.rpc('gerar_sped_fiscal', {
+        const { error } = await supabase.rpc('gerar_sped_fiscal', {
           p_mes: dataInicio.getMonth() + 1,
           p_ano: dataInicio.getFullYear(),
         });
         if (error) throw error;
-        relatorioId = data;
       } else {
         // Outros tipos de relatórios (genérico)
         const { data, error } = await supabase
@@ -249,13 +241,14 @@ export default function RelatoriosRegulatorios() {
           .select()
           .single();
         if (error) throw error;
-        relatorioId = data.id;
+        // id disponível em data.id se necessário
       }
 
       addToast('Relatório gerado com sucesso!', 'success');
       setIsGerarDialogOpen(false);
       await carregarRelatorios();
     } catch (error: unknown) {
+        const err = error as Error;
       addToast(`Erro ao gerar relatório: ${error.message}`, 'error');
     } finally {
       setLoading(false);
@@ -287,6 +280,7 @@ export default function RelatoriosRegulatorios() {
       addToast('Relatório enviado com sucesso!', 'success');
       await carregarRelatorios();
     } catch (error: unknown) {
+        const err = error as Error;
       addToast(`Erro ao enviar: ${error.message}`, 'error');
     } finally {
       setLoading(false);
@@ -325,38 +319,38 @@ export default function RelatoriosRegulatorios() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Card className="p-4 neuro-raised">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-[var(--text-secondary)]" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Total Gerados</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] font-medium">Total Gerados</h3>
               <FileText className="w-4 h-4 text-[var(--primary)]" />
             </div>
-            <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{relatorios.length}</p>
+            <p className="text-[0.813rem] font-bold">{relatorios.length}</p>
           </Card>
 
           <Card className="p-4 neuro-raised">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-[var(--text-secondary)]" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Pendentes Envio</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] font-medium">Pendentes Envio</h3>
               <Send className="w-4 h-4 text-warning" />
             </div>
-            <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>
+            <p className="text-[0.813rem] font-bold">
               {relatorios.filter((r) => r.status === 'gerado').length}
             </p>
           </Card>
 
           <Card className="p-4 neuro-raised">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-[var(--text-secondary)]" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Enviados</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] font-medium">Enviados</h3>
               <CheckCircle className="w-4 h-4 text-success" />
             </div>
-            <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>
+            <p className="text-[0.813rem] font-bold">
               {relatorios.filter((r) => r.status === 'enviado').length}
             </p>
           </Card>
 
           <Card className="p-4 neuro-raised">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-[var(--text-secondary)]" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Com Erro</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] font-medium">Com Erro</h3>
               <AlertCircle className="w-4 h-4 text-error" />
             </div>
-            <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>
+            <p className="text-[0.813rem] font-bold">
               {relatorios.filter((r) => r.status === 'erro').length}
             </p>
           </Card>
@@ -391,9 +385,9 @@ export default function RelatoriosRegulatorios() {
                       <div className="flex items-center gap-2">
                         <OrgaoIcon className={`w-4 h-4 ${orgaoConfig?.color}`} />
                         <div>
-                          <p className style={{ fontWeight: 500 }}>{relatorio.titulo}</p>
+                          <p className="font-medium">{relatorio.titulo}</p>
                           {relatorio.obrigatoriedade === 'obrigatorio' && (
-                            <Badge variant="default" className="bg-error/20 text-error mt-1" style={{ fontSize: '0.813rem' }}>
+                            <Badge variant="default" className="bg-error/20 text-error mt-1 text-[0.813rem]">
                               Obrigatório
                             </Badge>
                           )}
@@ -478,7 +472,7 @@ export default function RelatoriosRegulatorios() {
   const renderTemplates = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Templates de Relatórios</h2>
+        <h2 className="text-[0.813rem] font-semibold">Templates de Relatórios</h2>
         <Button icon={<Plus />}>Novo Template</Button>
       </div>
 
@@ -494,10 +488,10 @@ export default function RelatoriosRegulatorios() {
                 <OrgaoIcon className={`w-8 h-8 ${orgaoConfig?.color}`} />
                 <Badge variant="default">{template.orgao}</Badge>
               </div>
-              <h3 className="mb-2" style={{ fontWeight: 600 }}>{template.nome}</h3>
-              <p className="text-[var(--text-secondary)] mb-4" style={{ fontSize: '0.813rem' }}>{template.descricao}</p>
+              <h3 className="mb-2 font-semibold">{template.nome}</h3>
+              <p className="text-[var(--text-secondary)] mb-4 text-[0.813rem]">{template.descricao}</p>
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+                <div className="flex items-center gap-2 text-[var(--text-secondary)] text-[0.813rem]">
                   <FormatoIcon className="w-4 h-4" />
                   {template.formato_padrao}
                 </div>
@@ -521,7 +515,7 @@ export default function RelatoriosRegulatorios() {
   const renderAgendamentos = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Agendamentos Automáticos</h2>
+        <h2 className="text-[0.813rem] font-semibold">Agendamentos Automáticos</h2>
         <Button icon={<Plus />}>Novo Agendamento</Button>
       </div>
 
@@ -532,7 +526,7 @@ export default function RelatoriosRegulatorios() {
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
                   <Calendar className="w-5 h-5 text-[var(--primary)]" />
-                  <h3 className style={{ fontWeight: 600 }}>{agendamento.nome}</h3>
+                  <h3 className="font-semibold">{agendamento.nome}</h3>
                   <Badge
                     variant="default"
                     className={
@@ -544,14 +538,14 @@ export default function RelatoriosRegulatorios() {
                     {agendamento.is_ativo ? 'Ativo' : 'Inativo'}
                   </Badge>
                 </div>
-                <p className="text-[var(--text-secondary)] mb-3" style={{ fontSize: '0.813rem' }}>
+                <p className="text-[var(--text-secondary)] mb-3 text-[0.813rem]">
                   Frequência: {agendamento.frequencia} • Dia {agendamento.dia_execucao} às{' '}
                   {agendamento.hora_execucao}:00
                 </p>
-                <div className="grid grid-cols-2 gap-4" style={{ fontSize: '0.813rem' }}>
+                <div className="grid grid-cols-2 gap-4 text-[0.813rem]">
                   <div>
                     <p className="text-[var(--text-secondary)]">Última Execução</p>
-                    <p className style={{ fontWeight: 600 }}>
+                    <p className="font-semibold">
                       {agendamento.ultima_execucao
                         ? new Date(agendamento.ultima_execucao).toLocaleDateString('pt-BR')
                         : 'Nunca'}
@@ -559,7 +553,7 @@ export default function RelatoriosRegulatorios() {
                   </div>
                   <div>
                     <p className="text-[var(--text-secondary)]">Próxima Execução</p>
-                    <p className style={{ fontWeight: 600 }}>
+                    <p className="font-semibold">
                       {agendamento.proxima_execucao
                         ? new Date(agendamento.proxima_execucao).toLocaleDateString('pt-BR')
                         : '-'}
@@ -569,7 +563,7 @@ export default function RelatoriosRegulatorios() {
                 {agendamento.destinatarios_email && agendamento.destinatarios_email.length > 0 && (
                   <div className="mt-3 flex items-center gap-2">
                     <Mail className="w-4 h-4 text-[var(--text-secondary)]" />
-                    <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+                    <p className="text-[var(--text-secondary)] text-[0.813rem]">
                       {agendamento.destinatarios_email.length} destinatário(s)
                     </p>
                   </div>
@@ -589,14 +583,14 @@ export default function RelatoriosRegulatorios() {
   const renderAnvisa = () => (
     <div className="space-y-6">
       <Card className="p-6 neuro-raised bg-gradient-to-br from-green-500 to-green-600 text-white">
-        <div className="flex items-center gap-4 mb-4">
+          <div className="flex items-center gap-4 mb-4">
           <Shield className="w-12 h-12" />
           <div>
-            <h2 className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>ANVISA - Rastreabilidade</h2>
+            <h2 className="text-[0.813rem] font-bold">ANVISA - Rastreabilidade</h2>
             <p className="opacity-90">RDC 16/2013 - Boas Práticas de Distribuição</p>
           </div>
         </div>
-        <p className="opacity-80" style={{ fontSize: '0.813rem' }}>
+        <p className="opacity-80 text-[0.813rem]">
           Como distribuidora de OPME, você DEVE manter rastreabilidade completa de todos os
           produtos, desde o recebimento até a entrega ao hospital/clínica.
         </p>
@@ -605,28 +599,28 @@ export default function RelatoriosRegulatorios() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="p-6 neuro-raised">
           <Package className="w-8 h-8 text-[var(--primary)] mb-3" />
-          <h3 className="mb-2" style={{ fontWeight: 600 }}>Produtos Rastreados</h3>
-          <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>1.248</p>
-          <p className="text-[var(--text-secondary)] mt-2" style={{ fontSize: '0.813rem' }}>Últimos 30 dias</p>
+          <h3 className="mb-2 font-semibold">Produtos Rastreados</h3>
+          <p className="text-[0.813rem] font-bold">1.248</p>
+          <p className="text-[var(--text-secondary)] mt-2 text-[0.813rem]">Últimos 30 dias</p>
         </Card>
 
         <Card className="p-6 neuro-raised">
           <TrendingUp className="w-8 h-8 text-success mb-3" />
-          <h3 className="mb-2" style={{ fontWeight: 600 }}>Lotes Ativos</h3>
-          <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>87</p>
-          <p className="text-[var(--text-secondary)] mt-2" style={{ fontSize: '0.813rem' }}>Em estoque</p>
+          <h3 className="mb-2 font-semibold">Lotes Ativos</h3>
+          <p className="text-[0.813rem] font-bold">87</p>
+          <p className="text-[var(--text-secondary)] mt-2 text-[0.813rem]">Em estoque</p>
         </Card>
 
         <Card className="p-6 neuro-raised">
           <FileCheck className="w-8 h-8 text-purple-600 mb-3" />
-          <h3 className="mb-2" style={{ fontWeight: 600 }}>Conformidade</h3>
-          <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>100%</p>
-          <p className="text-[var(--text-secondary)] mt-2" style={{ fontSize: '0.813rem' }}>Todos rastreáveis</p>
+          <h3 className="mb-2 font-semibold">Conformidade</h3>
+          <p className="text-[0.813rem] font-bold">100%</p>
+          <p className="text-[var(--text-secondary)] mt-2 text-[0.813rem]">Todos rastreáveis</p>
         </Card>
       </div>
 
       <Card className="p-6 neuro-raised">
-        <h3 className="mb-4" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Movimentações Recentes</h3>
+        <h3 className="mb-4 text-[0.813rem] font-semibold">Movimentações Recentes</h3>
         <p className="text-[var(--text-secondary)]">
           Implementar tabela de movimentações ANVISA aqui...
         </p>
@@ -689,7 +683,7 @@ export default function RelatoriosRegulatorios() {
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <label className="block mb-2" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Template</label>
+              <label className="block mb-2 text-[0.813rem] font-medium">Template</label>
                 <Select
                   value={selectedTemplate?.id || ''}
                   onValueChange={(value) => {
@@ -708,7 +702,7 @@ export default function RelatoriosRegulatorios() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block mb-2" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Data Início</label>
+                  <label className="block mb-2 text-[0.813rem] font-medium">Data Início</label>
                   <Input
                     type="date"
                     value={formDataInicio}
@@ -716,7 +710,7 @@ export default function RelatoriosRegulatorios() {
                   />
                 </div>
                 <div>
-                  <label className="block mb-2" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Data Fim</label>
+                  <label className="block mb-2 text-[0.813rem] font-medium">Data Fim</label>
                   <Input
                     type="date"
                     value={formDataFim}
@@ -726,7 +720,7 @@ export default function RelatoriosRegulatorios() {
               </div>
 
               <div>
-                <label className="block mb-2" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Formato</label>
+                <label className="block mb-2 text-[0.813rem] font-medium">Formato</label>
                 <Select value={formFormato} onValueChange={setFormFormato}>
                   <option value="PDF">PDF</option>
                   <option value="Excel">Excel</option>

@@ -174,7 +174,8 @@ export class ValidacaoService {
             situacao: data.situacao
           };
         }
-      } catch (_error) {
+      } catch (error) {
+   const err = error as Error;
         console.warn('Brasil API indisponível, usando validação local');
       }
 
@@ -184,8 +185,9 @@ export class ValidacaoService {
         mensagem: 'CPF válido (validação local)'
       };
 
-    } catch (_error) {
-      console.error('Erro ao consultar CPF:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao consultar CPF:', err);
       return {
         valido: false,
         mensagem: 'Erro ao consultar CPF na Receita Federal'
@@ -280,7 +282,8 @@ export class ValidacaoService {
             }
           };
         }
-      } catch (_error) {
+      } catch (error) {
+   const err = error as Error;
         console.warn('Brasil API indisponível para CNPJ');
       }
 
@@ -290,8 +293,9 @@ export class ValidacaoService {
         mensagem: 'CNPJ válido (validação local)'
       };
 
-    } catch (_error) {
-      console.error('Erro ao consultar CNPJ:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao consultar CNPJ:', err);
       return {
         valido: false,
         mensagem: 'Erro ao consultar CNPJ na Receita Federal'
@@ -345,8 +349,9 @@ export class ValidacaoService {
         mensagem: 'CRM válido (validação de formato)'
       };
 
-    } catch (_error) {
-      console.error('Erro ao consultar CRM:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao consultar CRM:', err);
       return {
         ativo: false,
         mensagem: 'Erro ao consultar CRM no CFM'
@@ -404,8 +409,9 @@ export class ValidacaoService {
         siafi: data.siafi
       };
 
-    } catch (_error) {
-      console.error('Erro ao consultar CEP:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao consultar CEP:', err);
       return {
         encontrado: false,
         erro: 'Erro ao consultar CEP'
@@ -441,8 +447,9 @@ export class ValidacaoService {
         mensagem: 'Código ANVISA válido (validação de formato)'
       };
 
-    } catch (_error) {
-      console.error('Erro ao consultar ANVISA:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao consultar ANVISA:', err);
       return {
         valido: false,
         mensagem: 'Erro ao consultar código ANVISA'
@@ -478,8 +485,9 @@ export class ValidacaoService {
         mensagem: 'Registro ANS válido (validação de formato)'
       };
 
-    } catch (_error) {
-      console.error('Erro ao consultar ANS:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao consultar ANS:', err);
       return {
         encontrado: false,
         mensagem: 'Erro ao consultar registro ANS'
@@ -515,8 +523,9 @@ export class ValidacaoService {
         mensagem: 'CNES válido (validação de formato)'
       };
 
-    } catch (_error) {
-      console.error('Erro ao consultar CNES:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao consultar CNES:', err);
       return {
         encontrado: false,
         mensagem: 'Erro ao consultar CNES'

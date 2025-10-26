@@ -10,12 +10,12 @@
  * Cobertura: Nacional
  * Limite peso: 70kg
  */
-
+import {
   TransportadoraService,
   CotacaoParams,
   CotacaoResult,
   RastreamentoResult,
-  StatusEntrega
+  StatusEntrega,
 } from '../base/types';
 
 export class TNTService implements TransportadoraService {
@@ -99,8 +99,9 @@ export class TNTService implements TransportadoraService {
         prazo: rate.commit?.dateDetail?.dayOfWeek ? this.calcularPrazo(rate.commit.dateDetail.dayOfWeek) : 5,
         observacoes: rate.serviceDescription
       }));
-    } catch (_error) {
-      console.error('Erro ao cotar TNT:', _error);
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro ao cotar TNT:', err.message ?? err);
       return [];
     }
   }
@@ -166,9 +167,10 @@ export class TNTService implements TransportadoraService {
           ? new Date(trackingData.estimatedDeliveryTimeWindow.window.ends)
           : null
       };
-    } catch (_error) {
-      console.error('Erro ao rastrear TNT:', _error);
-      throw _error;
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro ao rastrear TNT:', err.message ?? err);
+      throw err;
     }
   }
 

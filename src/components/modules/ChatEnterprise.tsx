@@ -35,7 +35,7 @@ export const ChatEnterprise: React.FC = () => {
           <div className="flex items-center gap-2 px-4 py-2 bg-primary rounded-full">
             <Settings className="text-inverse animate-spin-slow" size={20} />
             <div className="text-left">
-              <p className="text-inverse text-body-sm" style={{ fontWeight: 500 }}>IA Chat Bot</p>
+              <p className="text-inverse text-body-sm font-medium">IA Chat Bot</p>
               <p className="text-indigo-100 text-body-xs">Online 24/7</p>
             </div>
           </div>
@@ -53,9 +53,9 @@ export const ChatEnterprise: React.FC = () => {
                       <Icon size={24} />
                     </div>
                     <div className="text-center">
-                      <p className="text-body-xs mb-1" style={{ fontWeight: 500 }}>{category.label}</p>
+                      <p className="text-body-xs mb-1 font-medium">{category.label}</p>
                       <div className="flex items-center justify-center gap-2">
-                        <span className="text-heading font-display" style={{ fontSize: '0.813rem' }}>{category.count}</span>
+                        <span className="text-heading font-display text-[0.813rem]">{category.count}</span>
                         <span className={`text-body-xs ${isActive ?"text-inverse/80" :"text-success dark:text-green-400"}`}>
                           <TrendingUp size={12} className="inline mr-0.5" />
                           {category.trend}

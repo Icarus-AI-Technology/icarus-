@@ -157,7 +157,8 @@ export function useContasPagar() {
 
       if (fetchError) throw fetchError;
       setContas((data as ContaPagar[] | null) ?? []);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao carregar contas a pagar";
       setError(message);
       console.error("Erro useContasPagar:", err);
@@ -178,7 +179,8 @@ export function useContasPagar() {
 
       if (createError) throw createError;
       return data as ContaPagar;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao criar conta a pagar";
       setError(message);
       console.error("Erro createConta:", err);
@@ -199,7 +201,8 @@ export function useContasPagar() {
 
       if (updateError) throw updateError;
       return data as ContaPagar;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao atualizar conta a pagar";
       setError(message);
       console.error("Erro updateConta:", err);
@@ -218,7 +221,8 @@ export function useContasPagar() {
 
       if (deleteError) throw deleteError;
       return true;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao excluir conta a pagar";
       setError(message);
       console.error("Erro deleteConta:", err);
@@ -270,7 +274,8 @@ export function useContasPagar() {
 
       if (updateError) throw updateError;
       return data as ContaPagar;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao aprovar conta";
       setError(message);
       console.error("Erro aprovarConta:", err);
@@ -301,7 +306,8 @@ export function useContasPagar() {
 
       if (updateError) throw updateError;
       return data as ContaPagar;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao agendar pagamento";
       setError(message);
       console.error("Erro agendarPagamento:", err);
@@ -357,7 +363,8 @@ export function useContasPagar() {
 
       if (updateError) throw updateError;
       return data as ContaPagar;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao pagar conta";
       setError(message);
       console.error("Erro pagarConta:", err);
@@ -374,7 +381,8 @@ export function useContasPagar() {
  
        if (resumoError) throw resumoError;
        return data as ContasPagarResumo;
-     } catch (_err) {
+     } catch (error) {
+   const err = error as Error;
        const message = err instanceof Error ? err.message :"Erro ao carregar resumo de contas a pagar";
        setError(message);
        console.error("Erro getResumo:", err);

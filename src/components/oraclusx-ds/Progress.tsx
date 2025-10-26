@@ -26,6 +26,13 @@ export const Progress: React.FC<ProgressProps> = ({
   className,
 }) => {
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
+  const fillRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (fillRef.current) {
+      fillRef.current.style.width = `${percentage}%`;
+    }
+  }, [percentage]);
 
   const sizeClasses = {
     sm:"h-1",
@@ -46,12 +53,12 @@ export const Progress: React.FC<ProgressProps> = ({
       {(label || showPercentage) && (
         <div className="flex items-center justify-between mb-2">
           {label && (
-            <span className="text-body-sm text-secondary dark:text-muted" style={{ fontWeight: 500 }}>
+            <span className="text-body-sm text-secondary dark:text-muted font-medium">
               {label}
             </span>
           )}
           {showPercentage && (
-            <span className="text-body-sm text-secondary dark:text-muted" style={{ fontWeight: 500 }}>
+            <span className="text-body-sm text-secondary dark:text-muted font-medium">
               {percentage.toFixed(0)}%
             </span>
           )}
@@ -62,7 +69,7 @@ export const Progress: React.FC<ProgressProps> = ({
           className={cn("h-full rounded-full transition-all duration-300",
             variantClasses[variant],
           )}
-          style={{ width: `${percentage}%` }}
+          ref={fillRef}
         />
       </div>
     </div>

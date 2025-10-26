@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase } from '@/lib/supabase';
+import type { PostgrestError } from '@supabase/supabase-js';
 
 /**
  * Hook para Kits de Consignação
@@ -55,7 +56,8 @@ export const useKits = () => {
 
       setKits((data as Kit[] | null) ?? []);
       setError(null);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       handleError(err, 'Erro ao carregar kits');
       setKits([]);
     } finally {
@@ -93,7 +95,8 @@ export const useKits = () => {
       if (error) throw error;
 
       return data as Kit;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       handleError(err, 'Erro ao criar kit');
       throw err;
     }
@@ -109,7 +112,8 @@ export const useKits = () => {
       if (error) throw error;
 
       await fetchKits();
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       handleError(err, 'Erro ao atualizar kit');
       throw err;
     }
@@ -126,7 +130,8 @@ export const useKits = () => {
       if (error) throw error;
 
       return data as ItemKit;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       handleError(err, 'Erro ao adicionar item ao kit');
       throw err;
     }
@@ -146,7 +151,8 @@ export const useKits = () => {
       if (error) throw error;
 
       return (data as ItemKit[] | null) ?? [];
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       handleError(err, 'Erro ao buscar itens do kit');
       throw err as PostgrestError;
     }

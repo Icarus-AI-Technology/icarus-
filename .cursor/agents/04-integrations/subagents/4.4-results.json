@@ -1,0 +1,51 @@
+{
+  "webhooks": [
+    {
+      "service": "stripe-payment",
+      "registered": true,
+      "has_handler": true,
+      "has_verification": true,
+      "issues": [],
+      "handler_path": "src/webhooks/stripe-payment.ts"
+    },
+    {
+      "service": "twilio-sms",
+      "registered": true,
+      "has_handler": true,
+      "has_verification": true,
+      "issues": [],
+      "handler_path": "src/webhooks/twilio-sms.ts"
+    },
+    {
+      "service": "sendgrid-email",
+      "registered": true,
+      "has_handler": true,
+      "has_verification": true,
+      "issues": [],
+      "handler_path": "src/webhooks/sendgrid-email.ts"
+    },
+    {
+      "service": "transportadora-status",
+      "registered": true,
+      "has_handler": true,
+      "has_verification": true,
+      "issues": [],
+      "handler_path": "src/webhooks/transportadora-status.ts"
+    }
+  ],
+  "queue": {
+    "system": "BullMQ",
+    "configured": true,
+    "has_workers": true,
+    "has_retry": true,
+    "has_dlq": true,
+    "workers": [
+      "start-workers.ts",
+      "workers"
+    ],
+    "issues": []
+  },
+  "webhooksOk": 4,
+  "totalWebhooks": 4,
+  "score": 100
+}

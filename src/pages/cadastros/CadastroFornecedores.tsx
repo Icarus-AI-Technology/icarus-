@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Check, Loader2, AlertTriangle, Star } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowLeft, Check, Loader2, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface Endereco {
@@ -71,7 +71,7 @@ const INITIAL_STATE: FornecedorFormData = {
   }
 };
 
-const ESTADOS = [
+const _ESTADOS = [
   { value: 'AC', label: 'AC' }, { value: 'AL', label: 'AL' }, { value: 'AP', label: 'AP' },
   { value: 'AM', label: 'AM' }, { value: 'BA', label: 'BA' }, { value: 'CE', label: 'CE' },
   { value: 'DF', label: 'DF' }, { value: 'ES', label: 'ES' }, { value: 'GO', label: 'GO' },
@@ -87,9 +87,9 @@ const CadastroFornecedores: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FornecedorFormData>(INITIAL_STATE);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [_errors, _setErrors] = useState<Record<string, string>>({});
 
-  const handleCEPChange = async (cep: string) => {
+  const _handleCEPChange = async (cep: string) => {
     const cepLimpo = cep.replace(/\D/g, '');
     
     if (cepLimpo.length === 8) {
@@ -111,8 +111,9 @@ const CadastroFornecedores: React.FC = () => {
             }
           });
         }
-      } catch (_error) {
-        console.error('Erro ao buscar CEP:', error);
+      } catch (error) {
+   const err = error as Error;
+        console.error('Erro ao buscar CEP:', err);
       }
     }
   };
@@ -126,8 +127,9 @@ const CadastroFornecedores: React.FC = () => {
       await new Promise(resolve => setTimeout(resolve, 1500));
       console.log('Fornecedor salvo:', formData);
       navigate('/cadastros');
-    } catch (_error) {
-      console.error('Erro ao salvar:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao salvar:', err);
     } finally {
       setLoading(false);
     }
@@ -257,7 +259,7 @@ const CadastroFornecedores: React.FC = () => {
               </label>
               <select
                 value={formData.tipo}
-                onChange={(e) => setFormData({ ...formData, tipo: e.target.value as any })}
+                onChange={(e) => setFormData({ ...formData, tipo: e.target.value as FornecedorFormData['tipo'] })}
                 required
                 style={{
                   width: '100%',
@@ -493,7 +495,10 @@ const CadastroFornecedores: React.FC = () => {
                     <button
                       key={star}
                       type="button"
-                      onClick={() => setFormData({ ...formData, [`avaliacao_${tipo}`]: star } as any)}
+                      onClick={() => {
+                        const key = (`avaliacao_${tipo}`) as 'avaliacao_qualidade' | 'avaliacao_pontualidade' | 'avaliacao_atendimento' | 'avaliacao_preco';
+                        setFormData({ ...formData, [key]: star });
+                      }}
                       style={{
                         background: 'transparent',
                         border: 'none',
@@ -503,7 +508,7 @@ const CadastroFornecedores: React.FC = () => {
                     >
                       <Star 
                         size={24} 
-                        fill={(formData as any)[`avaliacao_${tipo}`] >= star ? 'var(--orx-warning)' : 'none'}
+                        fill={(((formData[("avaliacao_" + tipo) as 'avaliacao_qualidade' | 'avaliacao_pontualidade' | 'avaliacao_atendimento' | 'avaliacao_preco'] ?? 0)) >= star) ? 'var(--orx-warning)' : 'none'}
                         stroke="var(--orx-warning)"
                       />
                     </button>

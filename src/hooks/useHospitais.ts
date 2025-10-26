@@ -52,7 +52,8 @@ export function useHospitais() {
         loading: false,
         error: null,
       });
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         loading: false,
@@ -71,8 +72,9 @@ export function useHospitais() {
 
       if (error) throw error;
       return data;
-    } catch (_error) {
-      console.error('Erro ao buscar hospital:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar hospital:', err);
       return null;
     }
   }, []);
@@ -94,7 +96,8 @@ export function useHospitais() {
       }));
 
       return data;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao criar hospital',
@@ -121,7 +124,8 @@ export function useHospitais() {
       }));
 
       return data;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao atualizar hospital',
@@ -146,7 +150,8 @@ export function useHospitais() {
       }));
 
       return true;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao deletar hospital',
@@ -165,8 +170,9 @@ export function useHospitais() {
 
       if (error) throw error;
       return data || [];
-    } catch (_error) {
-      console.error('Erro ao buscar hospitais por tipo:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar hospitais por tipo:', err);
       return [];
     }
   }, []);
@@ -181,8 +187,9 @@ export function useHospitais() {
 
       if (error) throw error;
       return data || [];
-    } catch (_error) {
-      console.error('Erro ao buscar hospitais ativos:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar hospitais ativos:', err);
       return [];
     }
   }, []);
@@ -201,8 +208,9 @@ export function useHospitais() {
       }, {} as Record<string, number>);
 
       return counts;
-    } catch (_error) {
-      console.error('Erro ao contar hospitais:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao contar hospitais:', err);
       return {};
     }
   }, []);

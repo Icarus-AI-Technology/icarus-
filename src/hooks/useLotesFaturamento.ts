@@ -130,7 +130,8 @@ export function useLotesFaturamento() {
 
       if (fetchError) throw fetchError;
       setLotes((data as LoteFaturamento[]) || []);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao carregar lotes de faturamento";
       setError(message);
       console.error("Erro useLotesFaturamento:", err);
@@ -151,7 +152,8 @@ export function useLotesFaturamento() {
 
       if (createError) throw createError;
       return data as LoteFaturamento;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao criar lote";
       setError(message);
       console.error("Erro createLote:", err);
@@ -172,7 +174,8 @@ export function useLotesFaturamento() {
 
       if (updateError) throw updateError;
       return data as LoteFaturamento;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao atualizar lote";
       setError(message);
       console.error("Erro updateLote:", err);
@@ -191,7 +194,8 @@ export function useLotesFaturamento() {
 
       if (deleteError) throw deleteError;
       return true;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao excluir lote";
       setError(message);
       console.error("Erro deleteLote:", err);
@@ -215,7 +219,8 @@ export function useLotesFaturamento() {
 
       if (updateError) throw updateError;
       return data as LoteFaturamento;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao fechar lote";
       setError(message);
       console.error("Erro fecharLote:", err);
@@ -256,7 +261,8 @@ export function useLotesFaturamento() {
 
       if (updateError) throw updateError;
       return data as LoteFaturamento;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao enviar lote";
       setError(message);
       console.error("Erro enviarLote:", err);
@@ -296,7 +302,8 @@ export function useLotesFaturamento() {
 
       if (updateError) throw updateError;
       return data as LoteFaturamento;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao processar retorno";
       setError(message);
       console.error("Erro processarRetorno:", err);
@@ -337,7 +344,8 @@ export function useLotesFaturamento() {
 
       if (updateError) throw updateError;
       return { lote: data as LoteFaturamento, analise };
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao analisar lote com IA";
       setError(message);
       console.error("Erro analisarLoteIA:", err);
@@ -380,7 +388,8 @@ export function useLotesFaturamento() {
         taxa_glosa: valorTotal > 0 ? (valorGlosado / valorTotal) * 100 : 0,
         ticket_medio_lote: total > 0 ? valorTotal / total : 0,
       };
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error("Erro getResumo:", err);
       return {
         total_lotes: 0,

@@ -156,7 +156,8 @@ export async function consultarCNPJ(cnpj: string): Promise<CNPJData> {
       })) || [],
     };
     
-  } catch (_error) {
+  } catch (error) {
+   const err = error as Error;
     // Fallback para ReceitaWS
     try {
       const response = await fetch(`https://receitaws.com.br/v1/cnpj/${cnpjLimpo}`);
@@ -232,7 +233,8 @@ export function useCNPJ() {
       const resultado = await consultarCNPJ(cnpj);
       setData(resultado);
       return resultado;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
       setError(errorMessage);
       throw err;

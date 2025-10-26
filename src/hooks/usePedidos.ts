@@ -53,7 +53,8 @@ export function usePedidos() {
         loading: false,
         error: null,
       });
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         loading: false,
@@ -72,8 +73,9 @@ export function usePedidos() {
 
       if (error) throw error;
       return data;
-    } catch (_error) {
-      console.error('Erro ao buscar pedido:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar pedido:', err);
       return null;
     }
   }, []);
@@ -95,7 +97,8 @@ export function usePedidos() {
       }));
 
       return data;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao criar pedido',
@@ -122,7 +125,8 @@ export function usePedidos() {
       }));
 
       return data;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao atualizar pedido',
@@ -147,7 +151,8 @@ export function usePedidos() {
       }));
 
       return true;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao deletar pedido',
@@ -166,8 +171,9 @@ export function usePedidos() {
 
       if (error) throw error;
       return data || [];
-    } catch (_error) {
-      console.error('Erro ao buscar pedidos por status:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar pedidos por status:', err);
       return [];
     }
   }, []);
@@ -182,8 +188,9 @@ export function usePedidos() {
 
       if (error) throw error;
       return data || [];
-    } catch (_error) {
-      console.error('Erro ao buscar pedidos por fornecedor:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar pedidos por fornecedor:', err);
       return [];
     }
   }, []);
@@ -199,8 +206,9 @@ export function usePedidos() {
 
       if (error) throw error;
       return data || [];
-    } catch (_error) {
-      console.error('Erro ao buscar pedidos por período:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar pedidos por período:', err);
       return [];
     }
   }, []);
@@ -221,7 +229,8 @@ export function usePedidos() {
       // Re-fetch para atualizar
       await fetchPedidos();
       return true;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao aprovar pedido',
@@ -242,7 +251,8 @@ export function usePedidos() {
       // Re-fetch para atualizar
       await fetchPedidos();
       return true;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao cancelar pedido',
@@ -273,8 +283,9 @@ export function usePedidos() {
         emAndamento,
         entregues,
       };
-    } catch (_error) {
-      console.error('Erro ao calcular resumo de pedidos:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao calcular resumo de pedidos:', err);
       return {
         totalPedidos: 0,
         valorTotal: 0,
@@ -299,8 +310,9 @@ export function usePedidos() {
       }, {} as Record<string, number>);
 
       return counts;
-    } catch (_error) {
-      console.error('Erro ao contar pedidos:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao contar pedidos:', err);
       return {};
     }
   }, []);

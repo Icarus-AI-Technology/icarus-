@@ -213,7 +213,7 @@ describe('Supabase Cache Integration', () => {
       expect(Array.isArray(data)).toBe(true);
 
       // Todos registros devem ser do tipo 'cep'
-      data.forEach((stat: any) => {
+      data.forEach((stat: { tipo?: string }) => {
         expect(stat.tipo).toBe('cep');
       });
     });

@@ -1,0 +1,582 @@
+{
+  "summary": {
+    "total": 58,
+    "covered": 58,
+    "coverage": 1
+  },
+  "report": [
+    {
+      "index": 1,
+      "name": "Dashboard Principal",
+      "matches": [
+        "src/pages/Dashboard.tsx",
+        "src/pages/DashboardFinanceiro.tsx",
+        "src/pages/DashboardPrincipal.tsx",
+        "src/pages/MonitoringDashboard.tsx",
+        "src/pages/cadastros/DashboardCadastros.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 2,
+      "name": "Gestão de Cadastros",
+      "matches": [
+        "src/components/modules/GestãoCadastros.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 3,
+      "name": "Cirurgias e Procedimentos",
+      "matches": [
+        "src/components/modules/CirurgiasProcedimentos.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 4,
+      "name": "Estoque com IA",
+      "matches": [
+        "src/pages/ComplianceAuditoria.tsx",
+        "src/components/modules/AuditoriaInterna.tsx",
+        "src/components/modules/AutomacaoIA.tsx",
+        "src/components/modules/AvaliacaoDesempenho.tsx",
+        "src/components/modules/BIAnalytics.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 5,
+      "name": "Financeiro Avançado",
+      "matches": [
+        "src/pages/DashboardFinanceiro.tsx",
+        "src/components/modules/EstoqueAvancado.tsx",
+        "src/components/modules/FinanceiroAvancado.tsx",
+        "src/components/modules/FornecedoresAvancado.tsx",
+        "src/components/modules/ModulosAvancados.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 6,
+      "name": "Faturamento Avançado",
+      "matches": [
+        "src/pages/modules/FaturamentoNFeCompleto.tsx",
+        "src/components/modules/EstoqueAvancado.tsx",
+        "src/components/modules/Faturamento.tsx",
+        "src/components/modules/FaturamentoNFeCompleto.tsx",
+        "src/components/modules/FinanceiroAvancado.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 7,
+      "name": "Faturamento NF-e Completo",
+      "matches": [
+        "src/pages/Welcome-completo-v2.tsx",
+        "src/pages/modules/FaturamentoNFeCompleto.tsx",
+        "src/components/modules/ConfiguracoesSistema.tsx",
+        "src/components/modules/Faturamento.tsx",
+        "src/components/modules/FaturamentoNFeCompleto.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 8,
+      "name": "Contas a Receber IA",
+      "matches": [
+        "src/pages/ComplianceAuditoria.tsx",
+        "src/pages/integracoes/GerenciadorCredenciais.tsx",
+        "src/components/modules/AuditoriaInterna.tsx",
+        "src/components/modules/AutomacaoIA.tsx",
+        "src/components/modules/AvaliacaoDesempenho.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 9,
+      "name": "Relatórios Financeiros",
+      "matches": [
+        "src/pages/modules/RelatoriosRegulatorios.tsx",
+        "src/components/modules/RelatoriosAvancados.tsx",
+        "src/components/modules/RelatoriosExecutivos.tsx",
+        "src/components/modules/RelatoriosFinanceiros.tsx",
+        "src/components/modules/RelatoriosRegulatorios.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 10,
+      "name": "Relatórios Executivos",
+      "matches": [
+        "src/pages/modules/RelatoriosRegulatorios.tsx",
+        "src/components/modules/RelatoriosAvancados.tsx",
+        "src/components/modules/RelatoriosExecutivos.tsx",
+        "src/components/modules/RelatoriosFinanceiros.tsx",
+        "src/components/modules/RelatoriosRegulatorios.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 11,
+      "name": "CRM Vendas",
+      "matches": [
+        "src/components/modules/CRMVendas.tsx",
+        "src/components/modules/ConversaoVendas.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 12,
+      "name": "Gestão de Leads",
+      "matches": [
+        "src/components/modules/GestaoLeads.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 13,
+      "name": "Relacionamento com Cliente",
+      "matches": [
+        "src/components/modules/RelacionamentoCliente.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 14,
+      "name": "Gestão de Compras",
+      "matches": [
+        "src/pages/compras/GestaoCotacoes.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 15,
+      "name": "Compras Internacionais",
+      "matches": [
+        "src/pages/compras/GestaoCotacoes.tsx",
+        "src/pages/compras/NotasCompra.tsx",
+        "src/pages/compras/NotasCompraReformatted.tsx",
+        "src/components/modules/ComprasInternacionais.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 16,
+      "name": "Notas de Compra",
+      "matches": [
+        "src/pages/compras/NotasCompra.tsx",
+        "src/pages/compras/NotasCompraReformatted.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 17,
+      "name": "Logística Avançada",
+      "matches": [
+        "src/pages/ConsignacaoAvancada.tsx",
+        "src/components/modules/AutenticacaoAvancada.tsx",
+        "src/components/modules/ConsignacaoAvancada.tsx",
+        "src/components/modules/LogisticaAvancada.tsx",
+        "src/components/modules/LogisticaTransportadoras.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 18,
+      "name": "Logística Transportadoras",
+      "matches": [
+        "src/pages/cadastros/CadastroTransportadoras.tsx",
+        "src/components/modules/LogisticaAvancada.tsx",
+        "src/components/modules/LogisticaTransportadoras.tsx",
+        "src/components/modules/TransportadorasIA.tsx",
+        "src/components/modules/logistica/GestaoEntregas.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 19,
+      "name": "Consignação Avançada",
+      "matches": [
+        "src/pages/ConsignacaoAvancada.tsx",
+        "src/components/modules/AutenticacaoAvancada.tsx",
+        "src/components/modules/ConsignacaoAvancada.tsx",
+        "src/components/modules/LogisticaAvancada.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 20,
+      "name": "Rastreabilidade OPME",
+      "matches": [
+        "src/pages/cadastros/CadastroProdutosOPME.tsx",
+        "src/components/modules/GruposProdutosOPME.tsx",
+        "src/components/modules/ProdutosOPME.tsx",
+        "src/components/modules/QualidadeOPME.tsx",
+        "src/components/modules/RastreabilidadeOPME.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 21,
+      "name": "Gestão de Inventário",
+      "matches": [
+        "src/components/modules/GestaoInventario.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 22,
+      "name": "Grupos de Produtos OPME",
+      "matches": [
+        "src/pages/cadastros/CadastroProdutosOPME.tsx",
+        "src/components/modules/GruposProdutosOPME.tsx",
+        "src/components/modules/ProdutosOPME.tsx",
+        "src/components/modules/QualidadeOPME.tsx",
+        "src/components/modules/RastreabilidadeOPME.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 23,
+      "name": "Tabela de Preços Viewer",
+      "matches": [
+        "src/pages/cadastros/TabelasPrecos.tsx",
+        "src/components/modules/TabelasPrecos.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 24,
+      "name": "Tabelas de Preços Form",
+      "matches": [
+        "src/pages/cadastros/TabelasPrecos.tsx",
+        "src/components/modules/TabelasPrecos.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 25,
+      "name": "Tabelas de Preços Import",
+      "matches": [
+        "src/pages/cadastros/TabelasPrecos.tsx",
+        "src/components/modules/TabelasPrecos.tsx",
+        "src/components/modules/ViabilidadeImportacao.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 26,
+      "name": "Viabilidade de Importação",
+      "matches": [
+        "src/components/modules/ViabilidadeImportacao.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 27,
+      "name": "IA Central",
+      "matches": [
+        "src/pages/ComplianceAuditoria.tsx",
+        "src/pages/integracoes/GerenciadorCredenciais.tsx",
+        "src/components/modules/AuditoriaInterna.tsx",
+        "src/components/modules/AutomacaoIA.tsx",
+        "src/components/modules/AvaliacaoDesempenho.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 28,
+      "name": "Automação IA",
+      "matches": [
+        "src/pages/ComplianceAuditoria.tsx",
+        "src/pages/integracoes/GerenciadorCredenciais.tsx",
+        "src/components/modules/AuditoriaInterna.tsx",
+        "src/components/modules/AutomacaoIA.tsx",
+        "src/components/modules/AvaliacaoDesempenho.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 29,
+      "name": "ChatBot Metrics Dashboard",
+      "matches": [
+        "src/components/modules/ChatBotMetrics.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 30,
+      "name": "Analytics BI",
+      "matches": [
+        "src/pages/modules/BIDashboardInterativo.tsx",
+        "src/pages/modules/GestaoContabil.tsx",
+        "src/components/modules/AnalyticsBI.tsx",
+        "src/components/modules/AnalyticsPredicao.tsx",
+        "src/components/modules/BIAnalytics.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 31,
+      "name": "Analytics Predição",
+      "matches": [
+        "src/components/modules/AnalyticsBI.tsx",
+        "src/components/modules/AnalyticsPredicao.tsx",
+        "src/components/modules/BIAnalytics.tsx",
+        "src/components/modules/ModulosAnalytics.tsx",
+        "src/components/modules/TooltipAnalyticsDashboard.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 32,
+      "name": "BI Dashboard Interativo",
+      "matches": [
+        "src/pages/modules/BIDashboardInterativo.tsx",
+        "src/components/modules/BIDashboardInterativo.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 33,
+      "name": "KPI Dashboard Consolidado",
+      "matches": [
+        "src/components/modules/KPIDashboardConsolidado.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 34,
+      "name": "Integrações Avançadas",
+      "matches": [
+        "src/pages/integracoes/GerenciadorCredenciais.tsx",
+        "src/components/modules/IntegracoesExternas.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 35,
+      "name": "Integrations Manager",
+      "matches": [
+        "src/components/modules/IntegrationsManager.tsx",
+        "src/components/modules/VideoCallsManager.tsx",
+        "src/components/modules/VoiceBiometricsManager.tsx",
+        "src/components/modules/VoiceCommandsManager.tsx",
+        "src/components/modules/VoiceMacrosManager.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 36,
+      "name": "API Gateway",
+      "matches": [
+        "src/pages/modules/APIGatewayDashboard.tsx",
+        "src/components/modules/APIGatewayDashboard.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 37,
+      "name": "Gestão Usuários e Permissões",
+      "matches": [
+        "src/pages/compras/GestaoCotacoes.tsx",
+        "src/pages/modules/GestaoContabil.tsx",
+        "src/pages/modules/GestaoUsuariosPermissoes.tsx",
+        "src/components/modules/GestaoContabil.tsx",
+        "src/components/modules/GestaoContratos.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 38,
+      "name": "Configurações do Sistema",
+      "matches": [
+        "src/components/modules/ConfiguracoesSistema.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 39,
+      "name": "Configurações Avançadas",
+      "matches": [
+        "src/components/modules/ConfiguracoesSistema.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 40,
+      "name": "RH Gestão de Pessoas",
+      "matches": [
+        "src/components/modules/RHGestaoPessoas.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 41,
+      "name": "Compliance e Auditoria",
+      "matches": [
+        "src/pages/ComplianceAuditoria.tsx",
+        "src/components/modules/AuditoriaInterna.tsx",
+        "src/components/modules/ComplianceRegulatorio.tsx",
+        "src/components/modules/ModulosCompliance.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 42,
+      "name": "Qualidade e Certificação",
+      "matches": [
+        "src/components/modules/QualidadeOPME.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 43,
+      "name": "Relatórios Regulatórios",
+      "matches": [
+        "src/pages/modules/RelatoriosRegulatorios.tsx",
+        "src/components/modules/RelatoriosAvancados.tsx",
+        "src/components/modules/RelatoriosExecutivos.tsx",
+        "src/components/modules/RelatoriosFinanceiros.tsx",
+        "src/components/modules/RelatoriosRegulatorios.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 44,
+      "name": "Gestão Contábil",
+      "matches": [
+        "src/pages/compras/GestaoCotacoes.tsx",
+        "src/pages/modules/GestaoContabil.tsx",
+        "src/pages/modules/GestaoUsuariosPermissoes.tsx",
+        "src/components/modules/GestaoContabil.tsx",
+        "src/components/modules/GestaoContratos.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 45,
+      "name": "Gestão de Contratos",
+      "matches": [
+        "src/components/modules/GestaoContratos.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 46,
+      "name": "Licitações e Propostas",
+      "matches": [
+        "src/pages/modules/LicitacoesPropostas.tsx",
+        "src/components/modules/LicitacoesPropostas.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 47,
+      "name": "Campanhas de Marketing",
+      "matches": [
+        "src/components/modules/CampanhasMarketing.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 48,
+      "name": "Telemetria IoT",
+      "matches": [
+        "src/components/modules/TelemetriaVeiculos.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 49,
+      "name": "Manutenção Preventiva",
+      "matches": [
+        "src/components/modules/ManutencaoFrota.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 50,
+      "name": "Workflow Builder Visual",
+      "matches": [
+        "src/pages/modules/WorkflowBuilder.tsx",
+        "src/components/modules/WorkflowBuilderVisual.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 51,
+      "name": "Voice Analytics Dashboard",
+      "matches": [
+        "src/components/modules/TooltipAnalyticsDashboard.tsx",
+        "src/components/modules/VoiceAnalyticsDashboard.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 52,
+      "name": "Voice Biometrics Manager",
+      "matches": [
+        "src/components/modules/VoiceBiometricsManager.tsx",
+        "src/components/modules/VoiceCommandsManager.tsx",
+        "src/components/modules/VoiceMacrosManager.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 53,
+      "name": "Voice Macros Manager",
+      "matches": [
+        "src/components/modules/VoiceBiometricsManager.tsx",
+        "src/components/modules/VoiceCommandsManager.tsx",
+        "src/components/modules/VoiceMacrosManager.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 54,
+      "name": "Video Calls Manager",
+      "matches": [
+        "src/components/modules/VideoCallsManager.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 55,
+      "name": "Notificações Inteligentes",
+      "matches": [
+        "src/components/modules/SistemaNotificacoes.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 56,
+      "name": "System Health Dashboard",
+      "matches": [
+        "src/pages/modules/SystemHealth.tsx",
+        "src/components/modules/SystemHealthDashboard.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 57,
+      "name": "Tooltip Analytics Dashboard",
+      "matches": [
+        "src/components/modules/TooltipAnalyticsDashboard.tsx",
+        "src/components/modules/VoiceAnalyticsDashboard.tsx"
+      ],
+      "covered": true
+    },
+    {
+      "index": 58,
+      "name": "Voice Commands Manager",
+      "matches": [
+        "src/components/modules/VoiceBiometricsManager.tsx",
+        "src/components/modules/VoiceCommandsManager.tsx",
+        "src/components/modules/VoiceMacrosManager.tsx"
+      ],
+      "covered": true
+    }
+  ]
+}

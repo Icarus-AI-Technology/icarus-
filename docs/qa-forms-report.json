@@ -1,0 +1,59 @@
+{
+  "base": "http://localhost:4173",
+  "ts": "2025-10-25T10:31:03.085Z",
+  "results": [
+    {
+      "route": "/qa/compras",
+      "url": "http://localhost:4173/qa/compras?qa=1",
+      "fieldsTotal": 5,
+      "fieldsLabeled": 5,
+      "fieldsRequired": 0,
+      "submitButtons": 3,
+      "sampleNames": [
+        "Buscar médicos, cirurgias, produtos...",
+        "Busca",
+        "Início",
+        "Fim",
+        "Status"
+      ]
+    },
+    {
+      "route": "/qa/financeiro",
+      "url": "http://localhost:4173/qa/financeiro?qa=1",
+      "fieldsTotal": 3,
+      "fieldsLabeled": 1,
+      "fieldsRequired": 0,
+      "submitButtons": 2,
+      "sampleNames": [
+        "Buscar médicos, cirurgias, produtos..."
+      ]
+    },
+    {
+      "route": "/qa/cadastros",
+      "url": "http://localhost:4173/qa/cadastros?qa=1",
+      "fieldsTotal": 0,
+      "fieldsLabeled": 0,
+      "fieldsRequired": 0,
+      "submitButtons": 0,
+      "sampleNames": []
+    },
+    {
+      "route": "/qa/cirurgias",
+      "url": "http://localhost:4173/qa/cirurgias?qa=1",
+      "fieldsTotal": 0,
+      "fieldsLabeled": 0,
+      "fieldsRequired": 0,
+      "submitButtons": 0,
+      "sampleNames": []
+    },
+    {
+      "route": "/qa/estoque",
+      "url": "http://localhost:4173/qa/estoque?qa=1",
+      "fieldsTotal": 0,
+      "fieldsLabeled": 0,
+      "fieldsRequired": 0,
+      "submitButtons": 0,
+      "sampleNames": []
+    }
+  ]
+}

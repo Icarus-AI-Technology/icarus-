@@ -18,15 +18,11 @@ import React, { useState, useMemo } from 'react';
 import { 
   AlertCircle,
   Calendar,
-  CheckCircle,
-  ChevronDown,
   Clock,
   Filter,
   Plus,
   Search,
   User,
-  Users,
-  X,
 } from 'lucide-react';
 import type { WorkflowInstance, WorkflowDefinition, WorkflowState, WorkflowPriority } from '@/types/workflow';
 

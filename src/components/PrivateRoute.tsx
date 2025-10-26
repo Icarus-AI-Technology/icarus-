@@ -4,7 +4,7 @@
  */
 
 import { Navigate } from"react-router-dom";
-import { useAuth } from"@/hooks";
+import { useAuth } from"@/contexts/AuthContext";
 import { Loader2 } from"lucide-react";
 
 interface PrivateRouteProps {
@@ -12,7 +12,7 @@ interface PrivateRouteProps {
 }
 
 export function PrivateRoute({ children }: PrivateRouteProps) {
-  const { user, loading } = useAuth();
+  const { usuario, loading } = useAuth();
 
   if (loading) {
     return (
@@ -25,7 +25,7 @@ export function PrivateRoute({ children }: PrivateRouteProps) {
     );
   }
 
-  if (!user) {
+  if (!usuario) {
     return <Navigate to="/login" replace />;
   }
 

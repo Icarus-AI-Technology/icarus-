@@ -1,518 +1,414 @@
 /**
  * Dashboard Principal - ICARUS v5.0
- * Design conforme Figma (mini-cards com background colorido)
+ * Módulo: 01 - Core Business
+ * 
+ * Visão consolidada de todos os KPIs críticos do negócio OPME
+ * 100% conformidade com OraclusX Design System
  */
 
-import {
-  Activity,
-  Users,
-  Package,
+import { useState, useEffect } from "react";
+import { 
+  TrendingUp, 
+  TrendingDown, 
+  DollarSign, 
+  Stethoscope, 
+  AlertTriangle, 
+  Package, 
   Calendar,
-  DollarSign,
-  MapPin,
   RefreshCw,
-  FileText,
-  TrendingUp,
-  TrendingDown,
-  Plus,
-  FileText as FileIcon,
-  ShoppingCart,
-  UserPlus,
-  BarChart3,
+  Download,
   Settings,
-} from"lucide-react";
-import { NeomorphicIconBox } from"../components/oraclusx-ds/NeomorphicIconBox";
+  Maximize2
+} from "lucide-react";
+import { Card } from "../components/oraclusx-ds/Card";
+import { Button } from "../components/oraclusx-ds/Button";
+import { IconButtonNeu } from "../components/oraclusx-ds/IconButtonNeu";
+import { SubModulesNavigation } from "../components/oraclusx-ds/SubModulesNavigation";
+import { OrxBarChart } from "../components/charts/OrxBarChart";
+import { OrxLineChart } from "../components/charts/OrxLineChart";
+import { OrxPieChart } from "../components/charts/OrxPieChart";
 
+/**
+ * KPI Card Component - PADRÃO OFICIAL OraclusX DS
+ * 
+ * ESPECIFICAÇÃO:
+ * - Background: #6366F1 (indigo médio)
+ * - Texto: #FFFFFF (branco)
+ * - Sombra: Neuromórfica
+ * - Altura: 140px
+ */
+interface KPICardProps {
+  label: string;
+  value: string | number;
+  icon: React.ReactNode;
+  trend?: {
+    direction: 'up' | 'down' | 'neutral';
+    percentage: number;
+  };
+  onClick?: () => void;
+}
+
+const KPICard: React.FC<KPICardProps> = ({ label, value, icon, trend, onClick }) => {
+  return (
+    <div
+      className="
+        kpi-card
+        bg-[#6366F1] text-white
+        h-[140px]
+        cursor-pointer
+        transition-transform hover:scale-105
+        shadow-[8px_8px_16px_rgba(99,102,241,0.3),-4px_-4px_12px_rgba(255,255,255,0.1)]
+        rounded-xl p-6
+      "
+      onClick={onClick}
+    >
+      <div className="flex items-start justify-between h-full">
+        {/* Ícone */}
+        <div className="
+          w-14 h-14 rounded-xl
+          bg-white/10
+          flex items-center justify-center
+        ">
+          <span className="text-white text-2xl">
+            {icon}
+          </span>
+        </div>
+
+        {/* Valor e Label */}
+        <div className="flex-1 ml-4">
+          <p className="text-sm text-white/80 mb-1">
+            {label}
+          </p>
+          <p className="text-3xl font-bold text-white kpi-value">
+            {value}
+          </p>
+          
+          {/* Tendência */}
+          {trend && (
+            <div className={`
+              flex items-center gap-1 mt-2
+              text-sm
+              ${trend.direction === 'up' ? 'text-green-300' :
+                trend.direction === 'down' ? 'text-red-300' :
+                'text-white/60'
+              }
+            `}>
+              {trend.direction === 'up' && <TrendingUp size={16} />}
+              {trend.direction === 'down' && <TrendingDown size={16} />}
+              {trend.direction === 'neutral' && <span>→</span>}
+              <span>{trend.percentage}%</span>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Dashboard Principal Component
+ */
 export default function DashboardPrincipal() {
-  // KPIs conforme Figma
-  const kpis = [
-    { 
-      title:"Sistema Status", 
-      subtitle:"", 
-      value:"98%", 
-      trend:"+2.3%", 
-      trendUp: true,
-      icon: Activity, 
-      colorVariant:"indigo",
-      iconColor:"#ffffff"
-    },
-    { 
-      title:"Médicos", 
-      subtitle:"Ativos", 
-      value:"1.847", 
-      trend:"+12.5%", 
-      trendUp: true,
-      icon: Users, 
-      colorVariant:"purple",
-      iconColor:"#ffffff"
-    },
-    { 
-      title:"Produtos", 
-      subtitle:"OPME", 
-      value:"12.4K", 
-      trend:"+5.2%", 
-      trendUp: true,
-      icon: Package, 
-      colorVariant:"orange",
-      iconColor:"#ffffff"
-    },
-    { 
-      title:"Pedidos", 
-      subtitle:"Urgentes", 
-      value:"89", 
-      trend:"-8.1%", 
-      trendUp: false,
-      icon: Calendar, 
-      colorVariant:"red",
-      iconColor:"#ffffff"
-    },
-  ];
+  const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('visao-geral');
+  const [currentPeriod, setCurrentPeriod] = useState('Hoje');
 
-  const bigKpis = [
-    {
-      title:"Faturamento Mensal",
-      value:"R$ 3.8M",
-      subtitle:"R$ 127K",
-      subtitleLabel:"média diária",
-      trend:"+15.3%",
-      trendUp: true,
-      icon: DollarSign,
-      colorVariant:"green",
-      iconColor:"#ffffff"
-    },
-    {
-      title:"Distribuição Geográfica",
-      value:"147",
-      subtitle:"28",
-      subtitleLabel:"cidades",
-      trend:"+8.7%",
-      trendUp: true,
-      icon: MapPin,
-      colorVariant:"purple",
-      iconColor:"#ffffff"
-    }
+  // Dados mockados para demonstração
+  const kpis = {
+    cirurgiasHoje: 12,
+    cirurgiasMes: 147,
+    faturamentoMes: 'R$ 2.847.500',
+    ticketMedio: 'R$ 19.372',
+    estoqueBaixo: 23,
+    contasReceber: 'R$ 1.234.000',
+    taxaInadimplencia: '2.3',
+    margemLucro: '18.5'
+  };
+
+  const handleRefresh = () => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 1000);
+  };
+
+  const handleExportPDF = () => {
+    alert('Exportar PDF - Em desenvolvimento');
+  };
+
+  const handleFullScreen = () => {
+    document.documentElement.requestFullscreen();
+  };
+
+  // Sub-navegação do Dashboard
+  const tabs = [
+    { id: 'visao-geral', label: 'Visão Geral', icon: <Calendar size={16} /> },
+    { id: 'cirurgias-hoje', label: 'Cirurgias do Dia', icon: <Stethoscope size={16} /> },
+    { id: 'estoque-critico', label: 'Estoque Crítico', icon: <Package size={16} /> },
+    { id: 'financeiro', label: 'Financeiro', icon: <DollarSign size={16} /> },
+    { id: 'alertas', label: 'Alertas', icon: <AlertTriangle size={16} /> }
   ];
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex items-start justify-between">
-          <div>
-            <h1
-              style={{
-                fontSize: '0.813rem',
-                fontFamily:"var(--orx-font-family)",
-                fontWeight: 600,
-                color:"var(--orx-text-primary)",
-                marginBottom:"0.5rem",
-              }}
-            >
+    <div className="space-y-6">
+      {/* Header do Módulo */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-[var(--orx-text-primary)] mb-2">
             Dashboard Principal
           </h1>
-            <p
-              style={{
-                fontSize: '0.813rem',
-                color:"var(--orx-text-secondary)",
-                fontFamily:"var(--orx-font-family)",
-              }}
-            >
-            Visão geral do sistema ICARUS v5.0
+          <p className="text-[var(--orx-text-secondary)]">
+            Visão consolidada em tempo real dos KPIs críticos do negócio
           </p>
         </div>
+        
+        <div className="flex items-center gap-3">
+          <Button
+            variant="secondary"
+            icon={<RefreshCw size={18} className={loading ? 'animate-spin' : ''} />}
+            onClick={handleRefresh}
+          >
+            Atualizar
+          </Button>
+          <Button
+            variant="secondary"
+            icon={<Calendar size={18} />}
+          >
+            {currentPeriod}
+          </Button>
+          <IconButtonNeu
+            icon={<Download size={18} />}
+            onClick={handleExportPDF}
+            tooltip="Exportar PDF"
+          />
+          <IconButtonNeu
+            icon={<Settings size={18} />}
+            tooltip="Configurar"
+          />
+          <IconButtonNeu
+            icon={<Maximize2 size={18} />}
+            onClick={handleFullScreen}
+            tooltip="Tela Cheia"
+          />
+        </div>
+      </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center gap-3">
-            <button
-              className="neumorphic-button colored-button flex items-center gap-2 px-6 py-3"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                background: 'rgba(16, 185, 129, 0.85)',
-                backdropFilter: 'blur(12px) saturate(180%)',
-                WebkitBackdropFilter: 'blur(12px) saturate(180%)',
-                border: '1px solid rgba(255, 255, 255, 0.18)',
-                borderRadius: '8px',
-                color: 'white',
-                fontWeight: 600,
-                fontSize: '0.813rem',
-                boxShadow: `
-                  10px 10px 20px rgba(16, 185, 129, 0.3),
-                  -5px -5px 14px rgba(255, 255, 255, 0.05),
-                  inset 2px 2px 8px rgba(0, 0, 0, 0.15),
-                  inset -2px -2px 8px rgba(255, 255, 255, 0.1)
-                `,
-                transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
-                cursor: 'pointer',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform ="scale(1.03) translateY(-2px)";
-                e.currentTarget.style.background ="rgba(16, 185, 129, 0.95)";
-                e.currentTarget.style.backdropFilter ="blur(16px) saturate(200%)";
-                e.currentTarget.style.WebkitBackdropFilter ="blur(16px) saturate(200%)";
-                e.currentTarget.style.boxShadow = `
-                  14px 14px 28px rgba(16, 185, 129, 0.35),
-                  -7px -7px 18px rgba(255, 255, 255, 0.08),
-                  inset 2px 2px 10px rgba(0, 0, 0, 0.18),
-                  inset -2px -2px 10px rgba(255, 255, 255, 0.12)
-                `;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform ="scale(1)";
-                e.currentTarget.style.background ="rgba(16, 185, 129, 0.85)";
-                e.currentTarget.style.backdropFilter ="blur(12px) saturate(180%)";
-                e.currentTarget.style.WebkitBackdropFilter ="blur(12px) saturate(180%)";
-                e.currentTarget.style.boxShadow = `
-                  10px 10px 20px rgba(16, 185, 129, 0.3),
-                  -5px -5px 14px rgba(255, 255, 255, 0.05),
-                  inset 2px 2px 8px rgba(0, 0, 0, 0.15),
-                  inset -2px -2px 8px rgba(255, 255, 255, 0.1)
-                `;
-              }}
-              onMouseDown={(e) => {
-                e.currentTarget.style.transform ="scale(0.97)";
-              }}
-              onMouseUp={(e) => {
-                e.currentTarget.style.transform ="scale(1.03) translateY(-2px)";
-              }}
-            >
-              <RefreshCw size={18} style={{ color:"white" }} />
-              Atualizar Dados
-            </button>
-            <button
-              className="neumorphic-button colored-button flex items-center gap-2 px-6 py-3"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                background:"rgba(139, 92, 246, 0.85)", // Roxo com 85% opacidade (Liquid Glass)
-                backdropFilter:"blur(12px) saturate(180%)",
-                WebkitBackdropFilter:"blur(12px) saturate(180%)",
-                border:"1px solid rgba(255, 255, 255, 0.18)",
-                borderRadius:"8px",
-                color:"white",
-                fontWeight: 600,
-                fontSize: '0.813rem',
-                boxShadow: `
-                  10px 10px 20px rgba(139, 92, 246, 0.3),
-                  -5px -5px 14px rgba(255, 255, 255, 0.05),
-                  inset 2px 2px 8px rgba(0, 0, 0, 0.15),
-                  inset -2px -2px 8px rgba(255, 255, 255, 0.1)
-                `,
-                transition:"all 300ms cubic-bezier(0.4, 0, 0.2, 1)",
-                cursor:"pointer",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform ="scale(1.03) translateY(-2px)";
-                e.currentTarget.style.background ="rgba(139, 92, 246, 0.95)";
-                e.currentTarget.style.backdropFilter ="blur(16px) saturate(200%)";
-                e.currentTarget.style.WebkitBackdropFilter ="blur(16px) saturate(200%)";
-                e.currentTarget.style.boxShadow = `
-                  14px 14px 28px rgba(139, 92, 246, 0.35),
-                  -7px -7px 18px rgba(255, 255, 255, 0.08),
-                  inset 2px 2px 10px rgba(0, 0, 0, 0.18),
-                  inset -2px -2px 10px rgba(255, 255, 255, 0.12)
-                `;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform ="scale(1)";
-                e.currentTarget.style.background ="rgba(139, 92, 246, 0.85)";
-                e.currentTarget.style.backdropFilter ="blur(12px) saturate(180%)";
-                e.currentTarget.style.WebkitBackdropFilter ="blur(12px) saturate(180%)";
-                e.currentTarget.style.boxShadow = `
-                  10px 10px 20px rgba(139, 92, 246, 0.3),
-                  -5px -5px 14px rgba(255, 255, 255, 0.05),
-                  inset 2px 2px 8px rgba(0, 0, 0, 0.15),
-                  inset -2px -2px 8px rgba(255, 255, 255, 0.1)
-                `;
-              }}
-              onMouseDown={(e) => {
-                e.currentTarget.style.transform ="scale(0.97)";
-              }}
-              onMouseUp={(e) => {
-                e.currentTarget.style.transform ="scale(1.03) translateY(-2px)";
-              }}
-            >
-              <FileText size={18} style={{ color:"white" }} />
-              Relatório Completo
-            </button>
+      {/* Sub-navegação */}
+      <SubModulesNavigation
+        items={tabs}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+      />
+
+      {/* Conteúdo baseado na aba ativa */}
+      {activeTab === 'visao-geral' && (
+        <>
+          {/* Grid de KPIs */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <KPICard
+              label="Cirurgias Hoje"
+              value={kpis.cirurgiasHoje}
+              icon={<Stethoscope size={28} />}
+              trend={{ direction: 'up', percentage: 8.5 }}
+            />
+            <KPICard
+              label="Cirurgias do Mês"
+              value={kpis.cirurgiasMes}
+              icon={<Calendar size={28} />}
+              trend={{ direction: 'up', percentage: 12.3 }}
+            />
+            <KPICard
+              label="Faturamento do Mês"
+              value={kpis.faturamentoMes}
+              icon={<DollarSign size={28} />}
+              trend={{ direction: 'up', percentage: 15.7 }}
+            />
+            <KPICard
+              label="Ticket Médio"
+              value={kpis.ticketMedio}
+              icon={<TrendingUp size={28} />}
+              trend={{ direction: 'up', percentage: 4.2 }}
+            />
+            <KPICard
+              label="Estoque Baixo"
+              value={kpis.estoqueBaixo}
+              icon={<Package size={28} />}
+              trend={{ direction: 'down', percentage: 3.1 }}
+            />
+            <KPICard
+              label="Contas a Receber"
+              value={kpis.contasReceber}
+              icon={<DollarSign size={28} />}
+              trend={{ direction: 'neutral', percentage: 0 }}
+            />
+            <KPICard
+              label="Taxa Inadimplência"
+              value={`${kpis.taxaInadimplencia}%`}
+              icon={<AlertTriangle size={28} />}
+              trend={{ direction: 'down', percentage: 0.5 }}
+            />
+            <KPICard
+              label="Margem de Lucro"
+              value={`${kpis.margemLucro}%`}
+              icon={<TrendingUp size={28} />}
+              trend={{ direction: 'up', percentage: 2.1 }}
+            />
           </div>
-        </div>
 
-        {/* KPIs Grid - 4 colunas */}
-        <div className="grid grid-cols-4 gap-6">
-          {kpis.map((kpi, index) => (
-            <div
-              key={index}
-              className="neumorphic-card p-6"
-              style={{
-                background:"var(--orx-bg-light)",
-                boxShadow:"var(--orx-shadow-light-1), var(--orx-shadow-light-2)",
-                borderRadius:"1.25rem",
-                transition:"transform 0.2s ease, box-shadow 0.2s ease",
-                cursor:"pointer",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform ="translateY(-4px)";
-                e.currentTarget.style.boxShadow ="0 12px 24px rgba(0, 0, 0, 0.12)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform ="translateY(0)";
-                e.currentTarget.style.boxShadow ="var(--orx-shadow-light-1), var(--orx-shadow-light-2)";
-              }}
-            >
-              {/* Icon + Title */}
-              <div className="flex items-start gap-4 mb-4">
-                <NeomorphicIconBox
-                  icon={kpi.icon}
-                  colorVariant={kpi.colorVariant}
-                  size="md"
-                  iconColor={kpi.iconColor}
-                />
-                <div className="flex-1">
-                  <p
-                    style={{
-                      fontSize: '0.813rem',
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                      marginBottom:"0.25rem",
-                    }}
-                  >
-                    {kpi.title}
-                  </p>
-                  {kpi.subtitle && (
-                    <p
-                      style={{
-                        fontSize: '0.813rem',
-                        color:"var(--orx-text-secondary)",
-                        fontFamily:"var(--orx-font-family)",
-                        opacity: 0.7,
-                      }}
-                    >
-                      {kpi.subtitle}
-                    </p>
-                  )}
-            </div>
-              </div>
+          {/* Gráficos */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+            <Card title="Faturamento Mensal" padding="lg">
+              <OrxBarChart
+                data={[
+                  { name: 'Jan', value: 2400000 },
+                  { name: 'Fev', value: 2100000 },
+                  { name: 'Mar', value: 2800000 },
+                  { name: 'Abr', value: 2600000 },
+                  { name: 'Mai', value: 2847500 },
+                ]}
+              />
+            </Card>
 
-              {/* Value */}
-              <div className="mb-2">
-                <p
-                  style={{
-                    fontSize: '0.813rem',
-                    fontWeight: 700,
-                    color:"var(--orx-text-primary)",
-                    fontFamily:"var(--orx-font-family)",
-                    lineHeight: 1,
-                  }}
-                >
-                  {kpi.value}
-                </p>
-              </div>
+            <Card title="Evolução de Cirurgias" padding="lg">
+              <OrxLineChart
+                data={[
+                  { name: 'Jan', value: 135 },
+                  { name: 'Fev', value: 128 },
+                  { name: 'Mar', value: 152 },
+                  { name: 'Abr', value: 143 },
+                  { name: 'Mai', value: 147 },
+                ]}
+              />
+            </Card>
+          </div>
 
-              {/* Trend */}
-              <div className="flex items-center gap-1">
-                {kpi.trendUp ? (
-                  <TrendingUp size={16} className="text-green-500" />
-                ) : (
-                  <TrendingDown size={16} className="text-red-500" />
-                )}
-                <span
-                  style={{
-                    fontSize: '0.813rem',
-                    fontWeight: 600,
-                    color: kpi.trendUp ?"var(--orx-success)" :"var(--orx-error)",
-                    fontFamily:"var(--orx-font-family)",
-                  }}
-                >
-                  {kpi.trend}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card title="Distribuição por Especialidade" padding="lg">
+              <OrxPieChart
+                data={[
+                  { name: 'Ortopedia', value: 35 },
+                  { name: 'Cardiologia', value: 25 },
+                  { name: 'Neurologia', value: 20 },
+                  { name: 'Outras', value: 20 },
+                ]}
+              />
+            </Card>
 
-        {/* Big KPIs - 2 colunas */}
-        <div className="grid grid-cols-2 gap-6">
-          {bigKpis.map((kpi, index) => (
-            <div
-              key={index}
-              className="neumorphic-card p-8"
-              style={{
-                background:"var(--orx-bg-light)",
-                boxShadow:"var(--orx-shadow-light-1), var(--orx-shadow-light-2)",
-                borderRadius:"1.5rem",
-                transition:"transform 0.2s ease, box-shadow 0.2s ease",
-                cursor:"pointer",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform ="translateY(-4px)";
-                e.currentTarget.style.boxShadow ="0 16px 32px rgba(0, 0, 0, 0.12)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform ="translateY(0)";
-                e.currentTarget.style.boxShadow ="var(--orx-shadow-light-1), var(--orx-shadow-light-2)";
-              }}
-            >
-              {/* Icon + Title */}
-              <div className="flex items-start gap-4 mb-6">
-                <NeomorphicIconBox
-                  icon={kpi.icon}
-                  colorVariant={kpi.colorVariant}
-                  size="lg"
-                  iconColor={kpi.iconColor}
-                />
-                <div className="flex-1">
-                  <p
-                    style={{
-                      fontSize: '0.813rem',
-                      fontWeight: 600,
-                      color:"var(--orx-text-primary)",
-                      fontFamily:"var(--orx-font-family)",
-                    }}
-                  >
-                    {kpi.title}
-                  </p>
-              </div>
-            </div>
-
-              {/* Value + Subtitle */}
-              <div className="flex items-end gap-6 mb-4">
-                <div>
-                  <p
-                    style={{
-                      fontSize: '0.813rem',
-                      fontWeight: 700,
-                      color:"var(--orx-text-primary)",
-                      fontFamily:"var(--orx-font-family)",
-                      lineHeight: 1,
-                    }}
-                  >
-                    {kpi.value}
-                  </p>
+            <Card title="Status de Estoque" padding="lg">
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm">Produtos em Estoque Alto</span>
+                  <span className="font-bold text-green-600">234</span>
                 </div>
-                <div className="pb-2">
-                  <p
-                    style={{
-                      fontSize: '0.813rem',
-                      fontWeight: 600,
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                    }}
-                  >
-                    {kpi.subtitle}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: '0.813rem',
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                      opacity: 0.7,
-                    }}
-                  >
-                    {kpi.subtitleLabel}
-                  </p>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm">Produtos em Estoque Médio</span>
+                  <span className="font-bold text-yellow-600">87</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm">Produtos em Estoque Baixo</span>
+                  <span className="font-bold text-red-600">23</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm">Produtos em Falta</span>
+                  <span className="font-bold text-red-800">5</span>
+                </div>
               </div>
-            </div>
-
-              {/* Trend */}
-              <div className="flex items-center gap-1">
-                {kpi.trendUp ? (
-                  <TrendingUp size={18} className="text-green-500" />
-                ) : (
-                  <TrendingDown size={18} className="text-red-500" />
-                )}
-                <span
-                  style={{
-                    fontSize: '0.813rem',
-                    fontWeight: 600,
-                    color: kpi.trendUp ?"var(--orx-success)" :"var(--orx-error)",
-                    fontFamily:"var(--orx-font-family)",
-                  }}
-                >
-                  {kpi.trend}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Ações Rápidas */}
-        <div 
-          className="neumorphic-card p-6"
-          style={{
-            background:"var(--orx-bg-light)",
-            boxShadow:"var(--orx-shadow-light-1), var(--orx-shadow-light-2)",
-            borderRadius:"1.25rem",
-          }}
-        >
-          <div className="mb-4">
-            <h3 style={{
-              fontSize: '0.813rem',
-              fontWeight: 600,
-              color:"var(--orx-text-primary)",
-              fontFamily:"var(--orx-font-family)",
-              marginBottom:"0.25rem"
-            }}>
-              Ações Rápidas
-            </h3>
-            <p style={{
-              fontSize: '0.813rem',
-              color:"var(--orx-text-secondary)",
-              fontFamily:"var(--orx-font-family)",
-            }}>
-              Acesso rápido às operações mais utilizadas
-            </p>
+            </Card>
           </div>
+        </>
+      )}
 
-          <div className="grid grid-cols-6 gap-4">
-            {[
-              { icon: Plus, label:"Novo Pedido", color:"var(--orx-primary)" },
-              { icon: FileIcon, label:"Nova NF", color:"var(--orx-primary)" },
-              { icon: ShoppingCart, label:"Orçamento", color:"var(--orx-primary)" },
-              { icon: UserPlus, label:"Cadastro", color:"var(--orx-primary)" },
-              { icon: BarChart3, label:"Relatórios", color:"var(--orx-primary)" },
-              { icon: Settings, label:"Configurar", color:"var(--orx-primary)" },
-            ].map((action, index) => (
-              <button
-                key={index}
-                className="neumorphic-button colored-button flex  items-center justify-center gap-2 p-4"
-                style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                  background: action.color,
-                  color:"white",
-                  borderRadius:"1rem",
-                  border:"none",
-                  boxShadow:"0 4px 12px rgba(99, 102, 241, 0.3)",
-                  transition:"all 0.2s ease",
-                  minHeight:"80px"
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform ="translateY(-2px)";
-                  e.currentTarget.style.boxShadow ="0 6px 16px rgba(99, 102, 241, 0.4)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform ="translateY(0)";
-                  e.currentTarget.style.boxShadow ="0 4px 12px rgba(99, 102, 241, 0.3)";
-                }}
-              >
-                <action.icon size={24} strokeWidth={2} style={{ color:"white" }} />
-                <span style={{
-                  fontSize: '0.813rem',
-                  fontWeight: 600,
-                  fontFamily:"var(--orx-font-family)",
-                  textAlign:"center"
-                }}>
-                  {action.label}
-                </span>
-              </button>
+      {activeTab === 'cirurgias-hoje' && (
+        <Card title="Cirurgias Agendadas para Hoje" padding="lg">
+          <div className="space-y-4">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="flex items-center justify-between p-4 bg-[var(--orx-surface-light)] rounded-lg">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-[#6366F1]/10 flex items-center justify-center">
+                    <Stethoscope size={24} className="text-[#6366F1]" />
+                  </div>
+                  <div>
+                    <p className="font-semibold">Cirurgia #{i}</p>
+                    <p className="text-sm text-[var(--orx-text-secondary)]">Dr. João Silva - Hospital ABC</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="font-semibold">{8 + i}:00</p>
+                  <p className="text-sm text-[var(--orx-text-secondary)]">Ortopedia</p>
+                </div>
+              </div>
             ))}
           </div>
+        </Card>
+      )}
+
+      {activeTab === 'estoque-critico' && (
+        <Card title="Produtos com Estoque Crítico" padding="lg">
+          <div className="space-y-3">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="flex items-center justify-between p-4 bg-[var(--orx-surface-light)] rounded-lg">
+                <div>
+                  <p className="font-semibold">Produto OPME #{i}</p>
+                  <p className="text-sm text-[var(--orx-text-secondary)]">Código: OPME-{1000 + i}</p>
+                </div>
+                <div className="text-right">
+                  <p className="font-bold text-red-600">{5 - i} unidades</p>
+                  <p className="text-sm text-[var(--orx-text-secondary)]">Mínimo: 10</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+
+      {activeTab === 'financeiro' && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <Card title="Contas a Receber" padding="lg">
+            <div className="text-center">
+              <p className="text-4xl font-bold text-[#6366F1]">R$ 1.234.000</p>
+              <p className="text-sm text-[var(--orx-text-secondary)] mt-2">Em aberto</p>
             </div>
-      </div>
+          </Card>
+          <Card title="Contas a Pagar" padding="lg">
+            <div className="text-center">
+              <p className="text-4xl font-bold text-[#6366F1]">R$ 876.500</p>
+              <p className="text-sm text-[var(--orx-text-secondary)] mt-2">A vencer</p>
+            </div>
+          </Card>
+          <Card title="Saldo Disponível" padding="lg">
+            <div className="text-center">
+              <p className="text-4xl font-bold text-green-600">R$ 456.200</p>
+              <p className="text-sm text-[var(--orx-text-secondary)] mt-2">Líquido</p>
+            </div>
+          </Card>
+        </div>
+      )}
+
+      {activeTab === 'alertas' && (
+        <Card title="Alertas Prioritários" padding="lg">
+          <div className="space-y-3">
+            <div className="flex items-start gap-3 p-4 bg-red-50 rounded-lg">
+              <AlertTriangle size={24} className="text-red-600 flex-shrink-0" />
+              <div>
+                <p className="font-semibold text-red-900">Estoque Crítico</p>
+                <p className="text-sm text-red-700">5 produtos em falta, 18 abaixo do mínimo</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-4 bg-yellow-50 rounded-lg">
+              <AlertTriangle size={24} className="text-yellow-600 flex-shrink-0" />
+              <div>
+                <p className="font-semibold text-yellow-900">Contas Vencidas</p>
+                <p className="text-sm text-yellow-700">3 contas a receber vencidas há mais de 30 dias</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-lg">
+              <AlertTriangle size={24} className="text-blue-600 flex-shrink-0" />
+              <div>
+                <p className="font-semibold text-blue-900">Certificações</p>
+                <p className="text-sm text-blue-700">2 certificações ANVISA vencem em 15 dias</p>
+              </div>
+            </div>
+          </div>
+        </Card>
+      )}
     </div>
   );
 }

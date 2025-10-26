@@ -75,9 +75,10 @@ class ViaCepService {
         ddd: data.ddd
       };
       
-    } catch (_error) {
-      console.error('Erro ao buscar CEP:', _error);
-      throw _error;
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar CEP:', err);
+      throw err;
     }
   }
   
@@ -133,9 +134,10 @@ class ViaCepService {
         ddd: item.ddd
       }));
       
-    } catch (_error) {
-      console.error('Erro ao buscar por endereço:', _error);
-      throw _error;
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar por endereço:', err);
+      throw err;
     }
   }
   

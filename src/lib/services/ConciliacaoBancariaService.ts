@@ -84,8 +84,9 @@ export class ConciliacaoBancariaService {
       }
 
       return extratos;
-    } catch (_err) {
-      console.error("Erro parseOFX:", _err);
+    } catch (error) {
+   const err = error as Error;
+      console.error("Erro parseOFX:", err);
       return [];
     }
   }
@@ -159,8 +160,9 @@ export class ConciliacaoBancariaService {
 
       // 3. Ordenar por score decrescente
       return sugestoes.sort((a, b) => b.match_score - a.match_score);
-    } catch (_err) {
-      console.error("Erro buscarSugestoesConciliacao:", _err);
+    } catch (error) {
+   const err = error as Error;
+      console.error("Erro buscarSugestoesConciliacao:", err);
       return [];
     }
   }

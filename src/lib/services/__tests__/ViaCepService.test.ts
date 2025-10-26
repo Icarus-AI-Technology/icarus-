@@ -32,7 +32,7 @@ describe('ViaCepService', () => {
         ddd: '11'
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce({
         ok: true,
         json: async () => mockResponse
       });
@@ -71,7 +71,7 @@ describe('ViaCepService', () => {
         ddd: '11'
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce({
         ok: true,
         json: async () => mockResponse
       });
@@ -86,7 +86,7 @@ describe('ViaCepService', () => {
 
     it('deve retornar null se CEP não for encontrado', async () => {
       // Arrange
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ erro: true })
       });
@@ -107,7 +107,7 @@ describe('ViaCepService', () => {
 
     it('deve lançar erro se API retornar erro HTTP', async () => {
       // Arrange
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce({
         ok: false,
         status: 500
       });
@@ -145,7 +145,7 @@ describe('ViaCepService', () => {
         }
       ];
 
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce({
         ok: true,
         json: async () => mockResponse
       });
@@ -165,7 +165,7 @@ describe('ViaCepService', () => {
 
     it('deve retornar array vazio se nenhum endereço for encontrado', async () => {
       // Arrange
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce({
         ok: true,
         json: async () => []
       });

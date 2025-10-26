@@ -19,8 +19,7 @@ import {
   AlertTriangle,
   Check,
   Loader2,
-  X,
-  Sparkles
+  X
 } from"lucide-react";
 import { toast } from"sonner";
 
@@ -30,10 +29,15 @@ import { validacaoService } from"@/services/ValidacaoService";
 import { duplicateDetectionService } from"@/services/DuplicateDetectionService";
 
 // Types
-import type { Medico, MedicoFormData, ValidationErrors } from"@/types/cadastros";
+import type { MedicoFormData, ValidationErrors } from"@/types/cadastros";
 
 // Hooks
 import { useDocumentTitle } from"@/hooks";
+
+interface PossivelDuplicata {
+  nome?: string;
+  motivo?: string;
+}
 
 // Estados brasileiros
 const ESTADOS_BRASILEIROS = [
@@ -123,48 +127,18 @@ export default function CadastroMedicos() {
   const [formData, setFormData] = useState<MedicoFormData>(INITIAL_STATE);
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
   const [loading, setLoading] = useState(false);
-  const [validatingCPF, setValidatingCPF] = useState(false);
   const [validatingCRM, setValidatingCRM] = useState(false);
   const [buscandoCEP, setBuscandoCEP] = useState(false);
-  const [possiveisDuplicatas, setPossiveisDuplicatas] = useState<any[]>([]);
+  const [possiveisDuplicatas, setPossiveisDuplicatas] = useState<PossivelDuplicata[]>([]);
 
-  // Validação de CPF em tempo real
-  const handleCPFChange = async (cpf: string) => {
+  // CPF opcional (sem validação em tempo real)
+  const handleCPFChange = (cpf: string) => {
     setFormData({ ...formData, cpf });
-
-    // Remove erros anteriores
-    const { cpf: _, ...restErrors } = validationErrors;
+    const { cpf: _omit, ...restErrors } = validationErrors;
     setValidationErrors(restErrors);
-
-    if (cpf.length === 14) { // CPF formatado: 999.999.999-99
-      setValidatingCPF(true);
-      try {
-        const resultado = await validacaoService.validarCPF(cpf);
-        
-        if (!resultado.valido) {
-          setValidationErrors({
-            ...validationErrors,
-            cpf: resultado.mensagem || 'CPF inválido'
-          });
-        } else {
-          // Enriquecer dados se disponível
-          if (resultado.dados?.nome) {
-            setFormData(prev => ({
-              ...prev,
-              cpf,
-              nome_completo: resultado.dados.nome || prev.nome_completo
-            }));
-          }
-        }
-      } catch (_error) {
-        console.warn('Erro ao validar CPF:', error);
-      } finally {
-        setValidatingCPF(false);
-      }
-    }
   };
 
-  // Validação de CRM em tempo real
+  // Validação de CRM + autofill via API (mantido)
   const handleCRMChange = async (crm: string, uf: string) => {
     setFormData({ ...formData, crm, uf_crm: uf });
 
@@ -175,14 +149,22 @@ export default function CadastroMedicos() {
     if (crm && uf) {
       setValidatingCRM(true);
       try {
-        const resultado = await validacaoService.validarCRM(crm, uf);
-        
-        if (!resultado.valido) {
+        // Consulta CRM (validação + dados)
+        const resultado = await validacaoService.consultarCRM(crm, uf);
+
+        if (!resultado.ativo) {
           setValidationErrors({
             ...validationErrors,
             crm: resultado.mensagem || 'CRM inválido'
           });
         } else {
+          // Preenchimento automático (nome/especialidade) se disponível
+          setFormData(prev => ({
+            ...prev,
+            nome_completo: resultado.nome || prev.nome_completo,
+            especialidade: resultado.especialidade || prev.especialidade,
+          }));
+
           // Verificar duplicação
           const duplicatas = await duplicateDetectionService.detectPossibleDuplicates({
             tipo: 'medico',
@@ -197,8 +179,8 @@ export default function CadastroMedicos() {
             });
           }
         }
-      } catch (_error) {
-        console.warn('Erro ao validar CRM:', error);
+      } catch (error) {
+        console.warn('Erro ao consultar/validar CRM:', error);
       } finally {
         setValidatingCRM(false);
       }
@@ -233,7 +215,7 @@ export default function CadastroMedicos() {
             }
           });
         }
-      } catch (_error) {
+      } catch (error) {
         console.warn('Erro ao buscar CEP:', error);
       } finally {
         setBuscandoCEP(false);
@@ -258,8 +240,8 @@ export default function CadastroMedicos() {
         });
 
         setPossiveisDuplicatas(duplicatas);
-      } catch (_error) {
-        console.error('Erro ao detectar duplicatas:', error);
+      } catch (error) {
+        console.error('Erro ao detectar duplicatas:', error as Error);
       }
     };
 
@@ -277,7 +259,6 @@ export default function CadastroMedicos() {
       const errors: ValidationErrors = {};
 
       if (!formData.nome_completo) errors.nome_completo = 'Nome completo é obrigatório';
-      if (!formData.cpf) errors.cpf = 'CPF é obrigatório';
       if (!formData.crm) errors.crm = 'CRM é obrigatório';
       if (!formData.uf_crm) errors.uf_crm = 'UF do CRM é obrigatório';
       if (!formData.especialidade) errors.especialidade = 'Especialidade é obrigatória';
@@ -292,12 +273,12 @@ export default function CadastroMedicos() {
       }
 
       // Salvar
-      const novoMedico = await cadastrosService.createMedico(formData);
+      await cadastrosService.createMedico(formData);
       
       toast.success('Médico cadastrado com sucesso!');
       navigate('/cadastros');
-    } catch (_error) {
-      console.error('Erro ao salvar médico:', error);
+    } catch (error) {
+      console.error('Erro ao salvar médico:', error as Error);
       toast.error('Erro ao salvar médico');
     } finally {
       setLoading(false);
@@ -319,53 +300,29 @@ export default function CadastroMedicos() {
         <button
           type="button"
           onClick={() => navigate('/cadastros')}
-          className="neumorphic-button"
-          style={{ padding: '0.75rem 1.5rem' }}
+          className="neumorphic-button px-6 py-3"
+          aria-label="Cancelar cadastro"
         >
           <X size={18} />
-          <span style={{ marginLeft: '0.5rem', fontSize: '0.813rem' }}>Cancelar</span>
+          <span className="ml-2 text-[0.813rem]">Cancelar</span>
         </button>
       </div>
 
       {/* Alerta de Duplicatas */}
       {possiveisDuplicatas.length > 0 && (
-        <div 
-          className="neumorphic-card" 
-          style={{ 
-            padding: '1rem',
-            border: '2px solid var(--orx-warning)',
-            background: 'var(--orx-bg-light)'
-          }}
-        >
+        <div className="neumorphic-card p-4 border-2 border-[var(--orx-warning)] bg-[var(--orx-bg-light)]">
           <div className="flex items-start gap-3">
-            <AlertTriangle 
-              size={24} 
-              style={{ color: 'var(--orx-warning)', flexShrink: 0 }} 
-            />
-            <div style={{ flex: 1 }}>
-              <h3 
-                className="font-display" 
-                style={{ 
-                  fontSize: '0.813rem', 
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem'
-                }}
-              >
+            <AlertTriangle size={24} className="text-[var(--orx-warning)] shrink-0" />
+            <div className="flex-1">
+              <h3 className="font-display text-[0.813rem] text-[var(--orx-text-primary)] mb-2">
                 Possíveis Duplicatas Detectadas
               </h3>
-              <p style={{ fontSize: '0.813rem', color: 'var(--orx-text-secondary)' }}>
+              <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">
                 Encontramos {possiveisDuplicatas.length} médico(s) similar(es):
               </p>
-              <ul style={{ marginTop: '0.5rem', marginLeft: '1rem' }}>
+              <ul className="mt-2 ml-4">
                 {possiveisDuplicatas.map((dup, idx) => (
-                  <li 
-                    key={idx}
-                    style={{ 
-                      fontSize: '0.813rem', 
-                      color: 'var(--orx-text-primary)',
-                      marginBottom: '0.25rem'
-                    }}
-                  >
+                  <li key={idx} className="text-[0.813rem] text-[var(--orx-text-primary)] mb-1">
                     • {dup.nome} - {dup.motivo}
                   </li>
                 ))}
@@ -377,10 +334,10 @@ export default function CadastroMedicos() {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Seção 1: Dados Pessoais */}
-        <div className="neumorphic-card" style={{ padding: '1.5rem' }}>
+        <div className="neumorphic-card p-6">
           <div className="flex items-center gap-2 mb-4">
-            <User size={20} style={{ color: 'var(--orx-primary)' }} />
-            <h2 className="font-display" style={{ fontSize: '0.813rem', color: 'var(--orx-text-primary)' }}>
+            <User size={20} className="text-[var(--orx-primary)]" />
+            <h2 className="font-display text-[0.813rem] text-[var(--orx-text-primary)]">
               Dados Pessoais
             </h2>
           </div>
@@ -390,78 +347,44 @@ export default function CadastroMedicos() {
             <div className="md:col-span-2">
               <label 
                 htmlFor="nome_completo"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
-                Nome Completo <span style={{ color: 'var(--orx-error)' }}>*</span>
+                Nome Completo <span className="text-[var(--orx-error)]">*</span>
               </label>
               <input
                 id="nome_completo"
                 type="text"
                 value={formData.nome_completo}
                 onChange={(e) => setFormData({ ...formData, nome_completo: e.target.value })}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: validationErrors.nome_completo ? '2px solid var(--orx-error)' : 'none'
-                }}
+                className={`neumorphic-input w-full p-3 rounded-lg ${validationErrors.nome_completo ? 'border-2 border-[var(--orx-error)]' : ''}`}
                 placeholder="Digite o nome completo do médico"
               />
               {validationErrors.nome_completo && (
-                <p style={{ fontSize: '0.813rem', color: 'var(--orx-error)', marginTop: '0.25rem' }}>
-                  {validationErrors.nome_completo}
-                </p>
+                <p className="text-[0.813rem] text-[var(--orx-error)] mt-1">{validationErrors.nome_completo}</p>
               )}
             </div>
 
-            {/* CPF */}
+            {/* CPF (opcional) */}
             <div>
               <label 
                 htmlFor="cpf"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
-                CPF <span style={{ color: 'var(--orx-error)' }}>*</span>
+                CPF
               </label>
-              <div style={{ position: 'relative' }}>
+              <div className="relative">
                 <input
                   id="cpf"
                   type="text"
                   value={formData.cpf}
                   onChange={(e) => handleCPFChange(e.target.value)}
-                  className="neumorphic-input"
-                  style={{ 
-                    width: '100%',
-                    padding: '0.75rem',
-                    paddingRight: validatingCPF ? '2.5rem' : '0.75rem',
-                    borderRadius: '0.5rem',
-                    border: validationErrors.cpf ? '2px solid var(--orx-error)' : 'none'
-                  }}
+                  className={`neumorphic-input w-full p-3 rounded-lg ${validationErrors.cpf ? 'border-2 border-[var(--orx-error)]' : ''}`}
                   placeholder="000.000.000-00"
                   maxLength={14}
                 />
-                {validatingCPF && (
-                  <div style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)' }}>
-                    <Loader2 size={18} className="animate-spin" style={{ color: 'var(--orx-primary)' }} />
-                  </div>
-                )}
               </div>
               {validationErrors.cpf && (
-                <p style={{ fontSize: '0.813rem', color: 'var(--orx-error)', marginTop: '0.25rem' }}>
-                  {validationErrors.cpf}
-                </p>
+                <p className="text-[0.813rem] text-[var(--orx-error)] mt-1">{validationErrors.cpf}</p>
               )}
             </div>
 
@@ -469,13 +392,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="rg"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
                 RG
               </label>
@@ -484,12 +401,7 @@ export default function CadastroMedicos() {
                 type="text"
                 value={formData.rg}
                 onChange={(e) => setFormData({ ...formData, rg: e.target.value })}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem'
-                }}
+                className="neumorphic-input w-full p-3 rounded-lg"
                 placeholder="00.000.000-0"
               />
             </div>
@@ -498,13 +410,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="data_nascimento"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
                 Data de Nascimento
               </label>
@@ -513,12 +419,7 @@ export default function CadastroMedicos() {
                 type="date"
                 value={formData.data_nascimento}
                 onChange={(e) => setFormData({ ...formData, data_nascimento: e.target.value })}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem'
-                }}
+                className="neumorphic-input w-full p-3 rounded-lg"
               />
             </div>
 
@@ -526,13 +427,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="sexo"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
                 Sexo
               </label>
@@ -540,29 +435,23 @@ export default function CadastroMedicos() {
                 id="sexo"
                 value={formData.sexo}
                 onChange={(e) => setFormData({ ...formData, sexo: e.target.value })}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem'
-                }}
+                className="neumorphic-input w-full p-3 rounded-lg"
               >
                 <option value="">Selecione</option>
                 <option value="M">Masculino</option>
                 <option value="F">Feminino</option>
                 <option value="Outro">Outro</option>
-              </select>
+              </select
+              >
             </div>
           </div>
         </div>
 
         {/* Seção 2: Dados Profissionais */}
-        <div className="neumorphic-card" style={{ padding: '1.5rem' }}>
+        <div className="neumorphic-card p-6">
           <div className="flex items-center gap-2 mb-4">
-            <Stethoscope size={20} style={{ color: 'var(--orx-primary)' }} />
-            <h2 className="font-display" style={{ fontSize: '0.813rem', color: 'var(--orx-text-primary)' }}>
-              Dados Profissionais
-            </h2>
+            <Stethoscope size={20} className="text-[var(--orx-primary)]" />
+            <h2 className="font-display text-[0.813rem] text-[var(--orx-text-primary)]">Dados Profissionais</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -570,42 +459,27 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="crm"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
-                CRM <span style={{ color: 'var(--orx-error)' }}>*</span>
+                CRM <span className="text-[var(--orx-error)]">*</span>
               </label>
-              <div style={{ position: 'relative' }}>
+              <div className="relative">
                 <input
                   id="crm"
                   type="text"
                   value={formData.crm}
                   onChange={(e) => handleCRMChange(e.target.value, formData.uf_crm)}
-                  className="neumorphic-input"
-                  style={{ 
-                    width: '100%',
-                    padding: '0.75rem',
-                    paddingRight: validatingCRM ? '2.5rem' : '0.75rem',
-                    borderRadius: '0.5rem',
-                    border: validationErrors.crm ? '2px solid var(--orx-error)' : 'none'
-                  }}
+                  className={`neumorphic-input w-full p-3 rounded-lg ${validatingCRM ? 'pr-10' : ''} ${validationErrors.crm ? 'border-2 border-[var(--orx-error)]' : ''}`}
                   placeholder="123456"
                 />
                 {validatingCRM && (
-                  <div style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)' }}>
-                    <Loader2 size={18} className="animate-spin" style={{ color: 'var(--orx-primary)' }} />
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                    <Loader2 size={18} className="animate-spin text-[var(--orx-primary)]" />
                   </div>
                 )}
               </div>
               {validationErrors.crm && (
-                <p style={{ fontSize: '0.813rem', color: 'var(--orx-error)', marginTop: '0.25rem' }}>
-                  {validationErrors.crm}
-                </p>
+                <p className="text-[0.813rem] text-[var(--orx-error)] mt-1">{validationErrors.crm}</p>
               )}
             </div>
 
@@ -613,27 +487,15 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="uf_crm"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
-                UF do CRM <span style={{ color: 'var(--orx-error)' }}>*</span>
+                UF do CRM <span className="text-[var(--orx-error)]">*</span>
               </label>
               <select
                 id="uf_crm"
                 value={formData.uf_crm}
                 onChange={(e) => handleCRMChange(formData.crm, e.target.value)}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: validationErrors.uf_crm ? '2px solid var(--orx-error)' : 'none'
-                }}
+                className={`neumorphic-input w-full p-3 rounded-lg ${validationErrors.uf_crm ? 'border-2 border-[var(--orx-error)]' : ''}`}
               >
                 <option value="">Selecione</option>
                 {ESTADOS_BRASILEIROS.map(estado => (
@@ -641,9 +503,7 @@ export default function CadastroMedicos() {
                 ))}
               </select>
               {validationErrors.uf_crm && (
-                <p style={{ fontSize: '0.813rem', color: 'var(--orx-error)', marginTop: '0.25rem' }}>
-                  {validationErrors.uf_crm}
-                </p>
+                <p className="text-[0.813rem] text-[var(--orx-error)] mt-1">{validationErrors.uf_crm}</p>
               )}
             </div>
 
@@ -651,27 +511,15 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="especialidade"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
-                Especialidade <span style={{ color: 'var(--orx-error)' }}>*</span>
+                Especialidade <span className="text-[var(--orx-error)]">*</span>
               </label>
               <select
                 id="especialidade"
                 value={formData.especialidade}
                 onChange={(e) => setFormData({ ...formData, especialidade: e.target.value })}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: validationErrors.especialidade ? '2px solid var(--orx-error)' : 'none'
-                }}
+                className="neumorphic-input w-full p-3 rounded-lg"
               >
                 <option value="">Selecione</option>
                 {ESPECIALIDADES.map(esp => (
@@ -679,9 +527,7 @@ export default function CadastroMedicos() {
                 ))}
               </select>
               {validationErrors.especialidade && (
-                <p style={{ fontSize: '0.813rem', color: 'var(--orx-error)', marginTop: '0.25rem' }}>
-                  {validationErrors.especialidade}
-                </p>
+                <p className="text-[0.813rem] text-[var(--orx-error)] mt-1">{validationErrors.especialidade}</p>
               )}
             </div>
 
@@ -689,13 +535,7 @@ export default function CadastroMedicos() {
             <div className="md:col-span-3">
               <label 
                 htmlFor="registro_ans"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
                 Registro ANS (opcional)
               </label>
@@ -704,12 +544,7 @@ export default function CadastroMedicos() {
                 type="text"
                 value={formData.registro_ans || ''}
                 onChange={(e) => setFormData({ ...formData, registro_ans: e.target.value })}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem'
-                }}
+                className="neumorphic-input w-full p-3 rounded-lg"
                 placeholder="Apenas se aplicável"
               />
             </div>
@@ -717,10 +552,10 @@ export default function CadastroMedicos() {
         </div>
 
         {/* Seção 3: Contato */}
-        <div className="neumorphic-card" style={{ padding: '1.5rem' }}>
+        <div className="neumorphic-card p-6">
           <div className="flex items-center gap-2 mb-4">
-            <Phone size={20} style={{ color: 'var(--orx-primary)' }} />
-            <h2 className="font-display" style={{ fontSize: '0.813rem', color: 'var(--orx-text-primary)' }}>
+            <Phone size={20} className="text-[var(--orx-primary)]" />
+            <h2 className="font-display text-[0.813rem] text-[var(--orx-text-primary)]">
               Contato
             </h2>
           </div>
@@ -730,13 +565,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="telefone"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
                 Telefone Fixo
               </label>
@@ -745,12 +574,7 @@ export default function CadastroMedicos() {
                 type="tel"
                 value={formData.telefone || ''}
                 onChange={(e) => setFormData({ ...formData, telefone: e.target.value })}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem'
-                }}
+                className="neumorphic-input w-full p-3 rounded-lg"
                 placeholder="(11) 3456-7890"
               />
             </div>
@@ -759,34 +583,20 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="celular"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
-                Celular (WhatsApp) <span style={{ color: 'var(--orx-error)' }}>*</span>
+                Celular (WhatsApp) <span className="text-[var(--orx-error)]">*</span>
               </label>
               <input
                 id="celular"
                 type="tel"
                 value={formData.celular}
                 onChange={(e) => setFormData({ ...formData, celular: e.target.value })}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: validationErrors.celular ? '2px solid var(--orx-error)' : 'none'
-                }}
-                placeholder="(11) 98765-4321"
+                className={`neumorphic-input w-full p-3 rounded-lg ${validationErrors.celular ? 'border-2 border-[var(--orx-error)]' : ''}`}
+                placeholder="(11) 98888-7777"
               />
               {validationErrors.celular && (
-                <p style={{ fontSize: '0.813rem', color: 'var(--orx-error)', marginTop: '0.25rem' }}>
-                  {validationErrors.celular}
-                </p>
+                <p className="text-[0.813rem] text-[var(--orx-error)] mt-1">{validationErrors.celular}</p>
               )}
             </div>
 
@@ -794,34 +604,20 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="email"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
-                Email <span style={{ color: 'var(--orx-error)' }}>*</span>
+                Email <span className="text-[var(--orx-error)]">*</span>
               </label>
               <input
                 id="email"
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: validationErrors.email ? '2px solid var(--orx-error)' : 'none'
-                }}
+                className={`neumorphic-input w-full p-3 rounded-lg ${validationErrors.email ? 'border-2 border-[var(--orx-error)]' : ''}`}
                 placeholder="medico@email.com"
               />
               {validationErrors.email && (
-                <p style={{ fontSize: '0.813rem', color: 'var(--orx-error)', marginTop: '0.25rem' }}>
-                  {validationErrors.email}
-                </p>
+                <p className="text-[0.813rem] text-[var(--orx-error)] mt-1">{validationErrors.email}</p>
               )}
             </div>
 
@@ -829,13 +625,7 @@ export default function CadastroMedicos() {
             <div className="md:col-span-3">
               <label 
                 htmlFor="linkedin"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
                 LinkedIn (opcional)
               </label>
@@ -844,12 +634,7 @@ export default function CadastroMedicos() {
                 type="url"
                 value={formData.linkedin || ''}
                 onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem'
-                }}
+                className="neumorphic-input w-full p-3 rounded-lg"
                 placeholder="https://linkedin.com/in/..."
               />
             </div>
@@ -857,10 +642,10 @@ export default function CadastroMedicos() {
         </div>
 
         {/* Seção 4: Endereço */}
-        <div className="neumorphic-card" style={{ padding: '1.5rem' }}>
+        <div className="neumorphic-card p-6">
           <div className="flex items-center gap-2 mb-4">
-            <MapPin size={20} style={{ color: 'var(--orx-primary)' }} />
-            <h2 className="font-display" style={{ fontSize: '0.813rem', color: 'var(--orx-text-primary)' }}>
+            <MapPin size={20} className="text-[var(--orx-primary)]" />
+            <h2 className="font-display text-[0.813rem] text-[var(--orx-text-primary)]">
               Endereço
             </h2>
           </div>
@@ -870,35 +655,23 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="cep"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
                 CEP
               </label>
-              <div style={{ position: 'relative' }}>
+              <div className="relative">
                 <input
                   id="cep"
                   type="text"
                   value={formData.endereco?.cep || ''}
                   onChange={(e) => handleCEPChange(e.target.value)}
-                  className="neumorphic-input"
-                  style={{ 
-                    width: '100%',
-                    padding: '0.75rem',
-                    paddingRight: buscandoCEP ? '2.5rem' : '0.75rem',
-                    borderRadius: '0.5rem'
-                  }}
+                  className={`neumorphic-input w-full p-3 rounded-lg ${buscandoCEP ? 'pr-10' : ''}`}
                   placeholder="00000-000"
                   maxLength={9}
                 />
                 {buscandoCEP && (
-                  <div style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)' }}>
-                    <Loader2 size={18} className="animate-spin" style={{ color: 'var(--orx-primary)' }} />
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                    <Loader2 size={18} className="animate-spin text-[var(--orx-primary)]" />
                   </div>
                 )}
               </div>
@@ -908,13 +681,7 @@ export default function CadastroMedicos() {
             <div className="md:col-span-3">
               <label 
                 htmlFor="logradouro"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
                 Logradouro
               </label>
@@ -926,12 +693,7 @@ export default function CadastroMedicos() {
                   ...formData,
                   endereco: { ...formData.endereco!, logradouro: e.target.value }
                 })}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem'
-                }}
+                className="neumorphic-input w-full p-3 rounded-lg"
                 placeholder="Rua, Avenida..."
               />
             </div>
@@ -940,13 +702,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="numero"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
                 Número
               </label>
@@ -958,12 +714,7 @@ export default function CadastroMedicos() {
                   ...formData,
                   endereco: { ...formData.endereco!, numero: e.target.value }
                 })}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem'
-                }}
+                className="neumorphic-input w-full p-3 rounded-lg"
                 placeholder="123"
               />
             </div>
@@ -972,13 +723,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="complemento"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
                 Complemento
               </label>
@@ -990,12 +735,7 @@ export default function CadastroMedicos() {
                   ...formData,
                   endereco: { ...formData.endereco!, complemento: e.target.value }
                 })}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem'
-                }}
+                className="neumorphic-input w-full p-3 rounded-lg"
                 placeholder="Apto, Sala..."
               />
             </div>
@@ -1004,13 +744,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="bairro"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
                 Bairro
               </label>
@@ -1022,13 +756,7 @@ export default function CadastroMedicos() {
                   ...formData,
                   endereco: { ...formData.endereco!, bairro: e.target.value }
                 })}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem'
-                }}
-                placeholder="Centro"
+                className="neumorphic-input w-full p-3 rounded-lg"
               />
             </div>
 
@@ -1036,13 +764,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="cidade"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
                 Cidade
               </label>
@@ -1054,23 +776,17 @@ export default function CadastroMedicos() {
                   ...formData,
                   endereco: { ...formData.endereco!, cidade: e.target.value }
                 })}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem'
-                }}
-                placeholder="São Paulo"
+                className="neumorphic-input w-full p-3 rounded-lg"
               />
             </div>
           </div>
         </div>
 
         {/* Seção 5: Dados Bancários */}
-        <div className="neumorphic-card" style={{ padding: '1.5rem' }}>
+        <div className="neumorphic-card p-6">
           <div className="flex items-center gap-2 mb-4">
-            <CreditCard size={20} style={{ color: 'var(--orx-primary)' }} />
-            <h2 className="font-display" style={{ fontSize: '0.813rem', color: 'var(--orx-text-primary)' }}>
+            <CreditCard size={20} className="text-[var(--orx-primary)]" />
+            <h2 className="font-display text-[0.813rem] text-[var(--orx-text-primary)]">
               Dados Bancários (Opcional)
             </h2>
           </div>
@@ -1080,13 +796,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="banco"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
                 Banco
               </label>
@@ -1098,12 +808,7 @@ export default function CadastroMedicos() {
                   ...formData,
                   dados_bancarios: { ...formData.dados_bancarios!, banco: e.target.value }
                 })}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem'
-                }}
+                className="neumorphic-input w-full p-3 rounded-lg"
                 placeholder="001 - Banco do Brasil"
               />
             </div>
@@ -1112,13 +817,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="agencia"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
                 Agência
               </label>
@@ -1130,12 +829,7 @@ export default function CadastroMedicos() {
                   ...formData,
                   dados_bancarios: { ...formData.dados_bancarios!, agencia: e.target.value }
                 })}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem'
-                }}
+                className="neumorphic-input w-full p-3 rounded-lg"
                 placeholder="1234"
               />
             </div>
@@ -1144,13 +838,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="conta"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
                 Conta
               </label>
@@ -1162,12 +850,7 @@ export default function CadastroMedicos() {
                   ...formData,
                   dados_bancarios: { ...formData.dados_bancarios!, conta: e.target.value }
                 })}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem'
-                }}
+                className="neumorphic-input w-full p-3 rounded-lg"
                 placeholder="12345-6"
               />
             </div>
@@ -1176,13 +859,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="tipo_conta"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
                 Tipo de Conta
               </label>
@@ -1193,12 +870,7 @@ export default function CadastroMedicos() {
                   ...formData,
                   dados_bancarios: { ...formData.dados_bancarios!, tipo_conta: e.target.value as 'corrente' | 'poupanca' }
                 })}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem'
-                }}
+                className="neumorphic-input w-full p-3 rounded-lg"
               >
                 <option value="corrente">Corrente</option>
                 <option value="poupanca">Poupança</option>
@@ -1209,13 +881,7 @@ export default function CadastroMedicos() {
             <div className="md:col-span-4">
               <label 
                 htmlFor="pix"
-                style={{ 
-                  display: 'block',
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-primary)',
-                  marginBottom: '0.5rem',
-                  fontWeight: '500'
-                }}
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
               >
                 Chave PIX
               </label>
@@ -1227,12 +893,7 @@ export default function CadastroMedicos() {
                   ...formData,
                   dados_bancarios: { ...formData.dados_bancarios!, pix: e.target.value }
                 })}
-                className="neumorphic-input"
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem'
-                }}
+                className="neumorphic-input w-full p-3 rounded-lg"
                 placeholder="CPF, email, telefone ou chave aleatória"
               />
             </div>
@@ -1240,10 +901,10 @@ export default function CadastroMedicos() {
         </div>
 
         {/* Seção 7: Observações */}
-        <div className="neumorphic-card" style={{ padding: '1.5rem' }}>
+        <div className="neumorphic-card p-6">
           <div className="flex items-center gap-2 mb-4">
-            <FileText size={20} style={{ color: 'var(--orx-primary)' }} />
-            <h2 className="font-display" style={{ fontSize: '0.813rem', color: 'var(--orx-text-primary)' }}>
+            <FileText size={20} className="text-[var(--orx-primary)]" />
+            <h2 className="font-display text-[0.813rem] text-[var(--orx-text-primary)]">
               Observações
             </h2>
           </div>
@@ -1251,14 +912,7 @@ export default function CadastroMedicos() {
           <textarea
             value={formData.observacoes || ''}
             onChange={(e) => setFormData({ ...formData, observacoes: e.target.value })}
-            className="neumorphic-input"
-            style={{ 
-              width: '100%',
-              padding: '0.75rem',
-              borderRadius: '0.5rem',
-              minHeight: '120px',
-              resize: 'vertical'
-            }}
+            className="neumorphic-input w-full p-3 rounded-lg min-h-[120px] resize-y"
             placeholder="Informações adicionais sobre o médico..."
           />
         </div>
@@ -1268,36 +922,27 @@ export default function CadastroMedicos() {
           <button
             type="button"
             onClick={() => navigate('/cadastros')}
-            className="neumorphic-button"
-            style={{ padding: '0.75rem 1.5rem' }}
+            className="neumorphic-button px-6 py-3"
             disabled={loading}
           >
             <X size={18} />
-            <span style={{ marginLeft: '0.5rem', fontSize: '0.813rem' }}>Cancelar</span>
+            <span className="ml-2 text-[0.813rem]">Cancelar</span>
           </button>
           
           <button
             type="submit"
-            className="neumorphic-button colored-button"
-            style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem', 
-              padding: '0.75rem 2rem',
-              background: 'var(--orx-primary)',
-              color: 'white'
-            }}
+            className="neumorphic-button colored-button inline-flex items-center gap-2 px-6 py-3 bg-[var(--orx-primary)] text-white"
             disabled={loading || Object.keys(validationErrors).length > 0}
           >
             {loading ? (
               <>
                 <Loader2 size={18} className="animate-spin" />
-                <span style={{ marginLeft: '0.5rem' }}>Salvando...</span>
+                <span className="ml-2">Salvando...</span>
               </>
             ) : (
               <>
                 <Check size={18} />
-                  <span style={{ marginLeft: '0.5rem', fontSize: '0.813rem' }}>Cadastrar Médico</span>
+                <span className="ml-2 text-[0.813rem]">Cadastrar Médico</span>
               </>
             )}
           </button>

@@ -1,0 +1,14 @@
+import type { Meta, StoryObj } from '@storybook/react';
+import { Switch } from './switch';
+
+const meta: Meta<typeof Switch> = {
+  title: 'OraclusX/UI/Switch',
+  component: Switch
+};
+export default meta;
+
+type Story = StoryObj<typeof Switch>;
+
+export const Default: Story = { args: { id: 'sw' } };
+
+

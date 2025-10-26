@@ -120,7 +120,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
         aria-label="Selecionar data"
-        aria-expanded={isOpen}
+        {...(isOpen ? { 'aria-expanded': 'true' as const } : { 'aria-expanded': 'false' as const })}
         aria-haspopup="dialog"
         className={cn("w-full px-4 py-2 rounded-lg flex items-center justify-between","bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]","border border-gray-200 dark:border-border","shadow-[var(--shadow-light-inner)] dark:shadow-[var(--shadow-dark-inner)]","focus:outline-none focus:ring-2 focus:ring-[var(--primary)]","transition-all",
           disabled &&"opacity-50 cursor-not-allowed",
@@ -162,7 +162,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             >
               ←
             </button>
-            <span className="text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]" style={{ fontWeight: 500 }}>
+            <span className="text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)] font-medium">
               {viewMonth.toLocaleDateString("pt-BR", { month:"long", year:"numeric" })}
             </span>
             <button

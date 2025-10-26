@@ -14,7 +14,7 @@ export interface CheckboxProps
   error?: string;
 }
 
-export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
+const CheckboxComponent = React.forwardRef<HTMLInputElement, CheckboxProps>(
   ({ className, label, description, error, id, ...props }, ref) => {
     const checkboxId = id || `checkbox-${Math.random().toString(36).substr(2, 9)}`;
 
@@ -30,7 +30,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           />
           <label
             htmlFor={checkboxId}
-            className={cn("w-5 h-5 rounded cursor-pointer","orx-card flex items-center justify-center","peer-checked:bg-primary peer-checked:text-inverse","peer-disabled:opacity-50 peer-disabled:cursor-not-allowed","transition-all duration-150",
+            className={cn("w-5 h-5 rounded cursor-pointer","orx-card flex items-center justify-center","dark:bg-gray-700","peer-checked:bg-primary peer-checked:text-inverse","peer-disabled:opacity-50 peer-disabled:cursor-not-allowed","transition-all duration-150",
               error &&"border-2 border-error",
             )}
           >
@@ -45,7 +45,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
             {label && (
               <label
                 htmlFor={checkboxId}
-                className="text-body-sm text-[var(--text-primary)] cursor-pointer" style={{ fontWeight: 500 }}
+                className="text-body-sm text-[var(--text-primary)] cursor-pointer font-medium"
               >
                 {label}
               </label>
@@ -63,7 +63,9 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
   },
 );
 
-Checkbox.displayName ="OraclusXCheckbox";
+CheckboxComponent.displayName ="OraclusXCheckbox";
+
+export const Checkbox = React.memo(CheckboxComponent);
 
 export default Checkbox;
 

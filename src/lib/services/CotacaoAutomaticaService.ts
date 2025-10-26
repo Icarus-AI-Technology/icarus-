@@ -224,9 +224,10 @@ export class CotacaoAutomaticaService {
         recomendacoes,
         observacoes,
       };
-    } catch (_error) {
-      console.error('Erro ao cotar cirurgia:', _error);
-      throw _error;
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao cotar cirurgia:', err);
+      throw err;
     }
   }
 
@@ -253,8 +254,9 @@ export class CotacaoAutomaticaService {
         relatorios.push(relatorio);
         economiaTotal += relatorio.economia_total;
         tempoTotal += relatorio.tempo_execucao;
-      } catch (_error) {
-        console.error(`Erro ao cotar cirurgia ${id}:`, _error);
+      } catch (error) {
+   const err = error as Error;
+        console.error(`Erro ao cotar cirurgia ${id}:`, err);
       }
     }
 
@@ -335,7 +337,7 @@ export class CotacaoAutomaticaService {
       .gte('data_cotacao', dataInicio.toISOString())
       .eq('status', 'concluida');
 
-    if (error) throw _error;
+    if (error) throw error;
 
     const totalCirurgias = new Set(cotacoes?.map(c => c.cirurgia_id).filter(Boolean)).size;
     const totalProdutos = cotacoes?.length || 0;

@@ -64,7 +64,8 @@ export function useFaturas() {
         loading: false,
         error: null,
       });
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         loading: false,
@@ -83,8 +84,9 @@ export function useFaturas() {
 
       if (error) throw error;
       return data;
-    } catch (_error) {
-      console.error('Erro ao buscar fatura:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar fatura:', err);
       return null;
     }
   }, []);
@@ -105,7 +107,8 @@ export function useFaturas() {
       }));
 
       return data;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao criar fatura',
@@ -131,7 +134,8 @@ export function useFaturas() {
       }));
 
       return data;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao atualizar fatura',
@@ -155,7 +159,8 @@ export function useFaturas() {
       }));
 
       return true;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao deletar fatura',
@@ -174,8 +179,9 @@ export function useFaturas() {
 
       if (error) throw error;
       return data || [];
-    } catch (_error) {
-      console.error('Erro ao buscar faturas por status:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar faturas por status:', err);
       return [];
     }
   }, []);
@@ -191,8 +197,9 @@ export function useFaturas() {
 
       if (error) throw error;
       return data || [];
-    } catch (_error) {
-      console.error('Erro ao buscar faturas por período:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar faturas por período:', err);
       return [];
     }
   }, []);
@@ -210,7 +217,8 @@ export function useFaturas() {
       if (error) throw error;
       await fetchFaturas();
       return true;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao emitir fatura',
@@ -233,7 +241,8 @@ export function useFaturas() {
       if (error) throw error;
       await fetchFaturas();
       return true;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao cancelar fatura',
@@ -267,8 +276,9 @@ export function useFaturas() {
         canceladas,
         taxaPagamento: totalFaturas > 0 ? (pagas / totalFaturas) * 100 : 0,
       };
-    } catch (_error) {
-      console.error('Erro ao calcular resumo de faturas:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao calcular resumo de faturas:', err);
       return {
         totalFaturas: 0,
         valorTotal: 0,
@@ -295,8 +305,9 @@ export function useFaturas() {
       }, {} as Record<string, number>);
 
       return counts;
-    } catch (_error) {
-      console.error('Erro ao contar faturas:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao contar faturas:', err);
       return {};
     }
   }, []);

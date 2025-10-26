@@ -5,26 +5,9 @@
  */
 
 import React from 'react';
-import {
-  ComposedChart,
-  Line,
-  Bar,
-  Area,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  Radar,
-  ScatterChart,
-  Scatter,
-  ZAxis,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from 'recharts';
+// import Recharts legacy charts
+// import { ComposedChart, Line, Bar, Area, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ScatterChart, Scatter, ZAxis, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { OrxLineChart } from '@/components/charts/OrxLineChart';
 import { cn } from '@/lib/utils';
 
 // ============================================
@@ -48,9 +31,15 @@ interface BaseChartProps {
 // CUSTOM TOOLTIP (Neumorphic) - Reusado
 // ============================================
 
+type TooltipEntry = {
+  color: string;
+  value: number | string;
+  name: string;
+};
+
 interface CustomTooltipProps {
   active?: boolean;
-  payload?: any[];
+  payload?: TooltipEntry[];
   label?: string;
 }
 
@@ -153,76 +142,18 @@ interface ComposedChartComponentProps extends BaseChartProps {
   };
 }
 
-export function ComposedChartComponent({
-  data,
-  dataKeys,
-  colors = {
-    line: ['var(--orx-primary)', 'var(--orx-success)'],
-    bar: ['var(--orx-warning)'],
-    area: ['var(--orx-info)'],
-  },
-  height = 400,
-  title,
-  subtitle,
-  className,
-}: ComposedChartComponentProps) {
+export function ComposedChartComponent({ data, dataKeys, height = 400, title, subtitle, className }: ComposedChartComponentProps) {
+  const series = (dataKeys.line || []).map((key) => ({
+    id: key,
+    data: data.map((d) => {
+      const value = d[key as keyof ChartData];
+      const y = typeof value === 'number' ? value : Number(value);
+      return { x: d.name, y };
+    }),
+  }));
   return (
     <ChartContainer title={title} subtitle={subtitle} className={className}>
-      <ResponsiveContainer width="100%" height={height}>
-        <ComposedChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-          <XAxis
-            dataKey="name"
-            stroke="var(--text-secondary)"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '0.813rem' }}
-          />
-          <YAxis
-            stroke="var(--text-secondary)"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '0.813rem' }}
-          />
-          <Tooltip content={<CustomTooltip />} />
-          <Legend
-            wrapperStyle={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '0.813rem',
-            }}
-          />
-
-          {/* Áreas */}
-          {dataKeys.area?.map((key, index) => (
-            <Area
-              key={key}
-              type="monotone"
-              dataKey={key}
-              fill={colors.area?.[index] || 'var(--orx-info)'}
-              stroke={colors.area?.[index] || 'var(--orx-info)'}
-              fillOpacity={0.3}
-            />
-          ))}
-
-          {/* Barras */}
-          {dataKeys.bar?.map((key, index) => (
-            <Bar
-              key={key}
-              dataKey={key}
-              fill={colors.bar?.[index] || 'var(--orx-warning)'}
-              radius={[8, 8, 0, 0]}
-            />
-          ))}
-
-          {/* Linhas */}
-          {dataKeys.line?.map((key, index) => (
-            <Line
-              key={key}
-              type="monotone"
-              dataKey={key}
-              stroke={colors.line?.[index] || 'var(--orx-primary)'}
-              strokeWidth={2}
-              dot={{ fill: colors.line?.[index] || 'var(--orx-primary)', r: 4 }}
-            />
-          ))}
-        </ComposedChart>
-      </ResponsiveContainer>
+      <OrxLineChart data={series} height={height} />
     </ChartContainer>
   );
 }

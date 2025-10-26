@@ -296,12 +296,12 @@ export class CadastrosService {
   async listar<T extends CadastroBase>(
     tipo: TipoEntidade,
     options?: {
-      filtros?: Record<string, any>;
+      filtros?: Record<string, unknown>;
       ordenacao?: { campo: string; direcao: 'asc' | 'desc' };
       limite?: number;
       offset?: number;
     }
-  ): Promise<{ data: T[]; count: number; error?: any }> {
+  ): Promise<{ data: T[]; count: number; error?: Error }> {
     try {
       const tabela = this.tabelaMap[tipo];
       let query = supabase.from(tabela).select('*', { count: 'exact' });
@@ -333,14 +333,16 @@ export class CadastrosService {
       const { data, error, count } = await query;
 
       if (error) {
-        console.error(`Erro ao listar ${tipo}:`, error);
-        return { data: [], count: 0, error };
+        const err = error as Error;
+        console.error(`Erro ao listar ${tipo}:`, err.message ?? err);
+        return { data: [], count: 0, error: err };
       }
 
       return { data: data as T[], count: count || 0 };
-    } catch (_error) {
-      console.error(`Erro ao listar ${tipo}:`, _error);
-      return { data: [], count: 0, error: _error };
+    } catch (error) {
+      const err = error as Error;
+      console.error(`Erro ao listar ${tipo}:`, err.message ?? err);
+      return { data: [], count: 0, error: err };
     }
   }
 
@@ -350,7 +352,7 @@ export class CadastrosService {
   async buscarPorId<T extends CadastroBase>(
     tipo: TipoEntidade,
     id: string
-  ): Promise<{ data: T | null; error?: any }> {
+  ): Promise<{ data: T | null; error?: Error }> {
     try {
       const tabela = this.tabelaMap[tipo];
       const { data, error } = await supabase
@@ -360,14 +362,16 @@ export class CadastrosService {
         .single();
 
       if (error) {
-        console.error(`Erro ao buscar ${tipo} por ID:`, error);
-        return { data: null, error };
+        const err = error as Error;
+        console.error(`Erro ao buscar ${tipo} por ID:`, err.message ?? err);
+        return { data: null, error: err };
       }
 
       return { data: data as T };
-    } catch (_error) {
-      console.error(`Erro ao buscar ${tipo} por ID:`, _error);
-      return { data: null, error: _error };
+    } catch (error) {
+      const err = error as Error;
+      console.error(`Erro ao buscar ${tipo} por ID:`, err.message ?? err);
+      return { data: null, error: err };
     }
   }
 
@@ -377,7 +381,7 @@ export class CadastrosService {
   async criar<T extends CadastroBase>(
     tipo: TipoEntidade,
     dados: Omit<T, 'id' | 'created_at' | 'updated_at'>
-  ): Promise<{ data: T | null; error?: any }> {
+  ): Promise<{ data: T | null; error?: Error }> {
     try {
       const tabela = this.tabelaMap[tipo];
       
@@ -396,17 +400,19 @@ export class CadastrosService {
         .single();
 
       if (error) {
-        console.error(`Erro ao criar ${tipo}:`, error);
-        return { data: null, error };
+        const err = error as Error;
+        console.error(`Erro ao criar ${tipo}:`, err.message ?? err);
+        return { data: null, error: err };
       }
 
       // Registrar no audit log
       await this.registrarAuditLog(tipo, 'criar', data.id, dados);
 
       return { data: data as T };
-    } catch (_error) {
-      console.error(`Erro ao criar ${tipo}:`, _error);
-      return { data: null, error: _error };
+    } catch (error) {
+      const err = error as Error;
+      console.error(`Erro ao criar ${tipo}:`, err.message ?? err);
+      return { data: null, error: err };
     }
   }
 
@@ -417,7 +423,7 @@ export class CadastrosService {
     tipo: TipoEntidade,
     id: string,
     dados: Partial<T>
-  ): Promise<{ data: T | null; error?: any }> {
+  ): Promise<{ data: T | null; error?: Error }> {
     try {
       const tabela = this.tabelaMap[tipo];
 
@@ -438,8 +444,9 @@ export class CadastrosService {
         .single();
 
       if (error) {
-        console.error(`Erro ao atualizar ${tipo}:`, error);
-        return { data: null, error };
+        const err = error as Error;
+        console.error(`Erro ao atualizar ${tipo}:`, err.message ?? err);
+        return { data: null, error: err };
       }
 
       // Registrar no audit log
@@ -449,9 +456,10 @@ export class CadastrosService {
       });
 
       return { data: data as T };
-    } catch (_error) {
-      console.error(`Erro ao atualizar ${tipo}:`, _error);
-      return { data: null, error: _error };
+    } catch (error) {
+      const err = error as Error;
+      console.error(`Erro ao atualizar ${tipo}:`, err.message ?? err);
+      return { data: null, error: err };
     }
   }
 
@@ -461,7 +469,7 @@ export class CadastrosService {
   async deletar(
     tipo: TipoEntidade,
     id: string
-  ): Promise<{ success: boolean; error?: any }> {
+  ): Promise<{ success: boolean; error?: Error }> {
     try {
       const tabela = this.tabelaMap[tipo];
 
@@ -478,17 +486,19 @@ export class CadastrosService {
         .eq('id', id);
 
       if (error) {
-        console.error(`Erro ao deletar ${tipo}:`, error);
-        return { success: false, error };
+        const err = error as Error;
+        console.error(`Erro ao deletar ${tipo}:`, err.message ?? err);
+        return { success: false, error: err };
       }
 
       // Registrar no audit log
-      await this.registrarAuditLog(tipo, 'deletar', id, dadosAntigos);
+      await this.registrarAuditLog(tipo, 'deletar', id, dadosAntigos as Record<string, unknown> | null);
 
       return { success: true };
-    } catch (_error) {
-      console.error(`Erro ao deletar ${tipo}:`, _error);
-      return { success: false, error: _error };
+    } catch (error) {
+      const err = error as Error;
+      console.error(`Erro ao deletar ${tipo}:`, err.message ?? err);
+      return { success: false, error: err };
     }
   }
 
@@ -499,7 +509,7 @@ export class CadastrosService {
     tipo: TipoEntidade,
     termo: string,
     campos: string[] = ['nome', 'nome_completo', 'razao_social', 'descricao']
-  ): Promise<{ data: T[]; error?: any }> {
+  ): Promise<{ data: T[]; error?: Error }> {
     try {
       const tabela = this.tabelaMap[tipo];
       
@@ -513,14 +523,16 @@ export class CadastrosService {
       const { data, error } = await query.limit(50);
 
       if (error) {
-        console.error(`Erro ao buscar ${tipo}:`, error);
-        return { data: [], error };
+        const err = error as Error;
+        console.error(`Erro ao buscar ${tipo}:`, err.message ?? err);
+        return { data: [], error: err };
       }
 
       return { data: data as T[] };
-    } catch (_error) {
-      console.error(`Erro ao buscar ${tipo}:`, _error);
-      return { data: [], error: _error };
+    } catch (error) {
+      const err = error as Error;
+      console.error(`Erro ao buscar ${tipo}:`, err.message ?? err);
+      return { data: [], error: err };
     }
   }
 
@@ -531,19 +543,18 @@ export class CadastrosService {
     entidade: string,
     acao: 'criar' | 'atualizar' | 'deletar',
     entidade_id: string,
-    dados: any
+    dados: Record<string, unknown> | null
   ): Promise<void> {
     try {
       await supabase.from('audit_log').insert({
         entidade,
         acao,
         entidade_id,
-        dados: JSON.stringify(dados),
-        usuario_id: 'system', // TODO: Pegar do contexto de autenticação
-        timestamp: new Date().toISOString()
+        dados,
       });
-    } catch (_error) {
-      console.error('Erro ao registrar audit log:', _error);
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro ao registrar audit log:', err.message ?? err);
     }
   }
 

@@ -1,0 +1,73 @@
+╔═══════════════════════════════════════════════════════════════════════╗
+║                                                                       ║
+║    📋 INSTRUÇÕES RÁPIDAS: APLICAR MIGRATION NO SUPABASE STUDIO       ║
+║                                                                       ║
+╚═══════════════════════════════════════════════════════════════════════╝
+
+🎯 PASSO A PASSO:
+
+1️⃣  Abra o Supabase Studio
+    🌐 https://app.supabase.com
+
+2️⃣  Selecione seu projeto Icarus
+
+3️⃣  Vá para o SQL Editor
+    📝 Menu lateral → SQL Editor
+
+4️⃣  Clique em "New Query"
+
+5️⃣  Copie TODO o conteúdo do arquivo:
+    📄 supabase/migrations/20251025_create_missing_critical_tables.sql
+
+6️⃣  Cole no editor SQL
+
+7️⃣  Clique em "Run" (ou Ctrl/Cmd + Enter)
+
+8️⃣  Aguarde execução (pode demorar 5-10 segundos)
+
+9️⃣  Ignore avisos de "already exists" - são NORMAIS ✅
+
+🔟  Valide que as 4 tabelas foram criadas:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ QUERY DE VALIDAÇÃO (copie e execute):
+
+SELECT 
+  table_name,
+  (SELECT COUNT(*) 
+   FROM information_schema.columns 
+   WHERE table_name = t.table_name) as num_colunas
+FROM information_schema.tables t
+WHERE table_schema = 'public' 
+AND table_name IN (
+  'consignacao_materiais',
+  'produtos_opme',
+  'rastreabilidade_opme',
+  'compliance_requisitos_abbott'
+)
+ORDER BY table_name;
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 RESULTADO ESPERADO:
+
+table_name                      | num_colunas
+--------------------------------|------------
+compliance_requisitos_abbott    | 42
+consignacao_materiais          | 32
+produtos_opme                  | 48
+rastreabilidade_opme           | 46
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Se você ver as 4 tabelas com as colunas corretas: SUCESSO!
+
+⏭️  Após confirmar, volte aqui e eu prossigo para o Passo 2!
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║  Arquivo: supabase/migrations/20251025_create_missing_critical_tables.sql
+║  Linhas: 415
+║  Tempo estimado: 2 minutos
+╚═══════════════════════════════════════════════════════════════════════╝
+

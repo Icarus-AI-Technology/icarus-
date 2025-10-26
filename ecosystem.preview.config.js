@@ -68,50 +68,39 @@ module.exports = {
   ]
 };
 
-/**
- * 📝 INSTRUÇÕES DE USO
- * 
- * 1. Instalar PM2 globalmente (se não tiver):
- *    npm install -g pm2
- * 
- * 2. Iniciar ambos os processos:
- *    pm2 start ecosystem.preview.config.js
- * 
- * 3. Monitorar:
- *    pm2 monit
- * 
- * 4. Ver logs:
- *    pm2 logs icarus-preview-server
- *    pm2 logs icarus-preview-capture
- * 
- * 5. Listar processos:
- *    pm2 list
- * 
- * 6. Parar processos:
- *    pm2 stop all
- *    pm2 stop icarus-preview-server
- *    pm2 stop icarus-preview-capture
- * 
- * 7. Reiniciar:
- *    pm2 restart all
- * 
- * 8. Remover processos:
- *    pm2 delete all
- * 
- * 9. Salvar configuração (iniciar no boot):
- *    pm2 save
- *    pm2 startup
- * 
- * ⏱️  CRONOGRAMA PADRÃO
- * - Servidor: sempre ativo
- * - Capturas: a cada 20 minutos (*/20 * * * *)
- * 
- * 🔧 AJUSTAR CRONOGRAMA
- * Edite a propriedade `cron_restart` conforme necessário:
- * - A cada 10 min: '*/10 * * * *'
- * - A cada 30 min: '*/30 * * * *'
- * - A cada 1 hora: '0 * * * *'
- * - A cada 2 horas: '0 */2 * * *'
- * - Diariamente às 9h: '0 9 * * *'
- */
+// 📝 INSTRUÇÕES DE USO
+// 1. Instalar PM2 globalmente (se não tiver):
+//    npm install -g pm2
+// 2. Iniciar ambos os processos:
+//    pm2 start ecosystem.preview.config.js
+// 3. Monitorar:
+//    pm2 monit
+// 4. Ver logs:
+//    pm2 logs icarus-preview-server
+//    pm2 logs icarus-preview-capture
+// 5. Listar processos:
+//    pm2 list
+// 6. Parar processos:
+//    pm2 stop all
+//    pm2 stop icarus-preview-server
+//    pm2 stop icarus-preview-capture
+// 7. Reiniciar:
+//    pm2 restart all
+// 8. Remover processos:
+//    pm2 delete all
+// 9. Salvar configuração (iniciar no boot):
+//    pm2 save
+//    pm2 startup
+
+// ⏱️  CRONOGRAMA PADRÃO
+// - Servidor: sempre ativo
+// - Capturas: a cada 20 minutos (cron: "*/20 * * * *")
+
+// 🔧 AJUSTAR CRONOGRAMA
+// Edite a propriedade `cron_restart` conforme necessário:
+// - A cada 10 min: "*/10 * * * *"
+// - A cada 30 min: "*/30 * * * *"
+// - A cada 1 hora: "0 * * * *"
+// - A cada 2 horas: "0 */2 * * *"
+// - Diariamente às 9h: "0 9 * * *"
 

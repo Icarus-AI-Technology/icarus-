@@ -240,10 +240,11 @@ export const useConsignacao = () => {
       }
       
       setMateriais(materiaisFiltrados);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const errorMsg = err instanceof Error ? err.message : 'Erro ao carregar materiais';
       setError(errorMsg);
-      console.error('Erro ao carregar materiais:', errorMsg);
+      console.error('Erro ao carregar materiais:', err.message ?? err);
     } finally {
       setLoading(false);
     }
@@ -262,7 +263,8 @@ export const useConsignacao = () => {
       
       if (error) throw error;
       setContratos(data || []);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao carregar contratos:', err);
     }
   }, []);
@@ -280,7 +282,8 @@ export const useConsignacao = () => {
       
       if (error) throw error;
       setFaturamentos(data || []);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao carregar faturamentos:', err);
     }
   }, []);
@@ -299,7 +302,8 @@ export const useConsignacao = () => {
       
       if (error) throw error;
       setAlertas(data || []);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao carregar alertas:', err);
     }
   }, []);
@@ -382,9 +386,10 @@ export const useConsignacao = () => {
       
       await fetchMateriais();
       return data;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const errorMsg = err instanceof Error ? err.message : 'Erro ao adicionar material';
-      console.error('Erro ao adicionar material:', errorMsg);
+      console.error('Erro ao adicionar material:', err.message ?? err);
       throw err;
     } finally {
       setLoading(false);
@@ -407,9 +412,10 @@ export const useConsignacao = () => {
       
       await fetchMateriais();
       return data;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const errorMsg = err instanceof Error ? err.message : 'Erro ao atualizar material';
-      console.error('Erro ao atualizar material:', errorMsg);
+      console.error('Erro ao atualizar material:', err.message ?? err);
       throw err;
     } finally {
       setLoading(false);
@@ -429,9 +435,10 @@ export const useConsignacao = () => {
       console.log('Material removido');
       
       await fetchMateriais();
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const errorMsg = err instanceof Error ? err.message : 'Erro ao remover material';
-      console.error('Erro ao remover material:', errorMsg);
+      console.error('Erro ao remover material:', err.message ?? err);
       throw err;
     } finally {
       setLoading(false);
@@ -462,9 +469,10 @@ export const useConsignacao = () => {
       console.log(`Movimentação registrada: ${movimentacao.tipo}`);
       
       return data;
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const errorMsg = err instanceof Error ? err.message : 'Erro ao registrar movimentação';
-      console.error('Erro ao registrar movimentação:', errorMsg);
+      console.error('Erro ao registrar movimentação:', err.message ?? err);
       throw err;
     }
   }, [updateMaterial]);
@@ -481,7 +489,8 @@ export const useConsignacao = () => {
       await fetchMateriais();
       
       console.log('Métricas atualizadas');
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao atualizar métricas:', err);
     }
   }, [fetchMateriais]);
@@ -498,7 +507,8 @@ export const useConsignacao = () => {
       await fetchAlertas();
       
       console.log('Alertas de conferência gerados');
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error('Erro ao gerar alertas:', err);
     }
   }, [fetchAlertas]);

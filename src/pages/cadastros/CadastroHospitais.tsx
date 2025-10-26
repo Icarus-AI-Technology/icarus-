@@ -15,7 +15,6 @@ import {
   MapPin, 
   User,
   FileText,
-  AlertTriangle,
   Check,
   Loader2,
   X
@@ -32,36 +31,6 @@ import type { Hospital, ValidationErrors } from"@/types/cadastros";
 // Hooks
 import { useDocumentTitle } from"@/hooks";
 
-// Estados brasileiros
-const ESTADOS_BRASILEIROS = [
-  { value: 'AC', label: 'Acre' },
-  { value: 'AL', label: 'Alagoas' },
-  { value: 'AP', label: 'Amapá' },
-  { value: 'AM', label: 'Amazonas' },
-  { value: 'BA', label: 'Bahia' },
-  { value: 'CE', label: 'Ceará' },
-  { value: 'DF', label: 'Distrito Federal' },
-  { value: 'ES', label: 'Espírito Santo' },
-  { value: 'GO', label: 'Goiás' },
-  { value: 'MA', label: 'Maranhão' },
-  { value: 'MT', label: 'Mato Grosso' },
-  { value: 'MS', label: 'Mato Grosso do Sul' },
-  { value: 'MG', label: 'Minas Gerais' },
-  { value: 'PA', label: 'Pará' },
-  { value: 'PB', label: 'Paraíba' },
-  { value: 'PR', label: 'Paraná' },
-  { value: 'PE', label: 'Pernambuco' },
-  { value: 'PI', label: 'Piauí' },
-  { value: 'RJ', label: 'Rio de Janeiro' },
-  { value: 'RN', label: 'Rio Grande do Norte' },
-  { value: 'RS', label: 'Rio Grande do Sul' },
-  { value: 'RO', label: 'Rondônia' },
-  { value: 'RR', label: 'Roraima' },
-  { value: 'SC', label: 'Santa Catarina' },
-  { value: 'SP', label: 'São Paulo' },
-  { value: 'SE', label: 'Sergipe' },
-  { value: 'TO', label: 'Tocantins' }
-];
 
 // Estado inicial
 const INITIAL_STATE: Partial<Hospital> = {
@@ -112,7 +81,8 @@ export default function CadastroHospitais() {
   const handleCNPJChange = async (cnpj: string) => {
     setFormData({ ...formData, cnpj });
 
-    const { cnpj: _, ...restErrors } = validationErrors;
+    const restErrors = { ...validationErrors };
+    delete restErrors.cnpj;
     setValidationErrors(restErrors);
 
     if (cnpj.length === 18) { // CNPJ formatado: 99.999.999/9999-99
@@ -136,7 +106,7 @@ export default function CadastroHospitais() {
             }));
           }
         }
-      } catch (_error) {
+      } catch (error) {
         console.warn('Erro ao validar CNPJ:', error);
       } finally {
         setValidatingCNPJ(false);
@@ -148,7 +118,8 @@ export default function CadastroHospitais() {
   const handleCNESChange = async (cnes: string) => {
     setFormData({ ...formData, cnes });
 
-    const { cnes: _, ...restErrors } = validationErrors;
+    const restErrors = { ...validationErrors };
+    delete restErrors.cnes;
     setValidationErrors(restErrors);
 
     if (cnes.length === 7) {
@@ -171,7 +142,7 @@ export default function CadastroHospitais() {
             }));
           }
         }
-      } catch (_error) {
+      } catch (error) {
         console.warn('Erro ao validar CNES:', error);
       } finally {
         setValidatingCNES(false);
@@ -183,7 +154,8 @@ export default function CadastroHospitais() {
   const handleCPFResponsavelChange = async (cpf: string) => {
     setFormData({ ...formData, responsavel_cpf: cpf });
 
-    const { responsavel_cpf: _, ...restErrors } = validationErrors;
+    const restErrors = { ...validationErrors };
+    delete restErrors.responsavel_cpf;
     setValidationErrors(restErrors);
 
     if (cpf.length === 14) {
@@ -197,7 +169,7 @@ export default function CadastroHospitais() {
             responsavel_cpf: resultado.mensagem || 'CPF inválido'
           });
         }
-      } catch (_error) {
+      } catch (error) {
         console.warn('Erro ao validar CPF:', error);
       } finally {
         setValidatingCPF(false);
@@ -233,7 +205,7 @@ export default function CadastroHospitais() {
             }
           });
         }
-      } catch (_error) {
+      } catch (error) {
         console.warn('Erro ao buscar CEP:', error);
       } finally {
         setBuscandoCEP(false);
@@ -271,8 +243,8 @@ export default function CadastroHospitais() {
       
       toast.success('Hospital cadastrado com sucesso!');
       navigate('/cadastros');
-    } catch (_error) {
-      console.error('Erro ao salvar hospital:', error);
+    } catch (error) {
+      console.error('Erro ao salvar hospital:', error as Error);
       toast.error('Erro ao salvar hospital');
     } finally {
       setLoading(false);
@@ -298,7 +270,7 @@ export default function CadastroHospitais() {
           style={{ padding: '0.75rem 1.5rem' }}
         >
           <X size={18} />
-          <span style={{ marginLeft: '0.5rem' }} style={{ fontSize: '0.813rem' }}>Cancelar</span>
+          <span style={{ marginLeft: '0.5rem', fontSize: '0.813rem' }}>Cancelar</span>
         </button>
       </div>
 

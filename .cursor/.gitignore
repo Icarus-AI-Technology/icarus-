@@ -1,0 +1,17 @@
+# Logs
+logs/*.log
+
+# Locks temporários
+locks/*.lock
+
+# Mensagens temporárias
+messages/*.json
+
+# Status dinâmico (descomentar se quiser versionar)
+# agents/*/STATUS.json
+
+# Relatórios gerados (descomentar se quiser versionar)
+# reports/*.md
+
+# Node modules (se houver scripts com deps)
+node_modules/

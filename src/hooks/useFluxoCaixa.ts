@@ -11,76 +11,67 @@
  * - Realtime updates
  */
 
-import { useState, useEffect, useCallback } from"react";
-import { supabase } from"@/lib/supabase";
+import { useCallback, useEffect, useState } from 'react';
+import { supabase } from '@/lib/supabase';
 
-interface ContaReceberPagamentoRow {
+// interface TendenciaFluxo { data: string; valor: number } // não utilizado
+
+// interface CarteiraRecebiveis { total_atrasado: number; total_vencer: number; total_recebido: number } // não utilizado
+
+type ContaReceberPagamentoRow = {
   data_pagamento: string | null;
   valor_pago: number | null;
-}
+};
 
-interface ContaPagarPagamentoRow {
+type ContaPagarPagamentoRow = {
   data_pagamento: string | null;
   valor_pago: number | null;
-}
+};
 
-interface ContaReceberResumoRow {
+type ContaReceberResumoRow = {
   valor_original: number | null;
   valor_pago: number | null;
-  status:"pago" |"pendente" | string;
-}
+  status: string | null;
+};
 
-interface ContaPagarResumoRow {
+type ContaPagarResumoRow = {
   valor_original: number | null;
   valor_pago: number | null;
-  status:"pago" |"pendente" | string;
+  status: string | null;
+};
+
+interface FluxoCaixaResumo {
+  periodo_inicio: string;
+  periodo_fim: string;
+  total_entradas: number;
+  entradas_previstas: number;
+  entradas_realizadas: number;
+  total_saidas: number;
+  saidas_previstas: number;
+  saidas_realizadas: number;
+  saldo_inicial: number;
+  saldo_final: number;
+  saldo_medio: number;
+  variacao: number;
+  variacao_percentual: number;
+  tendencia: 'crescente' | 'decrescente' | 'estável';
 }
 
-export interface FluxoCaixaDia {
-  data: string; // YYYY-MM-DD
+interface FluxoCaixaDia {
+  data: string;
   saldo_inicial: number;
   entradas: number;
   saidas: number;
   saldo_final: number;
 }
 
-export interface FluxoCaixaResumo {
-  periodo_inicio: string;
-  periodo_fim: string;
-  
-  // Entradas
-  total_entradas: number;
-  entradas_previstas: number;
-  entradas_realizadas: number;
-  
-  // Saídas
-  total_saidas: number;
-  saidas_previstas: number;
-  saidas_realizadas: number;
-  
-  // Saldo
-  saldo_inicial: number;
-  saldo_final: number;
-  saldo_medio: number;
-  
-  // Variação
-  variacao: number;
-  variacao_percentual: number;
-  
-  // Tendência
-  tendencia:"crescente" |"estável" |"decrescente";
-}
-
-export interface ProjecaoFluxo {
+interface ProjecaoFluxo {
   data: string;
   valor_projetado: number;
-  confianca_inferior: number; // Limite inferior (pessimista)
-  confianca_superior: number; // Limite superior (otimista)
-  probabilidade: number; // 0-1
 }
 
-export interface CenarioFluxo {
-  tipo:"otimista" |"realista" |"pessimista";
+interface CenarioFluxo {
+  tipo: 'otimista' | 'realista' | 'pessimista';
   projecao: ProjecaoFluxo[];
   saldo_final_projetado: number;
   premissas: string[];
@@ -167,7 +158,8 @@ export function useFluxoCaixa() {
       });
 
       setFluxoDiario(fluxoOrdenado);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       const message = err instanceof Error ? err.message :"Erro ao carregar fluxo de caixa";
       setError(message);
       console.error("Erro useFluxoCaixa:", err);
@@ -238,7 +230,8 @@ export function useFluxoCaixa() {
         variacao_percentual: variacaoPercentual,
         tendencia,
       };
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error("Erro getResumo:", err);
       return {
         periodo_inicio: dataInicio,
@@ -265,7 +258,8 @@ export function useFluxoCaixa() {
       // Importar FluxoCaixaAI dinamicamente
       const { fluxoCaixaAI } = await import("@/lib/services/FluxoCaixaAI");
       return await fluxoCaixaAI.projetarFluxo(diasFuturos);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error("Erro getProjecao:", err);
       return [];
     }
@@ -276,7 +270,8 @@ export function useFluxoCaixa() {
     try {
       const { fluxoCaixaAI } = await import("@/lib/services/FluxoCaixaAI");
       return await fluxoCaixaAI.simularCenarios(diasFuturos);
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error("Erro getCenarios:", err);
       return [];
     }
@@ -287,7 +282,8 @@ export function useFluxoCaixa() {
     try {
       const { fluxoCaixaAI } = await import("@/lib/services/FluxoCaixaAI");
       return await fluxoCaixaAI.analisarTendencia();
-    } catch (_err) {
+    } catch (error) {
+   const err = error as Error;
       console.error("Erro getTendencia:", err);
       return"estável";
     }

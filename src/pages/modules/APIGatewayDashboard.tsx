@@ -4,20 +4,8 @@
  */
 
 import { useState } from"react";
-import {
-  Activity,
-  CheckCircle,
-  XCircle,
-  Clock,
-  Zap,
-  TrendingUp,
-  TrendingDown,
-  AlertTriangle,
-  Server,
-  Globe,
-  Shield,
-  Database,
-} from"lucide-react";
+import { CheckCircle, XCircle, Zap, TrendingUp, AlertTriangle, Server, Globe, Database } from"lucide-react";
+import { ModulePage } from "@/components/templates/ModulePage";
 
 interface API {
   id: string;
@@ -164,56 +152,34 @@ export default function APIGatewayDashboard() {
   };
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex items-start justify-between">
-          <div>
-            <h1
-              style={{
-                fontSize: '0.813rem',
-                fontFamily:"var(--orx-font-family)",
-                fontWeight: 600,
-                color:"var(--orx-text-primary)",
-                marginBottom:"0.5rem",
-              }}
-            >
-              API Gateway Dashboard
-            </h1>
-            <p
-              style={{
-                fontSize: '0.813rem',
-                color:"var(--orx-text-secondary)",
-                fontFamily:"var(--orx-font-family)",
-              }}
-            >
-              Monitoramento e métricas de APIs externas e internas
-            </p>
-          </div>
-
-          {/* Period Selector */}
-          <div className="flex items-center gap-2">
-            <select
-              value={selectedPeriod}
-              onChange={(e) => setSelectedPeriod(e.target.value)}
-              className="px-4 py-3 rounded-xl"
-              style={{
-                background:"var(--orx-bg-light)",
-                boxShadow:"0 2px 4px rgba(0, 0, 0, 0.1)",
-                border:"1px solid rgba(99, 102, 241, 0.2)",
-                fontSize: '0.813rem',
-                fontFamily:"var(--orx-font-family)",
-                color:"var(--orx-text-primary)",
-              }}
-            >
-              <option value="hoje">Hoje</option>
-              <option value="7d">Últimos 7 dias</option>
-              <option value="30d">Últimos 30 dias</option>
-              <option value="90d">Últimos 90 dias</option>
-            </select>
-          </div>
+    <ModulePage
+      title="API Gateway Dashboard"
+      description="Monitoramento e métricas de APIs externas e internas"
+      icon={<Server aria-hidden="true" className="h-5 w-5" />}
+      actions={
+        <div className="inline-flex items-center gap-2">
+          <select
+            value={selectedPeriod}
+            onChange={(e) => setSelectedPeriod(e.target.value)}
+            className="px-4 py-2 rounded-xl"
+            style={{
+              background:"var(--orx-bg-light)",
+              boxShadow:"0 2px 4px rgba(0, 0, 0, 0.08)",
+              border:"1px solid rgba(99, 102, 241, 0.2)",
+              fontSize:"0.813rem",
+              fontFamily:"var(--orx-font-family)",
+              color:"var(--orx-text-primary)",
+            }}
+          >
+            <option value="hoje">Hoje</option>
+            <option value="7d">Últimos 7 dias</option>
+            <option value="30d">Últimos 30 dias</option>
+            <option value="90d">Últimos 90 dias</option>
+          </select>
         </div>
-
+      }
+    >
+      <div className="space-y-6">
         {/* KPIs Grid */}
         <div className="grid grid-cols-4 gap-6">
           {kpis.map((kpi, index) => (
@@ -235,7 +201,7 @@ export default function APIGatewayDashboard() {
                     boxShadow:"0 4px 12px rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  <kpi.icon size={24} color="#ffffff" strokeWidth={2} />
+                  <kpi.icon size={24} color="#ffffff" strokeWidth={1.5} />
                 </div>
                 <div className="flex-1">
                   <p
@@ -307,10 +273,10 @@ export default function APIGatewayDashboard() {
                         boxShadow:"0 4px 12px rgba(0, 0, 0, 0.1)",
                       }}
                     >
-                      {api.tipo ==="interna" ? (
-                        <Database size={24} color="#ffffff" />
+                      {api.tipo === "interna" ? (
+                        <Database size={24} color="#ffffff" strokeWidth={1.5} />
                       ) : (
-                        <Globe size={24} color="#ffffff" />
+                        <Globe size={24} color="#ffffff" strokeWidth={1.5} />
                       )}
                     </div>
                     <div>
@@ -350,7 +316,7 @@ export default function APIGatewayDashboard() {
                       color: getStatusColor(api.status),
                     }}
                   >
-                    <StatusIcon size={14} />
+                    <StatusIcon size={14} strokeWidth={1.5} />
                     {getStatusLabel(api.status)}
                   </span>
                 </div>
@@ -429,7 +395,7 @@ export default function APIGatewayDashboard() {
           })}
         </div>
       </div>
-    </div>
+    </ModulePage>
   );
 }
 

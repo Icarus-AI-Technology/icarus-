@@ -48,8 +48,8 @@ export default function ContasReceberIA() {
             </p>
           </div>
           <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
-            <Bot className="w-4 h-4 text-[var(--primary)] animate-pulse" />
-            <span className="text-body-sm text-[var(--text-primary)]" style={{ fontWeight: 500 }}>IA: 95% precisão</span>
+          <Bot className="w-4 h-4 text-[var(--primary)] animate-pulse" />
+          <span className="text-body-sm text-[var(--text-primary)] font-medium">IA: 95% precisão</span>
           </div>
         </div>
 
@@ -63,7 +63,7 @@ export default function ContasReceberIA() {
               }`}
             >
               <category.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
-              <span className="text-body-xs text-[var(--text-primary)]" style={{ fontWeight: 500 }}>{category.label}</span>
+              <span className="text-body-xs text-[var(--text-primary)] font-medium">{category.label}</span>
               <div className="flex items-center gap-1 mt-1">
                 <span className="text-body-lg font-display text-[var(--text-primary)]">{category.count}</span>
               </div>
@@ -97,7 +97,7 @@ export default function ContasReceberIA() {
 
         <Card className="neuro-raised p-12 text-center">
           <Bot className="w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4" />
-          <h3 className="text-heading-sm text-[var(--text-primary)] mb-2" style={{ fontWeight: 500 }}>Contas a Receber IA</h3>
+          <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 font-medium">Contas a Receber IA</h3>
           <p className="text-[var(--text-secondary)]">Módulo em desenvolvimento</p>
         </Card>
       </div>

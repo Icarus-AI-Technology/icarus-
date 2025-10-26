@@ -67,7 +67,7 @@ export const Toast: React.FC<ToastProps> = ({
 
   return (
     <div
-      className={cn("fixed z-50 w-96 max-w-[calc(100vw-2rem)]","orx-card p-4 border","animate-in slide-in-from-top-5 fade-in duration-300",
+      className={cn("fixed z-50 w-96 max-w-[calc(100vw-2rem)]","orx-card p-4 border","dark:bg-gray-800 dark:border-gray-700","animate-in slide-in-from-top-5 fade-in duration-300",
         bg,
         border,
         text,
@@ -77,7 +77,7 @@ export const Toast: React.FC<ToastProps> = ({
       <div className="flex items-start gap-3">
         <Icon className="flex-shrink-0 mt-0.5" size={20} />
         <div className="flex-1 min-w-0">
-          {title && <h4 className="mb-1" style={{ fontWeight: 500 }}>{title}</h4>}
+          {title && <h4 className="mb-1 font-medium">{title}</h4>}
           <p className="text-body-sm">{message}</p>
         </div>
         {onClose && (

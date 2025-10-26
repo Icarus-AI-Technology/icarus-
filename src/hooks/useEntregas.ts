@@ -94,7 +94,8 @@ export function useEntregas() {
         loading: false,
         error: null,
       });
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         loading: false,
@@ -113,8 +114,9 @@ export function useEntregas() {
 
       if (error) throw error;
       return data;
-    } catch (_error) {
-      console.error('Erro ao buscar entrega:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar entrega:', err);
       return null;
     }
   }, []);
@@ -129,8 +131,9 @@ export function useEntregas() {
 
       if (error) throw error;
       return data;
-    } catch (_error) {
-      console.error('Erro ao buscar entrega por código:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar entrega por código:', err);
       return null;
     }
   }, []);
@@ -151,7 +154,8 @@ export function useEntregas() {
       }));
 
       return data;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao criar entrega',
@@ -177,7 +181,8 @@ export function useEntregas() {
       }));
 
       return data;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao atualizar entrega',
@@ -201,7 +206,8 @@ export function useEntregas() {
       }));
 
       return true;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao deletar entrega',
@@ -220,8 +226,9 @@ export function useEntregas() {
 
       if (error) throw error;
       return data || [];
-    } catch (_error) {
-      console.error('Erro ao buscar entregas por status:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar entregas por status:', err);
       return [];
     }
   }, []);
@@ -237,8 +244,9 @@ export function useEntregas() {
 
       if (error) throw error;
       return data || [];
-    } catch (_error) {
-      console.error('Erro ao buscar entregas atrasadas:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar entregas atrasadas:', err);
       return [];
     }
   }, []);
@@ -253,8 +261,9 @@ export function useEntregas() {
 
       if (error) throw error;
       return data || [];
-    } catch (_error) {
-      console.error('Erro ao buscar histórico:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar histórico:', err);
       return [];
     }
   }, []);
@@ -267,8 +276,9 @@ export function useEntregas() {
 
       if (error) throw error;
       return true;
-    } catch (_error) {
-      console.error('Erro ao adicionar histórico:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao adicionar histórico:', err);
       return false;
     }
   }, []);
@@ -289,7 +299,8 @@ export function useEntregas() {
       if (error) throw error;
       await fetchEntregas();
       return true;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao confirmar entrega',
@@ -327,8 +338,9 @@ export function useEntregas() {
         atrasadas,
         taxaEntrega,
       };
-    } catch (_error) {
-      console.error('Erro ao calcular estatísticas:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao calcular estatísticas:', err);
       return {
         total: 0,
         pendentes: 0,
@@ -354,8 +366,9 @@ export function useEntregas() {
       }, {} as Record<string, number>);
 
       return counts;
-    } catch (_error) {
-      console.error('Erro ao contar entregas:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao contar entregas:', err);
       return {};
     }
   }, []);

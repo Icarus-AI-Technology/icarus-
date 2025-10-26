@@ -10,29 +10,21 @@
  * - Indústrias (fornecedores, negociação de compras)
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card } from '@/components/oraclusx-ds';
-import {
-  Calendar,
-  Video,
-  Mail,
-  Users,
-  FolderOpen,
-  CheckCircle,
-  XCircle,
-  Plus,
-  Send,
-  Download,
-  Settings,
-  AlertCircle,
-  Clock,
-  Building2,
-  Heart,
-  Factory,
-} from 'lucide-react';
+import { Calendar, Video, Mail, Users, FolderOpen, Plus, Send, Download, AlertCircle, Clock, Building2, Heart, Factory } from 'lucide-react';
 import { useDocumentTitle } from '@/hooks';
 import { useToast } from '@/contexts/ToastContext';
 import { Microsoft365Integration, type TeamsReuniao } from '@/lib/microsoft365/Microsoft365Service';
+
+type TeamsEventoResumo = {
+  id?: string;
+  subject: string;
+  start: { dateTime: string };
+  end: { dateTime: string };
+  isOnlineMeeting?: boolean;
+  onlineMeeting?: { joinUrl?: string };
+};
 
 export default function Microsoft365IntegrationPanel() {
   useDocumentTitle('Integração Microsoft 365');
@@ -41,7 +33,7 @@ export default function Microsoft365IntegrationPanel() {
   const [activeTab, setActiveTab] = useState<'teams' | 'outlook' | 'contatos' | 'onedrive'>('teams');
   const [conectado, setConectado] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [proximasReunioes, setProximasReunioes] = useState<any[]>([]);
+  const [proximasReunioes, setProximasReunioes] = useState<TeamsEventoResumo[]>([]);
   const [novaReuniao, setNovaReuniao] = useState({
     assunto: '',
     descricao: '',
@@ -55,19 +47,21 @@ export default function Microsoft365IntegrationPanel() {
   const [showFormularioReuniao, setShowFormularioReuniao] = useState(false);
   
   // Verificar se está conectado
-  useEffect(() => {
-    verificarConexao();
-  }, []);
-  
-  const verificarConexao = async () => {
+  const verificarConexao = useCallback(async () => {
     try {
       await Microsoft365Integration.getToken();
       setConectado(true);
       carregarProximasReunioes();
-    } catch (_error) {
+    } catch {
       setConectado(false);
     }
-  };
+  }, [carregarProximasReunioes]);
+
+  useEffect(() => {
+    verificarConexao();
+  }, [verificarConexao]);
+  
+  
   
   const handleLogin = async () => {
     setLoading(true);
@@ -76,26 +70,26 @@ export default function Microsoft365IntegrationPanel() {
       setConectado(true);
       addToast('Conectado ao Microsoft 365 com sucesso!', 'success');
       carregarProximasReunioes();
-    } catch (_error) {
+    } catch {
       addToast('Erro ao conectar Microsoft 365', 'error');
     } finally {
       setLoading(false);
     }
   };
   
-  const carregarProximasReunioes = async () => {
+  const carregarProximasReunioes = useCallback(async () => {
     if (!conectado) return;
     
     setLoading(true);
     try {
       const reunioes = await Microsoft365Integration.teams.listarProximasReunioes(7);
       setProximasReunioes(reunioes);
-    } catch (_error) {
+    } catch {
       addToast('Erro ao carregar reuniões', 'error');
     } finally {
       setLoading(false);
     }
-  };
+  }, [conectado, addToast]);
   
   const handleCriarReuniao = async () => {
     if (!novaReuniao.assunto || !novaReuniao.data_inicio || !novaReuniao.data_fim) {
@@ -135,9 +129,9 @@ export default function Microsoft365IntegrationPanel() {
         tipo_reuniao: '',
       });
       carregarProximasReunioes();
-    } catch (_error) {
+    } catch {
       addToast('Erro ao criar reunião', 'error');
-      console.error(error);
+      console.error('[Microsoft365] Erro ao criar reunião');
     } finally {
       setLoading(false);
     }
@@ -173,14 +167,14 @@ export default function Microsoft365IntegrationPanel() {
       await Microsoft365Integration.teams.criarReuniao(reuniao);
       addToast('Reunião de exemplo criada!', 'success');
       carregarProximasReunioes();
-    } catch (_error) {
+    } catch {
       addToast('Erro ao criar reunião de exemplo', 'error');
     } finally {
       setLoading(false);
     }
   };
   
-  const adicionarParticipante = () => {
+  const _adicionarParticipante = () => {
     setNovaReuniao({
       ...novaReuniao,
       participantes: [
@@ -190,14 +184,14 @@ export default function Microsoft365IntegrationPanel() {
     });
   };
   
-  const removerParticipante = (index: number) => {
+  const _removerParticipante = (index: number) => {
     setNovaReuniao({
       ...novaReuniao,
       participantes: novaReuniao.participantes.filter((_, i) => i !== index),
     });
   };
   
-  const atualizarParticipante = (index: number, campo: 'email' | 'nome' | 'tipo', valor: string) => {
+  const _atualizarParticipante = (index: number, campo: 'email' | 'nome' | 'tipo', valor: string) => {
     const novosParticipantes = [...novaReuniao.participantes];
     novosParticipantes[index] = {
       ...novosParticipantes[index],
@@ -216,7 +210,7 @@ export default function Microsoft365IntegrationPanel() {
               <Building2 size={32} className="text-[var(--orx-primary)]" />
             </div>
           </div>
-          <h1 className="mb-2" style={{  fontSize: '0.813rem' , fontWeight: 700 }}>Integração Microsoft 365</h1>
+          <h1 className="mb-2 text-[0.813rem] font-bold">Integração Microsoft 365</h1>
           <p className="text-[var(--text-secondary)] mb-6">
             Conecte sua conta Microsoft 365 para acessar Teams, Outlook e OneDrive diretamente do ICARUS.
           </p>
@@ -240,14 +234,14 @@ export default function Microsoft365IntegrationPanel() {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="mb-2" style={{  fontSize: '0.813rem' , fontWeight: 700 }}>Microsoft 365</h1>
+              <h1 className="mb-2 text-[0.813rem] font-bold">Microsoft 365</h1>
               <p className="text-[var(--text-secondary)]">
                 Gerencie reuniões, emails e contatos integrados ao Microsoft 365
               </p>
             </div>
             <div className="flex items-center gap-2 neuro-raised px-4 py-2 rounded-lg">
               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Conectado</span>
+              <span className="text-[0.813rem] font-medium">Conectado</span>
             </div>
           </div>
         </div>
@@ -280,7 +274,7 @@ export default function Microsoft365IntegrationPanel() {
           <div className="space-y-6">
             <Card className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Próximas Reuniões</h2>
+                <h2 className="text-[0.813rem] font-semibold">Próximas Reuniões</h2>
                 <div className="flex items-center gap-3">
                   <button
                     onClick={carregarProximasReunioes}
@@ -309,7 +303,7 @@ export default function Microsoft365IntegrationPanel() {
 
               {showFormularioReuniao && (
                 <div className="mb-6 p-6 neuro-inset rounded-xl space-y-4">
-                  <h3 className="mb-4" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Criar Nova Reunião</h3>
+                  <h3 className="mb-4 text-[0.813rem] font-semibold">Criar Nova Reunião</h3>
                   
                   <input
                     type="text"
@@ -329,7 +323,7 @@ export default function Microsoft365IntegrationPanel() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block mb-2" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Data/Hora Início</label>
+                      <label className="block mb-2 text-[0.813rem] font-medium">Data/Hora Início</label>
                       <input
                         type="datetime-local"
                         value={novaReuniao.data_inicio}
@@ -338,7 +332,7 @@ export default function Microsoft365IntegrationPanel() {
                       />
                     </div>
                     <div>
-                      <label className="block mb-2" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Data/Hora Fim</label>
+                      <label className="block mb-2 text-[0.813rem] font-medium">Data/Hora Fim</label>
                       <input
                         type="datetime-local"
                         value={novaReuniao.data_fim}
@@ -350,7 +344,7 @@ export default function Microsoft365IntegrationPanel() {
 
                   {/* Tipo de Entidade */}
                   <div>
-                    <label className="block mb-3" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Tipo de Entidade</label>
+                    <label className="block mb-3 text-[0.813rem] font-medium">Tipo de Entidade</label>
                     <div className="grid grid-cols-3 gap-3">
                       <button
                         type="button"
@@ -362,7 +356,7 @@ export default function Microsoft365IntegrationPanel() {
                         }`}
                       >
                         <Building2 className="w-6 h-6 text-[var(--orx-primary)]" />
-                        <span className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Hospital</span>
+                        <span className="text-[0.813rem] font-medium">Hospital</span>
                       </button>
                       <button
                         type="button"
@@ -374,7 +368,7 @@ export default function Microsoft365IntegrationPanel() {
                         }`}
                       >
                         <Heart className="w-6 h-6 text-emerald-500" />
-                        <span className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Plano de Saúde</span>
+                        <span className="text-[0.813rem] font-medium">Plano de Saúde</span>
                       </button>
                       <button
                         type="button"
@@ -386,7 +380,7 @@ export default function Microsoft365IntegrationPanel() {
                         }`}
                       >
                         <Factory className="w-6 h-6 text-orange-500" />
-                        <span className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Indústria</span>
+                        <span className="text-[0.813rem] font-medium">Indústria</span>
                       </button>
                     </div>
                   </div>
@@ -411,7 +405,7 @@ export default function Microsoft365IntegrationPanel() {
                   {/* Finalidade da Reunião */}
                   {novaReuniao.entidade_tipo && (
                     <div>
-                      <label className="block mb-2" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Finalidade da Reunião</label>
+                      <label className="block mb-2 text-[0.813rem] font-medium">Finalidade da Reunião</label>
                       <select
                         value={novaReuniao.tipo_reuniao}
                         onChange={(e) => setNovaReuniao({ ...novaReuniao, tipo_reuniao: e.target.value })}
@@ -483,8 +477,8 @@ export default function Microsoft365IntegrationPanel() {
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <h3 className="mb-1" style={{ fontWeight: 600 }}>{reuniao.subject}</h3>
-                          <div className="flex items-center gap-4 text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+                          <h3 className="mb-1 font-semibold">{reuniao.subject}</h3>
+                          <div className="flex items-center gap-4 text-[var(--text-secondary)] text-[0.813rem]">
                             <div className="flex items-center gap-1">
                               <Clock size={14} />
                               {new Date(reuniao.start.dateTime).toLocaleString('pt-BR')}
@@ -502,7 +496,7 @@ export default function Microsoft365IntegrationPanel() {
                             href={reuniao.onlineMeeting.joinUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="px-4 py-2 rounded-lg bg-[var(--orx-primary)] text-white hover:bg-[var(--orx-primary-hover)] transition-all flex items-center gap-2" style={{ fontSize: '0.813rem' }}
+                            className="px-4 py-2 rounded-lg bg-[var(--orx-primary)] text-white hover:bg-[var(--orx-primary-hover)] transition-all flex items-center gap-2 text-[0.813rem]"
                           >
                             <Video size={16} />
                             Entrar
@@ -521,7 +515,7 @@ export default function Microsoft365IntegrationPanel() {
         {activeTab !== 'teams' && (
           <Card className="p-8 text-center">
             <AlertCircle size={48} className="mx-auto mb-4 text-[var(--text-secondary)]" />
-            <h3 className="mb-2" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Em Desenvolvimento</h3>
+            <h3 className="mb-2 text-[0.813rem] font-semibold">Em Desenvolvimento</h3>
             <p className="text-[var(--text-secondary)]">
               Esta funcionalidade estará disponível em breve.
             </p>

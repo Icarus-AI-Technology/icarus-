@@ -12,7 +12,7 @@ export interface RadioProps
   description?: string;
 }
 
-export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
+const RadioComponent = React.forwardRef<HTMLInputElement, RadioProps>(
   ({ className, label, description, id, ...props }, ref) => {
     const radioId = id || `radio-${Math.random().toString(36).substr(2, 9)}`;
 
@@ -42,7 +42,7 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
             {label && (
               <label
                 htmlFor={radioId}
-                className="text-body-sm text-primary dark:text-gray-100 cursor-pointer" style={{ fontWeight: 500 }}
+                className="text-body-sm text-primary dark:text-gray-100 cursor-pointer font-medium"
               >
                 {label}
               </label>
@@ -60,6 +60,8 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
 );
 
 Radio.displayName ="OraclusXRadio";
+
+export const Radio = React.memo(RadioComponent);
 
 export default Radio;
 

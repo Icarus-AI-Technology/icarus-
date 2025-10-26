@@ -11,7 +11,25 @@
  * ACURÁCIA ESPERADA: > 85%
  */
 
-import { supabase } from"@/lib/supabase";
+import { supabase } from '@/lib/supabase';
+// import type { ContaReceber } from '@/types/finance'; // não utilizado
+
+type NivelRisco = 'baixo' | 'médio' | 'alto';
+type PrioridadeCobranca = 'baixa' | 'média' | 'alta' | 'urgente';
+type CanalCobranca = 'email' | 'whatsapp' | 'telefone' | 'visita' | 'juridico';
+
+interface ContaReceberRow {
+  id: string;
+  cliente_id?: string | null;
+  valor_original: number;
+  data_vencimento?: string | null;
+  data_emissao?: string | null;
+  data_pagamento?: string | null;
+  valor_pago?: number | null;
+  status?: string | null;
+  tipo_receita?: string | null;
+  dias_atraso?: number | null;
+}
 
 export interface InadimplenciaFeatures {
   // Histórico do cliente
@@ -34,7 +52,7 @@ export interface InadimplenciaFeatures {
 
 export interface ScoreResult {
   score: number; // 0-100 (100 = maior risco)
-  risco:"baixo" |"médio" |"alto";
+  risco: NivelRisco;
   probabilidade_inadimplencia: number; // 0-1
   recomendacoes: string[];
   fatores_risco: Array<{
@@ -50,8 +68,8 @@ export interface PrevisaoAtraso {
 }
 
 export interface AcaoCobranca {
-  prioridade:"baixa" |"média" |"alta" |"urgente";
-  tipo:"email" |"whatsapp" |"telefone" |"visita" |"juridico";
+  prioridade: PrioridadeCobranca;
+  tipo: CanalCobranca;
   mensagem_sugerida: string;
   momento_ideal: string;
 }
@@ -63,18 +81,18 @@ export class ContasReceberAI {
   async calcularScore(contaId: string): Promise<ScoreResult> {
     try {
       // Buscar dados da conta
-      const { data: conta, error } = await supabase
-        .from("contas_receber")
-        .select("*")
-        .eq("id", contaId)
+          const { data: conta, error } = await supabase
+            .from('contas_receber')
+        .select('*')
+        .eq('id', contaId)
         .single();
 
       if (error || !conta) {
-        throw new Error("Conta não encontrada");
+        throw new Error('Conta não encontrada');
       }
 
       // Buscar histórico do cliente
-      const features = await this.extrairFeatures(conta.cliente_id, conta);
+      const features = await this.extrairFeatures(conta.cliente_id ?? '', conta);
 
       // Calcular score baseado em regras (Random Forest simplificado)
       const score = this.calcularScoreRegras(features);
@@ -95,9 +113,10 @@ export class ContasReceberAI {
         recomendacoes,
         fatores_risco: fatores,
       };
-    } catch (_err) {
-      console.error("Erro calcularScore:", _err);
-      throw _err;
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro calcularScore:', err);
+      throw err;
     }
   }
 
@@ -106,19 +125,19 @@ export class ContasReceberAI {
    */
   async preverAtraso(contaId: string): Promise<PrevisaoAtraso> {
     try {
-      const { data: conta } = await supabase
-        .from("contas_receber")
-        .select("*")
-        .eq("id", contaId)
+          const { data: conta } = await supabase
+            .from('contas_receber')
+        .select('*')
+        .eq('id', contaId)
         .single();
 
-      if (!conta) throw new Error("Conta não encontrada");
+      if (!conta) throw new Error('Conta não encontrada');
 
-      const features = await this.extrairFeatures(conta.cliente_id, conta);
+      const features = await this.extrairFeatures(conta.cliente_id ?? '', conta);
 
       // Cálculo simplificado baseado em histórico
       let diasPrevisto = 0;
-      let motivo ="Cliente sem histórico de atrasos";
+      let motivo = 'Cliente sem histórico de atrasos';
       let confianca = 0.5;
 
       if (features.dias_atraso_medio > 0) {
@@ -129,7 +148,7 @@ export class ContasReceberAI {
 
       if (features.taxa_inadimplencia_historica > 0.5) {
         diasPrevisto += 15;
-        motivo +=". Cliente com alta taxa de inadimplência";
+        motivo += '. Cliente com alta taxa de inadimplência';
         confianca = 0.85;
       }
 
@@ -138,12 +157,13 @@ export class ContasReceberAI {
         confianca,
         motivo,
       };
-    } catch (_err) {
-      console.error("Erro preverAtraso:", _err);
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro preverAtraso:', err);
       return {
         dias_previsto: 0,
         confianca: 0,
-        motivo:"Erro ao calcular previsão",
+        motivo: 'Erro ao calcular previsão',
       };
     }
   }
@@ -153,13 +173,13 @@ export class ContasReceberAI {
    */
   async recomendarAcaoCobranca(contaId: string): Promise<AcaoCobranca> {
     try {
-      const { data: conta } = await supabase
-        .from("contas_receber")
-        .select("*")
-        .eq("id", contaId)
+          const { data: conta } = await supabase
+            .from('contas_receber')
+        .select('*')
+        .eq('id', contaId)
         .single();
 
-      if (!conta) throw new Error("Conta não encontrada");
+      if (!conta) throw new Error('Conta não encontrada');
 
       const hoje = new Date();
       const vencimento = new Date(conta.data_vencimento);
@@ -168,46 +188,46 @@ export class ContasReceberAI {
       const scoreResult = await this.calcularScore(contaId);
 
       // Lógica de recomendação
-      let prioridade: AcaoCobranca["prioridade"] ="baixa";
-      let tipo: AcaoCobranca["tipo"] ="email";
-      let mensagem ="";
-      let momento ="";
+      let prioridade: PrioridadeCobranca = 'baixa';
+      let tipo: CanalCobranca = 'email';
+      let mensagem = '';
+      let momento = '';
 
       if (diasAtraso < 0) {
         // Antes do vencimento
-        prioridade ="baixa";
-        tipo ="email";
-        mensagem ="Lembrete amigável de pagamento próximo ao vencimento";
-        momento ="3 dias antes do vencimento";
+        prioridade = 'baixa';
+        tipo = 'email';
+        mensagem = 'Lembrete amigável de pagamento próximo ao vencimento';
+        momento = '3 dias antes do vencimento';
       } else if (diasAtraso <= 5) {
         // 1-5 dias de atraso
-        prioridade ="média";
-        tipo ="whatsapp";
-        mensagem ="Notificação de vencimento com opção de renegociação";
-        momento ="Imediatamente";
+        prioridade = 'média';
+        tipo = 'whatsapp';
+        mensagem = 'Notificação de vencimento com opção de renegociação';
+        momento = 'Imediatamente';
       } else if (diasAtraso <= 15) {
         // 6-15 dias de atraso
-        prioridade ="alta";
-        tipo ="telefone";
-        mensagem ="Contato telefônico para entender situação e negociar";
-        momento ="Horário comercial (9h-17h)";
+        prioridade = 'alta';
+        tipo = 'telefone';
+        mensagem = 'Contato telefônico para entender situação e negociar';
+        momento = 'Horário comercial (9h-17h)';
       } else if (diasAtraso <= 30) {
         // 16-30 dias de atraso
-        prioridade ="urgente";
-        tipo ="visita";
-        mensagem ="Visita presencial para cobrança e análise de possibilidades";
-        momento ="Agendar reunião presencial";
+        prioridade = 'urgente';
+        tipo = 'visita';
+        mensagem = 'Visita presencial para cobrança e análise de possibilidades';
+        momento = 'Agendar reunião presencial';
       } else {
         // > 30 dias de atraso
-        prioridade ="urgente";
-        tipo ="juridico";
-        mensagem ="Encaminhar para cobrança jurídica";
-        momento ="Imediatamente";
+        prioridade = 'urgente';
+        tipo = 'juridico';
+        mensagem = 'Encaminhar para cobrança jurídica';
+        momento = 'Imediatamente';
       }
 
       // Ajustar por risco
-      if (scoreResult.risco ==="alto" && diasAtraso > 0) {
-        prioridade ="urgente";
+      if (scoreResult.risco === 'alto' && diasAtraso > 0) {
+        prioridade = 'urgente';
       }
 
       return {
@@ -216,13 +236,14 @@ export class ContasReceberAI {
         mensagem_sugerida: mensagem,
         momento_ideal: momento,
       };
-    } catch (_err) {
-      console.error("Erro recomendarAcaoCobranca:", _err);
+    } catch (error) {
+      const err = error as Error;
+      console.error('Erro recomendarAcaoCobranca:', err);
       return {
-        prioridade:"média",
-        tipo:"email",
-        mensagem_sugerida:"Erro ao calcular recomendação",
-        momento_ideal:"A definir",
+        prioridade: 'média',
+        tipo: 'email',
+        mensagem_sugerida: 'Erro ao calcular recomendação',
+        momento_ideal: 'A definir',
       };
     }
   }
@@ -230,15 +251,15 @@ export class ContasReceberAI {
   /**
    * Extrai features do histórico do cliente
    */
-  private async extrairFeatures(clienteId: string, contaAtual: ContaReceber): Promise<InadimplenciaFeatures> {
+  private async extrairFeatures(clienteId: string, contaAtual: ContaReceberRow): Promise<InadimplenciaFeatures> {
     // Buscar histórico de contas do cliente
-    const { data: historico } = await supabase
-      .from("contas_receber")
-      .select("*")
-      .eq("cliente_id", clienteId)
-      .neq("id", contaAtual.id);
+        const { data: historico } = await supabase
+          .from('contas_receber')
+      .select('*')
+      .eq('cliente_id', clienteId)
+      .neq('id', contaAtual.id);
 
-    const contasHistorico = (historico || []) as ContaReceber[];
+    const contasHistorico = historico ?? [];
 
     // Calcular métricas
     const quantidadeTransacoes = contasHistorico.length;
@@ -246,31 +267,33 @@ export class ContasReceberAI {
     const valorMedio = quantidadeTransacoes > 0 ? valorTotal / quantidadeTransacoes : 0;
 
     // Dias de atraso médio
-    const contasComAtraso = contasHistorico.filter((c) => c.dias_atraso && c.dias_atraso > 0);
+    const contasComAtraso = contasHistorico.filter((c) => (c.dias_atraso ?? 0) > 0);
     const diasAtrasoMedio = contasComAtraso.length > 0
-      ? contasComAtraso.reduce((sum, c) => sum + (c.dias_atraso || 0), 0) / contasComAtraso.length
+      ? contasComAtraso.reduce((sum, c) => sum + (c.dias_atraso ?? 0), 0) / contasComAtraso.length
       : 0;
 
     // Taxa de inadimplência
-    const contasInadimplentes = contasHistorico.filter((c) => c.status ==="vencido");
+    const contasInadimplentes = contasHistorico.filter((c) => c.status === 'vencido');
     const taxaInadimplencia = quantidadeTransacoes > 0
       ? contasInadimplentes.length / quantidadeTransacoes
       : 0;
 
     // Prazo médio de pagamento
-    const contasPagas = contasHistorico.filter((c) => c.status ==="pago" && c.data_pagamento);
+    const contasPagas = contasHistorico.filter((c) => c.status === 'pago' && c.data_pagamento);
     const prazoMedio = contasPagas.length > 0
       ? contasPagas.reduce((sum, c) => {
+          if (!c.data_pagamento || !c.data_emissao) return sum;
           const emissao = new Date(c.data_emissao);
-          const pagamento = new Date(c.data_pagamento!);
+          const pagamento = new Date(c.data_pagamento);
           return sum + Math.floor((pagamento.getTime() - emissao.getTime()) / (1000 * 60 * 60 * 24));
         }, 0) / contasPagas.length
       : 0;
 
     // Dados da conta atual
     const hoje = new Date();
-    const vencimento = new Date(contaAtual.data_vencimento);
-    const diasAteVencimento = Math.floor((vencimento.getTime() - hoje.getTime()) / (1000 * 60 * 60 * 24));
+    const diasAteVencimento = contaAtual.data_vencimento
+      ? Math.floor((new Date(contaAtual.data_vencimento).getTime() - hoje.getTime()) / (1000 * 60 * 60 * 24))
+      : 0;
 
     return {
       dias_atraso_medio: diasAtrasoMedio,
@@ -281,7 +304,7 @@ export class ContasReceberAI {
       ticket_medio: valorMedio,
       valor_conta: contaAtual.valor_original,
       dias_ate_vencimento: diasAteVencimento,
-      tipo_receita: contaAtual.tipo_receita,
+      tipo_receita: contaAtual.tipo_receita ?? 'desconhecido',
       mes_ano: `${hoje.getMonth() + 1}/${hoje.getFullYear()}`,
       dia_semana: hoje.getDay(),
     };
@@ -323,10 +346,10 @@ export class ContasReceberAI {
   /**
    * Classifica o risco baseado no score
    */
-  private classificarRisco(score: number):"baixo" |"médio" |"alto" {
-    if (score < 30) return"baixo";
-    if (score < 60) return"médio";
-    return"alto";
+  private classificarRisco(score: number): NivelRisco {
+    if (score < 30) return 'baixo';
+    if (score < 60) return 'médio';
+    return 'alto';
   }
 
   /**
@@ -379,34 +402,34 @@ export class ContasReceberAI {
    */
   private gerarRecomendacoes(
     score: number,
-    risco:"baixo" |"médio" |"alto",
+    risco: NivelRisco,
     fatores: Array<{ fator: string; impacto: number }>
   ): string[] {
     const recomendacoes: string[] = [];
 
-    if (risco ==="alto") {
-      recomendacoes.push("🔴 ATENÇÃO: Cliente de alto risco de inadimplência");
-      recomendacoes.push("Considerar exigir pagamento antecipado ou garantias");
-      recomendacoes.push("Aumentar frequência de acompanhamento");
-    } else if (risco ==="médio") {
-      recomendacoes.push("🟡 Cliente com risco moderado");
-      recomendacoes.push("Manter contato regular e enviar lembretes");
+    if (risco === 'alto') {
+      recomendacoes.push('🔴 ATENÇÃO: Cliente de alto risco de inadimplência');
+      recomendacoes.push('Considerar exigir pagamento antecipado ou garantias');
+      recomendacoes.push('Aumentar frequência de acompanhamento');
+    } else if (risco === 'médio') {
+      recomendacoes.push('🟡 Cliente com risco moderado');
+      recomendacoes.push('Manter contato regular e enviar lembretes');
     } else {
-      recomendacoes.push("🟢 Cliente com baixo risco de inadimplência");
-      recomendacoes.push("Manter relacionamento padrão");
+      recomendacoes.push('🟢 Cliente com baixo risco de inadimplência');
+      recomendacoes.push('Manter relacionamento padrão');
     }
 
     // Recomendações específicas por fator
-    if (fatores.some((f) => f.fator.includes("taxa de inadimplência"))) {
-      recomendacoes.push("Reduzir limite de crédito ou prazo de pagamento");
+    if (fatores.some((f) => f.fator.includes('taxa de inadimplência'))) {
+      recomendacoes.push('Reduzir limite de crédito ou prazo de pagamento');
     }
 
-    if (fatores.some((f) => f.fator.includes("Atraso médio"))) {
-      recomendacoes.push("Enviar lembrete 7 dias antes do vencimento");
+    if (fatores.some((f) => f.fator.includes('Atraso médio'))) {
+      recomendacoes.push('Enviar lembrete 7 dias antes do vencimento');
     }
 
-    if (fatores.some((f) => f.fator.includes("vencida"))) {
-      recomendacoes.push("Iniciar processo de cobrança imediatamente");
+    if (fatores.some((f) => f.fator.includes('vencida'))) {
+      recomendacoes.push('Iniciar processo de cobrança imediatamente');
     }
 
     return recomendacoes;

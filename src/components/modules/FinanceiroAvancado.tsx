@@ -28,7 +28,7 @@
  * - 🔄 SPC API (Consulta crédito)
  */
 
-import { useState, useEffect, useCallback } from"react";
+import { useState, useEffect, useCallback, useMemo } from"react";
 import { Card } from"@/components/oraclusx-ds";
 import { DollarSign, TrendingUp, CreditCard, FileText, AlertTriangle, PieChart, CheckCircle, Wallet, BarChart3, RefreshCw, Zap, Download, Search, Loader2, Eye, Edit2 } from"lucide-react";
 import {
@@ -153,7 +153,7 @@ export default function FinanceiroAvancado() {
   }, [conciliacao.extratos]);
 
   // Navegação - 10 Sub-módulos
-  const submodules: Category[] = [
+  const submodules: Category[] = useMemo(() => [
     {
       id:"dashboard",
       label:"Dashboard",
@@ -217,7 +217,12 @@ export default function FinanceiroAvancado() {
       icon: CheckCircle, // Assuming Settings is CheckCircle for now
       count: 0,
     },
-  ];
+  ], [
+    contasReceber.contas,
+    contasPagar.contas,
+    centroCustos.centros,
+    conciliacao.extratos,
+  ]);
 
   // KPIs Principais (8 cards - altura 140px)
   const [kpis, setKpis] = useState<KPI[]>([
@@ -428,7 +433,7 @@ export default function FinanceiroAvancado() {
     <div className="space-y-6">
       {/* Resumo Executivo */}
       <Card className="neuro-raised p-6">
-        <h3 className="text-body-lg text-[var(--text-primary)] mb-4 flex items-center gap-2" style={{ fontWeight: 500 }}>
+          <h3 className="text-body-lg text-[var(--text-primary)] mb-4 flex items-center gap-2 font-medium">
           <BarChart3 className="w-5 h-5 text-[var(--primary)]" />
           Resumo Financeiro - Mês Atual
         </h3>
@@ -462,7 +467,7 @@ export default function FinanceiroAvancado() {
           <div className="flex items-start gap-3">
             <AlertTriangle className="w-5 h-5 text-error flex-shrink-0 mt-1" />
             <div>
-              <h4 className="text-body-md text-[var(--text-primary)] mb-1" style={{ fontWeight: 500 }}>
+              <h4 className="text-body-md text-[var(--text-primary)] mb-1 font-medium">
                 ⚠️ {resumoReceber.pendentes} Contas a Receber Vencidas
               </h4>
               <p className="text-body-sm text-[var(--text-secondary)]">
@@ -476,7 +481,7 @@ export default function FinanceiroAvancado() {
       {/* Gráficos Placeholder */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="neuro-raised p-6">
-          <h3 className="text-body-lg text-[var(--text-primary)] mb-4" style={{ fontWeight: 500 }}>Fluxo de Caixa (12 meses)</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] mb-4 font-medium">Fluxo de Caixa (12 meses)</h3>
           <div className="h-64 flex items-center justify-center text-[var(--text-secondary)]">
             <BarChart3 className="w-16 h-16 mb-2" />
             <p>Gráfico em desenvolvimento</p>
@@ -484,7 +489,7 @@ export default function FinanceiroAvancado() {
         </Card>
 
         <Card className="neuro-raised p-6">
-          <h3 className="text-body-lg text-[var(--text-primary)] mb-4" style={{ fontWeight: 500 }}>Projeção ARIMA (90 dias)</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] mb-4 font-medium">Projeção ARIMA (90 dias)</h3>
           <div className="h-64 flex items-center justify-center text-[var(--text-secondary)]">
             <TrendingUp className="w-16 h-16 mb-2" />
             <p>Projeção com IA em desenvolvimento</p>
@@ -503,10 +508,10 @@ export default function FinanceiroAvancado() {
             <CheckCircle className="w-4 h-4" />
             Nova Conta
           </button>
-          <button className="neuro-button-secondary px-4 py-2 rounded-xl">
+          <button className="neuro-button-secondary px-4 py-2 rounded-xl" aria-label="Atualizar lista" title="Atualizar lista">
             <RefreshCw className="w-4 h-4" />
           </button>
-          <button className="neuro-button-secondary px-4 py-2 rounded-xl">
+          <button className="neuro-button-secondary px-4 py-2 rounded-xl" aria-label="Exportar contas" title="Exportar contas">
             <Download className="w-4 h-4" />
           </button>
         </div>
@@ -559,13 +564,13 @@ export default function FinanceiroAvancado() {
             <table className="w-full">
               <thead className="border-b border-[var(--border)]">
                 <tr>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Cliente</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Documento</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Valor</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Vencimento</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Status</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Score IA</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)]" style={{ fontWeight: 500 }}>Ações</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Cliente</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Documento</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Valor</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Vencimento</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Status</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Score IA</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Ações</th>
                 </tr>
               </thead>
               <tbody>
@@ -573,7 +578,7 @@ export default function FinanceiroAvancado() {
                   <tr key={conta.id} className="border-b border-[var(--border)] hover:bg-[var(--surface-hover)] transition-colors">
                     <td className="p-4 text-[var(--text-primary)]">{conta.cliente_nome}</td>
                     <td className="p-4 text-[var(--text-secondary)]">{conta.numero_documento}</td>
-                    <td className="p-4 text-[var(--text-primary)]" style={{ fontWeight: 500 }}>{formatCurrency(conta.valor_original)}</td>
+                    <td className="p-4 text-[var(--text-primary)] font-medium">{formatCurrency(conta.valor_original)}</td>
                     <td className="p-4 text-[var(--text-primary)]">{formatDate(conta.data_vencimento)}</td>
                     <td className="p-4">
                       <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs font-medium ${
@@ -597,10 +602,10 @@ export default function FinanceiroAvancado() {
                     </td>
                     <td className="p-4">
                       <div className="flex gap-2">
-                        <button className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all">
+                        <button className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all" aria-label="Visualizar conta" title="Visualizar conta">
                           <Eye className="w-4 h-4" />
                         </button>
-                        <button className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all">
+                        <button className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all" aria-label="Editar conta" title="Editar conta">
                           <Edit2 className="w-4 h-4" />
                         </button>
                       </div>
@@ -631,7 +636,7 @@ export default function FinanceiroAvancado() {
       {React.createElement(icon, {
         className:"w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4",
       })}
-      <h3 className="text-heading-sm text-[var(--text-primary)] mb-2" style={{ fontWeight: 500 }}>{titulo}</h3>
+      <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 font-medium">{titulo}</h3>
       <p className="text-[var(--text-secondary)]">Módulo em desenvolvimento</p>
     </Card>
   );
@@ -649,7 +654,7 @@ export default function FinanceiroAvancado() {
           </div>
           <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-success/50 animate-pulse" />
-            <span className="text-body-sm text-[var(--text-primary)]" style={{ fontWeight: 500 }}>
+            <span className="text-body-sm text-[var(--text-primary)] font-medium">
               {formatCurrency(resumoFluxo?.saldo || 0)}
             </span>
           </div>
@@ -666,12 +671,12 @@ export default function FinanceiroAvancado() {
               }`}
             >
               <sub.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
-              <span className="text-body-xs text-[var(--text-primary)] px-2" style={{ fontWeight: 500 }}>{sub.label}</span>
+              <span className="text-body-xs text-[var(--text-primary)] px-2 font-medium">{sub.label}</span>
               {sub.count > 0 && (
                 <span className="text-body-lg font-display text-[var(--text-primary)] mt-1">{sub.count}</span>
               )}
               {sub.badge && (
-                <span className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[0.625rem] bg-accent/10 text-accent" style={{ fontWeight: 500 }}>
+                <span className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[0.625rem] bg-accent/10 text-accent font-medium">
                   {sub.badge}
                 </span>
               )}

@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 /**
  * Componente: Gestão Contábil
  * 
@@ -25,21 +26,11 @@ import {
   TableBody,
   TableCell,
   Input,
-  Select,
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
 } from '@/components/oraclusx-ds';
 import {
   Calculator,
   FileText,
   TrendingUp,
-  TrendingDown,
   DollarSign,
   BarChart3,
   FileBarChart,
@@ -47,9 +38,6 @@ import {
   Eye,
   Download,
   RefreshCw,
-  CheckCircle,
-  AlertCircle,
-  Calendar,
   PieChart,
   Layers,
   ArrowUpRight,
@@ -58,8 +46,9 @@ import {
 import { useDocumentTitle } from '@/hooks';
 import { useToast } from '@/contexts/ToastContext';
 import { supabase } from '@/lib/supabase';
-import { formatCurrency, formatNumber, formatDate, formatPercent } from '@/lib/utils';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Cell } from 'recharts';
+import { formatCurrency } from '@/lib/utils';
+// import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Cell } from 'recharts';
+import { OrxBarChart } from '@/components/charts/OrxBarChart';
 
 interface DREItem {
   grupo: string;
@@ -120,6 +109,7 @@ export default function GestaoContabil() {
 
   useEffect(() => {
     carregarDados();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const carregarDados = async () => {
@@ -132,7 +122,8 @@ export default function GestaoContabil() {
         carregarCentrosCusto(),
       ]);
     } catch (error: unknown) {
-      addToast(`Erro ao carregar dados: ${error.message}`, 'error');
+      const err = error as Error;
+      addToast(`Erro ao carregar dados: ${err.message}`, 'error');
     } finally {
       setLoading(false);
     }
@@ -147,8 +138,8 @@ export default function GestaoContabil() {
 
       if (error) throw error;
       setDreData(data || []);
-    } catch (_error) {
-      console.error('Erro ao carregar DRE:', error);
+    } catch (error) {
+      console.error('Erro ao carregar DRE:', error as Error);
       // Mock data para desenvolvimento
       setDreData([
         { grupo: 'RECEITA_BRUTA', descricao: 'Receita Bruta', valor: 2500000, percentual: 100 },
@@ -174,8 +165,8 @@ export default function GestaoContabil() {
 
       if (error) throw error;
       setBalancete(data || []);
-    } catch (_error) {
-      console.error('Erro ao carregar balancete:', error);
+    } catch (error) {
+      console.error('Erro ao carregar balancete:', error as Error);
       // Mock data
       setBalancete([
         {
@@ -237,8 +228,8 @@ export default function GestaoContabil() {
 
       if (error) throw error;
       setLancamentos(data || []);
-    } catch (_error) {
-      console.error('Erro ao carregar lançamentos:', error);
+    } catch (error) {
+      console.error('Erro ao carregar lançamentos:', error as Error);
       // Mock data
       setLancamentos([
         {
@@ -275,8 +266,8 @@ export default function GestaoContabil() {
 
       if (error) throw error;
       setCentrosCusto(data || []);
-    } catch (_error) {
-      console.error('Erro ao carregar centros de custo:', error);
+    } catch (error) {
+      console.error('Erro ao carregar centros de custo:', error as Error);
       // Mock data
       setCentrosCusto([
         { id: '1', codigo: 'CC001', nome: 'Administrativo', tipo: 'administrativo', orcamento_mensal: 50000 },
@@ -313,7 +304,7 @@ export default function GestaoContabil() {
         <Card className="p-6 neuro-raised">
           <div className="flex items-center gap-4">
             <div className="flex-1">
-              <label className="block mb-2" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Data Início</label>
+              <label className="block mb-2 text-[0.813rem] font-medium">Data Início</label>
               <Input
                 type="date"
                 value={dreDataInicio}
@@ -321,7 +312,7 @@ export default function GestaoContabil() {
               />
             </div>
             <div className="flex-1">
-              <label className="block mb-2" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Data Fim</label>
+              <label className="block mb-2 text-[0.813rem] font-medium">Data Fim</label>
               <Input
                 type="date"
                 value={dreDataFim}
@@ -343,66 +334,47 @@ export default function GestaoContabil() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="p-6 neuro-raised bg-gradient-to-br from-blue-500 to-blue-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Receita Bruta</h3>
+              <h3 className="opacity-90 text-[0.813rem] font-medium">Receita Bruta</h3>
               <DollarSign className="w-5 h-5 opacity-80" />
             </div>
-            <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{formatCurrency(receitaBruta)}</p>
-            <p className="opacity-80 mt-2" style={{ fontSize: '0.813rem' }}>100% da base</p>
+            <p className="text-[0.813rem] font-bold">{formatCurrency(receitaBruta)}</p>
+            <p className="opacity-80 mt-2 text-[0.813rem]">100% da base</p>
           </Card>
 
           <Card className="p-6 neuro-raised bg-gradient-to-br from-emerald-500 to-emerald-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Lucro Líquido</h3>
+              <h3 className="opacity-90 text-[0.813rem] font-medium">Lucro Líquido</h3>
               <TrendingUp className="w-5 h-5 opacity-80" />
             </div>
-            <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{formatCurrency(lucroLiquido)}</p>
-            <p className="opacity-80 mt-2" style={{ fontSize: '0.813rem' }}>
+            <p className="text-[0.813rem] font-bold">{formatCurrency(lucroLiquido)}</p>
+            <p className="opacity-80 mt-2 text-[0.813rem]">
               {lucroLiquido >= 0 ? 'Positivo' : 'Negativo'}
             </p>
           </Card>
 
           <Card className="p-6 neuro-raised bg-gradient-to-br from-purple-500 to-purple-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Margem Líquida</h3>
+              <h3 className="opacity-90 text-[0.813rem] font-medium">Margem Líquida</h3>
               <PieChart className="w-5 h-5 opacity-80" />
             </div>
-            <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{margemLiquida.toFixed(1)}%</p>
-            <p className="opacity-80 mt-2" style={{ fontSize: '0.813rem' }}>Meta: ≥ 15%</p>
+            <p className="text-[0.813rem] font-bold">{margemLiquida.toFixed(1)}%</p>
+            <p className="opacity-80 mt-2 text-[0.813rem]">Meta: ≥ 15%</p>
           </Card>
         </div>
 
         {/* Gráfico */}
         <Card className="p-6 neuro-raised">
-          <h3 className="mb-4" style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Análise Visual</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="var(--text-secondary)" opacity={0.1} />
-              <XAxis dataKey="name" stroke="var(--text-secondary)" />
-              <YAxis stroke="var(--text-secondary)" />
-              <RechartsTooltip
-                contentStyle={{
-                  backgroundColor: 'var(--bg-primary)',
-                  border: '1px solid var(--text-secondary)',
-                  borderRadius: '8px',
-                }}
-                formatter={(value: any) => formatCurrency(value)}
-              />
-              <Bar dataKey="value" radius={[8, 8, 0, 0]}>
-                {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={colors[index]} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
+          <h3 className="mb-4 text-[0.813rem] font-semibold">Análise Visual</h3>
+          <OrxBarChart data={chartData} keys={["value"]} indexBy="name" height={300} colors={colors} />
         </Card>
 
         {/* Tabela DRE */}
         <Card className="neuro-raised p-0">
           <div className="p-6 border-b border-[var(--text-secondary)]/20">
-            <h3 className style={{  fontSize: '0.813rem' , fontWeight: 600 }}>
+            <h3 className="text-[0.813rem] font-semibold">
               Demonstração do Resultado do Exercício (DRE)
             </h3>
-            <p className="text-[var(--text-secondary)] mt-1" style={{ fontSize: '0.813rem' }}>
+            <p className="text-[var(--text-secondary)] mt-1 text-[0.813rem]">
               Período: {new Date(dreDataInicio).toLocaleDateString('pt-BR')} até{' '}
               {new Date(dreDataFim).toLocaleDateString('pt-BR')}
             </p>
@@ -462,33 +434,33 @@ export default function GestaoContabil() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="p-6 neuro-raised">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-[var(--text-secondary)]" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Total Ativo</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] font-medium">Total Ativo</h3>
               <ArrowUpRight className="w-5 h-5 text-success" />
             </div>
-            <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{formatCurrency(totalAtivo)}</p>
+            <p className="text-[0.813rem] font-bold">{formatCurrency(totalAtivo)}</p>
           </Card>
 
           <Card className="p-6 neuro-raised">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-[var(--text-secondary)]" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Total Passivo</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] font-medium">Total Passivo</h3>
               <ArrowDownRight className="w-5 h-5 text-error" />
             </div>
-            <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{formatCurrency(totalPassivo)}</p>
+            <p className="text-[0.813rem] font-bold">{formatCurrency(totalPassivo)}</p>
           </Card>
 
           <Card className="p-6 neuro-raised">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-[var(--text-secondary)]" style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Patrimônio Líquido</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] font-medium">Patrimônio Líquido</h3>
               <Calculator className="w-5 h-5 text-[var(--primary)]" />
             </div>
-            <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{formatCurrency(totalAtivo - totalPassivo)}</p>
+            <p className="text-[0.813rem] font-bold">{formatCurrency(totalAtivo - totalPassivo)}</p>
           </Card>
         </div>
 
         {/* Tabela */}
         <Card className="neuro-raised p-0">
           <div className="p-6 border-b border-[var(--text-secondary)]/20">
-            <h3 className style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Balancete de Verificação</h3>
+            <h3 className="text-[0.813rem] font-semibold">Balancete de Verificação</h3>
           </div>
           <Table>
             <TableHeader>
@@ -504,7 +476,7 @@ export default function GestaoContabil() {
             <TableBody>
               {balancete.map((item) => (
                 <TableRow key={item.conta_codigo}>
-                  <TableCell className="font-mono" style={{ fontSize: '0.813rem' }}>{item.conta_codigo}</TableCell>
+                  <TableCell className="font-mono text-[0.813rem]">{item.conta_codigo}</TableCell>
                   <TableCell>{item.conta_nome}</TableCell>
                   <TableCell>
                     <Badge variant="default">{item.conta_tipo}</Badge>
@@ -534,7 +506,7 @@ export default function GestaoContabil() {
   const renderLancamentos = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Lançamentos Contábeis</h2>
+        <h2 className="text-[0.813rem] font-semibold">Lançamentos Contábeis</h2>
         <Button icon={<Plus />}>Novo Lançamento</Button>
       </div>
 
@@ -562,7 +534,7 @@ export default function GestaoContabil() {
                 <TableCell>
                   <Badge variant="default">{lanc.tipo_lancamento}</Badge>
                 </TableCell>
-                <TableCell className="text-right" style={{ fontWeight: 600 }}>
+                <TableCell className="text-right font-semibold">
                   {formatCurrency(lanc.valor_total)}
                 </TableCell>
                 <TableCell>
@@ -593,7 +565,7 @@ export default function GestaoContabil() {
   const renderCentrosCusto = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className style={{  fontSize: '0.813rem' , fontWeight: 600 }}>Centros de Custo</h2>
+        <h2 className="text-[0.813rem] font-semibold">Centros de Custo</h2>
         <Button icon={<Plus />}>Novo Centro</Button>
       </div>
 
@@ -605,14 +577,14 @@ export default function GestaoContabil() {
                 <Badge variant="default" className="mb-2">
                   {centro.codigo}
                 </Badge>
-                <h3 className style={{  fontSize: '0.813rem' , fontWeight: 600 }}>{centro.nome}</h3>
-                <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>{centro.tipo}</p>
+                <h3 className="text-[0.813rem] font-semibold">{centro.nome}</h3>
+                <p className="text-[var(--text-secondary)] text-[0.813rem]">{centro.tipo}</p>
               </div>
               <Layers className="w-6 h-6 text-[var(--primary)]" />
             </div>
             <div className="pt-4 border-t border-[var(--text-secondary)]/20">
-              <p className="text-[var(--text-secondary)] mb-1" style={{ fontSize: '0.813rem' }}>Orçamento Mensal</p>
-              <p className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{formatCurrency(centro.orcamento_mensal)}</p>
+              <p className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">Orçamento Mensal</p>
+              <p className="text-[0.813rem] font-bold">{formatCurrency(centro.orcamento_mensal)}</p>
             </div>
           </Card>
         ))}

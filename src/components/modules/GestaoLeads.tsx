@@ -37,8 +37,8 @@ export default function GestaoLeads() {
               Pipeline completo de leads com scoring automático e integração CRM
             </p>
           </div>
-          <div className="px-4 py-2 rounded-xl neuro-raised">
-            <span className="text-body-sm text-[var(--text-primary)]" style={{ fontWeight: 500 }}>0 Leads</span>
+        <div className="px-4 py-2 rounded-xl neuro-raised">
+          <span className="text-body-sm text-[var(--text-primary)] font-medium">0 Leads</span>
           </div>
         </div>
 
@@ -47,7 +47,7 @@ export default function GestaoLeads() {
             <button key={category.id} onClick={() => setActiveCategory(category.id)}
               className={`flex flex-col items-center justify-center h-24 text-center rounded-xl transition-all duration-200 ${activeCategory === category.id ?"neuro-raised scale-105" :"neuro-flat hover:neuro-raised"}`}>
               <category.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
-              <span className="text-body-xs text-[var(--text-primary)]" style={{ fontWeight: 500 }}>{category.label}</span>
+              <span className="text-body-xs text-[var(--text-primary)] font-medium">{category.label}</span>
               <span className="text-body-lg font-display text-[var(--text-primary)] mt-1">{category.count}</span>
             </button>
           ))}
@@ -72,7 +72,7 @@ export default function GestaoLeads() {
 
         <Card className="neuro-raised p-12 text-center">
           <Users className="w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4" />
-          <h3 className="text-heading-sm text-[var(--text-primary)] mb-2" style={{ fontWeight: 500 }}>Gestão de Leads</h3>
+          <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 font-medium">Gestão de Leads</h3>
           <p className="text-[var(--text-secondary)]">Módulo em desenvolvimento</p>
         </Card>
       </div>

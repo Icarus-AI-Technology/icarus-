@@ -5,7 +5,6 @@ import {
   AlertTriangle,
   TrendingUp,
   Users,
-  Clock,
   CheckCircle2,
   XCircle,
   BarChart3,
@@ -71,7 +70,8 @@ export const ObservabilityDashboard: React.FC = () => {
       setSystemAlerts(alerts || []);
       setAnomalies(anomalousUsers || []);
     } catch (error) {
-      console.error('Erro ao carregar dados:', error);
+   const err = error as Error;
+      console.error('Erro ao carregar dados:', err);
     } finally {
       setLoading(false);
     }
@@ -103,7 +103,8 @@ export const ObservabilityDashboard: React.FC = () => {
       
       loadData();
     } catch (error) {
-      console.error('Erro ao resolver alerta:', error);
+   const err = error as Error;
+      console.error('Erro ao resolver alerta:', err);
     }
   };
 

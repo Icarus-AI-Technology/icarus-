@@ -16,13 +16,14 @@
  * @see https://functionpoint.com/blog/7-key-features-your-workflow-management-system-needs-to-have
  */
 
+import {
   WorkflowDefinition,
   WorkflowInstance,
   WorkflowTransition,
   WorkflowState,
   WorkflowAction,
-  WorkflowInstanceFilter,
   WorkflowMetrics,
+  NotificationRule
 } from '@/types/workflow';
 
 // ============================================
@@ -56,7 +57,7 @@ export class WorkflowEngine {
     entityType: string,
     createdBy: string,
     createdByName: string,
-    metadata?: Record<string, any>
+    metadata?: Record<string, unknown>
   ): Promise<WorkflowInstance> {
     const workflow = this.getWorkflowDefinition(workflowId);
     if (!workflow) {
@@ -129,7 +130,7 @@ export class WorkflowEngine {
     executedByName: string,
     actionId: string,
     comment?: string,
-    metadata?: Record<string, any>
+    metadata?: Record<string, unknown>
   ): Promise<WorkflowInstance> {
     // Verificar se transição é permitida
     const check = this.canTransition(instance, toStateId);
@@ -199,7 +200,7 @@ export class WorkflowEngine {
     instance: WorkflowInstance,
     assignedTo: string,
     assignedToName: string,
-    assignedBy: string
+    _assignedBy: string
   ): Promise<WorkflowInstance> {
     const updatedInstance: WorkflowInstance = {
       ...instance,
@@ -322,7 +323,7 @@ export class WorkflowEngine {
    */
   private resolveRecipients(
     instance: WorkflowInstance,
-    rule: any
+    rule: NotificationRule
   ): string[] {
     const recipients: string[] = [];
     

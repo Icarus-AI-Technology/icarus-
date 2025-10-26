@@ -11,7 +11,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   padding?:"none" |"sm" |"md" |"lg";
 }
 
-export const Card = React.forwardRef<HTMLDivElement, CardProps>(
+const CardComponent = React.forwardRef<HTMLDivElement, CardProps>(
   (
     { className, variant ="default", padding ="md", children, ...props },
     ref,
@@ -24,15 +24,16 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
 
     const paddingClasses = {
       none:"p-0",
-      sm:"p-3",
-      md:"p-6",
-      lg:"p-8",
+      sm:"p-2 md:p-3",
+      md:"p-4 md:p-6",
+      lg:"p-6 md:p-8",
     };
 
     return (
       <div
         ref={ref}
         className={cn(
+          "transition-colors duration-300",
           variantClasses[variant],
           paddingClasses[padding],
           className,
@@ -45,7 +46,9 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
   },
 );
 
-Card.displayName ="OraclusXCard";
+CardComponent.displayName ="OraclusXCard";
+
+export const Card = React.memo(CardComponent);
 
 type CardHeaderProps = React.HTMLAttributes<HTMLDivElement>;
 

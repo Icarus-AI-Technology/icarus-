@@ -90,7 +90,7 @@ describe('ReceitaFederalService', () => {
         status: 'ATIVA'
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce({
         ok: true,
         status: 200,
         json: async () => mockResponse
@@ -110,7 +110,7 @@ describe('ReceitaFederalService', () => {
 
     it('deve retornar null se CNPJ não for encontrado', async () => {
       // Arrange
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce({
         ok: false,
         status: 404
       });
@@ -131,7 +131,7 @@ describe('ReceitaFederalService', () => {
 
     it('deve lançar erro se API retornar erro HTTP', async () => {
       // Arrange
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce({
         ok: false,
         status: 500
       });

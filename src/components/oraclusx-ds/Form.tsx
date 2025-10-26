@@ -27,7 +27,7 @@ export const FormField: React.FC<FormFieldProps> = ({
     <div className="mb-4">
       <label
         htmlFor={htmlFor}
-        className="block text-body-sm text-secondary dark:text-muted mb-2" style={{ fontWeight: 500 }}
+        className="block text-body-sm text-secondary dark:text-muted mb-2 font-medium"
       >
         {label}
         {required && <span className="text-error ml-1">*</span>}

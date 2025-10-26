@@ -53,7 +53,8 @@ export function useTransacoes() {
         loading: false,
         error: null,
       });
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         loading: false,
@@ -72,8 +73,9 @@ export function useTransacoes() {
 
       if (error) throw error;
       return data;
-    } catch (_error) {
-      console.error('Erro ao buscar transação:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar transação:', err);
       return null;
     }
   }, []);
@@ -95,7 +97,8 @@ export function useTransacoes() {
       }));
 
       return data;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao criar transação',
@@ -122,7 +125,8 @@ export function useTransacoes() {
       }));
 
       return data;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao atualizar transação',
@@ -147,7 +151,8 @@ export function useTransacoes() {
       }));
 
       return true;
-    } catch (_error) {
+    } catch (error) {
+   const err = error as Error;
       setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao deletar transação',
@@ -166,8 +171,9 @@ export function useTransacoes() {
 
       if (error) throw error;
       return data || [];
-    } catch (_error) {
-      console.error('Erro ao buscar transações por tipo:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar transações por tipo:', err);
       return [];
     }
   }, []);
@@ -182,8 +188,9 @@ export function useTransacoes() {
 
       if (error) throw error;
       return data || [];
-    } catch (_error) {
-      console.error('Erro ao buscar transações por status:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar transações por status:', err);
       return [];
     }
   }, []);
@@ -199,8 +206,9 @@ export function useTransacoes() {
 
       if (error) throw error;
       return data || [];
-    } catch (_error) {
-      console.error('Erro ao buscar transações por período:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao buscar transações por período:', err);
       return [];
     }
   }, []);
@@ -234,8 +242,9 @@ export function useTransacoes() {
         pendentes,
         totalTransacoes: data.length,
       };
-    } catch (_error) {
-      console.error('Erro ao calcular resumo financeiro:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao calcular resumo financeiro:', err);
       return {
         receitas: 0,
         despesas: 0,
@@ -260,8 +269,9 @@ export function useTransacoes() {
       }, {} as Record<string, number>);
 
       return counts;
-    } catch (_error) {
-      console.error('Erro ao contar transações:', error);
+    } catch (error) {
+   const err = error as Error;
+      console.error('Erro ao contar transações:', err);
       return {};
     }
   }, []);

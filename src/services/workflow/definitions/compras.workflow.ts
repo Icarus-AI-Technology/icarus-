@@ -404,8 +404,8 @@ export const PEDIDO_COMPRA_WORKFLOW: WorkflowDefinition = {
       type: 'required_fields',
       message: 'É necessário preencher todos os itens do pedido',
       validator: async (instance) => {
-        const itens = instance.metadata?.itens || [];
-        return itens.length > 0 && itens.every((i: any) => i.quantidade > 0 && i.precoUnitario > 0);
+        const itens = (instance.metadata?.itens as Array<{ quantidade: number; precoUnitario: number }> | undefined) || [];
+        return itens.length > 0 && itens.every((i) => i.quantidade > 0 && i.precoUnitario > 0);
       },
     },
     {
