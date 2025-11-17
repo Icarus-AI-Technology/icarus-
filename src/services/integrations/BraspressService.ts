@@ -21,7 +21,7 @@ interface BraspressQuoteRequest {
   peso: number;
   volumes: number;
   valorMercadoria: number;
-  tipo: 'R' | 'N'; // R = Rodoviário, N = Normal
+  tipo: "R" | "N"; // R = Rodoviário, N = Normal
 }
 
 interface BraspressQuoteResponse {
@@ -33,16 +33,16 @@ interface BraspressQuoteResponse {
 }
 
 export class BraspressService {
-  private readonly baseUrl = 'https://api.braspress.com.br';
+  private readonly baseUrl = "https://api.braspress.com.br";
   private readonly apiKey: string;
   private readonly cnpj: string;
 
   constructor() {
-    this.apiKey = process.env.BRASPRESS_API_KEY || '';
-    this.cnpj = process.env.BRASPRESS_CNPJ || '';
+    this.apiKey = process.env.BRASPRESS_API_KEY || "";
+    this.cnpj = process.env.BRASPRESS_CNPJ || "";
 
     if (!this.apiKey || !this.cnpj) {
-      console.warn('⚠️ Braspress: Credenciais não configuradas');
+      console.warn("⚠️ Braspress: Credenciais não configuradas");
     }
   }
 
@@ -51,9 +51,9 @@ export class BraspressService {
    */
   private getHeaders(): HeadersInit {
     return {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${this.apiKey}`,
-      'X-CNPJ': this.cnpj,
+      "X-CNPJ": this.cnpj,
     };
   }
 
@@ -65,9 +65,9 @@ export class BraspressService {
       const response = await fetch(
         `${this.baseUrl}/v1/tracking/${trackingCode}`,
         {
-          method: 'GET',
+          method: "GET",
           headers: this.getHeaders(),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -76,8 +76,8 @@ export class BraspressService {
 
       const data: BraspressTrackingResponse = await response.json();
       return data;
-    } catch (error: any) {
-      console.error('❌ Erro ao rastrear Braspress:', error.message);
+    } catch (error: unknown) {
+      console.error("❌ Erro ao rastrear Braspress:", error.message);
       throw error;
     }
   }
@@ -88,16 +88,16 @@ export class BraspressService {
   async quote(request: BraspressQuoteRequest): Promise<BraspressQuoteResponse> {
     try {
       const response = await fetch(`${this.baseUrl}/v1/cotacao/calcular`, {
-        method: 'POST',
+        method: "POST",
         headers: this.getHeaders(),
         body: JSON.stringify({
           cnpjRemetente: this.cnpj,
-          cepOrigem: request.cepOrigem.replace(/\D/g, ''),
-          cepDestino: request.cepDestino.replace(/\D/g, ''),
+          cepOrigem: request.cepOrigem.replace(/\D/g, ""),
+          cepDestino: request.cepDestino.replace(/\D/g, ""),
           peso: request.peso,
           volumes: request.volumes,
           valorMercadoria: request.valorMercadoria,
-          tipo: request.tipo || 'R',
+          tipo: request.tipo || "R",
           cubagem: this.calculateCubagem(request.volumes),
         }),
       });
@@ -108,8 +108,8 @@ export class BraspressService {
 
       const data: BraspressQuoteResponse = await response.json();
       return data;
-    } catch (error: any) {
-      console.error('❌ Erro ao cotar Braspress:', error.message);
+    } catch (error: unknown) {
+      console.error("❌ Erro ao cotar Braspress:", error.message);
       throw error;
     }
   }
@@ -128,7 +128,7 @@ export class BraspressService {
   async createShipment(data: any): Promise<any> {
     try {
       const response = await fetch(`${this.baseUrl}/v1/conhecimento`, {
-        method: 'POST',
+        method: "POST",
         headers: this.getHeaders(),
         body: JSON.stringify(data),
       });
@@ -138,8 +138,8 @@ export class BraspressService {
       }
 
       return await response.json();
-    } catch (error: any) {
-      console.error('❌ Erro ao criar envio Braspress:', error.message);
+    } catch (error: unknown) {
+      console.error("❌ Erro ao criar envio Braspress:", error.message);
       throw error;
     }
   }
@@ -149,15 +149,15 @@ export class BraspressService {
    */
   async consultaPrazo(
     cepOrigem: string,
-    cepDestino: string
+    cepDestino: string,
   ): Promise<{ prazo: number; dataEntrega: string }> {
     try {
       const response = await fetch(`${this.baseUrl}/v1/prazo`, {
-        method: 'POST',
+        method: "POST",
         headers: this.getHeaders(),
         body: JSON.stringify({
-          cepOrigem: cepOrigem.replace(/\D/g, ''),
-          cepDestino: cepDestino.replace(/\D/g, ''),
+          cepOrigem: cepOrigem.replace(/\D/g, ""),
+          cepDestino: cepDestino.replace(/\D/g, ""),
         }),
       });
 
@@ -166,8 +166,8 @@ export class BraspressService {
       }
 
       return await response.json();
-    } catch (error: any) {
-      console.error('❌ Erro ao consultar prazo Braspress:', error.message);
+    } catch (error: unknown) {
+      console.error("❌ Erro ao consultar prazo Braspress:", error.message);
       throw error;
     }
   }
@@ -178,7 +178,7 @@ export class BraspressService {
   async healthCheck(): Promise<boolean> {
     try {
       const response = await fetch(`${this.baseUrl}/v1/status`, {
-        method: 'GET',
+        method: "GET",
         headers: this.getHeaders(),
       });
       return response.ok;
@@ -189,4 +189,3 @@ export class BraspressService {
 }
 
 export default new BraspressService();
-

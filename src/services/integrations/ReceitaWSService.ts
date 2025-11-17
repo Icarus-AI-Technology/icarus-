@@ -47,7 +47,7 @@ interface ReceitaWSResponse {
 }
 
 export class ReceitaWSService {
-  private readonly baseUrl = 'https://www.receitaws.com.br/v1';
+  private readonly baseUrl = "https://www.receitaws.com.br/v1";
 
   constructor() {
     // ReceitaWS é pública, não precisa de credenciais
@@ -58,19 +58,19 @@ export class ReceitaWSService {
    */
   async consultaCNPJ(cnpj: string): Promise<ReceitaWSResponse> {
     try {
-      const cnpjLimpo = cnpj.replace(/\D/g, '');
+      const cnpjLimpo = cnpj.replace(/\D/g, "");
 
       const response = await fetch(`${this.baseUrl}/cnpj/${cnpjLimpo}`, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       if (!response.ok) {
         if (response.status === 429) {
           throw new Error(
-            'Rate limit excedido. ReceitaWS permite apenas 3 requisições por minuto.'
+            "Rate limit excedido. ReceitaWS permite apenas 3 requisições por minuto.",
           );
         }
         throw new Error(`ReceitaWS error: ${response.status}`);
@@ -79,13 +79,13 @@ export class ReceitaWSService {
       const data: ReceitaWSResponse = await response.json();
 
       // Verificar se retornou erro
-      if (data.status === 'ERROR') {
-        throw new Error('CNPJ não encontrado ou inválido');
+      if (data.status === "ERROR") {
+        throw new Error("CNPJ não encontrado ou inválido");
       }
 
       return data;
-    } catch (error: any) {
-      console.error('❌ Erro ao consultar CNPJ ReceitaWS:', error.message);
+    } catch (error: unknown) {
+      console.error("❌ Erro ao consultar CNPJ ReceitaWS:", error.message);
       throw error;
     }
   }
@@ -95,20 +95,20 @@ export class ReceitaWSService {
    */
   async consultaCNPJComRetry(
     cnpj: string,
-    maxRetries = 3
+    maxRetries = 3,
   ): Promise<ReceitaWSResponse> {
     let lastError: Error | null = null;
 
     for (let i = 0; i < maxRetries; i++) {
       try {
         return await this.consultaCNPJ(cnpj);
-      } catch (error: any) {
+      } catch (error: unknown) {
         lastError = error;
 
-        if (error.message.includes('Rate limit')) {
+        if (error.message.includes("Rate limit")) {
           // Aguardar 60 segundos antes de tentar novamente
           console.warn(
-            `⚠️ Rate limit atingido. Aguardando 60s antes de tentar novamente (tentativa ${i + 1}/${maxRetries})...`
+            `⚠️ Rate limit atingido. Aguardando 60s antes de tentar novamente (tentativa ${i + 1}/${maxRetries})...`,
           );
 
           if (i < maxRetries - 1) {
@@ -121,14 +121,17 @@ export class ReceitaWSService {
       }
     }
 
-    throw lastError || new Error('Falha ao consultar CNPJ após múltiplas tentativas');
+    throw (
+      lastError ||
+      new Error("Falha ao consultar CNPJ após múltiplas tentativas")
+    );
   }
 
   /**
    * Valida formato do CNPJ
    */
   validaCNPJ(cnpj: string): boolean {
-    const cnpjLimpo = cnpj.replace(/\D/g, '');
+    const cnpjLimpo = cnpj.replace(/\D/g, "");
 
     if (cnpjLimpo.length !== 14) {
       return false;
@@ -176,7 +179,7 @@ export class ReceitaWSService {
    * Formata CNPJ
    */
   formataCNPJ(cnpj: string): string {
-    const cnpjLimpo = cnpj.replace(/\D/g, '');
+    const cnpjLimpo = cnpj.replace(/\D/g, "");
 
     if (cnpjLimpo.length !== 14) {
       return cnpj;
@@ -184,7 +187,7 @@ export class ReceitaWSService {
 
     return cnpjLimpo.replace(
       /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,
-      '$1.$2.$3/$4-$5'
+      "$1.$2.$3/$4-$5",
     );
   }
 
@@ -195,7 +198,7 @@ export class ReceitaWSService {
     try {
       // Usar CNPJ da Receita Federal como teste
       const response = await fetch(`${this.baseUrl}/cnpj/00000000000191`, {
-        method: 'GET',
+        method: "GET",
       });
       return response.ok;
     } catch {
@@ -205,4 +208,3 @@ export class ReceitaWSService {
 }
 
 export default new ReceitaWSService();
-

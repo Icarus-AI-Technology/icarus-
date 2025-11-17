@@ -3,11 +3,11 @@
  * Radio button neuromórfico
  */
 
-import React from"react";
-import { cn } from"@/lib/utils";
+import React from "react";
+import { cn } from "@/lib/utils";
 
 export interface RadioProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>,"type"> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
   label?: string;
   description?: string;
 }
@@ -28,11 +28,17 @@ const RadioComponent = React.forwardRef<HTMLInputElement, RadioProps>(
           />
           <label
             htmlFor={radioId}
-            className={cn("w-5 h-5 rounded-full cursor-pointer","orx-card flex items-center justify-center","peer-disabled:opacity-50 peer-disabled:cursor-not-allowed","transition-all duration-150",
+            className={cn(
+              "w-5 h-5 rounded-full cursor-pointer",
+              "orx-card flex items-center justify-center",
+              "peer-disabled:opacity-50 peer-disabled:cursor-not-allowed",
+              "transition-all duration-150",
             )}
           >
             <div
-              className={cn("w-2.5 h-2.5 rounded-full bg-primary","opacity-0 peer-checked:opacity-100 transition-opacity",
+              className={cn(
+                "w-2.5 h-2.5 rounded-full bg-primary",
+                "opacity-0 peer-checked:opacity-100 transition-opacity",
               )}
             />
           </label>
@@ -59,9 +65,8 @@ const RadioComponent = React.forwardRef<HTMLInputElement, RadioProps>(
   },
 );
 
-Radio.displayName ="OraclusXRadio";
+RadioComponent.displayName = "OraclusXRadio";
 
 export const Radio = React.memo(RadioComponent);
 
 export default Radio;
-

@@ -1,0 +1,66 @@
+{
+  "timestamp": "2025-10-27T13:22:50.076Z",
+  "score": 70,
+  "status": "🟡 Bom",
+  "issues": [],
+  "warnings": [
+    {
+      "category": "environment",
+      "severity": "medio",
+      "message": "Variável DATABASE_URL não configurada",
+      "action": "Adicionar DATABASE_URL ao arquivo .env"
+    },
+    {
+      "category": "database",
+      "severity": "medio",
+      "message": "Algumas tabelas críticas podem estar faltando",
+      "action": "Verificar migrations de tabelas core"
+    },
+    {
+      "category": "integrations",
+      "severity": "medio",
+      "message": "Integração SEFAZ/NF-e não encontrada",
+      "action": "Implementar integração SEFAZ/NF-e em src/lib/integrations/sefaz"
+    },
+    {
+      "category": "integrations",
+      "severity": "medio",
+      "message": "Integração ANS/TISS não encontrada",
+      "action": "Implementar integração ANS/TISS em src/lib/integrations/ans"
+    },
+    {
+      "category": "integrations",
+      "severity": "medio",
+      "message": "Integração ANVISA não encontrada",
+      "action": "Implementar integração ANVISA em src/lib/compliance/anvisa"
+    },
+    {
+      "category": "performance",
+      "severity": "baixo",
+      "message": "Bundle size grande (> 5MB)",
+      "action": "Considerar code splitting e lazy loading"
+    }
+  ],
+  "info": [
+    {
+      "category": "environment",
+      "message": "Node.js version: v22.20.0"
+    },
+    {
+      "category": "database",
+      "message": "96 migrations encontradas"
+    },
+    {
+      "category": "performance",
+      "message": "Tamanho do bundle: 12.24 MB"
+    },
+    {
+      "category": "performance",
+      "message": "Recomendado: revisar índices de tabelas com queries frequentes"
+    },
+    {
+      "category": "security",
+      "message": "✅ 6 políticas RLS encontradas"
+    }
+  ]
+}

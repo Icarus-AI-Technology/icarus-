@@ -1,0 +1,247 @@
+╔═══════════════════════════════════════════════════════════════════╗
+║                                                                   ║
+║     📚 GUIA DE ARQUIVOS - Próximos Passos Agentes ICARUS          ║
+║                                                                   ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 ARQUIVOS PRINCIPAIS
+
+1. PROXIMOS_PASSOS_AGENTES.md (12KB)
+   └─ Roadmap completo de 6 meses
+   └─ 5 fases detalhadas
+   └─ Cronograma e orçamento
+   └─ Como usar: cat PROXIMOS_PASSOS_AGENTES.md
+
+2. CHECKLIST_EXECUCAO.md (15KB)
+   └─ Checklist taskável por semana
+   └─ 30+ tarefas com critérios de aceitação
+   └─ KPIs e métricas de progresso
+   └─ Como usar: Marcar [ ] -> [x] conforme completa
+
+3. SPRINT_PLANNING.md (8KB)
+   └─ Sprint 1 detalhado (28/10 - 03/11)
+   └─ Stories com pontos e assignees
+   └─ Definition of Done
+   └─ Como usar: Template para planning meeting
+
+4. ROADMAP_VISUAL.txt (6KB)
+   └─ Timeline visual ASCII art
+   └─ Status por fase (✅📋)
+   └─ Ações imediatas
+   └─ Como usar: cat ROADMAP_VISUAL.txt
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 SCRIPTS EXECUTÁVEIS
+
+1. QUICK_START_PROXIMOS_PASSOS.sh
+   └─ Menu interativo com 6 opções
+   └─ Opção 1: Criar estrutura chatbot
+   └─ Opção 2: Configurar CI/CD
+   └─ Opção 3: Criar Edge Function
+   └─ Opção 4: Setup dashboard
+   └─ Como usar: ./QUICK_START_PROXIMOS_PASSOS.sh
+
+2. scripts/create-github-issues.sh
+   └─ Cria issues automaticamente no GitHub
+   └─ Milestones + Labels + 6 issues
+   └─ Requer: gh CLI instalado e autenticado
+   └─ Como usar: ./scripts/create-github-issues.sh
+
+3. QUICK_CHECK_AGENTES.sh
+   └─ Verifica 21 arquivos do sistema
+   └─ Status 100% operacional
+   └─ Como usar: ./QUICK_CHECK_AGENTES.sh
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 ARQUIVOS DE RELATÓRIO
+
+1. AGENTES_ICARUS_SUMMARY.txt
+   └─ Sumário visual com estatísticas
+   └─ Status: 100% COMPLETO
+
+2. RELATORIO_AGENTES_ICARUS.md
+   └─ Relatório técnico completo
+   └─ 22 arquivos criados
+
+3. SUMARIO_AGENTES_ICARUS.md
+   └─ Sumário executivo
+   └─ Impacto esperado
+
+4. .cursor/agents/IMPLEMENTACAO_CONCLUIDA.md
+   └─ Certificado de conclusão Fase 1
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📚 DOCUMENTAÇÃO BASE
+
+1. README_AGENTES.md
+   └─ Quick start e visão geral
+
+2. docs/GUIA_AGENTES_ICARUS.md (11KB)
+   └─ Documentação completa
+   └─ Como usar todos os 18 scripts
+
+3. .cursor/agents/EXEMPLOS_USO.md
+   └─ 10 casos de uso práticos
+   └─ Scripts de automação
+
+4. INDICE_AGENTES.md
+   └─ Índice navegável de tudo
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 FLUXO DE USO RECOMENDADO
+
+DIA 1 - HOJE:
+  1. cat ROADMAP_VISUAL.txt
+     └─ Ver visão geral do roadmap
+  
+  2. cat PROXIMOS_PASSOS_AGENTES.md | less
+     └─ Ler roadmap detalhado
+  
+  3. ./QUICK_START_PROXIMOS_PASSOS.sh
+     └─ Escolher opção 1 (Chatbot)
+  
+  4. cat CHECKLIST_EXECUCAO.md
+     └─ Ver tarefas da Semana 1
+
+DIA 2:
+  1. ./QUICK_START_PROXIMOS_PASSOS.sh
+     └─ Opção 2 (CI/CD)
+  
+  2. ./scripts/create-github-issues.sh
+     └─ Criar issues no GitHub
+  
+  3. Iniciar Sprint Planning
+     └─ Usar SPRINT_PLANNING.md como base
+
+DIA 3:
+  1. ./QUICK_START_PROXIMOS_PASSOS.sh
+     └─ Opção 3 (Edge Function)
+  
+  2. Deploy primeira função
+     └─ supabase functions deploy ai-tutor-financeiro
+
+SEMANA 1:
+  1. Executar tarefas 2.1, 2.2, 2.3
+     └─ Ver CHECKLIST_EXECUCAO.md
+  
+  2. Daily standups
+     └─ Atualizar progresso
+
+  3. Sprint Review (Sexta)
+     └─ Demo para stakeholders
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📐 ESTRUTURA DE DIRETÓRIOS
+
+icarus-make/
+├── PROXIMOS_PASSOS_AGENTES.md      ← Roadmap principal
+├── CHECKLIST_EXECUCAO.md           ← Checklist taskável
+├── SPRINT_PLANNING.md              ← Sprint 1 detalhado
+├── ROADMAP_VISUAL.txt              ← Timeline visual
+├── ARQUIVOS_PROXIMOS_PASSOS.txt    ← Este arquivo
+│
+├── QUICK_START_PROXIMOS_PASSOS.sh  ← Menu interativo
+├── QUICK_CHECK_AGENTES.sh          ← Verificação
+│
+├── scripts/
+│   └── create-github-issues.sh     ← Criador de issues
+│
+├── README_AGENTES.md               ← Quick start
+├── INDICE_AGENTES.md               ← Índice geral
+│
+├── docs/
+│   └── GUIA_AGENTES_ICARUS.md      ← Documentação completa
+│
+└── .cursor/agents/
+    ├── EXEMPLOS_USO.md             ← Casos de uso
+    └── IMPLEMENTACAO_CONCLUIDA.md  ← Certificado Fase 1
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔍 BUSCA RÁPIDA
+
+PERGUNTA: Como começar?
+RESPOSTA: ./QUICK_START_PROXIMOS_PASSOS.sh
+
+PERGUNTA: Quais são as tarefas da próxima semana?
+RESPOSTA: cat CHECKLIST_EXECUCAO.md | grep "Semana 1"
+
+PERGUNTA: Qual o cronograma completo?
+RESPOSTA: cat PROXIMOS_PASSOS_AGENTES.md | grep "Cronograma"
+
+PERGUNTA: Como criar issues no GitHub?
+RESPOSTA: ./scripts/create-github-issues.sh
+
+PERGUNTA: Qual o orçamento estimado?
+RESPOSTA: grep "ORÇAMENTO" PROXIMOS_PASSOS_AGENTES.md -A 10
+
+PERGUNTA: Quais KPIs devo acompanhar?
+RESPOSTA: grep "KPIs" CHECKLIST_EXECUCAO.md -A 20
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 ESTATÍSTICAS
+
+Total de Arquivos Criados:          10
+  Documentação:                     4
+  Scripts:                          3
+  Relatórios:                       3
+
+Páginas de Documentação:            ~50 páginas
+Tarefas Mapeadas:                   30+ tarefas
+Issues Criáveis:                    6 issues (GitHub)
+Sprints Planejados:                 4 sprints (Fase 2)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 PRIORIDADES
+
+🔴 CRÍTICO (Fazer AGORA):
+  1. Ler ROADMAP_VISUAL.txt
+  2. Executar ./QUICK_START_PROXIMOS_PASSOS.sh
+  3. Marcar primeira tarefa no CHECKLIST_EXECUCAO.md
+
+🟡 IMPORTANTE (Esta Semana):
+  1. Completar Sprint Planning
+  2. Criar issues no GitHub
+  3. Começar Tarefa 2.1 (Orchestrator)
+
+🟢 PODE ESPERAR:
+  1. Edge Functions (Fase 3)
+  2. ML e Análise (Fase 4)
+  3. Certificações (Fase 5)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📞 SUPORTE
+
+Dúvidas sobre arquivos:
+  • INDICE_AGENTES.md - navegação completa
+  • Este arquivo - guia de todos os arquivos
+
+Dúvidas técnicas:
+  • docs/GUIA_AGENTES_ICARUS.md
+  • .cursor/agents/EXEMPLOS_USO.md
+
+Suporte:
+  • GitHub Issues
+  • Slack #agentes-icarus
+  • dev@icarus.com.br
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+╔═══════════════════════════════════════════════════════════════════╗
+║                                                                   ║
+║           🚀 COMECE AGORA: ./QUICK_START_PROXIMOS_PASSOS.sh       ║
+║                                                                   ║
+║                 Sistema ICARUS v5.0 - Agentes IA                  ║
+║                      27 de Outubro de 2025                        ║
+║                                                                   ║
+╚═══════════════════════════════════════════════════════════════════╝

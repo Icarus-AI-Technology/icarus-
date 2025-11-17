@@ -10,9 +10,7 @@
     "grep": {},
     "grepInvert": null,
     "maxFailures": 5,
-    "metadata": {
-      "actualWorkers": 5
-    },
+    "metadata": {},
     "preserveOutput": "always",
     "reporter": [
       [
@@ -27,10 +25,7 @@
           "outputFile": "playwright-results.json"
         }
       ],
-      [
-        "list",
-        null
-      ]
+      ["list", null]
     ],
     "reportSlowTests": {
       "max": 5,
@@ -42,16 +37,12 @@
         "outputDir": "/Users/daxmeneghel/icarus-make/test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {
-          "actualWorkers": 5
-        },
+        "metadata": {},
         "id": "chromium",
         "name": "chromium",
         "testDir": "/Users/daxmeneghel/icarus-make/tests/e2e",
         "testIgnore": [],
-        "testMatch": [
-          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
-        ],
+        "testMatch": ["**/*.@(spec|test).?(c|m)[jt]s?(x)"],
         "timeout": 30000
       }
     ],
@@ -59,490 +50,31 @@
     "updateSnapshots": "missing",
     "updateSourceMethod": "patch",
     "version": "1.56.1",
-    "workers": 5,
+    "workers": 1,
     "webServer": {
       "command": "npm run dev",
+      "env": {
+        "VITE_SUPABASE_URL": "http://localhost:54321",
+        "VITE_SUPABASE_ANON_KEY": "test-anon-key"
+      },
       "url": "http://localhost:5173",
       "reuseExistingServer": true,
       "timeout": 120000
     }
   },
-  "suites": [
-    {
-      "title": "forms-zod.spec.ts",
-      "file": "forms-zod.spec.ts",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "Formulários Zod - FormularioMedicoAvancado",
-          "file": "forms-zod.spec.ts",
-          "line": 8,
-          "column": 6,
-          "specs": [
-            {
-              "title": "deve validar CPF em tempo real",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 5752,
-                      "error": {
-                        "message": "TimeoutError: page.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Novo Cadastro\")')\u001b[22m\n",
-                        "stack": "TimeoutError: page.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Novo Cadastro\")')\u001b[22m\n\n    at /Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts:13:16",
-                        "location": {
-                          "file": "/Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts",
-                          "column": 16,
-                          "line": 13
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 11 |\u001b[39m     \n \u001b[90m 12 |\u001b[39m     \u001b[90m// Abre formulário\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 13 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button:has-text(\"Novo Cadastro\")'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 14 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 15 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 16 |\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts",
-                            "column": 16,
-                            "line": 13
-                          },
-                          "message": "TimeoutError: page.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Novo Cadastro\")')\u001b[22m\n\n\n\u001b[0m \u001b[90m 11 |\u001b[39m     \n \u001b[90m 12 |\u001b[39m     \u001b[90m// Abre formulário\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 13 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button:has-text(\"Novo Cadastro\")'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 14 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 15 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 16 |\u001b[39m\u001b[0m\n\u001b[2m    at /Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts:13:16\u001b[22m"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-10-25T14:28:49.850Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/daxmeneghel/icarus-make/test-results/forms-zod-Formulários-Zod--6b348-e-validar-CPF-em-tempo-real-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/daxmeneghel/icarus-make/test-results/forms-zod-Formulários-Zod--6b348-e-validar-CPF-em-tempo-real-chromium/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/Users/daxmeneghel/icarus-make/test-results/forms-zod-Formulários-Zod--6b348-e-validar-CPF-em-tempo-real-chromium/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts",
-                        "column": 16,
-                        "line": 13
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "0b77771748ce73ee6fb7-4670c31146ca57bdb554",
-              "file": "forms-zod.spec.ts",
-              "line": 17,
-              "column": 3
-            },
-            {
-              "title": "deve validar email formato",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "failed",
-                      "duration": 5786,
-                      "error": {
-                        "message": "TimeoutError: page.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Novo Cadastro\")')\u001b[22m\n",
-                        "stack": "TimeoutError: page.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Novo Cadastro\")')\u001b[22m\n\n    at /Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts:13:16",
-                        "location": {
-                          "file": "/Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts",
-                          "column": 16,
-                          "line": 13
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 11 |\u001b[39m     \n \u001b[90m 12 |\u001b[39m     \u001b[90m// Abre formulário\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 13 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button:has-text(\"Novo Cadastro\")'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 14 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 15 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 16 |\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts",
-                            "column": 16,
-                            "line": 13
-                          },
-                          "message": "TimeoutError: page.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Novo Cadastro\")')\u001b[22m\n\n\n\u001b[0m \u001b[90m 11 |\u001b[39m     \n \u001b[90m 12 |\u001b[39m     \u001b[90m// Abre formulário\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 13 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button:has-text(\"Novo Cadastro\")'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 14 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 15 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 16 |\u001b[39m\u001b[0m\n\u001b[2m    at /Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts:13:16\u001b[22m"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-10-25T14:28:49.836Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/daxmeneghel/icarus-make/test-results/forms-zod-Formulários-Zod--3062f--deve-validar-email-formato-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/daxmeneghel/icarus-make/test-results/forms-zod-Formulários-Zod--3062f--deve-validar-email-formato-chromium/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/Users/daxmeneghel/icarus-make/test-results/forms-zod-Formulários-Zod--3062f--deve-validar-email-formato-chromium/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts",
-                        "column": 16,
-                        "line": 13
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "0b77771748ce73ee6fb7-a0e6c525b9df70bb2bf5",
-              "file": "forms-zod.spec.ts",
-              "line": 32,
-              "column": 3
-            },
-            {
-              "title": "deve desabilitar submit com campos inválidos",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 2,
-                      "parallelIndex": 2,
-                      "status": "failed",
-                      "duration": 5738,
-                      "error": {
-                        "message": "TimeoutError: page.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Novo Cadastro\")')\u001b[22m\n",
-                        "stack": "TimeoutError: page.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Novo Cadastro\")')\u001b[22m\n\n    at /Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts:13:16",
-                        "location": {
-                          "file": "/Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts",
-                          "column": 16,
-                          "line": 13
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 11 |\u001b[39m     \n \u001b[90m 12 |\u001b[39m     \u001b[90m// Abre formulário\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 13 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button:has-text(\"Novo Cadastro\")'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 14 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 15 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 16 |\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts",
-                            "column": 16,
-                            "line": 13
-                          },
-                          "message": "TimeoutError: page.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Novo Cadastro\")')\u001b[22m\n\n\n\u001b[0m \u001b[90m 11 |\u001b[39m     \n \u001b[90m 12 |\u001b[39m     \u001b[90m// Abre formulário\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 13 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button:has-text(\"Novo Cadastro\")'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 14 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 15 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 16 |\u001b[39m\u001b[0m\n\u001b[2m    at /Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts:13:16\u001b[22m"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-10-25T14:28:49.843Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/daxmeneghel/icarus-make/test-results/forms-zod-Formulários-Zod--fb89a-submit-com-campos-inválidos-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/daxmeneghel/icarus-make/test-results/forms-zod-Formulários-Zod--fb89a-submit-com-campos-inválidos-chromium/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/Users/daxmeneghel/icarus-make/test-results/forms-zod-Formulários-Zod--fb89a-submit-com-campos-inválidos-chromium/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts",
-                        "column": 16,
-                        "line": 13
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "0b77771748ce73ee6fb7-6a077b1237fd8c7cd483",
-              "file": "forms-zod.spec.ts",
-              "line": 48,
-              "column": 3
-            },
-            {
-              "title": "deve buscar CEP automaticamente",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
-                      "status": "failed",
-                      "duration": 5711,
-                      "error": {
-                        "message": "TimeoutError: page.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Novo Cadastro\")')\u001b[22m\n",
-                        "stack": "TimeoutError: page.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Novo Cadastro\")')\u001b[22m\n\n    at /Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts:13:16",
-                        "location": {
-                          "file": "/Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts",
-                          "column": 16,
-                          "line": 13
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 11 |\u001b[39m     \n \u001b[90m 12 |\u001b[39m     \u001b[90m// Abre formulário\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 13 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button:has-text(\"Novo Cadastro\")'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 14 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 15 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 16 |\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts",
-                            "column": 16,
-                            "line": 13
-                          },
-                          "message": "TimeoutError: page.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Novo Cadastro\")')\u001b[22m\n\n\n\u001b[0m \u001b[90m 11 |\u001b[39m     \n \u001b[90m 12 |\u001b[39m     \u001b[90m// Abre formulário\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 13 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button:has-text(\"Novo Cadastro\")'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 14 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 15 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 16 |\u001b[39m\u001b[0m\n\u001b[2m    at /Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts:13:16\u001b[22m"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-10-25T14:28:49.850Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/daxmeneghel/icarus-make/test-results/forms-zod-Formulários-Zod--a8aac--buscar-CEP-automaticamente-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/daxmeneghel/icarus-make/test-results/forms-zod-Formulários-Zod--a8aac--buscar-CEP-automaticamente-chromium/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/Users/daxmeneghel/icarus-make/test-results/forms-zod-Formulários-Zod--a8aac--buscar-CEP-automaticamente-chromium/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts",
-                        "column": 16,
-                        "line": 13
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "0b77771748ce73ee6fb7-09204f547d5044419a1c",
-              "file": "forms-zod.spec.ts",
-              "line": 59,
-              "column": 3
-            }
-          ]
-        },
-        {
-          "title": "Formulários Zod - Validações Customizadas",
-          "file": "forms-zod.spec.ts",
-          "line": 82,
-          "column": 6,
-          "specs": [
-            {
-              "title": "deve validar CRM único",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 4,
-                      "parallelIndex": 4,
-                      "status": "failed",
-                      "duration": 5730,
-                      "error": {
-                        "message": "TimeoutError: page.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Novo Cadastro\")')\u001b[22m\n",
-                        "stack": "TimeoutError: page.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Novo Cadastro\")')\u001b[22m\n\n    at /Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts:85:16",
-                        "location": {
-                          "file": "/Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts",
-                          "column": 16,
-                          "line": 85
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 83 |\u001b[39m   test(\u001b[32m'deve validar CRM único'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m 84 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/cadastros'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 85 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button:has-text(\"Novo Cadastro\")'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 86 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 87 |\u001b[39m     \n \u001b[90m 88 |\u001b[39m     \u001b[36mconst\u001b[39m crmInput \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[name=\"crm\"]'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts",
-                            "column": 16,
-                            "line": 85
-                          },
-                          "message": "TimeoutError: page.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Novo Cadastro\")')\u001b[22m\n\n\n\u001b[0m \u001b[90m 83 |\u001b[39m   test(\u001b[32m'deve validar CRM único'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m 84 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/cadastros'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 85 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button:has-text(\"Novo Cadastro\")'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 86 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 87 |\u001b[39m     \n \u001b[90m 88 |\u001b[39m     \u001b[36mconst\u001b[39m crmInput \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[name=\"crm\"]'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts:85:16\u001b[22m"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-10-25T14:28:49.837Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/daxmeneghel/icarus-make/test-results/forms-zod-Formulários-Zod--489e1-adas-deve-validar-CRM-único-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/daxmeneghel/icarus-make/test-results/forms-zod-Formulários-Zod--489e1-adas-deve-validar-CRM-único-chromium/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/Users/daxmeneghel/icarus-make/test-results/forms-zod-Formulários-Zod--489e1-adas-deve-validar-CRM-único-chromium/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/daxmeneghel/icarus-make/tests/e2e/forms-zod.spec.ts",
-                        "column": 16,
-                        "line": 85
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "0b77771748ce73ee6fb7-5c3b2103c81e8744db54",
-              "file": "forms-zod.spec.ts",
-              "line": 83,
-              "column": 3
-            },
-            {
-              "title": "deve validar telefone formato brasileiro",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "0b77771748ce73ee6fb7-960cb497a05572582123",
-              "file": "forms-zod.spec.ts",
-              "line": 104,
-              "column": 3
-            }
-          ]
-        },
-        {
-          "title": "Formulários Zod - Submissão",
-          "file": "forms-zod.spec.ts",
-          "line": 126,
-          "column": 6,
-          "specs": [
-            {
-              "title": "deve exibir loading durante submissão",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "0b77771748ce73ee6fb7-ac8006d3909dcafa3e3f",
-              "file": "forms-zod.spec.ts",
-              "line": 127,
-              "column": 3
-            },
-            {
-              "title": "deve limpar formulário após sucesso",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "0b77771748ce73ee6fb7-d8db05f6be7ef82110a3",
-              "file": "forms-zod.spec.ts",
-              "line": 148,
-              "column": 3
-            }
-          ]
-        }
-      ]
-    }
-  ],
+  "suites": [],
   "errors": [
     {
-      "message": "\u001b[31mTesting stopped early after 5 maximum allowed failures.\u001b[39m"
+      "message": "Error: Process from config.webServer was not able to start. Exit code: 1",
+      "stack": "Error: Process from config.webServer was not able to start. Exit code: 1"
     }
   ],
   "stats": {
-    "startTime": "2025-10-25T14:28:49.304Z",
-    "duration": 6807.432,
+    "startTime": "2025-10-27T00:09:34.743Z",
+    "duration": 1975.7089999999998,
     "expected": 0,
-    "skipped": 3,
-    "unexpected": 5,
+    "skipped": 0,
+    "unexpected": 0,
     "flaky": 0
   }
 }

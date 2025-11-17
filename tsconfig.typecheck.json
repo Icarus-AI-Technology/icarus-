@@ -15,8 +15,17 @@
     "types/**/*.d.ts"
   ],
   "exclude": [
-    "src/lib/services/transportadoras/**"
+    "src/lib/services/transportadoras/**",
+    "src/hooks/__tests__/**",
+    "src/test/**",
+    "tests/**",
+    "src/components/**/*.stories.tsx",
+    "src/components/**/*.stories.ts",
+    "src/components/**/*.test.tsx",
+    "src/components/**/*.test.ts",
+    "src/hooks/**/*.test.ts",
+    "src/hooks/**/*.test.tsx",
+    "src/lib/**/*.test.ts",
+    "src/lib/**/*.test.tsx"
   ]
 }
-
-

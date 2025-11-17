@@ -1,0 +1,47 @@
+{
+  "timestamp": "2025-10-27T16:43:26.163Z",
+  "saude_geral": "boa",
+  "score": 82,
+  "areas": {
+    "frontend": {
+      "score": 90,
+      "status": "excelente",
+      "pontos_fortes": [
+        "Design System moderno",
+        "Performance otimizada",
+        "UX intuitiva"
+      ],
+      "pontos_atencao": ["Testes E2E parciais"]
+    },
+    "backend": {
+      "score": 85,
+      "status": "bom",
+      "pontos_fortes": ["Supabase RLS", "Edge Functions", "Escalabilidade"],
+      "pontos_atencao": ["Otimização de queries", "Cache estratégico"]
+    },
+    "integracao": {
+      "score": 70,
+      "status": "necessita_atencao",
+      "pontos_fortes": ["APIs RESTful", "Webhooks"],
+      "pontos_atencao": ["TISS incompleto", "SPED pendente", "ANVISA parcial"]
+    },
+    "ia": {
+      "score": 75,
+      "status": "bom",
+      "pontos_fortes": ["Chatbot funcional", "Busca semântica"],
+      "pontos_atencao": ["Tutores por módulo", "Modelos em Edge Functions"]
+    },
+    "compliance": {
+      "score": 78,
+      "status": "bom",
+      "pontos_fortes": ["LGPD implementada", "Auditoria ativa"],
+      "pontos_atencao": ["Certificações ANVISA", "ISO 13485"]
+    }
+  },
+  "recomendacoes_prioritarias": [
+    "Completar integração TISS 4.1",
+    "Implementar rastreabilidade ANVISA completa",
+    "Adicionar tutores IA por módulo",
+    "Certificação ISO 13485"
+  ]
+}

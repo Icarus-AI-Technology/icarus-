@@ -1,6 +1,6 @@
 /**
  * SendGrid Service - Email Transacional
- * 
+ *
  * Funcionalidades:
  * - Envio de emails
  * - Templates dinâmicos
@@ -8,12 +8,12 @@
  * - Anexos
  * - Tracking de abertura e cliques
  * - Webhooks para eventos
- * 
+ *
  * Documentação API: https://docs.sendgrid.com/
  */
 
-import sgMail from '@sendgrid/mail';
-import type { MailDataRequired, ResponseError } from '@sendgrid/mail';
+import sgMail from "@sendgrid/mail";
+import type { MailDataRequired, ResponseError } from "@sendgrid/mail";
 
 export interface EmailParams {
   para: string | string[];
@@ -39,7 +39,7 @@ export interface EmailParams {
 export interface EmailTemplateParams {
   para: string | string[];
   templateId: string;
-  dados: Record<string, any>;
+  dados: Record<string, unknown>;
   cc?: string[];
   bcc?: string[];
   agendarPara?: Date;
@@ -56,10 +56,34 @@ export interface EmailStatus {
 
 export interface EmailEvent {
   email: string;
-  evento: 'delivered' | 'open' | 'click' | 'bounce' | 'dropped' | 'spam' | 'unsubscribe';
+  evento:
+    | "delivered"
+    | "open"
+    | "click"
+    | "bounce"
+    | "dropped"
+    | "spam"
+    | "unsubscribe";
   timestamp: number;
   url?: string; // Para eventos de click
   razao?: string; // Para bounce/dropped
+}
+
+interface SendGridWebhookEvent {
+  email: string;
+  event:
+    | "delivered"
+    | "open"
+    | "click"
+    | "bounce"
+    | "dropped"
+    | "spam"
+    | "unsubscribe";
+  timestamp: number;
+  sg_message_id: string;
+  url?: string;
+  reason?: string;
+  status?: string;
 }
 
 export class SendGridService {
@@ -68,12 +92,14 @@ export class SendGridService {
   private fromName: string;
 
   constructor() {
-    this.apiKey = process.env.SENDGRID_API_KEY || '';
-    this.fromEmail = process.env.SENDGRID_FROM_EMAIL || 'noreply@icarus.com.br';
-    this.fromName = process.env.SENDGRID_FROM_NAME || 'Icarus Make';
+    this.apiKey = process.env.SENDGRID_API_KEY || "";
+    this.fromEmail = process.env.SENDGRID_FROM_EMAIL || "noreply@icarus.com.br";
+    this.fromName = process.env.SENDGRID_FROM_NAME || "Icarus Make";
 
     if (!this.isConfigured()) {
-      console.warn('⚠️  SendGridService: API Key não configurada. Configure SENDGRID_API_KEY no .env');
+      console.warn(
+        "⚠️  SendGridService: API Key não configurada. Configure SENDGRID_API_KEY no .env",
+      );
     }
 
     sgMail.setApiKey(this.apiKey);
@@ -90,25 +116,26 @@ export class SendGridService {
         to: params.para,
         from: {
           email: this.fromEmail,
-          name: this.fromName
+          name: this.fromName,
         },
         subject: params.assunto,
-        text: params.texto || '',
-        html: params.html || params.texto || '',
+        text: params.texto || "",
+        html: params.html || params.texto || "",
         cc: params.cc,
         bcc: params.bcc,
-        replyTo: params.replyTo
+        replyTo: params.replyTo,
       };
 
       // Anexos
       if (params.anexos && params.anexos.length > 0) {
-        msg.attachments = params.anexos.map(anexo => ({
+        msg.attachments = params.anexos.map((anexo) => ({
           filename: anexo.nome,
-          content: typeof anexo.conteudo === 'string' 
-            ? anexo.conteudo 
-            : anexo.conteudo.toString('base64'),
-          type: anexo.tipo || 'application/octet-stream',
-          disposition: 'attachment'
+          content:
+            typeof anexo.conteudo === "string"
+              ? anexo.conteudo
+              : anexo.conteudo.toString("base64"),
+          type: anexo.tipo || "application/octet-stream",
+          disposition: "attachment",
         }));
       }
 
@@ -116,11 +143,11 @@ export class SendGridService {
       if (params.tracking) {
         msg.trackingSettings = {
           clickTracking: {
-            enable: params.tracking.clicarLinks ?? true
+            enable: params.tracking.clicarLinks ?? true,
           },
           openTracking: {
-            enable: params.tracking.abrirEmail ?? true
-          }
+            enable: params.tracking.abrirEmail ?? true,
+          },
         };
       }
 
@@ -137,19 +164,21 @@ export class SendGridService {
       const [response] = await sgMail.send(msg);
 
       return {
-        messageId: response.headers['x-message-id'],
+        messageId: response.headers["x-message-id"],
         statusCode: response.statusCode,
         para: Array.isArray(params.para) ? params.para : [params.para],
-        enviado: response.statusCode >= 200 && response.statusCode < 300
+        enviado: response.statusCode >= 200 && response.statusCode < 300,
       };
-    } catch (error: any) {
-      console.error('Erro ao enviar email:', error);
-      
+    } catch (error: unknown) {
+      console.error("Erro ao enviar email:", error);
+
       if (error.response) {
         const err = error as ResponseError;
-        throw new Error(`Falha ao enviar email: ${err.response.body.errors[0]?.message}`);
+        throw new Error(
+          `Falha ao enviar email: ${err.response.body.errors[0]?.message}`,
+        );
       }
-      
+
       throw new Error(`Falha ao enviar email: ${error.message}`);
     }
   }
@@ -163,12 +192,12 @@ export class SendGridService {
         to: params.para,
         from: {
           email: this.fromEmail,
-          name: this.fromName
+          name: this.fromName,
         },
         templateId: params.templateId,
         dynamicTemplateData: params.dados,
         cc: params.cc,
-        bcc: params.bcc
+        bcc: params.bcc,
       };
 
       // Tags
@@ -184,19 +213,21 @@ export class SendGridService {
       const [response] = await sgMail.send(msg);
 
       return {
-        messageId: response.headers['x-message-id'],
+        messageId: response.headers["x-message-id"],
         statusCode: response.statusCode,
         para: Array.isArray(params.para) ? params.para : [params.para],
-        enviado: response.statusCode >= 200 && response.statusCode < 300
+        enviado: response.statusCode >= 200 && response.statusCode < 300,
       };
-    } catch (error: any) {
-      console.error('Erro ao enviar email template:', error);
-      
+    } catch (error: unknown) {
+      console.error("Erro ao enviar email template:", error);
+
       if (error.response) {
         const err = error as ResponseError;
-        throw new Error(`Falha ao enviar email template: ${err.response.body.errors[0]?.message}`);
+        throw new Error(
+          `Falha ao enviar email template: ${err.response.body.errors[0]?.message}`,
+        );
       }
-      
+
       throw new Error(`Falha ao enviar email template: ${error.message}`);
     }
   }
@@ -219,11 +250,13 @@ export class SendGridService {
         try {
           const status = await this.enviarEmail(emailParams);
           sucesso.push(status);
-        } catch (error: any) {
-          const para = Array.isArray(emailParams.para) ? emailParams.para[0] : emailParams.para;
+        } catch (error: unknown) {
+          const para = Array.isArray(emailParams.para)
+            ? emailParams.para[0]
+            : emailParams.para;
           falhas.push({
             email: para,
-            erro: error.message
+            erro: error.message,
           });
         }
       });
@@ -240,7 +273,7 @@ export class SendGridService {
   async enviarBoasVindas(para: string, nome: string): Promise<EmailStatus> {
     return this.enviarEmail({
       para,
-      assunto: 'Bem-vindo ao Icarus Make!',
+      assunto: "Bem-vindo ao Icarus Make!",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h1 style="color: #333;">Olá, ${nome}!</h1>
@@ -257,19 +290,22 @@ export class SendGridService {
         </div>
       `,
       texto: `Olá, ${nome}! Seja bem-vindo ao Icarus Make.`,
-      tags: ['boas-vindas', 'onboarding']
+      tags: ["boas-vindas", "onboarding"],
     });
   }
 
   /**
    * Envia email de recuperação de senha
    */
-  async enviarRecuperacaoSenha(para: string, token: string): Promise<EmailStatus> {
+  async enviarRecuperacaoSenha(
+    para: string,
+    token: string,
+  ): Promise<EmailStatus> {
     const url = `https://icarus.com.br/reset-password?token=${token}`;
-    
+
     return this.enviarEmail({
       para,
-      assunto: 'Recuperação de Senha - Icarus Make',
+      assunto: "Recuperação de Senha - Icarus Make",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h1 style="color: #333;">Recuperação de Senha</h1>
@@ -289,20 +325,20 @@ export class SendGridService {
         </div>
       `,
       texto: `Acesse o link para redefinir sua senha: ${url}`,
-      tags: ['recuperacao-senha', 'seguranca']
+      tags: ["recuperacao-senha", "seguranca"],
     });
   }
 
   /**
    * Processa webhook de eventos do SendGrid
    */
-  processarWebhook(body: any[]): EmailEvent[] {
-    return body.map(event => ({
+  processarWebhook(body: SendGridWebhookEvent[]): EmailEvent[] {
+    return body.map((event) => ({
       email: event.email,
       evento: event.event,
       timestamp: event.timestamp,
       url: event.url,
-      razao: event.reason || event.status
+      razao: event.reason || event.status,
     }));
   }
 
@@ -312,19 +348,19 @@ export class SendGridService {
   validarWebhookSignature(
     signature: string,
     timestamp: string,
-    body: string
+    body: string,
   ): boolean {
     try {
-      const crypto = require('crypto');
-      const publicKey = process.env.SENDGRID_WEBHOOK_PUBLIC_KEY || '';
-      
+      const crypto = require("crypto");
+      const publicKey = process.env.SENDGRID_WEBHOOK_PUBLIC_KEY || "";
+
       const payload = timestamp + body;
-      const verifier = crypto.createVerify('sha256');
+      const verifier = crypto.createVerify("sha256");
       verifier.update(payload);
-      
-      return verifier.verify(publicKey, signature, 'base64');
+
+      return verifier.verify(publicKey, signature, "base64");
     } catch (error) {
-      console.error('Erro ao validar assinatura:', error);
+      console.error("Erro ao validar assinatura:", error);
       return false;
     }
   }
@@ -333,20 +369,20 @@ export class SendGridService {
 
   private validarEmail(params: EmailParams): void {
     if (!params.para) {
-      throw new Error('Destinatário é obrigatório');
+      throw new Error("Destinatário é obrigatório");
     }
 
     if (!params.assunto) {
-      throw new Error('Assunto é obrigatório');
+      throw new Error("Assunto é obrigatório");
     }
 
     if (!params.html && !params.texto) {
-      throw new Error('HTML ou texto é obrigatório');
+      throw new Error("HTML ou texto é obrigatório");
     }
 
     // Validar formato de email
     const emails = Array.isArray(params.para) ? params.para : [params.para];
-    emails.forEach(email => {
+    emails.forEach((email) => {
       if (!this.isValidEmailFormat(email)) {
         throw new Error(`Email inválido: ${email}`);
       }
@@ -380,13 +416,12 @@ export class SendGridService {
     try {
       // SendGrid não tem endpoint de ping, então tentamos validar a API key
       // enviando uma requisição simples
-      return this.apiKey.length > 0 && this.apiKey.startsWith('SG.');
+      return this.apiKey.length > 0 && this.apiKey.startsWith("SG.");
     } catch (error) {
-      console.error('Erro ao testar conexão SendGrid:', error);
+      console.error("Erro ao testar conexão SendGrid:", error);
       return false;
     }
   }
 }
 
 export default SendGridService;
-

@@ -1,0 +1,72 @@
+{
+  "timestamp": "2025-10-27T16:43:26.389Z",
+  "total_gaps": 7,
+  "criticos": 2,
+  "medios": 3,
+  "baixos": 2,
+  "gaps_detalhados": [
+    {
+      "id": "GAP-001",
+      "area": "Integração TISS",
+      "descricao": "Migração para TISS 4.1 incompleta",
+      "impacto": "Impossibilita faturamento com planos após prazo ANS",
+      "prioridade": "critico",
+      "esforco": "medio",
+      "prazo_sugerido": "30 dias"
+    },
+    {
+      "id": "GAP-002",
+      "area": "Rastreabilidade ANVISA",
+      "descricao": "Sistema de rastreamento parcial",
+      "impacto": "Não conformidade com RDC 786/2023, risco de multas",
+      "prioridade": "critico",
+      "esforco": "alto",
+      "prazo_sugerido": "45 dias"
+    },
+    {
+      "id": "GAP-003",
+      "area": "Tutores IA",
+      "descricao": "Assistentes IA por módulo não implementados",
+      "impacto": "Aumento do tempo de treinamento e suporte",
+      "prioridade": "medio",
+      "esforco": "medio",
+      "prazo_sugerido": "60 dias"
+    },
+    {
+      "id": "GAP-004",
+      "area": "SPED Fiscal",
+      "descricao": "Integração SPED não implementada",
+      "impacto": "Obrigação acessória manual, suscetível a erros",
+      "prioridade": "medio",
+      "esforco": "alto",
+      "prazo_sugerido": "90 dias"
+    },
+    {
+      "id": "GAP-005",
+      "area": "ISO 13485",
+      "descricao": "Certificação em processo",
+      "impacto": "Limitação para exportação e alguns contratos",
+      "prioridade": "medio",
+      "esforco": "alto",
+      "prazo_sugerido": "120 dias"
+    },
+    {
+      "id": "GAP-006",
+      "area": "Análise Preditiva",
+      "descricao": "ML para previsão de demanda não implementado",
+      "impacto": "Oportunidade de otimização de estoque",
+      "prioridade": "baixo",
+      "esforco": "medio",
+      "prazo_sugerido": "90 dias"
+    },
+    {
+      "id": "GAP-007",
+      "area": "Relatórios Executivos",
+      "descricao": "Dashboard executivo básico",
+      "impacto": "Decisões baseadas em dados parciais",
+      "prioridade": "baixo",
+      "esforco": "baixo",
+      "prazo_sugerido": "60 dias"
+    }
+  ]
+}

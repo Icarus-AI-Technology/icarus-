@@ -1,18 +1,18 @@
 /**
  * Twilio Service - SMS e WhatsApp
- * 
+ *
  * Funcionalidades:
  * - Envio de SMS
  * - Envio de WhatsApp
  * - Verificação de telefone
  * - Status de mensagens
  * - Webhooks para callbacks
- * 
+ *
  * Documentação API: https://www.twilio.com/docs/sms
  */
 
-import twilio from 'twilio';
-import type { Twilio, MessageInstance } from 'twilio/lib/rest/Twilio';
+import twilio from "twilio";
+import type { Twilio, MessageInstance } from "twilio/lib/rest/Twilio";
 
 export interface SMSParams {
   para: string; // Número de telefone com código do país: +5511999999999
@@ -30,7 +30,13 @@ export interface WhatsAppParams {
 
 export interface MessageStatus {
   sid: string;
-  status: 'queued' | 'sending' | 'sent' | 'delivered' | 'undelivered' | 'failed';
+  status:
+    | "queued"
+    | "sending"
+    | "sent"
+    | "delivered"
+    | "undelivered"
+    | "failed";
   para: string;
   de: string;
   mensagem: string;
@@ -47,13 +53,16 @@ export class TwilioService {
   private whatsappNumber: string;
 
   constructor() {
-    this.accountSid = process.env.TWILIO_ACCOUNT_SID || '';
-    this.authToken = process.env.TWILIO_AUTH_TOKEN || '';
-    this.phoneNumber = process.env.TWILIO_PHONE_NUMBER || '';
-    this.whatsappNumber = process.env.TWILIO_WHATSAPP_NUMBER || this.phoneNumber;
+    this.accountSid = process.env.TWILIO_ACCOUNT_SID || "";
+    this.authToken = process.env.TWILIO_AUTH_TOKEN || "";
+    this.phoneNumber = process.env.TWILIO_PHONE_NUMBER || "";
+    this.whatsappNumber =
+      process.env.TWILIO_WHATSAPP_NUMBER || this.phoneNumber;
 
     if (!this.isConfigured()) {
-      console.warn('⚠️ TwilioService: Credenciais não configuradas. Configure TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN e TWILIO_PHONE_NUMBER no .env');
+      console.warn(
+        "⚠️ TwilioService: Credenciais não configuradas. Configure TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN e TWILIO_PHONE_NUMBER no .env",
+      );
     }
 
     this.client = twilio(this.accountSid, this.authToken);
@@ -70,13 +79,13 @@ export class TwilioService {
       const messageData: any = {
         body: params.mensagem,
         from: this.phoneNumber,
-        to: params.para
+        to: params.para,
       };
 
       // Agendamento
       if (params.agendarPara) {
         messageData.sendAt = params.agendarPara;
-        messageData.scheduleType = 'fixed';
+        messageData.scheduleType = "fixed";
       }
 
       // Callback de status
@@ -87,8 +96,8 @@ export class TwilioService {
       const message = await this.client.messages.create(messageData);
 
       return this.formatarMessageStatus(message);
-    } catch (error: any) {
-      console.error('Erro ao enviar SMS:', error);
+    } catch (error: unknown) {
+      console.error("Erro ao enviar SMS:", error);
       throw new Error(`Falha ao enviar SMS: ${error.message}`);
     }
   }
@@ -104,7 +113,7 @@ export class TwilioService {
       const messageData: any = {
         body: params.mensagem,
         from: `whatsapp:${this.whatsappNumber}`,
-        to: `whatsapp:${params.para}`
+        to: `whatsapp:${params.para}`,
       };
 
       // Mídia (imagens, vídeos)
@@ -120,8 +129,8 @@ export class TwilioService {
       const message = await this.client.messages.create(messageData);
 
       return this.formatarMessageStatus(message);
-    } catch (error: any) {
-      console.error('Erro ao enviar WhatsApp:', error);
+    } catch (error: unknown) {
+      console.error("Erro ao enviar WhatsApp:", error);
       throw new Error(`Falha ao enviar WhatsApp: ${error.message}`);
     }
   }
@@ -129,7 +138,10 @@ export class TwilioService {
   /**
    * Envia SMS em lote
    */
-  async enviarSMSEmLote(destinatarios: string[], mensagem: string): Promise<{
+  async enviarSMSEmLote(
+    destinatarios: string[],
+    mensagem: string,
+  ): Promise<{
     sucesso: MessageStatus[];
     falhas: Array<{ telefone: string; erro: string }>;
   }> {
@@ -144,13 +156,13 @@ export class TwilioService {
         try {
           const status = await this.enviarSMS({
             para: telefone,
-            mensagem
+            mensagem,
           });
           sucesso.push(status);
-        } catch (error: any) {
+        } catch (error: unknown) {
           falhas.push({
             telefone,
-            erro: error.message
+            erro: error.message,
           });
         }
       });
@@ -168,8 +180,8 @@ export class TwilioService {
     try {
       const message = await this.client.messages(messageSid).fetch();
       return this.formatarMessageStatus(message);
-    } catch (error: any) {
-      console.error('Erro ao consultar status:', error);
+    } catch (error: unknown) {
+      console.error("Erro ao consultar status:", error);
       throw new Error(`Falha ao consultar status: ${error.message}`);
     }
   }
@@ -186,7 +198,7 @@ export class TwilioService {
   }): Promise<MessageStatus[]> {
     try {
       const options: any = {
-        limit: params?.limite || 50
+        limit: params?.limite || 50,
       };
 
       if (params?.de) options.from = params.de;
@@ -196,9 +208,9 @@ export class TwilioService {
 
       const messages = await this.client.messages.list(options);
 
-      return messages.map(msg => this.formatarMessageStatus(msg));
-    } catch (error: any) {
-      console.error('Erro ao listar mensagens:', error);
+      return messages.map((msg) => this.formatarMessageStatus(msg));
+    } catch (error: unknown) {
+      console.error("Erro ao listar mensagens:", error);
       throw new Error(`Falha ao listar mensagens: ${error.message}`);
     }
   }
@@ -209,28 +221,28 @@ export class TwilioService {
   async verificarTelefone(telefone: string): Promise<{
     valido: boolean;
     formatado: string;
-    tipo: 'mobile' | 'landline' | 'voip';
+    tipo: "mobile" | "landline" | "voip";
     pais: string;
     operadora?: string;
   }> {
     try {
       const lookup = await this.client.lookups.v1
         .phoneNumbers(telefone)
-        .fetch({ type: ['carrier'] });
+        .fetch({ type: ["carrier"] });
 
       return {
         valido: true,
         formatado: lookup.phoneNumber,
-        tipo: lookup.carrier?.type as any || 'mobile',
+        tipo: (lookup.carrier?.type as any) || "mobile",
         pais: lookup.countryCode,
-        operadora: lookup.carrier?.name
+        operadora: lookup.carrier?.name,
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         valido: false,
         formatado: telefone,
-        tipo: 'mobile',
-        pais: 'BR'
+        tipo: "mobile",
+        pais: "BR",
       };
     }
   }
@@ -250,7 +262,9 @@ export class TwilioService {
       status: body.MessageStatus || body.SmsStatus,
       de: body.From,
       para: body.To,
-      erro: body.ErrorCode ? `${body.ErrorCode}: ${body.ErrorMessage}` : undefined
+      erro: body.ErrorCode
+        ? `${body.ErrorCode}: ${body.ErrorMessage}`
+        : undefined,
     };
   }
 
@@ -260,17 +274,12 @@ export class TwilioService {
   validarWebhookSignature(
     signature: string,
     url: string,
-    params: Record<string, string>
+    params: Record<string, string>,
   ): boolean {
     try {
-      return twilio.validateRequest(
-        this.authToken,
-        signature,
-        url,
-        params
-      );
+      return twilio.validateRequest(this.authToken, signature, url, params);
     } catch (error) {
-      console.error('Erro ao validar assinatura:', error);
+      console.error("Erro ao validar assinatura:", error);
       return false;
     }
   }
@@ -279,29 +288,29 @@ export class TwilioService {
 
   private validarTelefone(telefone: string): void {
     if (!telefone) {
-      throw new Error('Número de telefone é obrigatório');
+      throw new Error("Número de telefone é obrigatório");
     }
 
     // Deve começar com +
-    if (!telefone.startsWith('+')) {
-      throw new Error('Telefone deve começar com + seguido do código do país');
+    if (!telefone.startsWith("+")) {
+      throw new Error("Telefone deve começar com + seguido do código do país");
     }
 
     // Deve ter pelo menos 10 dígitos
-    const digitos = telefone.replace(/\D/g, '');
+    const digitos = telefone.replace(/\D/g, "");
     if (digitos.length < 10) {
-      throw new Error('Telefone inválido (mínimo 10 dígitos)');
+      throw new Error("Telefone inválido (mínimo 10 dígitos)");
     }
   }
 
   private validarMensagem(mensagem: string): void {
     if (!mensagem || mensagem.trim().length === 0) {
-      throw new Error('Mensagem não pode estar vazia');
+      throw new Error("Mensagem não pode estar vazia");
     }
 
     // SMS tem limite de 1600 caracteres
     if (mensagem.length > 1600) {
-      throw new Error('Mensagem muito longa (máximo 1600 caracteres)');
+      throw new Error("Mensagem muito longa (máximo 1600 caracteres)");
     }
   }
 
@@ -313,8 +322,10 @@ export class TwilioService {
       de: message.from,
       mensagem: message.body,
       dataEnvio: message.dateCreated,
-      erro: message.errorCode ? `${message.errorCode}: ${message.errorMessage}` : undefined,
-      preco: message.price ? parseFloat(message.price) : undefined
+      erro: message.errorCode
+        ? `${message.errorCode}: ${message.errorMessage}`
+        : undefined,
+      preco: message.price ? parseFloat(message.price) : undefined,
     };
   }
 
@@ -341,11 +352,10 @@ export class TwilioService {
       await this.client.api.accounts(this.accountSid).fetch();
       return true;
     } catch (error) {
-      console.error('Erro ao testar conexão Twilio:', error);
+      console.error("Erro ao testar conexão Twilio:", error);
       return false;
     }
   }
 }
 
 export default TwilioService;
-

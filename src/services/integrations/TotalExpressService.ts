@@ -27,16 +27,16 @@ interface TotalExpressQuoteResponse {
 }
 
 export class TotalExpressService {
-  private readonly baseUrl = 'https://edi.totalexpress.com.br/api';
+  private readonly baseUrl = "https://edi.totalexpress.com.br/api";
   private readonly apiKey: string;
   private readonly clientId: string;
 
   constructor() {
-    this.apiKey = process.env.TOTAL_EXPRESS_API_KEY || '';
-    this.clientId = process.env.TOTAL_EXPRESS_CLIENT_ID || '';
+    this.apiKey = process.env.TOTAL_EXPRESS_API_KEY || "";
+    this.clientId = process.env.TOTAL_EXPRESS_CLIENT_ID || "";
 
     if (!this.apiKey || !this.clientId) {
-      console.warn('⚠️ Total Express: Credenciais não configuradas');
+      console.warn("⚠️ Total Express: Credenciais não configuradas");
     }
   }
 
@@ -45,9 +45,9 @@ export class TotalExpressService {
    */
   private getHeaders(): HeadersInit {
     return {
-      'Content-Type': 'application/json',
-      'X-API-Key': this.apiKey,
-      'X-Client-Id': this.clientId,
+      "Content-Type": "application/json",
+      "X-API-Key": this.apiKey,
+      "X-Client-Id": this.clientId,
     };
   }
 
@@ -59,9 +59,9 @@ export class TotalExpressService {
       const response = await fetch(
         `${this.baseUrl}/rastreamento/${trackingCode}`,
         {
-          method: 'GET',
+          method: "GET",
           headers: this.getHeaders(),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -70,8 +70,8 @@ export class TotalExpressService {
 
       const data: TotalExpressTrackingResponse = await response.json();
       return data;
-    } catch (error: any) {
-      console.error('❌ Erro ao rastrear Total Express:', error.message);
+    } catch (error: unknown) {
+      console.error("❌ Erro ao rastrear Total Express:", error.message);
       throw error;
     }
   }
@@ -80,15 +80,15 @@ export class TotalExpressService {
    * Calcula cotação de frete
    */
   async quote(
-    request: TotalExpressQuoteRequest
+    request: TotalExpressQuoteRequest,
   ): Promise<TotalExpressQuoteResponse> {
     try {
       const response = await fetch(`${this.baseUrl}/cotacao`, {
-        method: 'POST',
+        method: "POST",
         headers: this.getHeaders(),
         body: JSON.stringify({
-          cep_origem: request.cepOrigem.replace(/\D/g, ''),
-          cep_destino: request.cepDestino.replace(/\D/g, ''),
+          cep_origem: request.cepOrigem.replace(/\D/g, ""),
+          cep_destino: request.cepDestino.replace(/\D/g, ""),
           peso: request.peso,
           volumes: request.volumes,
           valor_declarado: request.valorDeclarado || 0,
@@ -101,8 +101,8 @@ export class TotalExpressService {
 
       const data: TotalExpressQuoteResponse = await response.json();
       return data;
-    } catch (error: any) {
-      console.error('❌ Erro ao cotar Total Express:', error.message);
+    } catch (error: unknown) {
+      console.error("❌ Erro ao cotar Total Express:", error.message);
       throw error;
     }
   }
@@ -110,10 +110,12 @@ export class TotalExpressService {
   /**
    * Cria uma solicitação de coleta
    */
-  async schedulePickup(data: any): Promise<any> {
+  async schedulePickup(
+    data: TotalExpressPickupData,
+  ): Promise<TotalExpressPickupResponse> {
     try {
       const response = await fetch(`${this.baseUrl}/coleta`, {
-        method: 'POST',
+        method: "POST",
         headers: this.getHeaders(),
         body: JSON.stringify(data),
       });
@@ -123,8 +125,9 @@ export class TotalExpressService {
       }
 
       return await response.json();
-    } catch (error: any) {
-      console.error('❌ Erro ao agendar coleta Total Express:', error.message);
+    } catch (error: unknown) {
+      const err = error as Error;
+      console.error("❌ Erro ao agendar coleta Total Express:", err.message);
       throw error;
     }
   }
@@ -134,10 +137,10 @@ export class TotalExpressService {
    */
   async consultaCEP(cep: string): Promise<any> {
     try {
-      const cepLimpo = cep.replace(/\D/g, '');
+      const cepLimpo = cep.replace(/\D/g, "");
 
       const response = await fetch(`${this.baseUrl}/cep/${cepLimpo}`, {
-        method: 'GET',
+        method: "GET",
         headers: this.getHeaders(),
       });
 
@@ -146,8 +149,8 @@ export class TotalExpressService {
       }
 
       return await response.json();
-    } catch (error: any) {
-      console.error('❌ Erro ao consultar CEP Total Express:', error.message);
+    } catch (error: unknown) {
+      console.error("❌ Erro ao consultar CEP Total Express:", error.message);
       throw error;
     }
   }
@@ -158,7 +161,7 @@ export class TotalExpressService {
   async healthCheck(): Promise<boolean> {
     try {
       const response = await fetch(`${this.baseUrl}/status`, {
-        method: 'GET',
+        method: "GET",
         headers: this.getHeaders(),
       });
       return response.ok;
@@ -169,4 +172,3 @@ export class TotalExpressService {
 }
 
 export default new TotalExpressService();
-

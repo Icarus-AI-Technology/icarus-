@@ -3,11 +3,11 @@
  * Toggle switch neuromórfico
  */
 
-import React from"react";
-import { cn } from"@/lib/utils";
+import React from "react";
+import { cn } from "@/lib/utils";
 
 export interface SwitchProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>,"type"> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
   label?: string;
   description?: string;
 }
@@ -28,11 +28,20 @@ const SwitchComponent = React.forwardRef<HTMLInputElement, SwitchProps>(
           />
           <label
             htmlFor={switchId}
-            className={cn("w-11 h-6 rounded-full cursor-pointer relative","orx-card","dark:bg-gray-700","peer-checked:bg-primary","peer-disabled:opacity-50 peer-disabled:cursor-not-allowed","transition-all duration-200",
+            className={cn(
+              "w-11 h-6 rounded-full cursor-pointer relative",
+              "orx-card",
+              "dark:bg-gray-700",
+              "peer-checked:bg-primary",
+              "peer-disabled:opacity-50 peer-disabled:cursor-not-allowed",
+              "transition-all duration-200",
             )}
           >
             <div
-              className={cn("absolute top-1 left-1 w-4 h-4 rounded-full bg-surface shadow-md","peer-checked:translate-x-5","transition-transform duration-200",
+              className={cn(
+                "absolute top-1 left-1 w-4 h-4 rounded-full bg-surface shadow-md",
+                "peer-checked:translate-x-5",
+                "transition-transform duration-200",
               )}
             />
           </label>
@@ -59,9 +68,8 @@ const SwitchComponent = React.forwardRef<HTMLInputElement, SwitchProps>(
   },
 );
 
-Switch.displayName ="OraclusXSwitch";
+SwitchComponent.displayName = "OraclusXSwitch";
 
 export const Switch = React.memo(SwitchComponent);
 
 export default Switch;
-

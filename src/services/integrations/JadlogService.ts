@@ -16,7 +16,7 @@ interface JadlogQuoteRequest {
   cepDestino: string;
   peso: number;
   valorDeclarado?: number;
-  modalidade?: 'PACKAGE' | 'DOC' | 'RODOVIARIO';
+  modalidade?: "PACKAGE" | "DOC" | "RODOVIARIO";
 }
 
 interface JadlogQuoteResponse {
@@ -25,19 +25,47 @@ interface JadlogQuoteResponse {
   modalidade: string;
 }
 
+interface JadlogShipmentData {
+  destinatario: {
+    nome: string;
+    documento: string;
+    endereco: string;
+    numero: string;
+    bairro: string;
+    cidade: string;
+    uf: string;
+    cep: string;
+    telefone?: string;
+  };
+  volumes: Array<{
+    peso: number;
+    altura: number;
+    largura: number;
+    comprimento: number;
+  }>;
+  valorDeclarado?: number;
+  observacoes?: string;
+}
+
+interface JadlogShipmentResponse {
+  codigo_rastreio: string;
+  protocolo: string;
+  etiqueta_url?: string;
+}
+
 export class JadlogService {
-  private readonly baseUrl = 'https://www.jadlog.com.br/embarcador/api';
+  private readonly baseUrl = "https://www.jadlog.com.br/embarcador/api";
   private readonly apiKey: string;
   private readonly cnpj: string;
   private readonly password: string;
 
   constructor() {
-    this.apiKey = process.env.JADLOG_API_KEY || '';
-    this.cnpj = process.env.JADLOG_CNPJ || '';
-    this.password = process.env.JADLOG_PASSWORD || '';
+    this.apiKey = process.env.JADLOG_API_KEY || "";
+    this.cnpj = process.env.JADLOG_CNPJ || "";
+    this.password = process.env.JADLOG_PASSWORD || "";
 
     if (!this.apiKey || !this.cnpj) {
-      console.warn('⚠️ Jadlog: Credenciais não configuradas');
+      console.warn("⚠️ Jadlog: Credenciais não configuradas");
     }
   }
 
@@ -47,9 +75,9 @@ export class JadlogService {
   private async authenticate(): Promise<string> {
     try {
       const response = await fetch(`${this.baseUrl}/token`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           cnpj: this.cnpj,
@@ -58,13 +86,13 @@ export class JadlogService {
       });
 
       if (!response.ok) {
-        throw new Error('Falha na autenticação Jadlog');
+        throw new Error("Falha na autenticação Jadlog");
       }
 
       const data = await response.json();
       return data.access_token;
-    } catch (error: any) {
-      console.error('❌ Erro na autenticação Jadlog:', error.message);
+    } catch (error: unknown) {
+      console.error("❌ Erro na autenticação Jadlog:", error.message);
       throw error;
     }
   }
@@ -79,12 +107,12 @@ export class JadlogService {
       const response = await fetch(
         `${this.baseUrl}/tracking/consultar?codigo=${trackingCode}`,
         {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -93,8 +121,8 @@ export class JadlogService {
 
       const data: JadlogTrackingResponse = await response.json();
       return data;
-    } catch (error: any) {
-      console.error('❌ Erro ao rastrear Jadlog:', error.message);
+    } catch (error: unknown) {
+      console.error("❌ Erro ao rastrear Jadlog:", error.message);
       throw error;
     }
   }
@@ -107,17 +135,17 @@ export class JadlogService {
       const token = await this.authenticate();
 
       const response = await fetch(`${this.baseUrl}/frete/valor`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          cepOrigem: request.cepOrigem.replace(/\D/g, ''),
-          cepDestino: request.cepDestino.replace(/\D/g, ''),
+          cepOrigem: request.cepOrigem.replace(/\D/g, ""),
+          cepDestino: request.cepDestino.replace(/\D/g, ""),
           peso: request.peso,
           valorDeclarado: request.valorDeclarado || 0,
-          modalidade: request.modalidade || 'PACKAGE',
+          modalidade: request.modalidade || "PACKAGE",
         }),
       });
 
@@ -127,8 +155,8 @@ export class JadlogService {
 
       const data: JadlogQuoteResponse = await response.json();
       return data;
-    } catch (error: any) {
-      console.error('❌ Erro ao cotar Jadlog:', error.message);
+    } catch (error: unknown) {
+      console.error("❌ Erro ao cotar Jadlog:", error.message);
       throw error;
     }
   }
@@ -136,14 +164,16 @@ export class JadlogService {
   /**
    * Cria uma nova coleta/postagem
    */
-  async createShipment(data: any): Promise<any> {
+  async createShipment(
+    data: JadlogShipmentData,
+  ): Promise<JadlogShipmentResponse> {
     try {
       const token = await this.authenticate();
 
       const response = await fetch(`${this.baseUrl}/shipment`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(data),
@@ -154,8 +184,8 @@ export class JadlogService {
       }
 
       return await response.json();
-    } catch (error: any) {
-      console.error('❌ Erro ao criar envio Jadlog:', error.message);
+    } catch (error: unknown) {
+      console.error("❌ Erro ao criar envio Jadlog:", error.message);
       throw error;
     }
   }
@@ -174,4 +204,3 @@ export class JadlogService {
 }
 
 export default new JadlogService();
-

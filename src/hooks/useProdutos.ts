@@ -1,144 +1,167 @@
-import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '../lib/supabase';
-
 /**
- * Hook Genérico para Produtos OPME
- * Tabela: produtos
+ * Hook: useProdutos
+ * Gerenciamento de produtos OPME
  */
 
-export interface ProdutoOPME {
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
+
+export interface Produto {
   id: string;
   empresa_id: string;
   codigo: string;
   nome: string;
   descricao?: string;
-  registro_anvisa?: string;
-  fabricante?: string;
   categoria: string;
-  preco_unitario: number;
-  estoque_minimo?: number;
-  estoque_atual?: number;
-  unidade_medida: string;
+  subcategoria?: string;
+  fabricante?: string;
+  fornecedor_id?: string;
+  unidade: string;
+  ncm?: string;
+  anvisa?: string;
+  valor_unitario: number;
+  custo_medio: number;
+  estoque_minimo: number;
+  estoque_maximo: number;
+  ponto_reposicao: number;
   ativo: boolean;
-  observacoes?: string;
-  created_at?: string;
-  updated_at?: string;
+  controlado: boolean;
+  rastreavel: boolean;
+  consignado: boolean;
+  tags?: string[];
+  especificacoes?: Record<string, unknown>;
+  criado_em: string;
+  atualizado_em: string;
 }
 
-export const useProdutos = () => {
-  const [produtos, setProdutos] = useState<ProdutoOPME[]>([]);
+export function useProdutos() {
+  const [produtos, setProdutos] = useState<Produto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Filtros
-  const [filtroCategoria, setFiltroCategoria] = useState<string | null>(null);
-  const [filtroAtivo, setFiltroAtivo] = useState<boolean | null>(null);
+  useEffect(() => {
+    fetchProdutos();
+  }, []);
 
-  const fetchProdutos = useCallback(async () => {
+  async function fetchProdutos() {
     try {
       setLoading(true);
-
-      let query = supabase
-        .from('produtos')
-        .select('*')
-        .order('nome');
-
-      if (filtroCategoria) {
-        query = query.eq('categoria', filtroCategoria);
-      }
-
-      if (filtroAtivo !== null) {
-        query = query.eq('ativo', filtroAtivo);
-      }
-
-      const { data, error: fetchError } = await query;
+      const { data, error: fetchError } = await supabase
+        .from("produtos")
+        .select("*")
+        .eq("ativo", true)
+        .order("nome");
 
       if (fetchError) throw fetchError;
-
-      setProdutos((data as ProdutoOPME[] | null) ?? []);
-      setError(null);
-    } catch (error) {
-   const err = error as Error;
-      const message = err instanceof Error ? err.message : 'Erro ao carregar produtos';
-      setError(message);
-      setProdutos([]);
+      setProdutos(data || []);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Erro ao carregar produtos",
+      );
     } finally {
       setLoading(false);
     }
-  }, [filtroCategoria, filtroAtivo]);
+  }
 
-  useEffect(() => {
-    fetchProdutos();
-  }, [fetchProdutos]);
-
-  const criarProduto = async (produto: Omit<ProdutoOPME, 'id'>) => {
+  async function createProduto(
+    produtoData: Omit<Produto, "id" | "criado_em" | "atualizado_em">,
+  ) {
     try {
-      const { data, error } = await supabase
-        .from('produtos')
-        .insert(produto)
+      const { data, error: createError } = await supabase
+        .from("produtos")
+        .insert([produtoData])
         .select()
         .single();
 
-      if (error) throw error;
-
+      if (createError) throw createError;
       await fetchProdutos();
-      return data as ProdutoOPME;
-    } catch (error) {
-   const err = error as Error;
-      const message = err instanceof Error ? err.message : 'Erro ao criar produto';
-      setError(message);
-      throw err;
+      return data;
+    } catch (err) {
+      throw new Error(
+        err instanceof Error ? err.message : "Erro ao criar produto",
+      );
     }
-  };
+  }
 
-  const atualizarProduto = async (id: string, updates: Partial<ProdutoOPME>) => {
+  async function updateProduto(id: string, updates: Partial<Produto>) {
     try {
-      const { error } = await supabase
-        .from('produtos')
+      const { data, error: updateError } = await supabase
+        .from("produtos")
         .update(updates)
-        .eq('id', id);
+        .eq("id", id)
+        .select()
+        .single();
 
-      if (error) throw error;
-
+      if (updateError) throw updateError;
       await fetchProdutos();
-    } catch (error) {
-   const err = error as Error;
-      const message = err instanceof Error ? err.message : 'Erro ao atualizar produto';
-      setError(message);
-      throw err;
+      return data;
+    } catch (err) {
+      throw new Error(
+        err instanceof Error ? err.message : "Erro ao atualizar produto",
+      );
     }
-  };
+  }
 
-  const deletarProduto = async (id: string) => {
+  async function deleteProduto(id: string) {
     try {
-      const { error } = await supabase
-        .from('produtos')
-        .delete()
-        .eq('id', id);
+      // Soft delete
+      const { error: deleteError } = await supabase
+        .from("produtos")
+        .update({ ativo: false })
+        .eq("id", id);
 
-      if (error) throw error;
-
+      if (deleteError) throw deleteError;
       await fetchProdutos();
-    } catch (error) {
-   const err = error as Error;
-      const message = err instanceof Error ? err.message : 'Erro ao deletar produto';
-      setError(message);
-      throw err;
+    } catch (err) {
+      throw new Error(
+        err instanceof Error ? err.message : "Erro ao deletar produto",
+      );
     }
-  };
+  }
+
+  async function buscarPorCodigo(codigo: string) {
+    try {
+      const { data, error: searchError } = await supabase
+        .from("produtos")
+        .select("*")
+        .eq("codigo", codigo)
+        .single();
+
+      if (searchError) throw searchError;
+      return data;
+    } catch (err) {
+      throw new Error(
+        err instanceof Error ? err.message : "Produto não encontrado",
+      );
+    }
+  }
+
+  async function buscarPorAnvisa(anvisa: string) {
+    try {
+      const { data, error: searchError } = await supabase
+        .from("produtos")
+        .select("*")
+        .eq("anvisa", anvisa)
+        .single();
+
+      if (searchError) throw searchError;
+      return data;
+    } catch (err) {
+      throw new Error(
+        err instanceof Error ? err.message : "Produto não encontrado",
+      );
+    }
+  }
 
   return {
     produtos,
     loading,
     error,
-    filtroCategoria,
-    setFiltroCategoria,
-    filtroAtivo,
-    setFiltroAtivo,
-    fetchProdutos,
-    criarProduto,
-    atualizarProduto,
-    deletarProduto
+    createProduto,
+    updateProduto,
+    deleteProduto,
+    buscarPorCodigo,
+    buscarPorAnvisa,
+    refresh: fetchProdutos,
   };
-};
-
+}

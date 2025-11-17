@@ -4,24 +4,24 @@
  * Design: Neuromórfico Premium 3D (OraclusX DS)
  */
 
-import React from"react";
-import { 
-  Bell, 
-  HelpCircle, 
-  Menu, 
-  Moon, 
+import React from "react";
+import {
+  Bell,
+  HelpCircle,
+  Menu,
+  Moon,
   Sun,
   Settings,
-  User
-} from"lucide-react";
-import { SearchContainer } from"../oraclusx-ds/SearchContainer";
+  User,
+} from "lucide-react";
+import { SearchContainer } from "../oraclusx-ds/SearchContainer";
 
 export interface IcarusTopbarProps {
   sidebarCollapsed: boolean;
-  darkMode: boolean;
+  darkMode?: boolean;
   unreadCount?: number;
   onToggleSidebar: () => void;
-  onToggleDarkMode: () => void;
+  onToggleDarkMode?: () => void;
   onOpenNotifications?: () => void;
   onOpenSettings?: () => void;
   onOpenHelp?: () => void;
@@ -31,25 +31,25 @@ export interface IcarusTopbarProps {
 
 export const IcarusTopbar: React.FC<IcarusTopbarProps> = ({
   sidebarCollapsed,
-  darkMode,
+  darkMode = false,
   unreadCount: _unreadCount = 0,
   onToggleSidebar,
   onToggleDarkMode,
   onOpenNotifications,
   onOpenSettings,
   onOpenHelp,
-  userName ="Roberto Silva",
-  userRole ="Gerente Comercial"
+  userName = "Roberto Silva",
+  userRole = "Gerente Comercial",
 }) => {
   return (
-    <header 
-      className="neumorphic-card fixed left-0 right-0 z-40 flex items-center justify-between px-6 py-2" 
-      style={{ 
-        top: '16px', 
-        marginLeft: sidebarCollapsed ? '88px' : '314px', // Dinâmico: 64px (sidebar) + 24px (gap) = 88px
-        marginRight: '16px',
-        height: '64px',
-        transition: 'margin-left 0.3s ease' // Transição suave
+    <header
+      className="neumorphic-card fixed left-0 right-0 z-40 flex items-center justify-between px-6 py-2"
+      style={{
+        top: "16px",
+        marginLeft: sidebarCollapsed ? "88px" : "314px", // Dinâmico: 64px (sidebar) + 24px (gap) = 88px
+        marginRight: "16px",
+        height: "64px",
+        transition: "margin-left 0.3s ease", // Transição suave
       }}
     >
       {/* Esquerda: Menu + Busca */}
@@ -61,9 +61,12 @@ export const IcarusTopbar: React.FC<IcarusTopbarProps> = ({
           aria-label="Abrir/Fechar Menu"
           title="Abrir/Fechar Menu"
           style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem', border: 'none', outline: 'none' }}
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            border: "none",
+            outline: "none",
+          }}
         >
           <Menu size={20} />
         </button>
@@ -86,9 +89,12 @@ export const IcarusTopbar: React.FC<IcarusTopbarProps> = ({
           aria-label="Central de Ajuda"
           title="Central de Ajuda"
           style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem', border: 'none', outline: 'none' }}
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            border: "none",
+            outline: "none",
+          }}
         >
           <HelpCircle size={20} />
         </button>
@@ -100,36 +106,46 @@ export const IcarusTopbar: React.FC<IcarusTopbarProps> = ({
           aria-label="3 notificações não lidas"
           title="3 notificações não lidas"
           style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem', border: 'none', outline: 'none' }}
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            border: "none",
+            outline: "none",
+          }}
         >
           <Bell size={20} />
-          <span 
-            className="absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-white rounded-full" style={{ 
-              background: 'var(--orx-error)',
-              fontSize: '0.813rem',
-              border: 'none', // SEM BORDA BRANCA
-              boxShadow: '0 2px 4px rgba(239, 68, 68, 0.3)'
-            , fontWeight: 700 }}
+          <span
+            className="absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-white rounded-full"
+            style={{
+              background: "var(--orx-error)",
+              fontSize: "0.813rem",
+              border: "none", // SEM BORDA BRANCA
+              boxShadow: "0 2px 4px rgba(239, 68, 68, 0.3)",
+              fontWeight: 700,
+            }}
           >
             3
           </span>
         </button>
 
         {/* Botão Tema Claro/Escuro - SEM BORDA */}
-        <button
-          onClick={onToggleDarkMode}
-          className="neumorphic-button p-2.5 rounded-full"
-          aria-label={darkMode ?"Modo Claro" :"Modo Escuro"}
-          title={darkMode ?"Modo Claro" :"Modo Escuro"}
-          style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem', border: 'none', outline: 'none' }}
-        >
-          {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-        </button>
+        {onToggleDarkMode && (
+          <button
+            onClick={onToggleDarkMode}
+            className="neumorphic-button p-2.5 rounded-full"
+            aria-label={darkMode ? "Modo Claro" : "Modo Escuro"}
+            title={darkMode ? "Modo Claro" : "Modo Escuro"}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              border: "none",
+              outline: "none",
+            }}
+          >
+            {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+        )}
 
         {/* Botão Configurações - SEM BORDA */}
         <button
@@ -138,18 +154,22 @@ export const IcarusTopbar: React.FC<IcarusTopbarProps> = ({
           aria-label="Configurações"
           title="Configurações"
           style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem', border: 'none', outline: 'none' }}
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            border: "none",
+            outline: "none",
+          }}
         >
           <Settings size={20} />
         </button>
 
         {/* Separador Vertical */}
-        <div 
+        <div
           className="w-px h-8 mx-2"
           style={{
-            background: 'linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.1) 50%, transparent 100%)'
+            background:
+              "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.1) 50%, transparent 100%)",
           }}
         />
 
@@ -157,22 +177,26 @@ export const IcarusTopbar: React.FC<IcarusTopbarProps> = ({
         <div className="flex items-center gap-3">
           {/* Nome e Cargo */}
           <div className="text-right hidden md:block">
-            <div style={{ 
-              fontSize: '0.813rem',
-              fontWeight: 600,
-              lineHeight: '18px',
-              color: 'var(--orx-text-primary)',
-              fontFamily: 'var(--orx-font-family)'
-            }}>
+            <div
+              style={{
+                fontSize: "0.813rem",
+                fontWeight: 600,
+                lineHeight: "18px",
+                color: "var(--orx-text-primary)",
+                fontFamily: "var(--orx-font-family)",
+              }}
+            >
               {userName}
             </div>
-            <div style={{ 
-              fontSize: '0.813rem',
-              fontWeight: 400,
-              lineHeight: '16px',
-              color: 'var(--orx-text-secondary)',
-              fontFamily: 'var(--orx-font-family)'
-            }}>
+            <div
+              style={{
+                fontSize: "0.813rem",
+                fontWeight: 400,
+                lineHeight: "16px",
+                color: "var(--orx-text-secondary)",
+                fontFamily: "var(--orx-font-family)",
+              }}
+            >
               {userRole}
             </div>
           </div>
@@ -182,14 +206,14 @@ export const IcarusTopbar: React.FC<IcarusTopbarProps> = ({
             onClick={onOpenSettings}
             className="rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
             style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-              width: '36px',
-              height: '36px',
-              background: 'var(--orx-primary)',
-              border: '2px solid rgba(255, 255, 255, 0.3)',
-              boxShadow: '0 2px 8px rgba(99, 102, 241, 0.3)'
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              width: "36px",
+              height: "36px",
+              background: "var(--orx-primary)",
+              border: "2px solid rgba(255, 255, 255, 0.3)",
+              boxShadow: "0 2px 8px rgba(99, 102, 241, 0.3)",
             }}
             aria-label="Perfil do Usuário"
             title="Perfil do Usuário"
@@ -202,7 +226,6 @@ export const IcarusTopbar: React.FC<IcarusTopbarProps> = ({
   );
 };
 
-IcarusTopbar.displayName ="IcarusTopbar";
+IcarusTopbar.displayName = "IcarusTopbar";
 
 export default IcarusTopbar;
-

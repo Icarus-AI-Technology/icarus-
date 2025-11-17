@@ -1,11 +1,11 @@
 // src/webhooks/transportadora-status.ts
 
-import { Request, Response } from 'express';
-import { createClient } from '@supabase/supabase-js';
+import { Request, Response } from "express";
+import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
-  process.env.VITE_SUPABASE_URL || '',
-  process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+  process.env.VITE_SUPABASE_URL || "",
+  process.env.SUPABASE_SERVICE_ROLE_KEY || "",
 );
 
 interface TransportadoraWebhookPayload {
@@ -17,7 +17,7 @@ interface TransportadoraWebhookPayload {
     hora: string;
     local: string;
     descricao: string;
-    tipo: 'POSTADO' | 'TRANSITO' | 'ENTREGUE' | 'DEVOLUCAO' | 'EXTRAVIADO';
+    tipo: "POSTADO" | "TRANSITO" | "ENTREGUE" | "DEVOLUCAO" | "EXTRAVIADO";
   };
   timestamp: string;
   signature?: string;
@@ -28,16 +28,16 @@ interface TransportadoraWebhookPayload {
  */
 export async function handleTransportadoraStatus(
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> {
   try {
-    console.log('📦 Webhook transportadora-status recebido');
+    console.log("📦 Webhook transportadora-status recebido");
 
     // Validar assinatura do webhook
     const isValid = await validateWebhookSignature(req);
     if (!isValid) {
-      console.error('❌ Assinatura inválida');
-      res.status(401).json({ error: 'Invalid signature' });
+      console.error("❌ Assinatura inválida");
+      res.status(401).json({ error: "Invalid signature" });
       return;
     }
 
@@ -45,8 +45,8 @@ export async function handleTransportadoraStatus(
 
     // Validar payload
     if (!payload.codigoRastreio || !payload.transportadora || !payload.evento) {
-      console.error('❌ Payload inválido', payload);
-      res.status(400).json({ error: 'Invalid payload' });
+      console.error("❌ Payload inválido", payload);
+      res.status(400).json({ error: "Invalid payload" });
       return;
     }
 
@@ -54,16 +54,16 @@ export async function handleTransportadoraStatus(
     await processarAtualizacaoStatus(payload);
 
     // Retornar sucesso
-    res.status(200).json({ 
-      success: true, 
-      message: 'Status atualizado com sucesso' 
+    res.status(200).json({
+      success: true,
+      message: "Status atualizado com sucesso",
     });
-
-  } catch (error: any) {
-    console.error('❌ Erro ao processar webhook:', error);
-    res.status(500).json({ 
-      error: 'Internal server error',
-      message: error.message 
+  } catch (error) {
+    const err = error as Error;
+    console.error("❌ Erro ao processar webhook:", err);
+    res.status(500).json({
+      error: "Internal server error",
+      message: error.message,
     });
   }
 }
@@ -73,7 +73,7 @@ export async function handleTransportadoraStatus(
  */
 async function validateWebhookSignature(req: Request): Promise<boolean> {
   try {
-    const signature = req.headers['x-webhook-signature'] as string;
+    const signature = req.headers["x-webhook-signature"] as string;
     const transportadora = req.body.transportadora as string;
 
     if (!signature) {
@@ -82,9 +82,9 @@ async function validateWebhookSignature(req: Request): Promise<boolean> {
 
     // Obter secret da transportadora do banco de dados
     const { data: config } = await supabase
-      .from('transportadora_config')
-      .select('webhook_secret')
-      .eq('nome', transportadora)
+      .from("transportadora_config")
+      .select("webhook_secret")
+      .eq("nome", transportadora)
       .single();
 
     if (!config?.webhook_secret) {
@@ -93,16 +93,16 @@ async function validateWebhookSignature(req: Request): Promise<boolean> {
     }
 
     // Verificar assinatura HMAC SHA256
-    const crypto = await import('crypto');
+    const crypto = await import("crypto");
     const bodyString = JSON.stringify(req.body);
     const hash = crypto
-      .createHmac('sha256', config.webhook_secret)
+      .createHmac("sha256", config.webhook_secret)
       .update(bodyString)
-      .digest('hex');
+      .digest("hex");
 
     return signature === hash;
   } catch (error) {
-    console.error('❌ Erro ao validar assinatura:', error);
+    console.error("❌ Erro ao validar assinatura:", error);
     return false;
   }
 }
@@ -111,14 +111,14 @@ async function validateWebhookSignature(req: Request): Promise<boolean> {
  * Processa atualização de status
  */
 async function processarAtualizacaoStatus(
-  payload: TransportadoraWebhookPayload
+  payload: TransportadoraWebhookPayload,
 ): Promise<void> {
   try {
     // Buscar envio no banco de dados
     const { data: envio, error: envioError } = await supabase
-      .from('envios')
-      .select('*')
-      .eq('codigo_rastreio', payload.codigoRastreio)
+      .from("envios")
+      .select("*")
+      .eq("codigo_rastreio", payload.codigoRastreio)
       .single();
 
     if (envioError || !envio) {
@@ -128,13 +128,13 @@ async function processarAtualizacaoStatus(
 
     // Atualizar status do envio
     const { error: updateError } = await supabase
-      .from('envios')
+      .from("envios")
       .update({
         status: payload.status,
         ultimo_evento: payload.evento,
         updated_at: new Date().toISOString(),
       })
-      .eq('id', envio.id);
+      .eq("id", envio.id);
 
     if (updateError) {
       throw updateError;
@@ -142,7 +142,7 @@ async function processarAtualizacaoStatus(
 
     // Registrar evento no histórico
     const { error: historicoError } = await supabase
-      .from('envios_historico')
+      .from("envios_historico")
       .insert({
         envio_id: envio.id,
         evento_tipo: payload.evento.tipo,
@@ -153,19 +153,19 @@ async function processarAtualizacaoStatus(
       });
 
     if (historicoError) {
-      console.error('❌ Erro ao registrar histórico:', historicoError);
+      console.error("❌ Erro ao registrar histórico:", historicoError);
     }
 
     // Notificar usuário se for evento importante
-    if (['ENTREGUE', 'EXTRAVIADO', 'DEVOLUCAO'].includes(payload.evento.tipo)) {
+    if (["ENTREGUE", "EXTRAVIADO", "DEVOLUCAO"].includes(payload.evento.tipo)) {
       await notificarUsuario(envio, payload);
     }
 
     console.log(
-      `✅ Status atualizado: ${payload.codigoRastreio} -> ${payload.status}`
+      `✅ Status atualizado: ${payload.codigoRastreio} -> ${payload.status}`,
     );
   } catch (error) {
-    console.error('❌ Erro ao processar atualização:', error);
+    console.error("❌ Erro ao processar atualização:", error);
     throw error;
   }
 }
@@ -173,16 +173,23 @@ async function processarAtualizacaoStatus(
 /**
  * Notifica usuário sobre evento importante
  */
+interface Envio {
+  id: string;
+  codigo_rastreio: string;
+  usuario_id?: string;
+  status: string;
+}
+
 async function notificarUsuario(
-  envio: any,
-  payload: TransportadoraWebhookPayload
+  envio: Envio,
+  payload: TransportadoraWebhookPayload,
 ): Promise<void> {
   try {
     // Buscar contato do usuário
     const { data: usuario } = await supabase
-      .from('usuarios')
-      .select('email, telefone')
-      .eq('id', envio.usuario_id)
+      .from("usuarios")
+      .select("email, telefone")
+      .eq("id", envio.usuario_id)
       .single();
 
     if (!usuario) {
@@ -200,12 +207,12 @@ async function notificarUsuario(
     // Enviar SMS (via Twilio) para eventos críticos
     if (
       usuario.telefone &&
-      ['EXTRAVIADO', 'DEVOLUCAO'].includes(payload.evento.tipo)
+      ["EXTRAVIADO", "DEVOLUCAO"].includes(payload.evento.tipo)
     ) {
       await enviarSMS(usuario.telefone, mensagem);
     }
   } catch (error) {
-    console.error('❌ Erro ao notificar usuário:', error);
+    console.error("❌ Erro ao notificar usuário:", error);
   }
 }
 
@@ -213,15 +220,16 @@ async function notificarUsuario(
  * Gera mensagem de notificação
  */
 function gerarMensagemNotificacao(
-  payload: TransportadoraWebhookPayload
+  payload: TransportadoraWebhookPayload,
 ): string {
-  const emoji = {
-    POSTADO: '📦',
-    TRANSITO: '🚚',
-    ENTREGUE: '✅',
-    DEVOLUCAO: '↩️',
-    EXTRAVIADO: '⚠️',
-  }[payload.evento.tipo] || '📦';
+  const emoji =
+    {
+      POSTADO: "📦",
+      TRANSITO: "🚚",
+      ENTREGUE: "✅",
+      DEVOLUCAO: "↩️",
+      EXTRAVIADO: "⚠️",
+    }[payload.evento.tipo] || "📦";
 
   return `${emoji} ${payload.evento.tipo}: Seu pedido (${payload.codigoRastreio}) ${payload.evento.descricao}. Local: ${payload.evento.local}.`;
 }
@@ -243,4 +251,3 @@ async function enviarSMS(telefone: string, mensagem: string): Promise<void> {
 }
 
 export default handleTransportadoraStatus;
-

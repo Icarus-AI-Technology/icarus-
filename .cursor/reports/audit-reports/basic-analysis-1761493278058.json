@@ -1,0 +1,249 @@
+{
+  "timestamp": "2025-10-26T15:41:18.053Z",
+  "project": "icarus-newortho",
+  "version": "5.0.0",
+  "analysis": {
+    "package": {
+      "status": "✅ VÁLIDO",
+      "details": {
+        "name": "icarus-make",
+        "version": "1.0.0",
+        "type": "module",
+        "framework": "React + Vite + TypeScript",
+        "nodeVersion": ">=18.18.0",
+        "productionDeps": {
+          "react": "^18.3.1",
+          "react-dom": "^18.3.1",
+          "@supabase/supabase-js": "^2.76.1",
+          "react-router-dom": "^6.26.0",
+          "@radix-ui/*": "múltiplos componentes",
+          "lucide-react": "^0.436.0",
+          "zod": "^4.1.12"
+        },
+        "devDeps": {
+          "vite": "^5.4.4",
+          "typescript": "^5.6.2",
+          "@vitejs/plugin-react-swc": "^3.7.0",
+          "vitest": "^3.2.4",
+          "playwright": "^1.56.1",
+          "eslint": "^9.10.0"
+        },
+        "scripts": {
+          "dev": "vite",
+          "build": "vite build",
+          "preview": "vite preview",
+          "test": "vitest",
+          "test:e2e": "playwright test",
+          "deploy": "node .cursor/scripts/deploy-vercel.js"
+        }
+      },
+      "issues": []
+    },
+    "structure": {
+      "expected": {
+        "essential": [
+          "src/",
+          "public/",
+          "package.json",
+          "tsconfig.json",
+          "vite.config.ts",
+          "index.html",
+          ".gitignore",
+          "README.md"
+        ],
+        "recommended": ["vercel.json", ".npmrc", ".env.example"],
+        "development": [".cursor/", "scripts/", "tools/"]
+      },
+      "recommendations": [
+        "Criar vercel.json para otimizar deploy",
+        "Criar .npmrc com legacy-peer-deps=true",
+        "Atualizar .env.example com todas as variáveis",
+        "Criar .cursor/agents/ para sistema de agentes"
+      ]
+    },
+    "dependencies": {
+      "deprecated": [
+        {
+          "package": "inflight@1.0.6",
+          "message": "Deprecated - atualizar para glob@9+",
+          "severity": "WARNING"
+        },
+        {
+          "package": "glob@8.1.0",
+          "message": "Versão antiga - atualizar para v9+",
+          "severity": "WARNING"
+        },
+        {
+          "package": "node-domexception@1.0.0",
+          "message": "Usar DOMException nativa",
+          "severity": "WARNING"
+        },
+        {
+          "package": "@types/twilio@3.19.3",
+          "message": "Verificar se Twilio é necessário",
+          "severity": "INFO"
+        }
+      ],
+      "critical": {
+        "missing": [],
+        "outdated": [],
+        "security": []
+      },
+      "recommendations": [
+        "Executar: npm audit fix",
+        "Atualizar glob para v9+",
+        "Remover dependências não utilizadas",
+        "Verificar uso de Twilio, Redis, BullMQ"
+      ]
+    },
+    "configurations": {
+      "viteConfig": {
+        "status": "NECESSÁRIO",
+        "mustHave": {
+          "build.outDir": "dist",
+          "build.minify": "terser",
+          "build.sourcemap": "false (produção)",
+          "plugins": ["react()"]
+        }
+      },
+      "vercelJson": {
+        "status": "FALTANDO",
+        "shouldCreate": true,
+        "required": {
+          "buildCommand": "npm run build",
+          "outputDirectory": "dist",
+          "installCommand": "npm install --legacy-peer-deps",
+          "framework": "vite"
+        }
+      },
+      "npmrc": {
+        "status": "FALTANDO",
+        "shouldCreate": true,
+        "content": "legacy-peer-deps=true"
+      },
+      "envExample": {
+        "status": "VERIFICAR",
+        "required": [
+          "VITE_SUPABASE_URL",
+          "VITE_SUPABASE_ANON_KEY",
+          "VITE_ENVIRONMENT"
+        ],
+        "optional": [
+          "VITE_API_GATEWAY_URL",
+          "VITE_SENTRY_DSN",
+          "VITE_POSTHOG_KEY"
+        ],
+        "remove": [
+          "REDIS_URL (backend only)",
+          "REDIS_HOST (backend only)",
+          "ML_SERVICE_URL (backend only)",
+          "VITE_OLLAMA_URL (dev only)"
+        ]
+      }
+    },
+    "nativeAIs": {
+      "ollama": {
+        "name": "Ollama (LLM Local)",
+        "url": "http://localhost:11434",
+        "status": "DEVE RODAR EM LOCALHOST",
+        "models": ["llama2", "codellama"],
+        "production": "REMOVER (não disponível em prod)",
+        "envVar": "VITE_OLLAMA_URL=http://localhost:11434",
+        "recommendations": [
+          "Usar apenas em desenvolvimento",
+          "Remover env var em produção",
+          "Considerar OpenAI/Anthropic API para produção"
+        ]
+      },
+      "meilisearch": {
+        "name": "MeiliSearch (Search Engine)",
+        "url": "http://localhost:7700",
+        "status": "LOCALHOST EM DEV",
+        "production": "MIGRAR PARA CLOUD",
+        "options": [
+          "MeiliSearch Cloud (https://cloud.meilisearch.com)",
+          "Self-hosted em Railway/Fly.io",
+          "Usar Supabase Full-Text Search"
+        ],
+        "recommendations": [
+          "Configurar MeiliSearch Cloud para produção",
+          "Migrar índices",
+          "Atualizar env vars"
+        ]
+      },
+      "tesseractjs": {
+        "name": "Tesseract.js (OCR)",
+        "mode": "Client-side",
+        "status": "✅ OK PARA PRODUÇÃO",
+        "notes": [
+          "Roda no browser",
+          "Não precisa servidor",
+          "Configurar web workers corretamente"
+        ]
+      },
+      "redis": {
+        "name": "Redis (Cache)",
+        "url": "redis://localhost:6379",
+        "status": "BACKEND ONLY",
+        "production": "USAR UPSTASH/RAILWAY",
+        "recommendations": [
+          "REMOVER variáveis Redis do frontend",
+          "Configurar Upstash Redis para produção",
+          "Backend API gerencia Redis, não frontend"
+        ]
+      }
+    },
+    "supabase": {
+      "integration": "✅ INTEGRADO",
+      "version": "^2.76.1",
+      "expectedTables": {
+        "auth": ["users", "sessions", "refresh_tokens"],
+        "patients": ["patients", "patient_documents", "patient_history"],
+        "appointments": ["appointments", "appointment_types", "schedules"],
+        "financial": ["transactions", "invoices", "payment_methods"],
+        "system": ["audit_logs", "notifications", "settings"]
+      },
+      "expectedFunctions": [
+        "search_patients(query text)",
+        "calculate_age(birth_date date)",
+        "get_next_appointment(patient_id uuid)",
+        "update_patient_status()",
+        "generate_invoice_number()"
+      ],
+      "rls": {
+        "status": "DEVE ESTAR ATIVO",
+        "critical": true,
+        "tables": "Todas as tabelas devem ter RLS policies"
+      },
+      "storage": {
+        "buckets": ["patient-documents", "profile-images", "reports"],
+        "policies": "Configurar policies de acesso"
+      },
+      "recommendations": [
+        "Executar agente supabase-migration para verificar",
+        "Validar todas as tabelas foram migradas",
+        "Testar todas as functions",
+        "Verificar RLS policies",
+        "Testar storage buckets"
+      ]
+    }
+  },
+  "summary": {
+    "overallStatus": "🟡 REQUER ATENÇÃO",
+    "criticalIssues": 4,
+    "warnings": 8,
+    "recommendations": 15,
+    "nextSteps": [
+      "1. Criar vercel.json e .npmrc",
+      "2. Limpar environment variables (remover Redis/Ollama)",
+      "3. Configurar MeiliSearch Cloud",
+      "4. Validar migração Supabase",
+      "5. Executar sistema de agentes completo",
+      "6. Corrigir issues encontradas",
+      "7. Deploy para preview",
+      "8. Testes em preview",
+      "9. Deploy para produção"
+    ],
+    "estimatedTime": "7-12 horas (conforme PLAN.md)"
+  }
+}

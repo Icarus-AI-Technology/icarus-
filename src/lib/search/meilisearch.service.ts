@@ -1,7 +1,7 @@
 /**
  * Meilisearch Service
  * Open-source search engine (alternative to Algolia/Elasticsearch)
- * 
+ *
  * Features:
  * - Full-text search ultra-rápido (<50ms)
  * - Typo tolerance
@@ -9,13 +9,22 @@
  * - Geo search
  * - Multi-language
  * - Highlights
- * 
+ *
  * Custo: $0 (self-hosted) vs $600-2,400/ano (Algolia)
  */
 
 export interface SearchDocument {
   id: string;
-  [key: string]: string | number | boolean | null | string[] | number[] | boolean[] | Record<string, unknown> | undefined;
+  [key: string]:
+    | string
+    | number
+    | boolean
+    | null
+    | string[]
+    | number[]
+    | boolean[]
+    | Record<string, unknown>
+    | undefined;
 }
 
 export interface SearchOptions {
@@ -26,11 +35,18 @@ export interface SearchOptions {
   attributesToCrop?: string[];
   filter?: string;
   sort?: string[];
-  matchingStrategy?: 'all' | 'last';
+  matchingStrategy?: "all" | "last";
+  showRankingScore?: boolean;
+  showRankingScoreDetails?: boolean;
 }
 
+export type SearchHit<T = Record<string, unknown>> = T & {
+  _rankingScore?: number;
+  _rankingScoreDetails?: Record<string, unknown>;
+};
+
 export interface SearchResult<T = Record<string, unknown>> {
-  hits: T[];
+  hits: Array<SearchHit<T>>;
   query: string;
   processingTimeMs: number;
   limit: number;
@@ -44,12 +60,13 @@ export class MeilisearchService {
   private enabled: boolean;
 
   constructor(baseURL?: string, apiKey?: string) {
-    this.baseURL = baseURL || process.env.VITE_MEILISEARCH_URL || 'http://localhost:7700';
-    this.apiKey = apiKey || process.env.VITE_MEILISEARCH_API_KEY || '';
+    this.baseURL =
+      baseURL || process.env.VITE_MEILISEARCH_URL || "http://localhost:7700";
+    this.apiKey = apiKey || process.env.VITE_MEILISEARCH_API_KEY || "";
     this.enabled = !!this.baseURL;
 
     if (!this.enabled) {
-      console.warn('[Meilisearch] Not configured. Set VITE_MEILISEARCH_URL');
+      console.warn("[Meilisearch] Not configured. Set VITE_MEILISEARCH_URL");
     }
   }
 
@@ -59,39 +76,44 @@ export class MeilisearchService {
   async search<T = Record<string, unknown>>(
     indexName: string,
     query: string,
-    options: SearchOptions = {}
+    options: SearchOptions = {},
   ): Promise<SearchResult<T>> {
     if (!this.enabled) {
-      console.warn('[Meilisearch] Service disabled, returning empty results');
+      console.warn("[Meilisearch] Service disabled, returning empty results");
       return {
         hits: [],
         query,
         processingTimeMs: 0,
-        limit: options.limit || 20,
-        offset: options.offset || 0,
+        limit: options.limit ?? 20,
+        offset: options.offset ?? 0,
         estimatedTotalHits: 0,
       };
     }
 
     try {
-      const response = await fetch(`${this.baseURL}/indexes/${indexName}/search`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(this.apiKey && { Authorization: `Bearer ${this.apiKey}` }),
+      const response = await fetch(
+        `${this.baseURL}/indexes/${indexName}/search`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(this.apiKey && { Authorization: `Bearer ${this.apiKey}` }),
+          },
+          body: JSON.stringify({
+            q: query,
+            limit: options.limit ?? 20,
+            offset: options.offset ?? 0,
+            attributesToRetrieve: options.attributesToRetrieve,
+            attributesToHighlight: options.attributesToHighlight,
+            attributesToCrop: options.attributesToCrop,
+            filter: options.filter,
+            sort: options.sort,
+            matchingStrategy: options.matchingStrategy || "last",
+            showRankingScore: options.showRankingScore,
+            showRankingScoreDetails: options.showRankingScoreDetails,
+          }),
         },
-        body: JSON.stringify({
-          q: query,
-          limit: options.limit || 20,
-          offset: options.offset || 0,
-          attributesToRetrieve: options.attributesToRetrieve,
-          attributesToHighlight: options.attributesToHighlight,
-          attributesToCrop: options.attributesToCrop,
-          filter: options.filter,
-          sort: options.sort,
-          matchingStrategy: options.matchingStrategy || 'last',
-        }),
-      });
+      );
 
       if (!response.ok) {
         throw new Error(`Meilisearch error: ${response.status}`);
@@ -99,8 +121,8 @@ export class MeilisearchService {
 
       return (await response.json()) as SearchResult<T>;
     } catch (error) {
-   const err = error as Error;
-      console.error('[Meilisearch] Search error:', err);
+      const err = error as Error;
+      console.error("[Meilisearch] Search error:", err);
       throw error;
     }
   }
@@ -108,27 +130,35 @@ export class MeilisearchService {
   /**
    * Adiciona documentos a um índice
    */
-  async addDocuments(indexName: string, documents: SearchDocument[]): Promise<void> {
+  async addDocuments(
+    indexName: string,
+    documents: SearchDocument[],
+  ): Promise<void> {
     if (!this.enabled) return;
 
     try {
-      const response = await fetch(`${this.baseURL}/indexes/${indexName}/documents`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(this.apiKey && { Authorization: `Bearer ${this.apiKey}` }),
+      const response = await fetch(
+        `${this.baseURL}/indexes/${indexName}/documents`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(this.apiKey && { Authorization: `Bearer ${this.apiKey}` }),
+          },
+          body: JSON.stringify(documents),
         },
-        body: JSON.stringify(documents),
-      });
+      );
 
       if (!response.ok) {
         throw new Error(`Meilisearch error: ${response.status}`);
       }
 
-      console.log(`[Meilisearch] Added ${documents.length} documents to ${indexName}`);
+      console.log(
+        `[Meilisearch] Added ${documents.length} documents to ${indexName}`,
+      );
     } catch (error) {
-   const err = error as Error;
-      console.error('[Meilisearch] Add documents error:', err);
+      const err = error as Error;
+      console.error("[Meilisearch] Add documents error:", err);
       throw error;
     }
   }
@@ -136,25 +166,31 @@ export class MeilisearchService {
   /**
    * Atualiza documentos
    */
-  async updateDocuments(indexName: string, documents: SearchDocument[]): Promise<void> {
+  async updateDocuments(
+    indexName: string,
+    documents: SearchDocument[],
+  ): Promise<void> {
     if (!this.enabled) return;
 
     try {
-      const response = await fetch(`${this.baseURL}/indexes/${indexName}/documents`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(this.apiKey && { Authorization: `Bearer ${this.apiKey}` }),
+      const response = await fetch(
+        `${this.baseURL}/indexes/${indexName}/documents`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            ...(this.apiKey && { Authorization: `Bearer ${this.apiKey}` }),
+          },
+          body: JSON.stringify(documents),
         },
-        body: JSON.stringify(documents),
-      });
+      );
 
       if (!response.ok) {
         throw new Error(`Meilisearch error: ${response.status}`);
       }
     } catch (error) {
-   const err = error as Error;
-      console.error('[Meilisearch] Update documents error:', err);
+      const err = error as Error;
+      console.error("[Meilisearch] Update documents error:", err);
       throw error;
     }
   }
@@ -169,19 +205,19 @@ export class MeilisearchService {
       const response = await fetch(
         `${this.baseURL}/indexes/${indexName}/documents/${documentId}`,
         {
-          method: 'DELETE',
+          method: "DELETE",
           headers: {
             ...(this.apiKey && { Authorization: `Bearer ${this.apiKey}` }),
           },
-        }
+        },
       );
 
       if (!response.ok) {
         throw new Error(`Meilisearch error: ${response.status}`);
       }
     } catch (error) {
-   const err = error as Error;
-      console.error('[Meilisearch] Delete document error:', err);
+      const err = error as Error;
+      console.error("[Meilisearch] Delete document error:", err);
       throw error;
     }
   }
@@ -189,14 +225,14 @@ export class MeilisearchService {
   /**
    * Cria ou atualiza índice
    */
-  async createIndex(indexName: string, primaryKey = 'id'): Promise<void> {
+  async createIndex(indexName: string, primaryKey = "id"): Promise<void> {
     if (!this.enabled) return;
 
     try {
       const response = await fetch(`${this.baseURL}/indexes`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           ...(this.apiKey && { Authorization: `Bearer ${this.apiKey}` }),
         },
         body: JSON.stringify({
@@ -212,8 +248,8 @@ export class MeilisearchService {
 
       console.log(`[Meilisearch] Index ${indexName} created`);
     } catch (error) {
-   const err = error as Error;
-      console.error('[Meilisearch] Create index error:', err);
+      const err = error as Error;
+      console.error("[Meilisearch] Create index error:", err);
       throw error;
     }
   }
@@ -229,20 +265,23 @@ export class MeilisearchService {
       sortableAttributes?: string[];
       displayedAttributes?: string[];
       rankingRules?: string[];
-    }
+    },
   ): Promise<void> {
     if (!this.enabled) return;
 
     try {
       // Update settings
-      const response = await fetch(`${this.baseURL}/indexes/${indexName}/settings`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(this.apiKey && { Authorization: `Bearer ${this.apiKey}` }),
+      const response = await fetch(
+        `${this.baseURL}/indexes/${indexName}/settings`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            ...(this.apiKey && { Authorization: `Bearer ${this.apiKey}` }),
+          },
+          body: JSON.stringify(config),
         },
-        body: JSON.stringify(config),
-      });
+      );
 
       if (!response.ok) {
         throw new Error(`Meilisearch error: ${response.status}`);
@@ -250,8 +289,8 @@ export class MeilisearchService {
 
       console.log(`[Meilisearch] Index ${indexName} configured`);
     } catch (error) {
-   const err = error as Error;
-      console.error('[Meilisearch] Configure index error:', err);
+      const err = error as Error;
+      console.error("[Meilisearch] Configure index error:", err);
       throw error;
     }
   }
@@ -279,11 +318,14 @@ export class MeilisearchService {
     if (!this.enabled) return null;
 
     try {
-      const response = await fetch(`${this.baseURL}/indexes/${indexName}/stats`, {
-        headers: {
-          ...(this.apiKey && { Authorization: `Bearer ${this.apiKey}` }),
+      const response = await fetch(
+        `${this.baseURL}/indexes/${indexName}/stats`,
+        {
+          headers: {
+            ...(this.apiKey && { Authorization: `Bearer ${this.apiKey}` }),
+          },
         },
-      });
+      );
 
       if (!response.ok) return null;
 
@@ -303,56 +345,66 @@ export const meilisearchService = new MeilisearchService();
 
 // Índice: Cirurgias
 export async function setupCirurgiasIndex(): Promise<void> {
-  await meilisearchService.createIndex('cirurgias');
-  await meilisearchService.configureIndex('cirurgias', {
+  await meilisearchService.createIndex("cirurgias");
+  await meilisearchService.configureIndex("cirurgias", {
     searchableAttributes: [
-      'paciente_nome',
-      'medico_nome',
-      'procedimento',
-      'hospital_nome',
-      'status',
+      "paciente_nome",
+      "medico_nome",
+      "procedimento",
+      "hospital_nome",
+      "status",
     ],
-    filterableAttributes: ['status', 'data_cirurgia', 'medico_id', 'hospital_id'],
-    sortableAttributes: ['data_cirurgia', 'created_at'],
+    filterableAttributes: [
+      "status",
+      "data_cirurgia",
+      "medico_id",
+      "hospital_id",
+    ],
+    sortableAttributes: ["data_cirurgia", "created_at"],
   });
 }
 
 // Índice: Produtos OPME
 export async function setupProdutosIndex(): Promise<void> {
-  await meilisearchService.createIndex('produtos');
-  await meilisearchService.configureIndex('produtos', {
+  await meilisearchService.createIndex("produtos");
+  await meilisearchService.configureIndex("produtos", {
     searchableAttributes: [
-      'nome',
-      'descricao',
-      'codigo_interno',
-      'codigo_anvisa',
-      'fabricante',
+      "nome",
+      "descricao",
+      "codigo_interno",
+      "codigo_anvisa",
+      "fabricante",
     ],
-    filterableAttributes: ['categoria', 'ativo', 'fabricante_id'],
-    sortableAttributes: ['nome', 'created_at'],
+    filterableAttributes: ["categoria", "ativo", "fabricante_id"],
+    sortableAttributes: ["nome", "created_at"],
   });
 }
 
 // Índice: Fornecedores
 export async function setupFornecedoresIndex(): Promise<void> {
-  await meilisearchService.createIndex('fornecedores');
-  await meilisearchService.configureIndex('fornecedores', {
-    searchableAttributes: ['razao_social', 'nome_fantasia', 'cnpj', 'contato_nome'],
-    filterableAttributes: ['ativo', 'tipo'],
-    sortableAttributes: ['razao_social', 'created_at'],
+  await meilisearchService.createIndex("fornecedores");
+  await meilisearchService.configureIndex("fornecedores", {
+    searchableAttributes: [
+      "razao_social",
+      "nome_fantasia",
+      "cnpj",
+      "contato_nome",
+    ],
+    filterableAttributes: ["ativo", "tipo"],
+    sortableAttributes: ["razao_social", "created_at"],
   });
 }
 
 // Busca global (multi-índice)
 export async function searchGlobal(query: string): Promise<{
-  cirurgias: SearchResult['hits'];
-  produtos: SearchResult['hits'];
-  fornecedores: SearchResult['hits'];
+  cirurgias: SearchResult["hits"];
+  produtos: SearchResult["hits"];
+  fornecedores: SearchResult["hits"];
 }> {
   const [cirurgias, produtos, fornecedores] = await Promise.all([
-    meilisearchService.search('cirurgias', query, { limit: 5 }),
-    meilisearchService.search('produtos', query, { limit: 5 }),
-    meilisearchService.search('fornecedores', query, { limit: 5 }),
+    meilisearchService.search("cirurgias", query, { limit: 5 }),
+    meilisearchService.search("produtos", query, { limit: 5 }),
+    meilisearchService.search("fornecedores", query, { limit: 5 }),
   ]);
 
   return {
@@ -361,4 +413,3 @@ export async function searchGlobal(query: string): Promise<{
     fornecedores: fornecedores.hits,
   };
 }
-

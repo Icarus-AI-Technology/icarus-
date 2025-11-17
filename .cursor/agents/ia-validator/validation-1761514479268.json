@@ -1,0 +1,46 @@
+{
+  "timestamp": "2025-10-26T21:34:39.266Z",
+  "environment": "development",
+  "checks": [
+    {
+      "service": "ollama",
+      "status": "ok",
+      "endpoint": "http://localhost:11434",
+      "models": ["llama3.1:8b"]
+    },
+    {
+      "service": "meilisearch",
+      "status": "ok",
+      "endpoint": "https://edge.meilisearch.com",
+      "version": "1.24.0",
+      "analytics": true
+    },
+    {
+      "service": "posthog",
+      "status": "ok",
+      "configured": true,
+      "apiKey": "phx_nlBCJxYa8wDWU3eL...",
+      "host": "https://app.posthog.com"
+    },
+    {
+      "service": "supabase",
+      "status": "ok",
+      "url": "https://ttswvavcisdnonytslom.supabase.co"
+    },
+    {
+      "service": "tesseract",
+      "status": "ok",
+      "path": "/tesseract",
+      "files": 3
+    }
+  ],
+  "passed": true,
+  "failed": 0,
+  "summary": {
+    "total": 5,
+    "ok": 5,
+    "warning": 0,
+    "error": 0,
+    "skipped": 0
+  }
+}

@@ -6,7 +6,19 @@
  * - Templates de Documentos (WYSIWYG placeholder)
  */
 import React, { useRef, useState } from "react";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, Badge, FileUpload, Input, Textarea, FormField, FormGroup } from "@/components/oraclusx-ds";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  Badge,
+  FileUpload,
+  Input,
+  Textarea,
+  FormField,
+  FormGroup,
+} from "@/components/oraclusx-ds";
 import { MaskedInput } from "@/components/ui/masked-input";
 import { Camera, ShieldCheck } from "lucide-react";
 
@@ -48,36 +60,41 @@ export const AdminConfiguracoes: React.FC = () => {
     regimeTributario: "",
     responsavel: "",
   });
-  const [responsavelStatus, setResponsavelStatus] = useState<'idle'|'corrigindo'|'padronizado'|'invalido'>('idle');
+  const [responsavelStatus, setResponsavelStatus] = useState<
+    "idle" | "corrigindo" | "padronizado" | "invalido"
+  >("idle");
   const [templateHtml, setTemplateHtml] = useState("");
   const editorRef = useRef<HTMLDivElement>(null);
 
   const standardizeUppercase = (value: string): string => {
-    return value
-      .normalize("NFKC")
-      .replace(/\s+/g, " ")
-      .trim()
-      .toUpperCase();
+    return value.normalize("NFKC").replace(/\s+/g, " ").trim().toUpperCase();
   };
 
   const handleResponsavelChange = (value: string) => {
     const corrected = standardizeUppercase(value);
-    const isPadronizado = corrected.length > 0 && corrected === value.toUpperCase();
+    const isPadronizado =
+      corrected.length > 0 && corrected === value.toUpperCase();
     setEmpresa((prev) => ({ ...prev, responsavel: corrected }));
-    setResponsavelStatus(isPadronizado ? 'padronizado' : 'corrigindo');
+    setResponsavelStatus(isPadronizado ? "padronizado" : "corrigindo");
   };
 
   const markInvalidResponsavel = () => {
-    setResponsavelStatus('invalido');
+    setResponsavelStatus("invalido");
   };
 
   const handlePfx = (files: File[]) => {
-    const valid = files.every((f) => f.name.toLowerCase().endsWith(".pfx")) && files.every((f) => f.size <= MAX_PFX);
+    const valid =
+      files.every((f) => f.name.toLowerCase().endsWith(".pfx")) &&
+      files.every((f) => f.size <= MAX_PFX);
     setPfxFiles(files);
     setPfxValid(valid);
     // Mock de leitura e validade
     if (valid && files.length) {
-      setPfxInfo({ validade: new Date(Date.now() + 1000 * 60 * 60 * 24 * 180).toLocaleDateString("pt-BR") });
+      setPfxInfo({
+        validade: new Date(
+          Date.now() + 1000 * 60 * 60 * 24 * 180,
+        ).toLocaleDateString("pt-BR"),
+      });
     } else {
       setPfxInfo(null);
     }
@@ -127,7 +144,9 @@ export const AdminConfiguracoes: React.FC = () => {
     <div className="min-h-screen p-6">
       <div className="max-w-6xl mx-auto space-y-6">
         <header className="flex items-center justify-between">
-          <h1 className="text-heading-lg text-primary dark:text-gray-100">Configurações do Sistema</h1>
+          <h1 className="text-heading-lg text-primary dark:text-gray-100">
+            Configurações do Sistema
+          </h1>
           <Badge variant="default">Admins</Badge>
         </header>
 
@@ -141,16 +160,29 @@ export const AdminConfiguracoes: React.FC = () => {
             <div className="grid md:grid-cols-[400px_1fr] gap-4 items-start">
               <div className="orx-card p-4 rounded-xl">
                 <div className="w-[400px] h-[200px]">
-                  <FileUpload onFileSelect={handlePfx} accept=".pfx" multiple={false} maxSize={MAX_PFX} />
+                  <FileUpload
+                    onFileSelect={handlePfx}
+                    accept=".pfx"
+                    multiple={false}
+                    maxSize={MAX_PFX}
+                  />
                 </div>
                 <div className="mt-3 grid grid-cols-1 md:grid-cols-[1fr_220px] gap-3 items-end">
                   <FormField label="Senha do Certificado" htmlFor="pfx-pass">
-                    <Input id="pfx-pass" type="password" placeholder="Senha do .pfx" value={pfxPassword} onChange={(e) => setPfxPassword(e.target.value)} />
+                    <Input
+                      id="pfx-pass"
+                      type="password"
+                      placeholder="Senha do .pfx"
+                      value={pfxPassword}
+                      onChange={(e) => setPfxPassword(e.target.value)}
+                    />
                   </FormField>
                   <button
                     type="button"
                     className="orx-button-primary px-3 py-2 rounded-lg"
-                    onClick={() => setPfxPasswordOk(pfxPassword.trim().length >= 4)}
+                    onClick={() =>
+                      setPfxPasswordOk(pfxPassword.trim().length >= 4)
+                    }
                     title="Validar senha"
                   >
                     Validar senha
@@ -159,8 +191,13 @@ export const AdminConfiguracoes: React.FC = () => {
               </div>
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <ShieldCheck className={pfxValid ? "text-success" : "text-warning"} size={18} />
-                  <span className="text-body-sm text-secondary dark:text-muted">Validação em tempo real</span>
+                  <ShieldCheck
+                    className={pfxValid ? "text-success" : "text-warning"}
+                    size={18}
+                  />
+                  <span className="text-body-sm text-secondary dark:text-muted">
+                    Validação em tempo real
+                  </span>
                 </div>
                 {pfxPasswordOk !== null && (
                   <div className="text-body-sm">
@@ -173,11 +210,15 @@ export const AdminConfiguracoes: React.FC = () => {
                 )}
                 {pfxInfo?.validade && (
                   <div className="flex items-center gap-2">
-                    <Badge variant="default">Válido até {pfxInfo.validade}</Badge>
+                    <Badge variant="default">
+                      Válido até {pfxInfo.validade}
+                    </Badge>
                   </div>
                 )}
                 {pfxFiles.length > 0 && (
-                  <div className="text-body-xs text-secondary dark:text-muted">{pfxFiles[0].name}</div>
+                  <div className="text-body-xs text-secondary dark:text-muted">
+                    {pfxFiles[0].name}
+                  </div>
                 )}
               </div>
             </div>
@@ -188,20 +229,29 @@ export const AdminConfiguracoes: React.FC = () => {
         <Card>
           <CardHeader>
             <CardTitle>Upload de Logo</CardTitle>
-            <CardDescription>PNG/JPG/SVG 200x60 (transparente preferível)</CardDescription>
+            <CardDescription>
+              PNG/JPG/SVG 200x60 (transparente preferível)
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4 items-start">
               <div className="orx-card p-4 rounded-xl">
-                <FileUpload onFileSelect={handleLogo} accept=".png,.jpg,.jpeg,.svg" multiple={false} />
+                <FileUpload
+                  onFileSelect={handleLogo}
+                  accept=".png,.jpg,.jpeg,.svg"
+                  multiple={false}
+                />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="orx-card p-4 rounded-xl bg-white">
                   <p className="text-body-sm text-secondary mb-2">Light</p>
                   <div className="h-[60px] flex items-center justify-center bg-gray-50 rounded">
                     {logoUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={logoUrl} alt="logo" className="h-[40px] object-contain" />
+                      <img
+                        src={logoUrl}
+                        alt="logo"
+                        className="h-[40px] object-contain"
+                      />
                     ) : (
                       <Camera className="text-muted" />
                     )}
@@ -211,8 +261,11 @@ export const AdminConfiguracoes: React.FC = () => {
                   <p className="text-body-sm mb-2 text-white/70">Dark</p>
                   <div className="h-[60px] flex items-center justify-center bg-[#0b0f19] rounded">
                     {logoUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={logoUrl} alt="logo" className="h-[40px] object-contain invert" />
+                      <img
+                        src={logoUrl}
+                        alt="logo"
+                        className="h-[40px] object-contain invert"
+                      />
                     ) : (
                       <Camera className="text-muted" />
                     )}
@@ -227,7 +280,9 @@ export const AdminConfiguracoes: React.FC = () => {
         <Card>
           <CardHeader>
             <CardTitle>Cadastro Empresa via CNPJ</CardTitle>
-            <CardDescription>Auto-preenchimento via Receita Federal</CardDescription>
+            <CardDescription>
+              Auto-preenchimento via Receita Federal
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -243,67 +298,151 @@ export const AdminConfiguracoes: React.FC = () => {
                   }}
                 />
                 <div className="text-body-sm text-secondary dark:text-muted">
-                  {cnpjValid ? "CNPJ válido. Buscando dados..." : "Preencha um CNPJ válido"}
+                  {cnpjValid
+                    ? "CNPJ válido. Buscando dados..."
+                    : "Preencha um CNPJ válido"}
                 </div>
               </div>
 
               <FormGroup columns={2}>
                 <FormField label="Razão Social">
-                  <Input value={empresa.razao} readOnly className="cursor-not-allowed bg-muted/30" />
+                  <Input
+                    value={empresa.razao}
+                    readOnly
+                    className="cursor-not-allowed bg-muted/30"
+                  />
                 </FormField>
                 <FormField label="Nome Fantasia">
-                  <Input value={empresa.fantasia} readOnly className="cursor-not-allowed bg-muted/30" />
+                  <Input
+                    value={empresa.fantasia}
+                    readOnly
+                    className="cursor-not-allowed bg-muted/30"
+                  />
                 </FormField>
                 <FormField label="CEP">
-                  <Input value={empresa.cep} readOnly className="cursor-not-allowed bg-muted/30" />
+                  <Input
+                    value={empresa.cep}
+                    readOnly
+                    className="cursor-not-allowed bg-muted/30"
+                  />
                 </FormField>
                 <FormField label="Endereço">
-                  <Input value={empresa.endereco} readOnly className="cursor-not-allowed bg-muted/30" />
+                  <Input
+                    value={empresa.endereco}
+                    readOnly
+                    className="cursor-not-allowed bg-muted/30"
+                  />
                 </FormField>
                 <FormField label="Número">
-                  <Input value={empresa.numero} readOnly className="cursor-not-allowed bg-muted/30" />
+                  <Input
+                    value={empresa.numero}
+                    readOnly
+                    className="cursor-not-allowed bg-muted/30"
+                  />
                 </FormField>
                 <FormField label="Bairro">
-                  <Input value={empresa.bairro} readOnly className="cursor-not-allowed bg-muted/30" />
+                  <Input
+                    value={empresa.bairro}
+                    readOnly
+                    className="cursor-not-allowed bg-muted/30"
+                  />
                 </FormField>
                 <FormField label="Cidade">
-                  <Input value={empresa.cidade} readOnly className="cursor-not-allowed bg-muted/30" />
+                  <Input
+                    value={empresa.cidade}
+                    readOnly
+                    className="cursor-not-allowed bg-muted/30"
+                  />
                 </FormField>
                 <FormField label="Estado">
-                  <Input value={empresa.estado} readOnly className="cursor-not-allowed bg-muted/30" />
+                  <Input
+                    value={empresa.estado}
+                    readOnly
+                    className="cursor-not-allowed bg-muted/30"
+                  />
                 </FormField>
                 <FormField label="Telefone">
-                  <Input value={empresa.telefone} readOnly className="cursor-not-allowed bg-muted/30" />
+                  <Input
+                    value={empresa.telefone}
+                    readOnly
+                    className="cursor-not-allowed bg-muted/30"
+                  />
                 </FormField>
                 <FormField label="Email">
-                  <Input value={empresa.email} readOnly className="cursor-not-allowed bg-muted/30" />
+                  <Input
+                    value={empresa.email}
+                    readOnly
+                    className="cursor-not-allowed bg-muted/30"
+                  />
                 </FormField>
                 <FormField label="Atividade Principal">
-                  <Textarea value={empresa.atividadePrincipal} readOnly className="cursor-not-allowed bg-muted/30" />
+                  <Textarea
+                    value={empresa.atividadePrincipal}
+                    readOnly
+                    className="cursor-not-allowed bg-muted/30"
+                  />
                 </FormField>
                 <FormField label="Atividades Secundárias">
-                  <Textarea value={empresa.atividadesSecundarias} readOnly className="cursor-not-allowed bg-muted/30" />
+                  <Textarea
+                    value={empresa.atividadesSecundarias}
+                    readOnly
+                    className="cursor-not-allowed bg-muted/30"
+                  />
                 </FormField>
                 <FormField label="Situação Cadastral">
-                  <Input value={empresa.situacao} readOnly className="cursor-not-allowed bg-muted/30" />
+                  <Input
+                    value={empresa.situacao}
+                    readOnly
+                    className="cursor-not-allowed bg-muted/30"
+                  />
                 </FormField>
                 <FormField label="Data de Abertura">
-                  <Input value={empresa.abertura} readOnly className="cursor-not-allowed bg-muted/30" />
+                  <Input
+                    value={empresa.abertura}
+                    readOnly
+                    className="cursor-not-allowed bg-muted/30"
+                  />
                 </FormField>
                 <FormField label="Capital Social">
-                  <Input value={empresa.capitalSocial} readOnly className="cursor-not-allowed bg-muted/30" />
+                  <Input
+                    value={empresa.capitalSocial}
+                    readOnly
+                    className="cursor-not-allowed bg-muted/30"
+                  />
                 </FormField>
                 <FormField label="Natureza Jurídica">
-                  <Input value={empresa.naturezaJuridica} readOnly className="cursor-not-allowed bg-muted/30" />
+                  <Input
+                    value={empresa.naturezaJuridica}
+                    readOnly
+                    className="cursor-not-allowed bg-muted/30"
+                  />
                 </FormField>
                 <FormField label="IE">
-                  <Input value={empresa.ie} onChange={(e) => setEmpresa({ ...empresa, ie: e.target.value })} />
+                  <Input
+                    value={empresa.ie}
+                    onChange={(e) =>
+                      setEmpresa({ ...empresa, ie: e.target.value })
+                    }
+                  />
                 </FormField>
                 <FormField label="IM">
-                  <Input value={empresa.im} onChange={(e) => setEmpresa({ ...empresa, im: e.target.value })} />
+                  <Input
+                    value={empresa.im}
+                    onChange={(e) =>
+                      setEmpresa({ ...empresa, im: e.target.value })
+                    }
+                  />
                 </FormField>
                 <FormField label="Regime Tributário">
-                  <Input value={empresa.regimeTributario} onChange={(e) => setEmpresa({ ...empresa, regimeTributario: standardizeUppercase(e.target.value) })} />
+                  <Input
+                    value={empresa.regimeTributario}
+                    onChange={(e) =>
+                      setEmpresa({
+                        ...empresa,
+                        regimeTributario: standardizeUppercase(e.target.value),
+                      })
+                    }
+                  />
                 </FormField>
                 <FormField label="Responsável Legal">
                   <div>
@@ -312,22 +451,29 @@ export const AdminConfiguracoes: React.FC = () => {
                       onChange={(e) => handleResponsavelChange(e.target.value)}
                       placeholder="NOME COMPLETO"
                       className={
-                        responsavelStatus === 'corrigindo'
-                          ? 'border-warning animate-pulse'
-                          : responsavelStatus === 'invalido'
-                          ? 'border-error'
-                          : ''
+                        responsavelStatus === "corrigindo"
+                          ? "border-warning animate-pulse"
+                          : responsavelStatus === "invalido"
+                            ? "border-error"
+                            : ""
                       }
                     />
                     <div className="mt-1 flex items-center gap-2">
-                      {responsavelStatus === 'padronizado' && (
+                      {responsavelStatus === "padronizado" && (
                         <Badge variant="default">✓ Padronizado</Badge>
                       )}
-                      {responsavelStatus === 'corrigindo' && (
-                        <Badge variant="default" className="bg-warning/10 text-warning">Corrigindo…</Badge>
+                      {responsavelStatus === "corrigindo" && (
+                        <Badge
+                          variant="default"
+                          className="bg-warning/10 text-warning"
+                        >
+                          Corrigindo…
+                        </Badge>
                       )}
-                      {responsavelStatus === 'invalido' && (
-                        <span className="text-body-xs text-error">Valor inválido</span>
+                      {responsavelStatus === "invalido" && (
+                        <span className="text-body-xs text-error">
+                          Valor inválido
+                        </span>
                       )}
                     </div>
                   </div>
@@ -341,15 +487,38 @@ export const AdminConfiguracoes: React.FC = () => {
         <Card>
           <CardHeader>
             <CardTitle>Templates de Documentos</CardTitle>
-            <CardDescription>Editor visual com variáveis {{variable}}</CardDescription>
+            <CardDescription>
+              Editor visual com variáveis {{ variable }}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <div className="flex flex-wrap items-center gap-2">
-                  <button type="button" className="orx-button px-2 py-1" title="Negrito" onClick={() => document.execCommand('bold')}>B</button>
-                  <button type="button" className="orx-button px-2 py-1" title="Itálico" onClick={() => document.execCommand('italic')}>I</button>
-                  <button type="button" className="orx-button px-2 py-1" title="Sublinhado" onClick={() => document.execCommand('underline')}>U</button>
+                  <button
+                    type="button"
+                    className="orx-button px-2 py-1"
+                    title="Negrito"
+                    onClick={() => document.execCommand("bold")}
+                  >
+                    B
+                  </button>
+                  <button
+                    type="button"
+                    className="orx-button px-2 py-1"
+                    title="Itálico"
+                    onClick={() => document.execCommand("italic")}
+                  >
+                    I
+                  </button>
+                  <button
+                    type="button"
+                    className="orx-button px-2 py-1"
+                    title="Sublinhado"
+                    onClick={() => document.execCommand("underline")}
+                  >
+                    U
+                  </button>
                   <button
                     type="button"
                     className="orx-button px-2 py-1"
@@ -377,13 +546,22 @@ export const AdminConfiguracoes: React.FC = () => {
                   ref={editorRef}
                   contentEditable
                   className="orx-card p-3 rounded-lg min-h-[220px] focus:outline-none"
-                  onInput={(e) => setTemplateHtml((e.target as HTMLDivElement).innerHTML)}
+                  onInput={(e) =>
+                    setTemplateHtml((e.target as HTMLDivElement).innerHTML)
+                  }
                   aria-label="Editor de template"
                 />
               </div>
               <div className="orx-card p-4 rounded-xl">
                 <p className="text-body-sm text-secondary mb-2">Preview</p>
-                <div className="p-3 bg-surface dark:bg-card rounded-lg text-body-sm text-primary dark:text-gray-100" dangerouslySetInnerHTML={{ __html: templateHtml || 'Ex.: Prezado {{"cliente.nome"}}, segue o documento de {{"tipo"}}...' }} />
+                <div
+                  className="p-3 bg-surface dark:bg-card rounded-lg text-body-sm text-primary dark:text-gray-100"
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      templateHtml ||
+                      'Ex.: Prezado {{"cliente.nome"}}, segue o documento de {{"tipo"}}...',
+                  }}
+                />
               </div>
             </div>
           </CardContent>
@@ -394,5 +572,3 @@ export const AdminConfiguracoes: React.FC = () => {
 };
 
 export default AdminConfiguracoes;
-
-

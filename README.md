@@ -31,10 +31,15 @@ Sistema completo de gestão para empresas de OPME, integrando todos os processos
 
 ### Vercel (Recomendado)
 
+**URLs do Projeto:**
+
+- **Domain**: https://icarus-oficial.vercel.app
+- **Repository**: https://github.com/Icarus-AI-Technology/icarus-oficial
+
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/Icarus-AI-Technology/icarus-newortho.git
-cd icarus-newortho
+git clone https://github.com/Icarus-AI-Technology/icarus-oficial.git
+cd icarus-oficial
 
 # 2. Instale dependências
 pnpm install
@@ -43,11 +48,23 @@ pnpm install
 cp env.example .env
 # Edite .env com suas credenciais Supabase
 
-# 4. Deploy
-./deploy-vercel.sh
+# 4. Build local (teste antes do deploy)
+pnpm type-check && pnpm build
+
+# 5. Deploy via Vercel CLI
+vercel --prod
 ```
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Icarus-AI-Technology/icarus-newortho)
+**⚠️ IMPORTANTE**: Configure o Vercel para **Vite** (NÃO Next.js):
+
+- **Framework**: Vite (ou deixe em branco)
+- **Build Command**: `pnpm type-check && pnpm build`
+- **Output Directory**: `dist`
+- **Install Command**: `pnpm install`
+
+**📖 Guia Completo**: [DEPLOYMENT.md](./DEPLOYMENT.md)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Icarus-AI-Technology/icarus-oficial)
 
 ---
 
@@ -64,18 +81,18 @@ cp env.example .env
 
 ## 📊 Status do Projeto
 
-| Módulo | Status | Coverage |
-|--------|--------|----------|
-| **Design System** | ✅ Completo | 100% |
-| **Autenticação** | ✅ Completo | 100% |
-| **Dashboard Principal** | ✅ Completo | 95% |
-| **Gestão de Cirurgias** | ✅ Completo | 90% |
-| **Estoque & Consignação** | ✅ Completo | 92% |
-| **Financeiro** | ✅ Completo | 88% |
-| **Compras** | ✅ Completo | 85% |
-| **CRM & Vendas** | ✅ Completo | 80% |
-| **Compliance** | ✅ Completo | 90% |
-| **IA & Analytics** | ✅ Completo | 85% |
+| Módulo                    | Status      | Coverage |
+| ------------------------- | ----------- | -------- |
+| **Design System**         | ✅ Completo | 100%     |
+| **Autenticação**          | ✅ Completo | 100%     |
+| **Dashboard Principal**   | ✅ Completo | 95%      |
+| **Gestão de Cirurgias**   | ✅ Completo | 90%      |
+| **Estoque & Consignação** | ✅ Completo | 92%      |
+| **Financeiro**            | ✅ Completo | 88%      |
+| **Compras**               | ✅ Completo | 85%      |
+| **CRM & Vendas**          | ✅ Completo | 80%      |
+| **Compliance**            | ✅ Completo | 90%      |
+| **IA & Analytics**        | ✅ Completo | 85%      |
 
 **Score Geral:** 92/100 ⭐
 
@@ -111,12 +128,31 @@ pnpm test:e2e
 
 ### Variáveis de Ambiente
 
+**Obrigatórias:**
+
 ```env
 VITE_SUPABASE_URL=https://your-project-id.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key-here
+VITE_APP_URL=https://icarus-oficial.vercel.app
 ```
 
 Veja `env.example` para todas as variáveis disponíveis.
+
+### Troubleshooting Build Vercel
+
+**Erro**: "Could not load Textarea"
+
+- **Causa**: Filesystem case-sensitive (Linux)
+- **Solução**: Imports devem usar lowercase: `@/components/ui/textarea`
+
+**Erro**: Framework incorreto
+
+- **Causa**: Vercel configurado para Next.js
+- **Solução**: Configure para Vite no vercel.json
+
+**Nota**: Mensagem "A more recent Production Deployment has been created" é apenas informativa. Faça novo commit/push para novo deployment.
+
+📖 **Guia Completo de Deploy**: [DEPLOYMENT.md](./DEPLOYMENT.md)
 
 ---
 

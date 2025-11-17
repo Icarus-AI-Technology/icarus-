@@ -1,0 +1,33 @@
+{
+  "timestamp": "2025-10-27T16:43:26.469Z",
+  "total_functions": 17,
+  "ai_functions": 2,
+  "functions": ["edr-orchestrator", "ml-vectors"],
+  "recommendations": [
+    {
+      "name": "ai-tutor-financeiro",
+      "desc": "Tutor IA para módulo financeiro"
+    },
+    {
+      "name": "ai-tutor-opme",
+      "desc": "Assistente IA para gestão OPME"
+    },
+    {
+      "name": "ai-tutor-compliance",
+      "desc": "Tutor IA para compliance ANVISA/ANS"
+    },
+    {
+      "name": "ml-predicao-demanda",
+      "desc": "ML para previsão de demanda"
+    },
+    {
+      "name": "ml-analise-risco",
+      "desc": "ML para análise de risco financeiro"
+    },
+    {
+      "name": "ai-chatbot-icarus",
+      "desc": "Chatbot geral do Icarus"
+    }
+  ],
+  "status": "needs_improvement"
+}

@@ -1,27 +1,27 @@
 /**
  * Queue Configuration - BullMQ/Redis
- * 
+ *
  * Gerenciamento de filas para processamento assíncrono:
  * - Email queue
  * - SMS queue
  * - Rastreio queue
  * - Notificações queue
  * - Dead Letter Queue (DLQ) para jobs falhados
- * 
+ *
  * Documentação: https://docs.bullmq.io/
  */
 
-import { Queue, QueueOptions, DefaultJobOptions } from 'bullmq';
-import { Redis } from 'ioredis';
+import { Queue, DefaultJobOptions } from "bullmq";
+import { Redis } from "ioredis";
 
 // ===== Configuração Redis =====
 const redisConnection = {
-  host: process.env.REDIS_HOST || 'localhost',
-  port: parseInt(process.env.REDIS_PORT || '6379'),
+  host: process.env.REDIS_HOST || "localhost",
+  port: parseInt(process.env.REDIS_PORT || "6379"),
   password: process.env.REDIS_PASSWORD || undefined,
-  db: parseInt(process.env.REDIS_DB || '0'),
+  db: parseInt(process.env.REDIS_DB || "0"),
   maxRetriesPerRequest: null, // Necessário para BullMQ
-  enableReadyCheck: false
+  enableReadyCheck: false,
 };
 
 // Criar conexão Redis compartilhada
@@ -31,16 +31,16 @@ export const redis = new Redis(redisConnection);
 const defaultJobOptions: DefaultJobOptions = {
   attempts: 3, // Número de tentativas
   backoff: {
-    type: 'exponential',
-    delay: 2000 // Começa com 2s, depois 4s, 8s...
+    type: "exponential",
+    delay: 2000, // Começa com 2s, depois 4s, 8s...
   },
   removeOnComplete: {
     age: 24 * 3600, // Remove após 24h
-    count: 1000 // Mantém últimos 1000
+    count: 1000, // Mantém últimos 1000
   },
   removeOnFail: {
-    age: 7 * 24 * 3600 // Remove falhas após 7 dias
-  }
+    age: 7 * 24 * 3600, // Remove falhas após 7 dias
+  },
 };
 
 // ===== Criar Queues =====
@@ -48,69 +48,69 @@ const defaultJobOptions: DefaultJobOptions = {
 /**
  * Queue de Emails
  */
-export const emailQueue = new Queue('email', {
+export const emailQueue = new Queue("email", {
   connection: redisConnection,
   defaultJobOptions: {
     ...defaultJobOptions,
-    priority: 1 // Alta prioridade para emails
-  }
+    priority: 1, // Alta prioridade para emails
+  },
 });
 
 /**
  * Queue de SMS
  */
-export const smsQueue = new Queue('sms', {
+export const smsQueue = new Queue("sms", {
   connection: redisConnection,
   defaultJobOptions: {
     ...defaultJobOptions,
-    priority: 2 // Média prioridade
-  }
+    priority: 2, // Média prioridade
+  },
 });
 
 /**
  * Queue de WhatsApp
  */
-export const whatsappQueue = new Queue('whatsapp', {
+export const whatsappQueue = new Queue("whatsapp", {
   connection: redisConnection,
   defaultJobOptions: {
     ...defaultJobOptions,
-    priority: 2
-  }
+    priority: 2,
+  },
 });
 
 /**
  * Queue de Rastreio
  */
-export const rastreioQueue = new Queue('rastreio', {
+export const rastreioQueue = new Queue("rastreio", {
   connection: redisConnection,
   defaultJobOptions: {
     ...defaultJobOptions,
     priority: 3, // Baixa prioridade
     repeat: {
       // Atualizar rastreios a cada 4 horas
-      pattern: '0 */4 * * *'
-    }
-  }
+      pattern: "0 */4 * * *",
+    },
+  },
 });
 
 /**
  * Queue de Notificações
  */
-export const notificacoesQueue = new Queue('notificacoes', {
+export const notificacoesQueue = new Queue("notificacoes", {
   connection: redisConnection,
-  defaultJobOptions
+  defaultJobOptions,
 });
 
 /**
  * Dead Letter Queue - Para jobs que falharam definitivamente
  */
-export const deadLetterQueue = new Queue('dead-letter', {
+export const deadLetterQueue = new Queue("dead-letter", {
   connection: redisConnection,
   defaultJobOptions: {
     attempts: 1, // Não tentar novamente
     removeOnComplete: false, // Nunca remover
-    removeOnFail: false // Nunca remover
-  }
+    removeOnFail: false, // Nunca remover
+  },
 });
 
 // ===== Tipos de Jobs =====
@@ -122,7 +122,7 @@ export interface EmailJob {
   texto?: string;
   template?: {
     id: string;
-    dados: Record<string, any>;
+    dados: Record<string, unknown>;
   };
 }
 
@@ -146,7 +146,7 @@ export interface RastreioJob {
 
 export interface NotificacaoJob {
   userId: string;
-  tipo: 'info' | 'warning' | 'error' | 'success';
+  tipo: "info" | "warning" | "error" | "success";
   titulo: string;
   mensagem: string;
   link?: string;
@@ -159,9 +159,9 @@ export interface NotificacaoJob {
  */
 export async function adicionarEmailNaFila(
   dados: EmailJob,
-  options?: Partial<DefaultJobOptions>
+  options?: Partial<DefaultJobOptions>,
 ) {
-  return await emailQueue.add('send-email', dados, options);
+  return await emailQueue.add("send-email", dados, options);
 }
 
 /**
@@ -169,9 +169,9 @@ export async function adicionarEmailNaFila(
  */
 export async function adicionarSMSNaFila(
   dados: SMSJob,
-  options?: Partial<DefaultJobOptions>
+  options?: Partial<DefaultJobOptions>,
 ) {
-  return await smsQueue.add('send-sms', dados, options);
+  return await smsQueue.add("send-sms", dados, options);
 }
 
 /**
@@ -179,9 +179,9 @@ export async function adicionarSMSNaFila(
  */
 export async function adicionarWhatsAppNaFila(
   dados: WhatsAppJob,
-  options?: Partial<DefaultJobOptions>
+  options?: Partial<DefaultJobOptions>,
 ) {
-  return await whatsappQueue.add('send-whatsapp', dados, options);
+  return await whatsappQueue.add("send-whatsapp", dados, options);
 }
 
 /**
@@ -189,9 +189,9 @@ export async function adicionarWhatsAppNaFila(
  */
 export async function adicionarRastreioNaFila(
   dados: RastreioJob,
-  options?: Partial<DefaultJobOptions>
+  options?: Partial<DefaultJobOptions>,
 ) {
-  return await rastreioQueue.add('track-package', dados, options);
+  return await rastreioQueue.add("track-package", dados, options);
 }
 
 /**
@@ -199,19 +199,21 @@ export async function adicionarRastreioNaFila(
  */
 export async function moverParaDLQ(
   queueName: string,
-  jobId: string,
-  jobData: any,
-  error: Error
+  jobId: string | number,
+  jobData: Record<string, unknown>,
+  error: unknown,
 ) {
-  return await deadLetterQueue.add('failed-job', {
+  const normalizedError =
+    error instanceof Error
+      ? { message: error.message, stack: error.stack }
+      : { message: String(error) };
+
+  return await deadLetterQueue.add("failed-job", {
     originalQueue: queueName,
     originalJobId: jobId,
     jobData,
-    error: {
-      message: error.message,
-      stack: error.stack
-    },
-    timestamp: new Date()
+    error: normalizedError,
+    timestamp: new Date(),
   });
 }
 
@@ -224,12 +226,12 @@ export async function limparJobsAntigos() {
     smsQueue,
     whatsappQueue,
     rastreioQueue,
-    notificacoesQueue
+    notificacoesQueue,
   ];
 
   for (const queue of queues) {
-    await queue.clean(24 * 3600 * 1000, 1000, 'completed'); // Completados há mais de 24h
-    await queue.clean(7 * 24 * 3600 * 1000, 1000, 'failed'); // Falhados há mais de 7 dias
+    await queue.clean(24 * 3600 * 1000, 1000, "completed"); // Completados há mais de 24h
+    await queue.clean(7 * 24 * 3600 * 1000, 1000, "failed"); // Falhados há mais de 7 dias
   }
 }
 
@@ -243,10 +245,19 @@ export async function obterEstatisticas() {
     whatsapp: whatsappQueue,
     rastreio: rastreioQueue,
     notificacoes: notificacoesQueue,
-    'dead-letter': deadLetterQueue
+    "dead-letter": deadLetterQueue,
   };
 
-  const stats: Record<string, any> = {};
+  interface QueueMetrics {
+    waiting: number;
+    active: number;
+    completed: number;
+    failed: number;
+    delayed: number;
+    total: number;
+  }
+
+  const stats: Record<string, QueueMetrics> = {};
 
   for (const [name, queue] of Object.entries(queues)) {
     const [waiting, active, completed, failed, delayed] = await Promise.all([
@@ -254,7 +265,7 @@ export async function obterEstatisticas() {
       queue.getActiveCount(),
       queue.getCompletedCount(),
       queue.getFailedCount(),
-      queue.getDelayedCount()
+      queue.getDelayedCount(),
     ]);
 
     stats[name] = {
@@ -263,7 +274,7 @@ export async function obterEstatisticas() {
       completed,
       failed,
       delayed,
-      total: waiting + active + completed + failed + delayed
+      total: waiting + active + completed + failed + delayed,
     };
   }
 
@@ -279,7 +290,7 @@ export async function pausarTodasAsFilas() {
     smsQueue.pause(),
     whatsappQueue.pause(),
     rastreioQueue.pause(),
-    notificacoesQueue.pause()
+    notificacoesQueue.pause(),
   ]);
 }
 
@@ -292,7 +303,7 @@ export async function resumirTodasAsFilas() {
     smsQueue.resume(),
     whatsappQueue.resume(),
     rastreioQueue.resume(),
-    notificacoesQueue.resume()
+    notificacoesQueue.resume(),
   ]);
 }
 
@@ -307,19 +318,19 @@ export async function fecharConexoes() {
     rastreioQueue.close(),
     notificacoesQueue.close(),
     deadLetterQueue.close(),
-    redis.quit()
+    redis.quit(),
   ]);
 }
 
 // Graceful shutdown
-process.on('SIGTERM', async () => {
-  console.log('Recebido SIGTERM, fechando filas...');
+process.on("SIGTERM", async () => {
+  console.log("Recebido SIGTERM, fechando filas...");
   await fecharConexoes();
   process.exit(0);
 });
 
-process.on('SIGINT', async () => {
-  console.log('Recebido SIGINT, fechando filas...');
+process.on("SIGINT", async () => {
+  console.log("Recebido SIGINT, fechando filas...");
   await fecharConexoes();
   process.exit(0);
 });
@@ -331,6 +342,5 @@ export default {
   rastreioQueue,
   notificacoesQueue,
   deadLetterQueue,
-  redis
+  redis,
 };
-

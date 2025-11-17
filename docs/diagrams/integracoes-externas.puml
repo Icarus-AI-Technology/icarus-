@@ -1,0 +1,62 @@
+@startuml Integracoes_Externas
+!theme cerulean-outline
+skinparam linetype ortho
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+title Integrações Externas - ICARUS v5.0 (OraclusX)
+
+package "IoT/RFID/Blockchain" as iot_package {
+  component [IoT / RFID Readers] as IoT
+  database [Blockchain Ledger] as Blockchain
+  IoT --> Blockchain : Envio de dados\n(MQTT/WebSocket)
+}
+
+package "Fornecedores / Mercado" as fornecedores_package {
+  component [Fornecedores OPME] as Fornecedores
+  component [Benchmark Externo] as Benchmark
+  Fornecedores --> Benchmark : API / dados web\n(REST/GraphQL)
+}
+
+package "Regulatório" as regulatorio_package {
+  component [ANVISA / UDI] as ANVISA
+  component [Certificações ISO / BPD] as Certificacoes
+  ANVISA --> ERP_Backend : Registros & rastreio\n(API REST)
+  Certificacoes --> ERP_Backend : Auditoria\n(Webhooks)
+}
+
+component [ERP / OraclusX Backend] as ERP_Backend
+component [Dashboard ICARUS] as Dashboard
+actor [Usuário\n(Hospital/Distribuidor)] as Usuarios
+
+Blockchain --> ERP_Backend : Consulta histórica\n(Blockchain RPC)
+Benchmark --> ERP_Backend : Relatórios & comparativos\n(HTTP/JSON)
+ERP_Backend --> Dashboard : WebSocket/REST
+Dashboard --> Usuarios : Interface React
+
+note right of iot_package
+  **IoT/RFID/Blockchain**
+  • Rastreabilidade em tempo real
+  • Imutabilidade de registros
+  • Smart Contracts
+  • Sensores de temperatura
+end note
+
+note right of fornecedores_package
+  **Fornecedores & Mercado**
+  • APIs de fornecedores
+  • Web scraping
+  • Análise de preços
+  • EDI (Electronic Data Interchange)
+end note
+
+note right of regulatorio_package
+  **Compliance & Regulatório**
+  • ANVISA (UDI/Device Registry)
+  • SEFAZ (NFe/NFSe)
+  • Certificações ISO 13485
+  • LGPD/HIPAA Compliance
+end note
+
+@enduml
+

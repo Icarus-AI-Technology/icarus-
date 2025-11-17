@@ -1,0 +1,3348 @@
+{
+  "timestamp": "2025-10-27T01:49:45.496Z",
+  "totalMigrations": 94,
+  "tablesWithRLS": [
+    {
+      "table": "edr_research_sessions",
+      "migration": "20250126000000_edr_integration.sql"
+    },
+    {
+      "table": "organizations",
+      "migration": "20250126000001_icarus_pro_master.sql"
+    },
+    {
+      "table": "user_organizations",
+      "migration": "20250126000001_icarus_pro_master.sql"
+    },
+    {
+      "table": "profiles",
+      "migration": "20250126000001_icarus_pro_master.sql"
+    },
+    {
+      "table": "roles",
+      "migration": "20250126000001_icarus_pro_master.sql"
+    },
+    {
+      "table": "user_roles",
+      "migration": "20250126000001_icarus_pro_master.sql"
+    },
+    {
+      "table": "permissions",
+      "migration": "20250126000001_icarus_pro_master.sql"
+    },
+    {
+      "table": "role_permissions",
+      "migration": "20250126000001_icarus_pro_master.sql"
+    },
+    {
+      "table": "contact_messages",
+      "migration": "20250126000001_icarus_pro_master.sql"
+    },
+    {
+      "table": "activity_logs",
+      "migration": "20250126000001_icarus_pro_master.sql"
+    },
+    {
+      "table": "notifications",
+      "migration": "20250126000001_icarus_pro_master.sql"
+    },
+    {
+      "table": "feature_flags",
+      "migration": "20250126000001_icarus_pro_master.sql"
+    },
+    {
+      "table": "system_settings",
+      "migration": "20250126000001_icarus_pro_master.sql"
+    },
+    {
+      "table": "audit_trail",
+      "migration": "20250126000001_icarus_pro_master.sql"
+    },
+    {
+      "table": "chatbot_conversas",
+      "migration": "20251019_chatbot_navegacao_ptbr.sql"
+    },
+    {
+      "table": "chatbot_mensagens",
+      "migration": "20251019_chatbot_navegacao_ptbr.sql"
+    },
+    {
+      "table": "chatbot_intencoes",
+      "migration": "20251019_chatbot_navegacao_ptbr.sql"
+    },
+    {
+      "table": "chatbot_faqs",
+      "migration": "20251019_chatbot_navegacao_ptbr.sql"
+    },
+    {
+      "table": "chatbot_treinamento",
+      "migration": "20251019_chatbot_navegacao_ptbr.sql"
+    },
+    {
+      "table": "chatbot_metricas",
+      "migration": "20251019_chatbot_navegacao_ptbr.sql"
+    },
+    {
+      "table": "chatbot_anexos",
+      "migration": "20251019_chatbot_navegacao_ptbr.sql"
+    },
+    {
+      "table": "chatbot_feedback",
+      "migration": "20251019_chatbot_navegacao_ptbr.sql"
+    },
+    {
+      "table": "chatbot_audit_log",
+      "migration": "20251019_chatbot_navegacao_ptbr.sql"
+    },
+    {
+      "table": "estoque_armazens",
+      "migration": "20251019_estoque_inteligente_completo.sql"
+    },
+    {
+      "table": "estoque_localizacoes",
+      "migration": "20251019_estoque_inteligente_completo.sql"
+    },
+    {
+      "table": "estoque",
+      "migration": "20251019_estoque_inteligente_completo.sql"
+    },
+    {
+      "table": "estoque_movimentacoes",
+      "migration": "20251019_estoque_inteligente_completo.sql"
+    },
+    {
+      "table": "estoque_reservas",
+      "migration": "20251019_estoque_inteligente_completo.sql"
+    },
+    {
+      "table": "estoque_lotes",
+      "migration": "20251019_estoque_inteligente_completo.sql"
+    },
+    {
+      "table": "estoque_inventarios",
+      "migration": "20251019_estoque_inteligente_completo.sql"
+    },
+    {
+      "table": "estoque_inventarios_itens",
+      "migration": "20251019_estoque_inteligente_completo.sql"
+    },
+    {
+      "table": "estoque_alertas",
+      "migration": "20251019_estoque_inteligente_completo.sql"
+    },
+    {
+      "table": "portais_opme_config",
+      "migration": "20251019_portais_opme.sql"
+    },
+    {
+      "table": "portais_opme_palavras_chave",
+      "migration": "20251019_portais_opme.sql"
+    },
+    {
+      "table": "portais_opme_cotacoes",
+      "migration": "20251019_portais_opme.sql"
+    },
+    {
+      "table": "portais_opme_historico",
+      "migration": "20251019_portais_opme.sql"
+    },
+    {
+      "table": "portais_opme_cache",
+      "migration": "20251019_portais_opme.sql"
+    },
+    {
+      "table": "validacoes_cache",
+      "migration": "20251019_validacoes_cache.sql"
+    },
+    {
+      "table": "tabelas_precos",
+      "migration": "202510201400_tabelas_precos_opme.sql"
+    },
+    {
+      "table": "tabelas_precos_itens",
+      "migration": "202510201400_tabelas_precos_opme.sql"
+    },
+    {
+      "table": "historico_precos",
+      "migration": "202510201400_tabelas_precos_opme.sql"
+    },
+    {
+      "table": "api_credentials",
+      "migration": "202510201600_api_credentials.sql"
+    },
+    {
+      "table": "notificacoes",
+      "migration": "20251020_advanced_features.sql"
+    },
+    {
+      "table": "audit_logs_advanced",
+      "migration": "20251020_advanced_features.sql"
+    },
+    {
+      "table": "backups",
+      "migration": "20251020_advanced_features.sql"
+    },
+    {
+      "table": "api_endpoints",
+      "migration": "20251020_api_gateway.sql"
+    },
+    {
+      "table": "api_requests_log",
+      "migration": "20251020_api_gateway.sql"
+    },
+    {
+      "table": "api_rate_limits",
+      "migration": "20251020_api_gateway.sql"
+    },
+    {
+      "table": "api_circuit_breaker",
+      "migration": "20251020_api_gateway.sql"
+    },
+    {
+      "table": "api_cache",
+      "migration": "20251020_api_gateway.sql"
+    },
+    {
+      "table": "api_health_checks",
+      "migration": "20251020_api_gateway.sql"
+    },
+    {
+      "table": "api_alerts",
+      "migration": "20251020_api_gateway.sql"
+    },
+    {
+      "table": "bi_dimensao_tempo",
+      "migration": "20251020_bi_analytics.sql"
+    },
+    {
+      "table": "bi_dimensao_produto",
+      "migration": "20251020_bi_analytics.sql"
+    },
+    {
+      "table": "bi_dimensao_cliente",
+      "migration": "20251020_bi_analytics.sql"
+    },
+    {
+      "table": "bi_dimensao_vendedor",
+      "migration": "20251020_bi_analytics.sql"
+    },
+    {
+      "table": "bi_fato_vendas",
+      "migration": "20251020_bi_analytics.sql"
+    },
+    {
+      "table": "bi_metricas_agregadas",
+      "migration": "20251020_bi_analytics.sql"
+    },
+    {
+      "table": "bi_previsao_demanda",
+      "migration": "20251020_bi_analytics.sql"
+    },
+    {
+      "table": "bi_dashboards_personalizados",
+      "migration": "20251020_bi_analytics.sql"
+    },
+    {
+      "table": "bi_relatorios_agendados",
+      "migration": "20251020_bi_analytics.sql"
+    },
+    {
+      "table": "plano_contas",
+      "migration": "20251020_gestao_contabil.sql"
+    },
+    {
+      "table": "centros_custo",
+      "migration": "20251020_gestao_contabil.sql"
+    },
+    {
+      "table": "lancamentos_contabeis",
+      "migration": "20251020_gestao_contabil.sql"
+    },
+    {
+      "table": "partidas_contabeis",
+      "migration": "20251020_gestao_contabil.sql"
+    },
+    {
+      "table": "kpi_metas",
+      "migration": "20251020_kpi_dashboard_consolidado.sql"
+    },
+    {
+      "table": "kpi_valores_historico",
+      "migration": "20251020_kpi_dashboard_consolidado.sql"
+    },
+    {
+      "table": "kpi_alertas",
+      "migration": "20251020_kpi_dashboard_consolidado.sql"
+    },
+    {
+      "table": "kpi_dashboard_widgets",
+      "migration": "20251020_kpi_dashboard_consolidado.sql"
+    },
+    {
+      "table": "licitacoes",
+      "migration": "20251020_licitacoes_propostas.sql"
+    },
+    {
+      "table": "propostas_comerciais",
+      "migration": "20251020_licitacoes_propostas.sql"
+    },
+    {
+      "table": "proposta_itens",
+      "migration": "20251020_licitacoes_propostas.sql"
+    },
+    {
+      "table": "licitacao_eventos",
+      "migration": "20251020_licitacoes_propostas.sql"
+    },
+    {
+      "table": "licitacao_documentos",
+      "migration": "20251020_licitacoes_propostas.sql"
+    },
+    {
+      "table": "microsoft_tokens",
+      "migration": "20251020_microsoft365_integration.sql"
+    },
+    {
+      "table": "reunioes_teams",
+      "migration": "20251020_microsoft365_integration.sql"
+    },
+    {
+      "table": "emails_enviados",
+      "migration": "20251020_microsoft365_integration.sql"
+    },
+    {
+      "table": "microsoft_contatos_sync",
+      "migration": "20251020_microsoft365_integration.sql"
+    },
+    {
+      "table": "microsoft_onedrive_files",
+      "migration": "20251020_microsoft365_integration.sql"
+    },
+    {
+      "table": "nfes",
+      "migration": "20251020_nfes_distribuidoras_opme.sql"
+    },
+    {
+      "table": "nfe_produtos",
+      "migration": "20251020_nfes_distribuidoras_opme.sql"
+    },
+    {
+      "table": "notifications",
+      "migration": "20251020_notifications_workflows.sql"
+    },
+    {
+      "table": "notification_queue",
+      "migration": "20251020_notifications_workflows.sql"
+    },
+    {
+      "table": "notification_retry",
+      "migration": "20251020_notifications_workflows.sql"
+    },
+    {
+      "table": "notification_log",
+      "migration": "20251020_notifications_workflows.sql"
+    },
+    {
+      "table": "workflow_instances",
+      "migration": "20251020_notifications_workflows.sql"
+    },
+    {
+      "table": "workflow_history",
+      "migration": "20251020_notifications_workflows.sql"
+    },
+    {
+      "table": "pluggy_connect_tokens",
+      "migration": "20251020_pluggy_tables.sql"
+    },
+    {
+      "table": "pluggy_items",
+      "migration": "20251020_pluggy_tables.sql"
+    },
+    {
+      "table": "pluggy_accounts",
+      "migration": "20251020_pluggy_tables.sql"
+    },
+    {
+      "table": "pluggy_transactions",
+      "migration": "20251020_pluggy_tables.sql"
+    },
+    {
+      "table": "pluggy_payments",
+      "migration": "20251020_pluggy_tables.sql"
+    },
+    {
+      "table": "pluggy_investments",
+      "migration": "20251020_pluggy_tables.sql"
+    },
+    {
+      "table": "pluggy_webhooks",
+      "migration": "20251020_pluggy_tables.sql"
+    },
+    {
+      "table": "pluggy_sync_log",
+      "migration": "20251020_pluggy_tables.sql"
+    },
+    {
+      "table": "roles",
+      "migration": "20251020_rbac_usuarios_permissoes.sql"
+    },
+    {
+      "table": "permissions",
+      "migration": "20251020_rbac_usuarios_permissoes.sql"
+    },
+    {
+      "table": "role_permissions",
+      "migration": "20251020_rbac_usuarios_permissoes.sql"
+    },
+    {
+      "table": "user_roles",
+      "migration": "20251020_rbac_usuarios_permissoes.sql"
+    },
+    {
+      "table": "user_permissions_override",
+      "migration": "20251020_rbac_usuarios_permissoes.sql"
+    },
+    {
+      "table": "user_sessions",
+      "migration": "20251020_rbac_usuarios_permissoes.sql"
+    },
+    {
+      "table": "user_2fa",
+      "migration": "20251020_rbac_usuarios_permissoes.sql"
+    },
+    {
+      "table": "audit_log",
+      "migration": "20251020_rbac_usuarios_permissoes.sql"
+    },
+    {
+      "table": "relatorios_regulatorios",
+      "migration": "20251020_relatorios_regulatorios.sql"
+    },
+    {
+      "table": "relatorios_templates",
+      "migration": "20251020_relatorios_regulatorios.sql"
+    },
+    {
+      "table": "relatorios_agendamentos",
+      "migration": "20251020_relatorios_regulatorios.sql"
+    },
+    {
+      "table": "anvisa_movimentacoes",
+      "migration": "20251020_relatorios_regulatorios.sql"
+    },
+    {
+      "table": "workflows",
+      "migration": "20251020_workflow_builder.sql"
+    },
+    {
+      "table": "workflow_execucoes",
+      "migration": "20251020_workflow_builder.sql"
+    },
+    {
+      "table": "workflow_aprovacoes",
+      "migration": "20251020_workflow_builder.sql"
+    },
+    {
+      "table": "agent_tasks",
+      "migration": "20251026_agent_orchestration_system.sql"
+    },
+    {
+      "table": "agent_logs",
+      "migration": "20251026_agent_orchestration_system.sql"
+    },
+    {
+      "table": "agent_reports",
+      "migration": "20251026_agent_orchestration_system.sql"
+    },
+    {
+      "table": "agent_sources",
+      "migration": "20251026_agent_orchestration_system.sql"
+    },
+    {
+      "table": "agent_metrics",
+      "migration": "20251026_agent_orchestration_system.sql"
+    },
+    {
+      "table": "edr_research_sessions",
+      "migration": "20251026_edr_schema.sql"
+    },
+    {
+      "table": "edr_research_results",
+      "migration": "20251026_edr_schema.sql"
+    },
+    {
+      "table": "edr_knowledge_gaps",
+      "migration": "20251026_edr_schema.sql"
+    },
+    {
+      "table": "edr_human_feedback",
+      "migration": "20251026_edr_schema.sql"
+    },
+    {
+      "table": "edr_visualizations",
+      "migration": "20251026_edr_schema.sql"
+    },
+    {
+      "table": "edr_agent_metrics",
+      "migration": "20251026_edr_schema.sql"
+    },
+    {
+      "table": "edr_commands",
+      "migration": "20251026_edr_schema.sql"
+    },
+    {
+      "table": "iot_devices",
+      "migration": "20251026_external_integrations.sql"
+    },
+    {
+      "table": "iot_readings",
+      "migration": "20251026_external_integrations.sql"
+    },
+    {
+      "table": "blockchain_transactions",
+      "migration": "20251026_external_integrations.sql"
+    },
+    {
+      "table": "supplier_integrations",
+      "migration": "20251026_external_integrations.sql"
+    },
+    {
+      "table": "supplier_api_logs",
+      "migration": "20251026_external_integrations.sql"
+    },
+    {
+      "table": "external_product_catalog",
+      "migration": "20251026_external_integrations.sql"
+    },
+    {
+      "table": "anvisa_validations",
+      "migration": "20251026_external_integrations.sql"
+    },
+    {
+      "table": "webhook_endpoints",
+      "migration": "20251026_webhook_registry_system.sql"
+    },
+    {
+      "table": "webhook_events",
+      "migration": "20251026_webhook_registry_system.sql"
+    },
+    {
+      "table": "webhook_subscriptions",
+      "migration": "20251026_webhook_registry_system.sql"
+    },
+    {
+      "table": "webhook_endpoints",
+      "migration": "20251026_webhook_system.sql"
+    },
+    {
+      "table": "webhook_deliveries",
+      "migration": "20251026_webhook_system.sql"
+    },
+    {
+      "table": "webhook_events",
+      "migration": "20251026_webhook_system.sql"
+    }
+  ],
+  "tablesWithoutRLS": [
+    {
+      "table": "empresas",
+      "migration": "0001_init_schema.sql"
+    },
+    {
+      "table": "usuarios",
+      "migration": "0001_init_schema.sql"
+    },
+    {
+      "table": "produtos",
+      "migration": "0001_init_schema.sql"
+    },
+    {
+      "table": "lotes",
+      "migration": "0001_init_schema.sql"
+    },
+    {
+      "table": "medicos",
+      "migration": "0001_init_schema.sql"
+    },
+    {
+      "table": "hospitais",
+      "migration": "0001_init_schema.sql"
+    },
+    {
+      "table": "cirurgias",
+      "migration": "0001_init_schema.sql"
+    },
+    {
+      "table": "kits",
+      "migration": "0001_init_schema.sql"
+    },
+    {
+      "table": "itens_kit",
+      "migration": "0001_init_schema.sql"
+    },
+    {
+      "table": "leads",
+      "migration": "0001_init_schema.sql"
+    },
+    {
+      "table": "transacoes",
+      "migration": "0001_init_schema.sql"
+    },
+    {
+      "table": "fornecedores",
+      "migration": "0001_init_schema.sql"
+    },
+    {
+      "table": "pedidos_compra",
+      "migration": "0001_init_schema.sql"
+    },
+    {
+      "table": "faturas",
+      "migration": "0001_init_schema.sql"
+    },
+    {
+      "table": "audit_log",
+      "migration": "0001_init_schema.sql"
+    },
+    {
+      "table": "feature_flags",
+      "migration": "0009_tutores_economia_corrigido.sql"
+    },
+    {
+      "table": "conhecimento_base",
+      "migration": "0009_tutores_economia_corrigido.sql"
+    },
+    {
+      "table": "tutor_logs",
+      "migration": "0009_tutores_economia_corrigido.sql"
+    },
+    {
+      "table": "certificacoes_usuario",
+      "migration": "0009_tutores_economia_corrigido.sql"
+    },
+    {
+      "table": "legislacao_updates",
+      "migration": "0009_tutores_economia_corrigido.sql"
+    },
+    {
+      "table": "notificacoes_legislacao",
+      "migration": "0009_tutores_economia_corrigido.sql"
+    },
+    {
+      "table": "pacientes",
+      "migration": "0011_cadastros_completo.sql"
+    },
+    {
+      "table": "convenios",
+      "migration": "0011_cadastros_completo.sql"
+    },
+    {
+      "table": "equipes_medicas",
+      "migration": "0011_cadastros_completo.sql"
+    },
+    {
+      "table": "membros_equipe",
+      "migration": "0011_cadastros_completo.sql"
+    },
+    {
+      "table": "transportadoras",
+      "migration": "0011_cadastros_completo.sql"
+    },
+    {
+      "table": "grupos_produtos",
+      "migration": "0011_cadastros_completo.sql"
+    },
+    {
+      "table": "solicitacoes_compra",
+      "migration": "0012_compras_completo.sql"
+    },
+    {
+      "table": "itens_solicitacao_compra",
+      "migration": "0012_compras_completo.sql"
+    },
+    {
+      "table": "cotacoes",
+      "migration": "0012_compras_completo.sql"
+    },
+    {
+      "table": "itens_cotacao",
+      "migration": "0012_compras_completo.sql"
+    },
+    {
+      "table": "cotacoes_fornecedores",
+      "migration": "0012_compras_completo.sql"
+    },
+    {
+      "table": "propostas_cotacao",
+      "migration": "0012_compras_completo.sql"
+    },
+    {
+      "table": "compras_internacionais",
+      "migration": "0012_compras_completo.sql"
+    },
+    {
+      "table": "notas_compra",
+      "migration": "0012_compras_completo.sql"
+    },
+    {
+      "table": "itens_nota_compra",
+      "migration": "0012_compras_completo.sql"
+    },
+    {
+      "table": "user_activities",
+      "migration": "0013_observabilidade_comportamental.sql"
+    },
+    {
+      "table": "user_behavior_profile",
+      "migration": "0013_observabilidade_comportamental.sql"
+    },
+    {
+      "table": "user_handovers",
+      "migration": "0013_observabilidade_comportamental.sql"
+    },
+    {
+      "table": "system_errors",
+      "migration": "0013_observabilidade_comportamental.sql"
+    },
+    {
+      "table": "system_alerts",
+      "migration": "0013_observabilidade_comportamental.sql"
+    },
+    {
+      "table": "user_training",
+      "migration": "0013_observabilidade_comportamental.sql"
+    },
+    {
+      "table": "user_sessions",
+      "migration": "0013_observabilidade_comportamental.sql"
+    },
+    {
+      "table": "edr_agent_tasks",
+      "migration": "20250126000000_edr_integration.sql"
+    },
+    {
+      "table": "edr_search_results",
+      "migration": "20250126000000_edr_integration.sql"
+    },
+    {
+      "table": "edr_reflection_logs",
+      "migration": "20250126000000_edr_integration.sql"
+    },
+    {
+      "table": "edr_steering_commands",
+      "migration": "20250126000000_edr_integration.sql"
+    },
+    {
+      "table": "edr_visualizations",
+      "migration": "20250126000000_edr_integration.sql"
+    },
+    {
+      "table": "edr_citations",
+      "migration": "20250126000000_edr_integration.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "IF",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "table": "entregas",
+      "migration": "20251018_entregas.sql"
+    },
+    {
+      "table": "entrega_historico",
+      "migration": "20251018_entregas.sql"
+    },
+    {
+      "table": "faturas",
+      "migration": "20251018_faturas.sql"
+    },
+    {
+      "table": "profiles",
+      "migration": "20251018_initial_schema.sql"
+    },
+    {
+      "table": "medicos",
+      "migration": "20251018_initial_schema.sql"
+    },
+    {
+      "table": "hospitais",
+      "migration": "20251018_initial_schema.sql"
+    },
+    {
+      "table": "cirurgias",
+      "migration": "20251018_initial_schema.sql"
+    },
+    {
+      "table": "materiais_opme",
+      "migration": "20251018_initial_schema.sql"
+    },
+    {
+      "table": "cirurgia_materiais",
+      "migration": "20251018_initial_schema.sql"
+    },
+    {
+      "table": "leads",
+      "migration": "20251018_initial_schema.sql"
+    },
+    {
+      "table": "transacoes",
+      "migration": "20251018_initial_schema.sql"
+    },
+    {
+      "table": "fornecedores",
+      "migration": "20251018_initial_schema.sql"
+    },
+    {
+      "table": "pedidos_compra",
+      "migration": "20251018_initial_schema.sql"
+    },
+    {
+      "table": "compliance_requisitos",
+      "migration": "20251019_compliance_auditoria_completo.sql"
+    },
+    {
+      "table": "auditorias_internas",
+      "migration": "20251019_compliance_auditoria_completo.sql"
+    },
+    {
+      "table": "checklist_auditoria",
+      "migration": "20251019_compliance_auditoria_completo.sql"
+    },
+    {
+      "table": "nao_conformidades",
+      "migration": "20251019_compliance_auditoria_completo.sql"
+    },
+    {
+      "table": "treinamentos_certificacoes",
+      "migration": "20251019_compliance_auditoria_completo.sql"
+    },
+    {
+      "table": "participantes_treinamento",
+      "migration": "20251019_compliance_auditoria_completo.sql"
+    },
+    {
+      "table": "rastreabilidade_opme_compliance",
+      "migration": "20251019_compliance_auditoria_completo.sql"
+    },
+    {
+      "table": "agentes_ia_compliance",
+      "migration": "20251019_compliance_auditoria_completo.sql"
+    },
+    {
+      "table": "alertas_compliance",
+      "migration": "20251019_compliance_auditoria_completo.sql"
+    },
+    {
+      "table": "documentacao_tecnica",
+      "migration": "20251019_compliance_auditoria_completo.sql"
+    },
+    {
+      "table": "contratos_consignacao",
+      "migration": "20251019_consignacao_avancada_completo.sql"
+    },
+    {
+      "table": "materiais_consignados",
+      "migration": "20251019_consignacao_avancada_completo.sql"
+    },
+    {
+      "table": "movimentacoes_consignacao",
+      "migration": "20251019_consignacao_avancada_completo.sql"
+    },
+    {
+      "table": "faturamento_consignacao",
+      "migration": "20251019_consignacao_avancada_completo.sql"
+    },
+    {
+      "table": "faturamento_consignacao_itens",
+      "migration": "20251019_consignacao_avancada_completo.sql"
+    },
+    {
+      "table": "alertas_consignacao",
+      "migration": "20251019_consignacao_avancada_completo.sql"
+    },
+    {
+      "table": "conferencias_consignacao",
+      "migration": "20251019_consignacao_avancada_completo.sql"
+    },
+    {
+      "table": "contratos",
+      "migration": "20251019_contracts_crm.sql"
+    },
+    {
+      "table": "contratos_clausulas",
+      "migration": "20251019_contracts_crm.sql"
+    },
+    {
+      "table": "contratos_aditivos",
+      "migration": "20251019_contracts_crm.sql"
+    },
+    {
+      "table": "contratos_sla",
+      "migration": "20251019_contracts_crm.sql"
+    },
+    {
+      "table": "contratos_aprovacoes",
+      "migration": "20251019_contracts_crm.sql"
+    },
+    {
+      "table": "contratos_alertas",
+      "migration": "20251019_contracts_crm.sql"
+    },
+    {
+      "table": "contratos_documentos",
+      "migration": "20251019_contracts_crm.sql"
+    },
+    {
+      "table": "oportunidades",
+      "migration": "20251019_contracts_crm.sql"
+    },
+    {
+      "table": "oportunidade_interacoes",
+      "migration": "20251019_contracts_crm.sql"
+    },
+    {
+      "table": "oportunidade_tarefas",
+      "migration": "20251019_contracts_crm.sql"
+    },
+    {
+      "table": "oportunidade_propostas",
+      "migration": "20251019_contracts_crm.sql"
+    },
+    {
+      "table": "campanhas_marketing",
+      "migration": "20251019_contracts_crm.sql"
+    },
+    {
+      "table": "crm_clientes",
+      "migration": "20251019_contracts_crm.sql"
+    },
+    {
+      "table": "cirurgias",
+      "migration": "202510201244_01_cirurgias_tabelas.sql"
+    },
+    {
+      "table": "cirurgia_materiais",
+      "migration": "202510201244_01_cirurgias_tabelas.sql"
+    },
+    {
+      "table": "cirurgia_eventos",
+      "migration": "202510201244_01_cirurgias_tabelas.sql"
+    },
+    {
+      "table": "pacientes",
+      "migration": "202510201300_fase1_10tabelas_criticas.sql"
+    },
+    {
+      "table": "convenios",
+      "migration": "202510201300_fase1_10tabelas_criticas.sql"
+    },
+    {
+      "table": "cirurgia_materiais",
+      "migration": "202510201300_fase1_10tabelas_criticas.sql"
+    },
+    {
+      "table": "cirurgia_eventos",
+      "migration": "202510201300_fase1_10tabelas_criticas.sql"
+    },
+    {
+      "table": "estoque",
+      "migration": "202510201300_fase1_10tabelas_criticas.sql"
+    },
+    {
+      "table": "estoque_movimentacoes",
+      "migration": "202510201300_fase1_10tabelas_criticas.sql"
+    },
+    {
+      "table": "contratos_consignacao",
+      "migration": "202510201300_fase1_10tabelas_criticas.sql"
+    },
+    {
+      "table": "notas_fiscais",
+      "migration": "202510201300_fase1_10tabelas_criticas.sql"
+    },
+    {
+      "table": "profiles",
+      "migration": "202510201300_fase1_10tabelas_criticas.sql"
+    },
+    {
+      "table": "notificacoes",
+      "migration": "202510201300_fase1_10tabelas_criticas.sql"
+    },
+    {
+      "table": "solicitacoes_compra",
+      "migration": "202510201310_fase2_parte1_compras.sql"
+    },
+    {
+      "table": "itens_pedido_compra",
+      "migration": "202510201310_fase2_parte1_compras.sql"
+    },
+    {
+      "table": "cotacoes",
+      "migration": "202510201310_fase2_parte1_compras.sql"
+    },
+    {
+      "table": "itens_cotacao",
+      "migration": "202510201310_fase2_parte1_compras.sql"
+    },
+    {
+      "table": "fornecedores_produtos",
+      "migration": "202510201310_fase2_parte1_compras.sql"
+    },
+    {
+      "table": "oportunidades",
+      "migration": "202510201311_fase2_parte2_vendas_crm.sql"
+    },
+    {
+      "table": "propostas",
+      "migration": "202510201311_fase2_parte2_vendas_crm.sql"
+    },
+    {
+      "table": "itens_proposta",
+      "migration": "202510201311_fase2_parte2_vendas_crm.sql"
+    },
+    {
+      "table": "negociacoes",
+      "migration": "202510201311_fase2_parte2_vendas_crm.sql"
+    },
+    {
+      "table": "atividades_crm",
+      "migration": "202510201311_fase2_parte2_vendas_crm.sql"
+    },
+    {
+      "table": "contas_pagar",
+      "migration": "202510201312_fase2_parte3_financeiro.sql"
+    },
+    {
+      "table": "contas_receber",
+      "migration": "202510201312_fase2_parte3_financeiro.sql"
+    },
+    {
+      "table": "fluxo_caixa",
+      "migration": "202510201312_fase2_parte3_financeiro.sql"
+    },
+    {
+      "table": "bancos",
+      "migration": "202510201312_fase2_parte3_financeiro.sql"
+    },
+    {
+      "table": "centros_custo",
+      "migration": "202510201312_fase2_parte3_financeiro.sql"
+    },
+    {
+      "table": "lancamentos_contabeis",
+      "migration": "202510201312_fase2_parte3_financeiro.sql"
+    },
+    {
+      "table": "remessas_consignacao",
+      "migration": "202510201313_fase2_parte4_consignacao.sql"
+    },
+    {
+      "table": "itens_consignacao",
+      "migration": "202510201313_fase2_parte4_consignacao.sql"
+    },
+    {
+      "table": "devolucoes_consignacao",
+      "migration": "202510201313_fase2_parte4_consignacao.sql"
+    },
+    {
+      "table": "estoque_reservas",
+      "migration": "202510201313_fase2_parte4_consignacao.sql"
+    },
+    {
+      "table": "compliance_requisitos",
+      "migration": "202510201320_fase3_parte1_compliance.sql"
+    },
+    {
+      "table": "compliance_evidencias",
+      "migration": "202510201320_fase3_parte1_compliance.sql"
+    },
+    {
+      "table": "auditorias",
+      "migration": "202510201320_fase3_parte1_compliance.sql"
+    },
+    {
+      "table": "auditorias_itens",
+      "migration": "202510201320_fase3_parte1_compliance.sql"
+    },
+    {
+      "table": "nao_conformidades",
+      "migration": "202510201320_fase3_parte1_compliance.sql"
+    },
+    {
+      "table": "acoes_corretivas",
+      "migration": "202510201320_fase3_parte1_compliance.sql"
+    },
+    {
+      "table": "portais_opme_config",
+      "migration": "202510201321_fase3_parte2_portais_opme.sql"
+    },
+    {
+      "table": "portais_opme_solicitacoes",
+      "migration": "202510201321_fase3_parte2_portais_opme.sql"
+    },
+    {
+      "table": "portais_opme_respostas",
+      "migration": "202510201321_fase3_parte2_portais_opme.sql"
+    },
+    {
+      "table": "portais_opme_logs",
+      "migration": "202510201321_fase3_parte2_portais_opme.sql"
+    },
+    {
+      "table": "licitacoes",
+      "migration": "202510201322_fase3_parte3_licitacoes.sql"
+    },
+    {
+      "table": "licitacoes_itens",
+      "migration": "202510201322_fase3_parte3_licitacoes.sql"
+    },
+    {
+      "table": "propostas_licitacao",
+      "migration": "202510201322_fase3_parte3_licitacoes.sql"
+    },
+    {
+      "table": "documentos_licitacao",
+      "migration": "202510201322_fase3_parte3_licitacoes.sql"
+    },
+    {
+      "table": "entregas",
+      "migration": "202510201323_fase3_parte4_entregas.sql"
+    },
+    {
+      "table": "chatbot_sessoes",
+      "migration": "202510201330_fase4_parte1_chatbot_gpt.sql"
+    },
+    {
+      "table": "chatbot_conversas",
+      "migration": "202510201330_fase4_parte1_chatbot_gpt.sql"
+    },
+    {
+      "table": "chatbot_mensagens",
+      "migration": "202510201330_fase4_parte1_chatbot_gpt.sql"
+    },
+    {
+      "table": "pesquisas_gpt",
+      "migration": "202510201330_fase4_parte1_chatbot_gpt.sql"
+    },
+    {
+      "table": "workflows",
+      "migration": "202510201331_fase4_parte2_workflows.sql"
+    },
+    {
+      "table": "workflows_etapas",
+      "migration": "202510201331_fase4_parte2_workflows.sql"
+    },
+    {
+      "table": "workflows_execucoes",
+      "migration": "202510201331_fase4_parte2_workflows.sql"
+    },
+    {
+      "table": "workflows_logs",
+      "migration": "202510201331_fase4_parte2_workflows.sql"
+    },
+    {
+      "table": "api_endpoints",
+      "migration": "202510201332_fase4_parte3_api_gateway.sql"
+    },
+    {
+      "table": "api_keys",
+      "migration": "202510201332_fase4_parte3_api_gateway.sql"
+    },
+    {
+      "table": "api_logs",
+      "migration": "202510201332_fase4_parte3_api_gateway.sql"
+    },
+    {
+      "table": "api_rate_limits",
+      "migration": "202510201332_fase4_parte3_api_gateway.sql"
+    },
+    {
+      "table": "bi_dimensao_tempo",
+      "migration": "202510201333_fase4_parte4_bi_analytics.sql"
+    },
+    {
+      "table": "bi_dimensao_produto",
+      "migration": "202510201333_fase4_parte4_bi_analytics.sql"
+    },
+    {
+      "table": "bi_fato_vendas",
+      "migration": "202510201333_fase4_parte4_bi_analytics.sql"
+    },
+    {
+      "table": "bi_fato_estoque",
+      "migration": "202510201333_fase4_parte4_bi_analytics.sql"
+    },
+    {
+      "table": "dashboards",
+      "migration": "202510201333_fase4_parte4_bi_analytics.sql"
+    },
+    {
+      "table": "widgets",
+      "migration": "202510201333_fase4_parte4_bi_analytics.sql"
+    },
+    {
+      "table": "kpi_metas",
+      "migration": "202510201334_fase4_parte5_kpis.sql"
+    },
+    {
+      "table": "kpi_realizacoes",
+      "migration": "202510201334_fase4_parte5_kpis.sql"
+    },
+    {
+      "table": "roles",
+      "migration": "202510201340_fase5_parte1_rbac.sql"
+    },
+    {
+      "table": "permissions",
+      "migration": "202510201340_fase5_parte1_rbac.sql"
+    },
+    {
+      "table": "role_permissions",
+      "migration": "202510201340_fase5_parte1_rbac.sql"
+    },
+    {
+      "table": "user_roles",
+      "migration": "202510201340_fase5_parte1_rbac.sql"
+    },
+    {
+      "table": "permission_groups",
+      "migration": "202510201340_fase5_parte1_rbac.sql"
+    },
+    {
+      "table": "system_health_metrics",
+      "migration": "202510201341_fase5_parte2_health.sql"
+    },
+    {
+      "table": "system_alerts",
+      "migration": "202510201341_fase5_parte2_health.sql"
+    },
+    {
+      "table": "system_logs",
+      "migration": "202510201341_fase5_parte2_health.sql"
+    },
+    {
+      "table": "relatorios_regulatorios",
+      "migration": "202510201342_fase5_parte3_relatorios.sql"
+    },
+    {
+      "table": "relatorios_templates",
+      "migration": "202510201342_fase5_parte3_relatorios.sql"
+    },
+    {
+      "table": "relatorios_agendamentos",
+      "migration": "202510201342_fase5_parte3_relatorios.sql"
+    },
+    {
+      "table": "pluggy_connections",
+      "migration": "202510201343_fase5_parte4_pluggy.sql"
+    },
+    {
+      "table": "pluggy_accounts",
+      "migration": "202510201343_fase5_parte4_pluggy.sql"
+    },
+    {
+      "table": "pluggy_transactions",
+      "migration": "202510201343_fase5_parte4_pluggy.sql"
+    },
+    {
+      "table": "comentarios",
+      "migration": "202510201344_fase5_parte5_auxiliares.sql"
+    },
+    {
+      "table": "tags",
+      "migration": "202510201344_fase5_parte5_auxiliares.sql"
+    },
+    {
+      "table": "favoritos",
+      "migration": "202510201344_fase5_parte5_auxiliares.sql"
+    },
+    {
+      "table": "materiais",
+      "migration": "202510201400_correcao_tabelas_faltantes.sql"
+    },
+    {
+      "table": "itens_remessa_consignacao",
+      "migration": "202510201400_correcao_tabelas_faltantes.sql"
+    },
+    {
+      "table": "itens_solicitacao_compra",
+      "migration": "202510201400_correcao_tabelas_faltantes.sql"
+    },
+    {
+      "table": "chatbot_pesquisas_gpt",
+      "migration": "202510201400_correcao_tabelas_faltantes.sql"
+    },
+    {
+      "table": "workflow_etapas",
+      "migration": "202510201400_correcao_tabelas_faltantes.sql"
+    },
+    {
+      "table": "workflow_execucoes",
+      "migration": "202510201400_correcao_tabelas_faltantes.sql"
+    },
+    {
+      "table": "workflow_logs",
+      "migration": "202510201400_correcao_tabelas_faltantes.sql"
+    },
+    {
+      "table": "bi_dimensoes",
+      "migration": "202510201410_modulo_bi_completo.sql"
+    },
+    {
+      "table": "bi_fatos",
+      "migration": "202510201410_modulo_bi_completo.sql"
+    },
+    {
+      "table": "bi_dashboards",
+      "migration": "202510201410_modulo_bi_completo.sql"
+    },
+    {
+      "table": "bi_widgets",
+      "migration": "202510201410_modulo_bi_completo.sql"
+    },
+    {
+      "table": "bi_relatorios",
+      "migration": "202510201410_modulo_bi_completo.sql"
+    },
+    {
+      "table": "bi_fontes_dados",
+      "migration": "202510201410_modulo_bi_completo.sql"
+    },
+    {
+      "table": "api_credentials_audit",
+      "migration": "202510201600_api_credentials.sql"
+    },
+    {
+      "table": "system_health_metrics",
+      "migration": "20251020_advanced_features.sql"
+    },
+    {
+      "table": "performance_metrics",
+      "migration": "20251020_advanced_features.sql"
+    },
+    {
+      "table": "user_2fa",
+      "migration": "20251020_advanced_features.sql"
+    },
+    {
+      "table": "ip_whitelist",
+      "migration": "20251020_advanced_features.sql"
+    },
+    {
+      "table": "rate_limits",
+      "migration": "20251020_advanced_features.sql"
+    },
+    {
+      "table": "nfes_audit_log",
+      "migration": "20251020_nfes_distribuidoras_opme.sql"
+    },
+    {
+      "table": "failed_login_attempts",
+      "migration": "20251020_rbac_usuarios_permissoes.sql"
+    },
+    {
+      "table": "ml_vectors",
+      "migration": "20251023140YYY_create_ml_vectors_table.sql"
+    },
+    {
+      "table": "consignacao_materiais",
+      "migration": "20251025_create_missing_critical_tables.sql"
+    },
+    {
+      "table": "produtos_opme",
+      "migration": "20251025_create_missing_critical_tables.sql"
+    },
+    {
+      "table": "rastreabilidade_opme",
+      "migration": "20251025_create_missing_critical_tables.sql"
+    },
+    {
+      "table": "compliance_requisitos_abbott",
+      "migration": "20251025_create_missing_critical_tables.sql"
+    },
+    {
+      "table": "mv_refresh_log",
+      "migration": "20251026_auto_refresh_materialized_views.sql"
+    }
+  ],
+  "policies": [
+    {
+      "name": "pol_empresas_select",
+      "table": "empresas",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_empresas_update",
+      "table": "empresas",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_usuarios_select",
+      "table": "usuarios",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_usuarios_insert",
+      "table": "usuarios",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_usuarios_update",
+      "table": "usuarios",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_usuarios_delete",
+      "table": "usuarios",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_produtos_select",
+      "table": "produtos",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_produtos_insert",
+      "table": "produtos",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_produtos_update",
+      "table": "produtos",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_produtos_delete",
+      "table": "produtos",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_lotes_select",
+      "table": "lotes",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_lotes_insert",
+      "table": "lotes",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_lotes_update",
+      "table": "lotes",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_medicos_select",
+      "table": "medicos",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_medicos_insert",
+      "table": "medicos",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_medicos_update",
+      "table": "medicos",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_hospitais_select",
+      "table": "hospitais",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_hospitais_insert",
+      "table": "hospitais",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_hospitais_update",
+      "table": "hospitais",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_cirurgias_select",
+      "table": "cirurgias",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_cirurgias_insert",
+      "table": "cirurgias",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_cirurgias_update",
+      "table": "cirurgias",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_kits_select",
+      "table": "kits",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_kits_insert",
+      "table": "kits",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_kits_update",
+      "table": "kits",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_itens_kit_select",
+      "table": "itens_kit",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_itens_kit_insert",
+      "table": "itens_kit",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_itens_kit_update",
+      "table": "itens_kit",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_leads_select",
+      "table": "leads",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_leads_insert",
+      "table": "leads",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_leads_update",
+      "table": "leads",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_transacoes_select",
+      "table": "transacoes",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_transacoes_insert",
+      "table": "transacoes",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_transacoes_update",
+      "table": "transacoes",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_fornecedores_select",
+      "table": "fornecedores",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_fornecedores_insert",
+      "table": "fornecedores",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_fornecedores_update",
+      "table": "fornecedores",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_pedidos_select",
+      "table": "pedidos_compra",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_pedidos_insert",
+      "table": "pedidos_compra",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_pedidos_update",
+      "table": "pedidos_compra",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_faturas_select",
+      "table": "faturas",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_faturas_insert",
+      "table": "faturas",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_faturas_update",
+      "table": "faturas",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_audit_log_select",
+      "table": "audit_log",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_audit_log_insert",
+      "table": "audit_log",
+      "migration": "0002_rls_policies.sql"
+    },
+    {
+      "name": "pol_empresas_select",
+      "table": "empresas",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_empresas_update",
+      "table": "empresas",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_usuarios_select",
+      "table": "usuarios",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_usuarios_insert",
+      "table": "usuarios",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_usuarios_update",
+      "table": "usuarios",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_usuarios_delete",
+      "table": "usuarios",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_produtos_select",
+      "table": "produtos",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_produtos_insert",
+      "table": "produtos",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_produtos_update",
+      "table": "produtos",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_produtos_delete",
+      "table": "produtos",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_lotes_select",
+      "table": "lotes",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_lotes_insert",
+      "table": "lotes",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_lotes_update",
+      "table": "lotes",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_medicos_select",
+      "table": "medicos",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_medicos_insert",
+      "table": "medicos",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_medicos_update",
+      "table": "medicos",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_hospitais_select",
+      "table": "hospitais",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_hospitais_insert",
+      "table": "hospitais",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_hospitais_update",
+      "table": "hospitais",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_cirurgias_select",
+      "table": "cirurgias",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_cirurgias_insert",
+      "table": "cirurgias",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_cirurgias_update",
+      "table": "cirurgias",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_kits_select",
+      "table": "kits",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_kits_insert",
+      "table": "kits",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_kits_update",
+      "table": "kits",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_itens_kit_select",
+      "table": "itens_kit",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_itens_kit_insert",
+      "table": "itens_kit",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_itens_kit_update",
+      "table": "itens_kit",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_leads_select",
+      "table": "leads",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_leads_insert",
+      "table": "leads",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_leads_update",
+      "table": "leads",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_transacoes_select",
+      "table": "transacoes",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_transacoes_insert",
+      "table": "transacoes",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_transacoes_update",
+      "table": "transacoes",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_fornecedores_select",
+      "table": "fornecedores",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_fornecedores_insert",
+      "table": "fornecedores",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_fornecedores_update",
+      "table": "fornecedores",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_pedidos_select",
+      "table": "pedidos_compra",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_pedidos_insert",
+      "table": "pedidos_compra",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_pedidos_update",
+      "table": "pedidos_compra",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_faturas_select",
+      "table": "faturas",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_faturas_insert",
+      "table": "faturas",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_faturas_update",
+      "table": "faturas",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_audit_log_select",
+      "table": "audit_log",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "pol_audit_log_insert",
+      "table": "audit_log",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "politica_chatbot_conversas_select",
+      "table": "chatbot_conversas",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "politica_chatbot_conversas_insert",
+      "table": "chatbot_conversas",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "politica_chatbot_conversas_update",
+      "table": "chatbot_conversas",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "politica_chatbot_mensagens_select",
+      "table": "chatbot_mensagens",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "politica_chatbot_mensagens_insert",
+      "table": "chatbot_mensagens",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "politica_chatbot_intencoes_select",
+      "table": "chatbot_intencoes",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "politica_chatbot_faqs_select",
+      "table": "chatbot_faqs",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "politica_chatbot_audit_admin",
+      "table": "chatbot_audit_log",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "cirurgias_select_policy",
+      "table": "cirurgias",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "cirurgias_insert_policy",
+      "table": "cirurgias",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "cirurgias_update_policy",
+      "table": "cirurgias",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "cirurgias_delete_policy",
+      "table": "cirurgias",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "cirurgia_materiais_select_policy",
+      "table": "cirurgia_materiais",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "cirurgia_materiais_insert_policy",
+      "table": "cirurgia_materiais",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "cirurgia_materiais_update_policy",
+      "table": "cirurgia_materiais",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "cirurgia_materiais_delete_policy",
+      "table": "cirurgia_materiais",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "cirurgia_eventos_select_policy",
+      "table": "cirurgia_eventos",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "cirurgia_eventos_insert_policy",
+      "table": "cirurgia_eventos",
+      "migration": "20250126_consolidated_all_tables.sql"
+    },
+    {
+      "name": "politica_chatbot_conversas_select",
+      "table": "chatbot_conversas",
+      "migration": "20251019_chatbot_navegacao_ptbr.sql"
+    },
+    {
+      "name": "politica_chatbot_conversas_insert",
+      "table": "chatbot_conversas",
+      "migration": "20251019_chatbot_navegacao_ptbr.sql"
+    },
+    {
+      "name": "politica_chatbot_conversas_update",
+      "table": "chatbot_conversas",
+      "migration": "20251019_chatbot_navegacao_ptbr.sql"
+    },
+    {
+      "name": "politica_chatbot_mensagens_select",
+      "table": "chatbot_mensagens",
+      "migration": "20251019_chatbot_navegacao_ptbr.sql"
+    },
+    {
+      "name": "politica_chatbot_mensagens_insert",
+      "table": "chatbot_mensagens",
+      "migration": "20251019_chatbot_navegacao_ptbr.sql"
+    },
+    {
+      "name": "politica_chatbot_intencoes_select",
+      "table": "chatbot_intencoes",
+      "migration": "20251019_chatbot_navegacao_ptbr.sql"
+    },
+    {
+      "name": "politica_chatbot_faqs_select",
+      "table": "chatbot_faqs",
+      "migration": "20251019_chatbot_navegacao_ptbr.sql"
+    },
+    {
+      "name": "politica_chatbot_audit_admin",
+      "table": "chatbot_audit_log",
+      "migration": "20251019_chatbot_navegacao_ptbr.sql"
+    },
+    {
+      "name": "cirurgias_select_policy",
+      "table": "cirurgias",
+      "migration": "202510201244_02_cirurgias_rls.sql"
+    },
+    {
+      "name": "cirurgias_insert_policy",
+      "table": "cirurgias",
+      "migration": "202510201244_02_cirurgias_rls.sql"
+    },
+    {
+      "name": "cirurgias_update_policy",
+      "table": "cirurgias",
+      "migration": "202510201244_02_cirurgias_rls.sql"
+    },
+    {
+      "name": "cirurgias_delete_policy",
+      "table": "cirurgias",
+      "migration": "202510201244_02_cirurgias_rls.sql"
+    },
+    {
+      "name": "cirurgia_materiais_select_policy",
+      "table": "cirurgia_materiais",
+      "migration": "202510201244_02_cirurgias_rls.sql"
+    },
+    {
+      "name": "cirurgia_materiais_insert_policy",
+      "table": "cirurgia_materiais",
+      "migration": "202510201244_02_cirurgias_rls.sql"
+    },
+    {
+      "name": "cirurgia_materiais_update_policy",
+      "table": "cirurgia_materiais",
+      "migration": "202510201244_02_cirurgias_rls.sql"
+    },
+    {
+      "name": "cirurgia_materiais_delete_policy",
+      "table": "cirurgia_materiais",
+      "migration": "202510201244_02_cirurgias_rls.sql"
+    },
+    {
+      "name": "cirurgia_eventos_select_policy",
+      "table": "cirurgia_eventos",
+      "migration": "202510201244_02_cirurgias_rls.sql"
+    },
+    {
+      "name": "cirurgia_eventos_insert_policy",
+      "table": "cirurgia_eventos",
+      "migration": "202510201244_02_cirurgias_rls.sql"
+    }
+  ]
+}

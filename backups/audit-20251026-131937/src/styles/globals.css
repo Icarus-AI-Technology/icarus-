@@ -1,0 +1,360 @@
+/* Import OraclusX Design System */
+@import "./oraclusx-ds.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* RESET GLOBAL - Força background em TODAS as camadas */
+html,
+body,
+#root {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: var(--orx-bg-light) !important;
+  min-height: 100vh !important;
+}
+
+@layer base {
+  :root {
+    --background: 210 40% 96%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 243 75% 59%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 36.9%; /* Mais escuro (era 46.9%) */
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 85%; /* Mais escuro (era 91.4%) */
+    --input: 214.3 31.8% 85%; /* Mais escuro (era 91.4%) */
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.75rem;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+
+    /* Mapas de alias para variáveis utilitárias usadas nos componentes */
+    --text-primary: var(--orx-text-primary);
+    /* Força secondary/muted com contraste mínimo 4.5:1 em fundo escuro */
+    --text-secondary: #cbd5e1; /* slate-300 */
+    --text-muted: #9ca3af; /* slate-400 */
+    --bg-primary: var(--orx-bg-light);
+    --surface: rgba(255, 255, 255, 0.04);
+    --surface-hover: rgba(255, 255, 255, 0.08);
+
+    /* Neuomorphic Design Variables - AJUSTADO */
+    --neumorphic-bg: #d6dce6; /* Menos brilhante (era #e0e5ec) */
+    --neumorphic-light: #f5f7fa; /* Menos intenso (era #ffffff) */
+    --neumorphic-dark: #8f9db3; /* Sombra mais forte (era #a3b1c6) */
+    --neumorphic-shadow-light: rgba(245, 247, 250, 0.9); /* Ajustado */
+    --neumorphic-shadow-dark: rgba(
+      143,
+      157,
+      179,
+      0.7
+    ); /* Mais opaco (era 0.6) */
+  }
+
+  .dark {
+    /* Aliases escuros */
+    --text-primary: var(--orx-text-primary);
+    --text-secondary: #d1d5db; /* cinza claro para contraste */
+    --text-muted: #9ca3af;
+    --bg-primary: var(--orx-bg-dark);
+    --surface: rgba(0, 0, 0, 0.35);
+    --surface-hover: rgba(255, 255, 255, 0.06);
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+
+    /* Dark Neuomorphic Design Variables */
+    --neumorphic-bg: #2d3748;
+    --neumorphic-light: #3d4a5c;
+    --neumorphic-dark: #1a202c;
+    --neumorphic-shadow-light: rgba(61, 74, 92, 0.6);
+    --neumorphic-shadow-dark: rgba(26, 32, 44, 0.8);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  /* Reset já aplicado FORA do @layer acima (linhas 9-16) */
+}
+
+@layer components {
+  /* Screen Reader Only (visível apenas em foco) */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .focus\:not-sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: inherit;
+    margin: inherit;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
+  /* Neuomorphic Card */
+  .neumorphic-card {
+    background: var(--orx-bg-light); /* USA A MESMA VARIÁVEL ADAPTÁVEL */
+    border-radius: var(--radius);
+    box-shadow:
+      8px 8px 16px var(--neumorphic-shadow-dark),
+      -8px -8px 16px var(--neumorphic-shadow-light);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05); /* Adiciona borda sutil */
+  }
+
+  .neumorphic-card:hover {
+    box-shadow:
+      12px 12px 24px var(--neumorphic-shadow-dark),
+      -12px -12px 24px var(--neumorphic-shadow-light);
+  }
+
+  /* Neuomorphic Button */
+  .neumorphic-button {
+    background: var(--orx-bg-light); /* USA A MESMA VARIÁVEL ADAPTÁVEL */
+    border: none;
+    border-radius: var(--radius);
+    box-shadow:
+      5px 5px 10px var(--neumorphic-shadow-dark),
+      -5px -5px 10px var(--neumorphic-shadow-light);
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--orx-text-primary); /* Cor do texto/ícones */
+  }
+
+  /* Ícones sem classe de cor herdam a cor do botão */
+  .neumorphic-button svg:not([class*="text-"]) {
+    color: var(--orx-text-primary);
+  }
+
+  /* Botões com background colorido mantêm ícones brancos */
+  .colored-button svg {
+    color: white !important;
+  }
+
+  /* Animação de pulse para o botão de voz */
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+  }
+
+  .neumorphic-button:hover {
+    box-shadow:
+      3px 3px 6px var(--neumorphic-shadow-dark),
+      -3px -3px 6px var(--neumorphic-shadow-light);
+  }
+
+  .neumorphic-button:active {
+    box-shadow:
+      inset 3px 3px 6px var(--neumorphic-shadow-dark),
+      inset -3px -3px 6px var(--neumorphic-shadow-light);
+  }
+
+  /* Neuomorphic Input */
+  .neumorphic-input {
+    background: var(--orx-bg-light); /* USA A MESMA VARIÁVEL ADAPTÁVEL */
+    border: none;
+    border-radius: var(--radius);
+    box-shadow:
+      inset 4px 4px 8px var(--neumorphic-shadow-dark),
+      inset -4px -4px 8px var(--neumorphic-shadow-light);
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
+  }
+
+  .neumorphic-input:focus {
+    outline: none;
+    box-shadow:
+      inset 6px 6px 12px var(--neumorphic-shadow-dark),
+      inset -6px -6px 12px var(--neumorphic-shadow-light);
+  }
+
+  /* Neuomorphic Container */
+  .neumorphic-container {
+    background: var(--orx-bg-light); /* USA A MESMA VARIÁVEL ADAPTÁVEL */
+    min-height: 100vh;
+  }
+
+  /* Toast Animation */
+  @keyframes slide-in-right {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .animate-slide-in-right {
+    animation: slide-in-right 0.3s ease-out;
+  }
+
+  /* Drawer Animations */
+  @keyframes slide-in-left {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slide-out-left {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  @keyframes slide-out-right {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  .animate-slide-in-left {
+    animation: slide-in-left 0.3s ease-out;
+  }
+
+  .animate-slide-out-left {
+    animation: slide-out-left 0.3s ease-in;
+  }
+
+  .animate-slide-out-right {
+    animation: slide-out-right 0.3s ease-in;
+  }
+
+  /* Modal Animations */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.2s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.2s ease-out;
+  }
+}
+
+/* Mini Bar Chart Animations */
+@keyframes bar-grow {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.mini-bar-chart .bar {
+  animation: bar-grow 0.6s ease-out;
+  animation-fill-mode: both;
+}
+
+.mini-bar-chart .bar:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.mini-bar-chart .bar:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.mini-bar-chart .bar:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.mini-bar-chart .bar:nth-child(4) {
+  animation-delay: 0.2s;
+}
+.mini-bar-chart .bar:nth-child(5) {
+  animation-delay: 0.25s;
+}
+.mini-bar-chart .bar:nth-child(6) {
+  animation-delay: 0.3s;
+}
+.mini-bar-chart .bar:nth-child(7) {
+  animation-delay: 0.35s;
+}
+.mini-bar-chart .bar:nth-child(8) {
+  animation-delay: 0.4s;
+}

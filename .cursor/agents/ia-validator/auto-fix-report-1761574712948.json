@@ -1,0 +1,13 @@
+{
+  "timestamp": "2025-10-27T14:18:32.947Z",
+  "mode": "test",
+  "fixes_applied": 1,
+  "fixes": [
+    {
+      "file": "scripts/ci-validate-ia-topology.sh",
+      "action": "Script CI/CD criado",
+      "status": "created"
+    }
+  ],
+  "status": "completed"
+}

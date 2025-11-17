@@ -1,0 +1,82 @@
+{
+  "timestamp": "2025-10-27T16:43:26.343Z",
+  "total_modulos": 12,
+  "completos": 6,
+  "em_desenvolvimento": 5,
+  "planejados": 1,
+  "cobertura_media": "72.9%",
+  "modulos": [
+    {
+      "nome": "Dashboard Principal",
+      "status": "completo",
+      "cobertura": "95%",
+      "prioridade": "critico"
+    },
+    {
+      "nome": "Gestão de Cirurgias",
+      "status": "completo",
+      "cobertura": "90%",
+      "prioridade": "critico"
+    },
+    {
+      "nome": "Estoque e Consignação",
+      "status": "completo",
+      "cobertura": "88%",
+      "prioridade": "critico"
+    },
+    {
+      "nome": "Faturamento OPME",
+      "status": "em_desenvolvimento",
+      "cobertura": "75%",
+      "prioridade": "critico"
+    },
+    {
+      "nome": "Integração TISS",
+      "status": "em_desenvolvimento",
+      "cobertura": "60%",
+      "prioridade": "critico"
+    },
+    {
+      "nome": "CRM e Vendas",
+      "status": "completo",
+      "cobertura": "85%",
+      "prioridade": "medio"
+    },
+    {
+      "nome": "Financeiro",
+      "status": "completo",
+      "cobertura": "80%",
+      "prioridade": "critico"
+    },
+    {
+      "nome": "Compras",
+      "status": "completo",
+      "cobertura": "82%",
+      "prioridade": "medio"
+    },
+    {
+      "nome": "Contratos",
+      "status": "em_desenvolvimento",
+      "cobertura": "70%",
+      "prioridade": "medio"
+    },
+    {
+      "nome": "Compliance e Auditoria",
+      "status": "em_desenvolvimento",
+      "cobertura": "65%",
+      "prioridade": "critico"
+    },
+    {
+      "nome": "Chatbot IA",
+      "status": "em_desenvolvimento",
+      "cobertura": "55%",
+      "prioridade": "medio"
+    },
+    {
+      "nome": "Relatórios Executivos",
+      "status": "planejado",
+      "cobertura": "30%",
+      "prioridade": "medio"
+    }
+  ]
+}

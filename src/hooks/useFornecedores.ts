@@ -1,21 +1,10 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
-
 /**
- * Hook para Fornecedores
- * Tabela: fornecedores
+ * Hook: useFornecedores
+ * Gerenciamento de fornecedores
  */
 
-export interface EnderecoFornecedor {
-  rua?: string;
-  numero?: string;
-  complemento?: string;
-  bairro?: string;
-  cidade?: string;
-  estado?: string;
-  cep?: string;
-  pais?: string;
-}
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 
 export interface Fornecedor {
   id: string;
@@ -23,18 +12,42 @@ export interface Fornecedor {
   razao_social: string;
   nome_fantasia?: string;
   cnpj: string;
+  inscricao_estadual?: string;
+  tipo: "fabricante" | "distribuidor" | "representante" | "importador";
+  categoria: string[];
   email: string;
-  telefone?: string;
-  endereco?: EnderecoFornecedor | null;
-  tipo: 'nacional' | 'internacional';
-  categoria: string;
-  ativo: boolean;
+  telefone: string;
+  whatsapp?: string;
+  website?: string;
+  endereco?: {
+    cep: string;
+    logradouro: string;
+    numero: string;
+    complemento?: string;
+    bairro: string;
+    cidade: string;
+    uf: string;
+  };
+  contato_comercial?: {
+    nome: string;
+    email: string;
+    telefone: string;
+  };
+  banco?: {
+    banco: string;
+    agencia: string;
+    conta: string;
+    tipo: "corrente" | "poupanca";
+  };
+  status: "ativo" | "inativo" | "bloqueado";
+  avaliacao?: number;
   observacoes?: string;
-  created_at?: string;
-  updated_at?: string;
+  tags?: string[];
+  criado_em: string;
+  atualizado_em: string;
 }
 
-export const useFornecedores = () => {
+export function useFornecedores() {
   const [fornecedores, setFornecedores] = useState<Fornecedor[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -43,92 +56,87 @@ export const useFornecedores = () => {
     fetchFornecedores();
   }, []);
 
-  const fetchFornecedores = async () => {
+  async function fetchFornecedores() {
     try {
       setLoading(true);
-
       const { data, error: fetchError } = await supabase
-        .from('fornecedores')
-        .select('*')
-        .order('razao_social');
+        .from("fornecedores")
+        .select("*")
+        .order("razao_social");
 
       if (fetchError) throw fetchError;
-
-      setFornecedores((data as Fornecedor[] | null) ?? []);
-      setError(null);
-    } catch (error) {
-   const err = error as Error;
-      setError(err instanceof Error ? err.message : 'Erro ao carregar fornecedores');
-      setFornecedores([]);
+      setFornecedores(data || []);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Erro ao carregar fornecedores",
+      );
     } finally {
       setLoading(false);
     }
-  };
+  }
 
-  const criarFornecedor = async (fornecedor: Omit<Fornecedor, 'id'>) => {
+  async function createFornecedor(
+    fornecedorData: Omit<Fornecedor, "id" | "criado_em" | "atualizado_em">,
+  ) {
     try {
-      const { data, error } = await supabase
-        .from('fornecedores')
-        .insert(fornecedor)
+      const { data, error: createError } = await supabase
+        .from("fornecedores")
+        .insert([fornecedorData])
         .select()
         .single();
 
-      if (error) throw error;
-
+      if (createError) throw createError;
       await fetchFornecedores();
-      return data as Fornecedor;
-    } catch (error) {
-   const err = error as Error;
-      const message = err instanceof Error ? err.message : 'Erro ao criar fornecedor';
-      setError(message);
-      throw err;
+      return data;
+    } catch (err) {
+      throw new Error(
+        err instanceof Error ? err.message : "Erro ao criar fornecedor",
+      );
     }
-  };
+  }
 
-  const atualizarFornecedor = async (id: string, updates: Partial<Fornecedor>) => {
+  async function updateFornecedor(id: string, updates: Partial<Fornecedor>) {
     try {
-      const { error } = await supabase
-        .from('fornecedores')
+      const { data, error: updateError } = await supabase
+        .from("fornecedores")
         .update(updates)
-        .eq('id', id);
+        .eq("id", id)
+        .select()
+        .single();
 
-      if (error) throw error;
-
+      if (updateError) throw updateError;
       await fetchFornecedores();
-    } catch (error) {
-   const err = error as Error;
-      const message = err instanceof Error ? err.message : 'Erro ao atualizar fornecedor';
-      setError(message);
-      throw err;
+      return data;
+    } catch (err) {
+      throw new Error(
+        err instanceof Error ? err.message : "Erro ao atualizar fornecedor",
+      );
     }
-  };
+  }
 
-  const deletarFornecedor = async (id: string) => {
+  async function deleteFornecedor(id: string) {
     try {
-      const { error } = await supabase
-        .from('fornecedores')
+      const { error: deleteError } = await supabase
+        .from("fornecedores")
         .delete()
-        .eq('id', id);
+        .eq("id", id);
 
-      if (error) throw error;
-
+      if (deleteError) throw deleteError;
       await fetchFornecedores();
-    } catch (error) {
-   const err = error as Error;
-      const message = err instanceof Error ? err.message : 'Erro ao deletar fornecedor';
-      setError(message);
-      throw err;
+    } catch (err) {
+      throw new Error(
+        err instanceof Error ? err.message : "Erro ao deletar fornecedor",
+      );
     }
-  };
+  }
 
   return {
     fornecedores,
     loading,
     error,
-    fetchFornecedores,
-    criarFornecedor,
-    atualizarFornecedor,
-    deletarFornecedor
+    createFornecedor,
+    updateFornecedor,
+    deleteFornecedor,
+    refresh: fetchFornecedores,
   };
-};
-
+}

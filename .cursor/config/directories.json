@@ -1,0 +1,46 @@
+{
+  "development": {
+    "root": "/Users/daxmeneghel/icarus-make",
+    "src": "/Users/daxmeneghel/icarus-make/src",
+    "public": "/Users/daxmeneghel/icarus-make/public",
+    "tests": "/Users/daxmeneghel/icarus-make/tests"
+  },
+  "production": {
+    "root": "/Users/daxmeneghel/icarus-v5.0",
+    "src": "/Users/daxmeneghel/icarus-v5.0/src",
+    "public": "/Users/daxmeneghel/icarus-v5.0/public",
+    "excluded": [
+      "node_modules",
+      ".git",
+      "dist",
+      "coverage",
+      "test-results",
+      "docs",
+      "examples",
+      ".cursor"
+    ]
+  },
+  "migration_rules": {
+    "include": [
+      "src/**/*",
+      "public/**/*",
+      "package.json",
+      "pnpm-lock.yaml",
+      "tsconfig.json",
+      "vite.config.ts",
+      "index.html",
+      ".env.example",
+      "README.md"
+    ],
+    "exclude": [
+      "**/*.test.ts",
+      "**/*.test.tsx",
+      "**/*.spec.ts",
+      "**/*.spec.tsx",
+      "**/test/**",
+      "**/tests/**",
+      "**/__tests__/**",
+      "**/coverage/**"
+    ]
+  }
+}

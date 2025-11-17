@@ -1,0 +1,523 @@
+{
+  "metadata": {
+    "projeto": "icarus-make",
+    "data_auditoria": "2025-10-26",
+    "auditor": "Agente Auditor de Código AI",
+    "versao": "1.0.0",
+    "total_arquivos": 498,
+    "total_linhas_codigo": 114731,
+    "bundle_size": "1.7MB"
+  },
+
+  "resumo_executivo": {
+    "score_geral": 72,
+    "status": "ATENÇÃO NECESSÁRIA",
+    "areas_criticas": 3,
+    "areas_atencao": 8,
+    "pontos_fortes": 12,
+    "recomendacao": "Correções urgentes necessárias em segurança e qualidade antes do deploy em produção"
+  },
+
+  "1_seguranca": {
+    "score": 65,
+    "status": "CRÍTICO - Ação Imediata Necessária",
+    "issues": [
+      {
+        "id": "SEC-001",
+        "severidade": "CRÍTICA",
+        "categoria": "Credenciais Expostas",
+        "titulo": "Credenciais Supabase hardcoded em env.example",
+        "descricao": "O arquivo env.example contém credenciais reais do Supabase (URL e ANON_KEY) que estão versionadas no Git",
+        "arquivo": "env.example",
+        "linhas": "4-5",
+        "impacto": "ALTO - Exposição de credenciais de produção",
+        "recomendacao": "Remover imediatamente as credenciais reais. Usar valores de exemplo/placeholder. Rotacionar as chaves do Supabase.",
+        "exemplo_correcao": "VITE_SUPABASE_URL=https://seu-projeto.supabase.co\nVITE_SUPABASE_ANON_KEY=sua-chave-anon-aqui"
+      },
+      {
+        "id": "SEC-002",
+        "severidade": "ALTA",
+        "categoria": "XSS Risk",
+        "titulo": "Uso de dangerouslySetInnerHTML",
+        "descricao": "Encontradas 3 ocorrências de dangerouslySetInnerHTML que podem causar XSS",
+        "arquivos": [
+          "src/components/modules/AdminConfiguracoes.tsx:386",
+          "src/lib/services/CFMScraperService.ts:145",
+          "src/main-test.tsx:31"
+        ],
+        "impacto": "MÉDIO - Potencial vulnerabilidade XSS",
+        "recomendacao": "Validar e sanitizar todo HTML antes de renderizar. Usar biblioteca DOMPurify.",
+        "exemplo_correcao": "import DOMPurify from 'dompurify';\nconst cleanHTML = DOMPurify.sanitize(dirtyHTML);\n<div dangerouslySetInnerHTML={{ __html: cleanHTML }} />"
+      },
+      {
+        "id": "SEC-003",
+        "severidade": "MÉDIA",
+        "categoria": "Session Storage",
+        "titulo": "Armazenamento de sessão em localStorage",
+        "descricao": "Dados de sessão incluindo permissões são armazenados em localStorage sem criptografia",
+        "arquivo": "src/contexts/AuthContext.tsx",
+        "linhas": "127-130",
+        "impacto": "MÉDIO - Dados sensíveis acessíveis via JavaScript",
+        "recomendacao": "Considerar usar httpOnly cookies ou session storage com criptografia. Implementar rotação de tokens.",
+        "exemplo_correcao": "Usar JWT em httpOnly cookies com refresh tokens"
+      },
+      {
+        "id": "SEC-004",
+        "severidade": "BAIXA",
+        "categoria": "CORS Configuration",
+        "titulo": "CORS configurado com Allow-Origin: *",
+        "descricao": "API de contato aceita requisições de qualquer origem",
+        "arquivo": "api/contact.ts",
+        "linha": "17",
+        "impacto": "BAIXO - Pode permitir requisições não autorizadas",
+        "recomendacao": "Restringir CORS para domínios específicos em produção",
+        "exemplo_correcao": "res.setHeader('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGINS || '*');"
+      }
+    ],
+    "pontos_positivos": [
+      "✓ Variáveis de ambiente usadas corretamente (90 ocorrências)",
+      "✓ Validação de inputs implementada na API de contato",
+      "✓ Proteção contra SQL injection via Supabase RPC",
+      "✓ Arquivo .gitignore configurado corretamente (.env ignorado)"
+    ],
+    "metricas": {
+      "credenciais_hardcoded": 1,
+      "xss_risks": 3,
+      "sql_injection_risks": 0,
+      "env_vars_usadas_corretamente": 90,
+      "validacao_inputs": "Parcial"
+    }
+  },
+
+  "2_performance": {
+    "score": 82,
+    "status": "BOM - Pequenas Melhorias Necessárias",
+    "issues": [
+      {
+        "id": "PERF-001",
+        "severidade": "MÉDIA",
+        "categoria": "Bundle Size",
+        "titulo": "Bundle size pode ser otimizado",
+        "descricao": "Bundle atual de 1.7MB pode ser reduzido",
+        "impacto": "MÉDIO - Afeta tempo de carregamento inicial",
+        "recomendacao": "Implementar code splitting mais agressivo, tree-shaking e compressão",
+        "acoes": [
+          "Analisar bundle com vite-bundle-visualizer",
+          "Implementar dynamic imports para rotas",
+          "Revisar dependências grandes (recharts, nivo)"
+        ]
+      },
+      {
+        "id": "PERF-002",
+        "severidade": "BAIXA",
+        "categoria": "Console Logs",
+        "titulo": "867 console.logs em produção",
+        "descricao": "Muitos console.logs que serão removidos apenas no build de produção",
+        "impacto": "BAIXO - Afeta performance em desenvolvimento",
+        "recomendacao": "Implementar sistema de logging estruturado (winston/pino)",
+        "nota": "Terser remove console.log em produção (configurado)"
+      },
+      {
+        "id": "PERF-003",
+        "severidade": "BAIXA",
+        "categoria": "Memoization",
+        "titulo": "Oportunidade para mais memoização",
+        "descricao": "MiniBarChart tem warning sobre normalizedData não memoizado",
+        "arquivo": "src/components/oraclusx-ds/MiniBarChart.tsx:49",
+        "recomendacao": "Envolver normalizedData em useMemo"
+      }
+    ],
+    "pontos_positivos": [
+      "✓ 19 componentes lazy loaded (ótimo)",
+      "✓ 378 ocorrências de useMemo/useCallback (excelente)",
+      "✓ Code splitting configurado no Vite",
+      "✓ Terser minification ativado",
+      "✓ Drop console em produção configurado",
+      "✓ Chunks manuais definidos (react, supabase, charts, ui)",
+      "✓ 939 queries Supabase otimizadas com select específicos"
+    ],
+    "metricas": {
+      "lazy_loading": 19,
+      "memoization_hooks": 378,
+      "bundle_size_mb": 1.7,
+      "code_splitting": "Configurado",
+      "supabase_queries": 939,
+      "console_logs": 867
+    }
+  },
+
+  "3_qualidade": {
+    "score": 58,
+    "status": "ATENÇÃO - Melhorias Urgentes Necessárias",
+    "issues": [
+      {
+        "id": "QUAL-001",
+        "severidade": "ALTA",
+        "categoria": "Type Safety",
+        "titulo": "109 ocorrências de tipo 'any'",
+        "descricao": "Uso excessivo de 'any' compromete segurança de tipos TypeScript",
+        "impacto": "ALTO - Reduz benefícios do TypeScript",
+        "arquivos_principais": [
+          "src/test/unit/business-logic.test.ts: 11 ocorrências",
+          "src/test/unit/components.test.tsx: 34 ocorrências",
+          "src/services/integrations/*.ts: 25+ ocorrências",
+          "src/webhooks/*.ts: 15+ ocorrências"
+        ],
+        "recomendacao": "Substituir 'any' por tipos específicos. Meta: reduzir para < 10 ocorrências",
+        "exemplo_correcao": "// Ruim\nfunction process(data: any) {}\n\n// Bom\ninterface ProcessData {\n  id: string;\n  value: number;\n}\nfunction process(data: ProcessData) {}"
+      },
+      {
+        "id": "QUAL-002",
+        "severidade": "CRÍTICA",
+        "categoria": "Cobertura de Testes",
+        "titulo": "Cobertura de testes muito baixa",
+        "descricao": "Apenas 13 arquivos de teste para 498 arquivos de código (2.6%)",
+        "impacto": "CRÍTICO - Risco alto de bugs em produção",
+        "metricas": {
+          "arquivos_teste": 13,
+          "arquivos_codigo": 498,
+          "cobertura_estimada": "< 10%",
+          "meta": "> 80%"
+        },
+        "recomendacao": "Implementar testes unitários e de integração urgentemente. Priorizar: hooks, services, componentes críticos",
+        "acoes": [
+          "Adicionar vitest/coverage-v8 como dependência",
+          "Criar testes para todos os hooks (38 hooks)",
+          "Criar testes para services críticos (integrations, AI)",
+          "Implementar testes E2E com Playwright",
+          "Configurar CI/CD para rodar testes"
+        ]
+      },
+      {
+        "id": "QUAL-003",
+        "severidade": "MÉDIA",
+        "categoria": "Linter Errors",
+        "titulo": "28 erros de lint encontrados",
+        "descricao": "ESLint reportou 28 erros e múltiplos warnings",
+        "principais_erros": [
+          "@typescript-eslint/no-explicit-any: 23 erros",
+          "@next/next/no-img-element: 2 erros",
+          "react-hooks/rules-of-hooks: 12 erros em stories"
+        ],
+        "impacto": "MÉDIO - Indica problemas de qualidade de código",
+        "recomendacao": "Corrigir todos os erros de lint. Warnings podem ser graduais"
+      },
+      {
+        "id": "QUAL-004",
+        "severidade": "BAIXA",
+        "categoria": "TODOs/FIXMEs",
+        "titulo": "77 TODOs/FIXMEs no código",
+        "descricao": "Código contém 77 marcadores de trabalho pendente",
+        "impacto": "BAIXO - Indica trabalho incompleto",
+        "recomendacao": "Revisar e resolver ou criar issues para cada TODO/FIXME"
+      }
+    ],
+    "pontos_positivos": [
+      "✓ TypeScript strict mode ativado",
+      "✓ ESLint configurado com TypeScript",
+      "✓ Prettier configurado",
+      "✓ Playwright configurado para E2E",
+      "✓ Vitest configurado",
+      "✓ Type checking separado (tsconfig.typecheck.json)"
+    ],
+    "metricas": {
+      "typescript_strict": true,
+      "any_types": 109,
+      "arquivos_teste": 13,
+      "arquivos_codigo": 498,
+      "cobertura_estimada": "< 10%",
+      "lint_erros": 28,
+      "lint_warnings": 50,
+      "todos_fixmes": 77
+    }
+  },
+
+  "4_arquitetura": {
+    "score": 85,
+    "status": "EXCELENTE - Arquitetura Bem Estruturada",
+    "issues": [
+      {
+        "id": "ARQ-001",
+        "severidade": "BAIXA",
+        "categoria": "State Management",
+        "titulo": "Múltiplos contextos sem biblioteca de estado",
+        "descricao": "3 contextos (Auth, Theme, Toast) sem biblioteca de state management",
+        "impacto": "BAIXO - Pode complicar com crescimento",
+        "recomendacao": "Considerar Zustand ou Redux Toolkit para estado global futuro",
+        "nota": "Context API é adequada para tamanho atual do projeto"
+      },
+      {
+        "id": "ARQ-002",
+        "severidade": "BAIXA",
+        "categoria": "Component Organization",
+        "titulo": "101 componentes na pasta modules sem suborganização",
+        "descricao": "Muitos componentes em src/components/modules/ sem categorização",
+        "impacto": "BAIXO - Dificulta navegação",
+        "recomendacao": "Organizar modules em subpastas: financeiro/, estoque/, crm/, etc."
+      }
+    ],
+    "pontos_positivos": [
+      "✓ Separação clara de concerns (components, hooks, services, contexts)",
+      "✓ 569 componentes exportados (alto reuso)",
+      "✓ 38 hooks customizados (excelente abstração)",
+      "✓ Services bem estruturados (integrations, workflow, compliance)",
+      "✓ Design System próprio (oraclusx-ds) com 83 componentes",
+      "✓ Storybook configurado para documentação",
+      "✓ Arquitetura modular e escalável",
+      "✓ Boa separação entre UI e lógica de negócio",
+      "✓ Context API usada apropriadamente",
+      "✓ Routing bem estruturado com lazy loading"
+    ],
+    "metricas": {
+      "total_componentes": 569,
+      "hooks_customizados": 38,
+      "services": 51,
+      "contexts": 3,
+      "design_system_componentes": 83,
+      "paginas": 25,
+      "features": 3
+    },
+    "estrutura": {
+      "components": {
+        "total": 300,
+        "subdiretorios": [
+          "ai/ (6 componentes)",
+          "auth/ (2 componentes)",
+          "cadastros/ (1 componente)",
+          "charts/ (4 componentes)",
+          "dashboard/ (4 componentes)",
+          "forms/ (6 componentes)",
+          "layout/ (8 componentes)",
+          "modules/ (101 componentes)",
+          "oraclusx-ds/ (83 componentes)",
+          "ui/ (45 componentes)",
+          "workflow/ (2 componentes)"
+        ]
+      },
+      "hooks": {
+        "total": 38,
+        "categorias": [
+          "Cadastros (useCadastrosKPIs, useMedicos, useHospitais, etc.)",
+          "Financeiro (useFluxoCaixa, useContasPagar, useContasReceber, etc.)",
+          "Estoque (useEstoque, useConsignacao, useLotes, etc.)",
+          "Integrations (useBrasilAPI, useGPTResearcher)",
+          "Utils (useAuth, useErrorHandler, useDocumentTitle, etc.)"
+        ]
+      },
+      "services": {
+        "total": 51,
+        "categorias": [
+          "integrations/ (12 services)",
+          "workflow/ (7 services)",
+          "compliance/ (2 services)",
+          "AI (CirurgiasAI, EstoqueAI, FinanceiroAI)"
+        ]
+      }
+    }
+  },
+
+  "5_boas_praticas": {
+    "score": 78,
+    "pontos_positivos": [
+      "✓ README.md presente",
+      "✓ package.json bem organizado com scripts úteis",
+      "✓ .gitignore configurado corretamente",
+      "✓ ESLint e Prettier configurados",
+      "✓ Docker configurado (Dockerfile presente)",
+      "✓ CI/CD scripts presentes",
+      "✓ Documentação extensa (múltiplos .md)",
+      "✓ Vercel configurado para deploy",
+      "✓ Monorepo bem estruturado",
+      "✓ Backup scripts configurados"
+    ],
+    "areas_melhorar": [
+      "⚠ Falta CHANGELOG atualizado",
+      "⚠ Falta CONTRIBUTING.md",
+      "⚠ Falta documentação de API",
+      "⚠ Falta guia de estilo de código"
+    ]
+  },
+
+  "recomendacoes_priorizadas": {
+    "urgente_24h": [
+      {
+        "prioridade": "P0 - CRÍTICO",
+        "acao": "Remover credenciais Supabase do env.example",
+        "impacto": "Segurança",
+        "esforco": "5 minutos",
+        "responsavel": "DevOps/Security"
+      },
+      {
+        "prioridade": "P0 - CRÍTICO",
+        "acao": "Rotacionar chaves Supabase expostas",
+        "impacto": "Segurança",
+        "esforco": "30 minutos",
+        "responsavel": "DevOps"
+      }
+    ],
+    "alta_1_semana": [
+      {
+        "prioridade": "P1 - ALTA",
+        "acao": "Implementar sanitização HTML com DOMPurify",
+        "impacto": "Segurança XSS",
+        "esforco": "2 horas",
+        "responsavel": "Frontend"
+      },
+      {
+        "prioridade": "P1 - ALTA",
+        "acao": "Reduzir uso de 'any' de 109 para < 20",
+        "impacto": "Type Safety",
+        "esforco": "1 semana",
+        "responsavel": "Dev Team"
+      },
+      {
+        "prioridade": "P1 - ALTA",
+        "acao": "Implementar testes unitários (meta: 30% cobertura)",
+        "impacto": "Qualidade",
+        "esforco": "2 semanas",
+        "responsavel": "QA/Dev Team"
+      },
+      {
+        "prioridade": "P1 - ALTA",
+        "acao": "Corrigir 28 erros de lint",
+        "impacto": "Qualidade",
+        "esforco": "1 dia",
+        "responsavel": "Dev Team"
+      }
+    ],
+    "media_1_mes": [
+      {
+        "prioridade": "P2 - MÉDIA",
+        "acao": "Implementar sistema de logging estruturado",
+        "impacto": "Observabilidade",
+        "esforco": "3 dias",
+        "responsavel": "Backend"
+      },
+      {
+        "prioridade": "P2 - MÉDIA",
+        "acao": "Otimizar bundle size para < 1MB",
+        "impacto": "Performance",
+        "esforco": "1 semana",
+        "responsavel": "Frontend"
+      },
+      {
+        "prioridade": "P2 - MÉDIA",
+        "acao": "Implementar httpOnly cookies para sessão",
+        "impacto": "Segurança",
+        "esforco": "2 dias",
+        "responsavel": "Backend/Security"
+      },
+      {
+        "prioridade": "P2 - MÉDIA",
+        "acao": "Aumentar cobertura de testes para 80%",
+        "impacto": "Qualidade",
+        "esforco": "1 mês",
+        "responsavel": "QA/Dev Team"
+      }
+    ],
+    "baixa_3_meses": [
+      {
+        "prioridade": "P3 - BAIXA",
+        "acao": "Reorganizar pasta modules em subcategorias",
+        "impacto": "Manutenibilidade",
+        "esforco": "1 dia",
+        "responsavel": "Dev Team"
+      },
+      {
+        "prioridade": "P3 - BAIXA",
+        "acao": "Resolver 77 TODOs/FIXMEs",
+        "impacto": "Manutenibilidade",
+        "esforco": "2 semanas",
+        "responsavel": "Dev Team"
+      },
+      {
+        "prioridade": "P3 - BAIXA",
+        "acao": "Considerar migração para Zustand",
+        "impacto": "Escalabilidade",
+        "esforco": "1 semana",
+        "responsavel": "Arquiteto"
+      }
+    ]
+  },
+
+  "metricas_consolidadas": {
+    "seguranca": {
+      "score": 65,
+      "issues_criticas": 1,
+      "issues_altas": 1,
+      "issues_medias": 1,
+      "issues_baixas": 1
+    },
+    "performance": {
+      "score": 82,
+      "bundle_size_mb": 1.7,
+      "lazy_components": 19,
+      "memoization_usage": 378,
+      "queries_otimizadas": 939
+    },
+    "qualidade": {
+      "score": 58,
+      "any_types": 109,
+      "cobertura_testes": "< 10%",
+      "lint_erros": 28,
+      "strict_mode": true
+    },
+    "arquitetura": {
+      "score": 85,
+      "componentes_reutilizaveis": 569,
+      "hooks_customizados": 38,
+      "services": 51,
+      "separacao_concerns": "Excelente"
+    }
+  },
+
+  "checklist_deploy_producao": {
+    "bloqueadores_criticos": [
+      "❌ Remover credenciais hardcoded",
+      "❌ Rotacionar chaves Supabase",
+      "❌ Implementar sanitização XSS",
+      "❌ Cobertura de testes mínima (30%)",
+      "❌ Corrigir erros de lint"
+    ],
+    "recomendados": [
+      "⚠ Reduzir uso de 'any'",
+      "⚠ Implementar logging estruturado",
+      "⚠ Otimizar bundle size",
+      "⚠ Implementar httpOnly cookies"
+    ],
+    "opcionais": [
+      "○ Reorganizar estrutura de pastas",
+      "○ Resolver TODOs",
+      "○ Migrar state management"
+    ]
+  },
+
+  "conclusao": {
+    "status": "PROJETO NÃO PRONTO PARA PRODUÇÃO",
+    "principais_riscos": [
+      "Credenciais expostas no repositório",
+      "Baixa cobertura de testes (< 10%)",
+      "Vulnerabilidades XSS potenciais",
+      "Type safety comprometida (109 'any')"
+    ],
+    "pontos_fortes": [
+      "Arquitetura bem estruturada e escalável",
+      "Bom uso de lazy loading e memoization",
+      "Design system robusto",
+      "Hooks bem abstraídos"
+    ],
+    "tempo_estimado_correções": {
+      "criticas": "2-3 dias",
+      "altas": "2-3 semanas",
+      "total_para_producao": "4-6 semanas"
+    },
+    "proximos_passos": [
+      "1. Executar correções críticas (P0) em 24h",
+      "2. Implementar testes unitários (P1) em 2 semanas",
+      "3. Code review completo do time",
+      "4. Penetration testing",
+      "5. Load testing",
+      "6. Deploy em staging para validação final"
+    ]
+  }
+}

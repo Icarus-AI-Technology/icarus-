@@ -1,0 +1,2284 @@
+[
+  {
+    "id": "icarus-v5-spec-0001",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Visão Geral",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📋 SUMÁRIO EXECUTIVO",
+      "Visão Geral"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "📋 SUMÁRIO EXECUTIVO",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/sum-rio-executivo/vis-o-geral",
+    "order": 1,
+    "content": "Sistema enterprise completo para gestão de OPME (Órteses, Próteses e Materiais Especiais) para distribuidores médico-hospitalares, desenvolvido com React 18, TypeScript, Tailwind CSS v4 e Supabase backend.",
+    "content_length": 205,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "vis o geral",
+      "sum rio executivo"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📋 SUMÁRIO EXECUTIVO > Visão Geral"
+  },
+  {
+    "id": "icarus-v5-spec-0002",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Estatísticas do Sistema",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📋 SUMÁRIO EXECUTIVO",
+      "Estatísticas do Sistema"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "📋 SUMÁRIO EXECUTIVO",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/sum-rio-executivo/estat-sticas-do-sistema",
+    "order": 2,
+    "content": "```yaml\nTotal de Módulos: 58\nLinhas de Código: 19.981 (somente componentes)\nComponentes Premium: 50+\nDesign System: OraclusX DS Neumorphic 3D (incl. RadialProgress)\nFramework: React 18.3 + TypeScript 5.6\nBackend: Supabase PostgreSQL\nAutenticação: Supabase Auth + RLS\nRealtime: Supabase Realtime\nStorage: Supabase Storage\nBuild Tool: Vite 5.4.20\nStyling: Tailwind CSS v3.4\nIcons: Lucide React (450+ ícones)\nForms: React Hook Form + Zod\nRouting: React Router DOM v6\nCharts: Recharts/Nivo (OrxLineChart/OrxBarChart/OrxPieChart)\nTesting: Playwright + Vitest\nCI/CD: GitHub Actions ready\nDeployment: Vercel/Netlify ready\n```\n\n---",
+    "content_length": 623,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "estat sticas do sistema",
+      "sum rio executivo"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📋 SUMÁRIO EXECUTIVO > Estatísticas do Sistema"
+  },
+  {
+    "id": "icarus-v5-spec-0003",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Frontend",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🎯 ARQUITETURA DO SISTEMA",
+      "Stack Tecnológico",
+      "Frontend"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Stack Tecnológico",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/arquitetura-do-sistema/stack-tecnol-gico/frontend",
+    "order": 3,
+    "content": "```yaml\nCore:\n  - React: 18.3.1\n  - TypeScript: 5.6.2\n  - Vite: 5.4.20\n  \nUI/UX:\n  - Tailwind CSS: 3.4.10\n  - Radix UI: Latest (15+ componentes primitivos)\n  - Lucide React: 0.436.0 (ícones)\n  - Recharts: 3.3.0 (gráficos)\n  - date-fns: 2.30.0 (datas)\n  \nForms & Validation:\n  - React Hook Form: 7.65.0\n  - Zod: 4.1.12\n  - @hookform/resolvers: 5.2.2\n  \nState Management:\n  - React Context API\n  - Custom Hooks (35+ hooks)\n  \nRouting:\n  - React Router DOM: 6.26.0\n```",
+    "content_length": 465,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "frontend",
+      "arquitetura do sistema",
+      "stack tecnol gico"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🎯 ARQUITETURA DO SISTEMA > Stack Tecnológico > Frontend"
+  },
+  {
+    "id": "icarus-v5-spec-0004",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Backend (Supabase)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🎯 ARQUITETURA DO SISTEMA",
+      "Stack Tecnológico",
+      "Backend (Supabase)"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Stack Tecnológico",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/arquitetura-do-sistema/stack-tecnol-gico/backend-supabase",
+    "order": 4,
+    "content": "```yaml\nDatabase:\n  - PostgreSQL: 15+\n  - Row Level Security (RLS)\n  - Multi-tenant\n  - 100+ tabelas\n  \nAuth:\n  - Email/Password\n  - OAuth providers ready\n  - JWT tokens\n  - Session management\n  \nStorage:\n  - Buckets organizados\n  - Public/Private files\n  - CDN integrado\n  \nRealtime:\n  - WebSocket connections\n  - Database changes\n  - Presence\n  \nEdge Functions:\n  - TypeScript/Deno\n  - Serverless\n  - Validações\n  - Notificações\n  - Vetores: ml-vectors (persistência)\n  - ML Job: ml-job (enqueue)\n  - Benchmark: vector-benchmark (comparação FAISS vs pgvector)\n```",
+    "content_length": 565,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "arquitetura do sistema",
+      "backend supabase",
+      "stack tecnol gico"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🎯 ARQUITETURA DO SISTEMA > Stack Tecnológico > Backend (Supabase)"
+  },
+  {
+    "id": "icarus-v5-spec-0005",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Design System (OraclusX DS)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🎯 ARQUITETURA DO SISTEMA",
+      "Stack Tecnológico",
+      "Design System (OraclusX DS)"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Stack Tecnológico",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/arquitetura-do-sistema/stack-tecnol-gico/design-system-oraclusx-ds",
+    "order": 5,
+    "content": "```yaml\nFilosofia: Neumorphism 3D Premium\nTokens:\n  - CSS Variables (100+)\n  - Semantic colors\n  - Typography scale\n  - Spacing system\n  - Shadow presets (4 tipos)\n  \nComponentes:\n  - Buttons (5 variantes)\n  - Cards (neuromorphic)\n  - Inputs (10+ tipos)\n  - Badges (6 variantes)\n  - Tooltips\n  - Modals/Dialogs\n  - Dropdowns\n  - Tabs\n  - Accordions\n  - Progress bars\n  - RadialProgress (novo)\n  - Sliders\n  - Switches\n  - Radio/Checkbox\n  - Date pickers\n  - File uploads\n  \nLayouts:\n  - Sidebar (260px/80px collapse)\n  - Topbar (64px fixed)\n  - Grid system responsivo\n  - Container fluido\n  \nTemas:\n  - Dark mode completo\n  - Light mode completo\n  - Transições suaves\n  - Persistência localStorage\n```\n\nConformidade Global (OraclusX DS em 58 módulos)\n- Todos os módulos utilizam componentes DS (cards, badges, progress, toast) para placeholders e métricas.\n- Módulos de demonstração com placeholders: System Health, Workflow Builder, Campanhas.\n- Toasts disponíveis via `contexts/ToastContext.tsx`.\n - Inline styles removidos do DS e migração completa para utilitários OraclusX (v4).\n\n---",
+    "content_length": 1088,
+    "keywords": [
+      "design system oraclusx ds",
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "arquitetura do sistema",
+      "stack tecnol gico"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🎯 ARQUITETURA DO SISTEMA > Stack Tecnológico > Design System (OraclusX DS)"
+  },
+  {
+    "id": "icarus-v5-spec-0006",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "1.1 Dashboard Principal ⭐",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📦 MÓDULOS IMPLEMENTADOS (58 TOTAL)",
+      "1. CORE BUSINESS (10 módulos principais)",
+      "1.1 Dashboard Principal ⭐"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "1. CORE BUSINESS (10 módulos principais)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/m-dulos-implementados-58-total/1-core-business-10-m-dulos-principais/1-1-dashboard-principal",
+    "order": 6,
+    "content": "**Rota**: `/dashboard-principal`  \n**Arquivo**: `src/pages/DashboardPrincipal.tsx`  \n**Linhas**: 450\n\n**Funcionalidades**:\n- 11 KPIs estratégicos em tempo real\n- 8 botões de ação rápida\n- Mini-charts integrados (Recharts)\n- Navegação por custom events\n- Design neuromorphic premium\n- Responsivo total\n- Dark/Light mode\n\n**KPIs**:\n1. Faturamento Mensal\n2. Cirurgias Agendadas\n3. Taxa de Conversão CRM\n4. Estoque Crítico\n5. Contas a Receber (Vencendo)\n6. Margem de Lucro\n7. NPS (Net Promoter Score)\n8. Entregas no Prazo\n9. Compliance Score\n10. Produtividade Equipe\n11. ROI Marketing\n\n**Integrações**:\n- Supabase RPC: `get_dashboard_kpis()`\n- Realtime: Atualização automática\n- Custom Events: Navegação entre módulos\n\n---",
+    "content_length": 718,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "m dulos implementados 58 total",
+      "1 core business 10 m dulos principais",
+      "1 1 dashboard principal"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📦 MÓDULOS IMPLEMENTADOS (58 TOTAL) > 1. CORE BUSINESS (10 módulos principais) > 1.1 Dashboard Principal ⭐"
+  },
+  {
+    "id": "icarus-v5-spec-0007",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "1.2 Gestão de Cadastros ⭐",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📦 MÓDULOS IMPLEMENTADOS (58 TOTAL)",
+      "1. CORE BUSINESS (10 módulos principais)",
+      "1.2 Gestão de Cadastros ⭐"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "1. CORE BUSINESS (10 módulos principais)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/m-dulos-implementados-58-total/1-core-business-10-m-dulos-principais/1-2-gest-o-de-cadastros",
+    "order": 7,
+    "content": "**Rota**: `/cadastros`  \n**Arquivo**: `src/components/modules/GestãoCadastros.tsx`  \n**Linhas**: 850\n\n**Sub-módulos** (8):\n1. Médicos Cadastrados\n2. Hospitais/Clínicas\n3. Pacientes\n4. Convênios\n5. Fornecedores OPME\n6. Produtos OPME\n7. Equipes Médicas\n8. Transportadora\n9. Tabelas de Preços\n\n**Funcionalidades**:\n- Validação automática com IA\n- Detecção de duplicatas (fuzzy matching)\n- Autocomplete inteligente\n- Importação em massa (CSV/Excel)\n- Validação CNPJ/CPF/CRM via APIs\n- Integração com Receita Federal\n- Geocoding de endereços\n- Histórico de alterações (audit log)\n\n**APIs Integradas**:\n- BrasilAPI (CNPJ/CEP)\n- ViaCEP\n- ReceitaWS\n- Google Geocoding\n\n**Hooks**:\n- `useMedicos()`\n- `useHospitais()`\n- `useFornecedores()`\n- `useProdutos()`\n\n---",
+    "content_length": 752,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "m dulos implementados 58 total",
+      "1 2 gest o de cadastros",
+      "1 core business 10 m dulos principais"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📦 MÓDULOS IMPLEMENTADOS (58 TOTAL) > 1. CORE BUSINESS (10 módulos principais) > 1.2 Gestão de Cadastros ⭐"
+  },
+  {
+    "id": "icarus-v5-spec-0008",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "1.3 Cirurgias & Procedimentos ⭐",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📦 MÓDULOS IMPLEMENTADOS (58 TOTAL)",
+      "1. CORE BUSINESS (10 módulos principais)",
+      "1.3 Cirurgias & Procedimentos ⭐"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "1. CORE BUSINESS (10 módulos principais)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/m-dulos-implementados-58-total/1-core-business-10-m-dulos-principais/1-3-cirurgias-procedimentos",
+    "order": 8,
+    "content": "**Rota**: `/cirurgias`  \n**Arquivo**: `src/components/modules/CirurgiasProcedimentos.tsx`  \n**Linhas**: 1.200\n\n**Sub-módulos** (13):\n1. Dashboard Cirurgias\n2. Agendamento\n3. Gestão de Kits Cirúrgicos\n4. Materiais OPME por Cirurgia\n5. Check-in Pré-Operatório\n6. Registro Intra-Operatório\n7. Rastreabilidade ANVISA\n8. Portais OPME (4 integrados)\n9. Faturamento Pós-Cirúrgico\n10. Glosas & Auditoria\n11. Relatórios Estatísticos\n12. IA: Predição de Duração\n13. IA: Recomendação de Kits\n\n**Portais OPME Integrados**:\n1. OPMENEXO\n2. Inpart Saúde\n3. EMS Ventura Saúde\n4. VSSupply\n\n**Funcionalidades IA** (`CirurgiasAI.ts`):\n- Predição de duração cirúrgica (Random Forest)\n- Recomendação de kits (Collaborative Filtering)\n- Análise de risco cirúrgico\n- Predição de glosas\n- Otimização de agenda\n- Detecção de anomalias\n\n**Compliance**:\n- ANVISA: Rastreabilidade completa\n- ANS: Registro de procedimentos\n- CFM: Validação de CRMs\n- ISO 13485: Gestão da qualidade\n\n**Hooks**:\n- `useCirurgias()`\n- `useKits()`\n- `useMateriais()`\n- `usePortaisOPME()`\n\n**Services**:\n- `CirurgiasAI.ts` (650 linhas)\n- `PortaisOPMEService.ts` (400 linhas)\n- `CotacaoAutomaticaService.ts` (350 linhas)\n- `PalavrasChaveService.ts` (200 linhas)\n\nFeature Flags relevantes:\n- `FF_AI_TUTOR_CIRURGIAS` (Tutor IA por módulo)\n\n---",
+    "content_length": 1289,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "m dulos implementados 58 total",
+      "1 3 cirurgias procedimentos",
+      "1 core business 10 m dulos principais"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📦 MÓDULOS IMPLEMENTADOS (58 TOTAL) > 1. CORE BUSINESS (10 módulos principais) > 1.3 Cirurgias & Procedimentos ⭐"
+  },
+  {
+    "id": "icarus-v5-spec-0009",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "1.4 Financeiro Avançado ⭐",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📦 MÓDULOS IMPLEMENTADOS (58 TOTAL)",
+      "1. CORE BUSINESS (10 módulos principais)",
+      "1.4 Financeiro Avançado ⭐"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "1. CORE BUSINESS (10 módulos principais)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/m-dulos-implementados-58-total/1-core-business-10-m-dulos-principais/1-4-financeiro-avan-ado",
+    "order": 9,
+    "content": "**Rota**: `/financeiro`  \n**Arquivo**: `src/components/modules/FinanceiroAvancado.tsx`  \n**Linhas**: 1.100\n\n**Sub-módulos** (9):\n1. Dashboard Financeiro\n2. Contas a Receber\n3. Contas a Pagar\n4. Fluxo de Caixa\n5. Conciliação Bancária\n6. Planejamento Financeiro\n7. Centro de Custos\n8. Tesouraria\n9. Relatórios Financeiros\n\n**Funcionalidades IA**:\n1. **Inadimplência Score** (Random Forest)\n   - Análise histórico cliente\n   - Predição probabilidade atraso\n   - Score 0-100\n   - Recomendação ação\n\n2. **Projeção Fluxo de Caixa** (ARIMA)\n   - Séries temporais\n   - Predição 90 dias\n   - Intervalos confiança\n   - Alertas proativos\n\n3. **Análise Financeira** (GPT-4)\n   - Insights automáticos\n   - Recomendações estratégicas\n   - Detecção padrões\n   - Relatórios executivos\n\n**Integrações Bancárias**:\n- Open Banking: Pluggy DDA\n- CNAB: 240/400\n- OFX: Import/Export\n- API Bancos: BB, Itaú, Santander, Bradesco\n\n**Hooks**:\n- `useContasReceber()`\n- `useContasPagar()`\n- `useFluxoCaixa()`\n- `useConciliacaoBancaria()`\n- `useCentroCustos()`\n\n**Services**:\n- `InadimplenciaScoreAI.ts` (300 linhas)\n- `FluxoCaixaAI.ts` (400 linhas)\n- `AnaliseFinanceiraAI.ts` (350 linhas)\n- `ConciliacaoBancariaService.ts` (500 linhas)\n\n---",
+    "content_length": 1212,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "m dulos implementados 58 total",
+      "1 core business 10 m dulos principais",
+      "1 4 financeiro avan ado"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📦 MÓDULOS IMPLEMENTADOS (58 TOTAL) > 1. CORE BUSINESS (10 módulos principais) > 1.4 Financeiro Avançado ⭐"
+  },
+  {
+    "id": "icarus-v5-spec-0010",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "1.5 Faturamento ⭐",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📦 MÓDULOS IMPLEMENTADOS (58 TOTAL)",
+      "1. CORE BUSINESS (10 módulos principais)",
+      "1.5 Faturamento ⭐"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "1. CORE BUSINESS (10 módulos principais)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/m-dulos-implementados-58-total/1-core-business-10-m-dulos-principais/1-5-faturamento",
+    "order": 10,
+    "content": "**Rota**: `/faturamento`  \n**Arquivo**: `src/components/modules/Faturamento.tsx`  \n**Linhas**: 950\n\n**Sub-módulos** (5):\n1. Gestão de Lotes\n2. Glosas & Auditoria\n3. Integração Convênios\n4. Emissão NF-e\n5. Eventos NF-e\n\n**Funcionalidades**:\n- Lotes de faturamento automáticos\n- Detecção de glosas com IA (95% acurácia)\n- Integração com 50+ convênios\n- Emissão NF-e automática (SEFAZ)\n- Rastreamento eventos NF-e\n- Cálculo impostos (ICMS, PIS, COFINS, ISS)\n- Validação TISS (Padrão ANS)\n- Exportação XML/PDF\n\n**Glosas Detection IA**:\n- Análise histórico glosas\n- Padrões convênios\n- Validação prévia\n- Recomendações correção\n- Score risco (0-100)\n\n**Integração SEFAZ**:\n- Ambiente Produção/Homologação\n- Certificado A1/A3\n- Contingência (FS-DA, SCAN)\n- Consulta status\n- Cancelamento/Carta Correção\n- DANFE (PDF gerado)\n\n**Hooks**:\n- `useLotesFaturamento()`\n- `useConvenios()`\n- `useFaturas()`\n\n**Services**:\n- `GlosasDetectionAI.ts` (400 linhas)\n- `SEFAZService.ts` (600 linhas)\n- `TISSService.ts` (350 linhas)\n\n---",
+    "content_length": 1014,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "1 5 faturamento",
+      "m dulos implementados 58 total",
+      "1 core business 10 m dulos principais"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📦 MÓDULOS IMPLEMENTADOS (58 TOTAL) > 1. CORE BUSINESS (10 módulos principais) > 1.5 Faturamento ⭐"
+  },
+  {
+    "id": "icarus-v5-spec-0011",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "1.6 CRM & Vendas ⭐",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📦 MÓDULOS IMPLEMENTADOS (58 TOTAL)",
+      "1. CORE BUSINESS (10 módulos principais)",
+      "1.6 CRM & Vendas ⭐"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "1. CORE BUSINESS (10 módulos principais)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/m-dulos-implementados-58-total/1-core-business-10-m-dulos-principais/1-6-crm-vendas",
+    "order": 11,
+    "content": "**Rota**: `/crm`  \n**Arquivo**: `src/components/modules/CRMVendas.tsx`  \n**Linhas**: 900\n\n**Sub-módulos** (7):\n1. Dashboard CRM\n2. Pipeline de Vendas\n3. Gestão de Leads\n4. Oportunidades\n5. Atividades & Tarefas\n6. Propostas Comerciais\n7. Relatórios de Vendas\n\n**Funcionalidades**:\n- Pipeline visual (Kanban)\n- Lead scoring automático\n- Automação follow-ups\n- Templates propostas\n- E-mail tracking\n- WhatsApp Business API\n- Análises preditivas IA\n- Integração telefonia (PABX)\n\n**IA CRM**:\n- Lead scoring (0-100)\n- Previsão fechamento\n- Próxima melhor ação\n- Análise sentimento\n- Clustering clientes\n\n**Integrações**:\n- E-mail: SMTP, Gmail API\n- WhatsApp: Business API\n- SMS: Twilio, AWS SNS\n- Telefonia: Asterisk, 3CX\n\n**Hooks**:\n---",
+    "content_length": 732,
+    "keywords": [
+      "1 6 crm vendas",
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "m dulos implementados 58 total",
+      "1 core business 10 m dulos principais"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📦 MÓDULOS IMPLEMENTADOS (58 TOTAL) > 1. CORE BUSINESS (10 módulos principais) > 1.6 CRM & Vendas ⭐"
+  },
+  {
+    "id": "icarus-v5-spec-0012",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "1.6.1 IA Vendas Dashboard ⭐ NOVO",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📦 MÓDULOS IMPLEMENTADOS (58 TOTAL)",
+      "1. CORE BUSINESS (10 módulos principais)",
+      "1.6.1 IA Vendas Dashboard ⭐ NOVO"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "1. CORE BUSINESS (10 módulos principais)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/m-dulos-implementados-58-total/1-core-business-10-m-dulos-principais/1-6-1-ia-vendas-dashboard-novo",
+    "order": 12,
+    "content": "**Rota**: `/vendas`  \n**Arquivo**: `src/components/modules/IAVendasDashboard.tsx`  \n**Linhas**: 280\n\n**Sessões**:\n- Diretor: Vendas Departamento, Metas Trimestre, Pipeline, Budget\n- Gerente: Vendas Equipe, Metas Atingidas, Pedidos Pendentes, Prazo Entrega\n- Operador: Tarefas Dia, Documentos Processados, Tempo Resposta, Satisfação\n\n**UI/Charts**:\n- KPIs circulares com `RadialProgress` (gradientes únicos por métrica, pulse crítico)\n- Shine hover nos cards\n- Sparkline (linhas) e Barras por canal\n\n---\n- `useLeads()`\n- `useOportunidades()`\n- `usePropostas()`\n\n---",
+    "content_length": 564,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "1 6 1 ia vendas dashboard novo",
+      "m dulos implementados 58 total",
+      "1 core business 10 m dulos principais"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📦 MÓDULOS IMPLEMENTADOS (58 TOTAL) > 1. CORE BUSINESS (10 módulos principais) > 1.6.1 IA Vendas Dashboard ⭐ NOVO"
+  },
+  {
+    "id": "icarus-v5-spec-0013",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "1.7 Gestão de Contratos ⭐",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📦 MÓDULOS IMPLEMENTADOS (58 TOTAL)",
+      "1. CORE BUSINESS (10 módulos principais)",
+      "1.7 Gestão de Contratos ⭐"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "1. CORE BUSINESS (10 módulos principais)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/m-dulos-implementados-58-total/1-core-business-10-m-dulos-principais/1-7-gest-o-de-contratos",
+    "order": 13,
+    "content": "**Rota**: `/contratos`  \n**Arquivo**: `src/components/modules/GestaoContratos.tsx`  \n**Linhas**: 850\n\n**Sub-módulos** (8):\n1. Dashboard Contratos\n2. Cadastro de Contratos\n3. Cláusulas & Termos\n4. Aditivos Contratuais\n5. SLA & Indicadores\n6. Aprovações (Workflow)\n7. Alertas & Vencimentos\n8. Documentação Anexa\n\n**Funcionalidades**:\n- Ciclo de vida completo\n- Workflow aprovações (3 níveis)\n- Assinatura digital (ICP-Brasil)\n- Geração automática PDFs\n- Templates customizáveis\n- Controle SLA\n- Renovação automática\n- Alertas proativos (30/15/7 dias)\n\n**Integrações**:\n- DocuSign\n- ClickSign\n- D4Sign\n- Adobe Sign\n\n**Hooks**:\n- `useContratos()`\n- `useClausulas()`\n- `useAditivos()`\n- `useAprovacoes()`\n\n---",
+    "content_length": 704,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "1 7 gest o de contratos",
+      "m dulos implementados 58 total",
+      "1 core business 10 m dulos principais"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📦 MÓDULOS IMPLEMENTADOS (58 TOTAL) > 1. CORE BUSINESS (10 módulos principais) > 1.7 Gestão de Contratos ⭐"
+  },
+  {
+    "id": "icarus-v5-spec-0014",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "1.8 Estoque Inteligente ⭐",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📦 MÓDULOS IMPLEMENTADOS (58 TOTAL)",
+      "1. CORE BUSINESS (10 módulos principais)",
+      "1.8 Estoque Inteligente ⭐"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "1. CORE BUSINESS (10 módulos principais)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/m-dulos-implementados-58-total/1-core-business-10-m-dulos-principais/1-8-estoque-inteligente",
+    "order": 14,
+    "content": "**Rota**: `/estoque`  \n**Arquivo**: `src/components/modules/EstoqueIA.tsx`  \n**Linhas**: 950\n\n**Sub-módulos** (8):\n1. Dashboard Estoque\n2. Gestão de Inventário\n3. Movimentações\n4. Controle de Validade\n5. Ponto de Reposição\n6. IA para Estoque\n7. Análise ABC/XYZ\n8. Integração Compras\n\n**Funcionalidades IA**:\n1. **Previsão de Demanda** (Prophet + LSTM)\n   - Análise séries temporais\n   - Sazonalidade\n   - Tendências\n   - Predição 90 dias\n\n2. **Otimização Estoque** (LP)\n   - Quantidade ótima pedido\n   - Estoque mínimo/máximo\n   - Ponto de reposição\n   - Custo total mínimo\n\n3. **Detecção Anomalias** (Isolation Forest)\n   - Movimentações atípicas\n   - Perdas/desvios\n   - Alertas tempo real\n\n**Análise ABC/XYZ**:\n- Curva ABC (valor)\n- Curva XYZ (variabilidade)\n- Matriz 9 quadrantes\n- Estratégias específicas\n\n**Hooks**:\n- `useEstoque()`\n- `useEstoqueKPIs()`\n- `useAlertasEstoque()`\n- `useAnaliseABCXYZ()`\n\n**Services**:\n- `EstoqueAI.ts` (800 linhas)\n- `ValidadeService.ts` (250 linhas)\n- `PontoReposicaoService.ts` (300 linhas)\n\n---",
+    "content_length": 1034,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "m dulos implementados 58 total",
+      "1 core business 10 m dulos principais",
+      "1 8 estoque inteligente"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📦 MÓDULOS IMPLEMENTADOS (58 TOTAL) > 1. CORE BUSINESS (10 módulos principais) > 1.8 Estoque Inteligente ⭐"
+  },
+  {
+    "id": "icarus-v5-spec-0015",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "1.9 Consignação Avançada ⭐ NOVO",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📦 MÓDULOS IMPLEMENTADOS (58 TOTAL)",
+      "1. CORE BUSINESS (10 módulos principais)",
+      "1.9 Consignação Avançada ⭐ NOVO"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "1. CORE BUSINESS (10 módulos principais)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/m-dulos-implementados-58-total/1-core-business-10-m-dulos-principais/1-9-consigna-o-avan-ada-novo",
+    "order": 15,
+    "content": "**Rota**: `/consignacao`  \n**Arquivo**: `src/pages/ConsignacaoAvancada.tsx`  \n**Linhas**: 1.350\n\n**Sub-módulos** (5):\n1. Dashboard Consignação (13 KPIs)\n2. Materiais Consignados\n3. Contratos Consignação\n4. Kits Consignados\n5. Empréstimos & Devoluções\n\n**KPIs** (13):\n1. Total Materiais Consignados\n2. Valor Total Consignado\n3. Materiais Disponíveis\n4. Materiais Utilizados\n5. Taxa de Utilização (%)\n6. Valor Utilizado\n7. Valor Devolvido\n8. Dias Médio Estoque\n9. Faturamento Pendente\n10. Hospitais Ativos\n11. Custo Total Carregamento\n12. Alertas Conferência\n13. ROI Consignação\n\n**Funcionalidades**:\n- Rastreamento completo materiais\n- Cálculo automático custos carregamento (1.5%/mês)\n- Rotatividade automática (alta/média/baixa)\n- Alertas conferência semanal\n- Contratos por hospital\n- Faturamento automático\n- Movimentações rastreadas\n- Dashboard tempo real\n\n**Alertas Automáticos**:\n- Conferência semanal obrigatória\n- 14 dias sem conferência: URGENTE\n- Valor > R$ 20.000: Alta prioridade\n- Materiais > 5 itens: Atenção\n- Notificações e-mail/SMS\n\n**Hook**:\n- `useConsignacao()` (600 linhas)\n\n**Database**:\n- 7 tabelas\n- 2 views\n- 2 functions RPC\n- 3 triggers\n\n---",
+    "content_length": 1166,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "1 9 consigna o avan ada novo",
+      "m dulos implementados 58 total",
+      "1 core business 10 m dulos principais"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📦 MÓDULOS IMPLEMENTADOS (58 TOTAL) > 1. CORE BUSINESS (10 módulos principais) > 1.9 Consignação Avançada ⭐ NOVO"
+  },
+  {
+    "id": "icarus-v5-spec-0016",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "1.10 Compliance & Auditoria ⭐ NOVO",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📦 MÓDULOS IMPLEMENTADOS (58 TOTAL)",
+      "1. CORE BUSINESS (10 módulos principais)",
+      "1.10 Compliance & Auditoria ⭐ NOVO"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "1. CORE BUSINESS (10 módulos principais)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/m-dulos-implementados-58-total/1-core-business-10-m-dulos-principais/1-10-compliance-auditoria-novo",
+    "order": 16,
+    "content": "**Rota**: `/compliance-auditoria`  \n**Arquivo**: `src/pages/ComplianceAuditoria.tsx`  \n**Linhas**: 1.600\n\n**Sub-módulos** (10):\n1. Dashboard Compliance (12 KPIs)\n2. Requisitos Abbott (7 obrigatórios)\n3. ANVISA/VISA\n4. Fabricantes\n5. Rastreabilidade OPME\n6. Auditoria Interna\n7. Documentação Técnica\n8. Certificações ISO\n9. Boas Práticas Distribuição\n10. Não Conformidades\n\n**Score Abbott Brasil**: 98.2% (Ponderado)\n- ISO 13485: 20% (98.5%)\n- Rastreabilidade: 20% (100%)\n- Armazenamento: 15% (97.8%)\n- Transporte: 15% (95.2%)\n- Documentação: 10% (99.1%)\n- Treinamento: 10% (98.0%)\n- Ética: 10% (100%)\n\n**5 Agentes IA**:\n1. **Compliance Automático**\n   - Monitora requisitos 24/7\n   - Score conformidade\n   - Alertas proativos\n   - Frequência: Tempo real\n\n2. **Documentação Inteligente**\n   - Análise docs técnicos\n   - Validação completude\n   - Extração metadados\n   - Frequência: Diária\n\n3. **Auditoria Preditiva**\n   - Prevê não conformidades\n   - Análise padrões\n   - Recomendações preventivas\n   - Frequência: Semanal\n\n4. **Treinamento Adaptativo**\n   - Identifica gaps conhecimento\n   - Recomenda treinamentos\n   - Trilhas personalizadas\n   - Frequência: Mensal\n\n5. **Análise de Risco**\n   - Avaliação riscos compliance\n   - Matriz probabilidade x impacto\n   - Planos mitigação\n   - Frequência: Mensal\n\n**Certificações**:\n- ISO 13485 (Gestão Qualidade)\n- ISO 9001\n- Boas Práticas Distribuição (ANVISA)\n- Certificados fabricantes\n\n**Hook**:\n- `useCompliance()` (700 linhas)\n\n**Database**:\n- 10 tabelas\n- 3 views\n- 2 functions RPC\n- 4 triggers\n\n---",
+    "content_length": 1551,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "1 10 compliance auditoria novo",
+      "m dulos implementados 58 total",
+      "1 core business 10 m dulos principais"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📦 MÓDULOS IMPLEMENTADOS (58 TOTAL) > 1. CORE BUSINESS (10 módulos principais) > 1.10 Compliance & Auditoria ⭐ NOVO"
+  },
+  {
+    "id": "icarus-v5-spec-0017",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "2.1 Compras & Fornecedores (6 módulos)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📦 MÓDULOS IMPLEMENTADOS (58 TOTAL)",
+      "2. MÓDULOS ADICIONAIS (48 módulos)",
+      "2.1 Compras & Fornecedores (6 módulos)"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "2. MÓDULOS ADICIONAIS (48 módulos)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/m-dulos-implementados-58-total/2-m-dulos-adicionais-48-m-dulos/2-1-compras-fornecedores-6-m-dulos",
+    "order": 17,
+    "content": "1. **Compras Fornecedores**\n   - Gestão pedidos compra\n   - Cotações automáticas\n   - Aprovação workflow\n   - Recebimento mercadorias\n\n2. **Cotações Automáticas**\n   - Multi-fornecedores\n   - Comparativo preços\n   - Histórico cotações\n\n3. **Fornecedores Avançado**\n   - Cadastro completo\n   - Avaliação performance\n   - Contratos fornecedores\n\n4. **Compras Internacionais**\n   - Importação\n   - Desembaraço aduaneiro\n   - Câmbio\n\n5. **Viabilidade Importação**\n   - Cálculo custos\n   - Simulação cenários\n   - ROI importação\n\n6. **Notas Compra**\n   - Recebimento NF-e\n   - Validação XML\n   - Lançamento fiscal\n\n---",
+    "content_length": 613,
+    "keywords": [
+      "2 1 compras fornecedores 6 m dulos",
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "m dulos implementados 58 total",
+      "2 m dulos adicionais 48 m dulos"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📦 MÓDULOS IMPLEMENTADOS (58 TOTAL) > 2. MÓDULOS ADICIONAIS (48 módulos) > 2.1 Compras & Fornecedores (6 módulos)"
+  },
+  {
+    "id": "icarus-v5-spec-0018",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "2.2 Logística & Frota (10 módulos)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📦 MÓDULOS IMPLEMENTADOS (58 TOTAL)",
+      "2. MÓDULOS ADICIONAIS (48 módulos)",
+      "2.2 Logística & Frota (10 módulos)"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "2. MÓDULOS ADICIONAIS (48 módulos)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/m-dulos-implementados-58-total/2-m-dulos-adicionais-48-m-dulos/2-2-log-stica-frota-10-m-dulos",
+    "order": 18,
+    "content": "1. **Logística Avançada**\n   - Central controle transportes\n   - 18 transportadoras integradas\n   - Rastreamento tempo real\n   - Otimização rotas (Genetic Algorithm)\n\n2. **Gestão Entregas**\n   - Programação entregas\n   - Manifesto carga\n   - Prova entrega digital\n   - Status tempo real\n\n3. **Frota Veículos**\n   - Cadastro veículos\n   - Controle motoristas\n   - Agendamento manutenções\n   - Telemetria\n\n4. **Rastreabilidade OPME**\n   - Lote a lote\n   - Número série\n   - Cadeia custódia\n   - Histórico completo\n\n5. **Rotas Otimizadas**\n   - IA otimização rotas\n   - Menor custo/tempo\n   - Restrições veículos\n   - Janelas entrega\n\n6. **Expedição Mercadorias**\n   - Separação pedidos\n   - Embalagem\n   - Etiquetas\n   - Conferência\n\n7. **Manutenção Frota**\n   - Preventiva/Corretiva\n   - Histórico manutenções\n   - Custos por veículo\n   - Alertas vencimentos\n\n8. **Combustível IA**\n   - Consumo previsto\n   - Análise eficiência\n   - Alertas anomalias\n   - Otimização abastecimento\n\n9. **Transportadoras**\n   - Gestão transportadoras\n   - Performance\n   - SLA entregas\n   - Cotações frete\n\n10. **Entregas Automáticas**\n    - Agendamento recorrente\n    - Rotas fixas\n    - Otimização automática\n\n---",
+    "content_length": 1196,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "m dulos implementados 58 total",
+      "2 2 log stica frota 10 m dulos",
+      "2 m dulos adicionais 48 m dulos"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📦 MÓDULOS IMPLEMENTADOS (58 TOTAL) > 2. MÓDULOS ADICIONAIS (48 módulos) > 2.2 Logística & Frota (10 módulos)"
+  },
+  {
+    "id": "icarus-v5-spec-0019",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "2.3 RH & Pessoas (11 módulos)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📦 MÓDULOS IMPLEMENTADOS (58 TOTAL)",
+      "2. MÓDULOS ADICIONAIS (48 módulos)",
+      "2.3 RH & Pessoas (11 módulos)"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "2. MÓDULOS ADICIONAIS (48 módulos)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/m-dulos-implementados-58-total/2-m-dulos-adicionais-48-m-dulos/2-3-rh-pessoas-11-m-dulos",
+    "order": 19,
+    "content": "1. **Recrutamento IA**\n2. **Onboarding Digital**\n3. **Ponto Eletrônico**\n4. **Folha Pagamento**\n5. **Benefícios Colaboradores**\n6. **Treinamento Equipes**\n7. **Capacitação IA**\n8. **Avaliação Desempenho**\n9. **Performance Equipes**\n10. **Escalas Funcionários**\n11. **Segurança Trabalho**\n\n---",
+    "content_length": 292,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "m dulos implementados 58 total",
+      "2 m dulos adicionais 48 m dulos",
+      "2 3 rh pessoas 11 m dulos"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📦 MÓDULOS IMPLEMENTADOS (58 TOTAL) > 2. MÓDULOS ADICIONAIS (48 módulos) > 2.3 RH & Pessoas (11 módulos)"
+  },
+  {
+    "id": "icarus-v5-spec-0020",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "2.4 Analytics & BI (8 módulos)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📦 MÓDULOS IMPLEMENTADOS (58 TOTAL)",
+      "2. MÓDULOS ADICIONAIS (48 módulos)",
+      "2.4 Analytics & BI (8 módulos)"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "2. MÓDULOS ADICIONAIS (48 módulos)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/m-dulos-implementados-58-total/2-m-dulos-adicionais-48-m-dulos/2-4-analytics-bi-8-m-dulos",
+    "order": 20,
+    "content": "1. **BI Analytics**\n2. **Analytics Predicao**\n3. **Relatórios Avançados**\n4. **Módulos Analytics**\n5. **ChatBot Metrics**\n6. **Dashboard Contratos**\n7. **DashboardKPIs**\n8. **Análises Customizadas**\n\n---",
+    "content_length": 203,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "2 4 analytics bi 8 m dulos",
+      "m dulos implementados 58 total",
+      "2 m dulos adicionais 48 m dulos"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📦 MÓDULOS IMPLEMENTADOS (58 TOTAL) > 2. MÓDULOS ADICIONAIS (48 módulos) > 2.4 Analytics & BI (8 módulos)"
+  },
+  {
+    "id": "icarus-v5-spec-0021",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "2.5 Integrações & Automação (7 módulos)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📦 MÓDULOS IMPLEMENTADOS (58 TOTAL)",
+      "2. MÓDULOS ADICIONAIS (48 módulos)",
+      "2.5 Integrações & Automação (7 módulos)"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "2. MÓDULOS ADICIONAIS (48 módulos)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/m-dulos-implementados-58-total/2-m-dulos-adicionais-48-m-dulos/2-5-integra-es-automa-o-7-m-dulos",
+    "order": 21,
+    "content": "1. **Integrações Externas**\n2. **NF-e Automática**\n3. **Chat Enterprise**\n4. **Sistema Notificações**\n5. **Autenticação Avançada**\n6. **Configurações Sistema** / **Admin Configurações (novo)**\n7. **API Gateway**",
+    "content_length": 211,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "2 5 integra es automa o 7 m dulos",
+      "m dulos implementados 58 total",
+      "2 m dulos adicionais 48 m dulos"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📦 MÓDULOS IMPLEMENTADOS (58 TOTAL) > 2. MÓDULOS ADICIONAIS (48 módulos) > 2.5 Integrações & Automação (7 módulos)"
+  },
+  {
+    "id": "icarus-v5-spec-0022",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Admin Configurações (novo)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📦 MÓDULOS IMPLEMENTADOS (58 TOTAL)",
+      "2. MÓDULOS ADICIONAIS (48 módulos)",
+      "Admin Configurações (novo)"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "2. MÓDULOS ADICIONAIS (48 módulos)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/m-dulos-implementados-58-total/2-m-dulos-adicionais-48-m-dulos/admin-configura-es-novo",
+    "order": 22,
+    "content": "**Rota**: `/configuracoes`  \n**Arquivo**: `src/components/modules/AdminConfiguracoes.tsx`\n\n**Funcionalidades**:\n- Upload Certificado Digital (.pfx A1/A3), área 400x200, senha validada (cliente)\n- Upload de Logo (PNG/JPG/SVG) com validação dimensões 200x60 e preview light/dark\n- Cadastro Empresa via CNPJ (auto-preenchimento stub Receita)\n- Templates Documentos: editor visual (toolbar básica, variáveis `{{variable}}`) e preview\n- Auto-correção/Padronização: uppercase, trims, indicadores de estado (corrigindo, padronizado, inválido)\n\n**A11y**:\n- Aria-labels para botões/inputs, contrastes em conformidade\n\n---",
+    "content_length": 612,
+    "keywords": [
+      "admin configura es novo",
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "m dulos implementados 58 total",
+      "2 m dulos adicionais 48 m dulos"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📦 MÓDULOS IMPLEMENTADOS (58 TOTAL) > 2. MÓDULOS ADICIONAIS (48 módulos) > Admin Configurações (novo)"
+  },
+  {
+    "id": "icarus-v5-spec-0023",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "2.6 Inventário & Armazém (6 módulos)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📦 MÓDULOS IMPLEMENTADOS (58 TOTAL)",
+      "2. MÓDULOS ADICIONAIS (48 módulos)",
+      "2.6 Inventário & Armazém (6 módulos)"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "2. MÓDULOS ADICIONAIS (48 módulos)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/m-dulos-implementados-58-total/2-m-dulos-adicionais-48-m-dulos/2-6-invent-rio-armaz-m-6-m-dulos",
+    "order": 23,
+    "content": "1. **Estoque Avançado**\n2. **Gestão Inventário**\n3. **Inventário Inteligente**\n4. **Controle Lotes**\n5. **Endereçamento Físico**\n6. **WMS (Warehouse Management)**\n\n---",
+    "content_length": 167,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "2 6 invent rio armaz m 6 m dulos",
+      "m dulos implementados 58 total",
+      "2 m dulos adicionais 48 m dulos"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📦 MÓDULOS IMPLEMENTADOS (58 TOTAL) > 2. MÓDULOS ADICIONAIS (48 módulos) > 2.6 Inventário & Armazém (6 módulos)"
+  },
+  {
+    "id": "icarus-v5-spec-0024",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Shadows (4 tipos)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🎨 DESIGN SYSTEM ORACLUSX DS",
+      "Neumorphism 3D Premium",
+      "Shadows (4 tipos)"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Neumorphism 3D Premium",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/design-system-oraclusx-ds/neumorphism-3d-premium/shadows-4-tipos",
+    "order": 24,
+    "content": "```css\n/* Raised (padrão botões) */\n--shadow-raised: \n  4px 4px 8px rgba(0,0,0,0.1),\n  -2px -2px 6px rgba(255,255,255,0.5);\n\n/* Inset (inputs, cards clicados) */\n--shadow-inset:\n  inset 2px 2px 5px rgba(0,0,0,0.12),\n  inset -2px -2px 5px rgba(255,255,255,0.4);\n\n/* Flat (cards hover) */\n--shadow-flat:\n  0 0 0 rgba(0,0,0,0),\n  0 0 0 rgba(255,255,255,0);\n\n/* Pressed (botões clicados) */\n--shadow-pressed:\n  inset 3px 3px 7px rgba(0,0,0,0.15),\n  inset -3px -3px 7px rgba(255,255,255,0.3);\n```",
+    "content_length": 491,
+    "keywords": [
+      "design system oraclusx ds",
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "neumorphism 3d premium",
+      "shadows 4 tipos"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🎨 DESIGN SYSTEM ORACLUSX DS > Neumorphism 3D Premium > Shadows (4 tipos)"
+  },
+  {
+    "id": "icarus-v5-spec-0025",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Colors (Semantic Tokens)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🎨 DESIGN SYSTEM ORACLUSX DS",
+      "Neumorphism 3D Premium",
+      "Colors (Semantic Tokens)"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Neumorphism 3D Premium",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/design-system-oraclusx-ds/neumorphism-3d-premium/colors-semantic-tokens",
+    "order": 25,
+    "content": "```css\n/* Primary - Indigo */\n--primary: #6366F1;\n--primary-hover: #4F46E5;\n--primary-active: #4338CA;\n\n/* Semantic Colors */\n--success: #10B981;\n--warning: #F59E0B;\n--error: #EF4444;\n--info: #3B82F6;\n\n/* Backgrounds */\n--bg-primary: #E0E5EC;      /* Light */\n--bg-secondary: #F3F6F9;\n--bg-primary-dark: #1A1D29;  /* Dark */\n--bg-secondary-dark: #22252F;\n\n/* Text */\n--text-primary: #1F2937;\n--text-secondary: #6B7280;\n--text-tertiary: #9CA3AF;\n```",
+    "content_length": 448,
+    "keywords": [
+      "design system oraclusx ds",
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "neumorphism 3d premium",
+      "colors semantic tokens"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🎨 DESIGN SYSTEM ORACLUSX DS > Neumorphism 3D Premium > Colors (Semantic Tokens)"
+  },
+  {
+    "id": "icarus-v5-spec-0026",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Typography",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🎨 DESIGN SYSTEM ORACLUSX DS",
+      "Neumorphism 3D Premium",
+      "Typography"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Neumorphism 3D Premium",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/design-system-oraclusx-ds/neumorphism-3d-premium/typography",
+    "order": 26,
+    "content": "```css\n/* Fonte base: Inter */\n--font-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;\n\n/* Scale (Major Third - 1.250) */\n--text-xs: 0.64rem;    /* 10px */\n--text-sm: 0.8rem;     /* 13px */\n--text-base: 1rem;     /* 16px */\n--text-lg: 1.25rem;    /* 20px */\n--text-xl: 1.563rem;   /* 25px */\n--text-2xl: 1.953rem;  /* 31px */\n--text-3xl: 2.441rem;  /* 39px */\n--text-4xl: 3.052rem;  /* 49px */\n\n/* Weights */\n--font-normal: 400;\n--font-medium: 500;\n--font-semibold: 600;\n--font-bold: 700;\n```",
+    "content_length": 517,
+    "keywords": [
+      "design system oraclusx ds",
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "neumorphism 3d premium",
+      "typography"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🎨 DESIGN SYSTEM ORACLUSX DS > Neumorphism 3D Premium > Typography"
+  },
+  {
+    "id": "icarus-v5-spec-0027",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Componentes Novos",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🎨 DESIGN SYSTEM ORACLUSX DS",
+      "Componentes Novos"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "🎨 DESIGN SYSTEM ORACLUSX DS",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/design-system-oraclusx-ds/componentes-novos",
+    "order": 27,
+    "content": "- `RadialProgress`: progresso circular por SVG com gradient stops e rótulo central\n\n```css\n--space-1: 0.5rem;   /* 8px */\n--space-2: 1rem;     /* 16px */\n--space-3: 1.5rem;   /* 24px */\n--space-4: 2rem;     /* 32px */\n--space-5: 2.5rem;   /* 40px */\n--space-6: 3rem;     /* 48px */\n--space-8: 4rem;     /* 64px */\n--space-10: 5rem;    /* 80px */\n```\n\n---",
+    "content_length": 354,
+    "keywords": [
+      "design system oraclusx ds",
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "componentes novos"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🎨 DESIGN SYSTEM ORACLUSX DS > Componentes Novos"
+  },
+  {
+    "id": "icarus-v5-spec-0028",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Supabase Auth",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🔐 AUTENTICAÇÃO & SEGURANÇA",
+      "Supabase Auth"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "🔐 AUTENTICAÇÃO & SEGURANÇA",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/autentica-o-seguran-a/supabase-auth",
+    "order": 28,
+    "content": "```yaml\nProviders:\n  - Email/Password (habilitado)\n  - Google OAuth (ready)\n  - Microsoft OAuth (ready)\n  - Apple OAuth (ready)\n  \nFeatures:\n  - JWT tokens (1h TTL)\n  - Refresh tokens (30d)\n  - Email verification\n  - Password reset\n  - Magic links\n  - Session management\n  - Multi-factor (2FA) ready\n```",
+    "content_length": 303,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "autentica o seguran a",
+      "supabase auth"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🔐 AUTENTICAÇÃO & SEGURANÇA > Supabase Auth"
+  },
+  {
+    "id": "icarus-v5-spec-0029",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Row Level Security (RLS)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🔐 AUTENTICAÇÃO & SEGURANÇA",
+      "Row Level Security (RLS)"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "🔐 AUTENTICAÇÃO & SEGURANÇA",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/autentica-o-seguran-a/row-level-security-rls",
+    "order": 29,
+    "content": "```sql\n-- Exemplo: Profiles\nCREATE POLICY \"Users can view own profile\"\n  ON profiles FOR SELECT\n  USING (auth.uid() = id);\n\nCREATE POLICY \"Users can update own profile\"\n  ON profiles FOR UPDATE\n  USING (auth.uid() = id);\n\n-- Multi-tenant (por empresa)\nCREATE POLICY \"Users see only their company data\"\n  ON cirurgias FOR SELECT\n  USING (\n    empresa_id IN (\n      SELECT empresa_id FROM profiles\n      WHERE id = auth.uid()\n    )\n  );\n```",
+    "content_length": 438,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "autentica o seguran a",
+      "row level security rls"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🔐 AUTENTICAÇÃO & SEGURANÇA > Row Level Security (RLS)"
+  },
+  {
+    "id": "icarus-v5-spec-0030",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Bootstrap Admin & usuario_id (Supabase)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🔐 AUTENTICAÇÃO & SEGURANÇA",
+      "RBAC (Role-Based Access Control)",
+      "Bootstrap Admin & usuario_id (Supabase)"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "RBAC (Role-Based Access Control)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/autentica-o-seguran-a/rbac-role-based-access-control/bootstrap-admin-usuario-id-supabase",
+    "order": 30,
+    "content": "Para garantir o admin e preencher `usuario_id`/FK em todas as tabelas públicas:\n\n```bash\n# 1) Criar/garantir admin via Admin API + backfill/FK + fallback SQL\nnpm run admin:recover\n\n# 2) (Opcional) Rodar também a suíte com QA de integrações\nnpm run admin:all\n\n# 3) Execução contínua (PM2)\nnpm run pm2:admin:start\nnpm run pm2:admin:logs\n```\n\nCritérios de aceite:\n- Admin presente em `auth.users` (`dax@newortho.com.br`).\n- Todas as tabelas públicas com coluna `usuario_id uuid`.\n- Backfill aplicado (registros existentes com `usuario_id` não-nulo).\n- FK criada: `FOREIGN KEY (usuario_id) REFERENCES auth.users(id) ON DELETE SET NULL`.\n- Logs do PM2 sem erros.\n\n---",
+    "content_length": 662,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "autentica o seguran a",
+      "bootstrap admin usuario id supabase",
+      "rbac role based access control"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🔐 AUTENTICAÇÃO & SEGURANÇA > RBAC (Role-Based Access Control) > Bootstrap Admin & usuario_id (Supabase)"
+  },
+  {
+    "id": "icarus-v5-spec-0031",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "RBAC (Role-Based Access Control)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🔐 AUTENTICAÇÃO & SEGURANÇA",
+      "RBAC (Role-Based Access Control)"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "🔐 AUTENTICAÇÃO & SEGURANÇA",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/autentica-o-seguran-a/rbac-role-based-access-control",
+    "order": 31,
+    "content": "**Arquivo**: `src/lib/services/RBACService.tsx` (555 linhas)\n\n**Roles** (hierarquia):\n1. Super Admin (nível 100)\n2. Admin (nível 90)\n3. Gerente (nível 80)\n4. Supervisor (nível 70)\n5. Coordenador (nível 60)\n6. Analista (nível 50)\n7. Operador (nível 40)\n8. Usuário Básico (nível 30)\n\n**Permissões** (por módulo):\n- `cirurgias.view`\n- `cirurgias.create`\n- `cirurgias.edit`\n- `cirurgias.delete`\n- `cirurgias.approve`\n\n**Uso**:\n```typescript\n// Hook\nconst hasPermission = usePermission('cirurgias.create');\n\n// HOC\nexport default withPermission(CirurgiasPage, 'cirurgias.view');\n```",
+    "content_length": 577,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "autentica o seguran a",
+      "rbac role based access control"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🔐 AUTENTICAÇÃO & SEGURANÇA > RBAC (Role-Based Access Control)"
+  },
+  {
+    "id": "icarus-v5-spec-0032",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Tela de Login (Separada)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🔐 AUTENTICAÇÃO & SEGURANÇA",
+      "Tela de Login (Separada)"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "🔐 AUTENTICAÇÃO & SEGURANÇA",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/autentica-o-seguran-a/tela-de-login-separada",
+    "order": 32,
+    "content": "Rota dedicada de autenticação seguindo o OraclusX DS.\n\n- Rota pública: `/login` (e `/signup` quando habilitado)\n- Rotas do sistema protegidas via `PrivateRoute` (redireciona para `/login` se não autenticado)\n- Título: `ICARUS v5.0`\n- Subtítulo: `Gestão elevada pela IA`\n- Ícone: Icarus padrão (cruz estilizada em círculo)\n- Layout: card central com glass/gradiente indigo→purple, sombras suaves e borda translúcida\n- Acessibilidade: foco visível, labels, auto-complete\n\nComandos úteis\n```bash\n# Desenvolvedor: abrir login diretamente\nhttp://localhost:3000/login\n\n# Após login bem-sucedido\n→ redireciona para /dashboard\n```\n\n---",
+    "content_length": 627,
+    "keywords": [
+      "tela de login separada",
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "autentica o seguran a"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🔐 AUTENTICAÇÃO & SEGURANÇA > Tela de Login (Separada)"
+  },
+  {
+    "id": "icarus-v5-spec-0033",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Core",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🗄️ DATABASE SCHEMA",
+      "Tabelas Principais (100+)",
+      "Core"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Tabelas Principais (100+)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/database-schema/tabelas-principais-100/core",
+    "order": 33,
+    "content": "```sql\n-- Empresas (Multi-tenant)\nCREATE TABLE empresas (\n  id UUID PRIMARY KEY,\n  razao_social TEXT NOT NULL,\n  cnpj TEXT UNIQUE NOT NULL,\n  inscricao_estadual TEXT,\n  ...\n);\n\n-- Usuários\nCREATE TABLE profiles (\n  id UUID PRIMARY KEY REFERENCES auth.users,\n  empresa_id UUID REFERENCES empresas,\n  nome TEXT NOT NULL,\n  email TEXT UNIQUE NOT NULL,\n  cargo TEXT,\n  departamento TEXT,\n  role TEXT DEFAULT 'usuario_basico',\n  ...\n);\n```",
+    "content_length": 434,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "tabelas principais 100",
+      "core",
+      "database schema"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🗄️ DATABASE SCHEMA > Tabelas Principais (100+) > Core"
+  },
+  {
+    "id": "icarus-v5-spec-0034",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Cirurgias",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🗄️ DATABASE SCHEMA",
+      "Tabelas Principais (100+)",
+      "Cirurgias"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Tabelas Principais (100+)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/database-schema/tabelas-principais-100/cirurgias",
+    "order": 34,
+    "content": "```sql\nCREATE TABLE cirurgias (\n  id UUID PRIMARY KEY,\n  empresa_id UUID REFERENCES empresas,\n  codigo_cirurgia TEXT UNIQUE NOT NULL,\n  tipo_procedimento TEXT NOT NULL,\n  data_agendada TIMESTAMP NOT NULL,\n  hora_inicio TIME,\n  duracao_estimada INTEGER, -- minutos\n  status TEXT DEFAULT 'agendada',\n  hospital_id UUID REFERENCES hospitais,\n  medico_id UUID REFERENCES medicos,\n  paciente_id UUID REFERENCES pacientes,\n  convenio_id UUID REFERENCES convenios,\n  sala_cirurgica TEXT,\n  equipe_medica JSONB,\n  observacoes TEXT,\n  ...\n);\n\nCREATE TABLE cirurgia_materiais (\n  id UUID PRIMARY KEY,\n  cirurgia_id UUID REFERENCES cirurgias,\n  material_id UUID REFERENCES materiais_opme,\n  quantidade INTEGER NOT NULL,\n  valor_unitario NUMERIC(10,2),\n  lote TEXT,\n  numero_serie TEXT,\n  utilizado BOOLEAN DEFAULT false,\n  ...\n);\n```",
+    "content_length": 822,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "tabelas principais 100",
+      "cirurgias",
+      "database schema"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🗄️ DATABASE SCHEMA > Tabelas Principais (100+) > Cirurgias"
+  },
+  {
+    "id": "icarus-v5-spec-0035",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Financeiro",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🗄️ DATABASE SCHEMA",
+      "Tabelas Principais (100+)",
+      "Financeiro"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Tabelas Principais (100+)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/database-schema/tabelas-principais-100/financeiro",
+    "order": 35,
+    "content": "```sql\nCREATE TABLE contas_receber (\n  id UUID PRIMARY KEY,\n  empresa_id UUID REFERENCES empresas,\n  numero_documento TEXT,\n  cliente_id UUID,\n  data_emissao DATE,\n  data_vencimento DATE,\n  data_pagamento DATE,\n  valor_original NUMERIC(10,2),\n  valor_pago NUMERIC(10,2),\n  desconto NUMERIC(10,2),\n  juros NUMERIC(10,2),\n  status TEXT DEFAULT 'aberta',\n  inadimplencia_score INTEGER,\n  ...\n);\n\nCREATE TABLE fluxo_caixa (\n  id UUID PRIMARY KEY,\n  empresa_id UUID REFERENCES empresas,\n  data DATE NOT NULL,\n  tipo TEXT NOT NULL, -- entrada/saida\n  categoria TEXT,\n  descricao TEXT,\n  valor NUMERIC(10,2),\n  conta_bancaria_id UUID,\n  centro_custo_id UUID,\n  ...\n);\n```",
+    "content_length": 664,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "tabelas principais 100",
+      "financeiro",
+      "database schema"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🗄️ DATABASE SCHEMA > Tabelas Principais (100+) > Financeiro"
+  },
+  {
+    "id": "icarus-v5-spec-0036",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Estoque",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🗄️ DATABASE SCHEMA",
+      "Tabelas Principais (100+)",
+      "Estoque"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Tabelas Principais (100+)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/database-schema/tabelas-principais-100/estoque",
+    "order": 36,
+    "content": "```sql\nCREATE TABLE estoque (\n  id UUID PRIMARY KEY,\n  empresa_id UUID REFERENCES empresas,\n  produto_id UUID REFERENCES produtos_opme,\n  armazem_id UUID REFERENCES estoque_armazens,\n  localizacao_id UUID REFERENCES estoque_localizacoes,\n  lote TEXT,\n  validade DATE,\n  quantidade NUMERIC(10,3),\n  quantidade_reservada NUMERIC(10,3),\n  quantidade_disponivel NUMERIC(10,3),\n  custo_unitario NUMERIC(10,2),\n  ...\n);\n```",
+    "content_length": 417,
+    "keywords": [
+      "estoque",
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "tabelas principais 100",
+      "database schema"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🗄️ DATABASE SCHEMA > Tabelas Principais (100+) > Estoque"
+  },
+  {
+    "id": "icarus-v5-spec-0037",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Consignação",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🗄️ DATABASE SCHEMA",
+      "Tabelas Principais (100+)",
+      "Consignação"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Tabelas Principais (100+)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/database-schema/tabelas-principais-100/consigna-o",
+    "order": 37,
+    "content": "```sql\nCREATE TABLE consignacao_materiais (\n  id UUID PRIMARY KEY,\n  codigo_interno TEXT NOT NULL,\n  nome TEXT NOT NULL,\n  fabricante TEXT NOT NULL,\n  categoria TEXT NOT NULL,\n  lote TEXT NOT NULL,\n  validade DATE NOT NULL,\n  quantidade INTEGER NOT NULL,\n  valor_unitario NUMERIC(10,2),\n  valor_total NUMERIC(10,2),\n  status TEXT DEFAULT 'disponivel',\n  hospital_id UUID REFERENCES hospitais,\n  custo_carregamento NUMERIC(10,2),\n  dias_estoque INTEGER,\n  rotatividade TEXT DEFAULT 'baixa',\n  ...\n);\n```",
+    "content_length": 502,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "consigna o",
+      "tabelas principais 100",
+      "database schema"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🗄️ DATABASE SCHEMA > Tabelas Principais (100+) > Consignação"
+  },
+  {
+    "id": "icarus-v5-spec-0038",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Compliance",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🗄️ DATABASE SCHEMA",
+      "Tabelas Principais (100+)",
+      "Compliance"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Tabelas Principais (100+)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/database-schema/tabelas-principais-100/compliance",
+    "order": 38,
+    "content": "```sql\nCREATE TABLE compliance_requisitos_abbott (\n  id UUID PRIMARY KEY,\n  codigo TEXT UNIQUE NOT NULL,\n  categoria TEXT NOT NULL,\n  requisito TEXT NOT NULL,\n  descricao TEXT,\n  status TEXT DEFAULT 'nao_conforme',\n  score_conformidade NUMERIC(5,2),\n  evidencias JSONB,\n  data_ultima_auditoria DATE,\n  proxima_auditoria DATE,\n  ...\n);\n\nCREATE TABLE compliance_rastreabilidade_opme (\n  id UUID PRIMARY KEY,\n  produto_id UUID REFERENCES produtos_opme,\n  lote TEXT NOT NULL,\n  numero_serie TEXT,\n  validade DATE,\n  data_entrada TIMESTAMP,\n  data_saida TIMESTAMP,\n  status TEXT,\n  temperatura_armazenamento NUMERIC(5,2),\n  umidade_armazenamento NUMERIC(5,2),\n  rastreamento_completo BOOLEAN DEFAULT false,\n  ...\n);\n```",
+    "content_length": 714,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "compliance",
+      "tabelas principais 100",
+      "database schema"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🗄️ DATABASE SCHEMA > Tabelas Principais (100+) > Compliance"
+  },
+  {
+    "id": "icarus-v5-spec-0039",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Views (20+)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🗄️ DATABASE SCHEMA",
+      "Views (20+)"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "🗄️ DATABASE SCHEMA",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/database-schema/views-20",
+    "order": 39,
+    "content": "```sql\n-- Dashboard KPIs\nCREATE VIEW vw_dashboard_kpis AS\nSELECT ...\n\n-- Consignação detalhes\nCREATE VIEW vw_consignacao_materiais_detalhes AS\nSELECT ...\n\n-- Compliance Abbott\nCREATE VIEW vw_compliance_abbott_score AS\nSELECT ...\n```",
+    "content_length": 232,
+    "keywords": [
+      "views 20",
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "database schema"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🗄️ DATABASE SCHEMA > Views (20+)"
+  },
+  {
+    "id": "icarus-v5-spec-0040",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Functions RPC (15+)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🗄️ DATABASE SCHEMA",
+      "Functions RPC (15+)"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "🗄️ DATABASE SCHEMA",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/database-schema/functions-rpc-15",
+    "order": 40,
+    "content": "```sql\n-- Dashboard KPIs\nCREATE OR REPLACE FUNCTION get_dashboard_kpis()\nRETURNS JSON ...\n\n-- Métricas Consignação\nCREATE OR REPLACE FUNCTION atualizar_metricas_consignacao()\nRETURNS VOID ...\n\n-- Score Abbott\nCREATE OR REPLACE FUNCTION calcular_score_global_abbott()\nRETURNS NUMERIC ...\n```\n\n---",
+    "content_length": 295,
+    "keywords": [
+      "functions rpc 15",
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "database schema"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🗄️ DATABASE SCHEMA > Functions RPC (15+)"
+  },
+  {
+    "id": "icarus-v5-spec-0041",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Governo/Receita",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🔗 INTEGRAÇÕES EXTERNAS",
+      "APIs Integradas (30+)",
+      "Governo/Receita"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "APIs Integradas (30+)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/integra-es-externas/apis-integradas-30/governo-receita",
+    "order": 41,
+    "content": "1. **BrasilAPI**\n   - CNPJ\n   - CEP\n   - Bancos\n   - Feriados\n\n2. **ReceitaWS**\n   - CNPJ completo\n   - Sócios\n   - Situação cadastral\n\n3. **ViaCEP**\n   - Busca CEP\n   - Endereços\n\n4. **SEFAZ**\n   - Emissão NF-e\n   - Consulta NF-e\n   - Cancelamento\n   - Carta Correção",
+    "content_length": 268,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "governo receita",
+      "integra es externas",
+      "apis integradas 30"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🔗 INTEGRAÇÕES EXTERNAS > APIs Integradas (30+) > Governo/Receita"
+  },
+  {
+    "id": "icarus-v5-spec-0042",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Saúde",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🔗 INTEGRAÇÕES EXTERNAS",
+      "APIs Integradas (30+)",
+      "Saúde"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "APIs Integradas (30+)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/integra-es-externas/apis-integradas-30/sa-de",
+    "order": 42,
+    "content": "5. **TISS/ANS**\n   - Padrão TISS\n   - Guias médicas\n   - Faturamento convênios\n\n6. **ANVISA**\n   - Consulta produtos\n   - Notificações sanitárias\n   - Rastreabilidade\n\n7. **CFM**\n   - Validação CRM\n   - Situação médico",
+    "content_length": 218,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "sa de",
+      "integra es externas",
+      "apis integradas 30"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🔗 INTEGRAÇÕES EXTERNAS > APIs Integradas (30+) > Saúde"
+  },
+  {
+    "id": "icarus-v5-spec-0043",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Transportadoras (18)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🔗 INTEGRAÇÕES EXTERNAS",
+      "APIs Integradas (30+)",
+      "Transportadoras (18)"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "APIs Integradas (30+)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/integra-es-externas/apis-integradas-30/transportadoras-18",
+    "order": 43,
+    "content": "**Nacionais** (14):\n8. Correios\n9. Jadlog\n10. TNT Express\n11. Total Express\n12. Azul Cargo\n13. Latam Cargo\n14. Rapidão Cometa\n15. JadLog\n16. Sequoia\n17. Braspress\n18. Jamef\n19. Rodonaves\n20. Direct\n21. Patrus\n\n**Internacionais** (4):\n22. DHL\n23. UPS\n24. FedEx\n25. DB Schenker",
+    "content_length": 275,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "transportadoras 18",
+      "integra es externas",
+      "apis integradas 30"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🔗 INTEGRAÇÕES EXTERNAS > APIs Integradas (30+) > Transportadoras (18)"
+  },
+  {
+    "id": "icarus-v5-spec-0044",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Financeiro",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🔗 INTEGRAÇÕES EXTERNAS",
+      "APIs Integradas (30+)",
+      "Financeiro"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "APIs Integradas (30+)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/integra-es-externas/apis-integradas-30/financeiro",
+    "order": 44,
+    "content": "26. **Pluggy** (Open Banking)\n27. **Bancos APIs**\n    - Banco do Brasil\n    - Itaú\n    - Santander\n    - Bradesco",
+    "content_length": 113,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "integra es externas",
+      "financeiro",
+      "apis integradas 30"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🔗 INTEGRAÇÕES EXTERNAS > APIs Integradas (30+) > Financeiro"
+  },
+  {
+    "id": "icarus-v5-spec-0045",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Comunicação",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🔗 INTEGRAÇÕES EXTERNAS",
+      "APIs Integradas (30+)",
+      "Comunicação"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "APIs Integradas (30+)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/integra-es-externas/apis-integradas-30/comunica-o",
+    "order": 45,
+    "content": "28. **Twilio**\n    - SMS\n    - WhatsApp\n    - Voice\n\n29. **AWS SNS**\n    - Push notifications\n    - SMS\n\n30. **SendGrid**\n    - E-mail transacional\n    - Templates\n\n---",
+    "content_length": 168,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "integra es externas",
+      "comunica o",
+      "apis integradas 30"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🔗 INTEGRAÇÕES EXTERNAS > APIs Integradas (30+) > Comunicação"
+  },
+  {
+    "id": "icarus-v5-spec-0046",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "1. Cirurgias AI",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🤖 INTELIGÊNCIA ARTIFICIAL",
+      "Modelos IA Implementados (12)",
+      "1. Cirurgias AI"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Modelos IA Implementados (12)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/intelig-ncia-artificial/modelos-ia-implementados-12/1-cirurgias-ai",
+    "order": 46,
+    "content": "**Arquivo**: `CirurgiasAI.ts`  \n**Modelos**:\n- Random Forest (duração)\n- Collaborative Filtering (kits)\n- Logistic Regression (risco)\n- Gradient Boosting (glosas)",
+    "content_length": 162,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "modelos ia implementados 12",
+      "1 cirurgias ai",
+      "intelig ncia artificial"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🤖 INTELIGÊNCIA ARTIFICIAL > Modelos IA Implementados (12) > 1. Cirurgias AI"
+  },
+  {
+    "id": "icarus-v5-spec-0047",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "2. Estoque AI",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🤖 INTELIGÊNCIA ARTIFICIAL",
+      "Modelos IA Implementados (12)",
+      "2. Estoque AI"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Modelos IA Implementados (12)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/intelig-ncia-artificial/modelos-ia-implementados-12/2-estoque-ai",
+    "order": 47,
+    "content": "**Arquivo**: `EstoqueAI.ts`  \n**Modelos**:\n- Prophet (demanda)\n- LSTM (tendências)\n- Isolation Forest (anomalias)\n- Linear Programming (otimização)",
+    "content_length": 147,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "modelos ia implementados 12",
+      "2 estoque ai",
+      "intelig ncia artificial"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🤖 INTELIGÊNCIA ARTIFICIAL > Modelos IA Implementados (12) > 2. Estoque AI"
+  },
+  {
+    "id": "icarus-v5-spec-0048",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "3. Financeiro AI",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🤖 INTELIGÊNCIA ARTIFICIAL",
+      "Modelos IA Implementados (12)",
+      "3. Financeiro AI"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Modelos IA Implementados (12)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/intelig-ncia-artificial/modelos-ia-implementados-12/3-financeiro-ai",
+    "order": 48,
+    "content": "**Arquivo**: `InadimplenciaScoreAI.ts`, `FluxoCaixaAI.ts`  \n**Modelos**:\n- Random Forest (inadimplência)\n- ARIMA (fluxo caixa)\n- GPT-4 (análise financeira)",
+    "content_length": 155,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "modelos ia implementados 12",
+      "3 financeiro ai",
+      "intelig ncia artificial"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🤖 INTELIGÊNCIA ARTIFICIAL > Modelos IA Implementados (12) > 3. Financeiro AI"
+  },
+  {
+    "id": "icarus-v5-spec-0049",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "4. Compliance AI",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🤖 INTELIGÊNCIA ARTIFICIAL",
+      "Modelos IA Implementados (12)",
+      "4. Compliance AI"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Modelos IA Implementados (12)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/intelig-ncia-artificial/modelos-ia-implementados-12/4-compliance-ai",
+    "order": 49,
+    "content": "**Arquivo**: `ComplianceAutomaticoAI.ts`  \n**Modelos**:\n- NLP (documentação)\n- Pattern Matching (auditoria)\n- Risk Assessment (análise risco)",
+    "content_length": 141,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "modelos ia implementados 12",
+      "4 compliance ai",
+      "intelig ncia artificial"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🤖 INTELIGÊNCIA ARTIFICIAL > Modelos IA Implementados (12) > 4. Compliance AI"
+  },
+  {
+    "id": "icarus-v5-spec-0050",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "5. CRM AI",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🤖 INTELIGÊNCIA ARTIFICIAL",
+      "Modelos IA Implementados (12)",
+      "5. CRM AI"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Modelos IA Implementados (12)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/intelig-ncia-artificial/modelos-ia-implementados-12/5-crm-ai",
+    "order": 50,
+    "content": "**Arquivo**: `LeadScoringAI.ts`  \n**Modelos**:\n- Gradient Boosting (lead score)\n- Sentiment Analysis (e-mails)\n- Clustering (segmentação)",
+    "content_length": 137,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "modelos ia implementados 12",
+      "5 crm ai",
+      "intelig ncia artificial"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🤖 INTELIGÊNCIA ARTIFICIAL > Modelos IA Implementados (12) > 5. CRM AI"
+  },
+  {
+    "id": "icarus-v5-spec-0051",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "6. Logística AI",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🤖 INTELIGÊNCIA ARTIFICIAL",
+      "Modelos IA Implementados (12)",
+      "6. Logística AI"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Modelos IA Implementados (12)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/intelig-ncia-artificial/modelos-ia-implementados-12/6-log-stica-ai",
+    "order": 51,
+    "content": "**Arquivo**: `RotasOtimizadasAI.ts`  \n**Modelos**:\n- Genetic Algorithm (rotas)\n- Random Forest (previsão atrasos)\n- Weighted Score (transportadoras)\n\n---",
+    "content_length": 153,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "modelos ia implementados 12",
+      "6 log stica ai",
+      "intelig ncia artificial"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🤖 INTELIGÊNCIA ARTIFICIAL > Modelos IA Implementados (12) > 6. Logística AI"
+  },
+  {
+    "id": "icarus-v5-spec-0052",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Busca Vetorial Unificada",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🤖 INTELIGÊNCIA ARTIFICIAL",
+      "Busca Vetorial Unificada"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "🤖 INTELIGÊNCIA ARTIFICIAL",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/intelig-ncia-artificial/busca-vetorial-unificada",
+    "order": 52,
+    "content": "Endpoint unificado com backend selecionável via env.\n\n- API: `server/api/ml/vector-search.ts`\n- Env: `VECTOR_BACKEND=pgvector|faiss|milvus|weaviate|qdrant`\n- Backends e envs:\n  - pgvector (Supabase): `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`\n  - faiss (FastAPI): `ML_API_URL`\n  - milvus: `MILVUS_ENDPOINT`\n  - weaviate: `WEAVIATE_URL`\n  - qdrant: `QDRANT_URL`, `QDRANT_COLLECTION`\n\nFunções relacionadas:\n- Persistência: `supabase/functions/ml-vectors`\n- Enfileirar: `supabase/functions/ml-job`\n- Benchmark: `supabase/functions/vector-benchmark`",
+    "content_length": 546,
+    "keywords": [
+      "busca vetorial unificada",
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "intelig ncia artificial"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🤖 INTELIGÊNCIA ARTIFICIAL > Busca Vetorial Unificada"
+  },
+  {
+    "id": "icarus-v5-spec-0053",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Módulos Voice/Video com Feature Flags",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🤖 INTELIGÊNCIA ARTIFICIAL",
+      "Módulos Voice/Video com Feature Flags"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "🤖 INTELIGÊNCIA ARTIFICIAL",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/intelig-ncia-artificial/m-dulos-voice-video-com-feature-flags",
+    "order": 53,
+    "content": "- Voice Analytics — Rota: `/modules/VoiceAnalyticsDashboard` — Flag: `FF_VOICE_ANALYTICS`\n- Voice Biometrics — Rota: `/modules/VoiceBiometricsManager` — Flag: `FF_VOICE_BIOMETRICS`\n- Voice Macros — Rota: `/modules/VoiceMacrosManager` — Flag: `FF_VOICE_MACROS`\n- Voice Commands — Rota: `/modules/VoiceCommandsManager` — Flag: `FF_VOICE_COMMANDS`\n- Video Calls — Rota: `/modules/VideoCallsManager` — Flag: `FF_VIDEO_CALLS`",
+    "content_length": 420,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "m dulos voice video com feature flags",
+      "intelig ncia artificial"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🤖 INTELIGÊNCIA ARTIFICIAL > Módulos Voice/Video com Feature Flags"
+  },
+  {
+    "id": "icarus-v5-spec-0054",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Operacionais",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📊 RELATÓRIOS & ANALYTICS",
+      "Tipos de Relatórios (50+)",
+      "Operacionais"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Tipos de Relatórios (50+)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/relat-rios-analytics/tipos-de-relat-rios-50/operacionais",
+    "order": 54,
+    "content": "1. Cirurgias do dia\n2. Materiais a vencer\n3. Entregas agendadas\n4. Estoque crítico\n5. Pedidos pendentes",
+    "content_length": 103,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "operacionais",
+      "tipos de relat rios 50",
+      "relat rios analytics"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📊 RELATÓRIOS & ANALYTICS > Tipos de Relatórios (50+) > Operacionais"
+  },
+  {
+    "id": "icarus-v5-spec-0055",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Gerenciais",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📊 RELATÓRIOS & ANALYTICS",
+      "Tipos de Relatórios (50+)",
+      "Gerenciais"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Tipos de Relatórios (50+)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/relat-rios-analytics/tipos-de-relat-rios-50/gerenciais",
+    "order": 55,
+    "content": "6. Faturamento mensal\n7. Margem por produto\n8. Performance vendedores\n9. Taxa conversão CRM\n10. Índice inadimplência",
+    "content_length": 116,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "gerenciais",
+      "tipos de relat rios 50",
+      "relat rios analytics"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📊 RELATÓRIOS & ANALYTICS > Tipos de Relatórios (50+) > Gerenciais"
+  },
+  {
+    "id": "icarus-v5-spec-0056",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Executivos",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📊 RELATÓRIOS & ANALYTICS",
+      "Tipos de Relatórios (50+)",
+      "Executivos"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Tipos de Relatórios (50+)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/relat-rios-analytics/tipos-de-relat-rios-50/executivos",
+    "order": 56,
+    "content": "11. Dashboard Executivo\n12. KPIs estratégicos\n13. Análise tendências\n14. Comparativos YoY\n15. Projeções futuras",
+    "content_length": 111,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "executivos",
+      "tipos de relat rios 50",
+      "relat rios analytics"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📊 RELATÓRIOS & ANALYTICS > Tipos de Relatórios (50+) > Executivos"
+  },
+  {
+    "id": "icarus-v5-spec-0057",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Compliance",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📊 RELATÓRIOS & ANALYTICS",
+      "Tipos de Relatórios (50+)",
+      "Compliance"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Tipos de Relatórios (50+)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/relat-rios-analytics/tipos-de-relat-rios-50/compliance",
+    "order": 57,
+    "content": "16. Auditoria interna\n17. Não conformidades\n18. Treinamentos realizados\n19. Certificações vigentes\n20. Score Abbott",
+    "content_length": 115,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "compliance",
+      "tipos de relat rios 50",
+      "relat rios analytics"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📊 RELATÓRIOS & ANALYTICS > Tipos de Relatórios (50+) > Compliance"
+  },
+  {
+    "id": "icarus-v5-spec-0058",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Customizados",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📊 RELATÓRIOS & ANALYTICS",
+      "Tipos de Relatórios (50+)",
+      "Customizados"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Tipos de Relatórios (50+)",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/relat-rios-analytics/tipos-de-relat-rios-50/customizados",
+    "order": 58,
+    "content": "- Report Builder visual\n- Filtros avançados\n- Exportação (PDF, Excel, CSV)\n- Agendamento automático\n- Envio e-mail\n\n---",
+    "content_length": 119,
+    "keywords": [
+      "customizados",
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "tipos de relat rios 50",
+      "relat rios analytics"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📊 RELATÓRIOS & ANALYTICS > Tipos de Relatórios (50+) > Customizados"
+  },
+  {
+    "id": "icarus-v5-spec-0059",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "E2E Tests (Playwright)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🧪 TESTES & QUALIDADE",
+      "E2E Tests (Playwright)"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "🧪 TESTES & QUALIDADE",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/testes-qualidade/e2e-tests-playwright",
+    "order": 59,
+    "content": "**Pasta**: `testsprite_tests/`  \n**Total**: 11 test suites\n\n```yaml\nTestes Implementados:\n  1. TC001: Neumorphic Design System UI\n  2. TC002: Dark Mode Toggle Persistence\n  3. TC003: Responsive Navigation\n  4. TC004: Multi-tab Form Functionality\n  5. TC005: Performance Benchmarks\n  6. TC006: Accessibility Compliance (WCAG AA)\n  7. TC007: API Gateway & React Hooks\n  8. TC008: Error Boundaries\n  9. TC009: Dashboard KPI Cards\n  10. TC010: Module Navigation\n  11. TC011: Theme Persistence\n\nCoverage Target: 85%\nBrowsers: Chromium, Firefox, WebKit\nCI/CD: GitHub Actions ready\n```",
+    "content_length": 578,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "e2e tests playwright",
+      "testes qualidade"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🧪 TESTES & QUALIDADE > E2E Tests (Playwright)"
+  },
+  {
+    "id": "icarus-v5-spec-0060",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Unit Tests (Vitest)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🧪 TESTES & QUALIDADE",
+      "Unit Tests (Vitest)"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "🧪 TESTES & QUALIDADE",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/testes-qualidade/unit-tests-vitest",
+    "order": 60,
+    "content": "```yaml\nComponents: 200+ tests\nHooks: 150+ tests\nServices: 100+ tests\nUtils: 50+ tests\n\nTotal: 500+ tests\nCoverage: 80%+\n```",
+    "content_length": 124,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "unit tests vitest",
+      "testes qualidade"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🧪 TESTES & QUALIDADE > Unit Tests (Vitest)"
+  },
+  {
+    "id": "icarus-v5-spec-0061",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Lighthouse Scores (Targets)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🧪 TESTES & QUALIDADE",
+      "Lighthouse Scores (Targets)"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "🧪 TESTES & QUALIDADE",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/testes-qualidade/lighthouse-scores-targets",
+    "order": 61,
+    "content": "```yaml\nPerformance: 90+\nAccessibility: 100\nBest Practices: 95+\nSEO: 90+\nPWA: 80+\n```\n\n---",
+    "content_length": 90,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "testes qualidade",
+      "lighthouse scores targets"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🧪 TESTES & QUALIDADE > Lighthouse Scores (Targets)"
+  },
+  {
+    "id": "icarus-v5-spec-0062",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "QA & Benchmarks (Scripts)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🧪 TESTES & QUALIDADE",
+      "QA & Benchmarks (Scripts)"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "🧪 TESTES & QUALIDADE",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/testes-qualidade/qa-benchmarks-scripts",
+    "order": 62,
+    "content": "Scripts disponíveis (QA/bench/health/report):\n\n```json\n{\n  \"scripts\": {\n    \"check:fe-bd\": \"node tools/qa/check-map-fe-bd.js\",\n    \"check:forms\": \"node tools/qa/check-forms.js\",\n    \"check:buttons\": \"node tools/qa/check-buttons.js\",\n    \"check:tables\": \"node tools/qa/check-tables.js\",\n    \"qa:buttons:topbar\": \"node tools/qa/check-buttons-topbar.cjs\",\n\n    \"check:meili\": \"node tools/qa/integrations/check-meili.js\",\n    \"check:tesseract\": \"node tools/qa/integrations/check-tesseract.js\",\n    \"check:ollama\": \"node tools/qa/integrations/check-ollama.js\",\n    \"check:email\": \"node tools/qa/integrations/check-email.js\",\n    \"check:bull\": \"node tools/qa/integrations/check-bullmq.js\",\n    \"check:posthog\": \"node tools/qa/integrations/check-posthog.js\",\n\n    \"bench:meili\": \"node tools/bench/meili.js\",\n    \"bench:ollama\": \"node tools/bench/ollama.js\",\n    \"bench:tesseract\": \"node tools/bench/tesseract.js\",\n    \"bench:tesseract:strict\": \"node tools/bench/tesseract-strict.js\",\n    \"bench:vector\": \"tsx tools/bench/vector-compare.ts\",\n\n    \"qa:integrations\": \"npm-run-all -s check:meili check:tesseract check:ollama check:email check:bull check:posthog\",\n    \"qa:ui\": \"npm-run-all -s check:forms check:buttons check:tables\",\n    \"qa:map\": \"node tools/qa/check-map-fe-bd.js\",\n    \"qa:manual\": \"tsx tools/audit/manual-coverage.ts\",\n    \"qa:all\": \"npm-run-all -s qa:map qa:ui qa:integrations\",\n\n    \"health:vector\": \"tsx tools/health/vector-endpoints.ts\",\n    \"rollback:integrations\": \"node tools/ops/rollback-integrations.js\",\n    \"report:qa\": \"node tools/reports/gen-qa-report.js\"\n  }\n}\n```\n\nFeature Flags usadas em QA/bench:\n- `FF_SYSTEM_HEALTH`, `FF_WORKFLOW_BUILDER`, `FF_MARKETING_CAMPANHAS`\n- `FF_AI_TUTOR_CIRURGIAS`, `FF_ML_QUEUE`\n- `FF_VOICE_ANALYTICS`, `FF_VOICE_BIOMETRICS`, `FF_VOICE_MACROS`, `FF_VOICE_COMMANDS`, `FF_VIDEO_CALLS`",
+    "content_length": 1838,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "testes qualidade",
+      "qa benchmarks scripts"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🧪 TESTES & QUALIDADE > QA & Benchmarks (Scripts)"
+  },
+  {
+    "id": "icarus-v5-spec-0063",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Build Production",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🚀 DEPLOYMENT",
+      "Build Production"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "🚀 DEPLOYMENT",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/deployment/build-production",
+    "order": 63,
+    "content": "```bash\nnpm run build\n\n# Output: dist/\n# Size: ~210 KB (gzipped)\n# Time: ~3.5s\n```",
+    "content_length": 82,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "deployment",
+      "build production"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🚀 DEPLOYMENT > Build Production"
+  },
+  {
+    "id": "icarus-v5-spec-0064",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Plataformas Suportadas",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🚀 DEPLOYMENT",
+      "Plataformas Suportadas"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "🚀 DEPLOYMENT",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/deployment/plataformas-suportadas",
+    "order": 64,
+    "content": "1. **Vercel** (recomendado)\n2. **Netlify**\n3. **AWS Amplify**\n4. **CloudFlare Pages**\n5. **Digital Ocean App Platform**",
+    "content_length": 119,
+    "keywords": [
+      "plataformas suportadas",
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "deployment"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🚀 DEPLOYMENT > Plataformas Suportadas"
+  },
+  {
+    "id": "icarus-v5-spec-0065",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Variáveis de Ambiente",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🚀 DEPLOYMENT",
+      "Variáveis de Ambiente"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "🚀 DEPLOYMENT",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/deployment/vari-veis-de-ambiente",
+    "order": 65,
+    "content": "```bash\n# Frontend (Vite)\nVITE_SUPABASE_URL=https://<ref>.supabase.co\nVITE_SUPABASE_ANON_KEY=eyJ...\nVITE_ENVIRONMENT=production\nVITE_API_GATEWAY_URL=https://app.icarus.pro\n\n# Feature Flags (rollout)\nFF_SYSTEM_HEALTH=1\nFF_WORKFLOW_BUILDER=1\nFF_MARKETING_CAMPANHAS=0\nFF_AI_TUTOR_CIRURGIAS=1\nFF_ML_QUEUE=1\nFF_VOICE_ANALYTICS=0\nFF_VOICE_BIOMETRICS=0\nFF_VOICE_MACROS=0\nFF_VOICE_COMMANDS=0\nFF_VIDEO_CALLS=0\n\n# Vetores / Benchmarks\nVECTOR_BACKEND=pgvector\nML_API_URL=http://localhost:8000\nSUPABASE_URL=https://<ref>.supabase.co\nSUPABASE_SERVICE_ROLE_KEY=eyJ...\nWEAVIATE_URL=http://localhost:8080\nQDRANT_URL=http://localhost:6333\nQDRANT_COLLECTION=ml_vectors\nMILVUS_ENDPOINT=http://localhost:19530\n\n# Integrações\nVITE_MEILISEARCH_URL=http://localhost:7700\nVITE_OLLAMA_URL=http://localhost:11434\nSMTP_HOST=localhost\nSMTP_PORT=8025\nPOSTHOG_API_KEY=\nVITE_POSTHOG_API_KEY=\nVITE_POSTHOG_HOST=https://app.posthog.com\n```\n\nObservação: QA integration para PostHog é marcado como SKIP quando a API key não está definida.\n\n---",
+    "content_length": 1008,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "vari veis de ambiente",
+      "deployment"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🚀 DEPLOYMENT > Variáveis de Ambiente"
+  },
+  {
+    "id": "icarus-v5-spec-0066",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Breakpoints",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📱 RESPONSIVIDADE",
+      "Breakpoints"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "📱 RESPONSIVIDADE",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/responsividade/breakpoints",
+    "order": 66,
+    "content": "```css\n/* Mobile First */\n/* xs: 0-639px (mobile) */\n/* sm: 640px-767px (mobile landscape) */\n/* md: 768px-1023px (tablet) */\n/* lg: 1024px-1279px (desktop) */\n/* xl: 1280px-1535px (large desktop) */\n/* 2xl: 1536px+ (extra large) */\n```",
+    "content_length": 236,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "breakpoints",
+      "responsividade"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📱 RESPONSIVIDADE > Breakpoints"
+  },
+  {
+    "id": "icarus-v5-spec-0067",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Layout Responsivo",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📱 RESPONSIVIDADE",
+      "Layout Responsivo"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "📱 RESPONSIVIDADE",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/responsividade/layout-responsivo",
+    "order": 67,
+    "content": "- **Mobile**: Sidebar collapse, nav bottom\n- **Tablet**: Sidebar mini (80px), topbar completo\n- **Desktop**: Sidebar completo (260px), layout fluido\n\n---",
+    "content_length": 153,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "layout responsivo",
+      "responsividade"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📱 RESPONSIVIDADE > Layout Responsivo"
+  },
+  {
+    "id": "icarus-v5-spec-0068",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "WCAG AA Compliance",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "♿ ACESSIBILIDADE",
+      "WCAG AA Compliance"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "♿ ACESSIBILIDADE",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/acessibilidade/wcag-aa-compliance",
+    "order": 68,
+    "content": "```yaml\nKeyboard Navigation: ✅\nScreen Reader: ✅\nFocus Visible: ✅\nColor Contrast: 4.5:1 mínimo ✅\nARIA Labels: ✅\nLandmarks: ✅\nSkip Links: ✅\nForm Labels: ✅\nError Messages: ✅\nAlt Text: ✅\n```",
+    "content_length": 186,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "acessibilidade",
+      "wcag aa compliance"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > ♿ ACESSIBILIDADE > WCAG AA Compliance"
+  },
+  {
+    "id": "icarus-v5-spec-0069",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Ferramentas",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "♿ ACESSIBILIDADE",
+      "Ferramentas"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "♿ ACESSIBILIDADE",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/acessibilidade/ferramentas",
+    "order": 69,
+    "content": "- axe-core (automated)\n- NVDA (screen reader testing)\n- Lighthouse (audit)\n\n---",
+    "content_length": 79,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "ferramentas",
+      "acessibilidade"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > ♿ ACESSIBILIDADE > Ferramentas"
+  },
+  {
+    "id": "icarus-v5-spec-0070",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "🔧 SCRIPTS NPM",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🔧 SCRIPTS NPM"
+    ],
+    "section_level": 2,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/scripts-npm",
+    "order": 70,
+    "content": "```json\n{\n  \"scripts\": {\n    \"dev\": \"vite\",                          // Dev server (3000)\n    \"build\": \"vite build\",                  // Build produção\n    \"preview\": \"vite preview\",              // Preview build (4173)\n    \"lint\": \"eslint .\",                     // Lint code\n    \"type-check\": \"tsc --noEmit\",           // TypeScript check\n    \"validate:all\": \"npm run type-check && npm run lint && npm run build\",\n    \"test\": \"vitest\",                       // Unit tests\n    \"test:e2e\": \"playwright test\",          // E2E tests\n    \"test:e2e:ui\": \"playwright test --ui\",  // E2E UI\n    \"test:coverage\": \"vitest run --coverage\",\n    \"qa:a11y\": \"axe http://localhost:4173\", // Accessibility\n    \"qa:perf\": \"lighthouse http://localhost:4173\", // Performance\n    \"format\": \"prettier --write \\\"src/**/*.{ts,tsx,css}\\\"\"\n  }\n}\n```\n\n---",
+    "content_length": 831,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "scripts npm"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🔧 SCRIPTS NPM"
+  },
+  {
+    "id": "icarus-v5-spec-0071",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Configuração",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📄 ARQUIVOS IMPORTANTES",
+      "Configuração"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "📄 ARQUIVOS IMPORTANTES",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/arquivos-importantes/configura-o",
+    "order": 71,
+    "content": "```\n/\n├── vite.config.ts          // Vite config (porta 3000)\n├── tailwind.config.js      // Tailwind config\n├── tsconfig.json           // TypeScript config\n├── playwright.config.ts    // E2E config\n├── .env.local              // Environment vars\n└── components.json         // Shadcn config\n```",
+    "content_length": 296,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "configura o",
+      "arquivos importantes"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📄 ARQUIVOS IMPORTANTES > Configuração"
+  },
+  {
+    "id": "icarus-v5-spec-0072",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Source",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📄 ARQUIVOS IMPORTANTES",
+      "Source"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "📄 ARQUIVOS IMPORTANTES",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/arquivos-importantes/source",
+    "order": 72,
+    "content": "```\nsrc/\n├── main.tsx                    // Entry point\n├── App.tsx                     // Router + Layout (26KB)\n├── styles/\n│   ├── globals.css             // Global styles + OraclusX DS\n│   └── oraclusx-ds.css         // Design system tokens\n├── components/\n│   ├── oraclusx-ds/            // 50+ componentes premium\n│   ├── ui/                     // Wrappers DS (Card, Badge, Progress)\n│   └── modules/                // 58 módulos (19.981 linhas)\n├── pages/\n│   ├── Dashboard.tsx\n│   ├── DashboardPrincipal.tsx\n│   ├── ConsignacaoAvancada.tsx\n│   ├── ComplianceAuditoria.tsx\n│   └── ...\n├── hooks/\n│   ├── index.ts                // 35+ custom hooks\n│   ├── useCirurgias.ts\n│   ├── useEstoque.ts\n│   ├── useConsignacao.ts\n│   ├── useCompliance.ts\n│   └── ...\n├── services/\n│   ├── CirurgiasAI.ts          // 650 linhas\n│   ├── EstoqueAI.ts            // 800 linhas\n│   ├── ComplianceAutomaticoAI.ts\n│   ├── RBACService.tsx         // 555 linhas\n│   ├── APIGatewayService.ts    // 630 linhas\n│   └── ...\n├── contexts/\n│   ├── ToastContext.tsx\n│   └── AuthContext.tsx\n├── lib/\n│   ├── supabase.ts             // Supabase client\n│   ├── flags.ts                // Feature flags helper\n│   └── utils.ts                // Utilities\n└── types/\n    └── database.types.ts       // Supabase generated types\n```",
+    "content_length": 1307,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "source",
+      "arquivos importantes"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📄 ARQUIVOS IMPORTANTES > Source"
+  },
+  {
+    "id": "icarus-v5-spec-0073",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Database",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📄 ARQUIVOS IMPORTANTES",
+      "Database"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "📄 ARQUIVOS IMPORTANTES",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/arquivos-importantes/database",
+    "order": 73,
+    "content": "```\nsupabase/\n├── migrations/\n│   ├── 20251019_dashboard_kpis_function.sql\n│   ├── 20251019_estoque_inteligente_completo.sql\n│   ├── 20251019_consignacao_avancada_completo.sql\n│   ├── 20251019_compliance_auditoria_completo.sql\n│   ├── 20251019_chatbot_navegacao_ptbr.sql\n│   ├── 20251019_portais_opme.sql\n│   └── ...\n└── functions/                  // Edge Functions\n    ├── ml-vectors/             // Persistência de vetores\n    ├── ml-job/                 // Enqueue de jobs ML\n    └── vector-benchmark/       // Comparação FAISS vs pgvector\n```\n\n---",
+    "content_length": 552,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "database",
+      "arquivos importantes"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📄 ARQUIVOS IMPORTANTES > Database"
+  },
+  {
+    "id": "icarus-v5-spec-0074",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Instalação",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🎓 GUIA DE USO",
+      "Para Desenvolvedores",
+      "Instalação"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Para Desenvolvedores",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/guia-de-uso/para-desenvolvedores/instala-o",
+    "order": 74,
+    "content": "```bash\n# 1. Clone o repositório\ngit clone https://github.com/empresa/icarus-v5.git\ncd icarus-v5\n\n# 2. Instale dependências\nnpm install\n\n# 3. Configure .env.local\ncp .env.example .env.local\n# Edite com suas credenciais Supabase\n\n# 4. Inicie dev server\nnpm run dev\n\n# Acesse: http://localhost:3000\n```",
+    "content_length": 300,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "instala o",
+      "para desenvolvedores",
+      "guia de uso"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🎓 GUIA DE USO > Para Desenvolvedores > Instalação"
+  },
+  {
+    "id": "icarus-v5-spec-0075",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Criar Novo Módulo",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🎓 GUIA DE USO",
+      "Para Desenvolvedores",
+      "Criar Novo Módulo"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Para Desenvolvedores",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/guia-de-uso/para-desenvolvedores/criar-novo-m-dulo",
+    "order": 75,
+    "content": "```typescript\n// 1. Criar componente\n// src/components/modules/MeuModulo.tsx\n\nimport { useState } from 'react';\nimport { Card } from '@/components/oraclusx-ds';\n\nexport default function MeuModulo() {\n  return (\n    <div className=\"p-6\">\n      <Card>\n        <h1>Meu Módulo</h1>\n      </Card>\n    </div>\n  );\n}\n\n// 2. Criar hook (se necessário)\n// src/hooks/useMeuModulo.ts\n\n// 3. Adicionar rota em App.tsx\nimport MeuModulo from './components/modules/MeuModulo';\n\n// No Routes:\n<Route path=\"/meu-modulo\" element={<MeuModulo />} />\n\n// 4. Adicionar na Sidebar\n// No array menuItems:\n{\n  icon: Star,\n  label: 'Meu Módulo',\n  path: '/meu-modulo'\n}\n```",
+    "content_length": 647,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "criar novo m dulo",
+      "para desenvolvedores",
+      "guia de uso"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🎓 GUIA DE USO > Para Desenvolvedores > Criar Novo Módulo"
+  },
+  {
+    "id": "icarus-v5-spec-0076",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Usar Componentes OraclusX DS",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🎓 GUIA DE USO",
+      "Para Desenvolvedores",
+      "Usar Componentes OraclusX DS"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Para Desenvolvedores",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/guia-de-uso/para-desenvolvedores/usar-componentes-oraclusx-ds",
+    "order": 76,
+    "content": "```typescript\nimport {\n  Card,\n  Button,\n  Input,\n  Badge,\n  Tooltip\n} from '@/components/oraclusx-ds';\n\n<Card className=\"neuromorphic-card\">\n  <Button variant=\"primary\">\n    Salvar\n  </Button>\n  \n  <Input\n    label=\"Nome\"\n    placeholder=\"Digite...\"\n  />\n  \n  <Badge variant=\"success\">\n    Ativo\n  </Badge>\n  \n  <Tooltip content=\"Ajuda\">\n    <InfoIcon />\n  </Tooltip>\n</Card>\n```",
+    "content_length": 380,
+    "keywords": [
+      "usar componentes oraclusx ds",
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "para desenvolvedores",
+      "guia de uso"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🎓 GUIA DE USO > Para Desenvolvedores > Usar Componentes OraclusX DS"
+  },
+  {
+    "id": "icarus-v5-spec-0077",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Integrar com Supabase",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🎓 GUIA DE USO",
+      "Para Desenvolvedores",
+      "Integrar com Supabase"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Para Desenvolvedores",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/guia-de-uso/para-desenvolvedores/integrar-com-supabase",
+    "order": 77,
+    "content": "```typescript\nimport { supabase } from '@/lib/supabase';\n\n// Fetch\nconst { data, error } = await supabase\n  .from('cirurgias')\n  .select('*')\n  .eq('status', 'agendada')\n  .order('data_agendada', { ascending: true });\n\n// Insert\nconst { data, error } = await supabase\n  .from('cirurgias')\n  .insert([{ ... }])\n  .select()\n  .single();\n\n// Update\nconst { data, error } = await supabase\n  .from('cirurgias')\n  .update({ status: 'concluida' })\n  .eq('id', cirurgiaId);\n\n// Delete\nconst { error } = await supabase\n  .from('cirurgias')\n  .delete()\n  .eq('id', cirurgiaId);\n\n// Realtime\nconst subscription = supabase\n  .channel('cirurgias-channel')\n  .on('postgres_changes', \n    { event: '*', schema: 'public', table: 'cirurgias' },\n    (payload) => {\n      console.log('Change:', payload);\n    }\n  )\n  .subscribe();\n```\n\n---",
+    "content_length": 820,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "integrar com supabase",
+      "para desenvolvedores",
+      "guia de uso"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🎓 GUIA DE USO > Para Desenvolvedores > Integrar com Supabase"
+  },
+  {
+    "id": "icarus-v5-spec-0078",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Executar Testes",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🎓 GUIA DE USO",
+      "Para QA/Testers",
+      "Executar Testes"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Para QA/Testers",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/guia-de-uso/para-qa-testers/executar-testes",
+    "order": 78,
+    "content": "```bash\n# Type-check\nnpm run type-check\n\n# Lint\nnpm run lint\n\n# Build\nnpm run build\n\n# E2E Tests\nnpm run test:e2e\n\n# E2E UI Mode\nnpm run test:e2e:ui\n\n# Accessibility\nnpm run qa:a11y\n\n# Performance\nnpm run qa:perf\n```",
+    "content_length": 216,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "para qa testers",
+      "executar testes",
+      "guia de uso"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🎓 GUIA DE USO > Para QA/Testers > Executar Testes"
+  },
+  {
+    "id": "icarus-v5-spec-0079",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Casos de Teste Principais",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🎓 GUIA DE USO",
+      "Para QA/Testers",
+      "Casos de Teste Principais"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Para QA/Testers",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/guia-de-uso/para-qa-testers/casos-de-teste-principais",
+    "order": 79,
+    "content": "1. **Login/Logout**\n2. **Navegação entre módulos**\n3. **CRUD operações** (Create, Read, Update, Delete)\n4. **Formulários** (validação, envio)\n5. **Dark/Light mode**\n6. **Responsividade** (mobile, tablet, desktop)\n7. **Acessibilidade** (keyboard, screen reader)\n8. **Performance** (load time, FCP, LCP)\n\n---",
+    "content_length": 306,
+    "keywords": [
+      "casos de teste principais",
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "para qa testers",
+      "guia de uso"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🎓 GUIA DE USO > Para QA/Testers > Casos de Teste Principais"
+  },
+  {
+    "id": "icarus-v5-spec-0080",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Acesso",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🎓 GUIA DE USO",
+      "Para Usuários Finais",
+      "Acesso"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Para Usuários Finais",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/guia-de-uso/para-usu-rios-finais/acesso",
+    "order": 80,
+    "content": "1. Abrir `http://localhost:3000` (ou URL produção)\n2. Login com email/senha\n3. Dashboard Principal é a home",
+    "content_length": 107,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "para usu rios finais",
+      "acesso",
+      "guia de uso"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🎓 GUIA DE USO > Para Usuários Finais > Acesso"
+  },
+  {
+    "id": "icarus-v5-spec-0081",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Navegação",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🎓 GUIA DE USO",
+      "Para Usuários Finais",
+      "Navegação"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Para Usuários Finais",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/guia-de-uso/para-usu-rios-finais/navega-o",
+    "order": 81,
+    "content": "- **Sidebar**: Acesso rápido a todos módulos\n- **Topbar**: Perfil, notificações, dark mode\n- **Breadcrumbs**: Localização atual\n- **Busca global**: Ctrl+K (ou Cmd+K no Mac)",
+    "content_length": 172,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "para usu rios finais",
+      "navega o",
+      "guia de uso"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🎓 GUIA DE USO > Para Usuários Finais > Navegação"
+  },
+  {
+    "id": "icarus-v5-spec-0082",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Módulos Principais (Fluxo)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🎓 GUIA DE USO",
+      "Para Usuários Finais",
+      "Módulos Principais (Fluxo)"
+    ],
+    "section_level": 4,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "Para Usuários Finais",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/guia-de-uso/para-usu-rios-finais/m-dulos-principais-fluxo",
+    "order": 82,
+    "content": "1. **Cadastros** → Registrar médicos, hospitais, produtos\n2. **Cirurgias** → Agendar procedimentos\n3. **Estoque** → Verificar disponibilidade materiais\n4. **Consignação** → Enviar kits para hospitais\n5. **Faturamento** → Emitir notas fiscais\n6. **Compliance** → Monitorar conformidade\n\n---",
+    "content_length": 289,
+    "keywords": [
+      "m dulos principais fluxo",
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "para usu rios finais",
+      "guia de uso"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🎓 GUIA DE USO > Para Usuários Finais > Módulos Principais (Fluxo)"
+  },
+  {
+    "id": "icarus-v5-spec-0083",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Links Úteis",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📞 SUPORTE & DOCUMENTAÇÃO",
+      "Links Úteis"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "📞 SUPORTE & DOCUMENTAÇÃO",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/suporte-documenta-o/links-teis",
+    "order": 83,
+    "content": "- **Documentação**: https://docs.icarus.com\n- **API Docs**: https://api.icarus.com/docs\n- **Changelog**: CHANGELOG.md\n- **Roadmap**: ROADMAP.md\n- **Issues**: GitHub Issues",
+    "content_length": 171,
+    "keywords": [
+      "links teis",
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "suporte documenta o"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📞 SUPORTE & DOCUMENTAÇÃO > Links Úteis"
+  },
+  {
+    "id": "icarus-v5-spec-0084",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Contatos",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📞 SUPORTE & DOCUMENTAÇÃO",
+      "Contatos"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "📞 SUPORTE & DOCUMENTAÇÃO",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/suporte-documenta-o/contatos",
+    "order": 84,
+    "content": "- **Email**: suporte@icarus.com\n- **Slack**: #icarus-support\n- **WhatsApp**: +55 11 99999-9999\n\n---",
+    "content_length": 99,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "contatos",
+      "suporte documenta o"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📞 SUPORTE & DOCUMENTAÇÃO > Contatos"
+  },
+  {
+    "id": "icarus-v5-spec-0085",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "🏆 CONQUISTAS",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🏆 CONQUISTAS"
+    ],
+    "section_level": 2,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/conquistas",
+    "order": 85,
+    "content": "```yaml\n✅ 100% Funcional\n✅ 58 Módulos Completos\n✅ 19.981 Linhas de Código\n✅ 50+ Componentes Premium\n✅ 35+ Custom Hooks\n✅ 12 Modelos IA\n✅ 100+ Tabelas Database\n✅ 30+ APIs Integradas\n✅ Type-Check Limpo\n✅ WCAG AA Compliant\n✅ Performance Otimizada\n✅ Documentação Completa\n```\n\n---",
+    "content_length": 276,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "conquistas"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🏆 CONQUISTAS"
+  },
+  {
+    "id": "icarus-v5-spec-0086",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Próximos Passos Sugeridos",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📝 NOTAS FINAIS",
+      "Próximos Passos Sugeridos"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "📝 NOTAS FINAIS",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/notas-finais/pr-ximos-passos-sugeridos",
+    "order": 86,
+    "content": "1. Deploy em staging\n2. Testes com usuários reais\n3. Ajustes UX baseados em feedback\n4. Deploy em produção\n5. Monitoramento contínuo",
+    "content_length": 132,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "notas finais",
+      "pr ximos passos sugeridos"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📝 NOTAS FINAIS > Próximos Passos Sugeridos"
+  },
+  {
+    "id": "icarus-v5-spec-0087",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Melhorias Futuras",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📝 NOTAS FINAIS",
+      "Melhorias Futuras"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "📝 NOTAS FINAIS",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/notas-finais/melhorias-futuras",
+    "order": 87,
+    "content": "1. PWA (Progressive Web App)\n2. Modo offline\n3. Push notifications\n4. App mobile (React Native)\n5. Mais integrações IA\n6. Dashboard customizável\n7. Multi-idioma (i18n)\n\n---\n\n**Documento gerado em**: 20/10/2025  \n**Versão**: 5.0.0  \n**Status**: ✅ Produção Ready\n\n---\n\n© 2025 ICARUS v5.0 - Sistema Enterprise OPME  \nDesenvolvido com ❤️ pela Equipe OraclusX DS\n\n---",
+    "content_length": 362,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "notas finais",
+      "melhorias futuras"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📝 NOTAS FINAIS > Melhorias Futuras"
+  },
+  {
+    "id": "icarus-v5-spec-0088",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "Local",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📚 Storybook CI & Preview",
+      "Local"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "📚 Storybook CI & Preview",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/storybook-ci-preview/local",
+    "order": 88,
+    "content": "```bash\nnpm run storybook  # porta 6007\n# http://localhost:6007\n```",
+    "content_length": 67,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "storybook ci preview",
+      "local"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📚 Storybook CI & Preview > Local"
+  },
+  {
+    "id": "icarus-v5-spec-0089",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "CI (GitHub Actions)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "📚 Storybook CI & Preview",
+      "CI (GitHub Actions)"
+    ],
+    "section_level": 3,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "📚 Storybook CI & Preview",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/storybook-ci-preview/ci-github-actions",
+    "order": 89,
+    "content": "- PRs: Storybook é construído e publicado como artefato `storybook-static`.\n- main: Deploy automático para GitHub Pages (Pages → Source: GitHub Actions).\n\nWorkflow: `.github/workflows/storybook.yml`.",
+    "content_length": 199,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "storybook ci preview",
+      "ci github actions"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 📚 Storybook CI & Preview > CI (GitHub Actions)"
+  },
+  {
+    "id": "icarus-v5-spec-0090",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "🔌 Integrações (mocks → produção)",
+    "hierarchy": [
+      "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+      "🔌 Integrações (mocks → produção)"
+    ],
+    "section_level": 2,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema/integra-es-mocks-produ-o",
+    "order": 90,
+    "content": "- Mocks locais: `npm run mocks:start:bg` (Meili:7700, Ollama:11434, Email:8025, BullMQ:9900)\n- QA validações: `npm run qa:integrations`\n- Produção: defina envs reais\n  - `VITE_MEILISEARCH_URL=...`\n  - `VITE_OLLAMA_URL=...`\n  - `SMTP_HOST`/`SMTP_PORT`\n  - `BULL_HTTP_URL`\n  - `VITE_POSTHOG_API_KEY` (opcional; se ausente, check = SKIP)",
+    "content_length": 334,
+    "keywords": [
+      "icarus v5 0 especifica o t cnica completa do sistema",
+      "integra es mocks produ o"
+    ],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema > 🔌 Integrações (mocks → produção)"
+  },
+  {
+    "id": "icarus-v5-spec-0091",
+    "document": "ICARUS_V5_SPEC_COMPLETO",
+    "section_title": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "hierarchy": ["ICARUS v5.0 - Especificação Técnica Completa do Sistema"],
+    "section_level": 1,
+    "top_level": "ICARUS v5.0 - Especificação Técnica Completa do Sistema",
+    "parent_section": null,
+    "path_slug": "icarus-v5-0-especifica-o-t-cnica-completa-do-sistema",
+    "order": 91,
+    "content": "**Data**: 20/10/2025  \n**Versão**: 5.0.0  \n**Status**: ✅ 100% Implementado e Funcional (alinhado ao estado atual)  \n**Autor**: Equipe OraclusX DS  \n**Ambiente**: http://localhost:3000\n\n---",
+    "content_length": 188,
+    "keywords": ["icarus v5 0 especifica o t cnica completa do sistema"],
+    "is_leaf": true,
+    "breadcrumbs": "ICARUS v5.0 - Especificação Técnica Completa do Sistema"
+  }
+]

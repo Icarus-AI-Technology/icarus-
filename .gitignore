@@ -41,3 +41,9 @@ __pycache__/
 .Python
 mock-server.log
 .mock-server.pid
+.vercel
+
+# Cursor Agents
+.cursor/results/
+.cursor/agents/*/reports/
+.cursor/agents/*/logs/

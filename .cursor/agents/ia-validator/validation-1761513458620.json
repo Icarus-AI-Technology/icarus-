@@ -1,0 +1,44 @@
+{
+  "timestamp": "2025-10-26T21:17:38.614Z",
+  "environment": "development",
+  "checks": [
+    {
+      "service": "ollama",
+      "status": "ok",
+      "endpoint": "http://localhost:11434",
+      "models": ["llama3.1:8b"]
+    },
+    {
+      "service": "meilisearch",
+      "status": "ok",
+      "endpoint": "https://edge.meilisearch.com",
+      "version": "1.24.0",
+      "analytics": true
+    },
+    {
+      "service": "posthog",
+      "status": "warning",
+      "message": "API key não configurada"
+    },
+    {
+      "service": "supabase",
+      "status": "ok",
+      "url": "https://ttswvavcisdnonytslom.supabase.co"
+    },
+    {
+      "service": "tesseract",
+      "status": "ok",
+      "path": "/tesseract",
+      "files": 3
+    }
+  ],
+  "passed": true,
+  "failed": 0,
+  "summary": {
+    "total": 5,
+    "ok": 4,
+    "warning": 1,
+    "error": 0,
+    "skipped": 0
+  }
+}

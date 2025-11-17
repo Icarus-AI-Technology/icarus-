@@ -1,0 +1,79 @@
+{
+  "version": "5.0.0",
+  "environment": "development",
+  "profile": "v5-limited-agents",
+  "description": "Perfil otimizado para ambientes Cursor com no máximo 5 agentes principais.",
+  "directories": {
+    "development": "/Users/daxmeneghel/icarus-make",
+    "production": "/Users/daxmeneghel/icarus-v5.0"
+  },
+  "agents": [
+    {
+      "id": "v5-01-orchestrator",
+      "name": "Orquestrador Geral",
+      "path": ".cursor/agents/v5-01-orchestrator",
+      "subagents": [
+        "v5-01-01-mission-control",
+        "v5-01-02-risk-monitor",
+        "v5-01-03-report-synth",
+        "v5-01-04-handoff"
+      ],
+      "scripts": []
+    },
+    {
+      "id": "v5-02-quality-ops",
+      "name": "Quality Ops",
+      "path": ".cursor/agents/v5-02-quality-ops",
+      "subagents": [
+        "v5-02-01-test-executor",
+        "v5-02-02-env-auditor",
+        "v5-02-03-dependency-auditor",
+        "v5-02-04-quality-gates"
+      ],
+      "scripts": [
+        "scripts/ops/run-missing-tests.sh",
+        "scripts/ops/validate-environment.mjs",
+        "scripts/ops/check-dependencies.mjs"
+      ]
+    },
+    {
+      "id": "v5-03-ai-localhost",
+      "name": "AI Localhost",
+      "path": ".cursor/agents/v5-03-ai-localhost",
+      "subagents": [
+        "v5-03-01-ollama-guard",
+        "v5-03-02-gpt-researcher",
+        "v5-03-03-ml-services",
+        "v5-03-04-fallback"
+      ],
+      "scripts": ["scripts/ops/validate-environment.mjs"]
+    },
+    {
+      "id": "v5-04-supabase",
+      "name": "Supabase Migration",
+      "path": ".cursor/agents/v5-04-supabase",
+      "subagents": [
+        "v5-04-01-schema-tracker",
+        "v5-04-02-functions-sync",
+        "v5-04-03-storage-guard",
+        "v5-04-04-edge-observer"
+      ],
+      "scripts": [
+        "scripts/ops/verify-migration-integrity.mjs",
+        "scripts/verify-supabase-status.ts"
+      ]
+    },
+    {
+      "id": "v5-05-production",
+      "name": "Production Delivery",
+      "path": ".cursor/agents/v5-05-production",
+      "subagents": [
+        "v5-05-01-migration-planner",
+        "v5-05-02-vercel-integration",
+        "v5-05-03-observability",
+        "v5-05-04-documentation"
+      ],
+      "scripts": []
+    }
+  ]
+}

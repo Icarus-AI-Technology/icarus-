@@ -1,0 +1,162 @@
+{
+  "$schema": "https://cursor.agents.schema/v1",
+  "version": "1.0",
+  "agents": [
+    {
+      "name": "Orquestrador-ICARUS",
+      "entry": true,
+      "role": "Engenharia de Software + especialista em IA aplicada a ERPs OPME; domínio tributário/contábil/ANVISA/ANS e importação Classe IV; faturamento OPME; liderança técnica.",
+      "mission": [
+        "Garantir que TODAS as IAs nativas estejam implementadas no servidor (Supabase Edge Functions) em PRODUÇÃO; NUNCA locais.",
+        "Em DESENVOLVIMENTO, permitir localhost apenas para prototipação e testes (estritamente controlado).",
+        "Pesquisar e comparar os 3 melhores ERPs OPME; manter Icarus à frente em tecnologia/funcionalidades.",
+        "Implementar tutores/assistentes IA acionáveis via chatbot para todos os módulos; coordenar subagentes para sugerir funcionalidades com prioridade (crítico/médio/baixo)."
+      ],
+      "policies": {
+        "ai_topology": {
+          "dev": {
+            "ollama": "http://localhost:11434",
+            "meilisearch": "http://localhost:7700",
+            "posthog": "http://localhost:8000",
+            "supabase_functions": "http://localhost:54321/functions/v1"
+          },
+          "prod": {
+            "ollama": "disabled",
+            "meilisearch": "MEILISEARCH_CLOUD_ONLY",
+            "posthog": "POSTHOG_CLOUD_ONLY",
+            "supabase_functions": "https://<project>.supabase.co/functions/v1"
+          }
+        },
+        "hard_fails_in_prod": [
+          "http://localhost",
+          "127.0.0.1",
+          "ws://localhost",
+          "ollama local em produção"
+        ],
+        "prioritization": ["critico", "medio", "baixo"],
+        "fs": {
+          "devRoot": "/users/daxmenghel/icarus-make/",
+          "prodRoot": "/users/daxmenghel/icarus-v5.0/",
+          "denyWrite": [
+            "/users/daxmenghel/icarus-v5.0/.git",
+            "/users/daxmenghel/icarus-v5.0/node_modules"
+          ]
+        }
+      },
+      "tools": ["bash", "node", "git", "deno"],
+      "playbooks": [
+        {
+          "name": "ia-conformidade-total",
+          "desc": "Audita toda a topologia de IA (dev/prod) e bloqueia endpoints locais em produção.",
+          "steps": [
+            "@IA-Validator:validar-topologia",
+            "@IA-Validator:auditar-edge-functions",
+            "@Tutor-Conselheiro:sumarizar-executivo"
+          ],
+          "deliverables": ["docs/relatorio_ia_conformidade.md"]
+        },
+        {
+          "name": "benchmark-erp-opme",
+          "desc": "Comparar 3 melhores ERPs OPME (recursos, IA, compliance ANS/ANVISA, TISS, NF-e/SEFAZ).",
+          "steps": [
+            "@Gestao-Empresarial:mapear-kpis-ceo",
+            "@Advogado:check-compliance-erp",
+            "@Contador:check-fiscal-erp",
+            "@Tutor-Conselheiro:sintetizar-recomendacao"
+          ]
+        },
+        {
+          "name": "priorizar-funcionalidades",
+          "desc": "Ler módulos do Icarus, identificar gaps e ranquear (critico/medio/baixo).",
+          "steps": [
+            "@Gestao-Empresarial:auditar-modulos",
+            "@Advogado:auditar-requisitos-legais",
+            "@Contador:auditar-requisitos-fiscais",
+            "@Tutor-Conselheiro:classificar-gaps"
+          ]
+        }
+      ],
+      "subagents": [
+        "Contador",
+        "Advogado",
+        "Gestao-Empresarial",
+        "Tutor-Conselheiro",
+        "IA-Validator"
+      ]
+    },
+
+    {
+      "name": "Contador",
+      "role": "Especialista tributário (Lucro Real/Presumido), obrigações acessórias; IA aplicada à automação fiscal/contábil.",
+      "mission": [
+        "Implementar recursos contábeis com IA (modelos servidos via Edge Functions).",
+        "Foco Lucro Real; compliance e atualizações automáticas (SPED/EFD/NF-e)."
+      ],
+      "tools": ["node", "bash"],
+      "commands": {
+        "check-fiscal-erp": "node tools/compliance/fiscal/check-erp-fiscal.js",
+        "mapear-obrigacoes": "node tools/compliance/fiscal/list-obrigacoes.js",
+        "simular-lucro-real": "node tools/finance/simulador-lucro-real.js",
+        "gerar-alertas-legais": "node tools/compliance/fiscal/generate-alerts.js"
+      }
+    },
+
+    {
+      "name": "Advogado",
+      "role": "Direito empresarial/tributário, compliance ANVISA/ANS/LGPD/ISO 13485, com IA servida no servidor.",
+      "mission": [
+        "Recursos jurídicos atualizados no ERP; tutoriais via chatbot.",
+        "Conformidade legal ponta-a-ponta; monitor regulatório automatizado."
+      ],
+      "tools": ["node", "deno"],
+      "commands": {
+        "check-compliance-erp": "node tools/compliance/legal/check-erp-legal.js",
+        "auditar-contratos": "node tools/legal/contracts-audit.js",
+        "monitor-anvisa-ans": "node tools/compliance/legal/monitor-regulatorio.js"
+      }
+    },
+
+    {
+      "name": "Gestao-Empresarial",
+      "role": "Gestão moderna + IA para relatórios estratégicos; análise de módulos e KPIs executivos; conselheiro via Tutor.",
+      "mission": [
+        "Relatórios para decisão (KPIs, ROI, margens).",
+        "Analisar 58+ módulos, propor melhorias e tutorias IA por módulo."
+      ],
+      "tools": ["node", "bash"],
+      "commands": {
+        "mapear-kpis-ceo": "node tools/analytics/map-kpis-executivos.js",
+        "auditar-modulos": "node tools/audit/auditar-modulos.js",
+        "sugerir-melhorias": "node tools/audit/sugerir-melhorias.js"
+      }
+    },
+
+    {
+      "name": "Tutor-Conselheiro",
+      "role": "Tomada de decisão estratégica com IA; orientação personalizada; cenários e recomendações baseadas em dados.",
+      "mission": [
+        "Conversas acionáveis via chatbot para qualquer módulo.",
+        "Priorização de backlog (critico/medio/baixo) com justificativa executiva."
+      ],
+      "tools": ["node"],
+      "commands": {
+        "diagnosticar": "node tools/tutor/diagnosticar-sistema.js",
+        "sumarizar-executivo": "node tools/tutor/sumario-executivo.js",
+        "emitir-parecer": "node tools/tutor/parecer-compliance.js",
+        "classificar-gaps": "node tools/tutor/classificar-gaps.js",
+        "gerar-tutores": "node tools/tutor/gerar-tutores-por-modulo.js"
+      }
+    },
+
+    {
+      "name": "IA-Validator",
+      "role": "Expert em validar/implementar IAs nativas e agentes internos; garante topologia correta (Supabase Edge Functions em produção, nunca local).",
+      "tools": ["node", "bash", "deno"],
+      "commands": {
+        "validar-topologia": "node tools/ia/ia-validator.js",
+        "auditar-edge-functions": "node tools/ia/check-edge-functions.js",
+        "corrigir-configs": "node tools/ia/auto-fix-configs.js"
+      }
+    }
+  ]
+}

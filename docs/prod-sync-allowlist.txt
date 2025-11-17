@@ -1,0 +1,33 @@
+# fontes principais
+package.json
+package-lock.json
+pnpm-lock.yaml
+vercel.json
+vite.config.ts
+vitest.config.ts
+
+# build/output (se disponível)
+dist/
+
+# frontend
+public/
+src/
+tsconfig.json
+tsconfig.typecheck.json
+
+# supabase artefacts
+supabase/
+
+# scripts essenciais
+scripts/ops/run-missing-tests.sh
+scripts/ops/sync-to-prod.sh
+scripts/setup-playwright-offline.sh
+scripts/ops/check-dependencies.mjs
+scripts/ops/validate-environment.mjs
+scripts/ops/verify-migration-integrity.mjs
+
+# documentação crítica
+docs/migration-plan-v5.md
+docs/migration-schedule-v5.md
+docs/performance-integration-plan.md
+docs/e2e-playwright-setup.md
