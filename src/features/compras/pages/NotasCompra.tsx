@@ -294,7 +294,7 @@ export const NotasCompra: React.FC = () => {
       status === 'contabilizada' ? 'bg-blue-500/15 text-blue-700 dark:text-blue-300' : 'bg-surface text-[var(--text-secondary)]';
 
     return (
-      <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[0.813rem] orx-font-semibold ${bgClass}`}>
+      <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[0.813rem] orx-orx-font-semibold ${bgClass}`}>
         {config.icon}
         {config.label}
       </span>
@@ -307,7 +307,7 @@ export const NotasCompra: React.FC = () => {
     >
       {/* Header */}
       <div>
-        <h1 className="text-[0.813rem] orx-font-extrabold text-[var(--orx-text-primary)] mb-2">
+        <h1 className="text-[0.813rem] orx-orx-font-extrabold text-[var(--orx-text-primary)] mb-2">
           Notas Fiscais de Entrada
         </h1>
         <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">
@@ -331,7 +331,7 @@ export const NotasCompra: React.FC = () => {
                   <Icon size={24} className="text-white" />
                 </div>
                 <div>
-                  <div className="text-[0.813rem] orx-font-bold text-[var(--orx-text-primary)] mb-1">{kpi.value}</div>
+                  <div className="text-[0.813rem] orx-orx-font-bold text-[var(--orx-text-primary)] mb-1">{kpi.value}</div>
                   <div className="text-[0.813rem] text-[var(--orx-text-secondary)]">{kpi.label}</div>
                 </div>
               </div>
@@ -356,7 +356,7 @@ export const NotasCompra: React.FC = () => {
               <Upload size={32} className="text-white" />
             </div>
             <div className="text-center">
-              <h3 className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)] mb-2">Importar XML NF-e</h3>
+              <h3 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-2">Importar XML NF-e</h3>
               <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">Clique para selecionar o arquivo XML</p>
             </div>
           </label>
@@ -374,7 +374,7 @@ export const NotasCompra: React.FC = () => {
               <Scan size={32} className="text-white" />
             </div>
             <div className="text-center">
-              <h3 className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)] mb-2">OCR de DANFE</h3>
+              <h3 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-2">OCR de DANFE</h3>
               <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">PDF ou imagem do DANFE</p>
             </div>
           </label>
@@ -402,7 +402,7 @@ export const NotasCompra: React.FC = () => {
               ) : (
                 <XCircle size={24} className="text-[var(--orx-error-dark)]" />
               )}
-              <h3 className={`text-[0.813rem] orx-font-semibold ${validacaoStatus.sefaz ? 'text-[var(--orx-success-dark)]' : 'text-[var(--orx-error-dark)]'}`}>
+              <h3 className={`text-[0.813rem] orx-orx-font-semibold ${validacaoStatus.sefaz ? 'text-[var(--orx-success-dark)]' : 'text-[var(--orx-error-dark)]'}`}>
                 {validacaoStatus.sefaz ? 'NF-e Validada com Sucesso' : 'NF-e com Problemas'}
               </h3>
             </div>
@@ -452,29 +452,29 @@ export const NotasCompra: React.FC = () => {
 
           {/* Dados da NF-e */}
           <div className="p-6 rounded-2xl bg-[var(--orx-bg-light)] shadow border border-white/10">
-            <h3 className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)] mb-4">Dados da Nota Fiscal</h3>
+            <h3 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-4">Dados da Nota Fiscal</h3>
             <div className="grid [grid-template-columns:repeat(auto-fit,minmax(200px,1fr))] gap-4">
               <div>
                 <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">Número</p>
-                <p className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)]">
+                <p className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)]">
                   {nfe.numero_nfe}
                 </p>
               </div>
               <div>
                 <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">Série</p>
-                <p className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)]">
+                <p className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)]">
                   {nfe.serie}
                 </p>
               </div>
               <div>
                 <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">Data Emissão</p>
-                <p className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)]">
+                <p className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)]">
                   {new Date(nfe.data_emissao).toLocaleDateString('pt-BR')}
                 </p>
               </div>
               <div>
                 <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">Valor Total</p>
-                <p className="text-[0.813rem] orx-font-bold text-[var(--orx-primary)]">
+                <p className="text-[0.813rem] orx-orx-font-bold text-[var(--orx-primary)]">
                   {new Intl.NumberFormat('pt-BR', {
                     style: 'currency',
                     currency: 'BRL',
@@ -483,7 +483,7 @@ export const NotasCompra: React.FC = () => {
               </div>
               <div className="col-span-2">
                 <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">Fornecedor</p>
-                <p className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)]">
+                <p className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)]">
                   {nfe.fornecedor_nome}
                 </p>
                 <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">
@@ -497,14 +497,14 @@ export const NotasCompra: React.FC = () => {
           <div className="flex gap-4 justify-end">
             <button
               onClick={() => setNfe(null)}
-              className="px-6 py-3 rounded-xl bg-[var(--orx-bg-light)] text-[var(--orx-text-primary)] text-[0.813rem] orx-font-semibold border border-black/10 shadow transition"
+              className="px-6 py-3 rounded-xl bg-[var(--orx-bg-light)] text-[var(--orx-text-primary)] text-[0.813rem] orx-orx-font-semibold border border-black/10 shadow transition"
             >
               Cancelar
             </button>
             <button
               onClick={handleDarEntrada}
               disabled={!validacaoStatus.sefaz}
-              className={`flex items-center gap-2 px-6 py-3 rounded-xl text-[0.813rem] orx-font-semibold shadow transition ${validacaoStatus.sefaz ? 'bg-[var(--orx-success-dark)] text-white cursor-pointer' : 'bg-[var(--orx-bg-light)] text-white opacity-50 cursor-not-allowed'}`}
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl text-[0.813rem] orx-orx-font-semibold shadow transition ${validacaoStatus.sefaz ? 'bg-[var(--orx-success-dark)] text-white cursor-pointer' : 'bg-[var(--orx-bg-light)] text-white opacity-50 cursor-not-allowed'}`}
             >
               <Package size={20} />
               Dar Entrada no Estoque
@@ -516,14 +516,14 @@ export const NotasCompra: React.FC = () => {
       {/* Lista de Notas */}
       <div className="rounded-2xl bg-[var(--orx-bg-light)] shadow border border-white/10 overflow-hidden">
         <div className="p-6 border-b border-black/5">
-          <h3 className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)]">Notas Fiscais Recentes</h3>
+          <h3 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)]">Notas Fiscais Recentes</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-indigo-500/5">
                 {['Nº NF-e','Fornecedor','Data Emissão','Valor Total','Status','Ações'].map((h, idx) => (
-                  <th key={idx} className={`p-4 ${idx === 5 ? 'text-center' : 'text-left'} text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)] border-b border-black/5`}>
+                  <th key={idx} className={`p-4 ${idx === 5 ? 'text-center' : 'text-left'} text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-secondary)] border-b border-black/5`}>
                     {h}
                   </th>
                 ))}
@@ -532,15 +532,15 @@ export const NotasCompra: React.FC = () => {
             <tbody>
               {notas.map((nota) => (
                 <tr key={nota.id} className="border-b border-black/5 hover:bg-indigo-500/5 transition-colors">
-                  <td className="p-4 text-[0.813rem] orx-font-semibold text-[var(--orx-primary)]">{nota.numero_nfe}</td>
+                  <td className="p-4 text-[0.813rem] orx-orx-font-semibold text-[var(--orx-primary)]">{nota.numero_nfe}</td>
                   <td className="p-4 text-[0.813rem] text-[var(--orx-text-primary)]">
                     <div>
-                      <div className="orx-font-semibold">{nota.fornecedor_nome}</div>
+                      <div className="orx-orx-font-semibold">{nota.fornecedor_nome}</div>
                       <div className="text-[0.813rem] text-[var(--orx-text-secondary)]">{nota.fornecedor_cnpj}</div>
                     </div>
                   </td>
                   <td className="p-4 text-[0.813rem] text-[var(--orx-text-primary)]">{new Date(nota.data_emissao).toLocaleDateString('pt-BR')}</td>
-                  <td className="p-4 text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)]">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(nota.valor_total)}</td>
+                  <td className="p-4 text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)]">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(nota.valor_total)}</td>
                   <td className="p-4">{getStatusBadge(nota.status)}</td>
                   <td className="p-4">
                     <div className="flex items-center justify-center gap-2">

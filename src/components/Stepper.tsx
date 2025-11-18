@@ -109,7 +109,7 @@ export const Stepper: React.FC<StepperProps> = ({
                 >
                   <div className="flex items-center gap-2">
                     <span
-                      className={cn("orx-font-medium",
+                      className={cn("orx-orx-font-medium",
                         status ==="current"
                           ?"text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]"
                           :"text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]"

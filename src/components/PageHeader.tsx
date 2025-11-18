@@ -79,7 +79,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
           {/* Título e descrição */}
           <div className="flex-1 min-w-0 space-y-2">
             <div className="flex items-center gap-3 flex-wrap">
-              <h1 className="orx-text-3xl orx-font-bold text-[var(--orx-text-primary)] leading-tight">
+              <h1 className="orx-text-3xl orx-orx-font-bold text-[var(--orx-text-primary)] leading-tight">
                 {title}
               </h1>
               {badge && (

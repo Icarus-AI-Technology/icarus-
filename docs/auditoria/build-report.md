@@ -1,12 +1,7 @@
 ## Build Report
 
 - **Comando:** `npm run build`
-- **Status:** Falhou
-- **Resumo:** 121 erros TypeScript impediram a compilação (mesmos blocos do `tsc --noEmit`).
-- **Principais bloqueadores:**
-  - Tipos incompletos nos módulos (`Lead.estagio`, `Material.descricao`, `Entrega.destino`).
-  - Duplicidade de imports `TrendingUp` em diversos módulos.
-  - Exportações incorretas no DS (`src/components/oraclusx-ds/index.ts`).
-  - Ausência de typings para `gpt-researcher` e uso de `React` global.
-- **Impacto:** Build de produção indisponível até correção; preview não executado.
-
+- **Status:** ✅ Concluído com sucesso
+- **Resumo:** Build Vite finalizada sem erros após correções de lint/TypeScript.
+- **Observações:** Apenas avisos de tamanho de bundle (`index-*.js ~994 kB`). Recomenda-se avaliar `dynamic import()`/`manualChunks` futuramente.
+- **Impacto:** Artefatos em `dist/` prontos para deploy (`npm run preview` disponível).

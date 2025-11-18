@@ -178,7 +178,7 @@ export default function CadastroPessoaJuridica() {
               <Building2 className="w-6 h-6 text-orx-primary" />
             </div>
             <div>
-              <h1 className="orx-text-3xl orx-font-bold text-orx-text-primary">
+              <h1 className="orx-text-3xl orx-orx-font-bold text-orx-text-primary">
                 Cadastro de Pessoa Jurídica
               </h1>
               <p className="text-orx-text-secondary mt-1">
@@ -191,7 +191,7 @@ export default function CadastroPessoaJuridica() {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Busca CNPJ */}
           <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
-            <h2 className="orx-text-lg orx-font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
+            <h2 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
               <Search className="w-5 h-5 text-orx-primary" />
               Buscar por CNPJ
             </h2>
@@ -239,7 +239,7 @@ export default function CadastroPessoaJuridica() {
           {cnpjEncontrado && (
             <>
               <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
-                <h2 className="orx-text-lg orx-font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
+                <h2 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
                   <Building2 className="w-5 h-5 text-orx-primary" />
                   Dados Cadastrais
                 </h2>
@@ -300,7 +300,7 @@ export default function CadastroPessoaJuridica() {
 
               {/* Endereço */}
               <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
-                <h2 className="orx-text-lg orx-font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
+                <h2 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
                   <MapPin className="w-5 h-5 text-orx-primary" />
                   Endereço
                 </h2>
@@ -420,7 +420,7 @@ export default function CadastroPessoaJuridica() {
 
               {/* Dados Bancários */}
               <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
-                <h2 className="orx-text-lg orx-font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
+                <h2 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
                   <Phone className="w-5 h-5 text-orx-primary" />
                   Dados Bancários (Opcional)
                 </h2>

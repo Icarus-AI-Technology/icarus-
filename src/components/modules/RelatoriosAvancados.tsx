@@ -35,7 +35,7 @@ export const RelatoriosAvancados: React.FC = () => {
           <div className="flex items-center gap-2 px-4 py-2 bg-[var(--primary)] rounded-full">
             <Settings className="text-[var(--primary-foreground)] animate-spin-slow" size={20} />
             <div className="text-left">
-              <p className="text-[var(--primary-foreground)] text-body-sm orx-font-medium">IA Automação</p>
+              <p className="text-[var(--primary-foreground)] text-body-sm orx-orx-font-medium">IA Automação</p>
               <p className="text-[var(--primary-foreground)]/70 text-body-xs">94.8% taxa</p>
             </div>
           </div>
@@ -53,7 +53,7 @@ export const RelatoriosAvancados: React.FC = () => {
                       <Icon size={24} />
                     </div>
                     <div className="text-center">
-                      <p className="text-body-xs mb-1 orx-font-medium">{category.label}</p>
+                      <p className="text-body-xs mb-1 orx-orx-font-medium">{category.label}</p>
                       <div className="flex items-center justify-center gap-2">
                         <span className="text-heading font-display text-[0.813rem]">{category.count}</span>
                         <span className={`text-body-xs ${isActive ?"text-[var(--primary)]/80" :"text-success"}`}>
@@ -100,7 +100,7 @@ export const RelatoriosAvancados: React.FC = () => {
               {["Financeiro Completo","Operacional Mensal","Analytics Avançado"].map((rel, i) => (
                 <div key={i} className="p-4 border border-[var(--border)] rounded-lg hover:neuro-raised transition-all cursor-pointer">
                   <FileText className="text-[var(--text-primary)] mb-2" size={24} />
-                  <h4 className="text-[var(--text-primary)] mb-1 orx-font-medium">{rel}</h4>
+                  <h4 className="text-[var(--text-primary)] mb-1 orx-orx-font-medium">{rel}</h4>
                   <p className="text-body-xs text-[var(--text-secondary)]">Gerado automaticamente</p>
                 </div>
               ))}

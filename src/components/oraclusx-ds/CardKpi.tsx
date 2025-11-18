@@ -167,12 +167,12 @@ export const CardKpi: React.FC<CardKpiProps> = ({
         {/* Conteúdo */}
         <div className="flex-1 min-w-0">
           {/* Label */}
-          <p className="orx-text-sm orx-font-medium text-orx-text-secondary mb-1 truncate">
+          <p className="orx-text-sm orx-orx-font-medium text-orx-text-secondary mb-1 truncate">
             {label}
           </p>
 
           {/* Valor */}
-          <p className="orx-text-3xl orx-font-bold text-orx-text-primary truncate">
+          <p className="orx-text-3xl orx-orx-font-bold text-orx-text-primary truncate">
             {value}
           </p>
 
@@ -180,7 +180,7 @@ export const CardKpi: React.FC<CardKpiProps> = ({
           {trend && (
             <div
               className={cn(
-                'flex items-center gap-1 mt-2 orx-text-sm orx-font-semibold',
+                'flex items-center gap-1 mt-2 orx-text-sm orx-orx-font-semibold',
                 styles.trendColor[trend.direction]
               )}
             >

@@ -122,7 +122,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         aria-label="Selecionar data"
         {...(isOpen ? { 'aria-expanded': 'true' as const } : { 'aria-expanded': 'false' as const })}
         aria-haspopup="dialog"
-        className={cn("w-full px-4 py-2 rounded-lg flex items-center justify-between","bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]","border border-gray-200 dark:border-border","shadow-[var(--shadow-light-inner)] dark:shadow-[var(--shadow-dark-inner)]","focus:outline-none focus:ring-2 focus:ring-[var(--primary)]","transition-all",
+        className={cn("w-full px-4 py-2 rounded-lg flex items-center justify-between","bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]","border border-gray-200 dark:border-border","shadow-[var(--shadow-light-inner)] dark:shadow-[var(--shadow-dark-inner)]","focus:outline-none focus:ring-3 focus:ring-[var(--primary)]","transition-all",
           disabled &&"opacity-50 cursor-not-allowed",
           error &&"border-error"
         )}
@@ -158,17 +158,17 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             <button
               onClick={previousMonth}
               aria-label="Mês anterior"
-              className="p-2 rounded-md hover:bg-[var(--surface-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+              className="p-2 rounded-md hover:bg-[var(--surface-hover)] focus:outline-none focus:ring-3 focus:ring-[var(--primary)]"
             >
               ←
             </button>
-            <span className="text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)] orx-font-medium">
+            <span className="text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)] orx-orx-font-medium">
               {viewMonth.toLocaleDateString("pt-BR", { month:"long", year:"numeric" })}
             </span>
             <button
               onClick={nextMonth}
               aria-label="Próximo mês"
-              className="p-2 rounded-md hover:bg-[var(--surface-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+              className="p-2 rounded-md hover:bg-[var(--surface-hover)] focus:outline-none focus:ring-3 focus:ring-[var(--primary)]"
             >
               →
             </button>
@@ -206,7 +206,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                   onClick={() => !isDisabled && handleDateSelect(date)}
                   disabled={isDisabled}
                   aria-label={`${day} de ${viewMonth.toLocaleDateString("pt-BR", { month:"long" })}`}
-                  className={cn("p-2 rounded-md text-center transition-colors","focus:outline-none focus:ring-2 focus:ring-[var(--primary)]",
+                  className={cn("p-2 rounded-md text-center transition-colors","focus:outline-none focus:ring-3 focus:ring-[var(--primary)]",
                     isSelected &&"bg-[var(--primary)] text-inverse shadow-md",
                     !isSelected && !isDisabled &&"hover:bg-[var(--surface-hover)]",
                     isDisabled &&"opacity-30 cursor-not-allowed"

@@ -125,7 +125,10 @@ export function initSentry() {
 /**
  * Captura erro manualmente
  */
-export function captureError(error: Error, context?: Record<string, any>) {
+export function captureError(
+  error: Error,
+  context?: Record<string, unknown>,
+) {
   if (!SENTRY_DSN) return;
   
   Sentry.captureException(error, {
@@ -176,7 +179,10 @@ export function setTag(key: string, value: string) {
 /**
  * Define contexto extra
  */
-export function setContext(name: string, context: Record<string, any>) {
+export function setContext(
+  name: string,
+  context: Record<string, unknown>,
+) {
   if (!SENTRY_DSN) return;
   
   Sentry.setContext(name, context);

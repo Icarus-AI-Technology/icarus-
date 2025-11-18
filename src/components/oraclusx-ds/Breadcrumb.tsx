@@ -61,7 +61,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
             <li>
               <a
                 href="/"
-                className={cn("flex items-center gap-1 px-2 py-1 rounded-md","text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]","hover:text-[var(--primary)] hover:bg-[var(--surface-hover)]","transition-colors","focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+                className={cn("flex items-center gap-1 px-2 py-1 rounded-md","text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]","hover:text-[var(--primary)] hover:bg-[var(--surface-hover)]","transition-colors","focus:outline-none focus:ring-3 focus:ring-[var(--primary)]"
                 )}
                 aria-label="Home"
               >
@@ -85,7 +85,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
               <li>
                 {isLast ? (
                   <span
-                    className="flex items-center gap-2 text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)] orx-font-medium"
+                    className="flex items-center gap-2 text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)] orx-orx-font-medium"
                     aria-current="page"
                   >
                     {item.icon && <span>{item.icon}</span>}
@@ -104,7 +104,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
                         item.onClick();
                       }
                     }}
-                    className={cn("flex items-center gap-2 px-2 py-1 rounded-md","text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]","hover:text-[var(--primary)] hover:bg-[var(--surface-hover)]","transition-colors","focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+                    className={cn("flex items-center gap-2 px-2 py-1 rounded-md","text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]","hover:text-[var(--primary)] hover:bg-[var(--surface-hover)]","transition-colors","focus:outline-none focus:ring-3 focus:ring-[var(--primary)]"
                     )}
                   >
                     {item.icon && <span>{item.icon}</span>}

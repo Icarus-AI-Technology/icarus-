@@ -48,7 +48,7 @@ function ChartContainer({ children, title, subtitle, className }: ChartContainer
         <div className="mb-4">
           {title && (
             <h3
-              className="text-[var(--text-primary)] mb-1 text-[0.813rem] font-bold"
+              className="text-[var(--text-primary)] mb-1 text-[0.813rem] orx-font-bold"
             >
               {title}
             </h3>
@@ -221,7 +221,7 @@ export function StatCard({ title, value, trend, icon: Icon, className }: StatCar
             {title}
           </p>
           <h3
-            className="text-[var(--text-primary)] text-[0.813rem] font-bold"
+            className="text-[var(--text-primary)] text-[0.813rem] orx-font-bold"
           >
             {value}
           </h3>

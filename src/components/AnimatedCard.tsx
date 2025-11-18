@@ -3,7 +3,7 @@
  * Card com animações de entrada configuráveis
  */
 
-import React, { type ReactNode } from 'react';
+import { type FC } from 'react';
 import { Card, type CardProps } from './Card';
 import { cn } from '@/lib/utils';
 import { type AnimationType, enterAnimationStyle } from '@/lib/styleUtils';
@@ -43,7 +43,7 @@ const animationClasses: Record<AnimationType, string> = {
  * </AnimatedCard>
  * ```
  */
-export const AnimatedCard: React.FC<AnimatedCardProps> = ({
+export const AnimatedCard: FC<AnimatedCardProps> = ({
   animation = 'fade',
   delay = 0,
   duration = 300,

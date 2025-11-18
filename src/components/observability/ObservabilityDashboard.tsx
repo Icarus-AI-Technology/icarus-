@@ -121,7 +121,7 @@ export const ObservabilityDashboard: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="orx-text-3xl orx-font-bold text-gray-900 flex items-center gap-3">
+          <h1 className="orx-text-3xl orx-orx-font-bold text-gray-900 flex items-center gap-3">
             <Activity className="w-8 h-8 text-blue-600" />
             Observabilidade Comportamental
           </h1>
@@ -136,7 +136,7 @@ export const ObservabilityDashboard: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="orx-text-sm text-gray-600">Usuários Ativos</p>
-                <p className="orx-text-2xl orx-font-bold text-gray-900">{behaviorProfiles.length}</p>
+                <p className="orx-text-2xl orx-orx-font-bold text-gray-900">{behaviorProfiles.length}</p>
               </div>
               <Users className="w-10 h-10 text-blue-600" />
             </div>
@@ -146,7 +146,7 @@ export const ObservabilityDashboard: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="orx-text-sm text-gray-600">Alertas Pendentes</p>
-                <p className="orx-text-2xl orx-font-bold text-orange-600">{systemAlerts.length}</p>
+                <p className="orx-text-2xl orx-orx-font-bold text-orange-600">{systemAlerts.length}</p>
               </div>
               <AlertTriangle className="w-10 h-10 text-orange-600" />
             </div>
@@ -156,7 +156,7 @@ export const ObservabilityDashboard: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="orx-text-sm text-gray-600">Anomalias Detectadas</p>
-                <p className="orx-text-2xl orx-font-bold text-red-600">{anomalies.length}</p>
+                <p className="orx-text-2xl orx-orx-font-bold text-red-600">{anomalies.length}</p>
               </div>
               <TrendingUp className="w-10 h-10 text-red-600" />
             </div>
@@ -166,7 +166,7 @@ export const ObservabilityDashboard: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="orx-text-sm text-gray-600">Taxa Média de Sucesso</p>
-                <p className="orx-text-2xl orx-font-bold text-green-600">
+                <p className="orx-text-2xl orx-orx-font-bold text-green-600">
                   {behaviorProfiles.length > 0
                     ? Math.round(
                         (behaviorProfiles.reduce((sum, p) => 
@@ -186,7 +186,7 @@ export const ObservabilityDashboard: React.FC = () => {
             <nav className="flex -mb-px">
               <button
                 onClick={() => setActiveTab('profiles')}
-                className={`px-6 py-4 orx-text-sm orx-font-medium border-b-2 ${
+                className={`px-6 py-4 orx-text-sm orx-orx-font-medium border-b-2 ${
                   activeTab === 'profiles'
                     ? 'border-blue-600 text-blue-600'
                     : 'border-transparent text-gray-600 hover:text-gray-800'
@@ -199,7 +199,7 @@ export const ObservabilityDashboard: React.FC = () => {
               </button>
               <button
                 onClick={() => setActiveTab('alerts')}
-                className={`px-6 py-4 orx-text-sm orx-font-medium border-b-2 ${
+                className={`px-6 py-4 orx-text-sm orx-orx-font-medium border-b-2 ${
                   activeTab === 'alerts'
                     ? 'border-blue-600 text-blue-600'
                     : 'border-transparent text-gray-600 hover:text-gray-800'
@@ -212,7 +212,7 @@ export const ObservabilityDashboard: React.FC = () => {
               </button>
               <button
                 onClick={() => setActiveTab('anomalies')}
-                className={`px-6 py-4 orx-text-sm orx-font-medium border-b-2 ${
+                className={`px-6 py-4 orx-text-sm orx-orx-font-medium border-b-2 ${
                   activeTab === 'anomalies'
                     ? 'border-blue-600 text-blue-600'
                     : 'border-transparent text-gray-600 hover:text-gray-800'
@@ -238,7 +238,7 @@ export const ObservabilityDashboard: React.FC = () => {
                           <Users className="w-5 h-5 text-blue-600" />
                         </div>
                         <div>
-                          <h3 className="orx-font-semibold text-gray-900">{profile.usuario_id.substring(0, 8)}</h3>
+                          <h3 className="orx-orx-font-semibold text-gray-900">{profile.usuario_id.substring(0, 8)}</h3>
                           <p className="orx-text-sm text-gray-500">
                             Última atividade: {new Date(profile.ultima_atividade).toLocaleDateString('pt-BR')}
                           </p>
@@ -246,7 +246,7 @@ export const ObservabilityDashboard: React.FC = () => {
                       </div>
                       <div className="text-right">
                         <p className="orx-text-sm text-gray-600">Taxa de Erro</p>
-                        <p className={`orx-text-lg orx-font-bold ${
+                        <p className={`orx-text-lg orx-orx-font-bold ${
                           profile.taxa_erro_geral > 0.3 ? 'text-red-600' : 'text-green-600'
                         }`}>
                           {(profile.taxa_erro_geral * 100).toFixed(1)}%
@@ -257,15 +257,15 @@ export const ObservabilityDashboard: React.FC = () => {
                     <div className="grid grid-cols-3 gap-4 orx-text-sm">
                       <div>
                         <p className="text-gray-600">Total de Atividades</p>
-                        <p className="orx-font-semibold text-gray-900">{profile.total_atividades}</p>
+                        <p className="orx-orx-font-semibold text-gray-900">{profile.total_atividades}</p>
                       </div>
                       <div>
                         <p className="text-gray-600">Total de Erros</p>
-                        <p className="orx-font-semibold text-red-600">{profile.total_erros}</p>
+                        <p className="orx-orx-font-semibold text-red-600">{profile.total_erros}</p>
                       </div>
                       <div>
                         <p className="text-gray-600">Módulos Usados</p>
-                        <p className="orx-font-semibold text-blue-600">
+                        <p className="orx-orx-font-semibold text-blue-600">
                           {profile.modulos_mais_usados ? Object.keys(profile.modulos_mais_usados).length : 0}
                         </p>
                       </div>
@@ -284,11 +284,11 @@ export const ObservabilityDashboard: React.FC = () => {
                       <div className="flex items-center gap-3">
                         <AlertTriangle className="w-5 h-5 text-orange-600" />
                         <div>
-                          <h3 className="orx-font-semibold text-gray-900">{alert.titulo}</h3>
+                          <h3 className="orx-orx-font-semibold text-gray-900">{alert.titulo}</h3>
                           <p className="orx-text-sm text-gray-600 mt-1">{alert.descricao}</p>
                         </div>
                       </div>
-                      <span className={`px-3 py-1 rounded-full orx-text-xs orx-font-medium ${getSeverityColor(alert.severidade)}`}>
+                      <span className={`px-3 py-1 rounded-full orx-text-xs orx-orx-font-medium ${getSeverityColor(alert.severidade)}`}>
                         {alert.severidade}
                       </span>
                     </div>
@@ -322,7 +322,7 @@ export const ObservabilityDashboard: React.FC = () => {
                     <div className="flex items-start gap-3">
                       <XCircle className="w-5 h-5 text-red-600 mt-0.5" />
                       <div className="flex-1">
-                        <h3 className="orx-font-semibold text-gray-900 mb-1">
+                        <h3 className="orx-orx-font-semibold text-gray-900 mb-1">
                           {anomaly.anomalia.replace(/_/g, ' ').toUpperCase()}
                         </h3>
                         <p className="orx-text-sm text-gray-700">{anomaly.detalhes}</p>
@@ -330,7 +330,7 @@ export const ObservabilityDashboard: React.FC = () => {
                           Usuário: {anomaly.usuario_id.substring(0, 8)}
                         </p>
                       </div>
-                      <span className={`px-3 py-1 rounded-full orx-text-xs orx-font-medium ${getSeverityColor(anomaly.severidade)}`}>
+                      <span className={`px-3 py-1 rounded-full orx-text-xs orx-orx-font-medium ${getSeverityColor(anomaly.severidade)}`}>
                         {anomaly.severidade}
                       </span>
                     </div>

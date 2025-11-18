@@ -3,6 +3,39 @@
 -- Descrição: Adiciona endpoints e configurações para Twilio, WhatsApp, SendGrid, Mailchimp e Fabricantes OPME
 
 -- =====================================================
+-- TABELA API_ENDPOINTS
+-- =====================================================
+
+CREATE TABLE IF NOT EXISTS api_endpoints (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  nome TEXT NOT NULL UNIQUE,
+  descricao TEXT,
+  servico TEXT NOT NULL,
+  metodo TEXT NOT NULL CHECK (metodo IN ('GET', 'POST', 'PUT', 'PATCH', 'DELETE')),
+  url_base TEXT NOT NULL,
+  url_path TEXT NOT NULL,
+  auth_tipo TEXT CHECK (auth_tipo IN ('none', 'basic', 'bearer', 'api_key', 'oauth2')),
+  auth_config JSONB DEFAULT '{}'::jsonb,
+  rate_limit_requests INTEGER DEFAULT 100,
+  rate_limit_window INTEGER DEFAULT 60,
+  circuit_breaker_enabled BOOLEAN DEFAULT true,
+  cache_enabled BOOLEAN DEFAULT false,
+  cache_ttl INTEGER DEFAULT 0,
+  retry_enabled BOOLEAN DEFAULT true,
+  retry_max_attempts INTEGER DEFAULT 3,
+  retry_backoff_ms INTEGER DEFAULT 1000,
+  timeout_ms INTEGER DEFAULT 10000,
+  criticidade TEXT DEFAULT 'media' CHECK (criticidade IN ('baixa', 'media', 'alta', 'critica')),
+  ativo BOOLEAN DEFAULT true,
+  criado_em TIMESTAMPTZ DEFAULT now(),
+  atualizado_em TIMESTAMPTZ DEFAULT now()
+);
+
+-- Índices
+CREATE INDEX IF NOT EXISTS idx_api_endpoints_servico ON api_endpoints(servico);
+CREATE INDEX IF NOT EXISTS idx_api_endpoints_ativo ON api_endpoints(ativo);
+
+-- =====================================================
 -- SERVIÇOS DE COMUNICAÇÃO
 -- =====================================================
 

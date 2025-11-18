@@ -198,7 +198,7 @@ export default function FormulariosIndex() {
       <div className="max-w-7xl mx-auto">
         {/* Cabeçalho */}
         <div className="mb-8">
-          <h1 className="orx-text-3xl orx-font-semibold text-gray-800">
+          <h1 className="orx-text-3xl orx-orx-font-semibold text-gray-800">
             Formulários do Sistema
           </h1>
           <p className="orx-text-sm text-gray-500 mt-1">
@@ -218,7 +218,7 @@ export default function FormulariosIndex() {
                   className="w-1 h-8 rounded-full"
                   style={{ backgroundColor: cat.cor }}
                 />
-                <h2 className="orx-text-xl orx-font-semibold text-gray-800">
+                <h2 className="orx-text-xl orx-orx-font-semibold text-gray-800">
                   {cat.titulo}
                 </h2>
                 <span className="orx-text-sm text-gray-500">
@@ -252,7 +252,7 @@ export default function FormulariosIndex() {
                     </div>
 
                     {/* Título */}
-                    <h3 className="orx-font-semibold text-gray-800 mb-2">
+                    <h3 className="orx-orx-font-semibold text-gray-800 mb-2">
                       {form.titulo}
                     </h3>
 

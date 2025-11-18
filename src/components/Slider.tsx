@@ -59,7 +59,7 @@ export function Slider({
   return (
     <div className={clsx('w-full', className)}>
       {label && (
-        <label htmlFor={id} className="mb-2 block orx-text-sm orx-font-medium text-[var(--orx-text-primary)] dark:text-[var(--orx-text-secondary)]">
+        <label htmlFor={id} className="mb-2 block orx-text-sm orx-orx-font-medium text-[var(--orx-text-primary)] dark:text-[var(--orx-text-secondary)]">
           {label}
         </label>
       )}

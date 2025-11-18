@@ -164,7 +164,7 @@ export function AgentReportsList() {
             ) : (
               reports.map((report) => (
                 <TableRow key={report.report_id}>
-                  <TableCell className="orx-font-medium">
+                  <TableCell className="orx-orx-font-medium">
                     <div className="flex items-center gap-2">
                       <FileText className="h-4 w-4 text-muted-foreground" />
                       {report.title}

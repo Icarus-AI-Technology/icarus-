@@ -15,7 +15,7 @@ export function SkipToContent() {
   return (
     <a
       href="#main-content"
-      className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-6 focus:py-3 focus:rounded-xl focus:neuro-raised bg-[var(--primary)] text-white text-[0.813rem] orx-font-semibold"
+      className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-6 focus:py-3 focus:rounded-xl focus:neuro-raised bg-[var(--primary)] text-white text-[0.813rem] orx-orx-font-semibold"
     >
       Pular para o conteúdo principal
     </a>
@@ -112,7 +112,7 @@ export function AccessibleButton({
       disabled={disabled || loading}
       className={cn(
         'px-6 py-3 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-2',
-        'inline-flex items-center gap-2 text-[0.813rem] orx-font-semibold',
+        'inline-flex items-center gap-2 text-[0.813rem] orx-orx-font-semibold',
         variant === 'primary' && 'neuro-raised bg-[var(--orx-primary)] text-white hover:neuro-flat',
         variant === 'secondary' && 'neuro-raised hover:neuro-flat text-[var(--text-primary)]',
         variant === 'danger' && 'neuro-raised bg-destructive text-white hover:neuro-flat',
@@ -162,7 +162,7 @@ export function AccessibleInput({
     <div className="space-y-2">
       <label
         htmlFor={inputId}
-        className="block text-[var(--text-primary)] text-[0.813rem] orx-font-semibold"
+        className="block text-[var(--text-primary)] text-[0.813rem] orx-orx-font-semibold"
       >
         {label}
         {required && (
@@ -199,7 +199,7 @@ export function AccessibleInput({
         <p
           id={errorId}
           role="alert"
-          className="text-destructive text-[0.813rem] orx-font-semibold"
+          className="text-destructive text-[0.813rem] orx-orx-font-semibold"
         >
           {error}
         </p>
@@ -288,7 +288,7 @@ export function ExemploFormularioAcessivel() {
       <div className="max-w-2xl mx-auto">
         <main id="main-content">
           <h1
-            className="text-[var(--text-primary)] mb-6 text-[0.813rem] orx-font-bold"
+            className="text-[var(--text-primary)] mb-6 text-[0.813rem] orx-orx-font-bold"
           >
             Formulário Acessível
           </h1>

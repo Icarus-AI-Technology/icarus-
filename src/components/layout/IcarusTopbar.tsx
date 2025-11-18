@@ -42,10 +42,10 @@ export const IcarusTopbar: React.FC<IcarusTopbarProps> = ({
       className="neumorphic-card fixed left-0 right-0 z-40 flex items-center justify-between px-6 py-2" 
       style={{ 
         top: '16px', 
-        marginLeft: sidebarCollapsed ? '88px' : '314px', // Dinâmico: 64px (sidebar) + 24px (gap) = 88px
+        marginLeft: sidebarCollapsed ? '88px' : '284px', // Dinâmico: 64px (sidebar) + 24px (gap) = 88px | 260px + 24px = 284px
         marginRight: '16px',
         height: '64px',
-        transition: 'margin-left 0.3s ease' // Transição suave
+        transition: 'margin-left 0.2s ease' // Transição suave
       }}
     >
       {/* Esquerda: Menu + Busca */}

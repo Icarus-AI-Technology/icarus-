@@ -27,7 +27,7 @@ export const DashboardCompras: React.FC = () => {
         <div className="flex items-center gap-3 mb-4">
           <ShoppingCart size={32} className="text-[var(--orx-info)]" />
           <div>
-            <h1 className="text-[0.813rem] orx-font-extrabold text-[var(--orx-text-primary)] mb-1 font-display">
+            <h1 className="text-[0.813rem] orx-orx-font-extrabold text-[var(--orx-text-primary)] mb-1 font-display">
               Compras e Fornecedores
             </h1>
             <p className="text-[0.813rem] text-[var(--orx-text-secondary)] font-sans">
@@ -76,7 +76,7 @@ export const DashboardCompras: React.FC = () => {
       {/* QA Table (only with ?qa=1) */}
       {typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && (
         <div className="neuro-raised rounded-2xl p-4 mb-6">
-          <h2 className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)] mb-3">Pedidos (QA)</h2>
+          <h2 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-3">Pedidos (QA)</h2>
           <div className="overflow-x-auto">
             <table role="table" className="w-full">
               <thead>
@@ -108,7 +108,7 @@ export const DashboardCompras: React.FC = () => {
 
       {/* Ações Rápidas */}
       <div className="neuro-raised rounded-2xl p-6 mb-8">
-        <h2 className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)] mb-4 font-display">Ações Rápidas</h2>
+        <h2 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-4 font-display">Ações Rápidas</h2>
 
         <div className="grid [grid-template-columns:repeat(auto-fit,minmax(200px,1fr))] gap-4">
           <button
@@ -149,7 +149,7 @@ export const DashboardCompras: React.FC = () => {
       <div className="neuro-raised rounded-2xl p-6">
         <div className="flex items-center gap-2 mb-4">
           <AlertTriangle size={20} className="text-[var(--orx-warning)]" />
-          <h2 className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)] font-display">Alertas e Pendências</h2>
+          <h2 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] font-display">Alertas e Pendências</h2>
         </div>
 
         <div className="flex flex-col gap-4">

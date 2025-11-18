@@ -79,6 +79,11 @@ export interface AnomaliaFinanceira {
   recomendacao: string;
 }
 
+type ReceitaDiariaRow = {
+  data: string;
+  valor: number;
+};
+
 // ============================================
 // SERVICE
 // ============================================
@@ -453,12 +458,12 @@ export class FinanceiroAI {
         });
 
       if (receitas && receitas.length > 0) {
-        const valores = receitas.map((r: any) => r.valor);
+        const valores = receitas.map((r: ReceitaDiariaRow) => r.valor);
         const media = valores.reduce((a: number, b: number) => a + b, 0) / valores.length;
         const variancia = valores.reduce((sum: number, v: number) => sum + Math.pow(v - media, 2), 0) / valores.length;
         const desvioPadrao = Math.sqrt(variancia);
 
-        receitas.forEach((r: any) => {
+        receitas.forEach((r: ReceitaDiariaRow) => {
           if (Math.abs(r.valor - media) > 2 * desvioPadrao) {
             anomalias.push({
               tipo: r.valor > media ? 'receita_atipica' : 'despesa_atipica',

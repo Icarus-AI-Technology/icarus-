@@ -98,39 +98,21 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
   };
   
   return (
-    <div className="workflow-timeline" style={{ width: '100%' }}>
+    <div className="workflow-timeline w-full">
       {/* Header */}
       <div className="neumorphic-container p-4 mb-4">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div className="flex items-center justify-between">
           <div>
-            <h3 style={{ 
-              fontSize: '0.813rem', 
-              fontWeight: 'bold',
-              color: 'var(--orx-text-primary)',
-              marginBottom: '0.5rem',
-            }}>
+            <h3 className="text-[0.813rem] font-bold text-[var(--orx-text-primary)] mb-2">
               {workflow.name}
             </h3>
-            <p style={{ 
-              fontSize: '0.813rem', 
-              color: 'var(--orx-text-secondary)',
-            }}>
+            <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">
               {instance.entityType} • {instance.entityId}
             </p>
           </div>
           
-          <div style={{ textAlign: 'right' }}>
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              padding: '0.5rem 1rem',
-              borderRadius: '0.75rem',
-              background: currentState?.color || 'var(--orx-primary)',
-              color: 'white',
-              fontWeight: '600',
-              fontSize: '0.813rem',
-              boxShadow: 'var(--orx-shadow-sm)',
-            }}>
+          <div className="text-right">
+            <div className="inline-flex items-center px-4 py-2 rounded-xl bg-[var(--orx-primary)] text-white font-semibold text-[0.813rem] shadow-[var(--orx-shadow-sm)]">
               {currentState?.label || 'Estado Desconhecido'}
             </div>
           </div>
@@ -139,19 +121,12 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
       
       {/* Timeline */}
       <div className="neumorphic-container p-6">
-        <div style={{ position: 'relative' }}>
+        <div className="relative">
           {/* Linha vertical */}
-          <div style={{
-            position: 'absolute',
-            left: '1rem',
-            top: '1rem',
-            bottom: '1rem',
-            width: '2px',
-            background: 'linear-gradient(180deg, var(--orx-primary) 0%, var(--orx-gray-300) 100%)',
-          }} />
+          <div className="absolute left-4 top-4 bottom-4 w-[2px] bg-[linear-gradient(180deg,var(--orx-primary)_0%,var(--orx-gray-300)_100%)]" />
           
           {/* Estados */}
-          <div style={{ position: 'relative', zIndex: 1 }}>
+          <div className="relative z-[1]">
             {workflow.states.map((state, index) => {
               const isCurrent = state.id === instance.currentStateId;
               const isPassed = passedStates.has(state.id);
@@ -160,123 +135,83 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
               const isFinal = state.isFinal;
               // const canGoTo = canTransition(state.id); // não utilizado
               
+              const setIconStyles = (el: HTMLDivElement | null) => {
+                if (el) {
+                  const bg = isCurrent
+                    ? (state.color || 'var(--orx-primary)')
+                    : isPassed
+                      ? 'var(--orx-success)'
+                      : 'var(--orx-bg-light)';
+                  const border = isCurrent
+                    ? `3px solid ${state.color || 'var(--orx-primary)'}`
+                    : isPassed
+                      ? '3px solid var(--orx-success)'
+                      : '3px solid var(--orx-gray-300)';
+                  const boxShadow = isCurrent ? `0 0 0 4px ${(state.color || 'var(--orx-primary)')}20` : 'none';
+                  el.style.background = bg;
+                  el.style.border = border;
+                  el.style.boxShadow = boxShadow;
+                }
+              };
+
+              const setTitleColor = (el: HTMLHeadingElement | null) => {
+                if (el) {
+                  el.style.color = isCurrent ? (state.color || 'var(--orx-text-primary)') : 'var(--orx-text-primary)';
+                }
+              };
+
               return (
                 <div
                   key={state.id}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    marginBottom: compact ? '1.5rem' : '2rem',
-                    paddingLeft: '3rem',
-                    position: 'relative',
-                  }}
+                  className={`flex items-start ${compact ? 'mb-6' : 'mb-8'} pl-12 relative`}
                 >
                   {/* Ícone do estado */}
-                  <div style={{
-                    position: 'absolute',
-                    left: '0',
-                    top: '0',
-                    width: '2rem',
-                    height: '2rem',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: isCurrent 
-                      ? state.color 
-                      : isPassed 
-                        ? 'var(--orx-success)' 
-                        : 'var(--orx-bg-light)',
-                    border: isCurrent 
-                      ? `3px solid ${state.color}` 
-                      : isPassed 
-                        ? '3px solid var(--orx-success)' 
-                        : '3px solid var(--orx-gray-300)',
-                    boxShadow: isCurrent 
-                      ? `0 0 0 4px ${state.color}20` 
-                      : 'none',
-                    transition: 'all 0.3s ease',
-                  }}>
+                  <div
+                    ref={setIconStyles}
+                    className="absolute left-0 top-0 w-8 h-8 rounded-full flex items-center justify-center transition-all"
+                  >
                     {isPassed ? (
-                      <CheckCircle style={{ 
-                        width: '1rem', 
-                        height: '1rem', 
-                        color: 'white',
-                      }} />
+                      <CheckCircle className="w-4 h-4 text-white" />
                     ) : isCurrent ? (
-                      <Clock style={{ 
-                        width: '1rem', 
-                        height: '1rem', 
-                        color: 'white',
-                      }} />
+                      <Clock className="w-4 h-4 text-white" />
                     ) : (
-                      <Circle style={{ 
-                        width: '1rem', 
-                        height: '1rem', 
-                        color: 'var(--orx-gray-400)',
-                      }} />
+                      <Circle className="w-4 h-4 text-[var(--orx-gray-400)]" />
                     )}
                   </div>
                   
                   {/* Conteúdo do estado */}
-                  <div style={{ flex: 1 }}>
+                  <div className="flex-1">
                     {/* Header do estado */}
-                    <div style={{ marginBottom: '0.5rem' }}>
-                      <div style={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        gap: '0.5rem',
-                        marginBottom: '0.25rem',
-                      }}>
-                        <h4 style={{
-                          fontSize: compact ? '0.875rem' : '1rem',
-                          fontWeight: '600',
-                          color: isCurrent ? state.color : 'var(--orx-text-primary)',
-                        }}>
+                    <div className="mb-2">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h4
+                          ref={setTitleColor}
+                          className={`${compact ? 'text-[0.875rem]' : 'text-[1rem]'} font-semibold`}
+                        >
                           {state.label}
                         </h4>
                         
                         {isInitial && (
-                          <span style={{
-                            fontSize: '0.813rem',
-                            padding: '0.125rem 0.5rem',
-                            borderRadius: '0.25rem',
-                            background: 'var(--orx-info-light)',
-                            color: 'var(--orx-info)',
-                            fontWeight: '600',
-                          }}>
+                          <span className="text-[0.813rem] px-2 py-0.5 rounded bg-[var(--orx-info-light)] text-[var(--orx-info)] font-semibold">
                             INICIAL
                           </span>
                         )}
                         
                         {isFinal && (
-                          <span style={{
-                            fontSize: '0.813rem',
-                            padding: '0.125rem 0.5rem',
-                            borderRadius: '0.25rem',
-                            background: 'var(--orx-success-light)',
-                            color: 'var(--orx-success)',
-                            fontWeight: '600',
-                          }}>
+                          <span className="text-[0.813rem] px-2 py-0.5 rounded bg-[var(--orx-success-light)] text-[var(--orx-success)] font-semibold">
                             FINAL
                           </span>
                         )}
                         
                         {isCurrent && getTimeInState(state.id) && (
-                          <span style={{
-                            fontSize: '0.813rem',
-                            color: 'var(--orx-text-secondary)',
-                          }}>
+                          <span className="text-[0.813rem] text-[var(--orx-text-secondary)]">
                             • há {getTimeInState(state.id)}
                           </span>
                         )}
                       </div>
                       
                       {state.description && !compact && (
-                        <p style={{
-                          fontSize: '0.813rem',
-                          color: 'var(--orx-text-secondary)',
-                        }}>
+                        <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">
                           {state.description}
                         </p>
                       )}
@@ -284,45 +219,21 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
                     
                     {/* Informações da transição */}
                     {transition && !compact && (
-                      <div style={{
-                        marginTop: '0.75rem',
-                        padding: '0.75rem',
-                        borderRadius: '0.5rem',
-                        background: 'var(--orx-bg-light)',
-                        border: '1px solid var(--orx-gray-200)',
-                      }}>
-                        <div style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '1rem',
-                          fontSize: '0.813rem',
-                          color: 'var(--orx-text-secondary)',
-                        }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                            <User style={{ width: '0.875rem', height: '0.875rem' }} />
+                      <div className="mt-3 p-3 rounded-lg bg-[var(--orx-bg-light)] border border-[var(--orx-gray-200)]">
+                        <div className="flex items-center gap-4 text-[0.813rem] text-[var(--orx-text-secondary)]">
+                          <div className="flex items-center gap-1">
+                            <User className="w-3.5 h-3.5" />
                             {transition.executedByName}
                           </div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                            <Calendar style={{ width: '0.875rem', height: '0.875rem' }} />
+                          <div className="flex items-center gap-1">
+                            <Calendar className="w-3.5 h-3.5" />
                             {formatDate(transition.executedAt)}
                           </div>
                         </div>
                         
                         {transition.comment && (
-                          <div style={{
-                            marginTop: '0.5rem',
-                            display: 'flex',
-                            alignItems: 'flex-start',
-                            gap: '0.25rem',
-                            fontSize: '0.813rem',
-                            color: 'var(--orx-text-primary)',
-                          }}>
-                            <MessageSquare style={{ 
-                              width: '0.875rem', 
-                              height: '0.875rem', 
-                              marginTop: '0.125rem',
-                              flexShrink: 0,
-                            }} />
+                          <div className="mt-2 flex items-start gap-1 text-[0.813rem] text-[var(--orx-text-primary)]">
+                            <MessageSquare className="w-3.5 h-3.5 mt-0.5 shrink-0" />
                             <span>{transition.comment}</span>
                           </div>
                         )}
@@ -331,45 +242,28 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
                     
                     {/* Ações disponíveis no estado atual */}
                     {isCurrent && showActions && availableActions.length > 0 && (
-                      <div style={{ marginTop: '1rem' }}>
-                        <p style={{
-                          fontSize: '0.813rem',
-                          fontWeight: '600',
-                          color: 'var(--orx-text-secondary)',
-                          marginBottom: '0.5rem',
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.05em',
-                        }}>
+                      <div className="mt-4">
+                        <p className="text-[0.813rem] font-semibold text-[var(--orx-text-secondary)] mb-2 uppercase tracking-wider">
                           Ações Disponíveis
                         </p>
                         
-                        <div style={{
-                          display: 'flex',
-                          flexWrap: 'wrap',
-                          gap: '0.5rem',
-                        }}>
+                        <div className="flex flex-wrap gap-2">
                           {availableActions.map(action => (
                             <button
                               key={action.id}
                               className="neumorphic-button"
                               onClick={() => onTransition?.(state.id, action.id)}
-                              style={{
-                                padding: '0.5rem 1rem',
-                                fontSize: '0.813rem',
-                                fontWeight: '600',
-                                color: action.color || 'var(--orx-primary)',
-                                border: `1px solid ${action.color || 'var(--orx-primary)'}`,
-                                borderRadius: '0.5rem',
-                                background: 'var(--orx-bg-light)',
-                                cursor: 'pointer',
-                                transition: 'all 0.2s ease',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '0.5rem',
+                              ref={(el) => {
+                                if (el) {
+                                  const color = action.color || 'var(--orx-primary)';
+                                  el.style.color = color;
+                                  el.style.border = `1px solid ${color}`;
+                                }
                               }}
+                              className="neumorphic-button inline-flex items-center gap-2 px-4 py-2 text-[0.813rem] font-semibold rounded-lg bg-[var(--orx-bg-light)] cursor-pointer transition-all"
                             >
                               {action.label}
-                              <ArrowRight style={{ width: '0.875rem', height: '0.875rem' }} />
+                              <ArrowRight className="w-3.5 h-3.5" />
                             </button>
                           ))}
                         </div>
@@ -378,26 +272,9 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
                     
                     {/* Alerta de auto-progressão */}
                     {isCurrent && state.autoProgressAfterDays && (
-                      <div style={{
-                        marginTop: '0.75rem',
-                        padding: '0.75rem',
-                        borderRadius: '0.5rem',
-                        background: 'var(--orx-warning-light)',
-                        border: '1px solid var(--orx-warning)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                      }}>
-                        <AlertCircle style={{ 
-                          width: '1rem', 
-                          height: '1rem', 
-                          color: 'var(--orx-warning)',
-                          flexShrink: 0,
-                        }} />
-                        <p style={{
-                          fontSize: '0.813rem',
-                          color: 'var(--orx-warning-dark)',
-                        }}>
+                      <div className="mt-3 p-3 rounded-lg bg-[var(--orx-warning-light)] border border-[var(--orx-warning)] flex items-center gap-2">
+                        <AlertCircle className="w-4 h-4 text-[var(--orx-warning)] shrink-0" />
+                        <p className="text-[0.813rem] text-[var(--orx-warning-dark)]">
                           Alerta se permanecer mais de {state.autoProgressAfterDays} dia(s) neste estado
                         </p>
                       </div>
@@ -412,59 +289,31 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
       
       {/* Footer com informações */}
       <div className="neumorphic-container p-4 mt-4">
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: compact ? '1fr' : 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: '1rem',
-        }}>
+        <div className={`grid gap-4 ${compact ? 'grid-cols-1' : 'sm:grid-cols-2 md:grid-cols-3'}`}>
           <div>
-            <p style={{ 
-              fontSize: '0.813rem', 
-              color: 'var(--orx-text-secondary)',
-              marginBottom: '0.25rem',
-            }}>
+            <p className="text-[0.813rem] text-[var(--orx-text-secondary)] mb-1">
               Criado por
             </p>
-            <p style={{ 
-              fontSize: '0.813rem', 
-              fontWeight: '600',
-              color: 'var(--orx-text-primary)',
-            }}>
+            <p className="text-[0.813rem] font-semibold text-[var(--orx-text-primary)]">
               {instance.createdByName}
             </p>
           </div>
           
           <div>
-            <p style={{ 
-              fontSize: '0.813rem', 
-              color: 'var(--orx-text-secondary)',
-              marginBottom: '0.25rem',
-            }}>
+            <p className="text-[0.813rem] text-[var(--orx-text-secondary)] mb-1">
               Data de criação
             </p>
-            <p style={{ 
-              fontSize: '0.813rem', 
-              fontWeight: '600',
-              color: 'var(--orx-text-primary)',
-            }}>
+            <p className="text-[0.813rem] font-semibold text-[var(--orx-text-primary)]">
               {formatDate(instance.createdAt)}
             </p>
           </div>
           
           {instance.assignedTo && (
             <div>
-              <p style={{ 
-                fontSize: '0.813rem', 
-                color: 'var(--orx-text-secondary)',
-                marginBottom: '0.25rem',
-              }}>
+              <p className="text-[0.813rem] text-[var(--orx-text-secondary)] mb-1">
                 Atribuído a
               </p>
-              <p style={{ 
-                fontSize: '0.813rem', 
-                fontWeight: '600',
-                color: 'var(--orx-text-primary)',
-              }}>
+              <p className="text-[0.813rem] font-semibold text-[var(--orx-text-primary)]">
                 {instance.assignedToName}
               </p>
             </div>
@@ -472,20 +321,10 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
           
           {instance.dueDate && (
             <div>
-              <p style={{ 
-                fontSize: '0.813rem', 
-                color: 'var(--orx-text-secondary)',
-                marginBottom: '0.25rem',
-              }}>
+              <p className="text-[0.813rem] text-[var(--orx-text-secondary)] mb-1">
                 Data de vencimento
               </p>
-              <p style={{ 
-                fontSize: '0.813rem', 
-                fontWeight: '600',
-                color: new Date(instance.dueDate) < new Date() 
-                  ? 'var(--orx-error)' 
-                  : 'var(--orx-text-primary)',
-              }}>
+              <p className={`text-[0.813rem] font-semibold ${new Date(instance.dueDate) < new Date() ? 'text-[var(--orx-error)]' : 'text-[var(--orx-text-primary)]'}`}>
                 {formatDate(instance.dueDate)}
                 {new Date(instance.dueDate) < new Date() && ' (Atrasado)'}
               </p>

@@ -49,7 +49,7 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
   return (
     <div className="neuro-raised rounded-xl p-4 bg-[var(--bg-primary)] border border-[var(--border)]">
       <p
-        className="text-[var(--text-primary)] mb-2 text-[0.813rem] font-semibold"
+        className="text-[var(--text-primary)] mb-2 text-[0.813rem] orx-font-semibold"
       >
         {label}
       </p>
@@ -90,7 +90,7 @@ function ChartContainer({ children, title, subtitle, className }: ChartContainer
         <div className="mb-4">
           {title && (
             <h3
-              className="text-[var(--text-primary)] mb-1 text-[0.813rem] font-bold"
+              className="text-[var(--text-primary)] mb-1 text-[0.813rem] orx-font-bold"
             >
               {title}
             </h3>
@@ -168,11 +168,11 @@ export function RadarChartComponent({
           <PolarAngleAxis
             dataKey="name"
             stroke="var(--text-secondary)"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '0.813rem' }}
+            tick={{ fontSize: 13 }}
           />
           <PolarRadiusAxis
             stroke="var(--text-secondary)"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '0.813rem' }}
+            tick={{ fontSize: 13 }}
           />
           <Radar
             name={dataKey}
@@ -222,14 +222,14 @@ export function ScatterChartComponent({
             dataKey={xKey}
             name={xKey}
             stroke="var(--text-secondary)"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '0.813rem' }}
+            tick={{ fontSize: 13 }}
           />
           <YAxis
             type="number"
             dataKey={yKey}
             name={yKey}
             stroke="var(--text-secondary)"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '0.813rem' }}
+            tick={{ fontSize: 13 }}
           />
           {zKey && <ZAxis type="number" dataKey={zKey} range={[60, 400]} />}
           <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: '3 3' }} />
@@ -277,11 +277,11 @@ export function MultiRadarChartComponent({
           <PolarAngleAxis
             dataKey="name"
             stroke="var(--text-secondary)"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '0.813rem' }}
+            tick={{ fontSize: 13 }}
           />
           <PolarRadiusAxis
             stroke="var(--text-secondary)"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '0.813rem' }}
+            tick={{ fontSize: 13 }}
           />
           {dataKeys.map((key, index) => (
             <Radar

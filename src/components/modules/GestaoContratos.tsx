@@ -294,7 +294,7 @@ export default function GestaoContratos() {
           <Card key={card.id} className="neuro-raised h-full">
             <CardHeader className="flex-row items-start justify-between gap-4">
               <div>
-                <CardTitle className="text-[var(--text-primary)] text-body-sm orx-font-medium">
+                <CardTitle className="text-[var(--text-primary)] text-body-sm orx-orx-font-medium">
                   {card.label}
                 </CardTitle>
                 <CardDescription>{card.description}</CardDescription>
@@ -347,7 +347,7 @@ export default function GestaoContratos() {
           accessor:"titulo",
           cell: ({ row }) => (
             <div className="space-y-1">
-              <p className="text-body-sm text-[var(--text-primary)] orx-font-medium">{row.titulo}</p>
+              <p className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">{row.titulo}</p>
               <p className="text-body-xs text-[var(--text-secondary)]">#{row.numero_contrato}</p>
             </div>
           ),
@@ -429,7 +429,7 @@ export default function GestaoContratos() {
         <Card key={contrato.id} className="neuro-raised">
           <CardContent className="flex flex-col md:flex-row md:items-center justify-between gap-4 py-4">
             <div>
-              <p className="text-body-sm text-[var(--text-primary)] orx-font-medium">{contrato.titulo}</p>
+              <p className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">{contrato.titulo}</p>
               <p className="text-body-xs text-[var(--text-secondary)]">#{contrato.numero_contrato} • {formatterCurrency.format(contrato.valor_total ?? 0)}</p>
             </div>
             <div className="flex items-center gap-2">
@@ -465,7 +465,7 @@ export default function GestaoContratos() {
                 {aprovacoes.map((aprovacao) => (
                   <div key={aprovacao.id} className="flex flex-col md:flex-row md:items-center justify-between gap-2 p-3 rounded-lg neuro-inset">
                     <div>
-                      <p className="text-body-sm text-[var(--text-primary)] orx-font-medium">
+                      <p className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">
                         {aprovacao.nivel.toUpperCase()}
                       </p>
                       <p className="text-body-xs text-[var(--text-secondary)]">
@@ -534,7 +534,7 @@ export default function GestaoContratos() {
             <div className="space-y-4">
               {clausulas.map((clausula) => (
                 <div key={clausula.id} className="p-4 rounded-lg neuro-inset">
-                  <p className="text-body-sm text-[var(--text-primary)] orx-font-medium">{clausula.titulo}</p>
+                  <p className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">{clausula.titulo}</p>
                   <p className="text-body-xs text-[var(--text-secondary)] mt-2 whitespace-pre-line">{clausula.texto}</p>
                 </div>
               ))}
@@ -681,7 +681,7 @@ export default function GestaoContratos() {
         ].map((item) => (
           <Card key={item.id} className="neuro-inset">
             <CardContent className="pt-6">
-              <p className="text-body-sm text-[var(--text-primary)] orx-font-medium">{item.label}</p>
+              <p className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">{item.label}</p>
               <p className="text-body-xs text-[var(--text-secondary)] mt-2">{item.description}</p>
               <Button variant="default" size="sm" className="mt-4" onClick={() => addToast("Exportação em desenvolvimento","info")}>
                 <Download className="w-4 h-4 mr-2" /> Exportar CSV

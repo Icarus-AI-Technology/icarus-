@@ -159,15 +159,15 @@ export default function DashboardPrincipal() {
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="orx-text-xs orx-font-semibold uppercase tracking-wide text-[var(--orx-text-secondary)]">
+                    <p className="orx-text-xs orx-orx-font-semibold uppercase tracking-wide text-[var(--orx-text-secondary)]">
                       {suggestion.type}
                     </p>
-                    <h3 className="mt-1 orx-text-base orx-font-semibold text-[var(--orx-text-primary)]">
+                    <h3 className="mt-1 orx-text-base orx-orx-font-semibold text-[var(--orx-text-primary)]">
                       {suggestion.title}
                     </h3>
                   </div>
                   <span
-                    className={`orx-text-xs orx-font-semibold px-2 py-1 rounded-full ${suggestionPriorityClasses[suggestion.priority]}`}
+                    className={`orx-text-xs orx-orx-font-semibold px-2 py-1 rounded-full ${suggestionPriorityClasses[suggestion.priority]}`}
                   >
                     {suggestionPriorityLabels[suggestion.priority]}
                   </span>
@@ -317,7 +317,7 @@ export default function DashboardPrincipal() {
                   <div className="flex justify-between items-center">
                     <span className="orx-text-sm">Produtos em Estoque Alto</span>
                     <span
-                      className="orx-font-bold"
+                      className="orx-orx-font-bold"
                       style={{ color: 'var(--orx-success-dark)' }}
                     >
                       234
@@ -326,7 +326,7 @@ export default function DashboardPrincipal() {
                   <div className="flex justify-between items-center">
                     <span className="orx-text-sm">Produtos em Estoque Médio</span>
                     <span
-                      className="orx-font-bold"
+                      className="orx-orx-font-bold"
                       style={{ color: 'var(--orx-warning-dark)' }}
                     >
                       87
@@ -335,7 +335,7 @@ export default function DashboardPrincipal() {
                   <div className="flex justify-between items-center">
                     <span className="orx-text-sm">Produtos em Estoque Baixo</span>
                     <span
-                      className="orx-font-bold"
+                      className="orx-orx-font-bold"
                       style={{ color: 'var(--orx-error-dark)' }}
                     >
                       23
@@ -344,7 +344,7 @@ export default function DashboardPrincipal() {
                   <div className="flex justify-between items-center">
                     <span className="orx-text-sm">Produtos em Falta</span>
                     <span
-                      className="orx-font-bold"
+                      className="orx-orx-font-bold"
                       style={{ color: 'var(--orx-error-dark)' }}
                     >
                       5
@@ -379,7 +379,7 @@ export default function DashboardPrincipal() {
                       <Stethoscope size={24} />
                     </div>
                     <div>
-                      <p className="orx-font-semibold">Cirurgia #{i}</p>
+                      <p className="orx-orx-font-semibold">Cirurgia #{i}</p>
                       <p
                         className="orx-text-sm"
                         style={{ color: 'var(--orx-text-secondary)' }}
@@ -389,7 +389,7 @@ export default function DashboardPrincipal() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="orx-font-semibold">{8 + i}:00</p>
+                    <p className="orx-orx-font-semibold">{8 + i}:00</p>
                     <p
                       className="orx-text-sm"
                       style={{ color: 'var(--orx-text-secondary)' }}
@@ -416,7 +416,7 @@ export default function DashboardPrincipal() {
                   }}
                 >
                   <div>
-                    <p className="orx-font-semibold">Produto OPME #{i}</p>
+                    <p className="orx-orx-font-semibold">Produto OPME #{i}</p>
                     <p
                       className="orx-text-sm"
                       style={{ color: 'var(--orx-text-secondary)' }}
@@ -426,7 +426,7 @@ export default function DashboardPrincipal() {
                   </div>
                   <div className="text-right">
                     <p
-                      className="orx-font-bold"
+                      className="orx-orx-font-bold"
                       style={{ color: 'var(--orx-error-dark)' }}
                     >
                       {5 - i} unidades
@@ -449,7 +449,7 @@ export default function DashboardPrincipal() {
             <Card title="Contas a Receber" padding="lg">
               <div className="text-center">
                 <p
-                  className="orx-text-4xl orx-font-bold"
+                  className="orx-text-4xl orx-orx-font-bold"
                   style={{ color: 'var(--orx-primary)' }}
                 >
                   R$ 1.234.000
@@ -460,7 +460,7 @@ export default function DashboardPrincipal() {
             <Card title="Contas a Pagar" padding="lg">
               <div className="text-center">
                 <p
-                  className="orx-text-4xl orx-font-bold"
+                  className="orx-text-4xl orx-orx-font-bold"
                   style={{ color: 'var(--orx-primary)' }}
                 >
                   R$ 876.500
@@ -471,7 +471,7 @@ export default function DashboardPrincipal() {
             <Card title="Saldo Disponível" padding="lg">
               <div className="text-center">
                 <p
-                  className="orx-text-4xl orx-font-bold"
+                  className="orx-text-4xl orx-orx-font-bold"
                   style={{ color: 'var(--orx-success)' }}
                 >
                   R$ 456.200
@@ -494,7 +494,7 @@ export default function DashboardPrincipal() {
               >
                 <AlertTriangle size={24} className="flex-shrink-0" style={{ color: 'var(--orx-error)' }} />
                 <div>
-                  <p className="orx-font-semibold" style={{ color: 'var(--orx-error-dark)' }}>Estoque Crítico</p>
+                  <p className="orx-orx-font-semibold" style={{ color: 'var(--orx-error-dark)' }}>Estoque Crítico</p>
                   <p className="orx-text-sm" style={{ color: 'var(--orx-text-secondary)' }}>5 produtos em falta, 18 abaixo do mínimo</p>
                 </div>
               </div>
@@ -507,7 +507,7 @@ export default function DashboardPrincipal() {
               >
                 <AlertTriangle size={24} className="flex-shrink-0" style={{ color: 'var(--orx-warning)' }} />
                 <div>
-                  <p className="orx-font-semibold" style={{ color: 'var(--orx-warning-dark)' }}>Contas Vencidas</p>
+                  <p className="orx-orx-font-semibold" style={{ color: 'var(--orx-warning-dark)' }}>Contas Vencidas</p>
                   <p className="orx-text-sm" style={{ color: 'var(--orx-text-secondary)' }}>3 contas a receber vencidas há mais de 30 dias</p>
                 </div>
               </div>
@@ -520,7 +520,7 @@ export default function DashboardPrincipal() {
               >
                 <AlertTriangle size={24} className="flex-shrink-0" style={{ color: 'var(--orx-info)' }} />
                 <div>
-                  <p className="orx-font-semibold" style={{ color: 'var(--orx-info-dark)' }}>Certificações</p>
+                  <p className="orx-orx-font-semibold" style={{ color: 'var(--orx-info-dark)' }}>Certificações</p>
                   <p className="orx-text-sm" style={{ color: 'var(--orx-text-secondary)' }}>2 certificações ANVISA vencem em 15 dias</p>
                 </div>
               </div>

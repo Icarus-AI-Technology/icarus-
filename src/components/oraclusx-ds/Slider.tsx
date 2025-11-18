@@ -59,7 +59,7 @@ export function Slider({
   return (
     <div className={clsx('w-full', className)}>
       {label && (
-        <label htmlFor={id} className="mb-2 block orx-text-sm orx-font-medium text-[var(--orx-text-primary)] dark:text-[var(--orx-text-secondary)]">
+        <label htmlFor={id} className="mb-2 block orx-text-sm orx-orx-font-medium text-[var(--orx-text-primary)] dark:text-[var(--orx-text-secondary)]">
           {label}
         </label>
       )}
@@ -97,7 +97,7 @@ export function Slider({
             'block rounded-full outline-none',
             classes.thumb,
             'bg-[var(--orx-bg-light)] shadow-[var(--orx-shadow-light-1),_var(--orx-shadow-light-2)]',
-            'hover:shadow-[10px_10px_20px_#8f9db3,_-10px_-10px_20px_#f5f7fa] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--orx-primary)]',
+            'hover:shadow-[10px_10px_20px_#8f9db3,_-10px_-10px_20px_#f5f7fa] focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-[var(--orx-primary)]',
             'dark:bg-[var(--orx-bg-dark)] dark:shadow-[var(--orx-shadow-dark-1),_var(--orx-shadow-dark-2)]',
             'transition-[box-shadow,transform] duration-300'
           )}

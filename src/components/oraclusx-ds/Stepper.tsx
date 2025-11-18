@@ -87,7 +87,7 @@ export const Stepper: React.FC<StepperProps> = ({
                   onClick={() => handleStepClick(index)}
                   disabled={!isClickable}
                   aria-current={status ==="current" ?"step" : undefined}
-                  className={cn("relative flex items-center justify-center w-10 h-10 rounded-full transition-all","focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-2",
+                  className={cn("relative flex items-center justify-center w-10 h-10 rounded-full transition-all","focus:outline-none focus:ring-3 focus:ring-[var(--primary)] focus:ring-offset-2",
                     status ==="completed" &&"bg-[var(--primary)] text-inverse shadow-md",
                     status ==="current" &&"bg-[var(--primary)] text-inverse shadow-lg ring-4 ring-[var(--primary)]/20",
                     status ==="upcoming" &&"bg-surface-secondary dark:bg-muted text-muted dark:text-muted",
@@ -109,7 +109,7 @@ export const Stepper: React.FC<StepperProps> = ({
                 >
                   <div className="flex items-center gap-2">
                     <span
-                      className={cn("orx-font-medium",
+                      className={cn("orx-orx-font-medium",
                         status ==="current"
                           ?"text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]"
                           :"text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]"

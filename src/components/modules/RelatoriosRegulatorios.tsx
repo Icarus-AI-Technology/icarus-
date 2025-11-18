@@ -30,8 +30,6 @@ import {
   DialogHeader,
   DialogTitle,
   Tooltip,
-  TooltipContent,
-  TooltipProvider,
 } from '@/components/oraclusx-ds';
 import {
   FileText,
@@ -319,38 +317,38 @@ export default function RelatoriosRegulatorios() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Card className="p-4 neuro-raised">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-font-medium">Total Gerados</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">Total Gerados</h3>
               <FileText className="w-4 h-4 text-[var(--primary)]" />
             </div>
-            <p className="text-[0.813rem] orx-font-bold">{relatorios.length}</p>
+            <p className="text-[0.813rem] orx-orx-font-bold">{relatorios.length}</p>
           </Card>
 
           <Card className="p-4 neuro-raised">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-font-medium">Pendentes Envio</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">Pendentes Envio</h3>
               <Send className="w-4 h-4 text-warning" />
             </div>
-            <p className="text-[0.813rem] orx-font-bold">
+            <p className="text-[0.813rem] orx-orx-font-bold">
               {relatorios.filter((r) => r.status === 'gerado').length}
             </p>
           </Card>
 
           <Card className="p-4 neuro-raised">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-font-medium">Enviados</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">Enviados</h3>
               <CheckCircle className="w-4 h-4 text-success" />
             </div>
-            <p className="text-[0.813rem] orx-font-bold">
+            <p className="text-[0.813rem] orx-orx-font-bold">
               {relatorios.filter((r) => r.status === 'enviado').length}
             </p>
           </Card>
 
           <Card className="p-4 neuro-raised">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-font-medium">Com Erro</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">Com Erro</h3>
               <AlertCircle className="w-4 h-4 text-error" />
             </div>
-            <p className="text-[0.813rem] orx-font-bold">
+            <p className="text-[0.813rem] orx-orx-font-bold">
               {relatorios.filter((r) => r.status === 'erro').length}
             </p>
           </Card>
@@ -385,7 +383,7 @@ export default function RelatoriosRegulatorios() {
                       <div className="flex items-center gap-2">
                         <OrgaoIcon className={`w-4 h-4 ${orgaoConfig?.color}`} />
                         <div>
-                          <p className="orx-font-medium">{relatorio.titulo}</p>
+                          <p className="orx-orx-font-medium">{relatorio.titulo}</p>
                           {relatorio.obrigatoriedade === 'obrigatorio' && (
                             <Badge variant="default" className="bg-error/20 text-error mt-1 text-[0.813rem]">
                               Obrigatório
@@ -418,45 +416,30 @@ export default function RelatoriosRegulatorios() {
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                icon={<Download />}
-                                onClick={() => handleDownload(relatorio)}
-                                disabled={!relatorio.arquivo_url}
-                              />
-                            </TooltipTrigger>
-                            <TooltipContent>Baixar</TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
+                        <Tooltip content="Baixar">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            icon={<Download />}
+                            onClick={() => handleDownload(relatorio)}
+                            disabled={!relatorio.arquivo_url}
+                          />
+                        </Tooltip>
 
                         {relatorio.status === 'gerado' && (
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  icon={<Send className="text-[var(--primary)]" />}
-                                  onClick={() => handleEnviar(relatorio.id)}
-                                />
-                              </TooltipTrigger>
-                              <TooltipContent>Enviar ao Órgão</TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
+                          <Tooltip content="Enviar ao Órgão">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              icon={<Send className="text-[var(--primary)]" />}
+                              onClick={() => handleEnviar(relatorio.id)}
+                            />
+                          </Tooltip>
                         )}
 
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Button variant="ghost" size="sm" icon={<Eye />} />
-                            </TooltipTrigger>
-                            <TooltipContent>Ver Detalhes</TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
+                        <Tooltip content="Ver Detalhes">
+                          <Button variant="ghost" size="sm" icon={<Eye />} />
+                        </Tooltip>
                       </div>
                     </TableCell>
                   </TableRow>
@@ -472,7 +455,7 @@ export default function RelatoriosRegulatorios() {
   const renderTemplates = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-[0.813rem] orx-font-semibold">Templates de Relatórios</h2>
+        <h2 className="text-[0.813rem] orx-orx-font-semibold">Templates de Relatórios</h2>
         <Button icon={<Plus />}>Novo Template</Button>
       </div>
 
@@ -488,7 +471,7 @@ export default function RelatoriosRegulatorios() {
                 <OrgaoIcon className={`w-8 h-8 ${orgaoConfig?.color}`} />
                 <Badge variant="default">{template.orgao}</Badge>
               </div>
-              <h3 className="mb-2 orx-font-semibold">{template.nome}</h3>
+              <h3 className="mb-2 orx-orx-font-semibold">{template.nome}</h3>
               <p className="text-[var(--text-secondary)] mb-4 text-[0.813rem]">{template.descricao}</p>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-[var(--text-secondary)] text-[0.813rem]">
@@ -515,7 +498,7 @@ export default function RelatoriosRegulatorios() {
   const renderAgendamentos = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-[0.813rem] orx-font-semibold">Agendamentos Automáticos</h2>
+        <h2 className="text-[0.813rem] orx-orx-font-semibold">Agendamentos Automáticos</h2>
         <Button icon={<Plus />}>Novo Agendamento</Button>
       </div>
 
@@ -526,7 +509,7 @@ export default function RelatoriosRegulatorios() {
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
                   <Calendar className="w-5 h-5 text-[var(--primary)]" />
-                  <h3 className="orx-font-semibold">{agendamento.nome}</h3>
+                  <h3 className="orx-orx-font-semibold">{agendamento.nome}</h3>
                   <Badge
                     variant="default"
                     className={
@@ -545,7 +528,7 @@ export default function RelatoriosRegulatorios() {
                 <div className="grid grid-cols-2 gap-4 text-[0.813rem]">
                   <div>
                     <p className="text-[var(--text-secondary)]">Última Execução</p>
-                    <p className="orx-font-semibold">
+                    <p className="orx-orx-font-semibold">
                       {agendamento.ultima_execucao
                         ? new Date(agendamento.ultima_execucao).toLocaleDateString('pt-BR')
                         : 'Nunca'}
@@ -553,7 +536,7 @@ export default function RelatoriosRegulatorios() {
                   </div>
                   <div>
                     <p className="text-[var(--text-secondary)]">Próxima Execução</p>
-                    <p className="orx-font-semibold">
+                    <p className="orx-orx-font-semibold">
                       {agendamento.proxima_execucao
                         ? new Date(agendamento.proxima_execucao).toLocaleDateString('pt-BR')
                         : '-'}
@@ -586,7 +569,7 @@ export default function RelatoriosRegulatorios() {
           <div className="flex items-center gap-4 mb-4">
           <Shield className="w-12 h-12" />
           <div>
-            <h2 className="text-[0.813rem] orx-font-bold">ANVISA - Rastreabilidade</h2>
+            <h2 className="text-[0.813rem] orx-orx-font-bold">ANVISA - Rastreabilidade</h2>
             <p className="opacity-90">RDC 16/2013 - Boas Práticas de Distribuição</p>
           </div>
         </div>
@@ -599,28 +582,28 @@ export default function RelatoriosRegulatorios() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="p-6 neuro-raised">
           <Package className="w-8 h-8 text-[var(--primary)] mb-3" />
-          <h3 className="mb-2 orx-font-semibold">Produtos Rastreados</h3>
-          <p className="text-[0.813rem] orx-font-bold">1.248</p>
+          <h3 className="mb-2 orx-orx-font-semibold">Produtos Rastreados</h3>
+          <p className="text-[0.813rem] orx-orx-font-bold">1.248</p>
           <p className="text-[var(--text-secondary)] mt-2 text-[0.813rem]">Últimos 30 dias</p>
         </Card>
 
         <Card className="p-6 neuro-raised">
           <TrendingUp className="w-8 h-8 text-success mb-3" />
-          <h3 className="mb-2 orx-font-semibold">Lotes Ativos</h3>
-          <p className="text-[0.813rem] orx-font-bold">87</p>
+          <h3 className="mb-2 orx-orx-font-semibold">Lotes Ativos</h3>
+          <p className="text-[0.813rem] orx-orx-font-bold">87</p>
           <p className="text-[var(--text-secondary)] mt-2 text-[0.813rem]">Em estoque</p>
         </Card>
 
         <Card className="p-6 neuro-raised">
           <FileCheck className="w-8 h-8 text-purple-600 mb-3" />
-          <h3 className="mb-2 orx-font-semibold">Conformidade</h3>
-          <p className="text-[0.813rem] orx-font-bold">100%</p>
+          <h3 className="mb-2 orx-orx-font-semibold">Conformidade</h3>
+          <p className="text-[0.813rem] orx-orx-font-bold">100%</p>
           <p className="text-[var(--text-secondary)] mt-2 text-[0.813rem]">Todos rastreáveis</p>
         </Card>
       </div>
 
       <Card className="p-6 neuro-raised">
-        <h3 className="mb-4 text-[0.813rem] orx-font-semibold">Movimentações Recentes</h3>
+        <h3 className="mb-4 text-[0.813rem] orx-orx-font-semibold">Movimentações Recentes</h3>
         <p className="text-[var(--text-secondary)]">
           Implementar tabela de movimentações ANVISA aqui...
         </p>
@@ -657,7 +640,7 @@ export default function RelatoriosRegulatorios() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`px-6 py-3 rounded-xl orx-font-medium transition-all flex items-center gap-2 ${
+              className={`px-6 py-3 rounded-xl orx-orx-font-medium transition-all flex items-center gap-2 ${
                 activeTab === tab.id
                   ? 'neuro-raised text-[var(--primary)]'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -683,7 +666,7 @@ export default function RelatoriosRegulatorios() {
             </DialogHeader>
             <div className="space-y-4">
               <div>
-              <label className="block mb-2 text-[0.813rem] orx-font-medium">Template</label>
+              <label className="block mb-2 text-[0.813rem] orx-orx-font-medium">Template</label>
                 <Select
                   value={selectedTemplate?.id || ''}
                   onValueChange={(value) => {
@@ -702,7 +685,7 @@ export default function RelatoriosRegulatorios() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block mb-2 text-[0.813rem] orx-font-medium">Data Início</label>
+                  <label className="block mb-2 text-[0.813rem] orx-orx-font-medium">Data Início</label>
                   <Input
                     type="date"
                     value={formDataInicio}
@@ -710,7 +693,7 @@ export default function RelatoriosRegulatorios() {
                   />
                 </div>
                 <div>
-                  <label className="block mb-2 text-[0.813rem] orx-font-medium">Data Fim</label>
+                  <label className="block mb-2 text-[0.813rem] orx-orx-font-medium">Data Fim</label>
                   <Input
                     type="date"
                     value={formDataFim}
@@ -720,7 +703,7 @@ export default function RelatoriosRegulatorios() {
               </div>
 
               <div>
-                <label className="block mb-2 text-[0.813rem] orx-font-medium">Formato</label>
+                <label className="block mb-2 text-[0.813rem] orx-orx-font-medium">Formato</label>
                 <Select value={formFormato} onValueChange={setFormFormato}>
                   <option value="PDF">PDF</option>
                   <option value="Excel">Excel</option>

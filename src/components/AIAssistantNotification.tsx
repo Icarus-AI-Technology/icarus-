@@ -135,13 +135,13 @@ export const AIAssistantNotification: React.FC<AIAssistantNotificationProps> = (
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="orx-text-sm orx-font-semibold text-[var(--orx-text-primary)] truncate">
+                    <h3 className="orx-text-sm orx-orx-font-semibold text-[var(--orx-text-primary)] truncate">
                       {notification.title}
                     </h3>
                     {notification.suggestionCount && (
                       <span
                         className={cn(
-                          "flex-shrink-0 px-2 py-0.5 rounded-full orx-text-xs orx-font-medium",
+                          "flex-shrink-0 px-2 py-0.5 rounded-full orx-text-xs orx-orx-font-medium",
                           styles.badge
                         )}
                       >
@@ -195,7 +195,7 @@ export const AIAssistantNotification: React.FC<AIAssistantNotificationProps> = (
                   {notification.confidence !== undefined && (
                     <div className="flex items-center gap-2">
                       <span className="orx-text-xs text-[var(--orx-text-secondary)]">Confiança:</span>
-                      <span className="orx-text-sm orx-font-semibold text-[var(--orx-primary)]">
+                      <span className="orx-text-sm orx-orx-font-semibold text-[var(--orx-primary)]">
                         {notification.confidence}%
                       </span>
                     </div>
@@ -206,7 +206,7 @@ export const AIAssistantNotification: React.FC<AIAssistantNotificationProps> = (
                     <button type="button"
                       onClick={() => handleAction(notification)}
                       className={cn(
-                        "w-full px-4 py-2.5 rounded-xl orx-font-medium orx-text-sm text-white",
+                        "w-full px-4 py-2.5 rounded-xl orx-orx-font-medium orx-text-sm text-white",
                         "bg-gradient-to-r from-purple-500 to-purple-600",
                         "shadow-[4px_4px_12px_rgba(139,92,246,0.3),-2px_-2px_8px_rgba(255,255,255,0.1)]",
                         "hover:shadow-[6px_6px_16px_rgba(139,92,246,0.4),-3px_-3px_10px_rgba(255,255,255,0.15)]",
@@ -279,7 +279,7 @@ export const AIAssistantNotification: React.FC<AIAssistantNotificationProps> = (
             "absolute -top-1 -right-1 w-6 h-6 rounded-full",
             "bg-gradient-to-br from-red-500 to-red-600",
             "flex items-center justify-center",
-            "text-white orx-text-xs orx-font-bold",
+            "text-white orx-text-xs orx-orx-font-bold",
             "shadow-lg border-2 border-white dark:border-gray-900",
             "animate-in zoom-in-50 duration-300"
           )}

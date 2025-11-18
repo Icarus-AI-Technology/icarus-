@@ -418,7 +418,7 @@ export default function KPIDashboardConsolidado() {
           <Card className="p-4 neuro-inset bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700">
             <div className="flex items-center gap-3 mb-3">
               <AlertCircle className="w-6 h-6 text-red-600" />
-              <h3 className="text-red-700 dark:text-red-300 orx-font-semibold">
+              <h3 className="text-red-700 dark:text-red-300 orx-orx-font-semibold">
                 {alertas.filter((a) => a.severidade === 'critico').length} Alertas Críticos
               </h3>
             </div>
@@ -431,7 +431,7 @@ export default function KPIDashboardConsolidado() {
                     className="flex items-start justify-between p-3 bg-red-100 dark:bg-red-800 rounded-lg"
                   >
                     <div className="flex-1">
-                      <p className="text-[0.813rem] orx-font-medium">{alerta.mensagem}</p>
+                      <p className="text-[0.813rem] orx-orx-font-medium">{alerta.mensagem}</p>
                       <p className="text-[var(--text-secondary)] mt-1 text-[0.813rem]">
                         💡 {alerta.acao_recomendada}
                       </p>
@@ -465,19 +465,19 @@ export default function KPIDashboardConsolidado() {
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <Icon className="w-5 h-5 text-[var(--primary)]" />
-                    <h3 className="capitalize orx-font-semibold">{est.categoria}</h3>
+                    <h3 className="capitalize orx-orx-font-semibold">{est.categoria}</h3>
                   </div>
                   <Badge variant="default">{est.total} KPIs</Badge>
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-[0.813rem]">
                     <span className="text-success">✓ Saudáveis</span>
-                    <span className="orx-font-semibold">{totalOk}</span>
+                    <span className="orx-orx-font-semibold">{totalOk}</span>
                   </div>
                   {totalProblemas > 0 && (
                     <div className="flex items-center justify-between text-[0.813rem]">
                       <span className="text-error">⚠ Problemas</span>
-                      <span className="orx-font-semibold">{totalProblemas}</span>
+                      <span className="orx-orx-font-semibold">{totalProblemas}</span>
                     </div>
                   )}
                 </div>
@@ -500,14 +500,14 @@ export default function KPIDashboardConsolidado() {
                 <div>
                     <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
-                      <h3 className="opacity-90 mb-1 text-[0.813rem] orx-font-medium">{kpi.descricao}</h3>
+                      <h3 className="opacity-90 mb-1 text-[0.813rem] orx-orx-font-medium">{kpi.descricao}</h3>
                       <Badge variant="default" className="bg-white/20 text-white text-[0.813rem]">
                         {kpi.categoria}
                       </Badge>
                     </div>
                     <StatusIcon className="w-6 h-6 opacity-90" />
                   </div>
-                  <div className="mb-2 text-[0.813rem] orx-font-bold">
+                  <div className="mb-2 text-[0.813rem] orx-orx-font-bold">
                     {formatarValor(kpi.valor_atual, kpi.unidade)}
                   </div>
                   <div className="opacity-80 text-[0.813rem]">
@@ -518,7 +518,7 @@ export default function KPIDashboardConsolidado() {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between opacity-90 text-[0.813rem]">
                     <span>Atingimento</span>
-                    <span className="orx-font-semibold">{kpi.atingimento_percentual.toFixed(1)}%</span>
+                    <span className="orx-orx-font-semibold">{kpi.atingimento_percentual.toFixed(1)}%</span>
                   </div>
                   <Progress value={Math.min(kpi.atingimento_percentual, 100)} />
                   <div className="flex items-center gap-2 opacity-80 text-[0.813rem]">
@@ -549,7 +549,7 @@ export default function KPIDashboardConsolidado() {
         {/* Lista de Alertas */}
         {alertas.length > 0 && (
           <Card className="p-6 neuro-raised">
-            <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] orx-font-semibold">
+            <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] orx-orx-font-semibold">
               <Bell className="w-5 h-5 text-[var(--primary)]" />
               Alertas Ativos ({alertas.length})
             </h3>
@@ -569,7 +569,7 @@ export default function KPIDashboardConsolidado() {
                         >
                           {alerta.severidade}
                         </Badge>
-                        <span className="text-[0.813rem] orx-font-medium">{alerta.kpi_nome}</span>
+                        <span className="text-[0.813rem] orx-orx-font-medium">{alerta.kpi_nome}</span>
                       </div>
                       <p className="mb-2 text-[0.813rem]">{alerta.mensagem}</p>
                       <p className="text-[var(--text-secondary)] text-[0.813rem]">

@@ -50,7 +50,7 @@ export default function DashboardExemplo() {
         {/* Header */}
         <div className="mb-8">
           <h1
-            className="text-[var(--text-primary)] mb-2 text-[0.813rem] font-bold"
+            className="text-[var(--text-primary)] mb-2 text-[0.813rem] orx-font-bold"
           >
             Dashboard Executivo
           </h1>

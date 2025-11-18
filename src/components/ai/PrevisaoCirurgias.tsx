@@ -90,7 +90,7 @@ export function PrevisaoCirurgias() {
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="orx-text-2xl orx-font-bold text-slate-900 dark:text-white">Previsão de Cirurgias IA</h2>
+          <h2 className="orx-text-2xl orx-orx-font-bold text-slate-900 dark:text-white">Previsão de Cirurgias IA</h2>
           <p className="text-slate-600 dark:text-slate-400">
             Demanda Cirúrgica, Análise de Complexidade, Otimização de Agendamento
           </p>
@@ -105,7 +105,7 @@ export function PrevisaoCirurgias() {
 
       {/* Previsão de Demanda */}
       <div className="space-y-4">
-        <h3 className="orx-text-xl orx-font-bold text-slate-900 dark:text-white flex items-center gap-2">
+        <h3 className="orx-text-xl orx-orx-font-bold text-slate-900 dark:text-white flex items-center gap-2">
           <TrendingUp className="w-6 h-6 text-blue-600" />
           Previsão de Demanda por Especialidade
         </h3>
@@ -115,13 +115,13 @@ export function PrevisaoCirurgias() {
             <div key={idx} className="bg-slate-50 dark:bg-slate-900 rounded-xl p-5 space-y-3">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <h4 className="orx-font-semibold text-slate-900 dark:text-white">{item.especialidade}</h4>
+                  <h4 className="orx-orx-font-semibold text-slate-900 dark:text-white">{item.especialidade}</h4>
                   <p className="orx-text-sm text-slate-600 dark:text-slate-400">
                     Confiança: {item.confianca}%
                   </p>
                 </div>
                 <div className={`
-                  px-3 py-1 rounded-full orx-text-sm orx-font-medium
+                  px-3 py-1 rounded-full orx-text-sm orx-orx-font-medium
                   ${item.crescimento_percentual > 0 
                     ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' 
                     : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'}
@@ -133,15 +133,15 @@ export function PrevisaoCirurgias() {
               <div className="grid grid-cols-3 gap-2">
                 <div className="bg-white dark:bg-slate-800 rounded-lg p-2 text-center">
                   <p className="orx-text-xs text-slate-600 dark:text-slate-400">Histórico 30d</p>
-                  <p className="orx-text-lg orx-font-bold text-slate-900 dark:text-white">{item.demanda_historica_30d}</p>
+                  <p className="orx-text-lg orx-orx-font-bold text-slate-900 dark:text-white">{item.demanda_historica_30d}</p>
                 </div>
                 <div className="bg-white dark:bg-slate-800 rounded-lg p-2 text-center">
                   <p className="orx-text-xs text-slate-600 dark:text-slate-400">Próximos 7d</p>
-                  <p className="orx-text-lg orx-font-bold text-slate-900 dark:text-white">{item.demanda_prevista_7d}</p>
+                  <p className="orx-text-lg orx-orx-font-bold text-slate-900 dark:text-white">{item.demanda_prevista_7d}</p>
                 </div>
                 <div className="bg-white dark:bg-slate-800 rounded-lg p-2 text-center">
                   <p className="orx-text-xs text-slate-600 dark:text-slate-400">Próximos 30d</p>
-                  <p className="orx-text-lg orx-font-bold text-slate-900 dark:text-white">{item.demanda_prevista_30d}</p>
+                  <p className="orx-text-lg orx-orx-font-bold text-slate-900 dark:text-white">{item.demanda_prevista_30d}</p>
                 </div>
               </div>
 
@@ -161,7 +161,7 @@ export function PrevisaoCirurgias() {
       {/* Análise de Complexidade */}
       {complexidade && (
         <div className="space-y-4">
-          <h3 className="orx-text-xl orx-font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <h3 className="orx-text-xl orx-orx-font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <Activity className="w-6 h-6 text-purple-600" />
             Análise de Complexidade
           </h3>
@@ -169,11 +169,11 @@ export function PrevisaoCirurgias() {
           <div className="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-xl p-6 border border-purple-200 dark:border-purple-800">
             <div className="flex items-start justify-between mb-4">
               <div>
-                <h4 className="orx-text-lg orx-font-semibold text-slate-900 dark:text-white">{complexidade.procedimento}</h4>
+                <h4 className="orx-text-lg orx-orx-font-semibold text-slate-900 dark:text-white">{complexidade.procedimento}</h4>
                 <p className="orx-text-sm text-slate-600 dark:text-slate-400">Análise preditiva de complexidade</p>
               </div>
               <div className={`
-                px-4 py-2 rounded-full orx-font-bold orx-text-lg
+                px-4 py-2 rounded-full orx-orx-font-bold orx-text-lg
                 ${complexidade.nivel_complexidade === 'critica' ? 'bg-red-600 text-white' :
                   complexidade.nivel_complexidade === 'alta' ? 'bg-orange-600 text-white' :
                   complexidade.nivel_complexidade === 'media' ? 'bg-yellow-600 text-white' :
@@ -187,39 +187,39 @@ export function PrevisaoCirurgias() {
               <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
                 <Clock className="w-5 h-5 text-purple-600 mb-1" />
                 <p className="orx-text-xs text-slate-600 dark:text-slate-400">Duração</p>
-                <p className="orx-text-xl orx-font-bold text-slate-900 dark:text-white">
+                <p className="orx-text-xl orx-orx-font-bold text-slate-900 dark:text-white">
                   {complexidade.fatores.duracao_estimada}min
                 </p>
               </div>
               <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
                 <Activity className="w-5 h-5 text-blue-600 mb-1" />
                 <p className="orx-text-xs text-slate-600 dark:text-slate-400">Materiais</p>
-                <p className="orx-text-xl orx-font-bold text-slate-900 dark:text-white">
+                <p className="orx-text-xl orx-orx-font-bold text-slate-900 dark:text-white">
                   {complexidade.fatores.materiais_especializados}
                 </p>
               </div>
               <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
                 <Calendar className="w-5 h-5 text-green-600 mb-1" />
                 <p className="orx-text-xs text-slate-600 dark:text-slate-400">Equipe Mínima</p>
-                <p className="orx-text-xl orx-font-bold text-slate-900 dark:text-white">
+                <p className="orx-text-xl orx-orx-font-bold text-slate-900 dark:text-white">
                   {complexidade.fatores.equipe_minima}
                 </p>
               </div>
               <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
                 <AlertTriangle className="w-5 h-5 text-orange-600 mb-1" />
                 <p className="orx-text-xs text-slate-600 dark:text-slate-400">Risco Clínico</p>
-                <p className="orx-text-xl orx-font-bold text-slate-900 dark:text-white capitalize">
+                <p className="orx-text-xl orx-orx-font-bold text-slate-900 dark:text-white capitalize">
                   {complexidade.fatores.risco_clinico}
                 </p>
               </div>
             </div>
 
             <div className="bg-white dark:bg-slate-800 rounded-lg p-4">
-              <p className="orx-font-medium text-slate-900 dark:text-white mb-2">Recomendações IA</p>
+              <p className="orx-orx-font-medium text-slate-900 dark:text-white mb-2">Recomendações IA</p>
               <ul className="space-y-2">
                 {complexidade.recomendacoes.map((rec, idx) => (
                   <li key={idx} className="flex items-start gap-2 orx-text-sm text-slate-700 dark:text-slate-300">
-                    <span className="text-purple-600 dark:text-purple-400 orx-font-bold">•</span>
+                    <span className="text-purple-600 dark:text-purple-400 orx-orx-font-bold">•</span>
                     <span>{rec}</span>
                   </li>
                 ))}

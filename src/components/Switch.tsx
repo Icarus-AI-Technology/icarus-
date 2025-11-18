@@ -51,7 +51,7 @@ const SwitchComponent = React.forwardRef<HTMLInputElement, SwitchProps>(
             {label && (
               <label
                 htmlFor={switchId}
-                className="text-body-sm text-[var(--text-primary)] cursor-pointer orx-font-medium"
+                className="text-body-sm text-[var(--text-primary)] cursor-pointer orx-orx-font-medium"
               >
                 {label}
               </label>

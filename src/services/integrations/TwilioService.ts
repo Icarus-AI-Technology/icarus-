@@ -14,8 +14,22 @@
 import twilio from "twilio";
 import type { Twilio, MessageInstance } from "twilio/lib/rest/Twilio";
 import { toAppError } from "@/utils/error";
-import { toAppError } from "@/utils/error";
-import { toAppError } from "@/utils/error";
+
+type MessageCreateOptions =
+  Twilio.Api.V2010.AccountContextMessageListInstanceCreateOptions;
+type MessageListOptions =
+  Twilio.Api.V2010.AccountMessageListInstanceListOptions;
+
+type TwilioWebhookPayload = {
+  MessageSid?: string;
+  SmsSid?: string;
+  MessageStatus?: string;
+  SmsStatus?: string;
+  From: string;
+  To: string;
+  ErrorCode?: string;
+  ErrorMessage?: string;
+};
 
 export interface SMSParams {
   para: string; // Número de telefone com código do país: +5511999999999
@@ -79,7 +93,7 @@ export class TwilioService {
       this.validarTelefone(params.para);
       this.validarMensagem(params.mensagem);
 
-      const messageData: any = {
+      const messageData: MessageCreateOptions = {
         body: params.mensagem,
         from: this.phoneNumber,
         to: params.para,
@@ -114,7 +128,7 @@ export class TwilioService {
       this.validarTelefone(params.para);
       this.validarMensagem(params.mensagem);
 
-      const messageData: any = {
+      const messageData: MessageCreateOptions = {
         body: params.mensagem,
         from: `whatsapp:${this.whatsappNumber}`,
         to: `whatsapp:${params.para}`,
@@ -203,7 +217,7 @@ export class TwilioService {
     limite?: number;
   }): Promise<MessageStatus[]> {
     try {
-      const options: any = {
+      const options: MessageListOptions = {
         limit: params?.limite || 50,
       };
 
@@ -237,14 +251,21 @@ export class TwilioService {
         .phoneNumbers(telefone)
         .fetch({ type: ["carrier"] });
 
+      const carrierType = (lookup.carrier?.type ?? "mobile").toLowerCase();
+      const tipo =
+        carrierType === "landline" || carrierType === "voip"
+          ? (carrierType as "landline" | "voip")
+          : "mobile";
+
       return {
         valido: true,
         formatado: lookup.phoneNumber,
-        tipo: (lookup.carrier?.type as any) || "mobile",
+        tipo,
         pais: lookup.countryCode,
         operadora: lookup.carrier?.name,
       };
     } catch (error: unknown) {
+      console.error("Erro ao verificar telefone:", error);
       return {
         valido: false,
         formatado: telefone,
@@ -257,7 +278,7 @@ export class TwilioService {
   /**
    * Processa webhook de status de mensagem
    */
-  processarWebhook(body: any): {
+  processarWebhook(body: TwilioWebhookPayload): {
     messageSid: string;
     status: string;
     de: string;
@@ -324,7 +345,7 @@ export class TwilioService {
   private formatarMessageStatus(message: MessageInstance): MessageStatus {
     return {
       sid: message.sid,
-      status: message.status as any,
+      status: this.mapStatus(message.status),
       para: message.to,
       de: message.from,
       mensagem: message.body,
@@ -334,6 +355,22 @@ export class TwilioService {
         : undefined,
       preco: message.price ? parseFloat(message.price) : undefined,
     };
+  }
+
+  private mapStatus(
+    status?: MessageInstance.Status | null,
+  ): MessageStatus["status"] {
+    switch (status) {
+      case "queued":
+      case "sending":
+      case "sent":
+      case "delivered":
+      case "undelivered":
+      case "failed":
+        return status;
+      default:
+        return "queued";
+    }
   }
 
   private chunkArray<T>(array: T[], size: number): T[][] {

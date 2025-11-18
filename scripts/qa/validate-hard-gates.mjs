@@ -22,9 +22,42 @@ const rules = [
   { id: 'shadows.inline', regex: /box-shadow:\s*[^;]+;/g, desc: 'Inline box-shadow' },
 ];
 
+// CSS properties que NÃO são classes Tailwind
+const CSS_PROPERTIES = [
+  'font-family',
+  'font-size',
+  'font-weight',
+  'font-style',
+  'font-variant',
+  'font-stretch',
+  'font-feature-settings',
+  'font-kerning',
+  'font-language-override',
+  'font-optical-sizing',
+  'font-variation-settings',
+];
+
 function analyzeFile(path) {
   const content = readFileSync(path, 'utf8');
   const findings = [];
+  
+  // ============================================
+  // SKIP FILES - Contextos onde classes são legítimas
+  // ============================================
+  
+  // Arquivos CSS (definem as próprias classes)
+  if (path.endsWith('.css')) {
+    return findings;
+  }
+  
+  // Serviços de e-mail (usam classes inline em templates HTML)
+  if (path.includes('/email/') || 
+      path.includes('/microsoft365/') || 
+      path.includes('SendGridService') ||
+      path.includes('resend.service')) {
+    return findings;
+  }
+  
   for (const rule of rules) {
     let matches = content.match(rule.regex) || [];
     
@@ -129,7 +162,7 @@ function analyzeFile(path) {
       // Permitir classes de variant
       const fontVariants = ['font-italic', 'font-not-italic', 'font-antialiased', 'font-subpixel-antialiased'];
       
-      const allowed = [...oracluxFonts, ...fontFamilies, ...fontVariants];
+      const allowed = [...oracluxFonts, ...fontFamilies, ...fontVariants, ...CSS_PROPERTIES];
       matches = matches.filter(m => !allowed.some(a => m.includes(a)));
     }
     

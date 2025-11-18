@@ -143,7 +143,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         role="button"
         aria-label="Selecionar arquivos"
         title="Selecionar arquivos"
-        className={cn("relative border-2 border-dashed rounded-lg p-8 text-center transition-all cursor-pointer","bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]","focus:outline-none focus:ring-2 focus:ring-[var(--primary)]",
+        className={cn("relative border-2 border-dashed rounded-lg p-8 text-center transition-all cursor-pointer","bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]","focus:outline-none focus:ring-3 focus:ring-[var(--primary)]",
           isDragging &&"border-[var(--primary)] bg-[var(--primary)]/5",
           !isDragging &&"border-gray-300 dark:border-border hover:border-[var(--primary)]",
           disabled &&"opacity-50 cursor-not-allowed",
@@ -206,7 +206,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
               </div>
 
               <div className="flex-1 min-w-0">
-                <p className="text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)] truncate orx-font-medium">
+                <p className="text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)] truncate orx-orx-font-medium">
                   {file.name}
                 </p>
                 <p className="text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]">
@@ -218,7 +218,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                 onClick={() => handleRemoveFile(index)}
                 aria-label={`Remover ${file.name}`}
                 title={`Remover ${file.name}`}
-                className={cn("p-2 rounded-md transition-colors","hover:bg-destructive/5 dark:hover:bg-red-950/20 text-error dark:text-red-400","focus:outline-none focus:ring-2 focus:ring-error"
+                className={cn("p-2 rounded-md transition-colors","hover:bg-destructive/5 dark:hover:bg-red-950/20 text-error dark:text-red-400","focus:outline-none focus:ring-3 focus:ring-error"
                 )}
               >
                 <X size={18} />

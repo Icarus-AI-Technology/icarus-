@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { 
   Calendar, Clock, CheckCircle, AlertTriangle, 
   XCircle, Plus, Filter, Search 
@@ -16,7 +16,7 @@ import { toast } from 'sonner';
 import { KanbanBoard, KanbanColumn, KanbanCard } from '@/components/kanban/KanbanBoard';
 
 export default function KanbanCirurgias() {
-  const [colunas, setColunas] = useState<KanbanColumn[]>([
+  const [colunas] = useState<KanbanColumn[]>([
     {
       id: 'agendada',
       titulo: 'Agendadas',
@@ -136,7 +136,7 @@ export default function KanbanCirurgias() {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="orx-text-3xl orx-font-semibold text-gray-800">
+              <h1 className="orx-text-3xl orx-orx-font-semibold text-gray-800">
                 Gestão de Cirurgias - Kanban
               </h1>
               <p className="orx-text-sm text-gray-500 mt-1">
@@ -151,7 +151,7 @@ export default function KanbanCirurgias() {
                          hover:shadow-[8px_8px_16px_rgba(94,53,177,0.4),-8px_-8px_16px_rgba(255,255,255,0.6)]
                          hover:-translate-y-0.5
                          transition-all duration-200
-                         text-white orx-font-semibold
+                         text-white orx-orx-font-semibold
                          flex items-center gap-2"
             >
               <Plus className="w-4 h-4" />
@@ -188,7 +188,7 @@ export default function KanbanCirurgias() {
                                  shadow-[3px_3px_6px_rgba(0,0,0,0.1),-3px_-3px_6px_rgba(255,255,255,0.8)]
                                  hover:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.1),inset_-3px_-3px_6px_rgba(255,255,255,0.8)]
                                  transition-all duration-200
-                                 orx-text-sm text-gray-700 orx-font-medium
+                                 orx-text-sm text-gray-700 orx-orx-font-medium
                                  flex items-center gap-2">
                 <Filter className="w-4 h-4" />
                 Filtros

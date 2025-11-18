@@ -150,7 +150,7 @@ export function AgentDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="orx-text-3xl orx-font-bold tracking-tight">Agentes IA</h1>
+          <h1 className="orx-text-3xl orx-orx-font-bold tracking-tight">Agentes IA</h1>
           <p className="text-muted-foreground">
             Dashboard de orquestração e supervisão de agentes
           </p>
@@ -165,13 +165,13 @@ export function AgentDashboard() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="orx-text-sm orx-font-medium">
+            <CardTitle className="orx-text-sm orx-orx-font-medium">
               Tarefas Ativas
             </CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="orx-text-2xl orx-font-bold">{stats.activeTasks}</div>
+            <div className="orx-text-2xl orx-orx-font-bold">{stats.activeTasks}</div>
             <p className="orx-text-xs text-muted-foreground">
               {stats.completedTasks} concluídas
             </p>
@@ -180,11 +180,11 @@ export function AgentDashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="orx-text-sm orx-font-medium">Relatórios</CardTitle>
+            <CardTitle className="orx-text-sm orx-orx-font-medium">Relatórios</CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="orx-text-2xl orx-font-bold">{stats.publishedReports}</div>
+            <div className="orx-text-2xl orx-orx-font-bold">{stats.publishedReports}</div>
             <p className="orx-text-xs text-muted-foreground">
               {stats.pendingReports} pendentes revisão
             </p>
@@ -193,11 +193,11 @@ export function AgentDashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="orx-text-sm orx-font-medium">Tempo Médio</CardTitle>
+            <CardTitle className="orx-text-sm orx-orx-font-medium">Tempo Médio</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="orx-text-2xl orx-font-bold">
+            <div className="orx-text-2xl orx-orx-font-bold">
               {(stats.avgExecutionTime / 1000).toFixed(1)}s
             </div>
             <p className="orx-text-xs text-muted-foreground">Por tarefa</p>
@@ -206,11 +206,11 @@ export function AgentDashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="orx-text-sm orx-font-medium">Compliance</CardTitle>
+            <CardTitle className="orx-text-sm orx-orx-font-medium">Compliance</CardTitle>
             <BarChart3 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="orx-text-2xl orx-font-bold">{stats.complianceScore}%</div>
+            <div className="orx-text-2xl orx-orx-font-bold">{stats.complianceScore}%</div>
             <p className="orx-text-xs text-muted-foreground">
               {stats.complianceScore >= 95
                 ? "Excelente"

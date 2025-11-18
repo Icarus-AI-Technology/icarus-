@@ -93,7 +93,7 @@ export const BIAnalytics: React.FC = () => {
           <div className="flex items-center gap-2 px-4 py-2 bg-[var(--primary)] rounded-full">
             <Settings className="text-[var(--primary-foreground)] animate-spin-slow" size={20} />
             <div className="text-left">
-              <p className="text-[var(--primary-foreground)] text-body-sm orx-font-medium">IA Predição</p>
+              <p className="text-[var(--primary-foreground)] text-body-sm orx-orx-font-medium">IA Predição</p>
               <p className="text-[var(--primary-foreground)]/70 text-body-xs">96.5% precisão</p>
             </div>
           </div>
@@ -127,7 +127,7 @@ export const BIAnalytics: React.FC = () => {
                       <Icon size={24} />
                     </div>
                     <div className="text-center">
-                      <p className="text-body-xs mb-1 orx-font-medium">{category.label}</p>
+                      <p className="text-body-xs mb-1 orx-orx-font-medium">{category.label}</p>
                       <div className="flex items-center justify-center gap-2">
                         <span className="text-heading font-display text-[0.813rem]">{category.count}</span>
                         <span
@@ -202,7 +202,7 @@ export const BIAnalytics: React.FC = () => {
                   >
                     <div className="flex items-start justify-between mb-2">
                       <div>
-                        <h4 className="text-[var(--text-primary)] mb-1 orx-font-medium">
+                        <h4 className="text-[var(--text-primary)] mb-1 orx-orx-font-medium">
                           {dash.titulo}
                         </h4>
                         <p className="text-body-xs text-[var(--text-secondary)]">
@@ -215,7 +215,7 @@ export const BIAnalytics: React.FC = () => {
                     </div>
                     <div className="flex items-center gap-2 mt-3">
                       <Activity size={14} className="text-success" />
-                      <span className="text-body-xs text-success orx-font-medium">
+                      <span className="text-body-xs text-success orx-orx-font-medium">
                         Atualizado em tempo real
                       </span>
                     </div>
@@ -241,7 +241,7 @@ export const BIAnalytics: React.FC = () => {
                         {pred.titulo}
                       </span>
                       <div className="flex items-center gap-2">
-                        <span className="text-body-sm text-[var(--text-primary)] orx-font-medium">
+                        <span className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">
                           {pred.valor}
                         </span>
                         <TrendingUp
@@ -288,7 +288,7 @@ export const BIAnalytics: React.FC = () => {
                     className="p-4 border border-[var(--border)] rounded-lg hover:neuro-raised transition-all cursor-pointer"
                   >
                     <BarChart3 className="text-[var(--text-primary)] mb-2" size={24} />
-                    <h4 className="text-[var(--text-primary)] mb-1 orx-font-medium">
+                    <h4 className="text-[var(--text-primary)] mb-1 orx-orx-font-medium">
                       {rel}
                     </h4>
                     <p className="text-body-xs text-[var(--text-secondary)]">Gerado automaticamente</p>

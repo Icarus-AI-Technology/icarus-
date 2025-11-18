@@ -113,7 +113,7 @@ export const TabelasPrecos: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="orx-text-3xl orx-font-bold text-[var(--orx-text-primary)] mb-2">
+          <h1 className="orx-text-3xl orx-orx-font-bold text-[var(--orx-text-primary)] mb-2">
             Tabelas de Preços OPME
           </h1>
           <p className="text-[var(--orx-text-secondary)] text-[0.938rem]">
@@ -246,25 +246,25 @@ export const TabelasPrecos: React.FC = () => {
             <table className="w-full border-collapse">
               <thead>
                 <tr className="bg-[var(--orx-bg-light)] border-b-2 border-[var(--orx-border)]">
-                  <th className="p-4 text-left text-[var(--orx-text-primary)] orx-font-semibold text-[0.813rem]">
+                  <th className="p-4 text-left text-[var(--orx-text-primary)] orx-orx-font-semibold text-[0.813rem]">
                     Nome da Tabela
                   </th>
-                  <th className="p-4 text-left text-[var(--orx-text-primary)] orx-font-semibold text-[0.813rem]">
+                  <th className="p-4 text-left text-[var(--orx-text-primary)] orx-orx-font-semibold text-[0.813rem]">
                     Tipo
                   </th>
-                  <th className="p-4 text-center text-[var(--orx-text-primary)] orx-font-semibold text-[0.813rem]">
+                  <th className="p-4 text-center text-[var(--orx-text-primary)] orx-orx-font-semibold text-[0.813rem]">
                     Itens
                   </th>
-                  <th className="p-4 text-right text-[var(--orx-text-primary)] orx-font-semibold text-[0.813rem]">
+                  <th className="p-4 text-right text-[var(--orx-text-primary)] orx-orx-font-semibold text-[0.813rem]">
                     Valor Total
                   </th>
-                  <th className="p-4 text-center text-[var(--orx-text-primary)] orx-font-semibold text-[0.813rem]">
+                  <th className="p-4 text-center text-[var(--orx-text-primary)] orx-orx-font-semibold text-[0.813rem]">
                     Vigência
                   </th>
-                  <th className="p-4 text-center text-[var(--orx-text-primary)] orx-font-semibold text-[0.813rem]">
+                  <th className="p-4 text-center text-[var(--orx-text-primary)] orx-orx-font-semibold text-[0.813rem]">
                     Status
                   </th>
-                  <th className="p-4 text-center text-[var(--orx-text-primary)] orx-font-semibold text-[0.813rem]">
+                  <th className="p-4 text-center text-[var(--orx-text-primary)] orx-orx-font-semibold text-[0.813rem]">
                     Ações
                   </th>
                 </tr>
@@ -277,7 +277,7 @@ export const TabelasPrecos: React.FC = () => {
                   >
                     <td className="p-4">
                       <div>
-                        <p className="text-[var(--orx-text-primary)] orx-font-medium text-[0.875rem]">
+                        <p className="text-[var(--orx-text-primary)] orx-orx-font-medium text-[0.875rem]">
                           {tabela.nome}
                         </p>
                         {tabela.codigo && (
@@ -290,10 +290,10 @@ export const TabelasPrecos: React.FC = () => {
                     <td className="p-4">
                       <TipoTabelaBadge tipo={tabela.tipo} />
                     </td>
-                    <td className="p-4 text-center text-[var(--orx-text-primary)] orx-font-medium text-[0.875rem]">
+                    <td className="p-4 text-center text-[var(--orx-text-primary)] orx-orx-font-medium text-[0.875rem]">
                       {tabela.total_itens || 0}
                     </td>
-                    <td className="p-4 text-right text-[var(--orx-text-primary)] orx-font-semibold text-[0.875rem]">
+                    <td className="p-4 text-right text-[var(--orx-text-primary)] orx-orx-font-semibold text-[0.875rem]">
                       R$ {(tabela.valor_total_estimado || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </td>
                     <td className="p-4 text-center text-[var(--orx-text-secondary)] text-[0.813rem]">
@@ -352,7 +352,7 @@ export const TabelasPrecos: React.FC = () => {
             {tabelasFiltradas.length === 0 && !loading && (
               <div className="p-12 text-center">
                 <AlertTriangle size={48} className="mx-auto mb-4 text-[var(--orx-text-secondary)]" />
-                <p className="text-[var(--orx-text-primary)] orx-font-medium">
+                <p className="text-[var(--orx-text-primary)] orx-orx-font-medium">
                   Nenhuma tabela encontrada
                 </p>
                 <p className="text-[var(--orx-text-secondary)] text-[0.813rem] mt-2">
@@ -371,7 +371,7 @@ export const TabelasPrecos: React.FC = () => {
         <div className="flex gap-3 items-start">
           <AlertTriangle size={20} className="text-[var(--orx-info)] shrink-0 mt-[2px]" />
           <div>
-            <h3 className="orx-font-semibold text-[var(--orx-text-primary)] mb-2 text-[0.938rem]">
+            <h3 className="orx-orx-font-semibold text-[var(--orx-text-primary)] mb-2 text-[0.938rem]">
               Sobre Tabelas de Preços OPME
             </h3>
             <ul className="text-[var(--orx-text-secondary)] text-[0.813rem] leading-6 pl-5 list-disc">
@@ -411,7 +411,7 @@ const KPICard: React.FC<KPICardProps> = ({ label, value, icon, bgClass, textClas
       </div>
       <div className="flex-1">
         <p className="text-[var(--orx-text-secondary)] text-[0.813rem] mb-1">{label}</p>
-        <p className="text-[var(--orx-text-primary)] orx-text-2xl orx-font-bold">{value}</p>
+        <p className="text-[var(--orx-text-primary)] orx-text-2xl orx-orx-font-bold">{value}</p>
       </div>
     </div>
   );
@@ -432,7 +432,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
   const { label, color, bg, icon } = config[status];
 
   return (
-    <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[0.813rem] orx-font-medium bg-[${bg}] text-[${color}]`}>
+    <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[0.813rem] orx-orx-font-medium bg-[${bg}] text-[${color}]`}>
       {icon}
       {label}
     </span>
@@ -457,7 +457,7 @@ const TipoTabelaBadge: React.FC<TipoTabelaBadgeProps> = ({ tipo }) => {
   const { label, color, bg, icon } = config[tipo];
 
   return (
-    <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[0.813rem] orx-font-medium bg-[${bg}] text-[${color}]`}>
+    <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[0.813rem] orx-orx-font-medium bg-[${bg}] text-[${color}]`}>
       {icon}
       {label}
     </span>

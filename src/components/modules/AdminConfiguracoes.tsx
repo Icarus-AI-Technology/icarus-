@@ -36,7 +36,6 @@ export const AdminConfiguracoes: React.FC = () => {
   const [pfxPasswordOk, setPfxPasswordOk] = useState<boolean | null>(null);
 
   // Logo
-  const [logo, setLogo] = useState<File | null>(null);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
 
   // Empresa (CNPJ)
@@ -89,10 +88,6 @@ export const AdminConfiguracoes: React.FC = () => {
     setResponsavelStatus(isPadronizado ? "padronizado" : "corrigindo");
   };
 
-  const markInvalidResponsavel = () => {
-    setResponsavelStatus("invalido");
-  };
-
   const handlePfx = (files: File[]) => {
     const valid =
       files.every((f) => f.name.toLowerCase().endsWith(".pfx")) &&
@@ -121,13 +116,12 @@ export const AdminConfiguracoes: React.FC = () => {
         // Mantém upload, mas sinaliza recomendação
         console.warn("Logo fora das dimensões recomendadas 200x60");
       }
-      setLogo(f);
       setLogoUrl(URL.createObjectURL(f));
     };
     img.src = URL.createObjectURL(f);
   };
 
-  const fetchCNPJ = async (cnpjSemMascara: string) => {
+  const fetchCNPJ = async (_cnpjSemMascara: string) => {
     // Stub de integração com Receita (substituir por chamada real)
     // Preenche alguns dados fictícios
     setEmpresa((prev) => ({

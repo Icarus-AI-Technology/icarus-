@@ -1,144 +1,138 @@
-import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '../lib/supabase';
+// src/hooks/useProdutos.ts
+import { useState, useCallback } from 'react'
+import { supabase } from '../lib/supabase'
+import { useSupabaseQuery } from './useSupabase'
+import type { Database } from '../lib/database.types.generated'
 
-/**
- * Hook Genérico para Produtos OPME
- * Tabela: produtos
- */
+type ProdutoInsert = Database['public']['Tables']['produtos_opme']['Insert']
+type ProdutoUpdate = Database['public']['Tables']['produtos_opme']['Update']
 
-export interface ProdutoOPME {
-  id: string;
-  empresa_id: string;
-  codigo: string;
-  nome: string;
-  descricao?: string;
-  registro_anvisa?: string;
-  fabricante?: string;
-  categoria: string;
-  preco_unitario: number;
-  estoque_minimo?: number;
-  estoque_atual?: number;
-  unidade_medida: string;
-  ativo: boolean;
-  observacoes?: string;
-  created_at?: string;
-  updated_at?: string;
-}
+export function useProdutos(empresaId?: string) {
+  const { data: produtos, loading, error } = useSupabaseQuery('produtos_opme', {
+    select: '*',
+    filter: empresaId ? { empresa_id: empresaId, excluido_em: null } : { excluido_em: null },
+    orderBy: { column: 'nome', ascending: true }
+  })
 
-export const useProdutos = () => {
-  const [produtos, setProdutos] = useState<ProdutoOPME[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // Filtros
-  const [filtroCategoria, setFiltroCategoria] = useState<string | null>(null);
-  const [filtroAtivo, setFiltroAtivo] = useState<boolean | null>(null);
-
-  const fetchProdutos = useCallback(async () => {
+  const createProduto = useCallback(async (data: ProdutoInsert) => {
     try {
-      setLoading(true);
+      setIsSubmitting(true)
+      const { data: newProduto, error } = await supabase
+        .from('produtos_opme')
+        .insert(data)
+        .select()
+        .single()
 
-      let query = supabase
-        .from('produtos')
-        .select('*')
-        .order('nome');
-
-      if (filtroCategoria) {
-        query = query.eq('categoria', filtroCategoria);
-      }
-
-      if (filtroAtivo !== null) {
-        query = query.eq('ativo', filtroAtivo);
-      }
-
-      const { data, error: fetchError } = await query;
-
-      if (fetchError) throw fetchError;
-
-      setProdutos((data as ProdutoOPME[] | null) ?? []);
-      setError(null);
-    } catch (error) {
-   const err = error as Error;
-      const message = err instanceof Error ? err.message : 'Erro ao carregar produtos';
-      setError(message);
-      setProdutos([]);
+      if (error) throw error
+      return { data: newProduto, error: null }
+    } catch (err) {
+      console.error('Erro ao criar produto:', err)
+      return { data: null, error: err as Error }
     } finally {
-      setLoading(false);
+      setIsSubmitting(false)
     }
-  }, [filtroCategoria, filtroAtivo]);
+  }, [])
 
-  useEffect(() => {
-    fetchProdutos();
-  }, [fetchProdutos]);
+  const updateProduto = useCallback(async (id: string, data: ProdutoUpdate) => {
+    try {
+      setIsSubmitting(true)
+      const { data: updatedProduto, error } = await supabase
+        .from('produtos_opme')
+        .update(data)
+        .eq('id', id)
+        .select()
+        .single()
 
-  const criarProduto = async (produto: Omit<ProdutoOPME, 'id'>) => {
+      if (error) throw error
+      return { data: updatedProduto, error: null }
+    } catch (err) {
+      console.error('Erro ao atualizar produto:', err)
+      return { data: null, error: err as Error }
+    } finally {
+      setIsSubmitting(false)
+    }
+  }, [])
+
+  const deleteProduto = useCallback(async (id: string) => {
+    try {
+      setIsSubmitting(true)
+      const { error } = await supabase
+        .from('produtos_opme')
+        .update({ excluido_em: new Date().toISOString() })
+        .eq('id', id)
+
+      if (error) throw error
+      return { error: null }
+    } catch (err) {
+      console.error('Erro ao deletar produto:', err)
+      return { error: err as Error }
+    } finally {
+      setIsSubmitting(false)
+    }
+  }, [])
+
+  // Buscar produto por registro ANVISA
+  const buscarPorRegistroANVISA = useCallback(async (registroAnvisa: string) => {
     try {
       const { data, error } = await supabase
-        .from('produtos')
-        .insert(produto)
-        .select()
-        .single();
+        .from('produtos_opme')
+        .select('*')
+        .eq('registro_anvisa', registroAnvisa)
+        .is('excluido_em', null)
+        .single()
 
-      if (error) throw error;
-
-      await fetchProdutos();
-      return data as ProdutoOPME;
-    } catch (error) {
-   const err = error as Error;
-      const message = err instanceof Error ? err.message : 'Erro ao criar produto';
-      setError(message);
-      throw err;
+      if (error && error.code !== 'PGRST116') throw error
+      return { data, error: null }
+    } catch (err) {
+      console.error('Erro ao buscar produto por ANVISA:', err)
+      return { data: null, error: err as Error }
     }
-  };
+  }, [])
 
-  const atualizarProduto = async (id: string, updates: Partial<ProdutoOPME>) => {
+  // Buscar produtos com estoque baixo
+  const buscarEstoqueBaixo = useCallback(async (empresaId: string) => {
     try {
-      const { error } = await supabase
-        .from('produtos')
-        .update(updates)
-        .eq('id', id);
+      const { data, error } = await supabase
+        .from('produtos_opme')
+        .select(`
+          *,
+          estoque:estoque(quantidade_disponivel)
+        `)
+        .eq('empresa_id', empresaId)
+        .is('excluido_em', null)
 
-      if (error) throw error;
+      if (error) throw error
 
-      await fetchProdutos();
-    } catch (error) {
-   const err = error as Error;
-      const message = err instanceof Error ? err.message : 'Erro ao atualizar produto';
-      setError(message);
-      throw err;
+      // Filtrar produtos com estoque abaixo do ponto de reposição
+      const produtosBaixo = (data as Array<{
+        estoque?: Array<{ quantidade_disponivel?: number }>
+        ponto_reposicao?: number
+      }> | null)?.filter((produto) => {
+        const estoqueTotal = (produto.estoque ?? []).reduce(
+          (sum: number, e) => sum + (e.quantidade_disponivel ?? 0),
+          0,
+        )
+        return estoqueTotal < (produto.ponto_reposicao ?? 10)
+      }) as unknown
+
+      return { data: produtosBaixo, error: null }
+    } catch (err) {
+      console.error('Erro ao buscar produtos com estoque baixo:', err)
+      return { data: null, error: err as Error }
     }
-  };
-
-  const deletarProduto = async (id: string) => {
-    try {
-      const { error } = await supabase
-        .from('produtos')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-
-      await fetchProdutos();
-    } catch (error) {
-   const err = error as Error;
-      const message = err instanceof Error ? err.message : 'Erro ao deletar produto';
-      setError(message);
-      throw err;
-    }
-  };
+  }, [])
 
   return {
     produtos,
     loading,
     error,
-    filtroCategoria,
-    setFiltroCategoria,
-    filtroAtivo,
-    setFiltroAtivo,
-    fetchProdutos,
-    criarProduto,
-    atualizarProduto,
-    deletarProduto
-  };
-};
-
+    isSubmitting,
+    createProduto,
+    updateProduto,
+    deleteProduto,
+    buscarPorRegistroANVISA,
+    buscarEstoqueBaixo
+  }
+}

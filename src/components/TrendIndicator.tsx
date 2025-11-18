@@ -67,7 +67,7 @@ export const TrendIndicator: React.FC<TrendIndicatorProps> = ({
         aria-hidden="true" 
       />
       {showPercentage && (
-        <span className={cn(sizing.text, 'orx-font-medium', colorClass)}>
+        <span className={cn(sizing.text, 'orx-orx-font-medium', colorClass)}>
           {formatted}
         </span>
       )}

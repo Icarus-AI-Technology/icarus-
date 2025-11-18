@@ -3,9 +3,9 @@
  * Wrapper padronizado para layouts com variantes neumórficas e glass
  */
 
-import React, { type ReactNode } from 'react';
+import { type FC, type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
-import { neuStyle, glassEffect } from '@/lib/styleUtils';
+import { neuStyle } from '@/lib/styleUtils';
 
 export interface ContainerProps {
   /** Conteúdo do container */
@@ -56,7 +56,7 @@ const maxWidthClasses = {
  * </Container>
  * ```
  */
-export const Container: React.FC<ContainerProps> = ({
+export const Container: FC<ContainerProps> = ({
   children,
   variant = 'default',
   padding = 'md',

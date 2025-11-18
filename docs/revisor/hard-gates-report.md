@@ -1,13 +1,13 @@
 # Hard Gates Report
 
 **Files scanned:** 769  
-**Violations files:** 325  
+**Violations files:** 313  
 
 ## Totals
-- text-* classes: 2466
-- font-* classes: 58
-- Hex colors: 471
-- Inline box-shadow: 87
+- text-* classes: 2412
+- font-* classes: 21
+- Hex colors: 178
+- Inline box-shadow: 0
 
 ## Top files (up to 20)
 - src/AISystemDashboard.tsx — text-* classes:15

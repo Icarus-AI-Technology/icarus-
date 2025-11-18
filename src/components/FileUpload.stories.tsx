@@ -84,7 +84,7 @@ export const Interactive: Story = {
         />
         {files && files.length > 0 && (
           <div className="mt-4 space-y-2">
-            <p className="orx-text-sm orx-font-medium">Arquivos selecionados:</p>
+            <p className="orx-text-sm orx-orx-font-medium">Arquivos selecionados:</p>
             {Array.from(files).map((file, index) => (
               <div key={index} className="orx-text-sm text-[var(--text-secondary)] orx-card p-2">
                 {file.name} ({(file.size / 1024).toFixed(2)} KB)

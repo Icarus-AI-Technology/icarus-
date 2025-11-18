@@ -138,8 +138,10 @@
      CORES DE TEXTO E FUNDO (MODO CLARO - AJUSTADO)
      ======================================== */
   --orx-text-primary: #1a202c; /* Mais escuro para maior contraste (era #1f2937) */
-  --orx-text-secondary: #4b5563; /* Mais escuro para melhor legibilidade (era #6b7280) */
-  --orx-text-muted: #6b7280; /* Ajustado (era #9ca3af) */
+  --orx-text-secondary: #374151; /* contraste reforçado */
+  --orx-text-muted: #4a5568; /* texto auxiliar ainda legível */
+  --orx-link-color: #312e81; /* Indigo 900 para contraste AA */
+  --orx-link-hover: #1e1b4b;
 }
 
 /* ========================================
@@ -153,8 +155,10 @@
   --orx-shadow-inset-light-2: inset -8px -8px 16px #374151;
   
   --orx-text-primary: #f9fafb;
-  --orx-text-secondary: #d1d5db;
-  --orx-text-muted: #9ca3af;
+  --orx-text-secondary: #e5e7eb;
+  --orx-text-muted: #d1d5db;
+  --orx-link-color: #c7d2fe; /* Azul claro para contraste no dark mode */
+  --orx-link-hover: #e0e7ff;
 }
 
 /* ========================================

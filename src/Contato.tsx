@@ -70,7 +70,7 @@ export default function Contato() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="orx-text-3xl orx-font-bold mb-8" style={{ color: "var(--orx-text-primary)" }}>
+      <h1 className="orx-text-3xl orx-orx-font-bold mb-8" style={{ color: "var(--orx-text-primary)" }}>
         Fale Conosco
       </h1>
 
@@ -78,7 +78,7 @@ export default function Contato() {
         <div className="neumorphic-card">
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <div className="mb-4">
-              <label className="block mb-2 orx-font-medium" htmlFor="name">
+              <label className="block mb-2 orx-orx-font-medium" htmlFor="name">
                 Nome
               </label>
               <input
@@ -97,7 +97,7 @@ export default function Contato() {
             </div>
 
             <div className="mb-4">
-              <label className="block mb-2 orx-font-medium" htmlFor="email">
+              <label className="block mb-2 orx-orx-font-medium" htmlFor="email">
                 E-mail
               </label>
               <input
@@ -116,7 +116,7 @@ export default function Contato() {
             </div>
 
             <div className="mb-4">
-              <label className="block mb-2 orx-font-medium" htmlFor="subject">
+              <label className="block mb-2 orx-orx-font-medium" htmlFor="subject">
                 Assunto
               </label>
               <input
@@ -135,7 +135,7 @@ export default function Contato() {
             </div>
 
             <div className="mb-6">
-              <label className="block mb-2 orx-font-medium" htmlFor="message">
+              <label className="block mb-2 orx-orx-font-medium" htmlFor="message">
                 Mensagem
               </label>
               <textarea
@@ -173,17 +173,17 @@ export default function Contato() {
         </div>
 
         <div className="neumorphic-card">
-          <h2 className="orx-text-xl orx-font-semibold mb-3">Canais Oficiais</h2>
+          <h2 className="orx-text-xl orx-orx-font-semibold mb-3">Canais Oficiais</h2>
           <div className="space-y-4 orx-text-sm">
             <div>
-              <p className="orx-font-medium">🛠️ Suporte Técnico</p>
+              <p className="orx-orx-font-medium">🛠️ Suporte Técnico</p>
               <a className="text-blue-600 hover:underline" href="mailto:suporte@icarusai.com.br">
                 suporte@icarusai.com.br
               </a>
               <p className="text-gray-500">Resposta em até 24h (dias úteis)</p>
             </div>
             <div>
-              <p className="orx-font-medium">🛡️ Proteção de Dados (DPO)</p>
+              <p className="orx-orx-font-medium">🛡️ Proteção de Dados (DPO)</p>
               <a className="text-blue-600 hover:underline" href="mailto:dpo@icarusai.com.br">
                 dpo@icarusai.com.br
               </a>

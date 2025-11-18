@@ -381,7 +381,7 @@ export const PedidosCompra: React.FC = () => {
     };
 
     return (
-      <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[0.813rem] orx-font-semibold ${bgClass[config.bg]} ${textClass[config.text]}`}>
+      <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[0.813rem] orx-orx-font-semibold ${bgClass[config.bg]} ${textClass[config.text]}`}>
         {config.icon}
         {config.label}
       </span>
@@ -407,7 +407,7 @@ export const PedidosCompra: React.FC = () => {
             <React.Fragment key={index}>
               <div
                 title={`${aprovacao.aprovador_nome} (${aprovacao.aprovador_cargo})`}
-                className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-[0.813rem] orx-font-semibold neuro-raised ${
+                className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-[0.813rem] orx-orx-font-semibold neuro-raised ${
                   statusColor === 'var(--orx-success-dark)'
                     ? 'bg-[var(--orx-success-dark)]'
                     : statusColor === 'var(--orx-error-dark)'
@@ -442,7 +442,7 @@ export const PedidosCompra: React.FC = () => {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-[0.813rem] orx-font-bold text-[var(--orx-text-primary)] mb-2">
+          <h1 className="text-[0.813rem] orx-orx-font-bold text-[var(--orx-text-primary)] mb-2">
             Pedidos de Compra
           </h1>
           <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">
@@ -451,7 +451,7 @@ export const PedidosCompra: React.FC = () => {
         </div>
         <button
           onClick={handleNovoPedido}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--orx-primary)] text-white text-[0.813rem] orx-font-semibold shadow-[var(--orx-shadow-light-1),_var(--orx-shadow-light-2)] transition-all hover:-translate-y-0.5 hover:shadow-[var(--orx-shadow-light-1),_var(--orx-shadow-light-2),_0_8px_16px_rgba(99,102,241,0.3)]"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--orx-primary)] text-white text-[0.813rem] orx-orx-font-semibold shadow-[var(--orx-shadow-light-1),_var(--orx-shadow-light-2)] transition-all hover:-translate-y-0.5 hover:shadow-[var(--orx-shadow-light-1),_var(--orx-shadow-light-2),_0_8px_16px_rgba(99,102,241,0.3)]"
         >
           <Plus size={20} />
           Novo Pedido
@@ -475,13 +475,13 @@ export const PedidosCompra: React.FC = () => {
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-[var(--orx-shadow-light-1)] ${colorMap[kpi.color]}`}>
                   <Icon size={24} className="text-white" />
                 </div>
-                <span className={`flex items-center gap-1 text-[0.813rem] orx-font-semibold ${trendClass}`}>
+                <span className={`flex items-center gap-1 text-[0.813rem] orx-orx-font-semibold ${trendClass}`}>
                   {kpi.trendUp ? <TrendingUp size={16} /> : <AlertTriangle size={16} />}
                   {kpi.trend}
                 </span>
               </div>
               <div>
-                <div className="text-[0.813rem] orx-font-bold text-[var(--orx-text-primary)] mb-1">{kpi.value}</div>
+                <div className="text-[0.813rem] orx-orx-font-bold text-[var(--orx-text-primary)] mb-1">{kpi.value}</div>
                 <div className="text-[0.813rem] text-[var(--orx-text-secondary)]">{kpi.label}</div>
               </div>
             </div>
@@ -543,25 +543,25 @@ export const PedidosCompra: React.FC = () => {
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-[rgba(99,102,241,0.05)]">
-                <th className="p-4 text-left text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)] border-b border-black/5">
+                <th className="p-4 text-left text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-secondary)] border-b border-black/5">
                   Nº Pedido
                 </th>
-                <th className="p-4 text-left text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)] border-b border-black/5">
+                <th className="p-4 text-left text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-secondary)] border-b border-black/5">
                   Fornecedor
                 </th>
-                <th className="p-4 text-left text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)] border-b border-black/5">
+                <th className="p-4 text-left text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-secondary)] border-b border-black/5">
                   Solicitante
                 </th>
-                <th className="p-4 text-left text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)] border-b border-black/5">
+                <th className="p-4 text-left text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-secondary)] border-b border-black/5">
                   Valor Total
                 </th>
-                <th className="p-4 text-left text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)] border-b border-black/5">
+                <th className="p-4 text-left text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-secondary)] border-b border-black/5">
                   Status
                 </th>
-                <th className="p-4 text-left text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)] border-b border-black/5">
+                <th className="p-4 text-left text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-secondary)] border-b border-black/5">
                   Aprovação
                 </th>
-                <th className="p-4 text-center text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)] border-b border-black/5">
+                <th className="p-4 text-center text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-secondary)] border-b border-black/5">
                   Ações
                 </th>
               </tr>
@@ -576,12 +576,12 @@ export const PedidosCompra: React.FC = () => {
               ) : (
                 pedidosFiltrados.map((pedido) => (
                   <tr key={pedido.id} className="border-b border-black/5 hover:bg-[rgba(99,102,241,0.03)] transition-colors">
-                    <td className="p-4 text-[0.813rem] orx-font-semibold text-[var(--orx-primary)]">
+                    <td className="p-4 text-[0.813rem] orx-orx-font-semibold text-[var(--orx-primary)]">
                       {pedido.numero_pedido}
                     </td>
                     <td className="p-4 text-[0.813rem] text-[var(--orx-text-primary)]">
                       <div>
-                        <div className="orx-font-semibold">{pedido.fornecedor_nome}</div>
+                        <div className="orx-orx-font-semibold">{pedido.fornecedor_nome}</div>
                         <div className="text-[0.813rem] text-[var(--orx-text-secondary)]">
                           {pedido.fornecedor_cnpj}
                         </div>
@@ -595,7 +595,7 @@ export const PedidosCompra: React.FC = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="p-4 text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)]">
+                    <td className="p-4 text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)]">
                       {new Intl.NumberFormat('pt-BR', {
                         style: 'currency',
                         currency: 'BRL',

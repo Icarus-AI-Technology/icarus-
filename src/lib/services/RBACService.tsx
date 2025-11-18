@@ -347,8 +347,9 @@ export class RBACService {
 
       if (error) throw error;
 
-      console.log(`[RBAC] ${data} sessões expiradas limpas`);
-      return data || 0;
+      const cleaned = typeof data === 'number' ? data : Number(data ?? 0) || 0;
+      console.log(`[RBAC] ${cleaned} sessões expiradas limpas`);
+      return cleaned;
     } catch (error) {
    const err = error as Error;
       console.error('[RBAC] Erro ao limpar sessões expiradas:', err);

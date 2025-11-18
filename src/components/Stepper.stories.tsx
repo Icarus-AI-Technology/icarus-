@@ -63,7 +63,7 @@ export const Interactive: Story = {
         <Stepper steps={steps} currentStep={currentStep} />
         
         <div className="mt-8 p-4 orx-card">
-          <h3 className="orx-font-semibold mb-2">Passo {currentStep}: {steps[currentStep - 1].label}</h3>
+          <h3 className="orx-orx-font-semibold mb-2">Passo {currentStep}: {steps[currentStep - 1].label}</h3>
           <p className="orx-text-sm text-[var(--text-secondary)] mb-4">
             Conteúdo do passo {currentStep}
           </p>

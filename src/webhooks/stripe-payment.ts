@@ -15,6 +15,7 @@
 
 import { Request, Response } from 'express';
 import crypto from 'crypto';
+import Stripe from 'stripe';
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || '';
 
@@ -68,16 +69,21 @@ export async function stripeWebhookHandler(req: Request, res: Response) {
     }
 
     res.json({ received: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ Erro ao processar webhook Stripe:', error);
-    res.status(400).send(`Webhook Error: ${error.message}`);
+    const message = error instanceof Error ? error.message : String(error);
+    res.status(400).send(`Webhook Error: ${message}`);
   }
 }
 
 /**
  * Verifica assinatura do webhook
  */
-function verifyStripeSignature(payload: string, signature: string, secret: string): any {
+function verifyStripeSignature(
+  payload: string,
+  signature: string,
+  secret: string
+): Stripe.Event {
   if (!secret) {
     throw new Error('STRIPE_WEBHOOK_SECRET não configurado');
   }
@@ -111,12 +117,12 @@ function verifyStripeSignature(payload: string, signature: string, secret: strin
     throw new Error('Invalid signature');
   }
 
-  return JSON.parse(payload);
+  return JSON.parse(payload) as Stripe.Event;
 }
 
 // ===== Event Handlers =====
 
-async function handlePaymentSuccess(paymentIntent: any) {
+async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
   console.log('✅ Pagamento bem-sucedido:', paymentIntent.id);
   
   // TODO: Atualizar pedido no banco de dados
@@ -124,32 +130,32 @@ async function handlePaymentSuccess(paymentIntent: any) {
   // TODO: Liberar acesso ao produto/serviço
 }
 
-async function handlePaymentFailed(paymentIntent: any) {
+async function handlePaymentFailed(paymentIntent: Stripe.PaymentIntent) {
   console.log('❌ Pagamento falhou:', paymentIntent.id);
   
   // TODO: Notificar cliente
   // TODO: Atualizar status do pedido
 }
 
-async function handleChargeSuccess(charge: any) {
+async function handleChargeSuccess(charge: Stripe.Charge) {
   console.log('✅ Cobrança bem-sucedida:', charge.id);
   
   // TODO: Registrar transação
 }
 
-async function handleChargeFailed(charge: any) {
+async function handleChargeFailed(charge: Stripe.Charge) {
   console.log('❌ Cobrança falhou:', charge.id);
   
   // TODO: Notificar administrador
 }
 
-async function handleSubscriptionUpdated(subscription: any) {
+async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
   console.log('🔄 Assinatura atualizada:', subscription.id);
   
   // TODO: Atualizar status da assinatura no banco
 }
 
-async function handleSubscriptionDeleted(subscription: any) {
+async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
   console.log('🗑️  Assinatura cancelada:', subscription.id);
   
   // TODO: Desativar acesso do usuário

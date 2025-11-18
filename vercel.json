@@ -6,6 +6,10 @@
   "devCommand": "npm run dev",
   "rewrites": [
     {
+      "source": "/api/contact",
+      "destination": "/api/contact.ts"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
@@ -40,6 +44,20 @@
           "value": "public, max-age=0, must-revalidate"
         }
       ]
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/recalcular-kpis",
+      "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/cron/refresh-views",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/cron/cleanup-webhooks",
+      "schedule": "0 2 * * *"
     }
   ]
 }

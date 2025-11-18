@@ -85,9 +85,9 @@ export const NeumoButton = forwardRef<HTMLButtonElement, NeumoButtonProps>(
         className={cn(
           // Base
           'inline-flex items-center justify-center',
-          'rounded-lg orx-font-medium',
+          'rounded-lg orx-orx-font-medium',
           'transition-all duration-200 ease-out',
-          'focus:outline-none focus:ring-2 focus:ring-orx-primary/30 focus:ring-offset-2',
+          'focus:outline-none focus:ring-3 focus:ring-orx-primary/30 focus:ring-offset-2',
           // Variante
           variantStyles[variant],
           // Tamanho

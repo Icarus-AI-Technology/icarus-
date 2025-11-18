@@ -99,7 +99,7 @@ export function ChatIA() {
             <Bot className="w-6 h-6 text-white" />
           </div>
           <div className="flex-1">
-            <h3 className="orx-font-semibold text-slate-900 dark:text-white">Chat IA - Assistente ICARUS</h3>
+            <h3 className="orx-orx-font-semibold text-slate-900 dark:text-white">Chat IA - Assistente ICARUS</h3>
             <p className="orx-text-xs text-slate-600 dark:text-slate-400">
               Powered by: Ollama + GPT-4 + Claude 3.5
             </p>

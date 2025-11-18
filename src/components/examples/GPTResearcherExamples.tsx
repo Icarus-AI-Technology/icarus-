@@ -156,7 +156,7 @@ export function ExemploComHook() {
           <button
             onClick={handlePesquisar}
             disabled={isResearching || !isConnected || !query.trim()}
-            className={`px-6 py-2 rounded-lg orx-font-medium ${
+            className={`px-6 py-2 rounded-lg orx-orx-font-medium ${
               isResearching || !isConnected || !query.trim()
                 ? 'bg-gray-300 text-muted cursor-not-allowed'
                 : 'bg-primary text-inverse hover:bg-primary'

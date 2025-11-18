@@ -562,8 +562,9 @@ export class APIGatewayService {
 
       if (error) throw error;
 
-      console.log(`[APIGateway] ${data} entradas de cache expiradas removidas`);
-      return data || 0;
+      const removedCount = typeof data === 'number' ? data : Number(data ?? 0) || 0;
+      console.log(`[APIGateway] ${removedCount} entradas de cache expiradas removidas`);
+      return removedCount;
     } catch (error) {
       const err = error as Error;
       console.error('[APIGateway] Erro ao limpar cache:', err);

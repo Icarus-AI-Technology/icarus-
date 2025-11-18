@@ -72,7 +72,7 @@ export const NeumoInput = forwardRef<HTMLInputElement, NeumoInputProps>(
           <label
             htmlFor={inputId}
             className={cn(
-              'block orx-text-sm orx-font-medium text-orx-text-primary mb-2',
+              'block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2',
               disabled && 'opacity-50 cursor-not-allowed',
               labelClassName
             )}

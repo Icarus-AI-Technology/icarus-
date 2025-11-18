@@ -1,14 +1,14 @@
 {
   "summary": {
-    "timestamp": "2025-11-18T04:12:38.340Z",
+    "timestamp": "2025-11-18T11:15:45.821Z",
     "filesScanned": 769,
     "totals": {
-      "typography.text": 2466,
-      "typography.font": 58,
-      "colors.hex": 471,
-      "shadows.inline": 87
+      "typography.text": 2412,
+      "typography.font": 21,
+      "colors.hex": 178,
+      "shadows.inline": 0
     },
-    "violations": 325
+    "violations": 313
   },
   "results": [
     {
@@ -237,126 +237,11 @@
       ]
     },
     {
-      "file": "src/accessibility.css",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 1
-        },
-        {
-          "rule": "typography.font",
-          "desc": "font-* classes",
-          "count": 9
-        },
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 10
-        },
-        {
-          "rule": "shadows.inline",
-          "desc": "Inline box-shadow",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "file": "src/animations.css",
-      "findings": [
-        {
-          "rule": "shadows.inline",
-          "desc": "Inline box-shadow",
-          "count": 16
-        }
-      ]
-    },
-    {
-      "file": "src/design-tokens.css",
-      "findings": [
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 28
-        },
-        {
-          "rule": "shadows.inline",
-          "desc": "Inline box-shadow",
-          "count": 8
-        }
-      ]
-    },
-    {
-      "file": "src/globals.css",
-      "findings": [
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 13
-        },
-        {
-          "rule": "shadows.inline",
-          "desc": "Inline box-shadow",
-          "count": 7
-        }
-      ]
-    },
-    {
-      "file": "src/main-test.tsx",
-      "findings": [
-        {
-          "rule": "typography.font",
-          "desc": "font-* classes",
-          "count": 1
-        }
-      ]
-    },
-    {
       "file": "src/main.tsx",
       "findings": [
         {
           "rule": "colors.hex",
           "desc": "Hex colors",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "file": "src/oraclusx-ds.css",
-      "findings": [
-        {
-          "rule": "typography.font",
-          "desc": "font-* classes",
-          "count": 4
-        },
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 80
-        },
-        {
-          "rule": "shadows.inline",
-          "desc": "Inline box-shadow",
-          "count": 15
-        }
-      ]
-    },
-    {
-      "file": "src/oraclusx-utils.css",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 1
-        },
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 4
-        },
-        {
-          "rule": "shadows.inline",
-          "desc": "Inline box-shadow",
           "count": 1
         }
       ]
@@ -508,136 +393,6 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 2
-        }
-      ]
-    },
-    {
-      "file": "src/financeiro/FormularioContasPagar.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 5
-        }
-      ]
-    },
-    {
-      "file": "src/financeiro/FormularioContasReceber.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 5
-        }
-      ]
-    },
-    {
-      "file": "src/financeiro/FormularioNotasFiscais.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 4
-        }
-      ]
-    },
-    {
-      "file": "src/modules/APIGatewayDashboard.tsx",
-      "findings": [
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 7
-        }
-      ]
-    },
-    {
-      "file": "src/modules/BIDashboardInterativo.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 48
-        },
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 7
-        }
-      ]
-    },
-    {
-      "file": "src/modules/FaturamentoNFeCompleto.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 35
-        },
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 4
-        }
-      ]
-    },
-    {
-      "file": "src/modules/GestaoContabil.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 1
-        },
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 5
-        }
-      ]
-    },
-    {
-      "file": "src/modules/GestaoUsuariosPermissoes.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 3
-        },
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 4
-        }
-      ]
-    },
-    {
-      "file": "src/modules/LicitacoesPropostas.tsx",
-      "findings": [
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 4
-        }
-      ]
-    },
-    {
-      "file": "src/modules/Microsoft365IntegrationPanel.tsx",
-      "findings": [
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 6
-        }
-      ]
-    },
-    {
-      "file": "src/modules/RelatoriosRegulatorios.tsx",
-      "findings": [
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 4
         }
       ]
     },
@@ -1222,6 +977,136 @@
       ]
     },
     {
+      "file": "src/financeiro/FormularioContasPagar.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "file": "src/financeiro/FormularioContasReceber.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "file": "src/financeiro/FormularioNotasFiscais.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "file": "src/modules/APIGatewayDashboard.tsx",
+      "findings": [
+        {
+          "rule": "colors.hex",
+          "desc": "Hex colors",
+          "count": 7
+        }
+      ]
+    },
+    {
+      "file": "src/modules/BIDashboardInterativo.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 48
+        },
+        {
+          "rule": "colors.hex",
+          "desc": "Hex colors",
+          "count": 7
+        }
+      ]
+    },
+    {
+      "file": "src/modules/FaturamentoNFeCompleto.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 35
+        },
+        {
+          "rule": "colors.hex",
+          "desc": "Hex colors",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "file": "src/modules/GestaoContabil.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 1
+        },
+        {
+          "rule": "colors.hex",
+          "desc": "Hex colors",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "file": "src/modules/GestaoUsuariosPermissoes.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 3
+        },
+        {
+          "rule": "colors.hex",
+          "desc": "Hex colors",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "file": "src/modules/LicitacoesPropostas.tsx",
+      "findings": [
+        {
+          "rule": "colors.hex",
+          "desc": "Hex colors",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "file": "src/modules/Microsoft365IntegrationPanel.tsx",
+      "findings": [
+        {
+          "rule": "colors.hex",
+          "desc": "Hex colors",
+          "count": 6
+        }
+      ]
+    },
+    {
+      "file": "src/modules/RelatoriosRegulatorios.tsx",
+      "findings": [
+        {
+          "rule": "colors.hex",
+          "desc": "Hex colors",
+          "count": 4
+        }
+      ]
+    },
+    {
       "file": "src/operacional/FormularioCirurgias.tsx",
       "findings": [
         {
@@ -1327,7 +1212,7 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 1
+          "count": 2
         }
       ]
     },
@@ -1382,126 +1267,11 @@
       ]
     },
     {
-      "file": "src/styles/design-tokens.css",
-      "findings": [
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 28
-        },
-        {
-          "rule": "shadows.inline",
-          "desc": "Inline box-shadow",
-          "count": 8
-        }
-      ]
-    },
-    {
-      "file": "src/styles/globals.css",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 1
-        },
-        {
-          "rule": "typography.font",
-          "desc": "font-* classes",
-          "count": 30
-        },
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 21
-        },
-        {
-          "rule": "shadows.inline",
-          "desc": "Inline box-shadow",
-          "count": 15
-        }
-      ]
-    },
-    {
-      "file": "src/styles/oraclusx-ds.css",
-      "findings": [
-        {
-          "rule": "typography.font",
-          "desc": "font-* classes",
-          "count": 4
-        },
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 80
-        },
-        {
-          "rule": "shadows.inline",
-          "desc": "Inline box-shadow",
-          "count": 15
-        }
-      ]
-    },
-    {
-      "file": "src/styles/oraclusx-utils.css",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 1
-        },
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 4
-        },
-        {
-          "rule": "shadows.inline",
-          "desc": "Inline box-shadow",
-          "count": 1
-        }
-      ]
-    },
-    {
       "file": "src/utils/browserCompatibility.ts",
       "findings": [
         {
           "rule": "colors.hex",
           "desc": "Hex colors",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "file": "src/lib/email/resend.service.ts",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 7
-        },
-        {
-          "rule": "typography.font",
-          "desc": "font-* classes",
-          "count": 5
-        },
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 18
-        }
-      ]
-    },
-    {
-      "file": "src/lib/microsoft365/Microsoft365Service.ts",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 1
-        },
-        {
-          "rule": "typography.font",
-          "desc": "font-* classes",
           "count": 1
         }
       ]
@@ -1517,12 +1287,52 @@
       ]
     },
     {
+      "file": "src/components/cadastros/DocumentosUpload.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 27
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 8
+        }
+      ]
+    },
+    {
       "file": "src/components/dashboard/Charts.tsx",
       "findings": [
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 2
+          "count": 7
+        }
+      ]
+    },
+    {
+      "file": "src/components/dashboard/ChartsAvancados.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "file": "src/components/dashboard/DashboardCache.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 11
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 11
         }
       ]
     },
@@ -1533,11 +1343,6 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 2
-        },
-        {
-          "rule": "typography.font",
-          "desc": "font-* classes",
-          "count": 1
         }
       ]
     },
@@ -1548,16 +1353,6 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 1
-        }
-      ]
-    },
-    {
-      "file": "src/components/cadastros/DocumentosUpload.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 15
         }
       ]
     },
@@ -1578,16 +1373,6 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 1
-        }
-      ]
-    },
-    {
-      "file": "src/components/templates/ModulePage.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 2
         }
       ]
     },
@@ -2202,7 +1987,7 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 2
+          "count": 4
         }
       ]
     },
@@ -2967,86 +2752,6 @@
       ]
     },
     {
-      "file": "src/pages/agentes/AgentPerformance.tsx",
-      "findings": [
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 12
-        }
-      ]
-    },
-    {
-      "file": "src/pages/cadastros/CadastroEquipesMedicas.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 4
-        }
-      ]
-    },
-    {
-      "file": "src/pages/cadastros/CadastroHospitais.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 2
-        }
-      ]
-    },
-    {
-      "file": "src/pages/cadastros/CadastroMedicos.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 78
-        }
-      ]
-    },
-    {
-      "file": "src/pages/cadastros/CadastroPessoaJuridica.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 5
-        }
-      ]
-    },
-    {
-      "file": "src/pages/cadastros/CadastroTransportadoras.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 4
-        }
-      ]
-    },
-    {
-      "file": "src/pages/cadastros/DashboardCadastros.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 22
-        }
-      ]
-    },
-    {
-      "file": "src/pages/cadastros/TabelasPrecos.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 48
-        }
-      ]
-    },
-    {
       "file": "src/components/ui/accordion.tsx",
       "findings": [
         {
@@ -3127,12 +2832,107 @@
       ]
     },
     {
+      "file": "src/components/workflow/WorkflowTimeline.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 3
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/components/templates/ModulePage.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/pages/agentes/AgentPerformance.tsx",
+      "findings": [
+        {
+          "rule": "colors.hex",
+          "desc": "Hex colors",
+          "count": 12
+        }
+      ]
+    },
+    {
       "file": "src/pages/cirurgias/GestaoProcedimentos.tsx",
       "findings": [
         {
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 7
+        }
+      ]
+    },
+    {
+      "file": "src/pages/cadastros/CadastroEquipesMedicas.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "file": "src/pages/cadastros/CadastroHospitais.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/pages/cadastros/CadastroPessoaJuridica.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "file": "src/pages/cadastros/CadastroTransportadoras.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "file": "src/pages/cadastros/DashboardCadastros.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 22
+        }
+      ]
+    },
+    {
+      "file": "src/pages/cadastros/TabelasPrecos.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 48
         }
       ]
     },
@@ -3177,16 +2977,6 @@
       ]
     },
     {
-      "file": "src/pages/examples/MasksExample.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 2
-        }
-      ]
-    },
-    {
       "file": "src/pages/financeiro/GestaoFaturamento.tsx",
       "findings": [
         {
@@ -3198,6 +2988,16 @@
     },
     {
       "file": "src/pages/financeiro/GestaoNFe.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 6
+        }
+      ]
+    },
+    {
+      "file": "src/pages/relatorios/DashboardsAnaliticos.tsx",
       "findings": [
         {
           "rule": "typography.text",
@@ -3307,12 +3107,12 @@
       ]
     },
     {
-      "file": "src/pages/relatorios/DashboardsAnaliticos.tsx",
+      "file": "src/pages/examples/MasksExample.tsx",
       "findings": [
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 6
+          "count": 2
         }
       ]
     },
@@ -3347,22 +3147,12 @@
       ]
     },
     {
-      "file": "src/services/integrations/SendGridService.ts",
+      "file": "src/components/modules/logistica/GestaoEntregas.tsx",
       "findings": [
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 2
-        },
-        {
-          "rule": "typography.font",
-          "desc": "font-* classes",
-          "count": 3
-        },
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 7
+          "count": 35
         }
       ]
     },
@@ -3433,16 +3223,6 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 46
-        }
-      ]
-    },
-    {
-      "file": "src/components/modules/logistica/GestaoEntregas.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 35
         }
       ]
     }

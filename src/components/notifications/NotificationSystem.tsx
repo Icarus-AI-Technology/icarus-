@@ -153,7 +153,7 @@ export const NotificationSystem: React.FC = () => {
       >
         <Bell className="w-6 h-6 text-gray-700" />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-600 text-white orx-text-xs orx-font-bold rounded-full flex items-center justify-center">
+          <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-600 text-white orx-text-xs orx-orx-font-bold rounded-full flex items-center justify-center">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
@@ -164,7 +164,7 @@ export const NotificationSystem: React.FC = () => {
         <div className="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-xl border border-gray-200 z-50 max-h-[600px] overflow-hidden flex flex-col">
           {/* Header */}
           <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
-            <h3 className="orx-font-semibold text-gray-900">Notificações</h3>
+            <h3 className="orx-orx-font-semibold text-gray-900">Notificações</h3>
             <button
               onClick={() => setIsOpen(false)}
               className="p-1 hover:bg-gray-100 rounded transition"
@@ -193,7 +193,7 @@ export const NotificationSystem: React.FC = () => {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between mb-1">
-                          <h4 className="orx-font-medium orx-text-sm text-gray-900">
+                          <h4 className="orx-orx-font-medium orx-text-sm text-gray-900">
                             {notification.titulo}
                           </h4>
                           {!notification.lido && (
@@ -215,7 +215,7 @@ export const NotificationSystem: React.FC = () => {
                           </span>
                           <button
                             onClick={() => resolveNotification(notification.id)}
-                            className="orx-text-xs text-blue-600 hover:text-blue-800 orx-font-medium"
+                            className="orx-text-xs text-blue-600 hover:text-blue-800 orx-orx-font-medium"
                           >
                             Resolver
                           </button>
@@ -233,7 +233,7 @@ export const NotificationSystem: React.FC = () => {
             <div className="px-4 py-3 border-t border-gray-200">
               <button
                 onClick={loadNotifications}
-                className="w-full text-center orx-text-sm text-blue-600 hover:text-blue-800 orx-font-medium"
+                className="w-full text-center orx-text-sm text-blue-600 hover:text-blue-800 orx-orx-font-medium"
               >
                 Atualizar
               </button>

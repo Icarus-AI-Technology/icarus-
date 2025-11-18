@@ -48,7 +48,7 @@ const RadioComponent = React.forwardRef<HTMLInputElement, RadioProps>(
             {label && (
               <label
                 htmlFor={radioId}
-                className="text-body-sm text-primary dark:text-gray-100 cursor-pointer orx-font-medium"
+                className="text-body-sm text-primary dark:text-gray-100 cursor-pointer orx-orx-font-medium"
               >
                 {label}
               </label>

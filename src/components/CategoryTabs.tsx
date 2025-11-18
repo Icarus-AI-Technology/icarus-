@@ -130,7 +130,7 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
             />
             <span
               className={cn(
-                'orx-font-medium text-[var(--orx-text-primary)]',
+                'orx-orx-font-medium text-[var(--orx-text-primary)]',
                 variant === 'default' ? 'orx-text-xs' : 'orx-text-sm'
               )}
             >

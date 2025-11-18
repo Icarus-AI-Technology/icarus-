@@ -475,7 +475,7 @@ export default function FaturamentoNFeCompleto() {
             </div>
             <div className="flex-1 ml-4">
               <p className="text-white/80 mb-1 text-[0.813rem]">NF-es Mês</p>
-              <p className="text-white text-[0.813rem] orx-font-bold">{kpis.total_mes}</p>
+              <p className="text-white text-[0.813rem] orx-orx-font-bold">{kpis.total_mes}</p>
               <div className="flex items-center gap-1 mt-2 text-green-300 text-[0.813rem]">
                 <TrendingUp size={16} />
                 <span>{kpis.autorizadas} autorizadas</span>
@@ -491,7 +491,7 @@ export default function FaturamentoNFeCompleto() {
             </div>
             <div className="flex-1 ml-4">
               <p className="text-white/80 mb-1 text-[0.813rem]">Valor Total</p>
-              <p className="text-white text-[0.813rem] orx-font-bold">
+              <p className="text-white text-[0.813rem] orx-orx-font-bold">
                 {new Intl.NumberFormat('pt-BR', {
                   style: 'currency',
                   currency: 'BRL',
@@ -513,7 +513,7 @@ export default function FaturamentoNFeCompleto() {
             </div>
             <div className="flex-1 ml-4">
               <p className="text-white/80 mb-1 text-[0.813rem]">Taxa Autorização</p>
-              <p className="text-white text-[0.813rem] orx-font-bold">
+              <p className="text-white text-[0.813rem] orx-orx-font-bold">
                 {kpis.taxa_autorizacao.toFixed(1)}%
               </p>
               <div className="flex items-center gap-1 mt-2 text-[0.813rem]">
@@ -537,7 +537,7 @@ export default function FaturamentoNFeCompleto() {
             </div>
             <div className="flex-1 ml-4">
               <p className="text-white/80 mb-1 text-[0.813rem]">Conformidade ANVISA</p>
-              <p className="text-white text-[0.813rem] orx-font-bold">
+              <p className="text-white text-[0.813rem] orx-orx-font-bold">
                 {kpis.conformidade_anvisa.toFixed(1)}%
               </p>
               <div className="flex items-center gap-1 mt-2 text-[0.813rem]">
@@ -558,7 +558,7 @@ export default function FaturamentoNFeCompleto() {
           <div className="flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-yellow-500 mt-0.5" />
             <div>
-              <h3 className="text-yellow-800 dark:text-yellow-200 orx-font-medium">
+              <h3 className="text-yellow-800 dark:text-yellow-200 orx-orx-font-medium">
                 Alertas de Conformidade
               </h3>
               <ul className="mt-2 space-y-1 text-yellow-700 dark:text-yellow-300 text-[0.813rem]">
@@ -576,7 +576,7 @@ export default function FaturamentoNFeCompleto() {
       
       {/* Lista de NF-es Recentes */}
       <Card className="p-6">
-        <h2 className="mb-4 text-[0.813rem] orx-font-semibold">NF-es Recentes</h2>
+        <h2 className="mb-4 text-[0.813rem] orx-orx-font-semibold">NF-es Recentes</h2>
         
         {loading ? (
           <div className="flex items-center justify-center py-12">
@@ -605,7 +605,7 @@ export default function FaturamentoNFeCompleto() {
                   
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="orx-font-medium">NF-e {nfe.numero}</span>
+                      <span className="orx-orx-font-medium">NF-e {nfe.numero}</span>
                       <span className="text-[var(--text-secondary)] text-[0.813rem]">
                         Série {nfe.serie}
                       </span>
@@ -621,7 +621,7 @@ export default function FaturamentoNFeCompleto() {
                 
                 <div className="flex items-center gap-4">
                   <div className="text-right">
-                    <div className="orx-font-medium">
+                    <div className="orx-orx-font-medium">
                       {new Intl.NumberFormat('pt-BR', {
                         style: 'currency',
                         currency: 'BRL',
@@ -673,7 +673,7 @@ export default function FaturamentoNFeCompleto() {
   
   const renderEmitir = () => (
     <Card className="p-6">
-      <h2 className="mb-4 text-[0.813rem] orx-font-semibold">Emitir Nova NF-e</h2>
+      <h2 className="mb-4 text-[0.813rem] orx-orx-font-semibold">Emitir Nova NF-e</h2>
       <p className="text-[var(--text-secondary)] mb-4">
         Formulário de emissão será implementado na próxima iteração com:
       </p>
@@ -726,10 +726,10 @@ export default function FaturamentoNFeCompleto() {
   
   const renderRastreabilidade = () => (
     <Card className="p-6">
-      <h2 className="mb-4 text-[0.813rem] orx-font-semibold">Rastreabilidade ANVISA</h2>
+      <h2 className="mb-4 text-[0.813rem] orx-orx-font-semibold">Rastreabilidade ANVISA</h2>
       <div className="space-y-4">
         <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-          <h3 className="text-blue-800 dark:text-blue-200 mb-2 orx-font-medium">
+          <h3 className="text-blue-800 dark:text-blue-200 mb-2 orx-orx-font-medium">
             RDC ANVISA 157/2017
           </h3>
           <p className="text-blue-700 dark:text-blue-300 text-[0.813rem]">
@@ -742,9 +742,9 @@ export default function FaturamentoNFeCompleto() {
           <div className="p-4 neuro-flat rounded-lg">
             <div className="flex items-center gap-2 mb-2">
               <Package className="w-5 h-5 text-[var(--orx-primary)]" />
-              <span className="orx-font-medium text-[0.813rem]">Produtos Rastreados</span>
+              <span className="orx-orx-font-medium text-[0.813rem]">Produtos Rastreados</span>
             </div>
-            <p className="text-[0.813rem] orx-font-bold">
+            <p className="text-[0.813rem] orx-orx-font-bold">
               {kpis.conformidade_anvisa.toFixed(1)}%
             </p>
             <p className="text-[var(--text-secondary)] mt-1 text-[0.813rem]">
@@ -755,9 +755,9 @@ export default function FaturamentoNFeCompleto() {
           <div className="p-4 neuro-flat rounded-lg">
             <div className="flex items-center gap-2 mb-2">
               <AlertCircle className="w-5 h-5 text-yellow-500" />
-              <span className="orx-font-medium">Alertas Validade</span>
+              <span className="orx-orx-font-medium">Alertas Validade</span>
             </div>
-            <p className="text-yellow-600 text-[0.813rem] orx-font-bold">
+            <p className="text-yellow-600 text-[0.813rem] orx-orx-font-bold">
               12
             </p>
             <p className="text-[var(--text-secondary)] mt-1 text-[0.813rem]">
@@ -768,9 +768,9 @@ export default function FaturamentoNFeCompleto() {
           <div className="p-4 neuro-flat rounded-lg">
             <div className="flex items-center gap-2 mb-2">
               <CheckCircle className="w-5 h-5 text-green-500" />
-              <span className="orx-font-medium">Conformidade</span>
+              <span className="orx-orx-font-medium">Conformidade</span>
             </div>
-            <p className="text-green-600 text-[0.813rem] orx-font-bold">
+            <p className="text-green-600 text-[0.813rem] orx-orx-font-bold">
               {kpis.conformidade_anvisa >= 95 ? 'OK' : 'Atenção'}
             </p>
             <p className="text-[var(--text-secondary)] mt-1 text-[0.813rem]">
@@ -789,7 +789,7 @@ export default function FaturamentoNFeCompleto() {
         {/* Header */}
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-[var(--text-primary)] mb-2 text-[0.813rem] orx-font-bold">
+            <h1 className="text-[var(--text-primary)] mb-2 text-[0.813rem] orx-orx-font-bold">
               Faturamento NF-e Completo
             </h1>
             <p className="text-[var(--text-secondary)]">
@@ -800,14 +800,14 @@ export default function FaturamentoNFeCompleto() {
           <div className="flex items-center gap-4">
             <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-green-500" />
-              <span className="text-[0.813rem] orx-font-medium">
+              <span className="text-[0.813rem] orx-orx-font-medium">
                 Compliance OK
               </span>
             </div>
             
             <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-[0.813rem] orx-font-medium">
+              <span className="text-[0.813rem] orx-orx-font-medium">
                 SEFAZ Online
               </span>
             </div>
@@ -826,7 +826,7 @@ export default function FaturamentoNFeCompleto() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id as 'dashboard' | 'emitir' | 'consultar' | 'rastreabilidade')}
               className={`
-                px-6 py-3 rounded-xl orx-font-medium transition-all flex items-center gap-2
+                px-6 py-3 rounded-xl orx-orx-font-medium transition-all flex items-center gap-2
                 ${activeTab === tab.id
                   ? 'neuro-raised text-[var(--orx-primary)]'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'

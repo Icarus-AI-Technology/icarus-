@@ -433,7 +433,7 @@ export default function FinanceiroAvancado() {
     <div className="space-y-6">
       {/* Resumo Executivo */}
       <Card className="neuro-raised p-6">
-          <h3 className="text-body-lg text-[var(--text-primary)] mb-4 flex items-center gap-2 orx-font-medium">
+          <h3 className="text-body-lg text-[var(--text-primary)] mb-4 flex items-center gap-2 orx-orx-font-medium">
           <BarChart3 className="w-5 h-5 text-[var(--primary)]" />
           Resumo Financeiro - Mês Atual
         </h3>
@@ -467,7 +467,7 @@ export default function FinanceiroAvancado() {
           <div className="flex items-start gap-3">
             <AlertTriangle className="w-5 h-5 text-error flex-shrink-0 mt-1" />
             <div>
-              <h4 className="text-body-md text-[var(--text-primary)] mb-1 orx-font-medium">
+              <h4 className="text-body-md text-[var(--text-primary)] mb-1 orx-orx-font-medium">
                 ⚠️ {resumoReceber.pendentes} Contas a Receber Vencidas
               </h4>
               <p className="text-body-sm text-[var(--text-secondary)]">
@@ -481,7 +481,7 @@ export default function FinanceiroAvancado() {
       {/* Gráficos Placeholder */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="neuro-raised p-6">
-          <h3 className="text-body-lg text-[var(--text-primary)] mb-4 orx-font-medium">Fluxo de Caixa (12 meses)</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] mb-4 orx-orx-font-medium">Fluxo de Caixa (12 meses)</h3>
           <div className="h-64 flex items-center justify-center text-[var(--text-secondary)]">
             <BarChart3 className="w-16 h-16 mb-2" />
             <p>Gráfico em desenvolvimento</p>
@@ -489,7 +489,7 @@ export default function FinanceiroAvancado() {
         </Card>
 
         <Card className="neuro-raised p-6">
-          <h3 className="text-body-lg text-[var(--text-primary)] mb-4 orx-font-medium">Projeção ARIMA (90 dias)</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] mb-4 orx-orx-font-medium">Projeção ARIMA (90 dias)</h3>
           <div className="h-64 flex items-center justify-center text-[var(--text-secondary)]">
             <TrendingUp className="w-16 h-16 mb-2" />
             <p>Projeção com IA em desenvolvimento</p>
@@ -539,7 +539,7 @@ export default function FinanceiroAvancado() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-6 py-3 rounded-xl orx-font-medium transition-all ${
+            className={`px-6 py-3 rounded-xl orx-orx-font-medium transition-all ${
               activeTab === tab.id
                 ?"neuro-raised text-[var(--primary)]"
                 :"text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
@@ -564,13 +564,13 @@ export default function FinanceiroAvancado() {
             <table className="w-full">
               <thead className="border-b border-[var(--border)]">
                 <tr>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Cliente</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Documento</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Valor</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Vencimento</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Status</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Score IA</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Ações</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Cliente</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Documento</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Valor</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Vencimento</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Status</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Score IA</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Ações</th>
                 </tr>
               </thead>
               <tbody>
@@ -578,10 +578,10 @@ export default function FinanceiroAvancado() {
                   <tr key={conta.id} className="border-b border-[var(--border)] hover:bg-[var(--surface-hover)] transition-colors">
                     <td className="p-4 text-[var(--text-primary)]">{conta.cliente_nome}</td>
                     <td className="p-4 text-[var(--text-secondary)]">{conta.numero_documento}</td>
-                    <td className="p-4 text-[var(--text-primary)] orx-font-medium">{formatCurrency(conta.valor_original)}</td>
+                    <td className="p-4 text-[var(--text-primary)] orx-orx-font-medium">{formatCurrency(conta.valor_original)}</td>
                     <td className="p-4 text-[var(--text-primary)]">{formatDate(conta.data_vencimento)}</td>
                     <td className="p-4">
-                      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs orx-font-medium ${
+                      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs orx-orx-font-medium ${
                         conta.status ==="pago" ?"text-success bg-success/5" :
                         conta.status ==="vencido" ?"text-error bg-destructive/5" :"text-warning bg-warning/5"
                       }`}>
@@ -590,7 +590,7 @@ export default function FinanceiroAvancado() {
                     </td>
                     <td className="p-4">
                       {conta.score_inadimplencia ? (
-                        <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs orx-font-medium ${
+                        <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs orx-orx-font-medium ${
                           conta.score_inadimplencia > 70 ?"text-error bg-destructive/5" :
                           conta.score_inadimplencia > 40 ?"text-warning bg-warning/5" :"text-success bg-success/5"
                         }`}>
@@ -636,7 +636,7 @@ export default function FinanceiroAvancado() {
       {React.createElement(icon, {
         className:"w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4",
       })}
-      <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 orx-font-medium">{titulo}</h3>
+      <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 orx-orx-font-medium">{titulo}</h3>
       <p className="text-[var(--text-secondary)]">Módulo em desenvolvimento</p>
     </Card>
   );
@@ -654,7 +654,7 @@ export default function FinanceiroAvancado() {
           </div>
           <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-success/50 animate-pulse" />
-            <span className="text-body-sm text-[var(--text-primary)] orx-font-medium">
+            <span className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">
               {formatCurrency(resumoFluxo?.saldo || 0)}
             </span>
           </div>
@@ -671,12 +671,12 @@ export default function FinanceiroAvancado() {
               }`}
             >
               <sub.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
-              <span className="text-body-xs text-[var(--text-primary)] px-2 orx-font-medium">{sub.label}</span>
+              <span className="text-body-xs text-[var(--text-primary)] px-2 orx-orx-font-medium">{sub.label}</span>
               {sub.count > 0 && (
                 <span className="text-body-lg font-display text-[var(--text-primary)] mt-1">{sub.count}</span>
               )}
               {sub.badge && (
-                <span className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[0.625rem] bg-accent/10 text-accent orx-font-medium">
+                <span className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[0.625rem] bg-accent/10 text-accent orx-orx-font-medium">
                   {sub.badge}
                 </span>
               )}

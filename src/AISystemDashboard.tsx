@@ -294,7 +294,7 @@ export default function AISystemDashboard() {
               <Brain size={24} className="text-[var(--orx-primary)]" />
             </div>
             <div>
-              <h3 className="orx-text-xl orx-font-semibold text-[var(--orx-text-primary)]">
+              <h3 className="orx-text-xl orx-orx-font-semibold text-[var(--orx-text-primary)]">
                 Agentes de IA
               </h3>
               <p className="orx-text-sm text-[var(--orx-text-secondary)]">
@@ -311,7 +311,7 @@ export default function AISystemDashboard() {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="flex items-start justify-between mb-3">
-                  <h4 className="orx-font-semibold text-[var(--orx-text-primary)]">
+                  <h4 className="orx-orx-font-semibold text-[var(--orx-text-primary)]">
                     {agent.name}
                   </h4>
                   <Badge variant={getStatusVariant(agent.status)} size="sm">
@@ -321,15 +321,15 @@ export default function AISystemDashboard() {
                 <div className="space-y-2 orx-text-sm">
                   <div className="flex justify-between">
                     <span className="text-[var(--orx-text-secondary)]">Execuções</span>
-                    <span className="orx-font-medium text-[var(--orx-text-primary)]">{agent.executions}</span>
+                    <span className="orx-orx-font-medium text-[var(--orx-text-primary)]">{agent.executions}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-[var(--orx-text-secondary)]">Taxa Sucesso</span>
-                    <span className="orx-font-medium text-[var(--orx-success)]">{agent.successRate.toFixed(1)}%</span>
+                    <span className="orx-orx-font-medium text-[var(--orx-success)]">{agent.successRate.toFixed(1)}%</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-[var(--orx-text-secondary)]">Tempo Médio</span>
-                    <span className="orx-font-medium text-[var(--orx-text-primary)]">{agent.avgTime.toFixed(0)}ms</span>
+                    <span className="orx-orx-font-medium text-[var(--orx-text-primary)]">{agent.avgTime.toFixed(0)}ms</span>
                   </div>
                 </div>
               </div>
@@ -348,7 +348,7 @@ export default function AISystemDashboard() {
               <Activity size={24} className="text-[var(--orx-info)]" />
             </div>
             <div>
-              <h3 className="orx-text-xl orx-font-semibold text-[var(--orx-text-primary)]">
+              <h3 className="orx-text-xl orx-orx-font-semibold text-[var(--orx-text-primary)]">
                 Atividade dos Módulos
               </h3>
               <p className="orx-text-sm text-[var(--orx-text-secondary)]">
@@ -361,10 +361,10 @@ export default function AISystemDashboard() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-[var(--orx-border-muted)]">
-                  <th className="text-left p-3 orx-text-sm orx-font-medium text-[var(--orx-text-primary)]">Módulo</th>
-                  <th className="text-right p-3 orx-text-sm orx-font-medium text-[var(--orx-text-primary)]">Sugestões</th>
-                  <th className="text-right p-3 orx-text-sm orx-font-medium text-[var(--orx-text-primary)]">Conversões</th>
-                  <th className="text-right p-3 orx-text-sm orx-font-medium text-[var(--orx-text-primary)]">Taxa</th>
+                  <th className="text-left p-3 orx-text-sm orx-orx-font-medium text-[var(--orx-text-primary)]">Módulo</th>
+                  <th className="text-right p-3 orx-text-sm orx-orx-font-medium text-[var(--orx-text-primary)]">Sugestões</th>
+                  <th className="text-right p-3 orx-text-sm orx-orx-font-medium text-[var(--orx-text-primary)]">Conversões</th>
+                  <th className="text-right p-3 orx-text-sm orx-orx-font-medium text-[var(--orx-text-primary)]">Taxa</th>
                 </tr>
               </thead>
               <tbody>
@@ -378,7 +378,7 @@ export default function AISystemDashboard() {
                       className="border-b border-[var(--orx-border-muted)] hover:bg-[var(--orx-bg-muted)] orx-transition-all"
                       style={{ animationDelay: `${index * 50}ms` }}
                     >
-                      <td className="p-3 text-[var(--orx-text-primary)] orx-font-medium capitalize">
+                      <td className="p-3 text-[var(--orx-text-primary)] orx-orx-font-medium capitalize">
                         {module.module}
                       </td>
                       <td className="p-3 text-right text-[var(--orx-text-secondary)]">

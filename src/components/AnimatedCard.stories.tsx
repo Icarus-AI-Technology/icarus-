@@ -46,7 +46,7 @@ export const FadeIn: Story = {
     hoverEffect: 'lift',
     children: (
       <div className="p-6 min-w-[300px]">
-        <h3 className="orx-text-lg orx-font-semibold mb-2 text-[var(--orx-text-primary)]">
+        <h3 className="orx-text-lg orx-orx-font-semibold mb-2 text-[var(--orx-text-primary)]">
           Card com Fade In
         </h3>
         <p className="text-[var(--orx-text-secondary)]">
@@ -63,7 +63,7 @@ export const SlideUp: Story = {
     hoverEffect: 'lift',
     children: (
       <div className="p-6 min-w-[300px]">
-        <h3 className="orx-text-lg orx-font-semibold mb-2 text-[var(--orx-text-primary)]">
+        <h3 className="orx-text-lg orx-orx-font-semibold mb-2 text-[var(--orx-text-primary)]">
           Card com Slide Up
         </h3>
         <p className="text-[var(--orx-text-secondary)]">
@@ -80,7 +80,7 @@ export const ScaleIn: Story = {
     hoverEffect: 'scale',
     children: (
       <div className="p-6 min-w-[300px]">
-        <h3 className="orx-text-lg orx-font-semibold mb-2 text-[var(--orx-text-primary)]">
+        <h3 className="orx-text-lg orx-orx-font-semibold mb-2 text-[var(--orx-text-primary)]">
           Card com Scale In
         </h3>
         <p className="text-[var(--orx-text-secondary)]">
@@ -104,7 +104,7 @@ export const WithGlowEffect: Story = {
           </div>
           <div>
             <p className="orx-text-sm text-[var(--orx-text-secondary)]">Receita Mensal</p>
-            <p className="orx-text-2xl orx-font-bold text-[var(--orx-text-primary)]">R$ 45.280</p>
+            <p className="orx-text-2xl orx-orx-font-bold text-[var(--orx-text-primary)]">R$ 45.280</p>
           </div>
         </div>
         <p className="orx-text-sm text-[var(--orx-success)]">+12.5% vs mês anterior</p>
@@ -119,21 +119,21 @@ export const StaggeredCards: Story = {
       <AnimatedCard animation="slideUp" hoverEffect="lift" delay={0}>
         <div className="p-6">
           <Users size={32} className="text-[var(--orx-primary)] mb-3" />
-          <h3 className="orx-font-semibold mb-1">1.284</h3>
+          <h3 className="orx-orx-font-semibold mb-1">1.284</h3>
           <p className="orx-text-sm text-[var(--orx-text-secondary)]">Usuários Ativos</p>
         </div>
       </AnimatedCard>
       <AnimatedCard animation="slideUp" hoverEffect="lift" delay={100}>
         <div className="p-6">
           <DollarSign size={32} className="text-[var(--orx-success)] mb-3" />
-          <h3 className="orx-font-semibold mb-1">R$ 125.4K</h3>
+          <h3 className="orx-orx-font-semibold mb-1">R$ 125.4K</h3>
           <p className="orx-text-sm text-[var(--orx-text-secondary)]">Faturamento</p>
         </div>
       </AnimatedCard>
       <AnimatedCard animation="slideUp" hoverEffect="lift" delay={200}>
         <div className="p-6">
           <TrendingUp size={32} className="text-[var(--orx-info)] mb-3" />
-          <h3 className="orx-font-semibold mb-1">+18.2%</h3>
+          <h3 className="orx-orx-font-semibold mb-1">+18.2%</h3>
           <p className="orx-text-sm text-[var(--orx-text-secondary)]">Crescimento</p>
         </div>
       </AnimatedCard>
@@ -148,7 +148,7 @@ export const WithGlassmorphism: Story = {
     className: 'orx-glass-lg',
     children: (
       <div className="p-6 min-w-[300px] backdrop-blur-xl">
-        <h3 className="orx-text-lg orx-font-semibold mb-2 text-[var(--orx-text-primary)]">
+        <h3 className="orx-text-lg orx-orx-font-semibold mb-2 text-[var(--orx-text-primary)]">
           Card Glassmorphism
         </h3>
         <p className="text-[var(--orx-text-secondary)]">

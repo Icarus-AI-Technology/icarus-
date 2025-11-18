@@ -12,7 +12,6 @@
 
 import axios, { AxiosInstance } from 'axios';
 import { toAppError } from '@/utils/error';
-import { toAppError } from '@/utils/error';
 
 export interface RastreioResponse {
   codigo: string;
@@ -48,6 +47,19 @@ export interface FreteResponse {
   valorValorDeclarado: number;
   erro?: string;
 }
+
+type CorreiosEvento = {
+  dtHrCriado: string;
+  tipo: string;
+  descricao: string;
+  unidade: {
+    nome: string;
+    endereco: {
+      cidade: string;
+      uf: string;
+    };
+  };
+};
 
 export class CorreiosService {
   private api: AxiosInstance;
@@ -107,7 +119,7 @@ export class CorreiosService {
       
       return {
         codigo: response.data.codigo,
-        eventos: response.data.eventos.map((evento: any) => ({
+        eventos: response.data.eventos.map((evento: CorreiosEvento) => ({
           data: evento.dtHrCriado.split('T')[0],
           hora: evento.dtHrCriado.split('T')[1],
           local: `${evento.unidade.nome} - ${evento.unidade.endereco.cidade}/${evento.unidade.endereco.uf}`,

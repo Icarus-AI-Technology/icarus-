@@ -12,14 +12,14 @@ export default function VoiceBiometricsManager(): JSX.Element {
           Recurso em rollout: FF_VOICE_BIOMETRICS desabilitado
         </div>
       )}
-      <h1 className="orx-text-xl orx-font-semibold mb-2">Voice Biometrics</h1>
+      <h1 className="orx-text-xl orx-orx-font-semibold mb-2">Voice Biometrics</h1>
       <p className="orx-text-sm text-muted-foreground mb-4">Gestão de amostras de voz e verificação biométrica.</p>
 
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="pb-2"><CardTitle className="orx-text-base">Perfis cadastrados</CardTitle></CardHeader>
           <CardContent>
-            <div className="orx-text-2xl orx-font-semibold">324</div>
+            <div className="orx-text-2xl orx-orx-font-semibold">324</div>
             <div className="orx-text-xs text-muted-foreground">Total global</div>
           </CardContent>
         </Card>
@@ -32,7 +32,7 @@ export default function VoiceBiometricsManager(): JSX.Element {
         <Card>
           <CardHeader className="pb-2"><CardTitle className="orx-text-base">Tentativas falhas</CardTitle></CardHeader>
           <CardContent>
-            <div className="orx-text-2xl orx-font-semibold">3</div>
+            <div className="orx-text-2xl orx-orx-font-semibold">3</div>
             <div className="orx-text-xs text-muted-foreground">Últimas 24h</div>
           </CardContent>
         </Card>
@@ -40,18 +40,18 @@ export default function VoiceBiometricsManager(): JSX.Element {
 
       <div className="grid gap-3 mt-6">
         <section>
-          <h2 className="orx-font-medium">Objetivo</h2>
+          <h2 className="orx-orx-font-medium">Objetivo</h2>
           <p className="orx-text-sm">Descrição breve do objetivo do módulo.</p>
         </section>
         <section>
-          <h2 className="orx-font-medium">Funcionalidades</h2>
+          <h2 className="orx-orx-font-medium">Funcionalidades</h2>
           <ul className="list-disc ml-6 orx-text-sm">
             <li>Placeholder 1</li>
             <li>Placeholder 2</li>
           </ul>
         </section>
         <section>
-          <h2 className="orx-font-medium">Passo a passo</h2>
+          <h2 className="orx-orx-font-medium">Passo a passo</h2>
           <ol className="list-decimal ml-6 orx-text-sm">
             <li>Passo 1</li>
             <li>Passo 2</li>

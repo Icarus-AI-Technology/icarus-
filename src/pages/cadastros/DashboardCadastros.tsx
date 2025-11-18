@@ -67,7 +67,7 @@ export const DashboardCadastros: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-[0.813rem] orx-font-bold text-[var(--orx-text-primary)] mb-2">
+          <h1 className="text-[0.813rem] orx-orx-font-bold text-[var(--orx-text-primary)] mb-2">
             Cadastros Inteligentes
           </h1>
           <p className="text-[var(--orx-text-secondary)]">
@@ -115,7 +115,7 @@ export const DashboardCadastros: React.FC = () => {
 
       {typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && (
         <div className="neumorphic-container p-4 rounded-2xl">
-          <h2 className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)] mb-3">Cadastros (QA)</h2>
+          <h2 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-3">Cadastros (QA)</h2>
           <div className="overflow-x-auto">
             <table role="table" className="w-full">
               <thead>
@@ -173,7 +173,7 @@ export const DashboardCadastros: React.FC = () => {
       {alertas.length > 0 && (
         <div className="neumorphic-container p-6 rounded-2xl">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)]">
+            <h2 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)]">
               Alertas de Cadastros
             </h2>
           </div>
@@ -185,7 +185,7 @@ export const DashboardCadastros: React.FC = () => {
                   className={`${alerta.tipo === 'error' ? 'text-[var(--orx-error)]' : alerta.tipo === 'warning' ? 'text-[var(--orx-warning)]' : 'text-[var(--orx-info)]'} shrink-0`} 
                 />
                 <div className="flex-1">
-                  <h3 className="orx-font-semibold text-[var(--orx-text-primary)] mb-1">
+                  <h3 className="orx-orx-font-semibold text-[var(--orx-text-primary)] mb-1">
                     {alerta.titulo}
                   </h3>
                   <p className="text-[var(--orx-text-secondary)] text-[0.813rem]">
@@ -206,7 +206,7 @@ export const DashboardCadastros: React.FC = () => {
         <div className="neumorphic-container p-6 rounded-2xl">
           <div className="flex items-center gap-3 mb-4">
             <Copy size={24} className="text-[var(--orx-primary)]" />
-            <h2 className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)]">
+            <h2 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)]">
               Possíveis Duplicatas Detectadas
             </h2>
           </div>
@@ -214,7 +214,7 @@ export const DashboardCadastros: React.FC = () => {
             {duplicatas.map((duplicata) => (
               <div key={duplicata.id} className="neumorphic-container p-4 rounded-xl flex items-center justify-between">
                 <div>
-                  <h3 className="orx-font-semibold text-[var(--orx-text-primary)] mb-1">
+                  <h3 className="orx-orx-font-semibold text-[var(--orx-text-primary)] mb-1">
                     {duplicata.nome}
                   </h3>
                   <p className="text-[var(--orx-text-secondary)] text-[0.813rem]">
@@ -245,7 +245,7 @@ export const DashboardCadastros: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Evolução de Cadastros */}
         <div className="neumorphic-container p-6 rounded-2xl">
-          <h2 className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)] mb-4">
+          <h2 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-4">
             Evolução de Cadastros - 12 Meses
           </h2>
           <ResponsiveContainer width="100%" height={300}>
@@ -264,7 +264,7 @@ export const DashboardCadastros: React.FC = () => {
 
         {/* Top 10 Médicos */}
         <div className="neumorphic-container p-6 rounded-2xl">
-          <h2 className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)] mb-4">
+          <h2 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-4">
             Top 10 Médicos (Cirurgias)
           </h2>
           <ResponsiveContainer width="100%" height={300}>
@@ -280,7 +280,7 @@ export const DashboardCadastros: React.FC = () => {
 
         {/* Top 10 Hospitais */}
         <div className="neumorphic-container p-6 rounded-2xl">
-          <h2 className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)] mb-4">
+          <h2 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-4">
             Top 10 Hospitais (Faturamento)
           </h2>
           <ResponsiveContainer width="100%" height={300}>
@@ -296,7 +296,7 @@ export const DashboardCadastros: React.FC = () => {
 
         {/* Produtos por Categoria */}
         <div className="neumorphic-container p-6 rounded-2xl">
-          <h2 className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)] mb-4">
+          <h2 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-4">
             Produtos OPME por Categoria
           </h2>
           <ResponsiveContainer width="100%" height={300}>
@@ -325,7 +325,7 @@ export const DashboardCadastros: React.FC = () => {
       <div className="neumorphic-container p-6 rounded-2xl">
         <div className="flex items-center gap-3 mb-4">
           <Sparkles size={24} className="text-[var(--orx-primary)]" />
-          <h2 className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)]">
+          <h2 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)]">
             Sugestões de Atualização (IA)
           </h2>
         </div>
@@ -368,7 +368,7 @@ interface SugestaoCardProps {
 const SugestaoCard: React.FC<SugestaoCardProps> = ({ titulo, descricao, acao }) => {
   return (
     <div className="neumorphic-container p-5 rounded-xl">
-      <h3 className="orx-font-semibold text-[var(--orx-text-primary)] mb-2">
+      <h3 className="orx-orx-font-semibold text-[var(--orx-text-primary)] mb-2">
         {titulo}
       </h3>
       <p className="text-[var(--orx-text-secondary)] text-[0.813rem] mb-4">

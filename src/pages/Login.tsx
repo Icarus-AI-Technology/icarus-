@@ -108,7 +108,7 @@ export default function Login() {
             <div className="flex justify-center">
               <Link
                 to="/reset-password"
-                className="orx-text-sm font-semibold text-orx-primary hover:text-orx-primary/80 underline decoration-transparent hover:decoration-current transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2"
+                className="orx-text-sm orx-font-semibold text-orx-primary hover:text-orx-primary/80 underline decoration-transparent hover:decoration-current transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2"
               >
                 Esqueceu sua senha?
               </Link>

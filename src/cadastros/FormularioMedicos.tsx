@@ -16,9 +16,8 @@ import { User, Stethoscope, MapPin, FileText } from 'lucide-react';
 import { toast } from 'sonner';
 import InputMask from 'react-input-mask';
 
-import { FormTemplate, FormField, NeuInput, NeuSelect, NeuTextarea } from '@/components/forms';
+import { FormTemplate, FormField, NeuInput, NeuSelect } from '@/components/forms';
 import { FORM_GRID, FORM_COL } from '@/components/forms/formLayout';
-import type { MedicoFormData } from '@/types/forms';
 import { supabase } from '@/lib/supabase';
 
 // ===================================
@@ -127,7 +126,6 @@ const ESPECIALIDADES = [
 
 export default function FormularioMedicos() {
   const navigate = useNavigate();
-  const [validatingCRM, setValidatingCRM] = useState(false);
   const [validatingCEP, setValidatingCEP] = useState(false);
 
   const {
@@ -136,7 +134,6 @@ export default function FormularioMedicos() {
     handleSubmit,
     formState: { errors, isSubmitting },
     setValue,
-    watch
   } = useForm<FormMedicoData>({
     resolver: zodResolver(schemaMedico),
     defaultValues: {
@@ -168,7 +165,7 @@ export default function FormularioMedicos() {
       };
 
       // Inserir no Supabase
-      const { data: result, error } = await supabase
+      const { error } = await supabase
         .from('medicos')
         .insert([medicoData])
         .select()
@@ -317,7 +314,6 @@ export default function FormularioMedicos() {
               type="text"
               placeholder="123456"
               error={!!errors.crm}
-              loading={validatingCRM}
               {...register('crm')}
             />
           </FormField>

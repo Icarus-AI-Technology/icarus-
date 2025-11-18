@@ -186,7 +186,7 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
           <div className="w-16 h-16 rounded-full bg-[linear-gradient(135deg,var(--orx-primary),var(--orx-secondary))] flex items-center justify-center mx-auto mb-4">
             <Building2 className="w-8 h-8 text-white" />
           </div>
-          <h2 className="text-[0.813rem] orx-font-bold text-[var(--orx-text-primary)] mb-2">
+          <h2 className="text-[0.813rem] orx-orx-font-bold text-[var(--orx-text-primary)] mb-2">
             Conectar Banco
           </h2>
           <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">
@@ -223,7 +223,7 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
             <div className="w-16 h-16 rounded-full bg-[var(--orx-success)] flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-[0.813rem] orx-font-bold text-[var(--orx-success)] mb-2">
+            <h3 className="text-[0.813rem] orx-orx-font-bold text-[var(--orx-success)] mb-2">
               Banco Conectado!
             </h3>
             <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">
@@ -235,7 +235,7 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
         {/* MOCK: Bank Selection */}
         {!pluggyEnabled && !loading && !success && step === 'select' && (
           <div>
-            <h3 className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)] mb-4">
+            <h3 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-4">
               Selecione seu banco
             </h3>
             
@@ -247,7 +247,7 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
                   className="neumorphic-button p-4 flex flex-col items-center gap-2 rounded-xl transition-all"
                 >
                   <span className="text-[0.813rem]">{bank.logo}</span>
-                  <span className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)] text-center">
+                  <span className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] text-center">
                     {bank.name}
                   </span>
                 </button>
@@ -261,17 +261,17 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
           <div>
             <button
               onClick={handleBack}
-              className="inline-flex items-center gap-2 mb-4 text-[0.813rem] text-[var(--orx-primary)] bg-transparent border-0 cursor-pointer orx-font-semibold"
+              className="inline-flex items-center gap-2 mb-4 text-[0.813rem] text-[var(--orx-primary)] bg-transparent border-0 cursor-pointer orx-orx-font-semibold"
             >
               ← Voltar
             </button>
             
-            <h3 className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)] mb-4">
+            <h3 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-4">
               Conectar {MOCK_BANKS.find(b => b.id === selectedBank)?.name}
             </h3>
             
             <div className="mb-4">
-              <label className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)] mb-2 block">
+              <label className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-secondary)] mb-2 block">
                 Usuário / CPF / Agência
               </label>
               <input
@@ -284,7 +284,7 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
             </div>
             
             <div className="mb-6">
-              <label className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)] mb-2 block">
+              <label className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-secondary)] mb-2 block">
                 Senha
               </label>
               <input
@@ -298,7 +298,7 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
             
             <button
               onClick={handleMockConnect}
-              className="neumorphic-button inline-flex items-center gap-2 w-full p-3 rounded-xl bg-[var(--orx-primary)] text-white orx-font-semibold text-[0.813rem] cursor-pointer"
+              className="neumorphic-button inline-flex items-center gap-2 w-full p-3 rounded-xl bg-[var(--orx-primary)] text-white orx-orx-font-semibold text-[0.813rem] cursor-pointer"
             >
               Conectar
             </button>

@@ -38,7 +38,7 @@ const TextareaComponent = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         {label && (
           <label
             htmlFor={textareaId}
-            className="block text-body-sm text-[var(--text-secondary)] mb-1 orx-font-medium"
+            className="block text-body-sm text-[var(--text-secondary)] mb-1 orx-orx-font-medium"
           >
             {label}
           </label>

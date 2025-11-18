@@ -186,7 +186,7 @@ export default function EstoqueIA() {
   const renderDashboard = () => (
     <div className="space-y-6">
       <Card className="neuro-raised p-6">
-        <h3 className="text-body-lg text-[var(--text-primary)] mb-4 flex items-center gap-2 orx-font-medium">
+        <h3 className="text-body-lg text-[var(--text-primary)] mb-4 flex items-center gap-2 orx-orx-font-medium">
           <Bot className="w-5 h-5 text-[var(--primary)]" />
           IA Predictions - Estoque Inteligente
         </h3>
@@ -245,7 +245,7 @@ export default function EstoqueIA() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-6 py-3 rounded-xl orx-font-medium transition-all ${
+            className={`px-6 py-3 rounded-xl orx-orx-font-medium transition-all ${
               activeTab === tab.id
                 ?"neuro-raised text-[var(--primary)]"
                 :"text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
@@ -268,13 +268,13 @@ export default function EstoqueIA() {
             <table className="w-full">
               <thead className="border-b border-[var(--border)]">
                 <tr>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Código</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Descrição</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Quantidade</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Mínimo</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Valor Unit.</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Status</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Ações</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Código</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Descrição</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Quantidade</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Mínimo</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Valor Unit.</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Status</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Ações</th>
                 </tr>
               </thead>
               <tbody>
@@ -285,7 +285,7 @@ export default function EstoqueIA() {
                       key={material.id}
                       className="border-b border-[var(--border)] hover:bg-[var(--surface-hover)] transition-colors"
                     >
-                      <td className="p-4 text-[var(--text-primary)] orx-font-medium">{material.codigo}</td>
+                      <td className="p-4 text-[var(--text-primary)] orx-orx-font-medium">{material.codigo}</td>
                       <td className="p-4 text-[var(--text-primary)]">{material.descricao}</td>
                       <td className="p-4">
                         <span className={`font-display ${isLow ?"text-error" :"text-[var(--text-primary)]"}`}>
@@ -295,7 +295,7 @@ export default function EstoqueIA() {
                       <td className="p-4 text-[var(--text-secondary)]">{material.quantidade_minima || 0}</td>
                       <td className="p-4 text-[var(--text-primary)]">{formatCurrency(material.valor_unitario)}</td>
                       <td className="p-4">
-                        <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs orx-font-medium ${
+                        <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs orx-orx-font-medium ${
                           isLow ?"text-error bg-destructive/5" :"text-success bg-success/5"
                         }`}>
                           {isLow ?"Estoque Baixo" :"OK"}
@@ -344,7 +344,7 @@ export default function EstoqueIA() {
           <>
             <style>{`* { animation: none !important; transition: none !important; }`}</style>
             <div id="qa-lcp-h1" className="p-4 rounded-xl bg-indigo-500/10">
-              <h1 className="m-0 text-[1.5rem] orx-font-extrabold text-[var(--orx-text-primary)]">
+              <h1 className="m-0 text-[1.5rem] orx-orx-font-extrabold text-[var(--orx-text-primary)]">
                 Estoque IA — Snapshot QA
               </h1>
             </div>
@@ -373,7 +373,7 @@ export default function EstoqueIA() {
           </div>
           <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
             <Bot className="w-4 h-4 text-[var(--primary)] animate-pulse" />
-            <span className="text-body-sm text-[var(--text-primary)] orx-font-medium">IA: 99.2%</span>
+            <span className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">IA: 99.2%</span>
           </div>
         </div>
 
@@ -407,7 +407,7 @@ export default function EstoqueIA() {
             </form>
 
             <div className="neuro-raised p-4 rounded-2xl">
-              <h2 className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)] mb-3">Materiais (QA)</h2>
+              <h2 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-3">Materiais (QA)</h2>
               <div className="overflow-x-auto">
                 <table role="table" className="w-full">
                   <thead>
@@ -449,7 +449,7 @@ export default function EstoqueIA() {
               }`}
             >
               <category.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
-              <span className="text-body-xs text-[var(--text-primary)] orx-font-medium">{category.label}</span>
+              <span className="text-body-xs text-[var(--text-primary)] orx-orx-font-medium">{category.label}</span>
               <div className="flex items-center gap-1 mt-1">
                 <span className="text-body-lg font-display text-[var(--text-primary)]">{category.count}</span>
                 {category.trend && category.trend !=="0" && (

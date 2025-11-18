@@ -79,7 +79,7 @@ const KPICard: React.FC<KPICardProps> = ({ label, value, icon, trend, onClick })
           <p className="orx-text-sm text-white/80 mb-1">
             {label}
           </p>
-          <p className="orx-text-3xl orx-font-bold text-white kpi-value">
+          <p className="orx-text-3xl orx-orx-font-bold text-white kpi-value">
             {value}
           </p>
           
@@ -152,7 +152,7 @@ export default function DashboardPrincipal() {
       {/* Header do Módulo */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="orx-text-3xl orx-font-bold text-[var(--orx-text-primary)] mb-2">
+          <h1 className="orx-text-3xl orx-orx-font-bold text-[var(--orx-text-primary)] mb-2">
             Dashboard Principal
           </h1>
           <p className="text-[var(--orx-text-secondary)]">
@@ -201,56 +201,72 @@ export default function DashboardPrincipal() {
       {/* Conteúdo baseado na aba ativa */}
       {activeTab === 'visao-geral' && (
         <>
-          {/* Grid de KPIs */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <KPICard
-              label="Cirurgias Hoje"
-              value={kpis.cirurgiasHoje}
-              icon={<Stethoscope size={28} />}
-              trend={{ direction: 'up', percentage: 8.5 }}
-            />
-            <KPICard
-              label="Cirurgias do Mês"
-              value={kpis.cirurgiasMes}
-              icon={<Calendar size={28} />}
-              trend={{ direction: 'up', percentage: 12.3 }}
-            />
-            <KPICard
-              label="Faturamento do Mês"
-              value={kpis.faturamentoMes}
-              icon={<DollarSign size={28} />}
-              trend={{ direction: 'up', percentage: 15.7 }}
-            />
-            <KPICard
-              label="Ticket Médio"
-              value={kpis.ticketMedio}
-              icon={<TrendingUp size={28} />}
-              trend={{ direction: 'up', percentage: 4.2 }}
-            />
-            <KPICard
-              label="Estoque Baixo"
-              value={kpis.estoqueBaixo}
-              icon={<Package size={28} />}
-              trend={{ direction: 'down', percentage: 3.1 }}
-            />
-            <KPICard
-              label="Contas a Receber"
-              value={kpis.contasReceber}
-              icon={<DollarSign size={28} />}
-              trend={{ direction: 'neutral', percentage: 0 }}
-            />
-            <KPICard
-              label="Taxa Inadimplência"
-              value={`${kpis.taxaInadimplencia}%`}
-              icon={<AlertTriangle size={28} />}
-              trend={{ direction: 'down', percentage: 0.5 }}
-            />
-            <KPICard
-              label="Margem de Lucro"
-              value={`${kpis.margemLucro}%`}
-              icon={<TrendingUp size={28} />}
-              trend={{ direction: 'up', percentage: 2.1 }}
-            />
+          {/* Grid de KPIs - 12 COLUNAS RESPONSIVO conforme spec */}
+          <div className="grid grid-cols-12 gap-6">
+            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
+              <KPICard
+                label="Cirurgias Hoje"
+                value={kpis.cirurgiasHoje}
+                icon={<Stethoscope size={28} />}
+                trend={{ direction: 'up', percentage: 8.5 }}
+              />
+            </div>
+            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
+              <KPICard
+                label="Cirurgias do Mês"
+                value={kpis.cirurgiasMes}
+                icon={<Calendar size={28} />}
+                trend={{ direction: 'up', percentage: 12.3 }}
+              />
+            </div>
+            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
+              <KPICard
+                label="Faturamento do Mês"
+                value={kpis.faturamentoMes}
+                icon={<DollarSign size={28} />}
+                trend={{ direction: 'up', percentage: 15.7 }}
+              />
+            </div>
+            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
+              <KPICard
+                label="Ticket Médio"
+                value={kpis.ticketMedio}
+                icon={<TrendingUp size={28} />}
+                trend={{ direction: 'up', percentage: 4.2 }}
+              />
+            </div>
+            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
+              <KPICard
+                label="Estoque Baixo"
+                value={kpis.estoqueBaixo}
+                icon={<Package size={28} />}
+                trend={{ direction: 'down', percentage: 3.1 }}
+              />
+            </div>
+            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
+              <KPICard
+                label="Contas a Receber"
+                value={kpis.contasReceber}
+                icon={<DollarSign size={28} />}
+                trend={{ direction: 'neutral', percentage: 0 }}
+              />
+            </div>
+            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
+              <KPICard
+                label="Taxa Inadimplência"
+                value={`${kpis.taxaInadimplencia}%`}
+                icon={<AlertTriangle size={28} />}
+                trend={{ direction: 'down', percentage: 0.5 }}
+              />
+            </div>
+            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
+              <KPICard
+                label="Margem de Lucro"
+                value={`${kpis.margemLucro}%`}
+                icon={<TrendingUp size={28} />}
+                trend={{ direction: 'up', percentage: 2.1 }}
+              />
+            </div>
           </div>
 
           {/* Gráficos */}
@@ -296,19 +312,19 @@ export default function DashboardPrincipal() {
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <span className="orx-text-sm">Produtos em Estoque Alto</span>
-                  <span className="orx-font-bold text-green-600">234</span>
+                  <span className="orx-orx-font-bold text-green-600">234</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="orx-text-sm">Produtos em Estoque Médio</span>
-                  <span className="orx-font-bold text-yellow-600">87</span>
+                  <span className="orx-orx-font-bold text-yellow-600">87</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="orx-text-sm">Produtos em Estoque Baixo</span>
-                  <span className="orx-font-bold text-red-600">23</span>
+                  <span className="orx-orx-font-bold text-red-600">23</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="orx-text-sm">Produtos em Falta</span>
-                  <span className="orx-font-bold text-red-800">5</span>
+                  <span className="orx-orx-font-bold text-red-800">5</span>
                 </div>
               </div>
             </Card>
@@ -326,12 +342,12 @@ export default function DashboardPrincipal() {
                     <Stethoscope size={24} className="text-[var(--orx-primary)]" />
                   </div>
                   <div>
-                    <p className="orx-font-semibold">Cirurgia #{i}</p>
+                    <p className="orx-orx-font-semibold">Cirurgia #{i}</p>
                     <p className="orx-text-sm text-[var(--orx-text-secondary)]">Dr. João Silva - Hospital ABC</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="orx-font-semibold">{8 + i}:00</p>
+                  <p className="orx-orx-font-semibold">{8 + i}:00</p>
                   <p className="orx-text-sm text-[var(--orx-text-secondary)]">Ortopedia</p>
                 </div>
               </div>
@@ -346,11 +362,11 @@ export default function DashboardPrincipal() {
             {[1, 2, 3, 4, 5].map((i) => (
               <div key={i} className="flex items-center justify-between p-4 bg-[var(--orx-surface-light)] rounded-lg">
                 <div>
-                  <p className="orx-font-semibold">Produto OPME #{i}</p>
+                  <p className="orx-orx-font-semibold">Produto OPME #{i}</p>
                   <p className="orx-text-sm text-[var(--orx-text-secondary)]">Código: OPME-{1000 + i}</p>
                 </div>
                 <div className="text-right">
-                  <p className="orx-font-bold text-red-600">{5 - i} unidades</p>
+                  <p className="orx-orx-font-bold text-red-600">{5 - i} unidades</p>
                   <p className="orx-text-sm text-[var(--orx-text-secondary)]">Mínimo: 10</p>
                 </div>
               </div>
@@ -363,19 +379,19 @@ export default function DashboardPrincipal() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <Card title="Contas a Receber" padding="lg">
             <div className="text-center">
-              <p className="orx-text-4xl orx-font-bold text-[var(--orx-primary)]">R$ 1.234.000</p>
+              <p className="orx-text-4xl orx-orx-font-bold text-[var(--orx-primary)]">R$ 1.234.000</p>
               <p className="orx-text-sm text-[var(--orx-text-secondary)] mt-2">Em aberto</p>
             </div>
           </Card>
           <Card title="Contas a Pagar" padding="lg">
             <div className="text-center">
-              <p className="orx-text-4xl orx-font-bold text-[var(--orx-primary)]">R$ 876.500</p>
+              <p className="orx-text-4xl orx-orx-font-bold text-[var(--orx-primary)]">R$ 876.500</p>
               <p className="orx-text-sm text-[var(--orx-text-secondary)] mt-2">A vencer</p>
             </div>
           </Card>
           <Card title="Saldo Disponível" padding="lg">
             <div className="text-center">
-              <p className="orx-text-4xl orx-font-bold text-green-600">R$ 456.200</p>
+              <p className="orx-text-4xl orx-orx-font-bold text-green-600">R$ 456.200</p>
               <p className="orx-text-sm text-[var(--orx-text-secondary)] mt-2">Líquido</p>
             </div>
           </Card>
@@ -388,21 +404,21 @@ export default function DashboardPrincipal() {
             <div className="flex items-start gap-3 p-4 bg-red-50 rounded-lg">
               <AlertTriangle size={24} className="text-red-600 flex-shrink-0" />
               <div>
-                <p className="orx-font-semibold text-red-900">Estoque Crítico</p>
+                <p className="orx-orx-font-semibold text-red-900">Estoque Crítico</p>
                 <p className="orx-text-sm text-red-700">5 produtos em falta, 18 abaixo do mínimo</p>
               </div>
             </div>
             <div className="flex items-start gap-3 p-4 bg-yellow-50 rounded-lg">
               <AlertTriangle size={24} className="text-yellow-600 flex-shrink-0" />
               <div>
-                <p className="orx-font-semibold text-yellow-900">Contas Vencidas</p>
+                <p className="orx-orx-font-semibold text-yellow-900">Contas Vencidas</p>
                 <p className="orx-text-sm text-yellow-700">3 contas a receber vencidas há mais de 30 dias</p>
               </div>
             </div>
             <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-lg">
               <AlertTriangle size={24} className="text-blue-600 flex-shrink-0" />
               <div>
-                <p className="orx-font-semibold text-blue-900">Certificações</p>
+                <p className="orx-orx-font-semibold text-blue-900">Certificações</p>
                 <p className="orx-text-sm text-blue-700">2 certificações ANVISA vencem em 15 dias</p>
               </div>
             </div>

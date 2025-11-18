@@ -62,7 +62,7 @@ export const NeumoTextarea = forwardRef<
           <label
             htmlFor={textareaId}
             className={cn(
-              'block orx-text-sm orx-font-medium text-orx-text-primary mb-2',
+              'block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2',
               disabled && 'opacity-50 cursor-not-allowed',
               labelClassName
             )}
@@ -103,7 +103,7 @@ export const NeumoTextarea = forwardRef<
               'shadow-neumo-sm-inset',
               'focus:shadow-neumo-inset',
               // Estados
-              'focus:outline-none focus:ring-2 focus:ring-orx-primary/20',
+              'focus:outline-none focus:ring-3 focus:ring-orx-primary/20',
               hasError && 'border-orx-danger focus:ring-orx-danger/20',
               disabled &&
                 'opacity-50 cursor-not-allowed bg-orx-bg-light',

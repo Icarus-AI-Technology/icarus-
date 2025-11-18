@@ -20,8 +20,8 @@
     
     /* Cores de Texto */
     --orx-text-primary: #1a202c;
-    --orx-text-secondary: #4a5568;
-    --orx-text-muted: #718096;
+    --orx-text-secondary: #374151;
+    --orx-text-muted: #4a5568;
     --orx-text-disabled: #cbd5e0;
     
     /* Borders e Separadores */
@@ -30,9 +30,9 @@
     --orx-border-strong: rgba(0, 0, 0, 0.18);
     
     /* Cores de Acento */
-    --orx-primary: #6366f1;
-    --orx-primary-hover: #5558e3;
-    --orx-primary-light: rgba(99, 102, 241, 0.1);
+    --orx-primary: #4f46e5;
+    --orx-primary-hover: #4338ca;
+    --orx-primary-light: rgba(79, 70, 229, 0.15);
     
     --orx-success: #10b981;
     --orx-success-light: rgba(16, 185, 129, 0.1);
@@ -153,8 +153,8 @@
     
     /* Cores de Texto */
     --orx-text-primary: #f7fafc;
-    --orx-text-secondary: #e2e8f0;
-    --orx-text-muted: #a0aec0;
+    --orx-text-secondary: #e5e7eb;
+    --orx-text-muted: #d1d5db;
     --orx-text-disabled: #4a5568;
     
     /* Borders e Separadores */
@@ -163,9 +163,9 @@
     --orx-border-strong: rgba(255, 255, 255, 0.16);
     
     /* Cores de Acento (mantém as mesmas, mas ajusta opacidade dos light) */
-    --orx-primary: #6366f1;
-    --orx-primary-hover: #7c3aed;
-    --orx-primary-light: rgba(99, 102, 241, 0.15);
+    --orx-primary: #818cf8;
+    --orx-primary-hover: #a5b4fc;
+    --orx-primary-light: rgba(129, 140, 248, 0.2);
     
     --orx-success: #10b981;
     --orx-success-light: rgba(16, 185, 129, 0.15);

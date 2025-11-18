@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import { ArrowLeft, Search, FileText, DollarSign, TrendingUp, AlertCircle } from 'lucide-react';
+import { ArrowLeft, FileText, DollarSign, TrendingUp, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { NeumoButton, NeumoSearchBar } from '@/components/oraclusx-ds';
 import { useDocumentTitle } from '@/hooks';
@@ -56,7 +56,7 @@ export default function GestaoFaturamento() {
                 <FileText className="w-6 h-6 text-orx-primary" />
               </div>
               <div>
-                <h1 className="orx-text-3xl orx-font-bold text-orx-text-primary">Faturamento</h1>
+                <h1 className="orx-text-3xl orx-orx-font-bold text-orx-text-primary">Faturamento</h1>
                 <p className="text-orx-text-secondary mt-1">Gestão de faturamento hospitalar</p>
               </div>
             </div>
@@ -75,7 +75,7 @@ export default function GestaoFaturamento() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="orx-text-xs text-orx-text-muted mb-1">{stat.label}</p>
-                  <p className="orx-text-2xl orx-font-bold text-orx-text-primary">{stat.value}</p>
+                  <p className="orx-text-2xl orx-orx-font-bold text-orx-text-primary">{stat.value}</p>
                 </div>
                 <div className={`p-3 rounded-lg ${stat.color}`}><stat.icon className="w-5 h-5" /></div>
               </div>
@@ -93,8 +93,8 @@ export default function GestaoFaturamento() {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="orx-text-lg orx-font-semibold text-orx-text-primary">{fatura.numero}</h3>
-                    <span className={`px-3 py-1 orx-text-xs orx-font-medium rounded-lg ${
+                    <h3 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary">{fatura.numero}</h3>
+                    <span className={`px-3 py-1 orx-text-xs orx-orx-font-medium rounded-lg ${
                       fatura.status === 'paga' ? 'bg-orx-success/10 text-orx-success' :
                       fatura.status === 'aprovada' ? 'bg-orx-info/10 text-orx-info' :
                       fatura.status === 'em_analise' ? 'bg-orx-warning/10 text-orx-warning' :
@@ -107,15 +107,15 @@ export default function GestaoFaturamento() {
                   <div className="grid grid-cols-3 gap-4">
                     <div>
                       <p className="orx-text-xs text-orx-text-muted mb-1">Convênio</p>
-                      <p className="orx-text-sm orx-font-medium text-orx-text-primary">{fatura.convenio}</p>
+                      <p className="orx-text-sm orx-orx-font-medium text-orx-text-primary">{fatura.convenio}</p>
                     </div>
                     <div>
                       <p className="orx-text-xs text-orx-text-muted mb-1">Valor</p>
-                      <p className="orx-text-sm orx-font-semibold text-orx-success">R$ {fatura.valor.toLocaleString('pt-BR')}</p>
+                      <p className="orx-text-sm orx-orx-font-semibold text-orx-success">R$ {fatura.valor.toLocaleString('pt-BR')}</p>
                     </div>
                     <div>
                       <p className="orx-text-xs text-orx-text-muted mb-1">Emissão</p>
-                      <p className="orx-text-sm orx-font-medium text-orx-text-primary">
+                      <p className="orx-text-sm orx-orx-font-medium text-orx-text-primary">
                         {new Date(fatura.data_emissao).toLocaleDateString('pt-BR')}
                       </p>
                     </div>

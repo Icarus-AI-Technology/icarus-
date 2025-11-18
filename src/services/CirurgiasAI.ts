@@ -78,6 +78,23 @@ export interface PredicaoTempoCirurgico {
   confianca: number; // 0-100%
 }
 
+type KitCirurgicoItem = {
+  produto_id: string;
+  quantidade: number;
+  produtos?: {
+    nome?: string | null;
+    preco_venda?: number | null;
+  } | null;
+};
+
+type KitCirurgicoRecord = {
+  itens?: KitCirurgicoItem[] | null;
+};
+
+type CirurgiaPassadaRecord = {
+  kits_cirurgicos?: KitCirurgicoRecord[] | null;
+};
+
 // ============================================
 // SERVICE
 // ============================================
@@ -325,9 +342,9 @@ export class CirurgiasAI {
       // Contar frequência de uso de cada produto
       const frequenciaProdutos = new Map<string, { nome: string; count: number; qtdMedia: number; preco: number }>();
 
-      cirurgiasPassadas?.forEach((c) => {
-        c.kits_cirurgicos?.forEach((kit: any) => {
-          kit.itens?.forEach((item: any) => {
+      cirurgiasPassadas?.forEach((c: CirurgiaPassadaRecord) => {
+        c.kits_cirurgicos?.forEach((kit: KitCirurgicoRecord) => {
+          kit.itens?.forEach((item: KitCirurgicoItem) => {
             const prodId = item.produto_id;
             const prodNome = item.produtos?.nome || 'Desconhecido';
             const preco = item.produtos?.preco_venda || 0;
@@ -346,7 +363,7 @@ export class CirurgiasAI {
       const totalCirurgias = cirurgiasPassadas?.length || 1;
       
       const materiaisRecomendados = Array.from(frequenciaProdutos.entries())
-        .map(([prodId, { nome, count, qtdMedia, preco }]) => ({
+        .map(([prodId, { nome, count, qtdMedia }]) => ({
           produto_id: prodId,
           produto_nome: nome,
           quantidade_sugerida: Math.ceil(qtdMedia / count),

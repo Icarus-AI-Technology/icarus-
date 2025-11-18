@@ -206,7 +206,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
               </div>
 
               <div className="flex-1 min-w-0">
-                <p className="text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)] truncate orx-font-medium">
+                <p className="text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)] truncate orx-orx-font-medium">
                   {file.name}
                 </p>
                 <p className="text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]">

@@ -47,3 +47,4 @@ mock-server.log
 .cursor/results/
 .cursor/agents/*/reports/
 .cursor/agents/*/logs/
+.env*.local

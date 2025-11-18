@@ -19,13 +19,23 @@ import crypto from 'crypto';
 
 const publicKey = process.env.SENDGRID_WEBHOOK_PUBLIC_KEY || '';
 
+type SendGridWebhookEvent = {
+  event: string;
+  email: string;
+  timestamp: number;
+  sg_message_id?: string;
+  url?: string;
+  reason?: string;
+  status?: string;
+};
+
 /**
  * Handler do webhook do SendGrid
  */
 export async function sendGridWebhookHandler(req: Request, res: Response) {
   try {
     // SendGrid envia um array de eventos
-    const events = req.body as Array<any>;
+    const events = req.body as SendGridWebhookEvent[];
 
     if (!Array.isArray(events)) {
       return res.status(400).send('Invalid payload');
@@ -39,13 +49,13 @@ export async function sendGridWebhookHandler(req: Request, res: Response) {
     }
 
     res.status(200).send('OK');
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ Erro ao processar webhook SendGrid:', error);
     res.status(500).send('Internal Server Error');
   }
 }
 
-async function processEvent(event: any) {
+async function processEvent(event: SendGridWebhookEvent) {
   const { event: eventType, email, timestamp, sg_message_id } = event;
 
   console.log(`📧 Evento: ${eventType} para ${email}`);
@@ -93,14 +103,14 @@ async function processEvent(event: any) {
 // ===== Event Handlers =====
 
 async function handleEmailDelivered(email: string, messageId: string, timestamp: number) {
-  console.log(`✅ Email entregue: ${messageId} para ${email}`);
+  console.log(`✅ Email entregue: ${messageId} para ${email} em ${new Date(timestamp * 1000).toISOString()}`);
   
   // TODO: Atualizar status no banco
   // TODO: Registrar métrica de entrega
 }
 
 async function handleEmailOpened(email: string, messageId: string, timestamp: number) {
-  console.log(`👁️  Email aberto: ${messageId} por ${email}`);
+  console.log(`👁️  Email aberto: ${messageId} por ${email} em ${new Date(timestamp * 1000).toISOString()}`);
   
   // TODO: Registrar abertura
   // TODO: Atualizar engajamento do usuário
@@ -112,7 +122,7 @@ async function handleEmailClicked(
   url: string,
   timestamp: number
 ) {
-  console.log(`🔗 Link clicado: ${url} por ${email}`);
+  console.log(`🔗 Link clicado: ${url} por ${email} (mensagem ${messageId}) em ${new Date(timestamp * 1000).toISOString()}`);
   
   // TODO: Registrar clique
   // TODO: Atualizar métrica de conversão
@@ -125,7 +135,7 @@ async function handleEmailBounced(
   status: string,
   timestamp: number
 ) {
-  console.log(`⚠️  Email rejeitado: ${messageId} - ${reason}`);
+  console.log(`⚠️  Email rejeitado: ${messageId} (${status}) - ${reason} para ${email} em ${new Date(timestamp * 1000).toISOString()}`);
   
   // TODO: Marcar email como inválido
   // TODO: Pausar envios para este email
@@ -138,21 +148,21 @@ async function handleEmailDropped(
   reason: string,
   timestamp: number
 ) {
-  console.log(`🗑️  Email descartado: ${messageId} - ${reason}`);
+  console.log(`🗑️  Email descartado: ${messageId} - ${reason} para ${email} em ${new Date(timestamp * 1000).toISOString()}`);
   
   // TODO: Registrar motivo do descarte
   // TODO: Verificar reputação do email
 }
 
 async function handleSpamReport(email: string, messageId: string, timestamp: number) {
-  console.log(`🚫 Spam report: ${email}`);
+  console.log(`🚫 Spam report: ${email} (mensagem ${messageId}) em ${new Date(timestamp * 1000).toISOString()}`);
   
   // TODO: Remover da lista de envio
   // TODO: Notificar administrador
 }
 
 async function handleUnsubscribe(email: string, messageId: string, timestamp: number) {
-  console.log(`👋 Unsubscribe: ${email}`);
+  console.log(`👋 Unsubscribe: ${email} (mensagem ${messageId}) em ${new Date(timestamp * 1000).toISOString()}`);
   
   // TODO: Atualizar preferências do usuário
   // TODO: Remover das listas de envio

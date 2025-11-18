@@ -34,7 +34,7 @@ export default function NeumoShowcase() {
       <div className="max-w-7xl mx-auto space-y-12">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="orx-text-4xl orx-font-bold text-orx-text-primary mb-4">
+          <h1 className="orx-text-4xl orx-orx-font-bold text-orx-text-primary mb-4">
             Design System Neumórfico 3D Premium
           </h1>
           <p className="orx-text-lg text-orx-text-secondary">
@@ -44,7 +44,7 @@ export default function NeumoShowcase() {
 
         {/* CardKpi Section */}
         <section>
-          <h2 className="orx-text-2xl orx-font-bold text-orx-text-primary mb-6">
+          <h2 className="orx-text-2xl orx-orx-font-bold text-orx-text-primary mb-6">
             Cards KPI
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -81,7 +81,7 @@ export default function NeumoShowcase() {
 
         {/* MiniCard Section */}
         <section>
-          <h2 className="orx-text-2xl orx-font-bold text-orx-text-primary mb-6">
+          <h2 className="orx-text-2xl orx-orx-font-bold text-orx-text-primary mb-6">
             Mini Cards
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -124,12 +124,12 @@ export default function NeumoShowcase() {
 
         {/* Search Bar Section */}
         <section>
-          <h2 className="orx-text-2xl orx-font-bold text-orx-text-primary mb-6">
+          <h2 className="orx-text-2xl orx-orx-font-bold text-orx-text-primary mb-6">
             Barras de Busca
           </h2>
           <div className="space-y-4 max-w-2xl">
             <div>
-              <label className="block orx-text-sm orx-font-medium text-orx-text-primary mb-2">
+              <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2">
                 Busca Padrão
               </label>
               <NeumoSearchBar
@@ -141,7 +141,7 @@ export default function NeumoShowcase() {
             </div>
 
             <div>
-              <label className="block orx-text-sm orx-font-medium text-orx-text-primary mb-2">
+              <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2">
                 Busca Pequena
               </label>
               <NeumoSearchBar
@@ -152,7 +152,7 @@ export default function NeumoShowcase() {
             </div>
 
             <div>
-              <label className="block orx-text-sm orx-font-medium text-orx-text-primary mb-2">
+              <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2">
                 Busca Grande
               </label>
               <NeumoSearchBar
@@ -165,7 +165,7 @@ export default function NeumoShowcase() {
 
         {/* Inputs Section */}
         <section>
-          <h2 className="orx-text-2xl orx-font-bold text-orx-text-primary mb-6">
+          <h2 className="orx-text-2xl orx-orx-font-bold text-orx-text-primary mb-6">
             Campos de Entrada
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl">
@@ -218,7 +218,7 @@ export default function NeumoShowcase() {
 
         {/* Textarea Section */}
         <section>
-          <h2 className="orx-text-2xl orx-font-bold text-orx-text-primary mb-6">
+          <h2 className="orx-text-2xl orx-orx-font-bold text-orx-text-primary mb-6">
             Área de Texto
           </h2>
           <div className="space-y-4 max-w-2xl">
@@ -250,13 +250,13 @@ export default function NeumoShowcase() {
 
         {/* Buttons Section */}
         <section>
-          <h2 className="orx-text-2xl orx-font-bold text-orx-text-primary mb-6">
+          <h2 className="orx-text-2xl orx-orx-font-bold text-orx-text-primary mb-6">
             Botões
           </h2>
           <div className="space-y-6">
             {/* Variantes */}
             <div>
-              <h3 className="orx-text-lg orx-font-semibold text-orx-text-primary mb-3">
+              <h3 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary mb-3">
                 Variantes
               </h3>
               <div className="flex flex-wrap gap-3">
@@ -272,7 +272,7 @@ export default function NeumoShowcase() {
 
             {/* Tamanhos */}
             <div>
-              <h3 className="orx-text-lg orx-font-semibold text-orx-text-primary mb-3">
+              <h3 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary mb-3">
                 Tamanhos
               </h3>
               <div className="flex flex-wrap items-center gap-3">
@@ -284,7 +284,7 @@ export default function NeumoShowcase() {
 
             {/* Com Ícones */}
             <div>
-              <h3 className="orx-text-lg orx-font-semibold text-orx-text-primary mb-3">
+              <h3 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary mb-3">
                 Com Ícones
               </h3>
               <div className="flex flex-wrap gap-3">
@@ -300,7 +300,7 @@ export default function NeumoShowcase() {
 
             {/* Estados */}
             <div>
-              <h3 className="orx-text-lg orx-font-semibold text-orx-text-primary mb-3">
+              <h3 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary mb-3">
                 Estados
               </h3>
               <div className="flex flex-wrap gap-3">

@@ -13,6 +13,32 @@
  * - Neumórfico 3D Premium: 5 (NOVOS!)
  */
 
+// ===== LAYOUT COMPONENTS (NEW) =====
+export { Container } from "../Container";
+export type { ContainerProps } from "../Container";
+
+export { Section } from "../Section";
+export type { SectionProps } from "../Section";
+
+export { GlassCard } from "../GlassCard";
+export type { GlassCardProps } from "../GlassCard";
+
+export { AnimatedCard } from "../AnimatedCard";
+export type { AnimatedCardProps } from "../AnimatedCard";
+
+export {
+  CadastroPageLayout,
+  CadastroSection,
+  FormGrid,
+  FormActions,
+} from "../CadastroLayout";
+export type {
+  CadastroPageLayoutProps,
+  CadastroSectionProps,
+  FormGridProps,
+  FormActionsProps,
+} from "../CadastroLayout";
+
 // ===== CORE COMPONENTS (8) =====
 export { Button } from"./Button";
 export type { ButtonProps } from"./Button";

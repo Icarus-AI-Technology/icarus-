@@ -3,7 +3,7 @@
  * Card com efeito glassmorphism avançado
  */
 
-import React, { type ReactNode } from 'react';
+import { type FC } from 'react';
 import { Card, type CardProps } from './Card';
 import { cn } from '@/lib/utils';
 import { type BlurLevel } from '@/lib/styleUtils';
@@ -51,7 +51,7 @@ const gradientClasses = {
  * </GlassCard>
  * ```
  */
-export const GlassCard: React.FC<GlassCardProps> = ({
+export const GlassCard: FC<GlassCardProps> = ({
   blur = 'md',
   gradient = false,
   gradientColor = 'brand',

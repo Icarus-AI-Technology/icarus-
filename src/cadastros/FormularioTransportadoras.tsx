@@ -15,7 +15,7 @@ import { Truck, Phone, MapPin } from 'lucide-react';
 import { toast } from 'sonner';
 import InputMask from 'react-input-mask';
 
-import { FormTemplate, FormField, NeuInput, NeuSelect, NeuTextarea } from '@/components/forms';
+import { FormTemplate, FormField, NeuInput, NeuSelect } from '@/components/forms';
 import { FORM_GRID, FORM_COL } from '@/components/forms/formLayout';
 import { insertRecord, getSupabaseErrorMessage } from '@/lib/form-helpers';
 

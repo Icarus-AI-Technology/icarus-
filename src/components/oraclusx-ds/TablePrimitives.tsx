@@ -31,7 +31,7 @@ export const TableRow = ({ children, className, ...props }: React.HTMLAttributes
 );
 
 export const TableHead = ({ children, className, ...props }: React.ThHTMLAttributes<HTMLTableCellElement>) => (
-  <th {...props} className={cn("px-4 py-3 text-left orx-font-semibold text-[var(--text)]", className)}>
+  <th {...props} className={cn("px-4 py-3 text-left orx-orx-font-semibold text-[var(--text)]", className)}>
     {children}
   </th>
 );

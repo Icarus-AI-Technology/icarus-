@@ -81,7 +81,7 @@ export function AlertasCompliance() {
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="orx-text-2xl orx-font-bold text-slate-900 dark:text-white">Compliance Automático IA</h2>
+          <h2 className="orx-text-2xl orx-orx-font-bold text-slate-900 dark:text-white">Compliance Automático IA</h2>
           <p className="text-slate-600 dark:text-slate-400">
             Monitoramento 24/7 de requisitos regulatórios • Taxa de acerto: 96.8%
           </p>
@@ -100,7 +100,7 @@ export function AlertasCompliance() {
           <div className="flex items-center justify-between">
             <div>
               <p className="orx-text-sm text-slate-600 dark:text-slate-400">Total de Alertas</p>
-              <p className="orx-text-3xl orx-font-bold text-slate-900 dark:text-white">{alertas.length}</p>
+              <p className="orx-text-3xl orx-orx-font-bold text-slate-900 dark:text-white">{alertas.length}</p>
             </div>
             <Shield className="w-8 h-8 text-orange-600" />
           </div>
@@ -110,7 +110,7 @@ export function AlertasCompliance() {
           <div className="flex items-center justify-between">
             <div>
               <p className="orx-text-sm text-red-600 dark:text-red-400">Críticos</p>
-              <p className="orx-text-3xl orx-font-bold text-red-700 dark:text-red-300">{alertasPorSeveridade.critico}</p>
+              <p className="orx-text-3xl orx-orx-font-bold text-red-700 dark:text-red-300">{alertasPorSeveridade.critico}</p>
             </div>
             <AlertTriangle className="w-8 h-8 text-red-600" />
           </div>
@@ -120,7 +120,7 @@ export function AlertasCompliance() {
           <div className="flex items-center justify-between">
             <div>
               <p className="orx-text-sm text-orange-600 dark:text-orange-400">Urgentes</p>
-              <p className="orx-text-3xl orx-font-bold text-orange-700 dark:text-orange-300">{alertasPorSeveridade.urgente}</p>
+              <p className="orx-text-3xl orx-orx-font-bold text-orange-700 dark:text-orange-300">{alertasPorSeveridade.urgente}</p>
             </div>
             <Clock className="w-8 h-8 text-orange-600" />
           </div>
@@ -130,7 +130,7 @@ export function AlertasCompliance() {
           <div className="flex items-center justify-between">
             <div>
               <p className="orx-text-sm text-yellow-600 dark:text-yellow-400">Avisos</p>
-              <p className="orx-text-3xl orx-font-bold text-yellow-700 dark:text-yellow-300">{alertasPorSeveridade.aviso}</p>
+              <p className="orx-text-3xl orx-orx-font-bold text-yellow-700 dark:text-yellow-300">{alertasPorSeveridade.aviso}</p>
             </div>
             <FileText className="w-8 h-8 text-yellow-600" />
           </div>
@@ -142,7 +142,7 @@ export function AlertasCompliance() {
         {alertas.length === 0 ? (
           <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-8 text-center">
             <CheckCircle className="w-16 h-16 text-green-600 dark:text-green-400 mx-auto mb-3" />
-            <p className="orx-text-xl orx-font-semibold text-green-800 dark:text-green-200 mb-1">
+            <p className="orx-text-xl orx-orx-font-semibold text-green-800 dark:text-green-200 mb-1">
               Tudo em conformidade!
             </p>
             <p className="orx-text-sm text-green-600 dark:text-green-400">
@@ -170,7 +170,7 @@ export function AlertasCompliance() {
                     {alerta.tipo === 'documento' && <FileText className="w-5 h-5" />}
                     {alerta.tipo === 'calibracao' && <Clock className="w-5 h-5" />}
                     
-                    <h3 className="orx-text-lg orx-font-semibold text-slate-900 dark:text-white">
+                    <h3 className="orx-text-lg orx-orx-font-semibold text-slate-900 dark:text-white">
                       {alerta.titulo}
                     </h3>
                   </div>
@@ -200,7 +200,7 @@ export function AlertasCompliance() {
                 </div>
 
                 <div className={`
-                  px-3 py-1 rounded-full orx-text-xs orx-font-bold uppercase whitespace-nowrap ml-4
+                  px-3 py-1 rounded-full orx-text-xs orx-orx-font-bold uppercase whitespace-nowrap ml-4
                   ${alerta.severidade === 'critico' 
                     ? 'bg-red-600 text-white' 
                     : alerta.severidade === 'urgente' 
@@ -212,7 +212,7 @@ export function AlertasCompliance() {
               </div>
 
               <div className="bg-white dark:bg-slate-800 rounded-lg p-3 mt-3">
-                <p className="orx-text-sm orx-font-medium text-slate-700 dark:text-slate-300 mb-1">
+                <p className="orx-text-sm orx-orx-font-medium text-slate-700 dark:text-slate-300 mb-1">
                   💡 Ação Sugerida pela IA:
                 </p>
                 <p className="orx-text-sm text-slate-600 dark:text-slate-400">
@@ -229,19 +229,19 @@ export function AlertasCompliance() {
         <div className="flex items-start gap-3">
           <Shield className="w-6 h-6 text-orange-600 mt-0.5" />
           <div className="flex-1">
-            <p className="orx-font-semibold text-slate-900 dark:text-white mb-2">Sobre o Agente de Compliance IA</p>
+            <p className="orx-orx-font-semibold text-slate-900 dark:text-white mb-2">Sobre o Agente de Compliance IA</p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 orx-text-sm">
               <div>
                 <p className="text-slate-600 dark:text-slate-400">Taxa de Acerto</p>
-                <p className="orx-text-2xl orx-font-bold text-orange-600">96.8%</p>
+                <p className="orx-text-2xl orx-orx-font-bold text-orange-600">96.8%</p>
               </div>
               <div>
                 <p className="text-slate-600 dark:text-slate-400">Monitoramento</p>
-                <p className="orx-text-2xl orx-font-bold text-orange-600">24/7</p>
+                <p className="orx-text-2xl orx-orx-font-bold text-orange-600">24/7</p>
               </div>
               <div>
                 <p className="text-slate-600 dark:text-slate-400">Última Execução</p>
-                <p className="orx-text-2xl orx-font-bold text-orange-600">Agora</p>
+                <p className="orx-text-2xl orx-orx-font-bold text-orange-600">Agora</p>
               </div>
             </div>
             <p className="orx-text-xs text-slate-600 dark:text-slate-400 mt-3">

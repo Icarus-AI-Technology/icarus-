@@ -71,7 +71,7 @@ export function DashboardCache() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="tracking-tight flex items-center gap-2" style={{  fontSize: '0.813rem' , fontWeight: 700 }}>
+        <h2 className="tracking-tight flex items-center gap-2 text-[0.813rem] font-bold">
           <Database className="h-8 w-8 text-primary" />
           Dashboard de Cache
         </h2>
@@ -102,12 +102,12 @@ export function DashboardCache() {
         {/* Total de Consultas */}
         <Card className="orx-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Total de Consultas</CardTitle>
+            <CardTitle className="text-[0.813rem] font-medium">Total de Consultas</CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{formatNumber(totalConsultas)}</div>
-            <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>
+            <div className="text-[0.813rem] font-bold">{formatNumber(totalConsultas)}</div>
+            <p className="text-muted-foreground text-[0.813rem]">
               Últimos {periodo} dias
             </p>
           </CardContent>
@@ -116,12 +116,12 @@ export function DashboardCache() {
         {/* Hit Rate Geral */}
         <Card className="orx-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Hit Rate Geral</CardTitle>
+            <CardTitle className="text-[0.813rem] font-medium">Hit Rate Geral</CardTitle>
             <Zap className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>{hitRateGeral}%</div>
-            <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>
+            <div className="text-[0.813rem] font-bold">{hitRateGeral}%</div>
+            <p className="text-muted-foreground text-[0.813rem]">
               {hitRateGeral >= 70 ? '🎉 Excelente!' : hitRateGeral >= 50 ? '✅ Bom' : '⚠️ Pode melhorar'}
             </p>
           </CardContent>
@@ -130,14 +130,14 @@ export function DashboardCache() {
         {/* Economia Estimada */}
         <Card className="orx-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Economia Estimada</CardTitle>
+            <CardTitle className="text-[0.813rem] font-medium">Economia Estimada</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>
+            <div className="text-[0.813rem] font-bold">
               R$ {economiaEstimada.toFixed(2)}
             </div>
-            <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>
+            <p className="text-muted-foreground text-[0.813rem]">
               Últimos {periodo} dias
             </p>
           </CardContent>
@@ -146,12 +146,12 @@ export function DashboardCache() {
         {/* Performance */}
         <Card className="orx-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className style={{  fontSize: '0.813rem' , fontWeight: 500 }}>Latência Média</CardTitle>
+            <CardTitle className="text-[0.813rem] font-medium">Latência Média</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className style={{  fontSize: '0.813rem' , fontWeight: 700 }}>~50ms</div>
-            <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>
+            <div className="text-[0.813rem] font-bold">~50ms</div>
+            <p className="text-muted-foreground text-[0.813rem]">
               10-20x mais rápido que API
             </p>
           </CardContent>
@@ -189,13 +189,13 @@ export function DashboardCache() {
                   <div className="flex items-center gap-3 flex-1">
                     <div className={`w-3 h-3 rounded-full ${getColorByType(stat.tipo)}`} />
                     <div>
-                      <div className="capitalize" style={{ fontWeight: 500 }}>
+                      <div className="capitalize font-medium">
                         {stat.tipo}
-                        <Badge variant="outline" className="ml-2" style={{ fontSize: '0.813rem' }}>
+                        <Badge variant="outline" className="ml-2 text-[0.813rem]">
                           {stat.fonte}
                         </Badge>
                       </div>
-                      <div className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>
+                      <div className="text-muted-foreground text-[0.813rem]">
                         Mais consultado: {stat.mais_consultado || 'N/A'}
                       </div>
                     </div>
@@ -205,22 +205,22 @@ export function DashboardCache() {
                   <div className="flex items-center gap-6">
                     {/* Total de Consultas */}
                     <div className="text-right">
-                      <div className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>Consultas</div>
-                      <div className style={{ fontWeight: 700 }}>{formatNumber(stat.total_consultas)}</div>
+                      <div className="text-muted-foreground text-[0.813rem]">Consultas</div>
+                      <div className="font-bold">{formatNumber(stat.total_consultas)}</div>
                     </div>
 
                     {/* Hit Rate */}
                     <div className="text-right">
-                      <div className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>Hit Rate</div>
-                      <div className="text-green-600" style={{ fontWeight: 700 }}>
+                      <div className="text-muted-foreground text-[0.813rem]">Hit Rate</div>
+                      <div className="text-green-600 font-bold">
                         {stat.hit_rate.toFixed(1)}%
                       </div>
                     </div>
 
                     {/* Consultas por Dia */}
                     <div className="text-right">
-                      <div className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>Por Dia</div>
-                      <div className style={{ fontWeight: 700 }}>{stat.consultas_por_dia.toFixed(1)}</div>
+                      <div className="text-muted-foreground text-[0.813rem]">Por Dia</div>
+                      <div className="font-bold">{stat.consultas_por_dia.toFixed(1)}</div>
                     </div>
                   </div>
                 </div>
@@ -235,7 +235,7 @@ export function DashboardCache() {
         <CardHeader>
           <CardTitle className="text-primary">💡 Recomendações</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-2" style={{ fontSize: '0.813rem' }}>
+        <CardContent className="space-y-2 text-[0.813rem]">
           {hitRateGeral < 50 && (
             <p>
               ⚠️ <strong>Hit rate abaixo de 50%:</strong> Considere aumentar o TTL do cache (atualmente 7-30 dias)

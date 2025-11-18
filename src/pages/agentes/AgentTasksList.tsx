@@ -250,7 +250,7 @@ export function AgentTasksList() {
             ) : (
               tasks.map((task) => (
                 <TableRow key={task.task_id}>
-                  <TableCell className="orx-font-medium max-w-xs truncate">
+                  <TableCell className="orx-orx-font-medium max-w-xs truncate">
                     {task.query_text}
                   </TableCell>
                   <TableCell>

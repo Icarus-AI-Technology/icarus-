@@ -9,7 +9,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -21,6 +20,10 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, PlayCircle } from "lucide-react";
 import { toast } from "sonner";
+
+interface OrchestratorResponse {
+  task_id: string;
+}
 
 interface CreateTaskDialogProps {
   open: boolean;
@@ -50,28 +53,33 @@ export function CreateTaskDialog({
 
       if (!user) throw new Error("Usuário não autenticado");
 
-      const { data: userOrg } = await supabase
+      const { data: userOrg, error: userOrgError } = await supabase
         .from("user_organizations")
         .select("organization_id")
         .eq("user_id", user.id)
         .single();
 
+      if (userOrgError) throw userOrgError;
       if (!userOrg) throw new Error("Organização não encontrada");
 
       // Chamar orchestrator
-      const { data, error } = await supabase.functions.invoke("orchestrator", {
-        body: {
-          query_text: formData.query_text,
-          organization_id: userOrg.organization_id,
-          priority: parseInt(formData.priority),
-          task_type: formData.task_type,
-        },
-      });
+      const { data, error } =
+        await supabase.functions.invoke<OrchestratorResponse>(
+          "orchestrator",
+          {
+            body: {
+              query_text: formData.query_text,
+              organization_id: userOrg.organization_id,
+              priority: parseInt(formData.priority, 10),
+              task_type: formData.task_type,
+            },
+          },
+        );
 
       if (error) throw error;
 
       toast.success("Análise iniciada com sucesso!", {
-        description: `Task ID: ${data.task_id}`,
+        description: `Task ID: ${data?.task_id ?? "desconhecido"}`,
       });
 
       // Reset form
@@ -82,10 +90,12 @@ export function CreateTaskDialog({
       });
 
       onOpenChange(false);
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error creating task:", error);
+      const description =
+        error instanceof Error ? error.message : "Erro ao criar análise";
       toast.error("Erro ao criar análise", {
-        description: error.message,
+        description,
       });
     } finally {
       setLoading(false);

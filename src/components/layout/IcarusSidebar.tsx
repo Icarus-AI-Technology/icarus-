@@ -795,7 +795,7 @@ export const IcarusSidebar: React.FC<IcarusSidebarProps> = ({
             paddingLeft: collapsed ?"8px" : `${12 + level * 12}px`,
             paddingRight: collapsed ?"8px" :"12px",
             justifyContent: collapsed ?"center" :"flex-start",
-            transition:"all 0.3s ease",
+            transition:"all 0.2s ease",
             marginBottom:"7px", // Aumentado de 6px para 7px
             fontSize: level === 0 ?"0.8125rem" :"0.75rem",
             fontWeight: level === 0 ? 600 : 500,
