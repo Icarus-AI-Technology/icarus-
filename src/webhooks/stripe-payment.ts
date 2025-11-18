@@ -15,8 +15,14 @@
 
 import { Request, Response } from 'express';
 import crypto from 'crypto';
-import Stripe from 'stripe';
 import he from 'he';
+
+type StripeObject = { id: string; [key: string]: unknown };
+
+type StripeEvent = {
+  type: string;
+  data: { object: StripeObject };
+};
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || '';
 
@@ -84,7 +90,7 @@ function verifyStripeSignature(
   payload: string,
   signature: string,
   secret: string
-): Stripe.Event {
+): StripeEvent {
   if (!secret) {
     throw new Error('STRIPE_WEBHOOK_SECRET não configurado');
   }
@@ -118,12 +124,12 @@ function verifyStripeSignature(
     throw new Error('Invalid signature');
   }
 
-  return JSON.parse(payload) as Stripe.Event;
+  return JSON.parse(payload) as StripeEvent;
 }
 
 // ===== Event Handlers =====
 
-async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
+async function handlePaymentSuccess(paymentIntent: StripeObject) {
   console.log('✅ Pagamento bem-sucedido:', paymentIntent.id);
   
   // TODO: Atualizar pedido no banco de dados
@@ -131,32 +137,32 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
   // TODO: Liberar acesso ao produto/serviço
 }
 
-async function handlePaymentFailed(paymentIntent: Stripe.PaymentIntent) {
+async function handlePaymentFailed(paymentIntent: StripeObject) {
   console.log('❌ Pagamento falhou:', paymentIntent.id);
   
   // TODO: Notificar cliente
   // TODO: Atualizar status do pedido
 }
 
-async function handleChargeSuccess(charge: Stripe.Charge) {
+async function handleChargeSuccess(charge: StripeObject) {
   console.log('✅ Cobrança bem-sucedida:', charge.id);
   
   // TODO: Registrar transação
 }
 
-async function handleChargeFailed(charge: Stripe.Charge) {
+async function handleChargeFailed(charge: StripeObject) {
   console.log('❌ Cobrança falhou:', charge.id);
   
   // TODO: Notificar administrador
 }
 
-async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
+async function handleSubscriptionUpdated(subscription: StripeObject) {
   console.log('🔄 Assinatura atualizada:', subscription.id);
   
   // TODO: Atualizar status da assinatura no banco
 }
 
-async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
+async function handleSubscriptionDeleted(subscription: StripeObject) {
   console.log('🗑️  Assinatura cancelada:', subscription.id);
   
   // TODO: Desativar acesso do usuário
