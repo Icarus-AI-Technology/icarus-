@@ -57,7 +57,7 @@ export default tseslint.config(
           additionalHooks: "^(useAsync|useEvent|useDebouncedCallback)$",
         },
       ],
-      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/no-require-imports": "off",
       // Import validation rules
       // Note: These are conceptual - they help prevent case-sensitive import issues

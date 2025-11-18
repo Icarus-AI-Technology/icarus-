@@ -11548,6 +11548,143 @@ export type Database = {
           },
         ]
       }
+      oportunidade_interacoes: {
+        Row: {
+          created_at: string
+          descricao: string | null
+          id: string
+          metadata: Json | null
+          ocorreu_em: string
+          oportunidade_id: string
+          tipo: string | null
+          usuario_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          metadata?: Json | null
+          ocorreu_em?: string
+          oportunidade_id: string
+          tipo?: string | null
+          usuario_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          metadata?: Json | null
+          ocorreu_em?: string
+          oportunidade_id?: string
+          tipo?: string | null
+          usuario_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "oportunidade_interacoes_oportunidade_id_fkey"
+            columns: ["oportunidade_id"]
+            isOneToOne: false
+            referencedRelation: "oportunidades"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "oportunidade_interacoes_usuario_id_fkey"
+            columns: ["usuario_id"]
+            isOneToOne: false
+            referencedRelation: "usuarios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      oportunidade_propostas: {
+        Row: {
+          atualizada_em: string
+          criada_em: string
+          id: string
+          numero: string | null
+          oportunidade_id: string
+          status: string
+          url_pdf: string | null
+          valor: number
+        }
+        Insert: {
+          atualizada_em?: string
+          criada_em?: string
+          id?: string
+          numero?: string | null
+          oportunidade_id: string
+          status?: string
+          url_pdf?: string | null
+          valor?: number
+        }
+        Update: {
+          atualizada_em?: string
+          criada_em?: string
+          id?: string
+          numero?: string | null
+          oportunidade_id?: string
+          status?: string
+          url_pdf?: string | null
+          valor?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "oportunidade_propostas_oportunidade_id_fkey"
+            columns: ["oportunidade_id"]
+            isOneToOne: false
+            referencedRelation: "oportunidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      oportunidade_tarefas: {
+        Row: {
+          concluido_em: string | null
+          created_at: string
+          due_date: string | null
+          id: string
+          oportunidade_id: string
+          responsavel_id: string | null
+          status: string
+          titulo: string
+        }
+        Insert: {
+          concluido_em?: string | null
+          created_at?: string
+          due_date?: string | null
+          id?: string
+          oportunidade_id: string
+          responsavel_id?: string | null
+          status?: string
+          titulo: string
+        }
+        Update: {
+          concluido_em?: string | null
+          created_at?: string
+          due_date?: string | null
+          id?: string
+          oportunidade_id?: string
+          responsavel_id?: string | null
+          status?: string
+          titulo?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "oportunidade_tarefas_oportunidade_id_fkey"
+            columns: ["oportunidade_id"]
+            isOneToOne: false
+            referencedRelation: "oportunidades"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "oportunidade_tarefas_responsavel_id_fkey"
+            columns: ["responsavel_id"]
+            isOneToOne: false
+            referencedRelation: "usuarios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       oportunidades: {
         Row: {
           atualizado_em: string | null
@@ -11555,8 +11692,10 @@ export type Database = {
           cliente_cnpj: string | null
           cliente_email: string | null
           cliente_nome: string
+          cliente_segmento: string | null
           cliente_telefone: string | null
           concorrente: string | null
+          created_at: string | null
           criado_em: string | null
           criado_por: string | null
           data_abertura: string | null
@@ -11566,19 +11705,26 @@ export type Database = {
           descricao: string | null
           empresa_id: string
           estagio: string | null
+          etapa: string | null
           excluido_em: string | null
           id: string
           lead_id: string | null
           motivo_ganho: string | null
           motivo_perda: string | null
           nome: string
+          nota: string | null
           numero: string
           observacoes: string | null
           origem: string | null
           probabilidade: number | null
           proximos_passos: string | null
+          responsavel_id: string | null
           segmento: string | null
+          status: string | null
           tipo: string | null
+          titulo: string | null
+          updated_at: string | null
+          valor: number | null
           valor_estimado: number | null
           valor_fechado: number | null
           vendedor_id: string
@@ -11589,8 +11735,10 @@ export type Database = {
           cliente_cnpj?: string | null
           cliente_email?: string | null
           cliente_nome: string
+          cliente_segmento?: string | null
           cliente_telefone?: string | null
           concorrente?: string | null
+          created_at?: string | null
           criado_em?: string | null
           criado_por?: string | null
           data_abertura?: string | null
@@ -11600,19 +11748,26 @@ export type Database = {
           descricao?: string | null
           empresa_id: string
           estagio?: string | null
+          etapa?: string | null
           excluido_em?: string | null
           id?: string
           lead_id?: string | null
           motivo_ganho?: string | null
           motivo_perda?: string | null
           nome: string
+          nota?: string | null
           numero: string
           observacoes?: string | null
           origem?: string | null
           probabilidade?: number | null
           proximos_passos?: string | null
+          responsavel_id?: string | null
           segmento?: string | null
+          status?: string | null
           tipo?: string | null
+          titulo?: string | null
+          updated_at?: string | null
+          valor?: number | null
           valor_estimado?: number | null
           valor_fechado?: number | null
           vendedor_id: string
@@ -11623,8 +11778,10 @@ export type Database = {
           cliente_cnpj?: string | null
           cliente_email?: string | null
           cliente_nome?: string
+          cliente_segmento?: string | null
           cliente_telefone?: string | null
           concorrente?: string | null
+          created_at?: string | null
           criado_em?: string | null
           criado_por?: string | null
           data_abertura?: string | null
@@ -11634,19 +11791,26 @@ export type Database = {
           descricao?: string | null
           empresa_id?: string
           estagio?: string | null
+          etapa?: string | null
           excluido_em?: string | null
           id?: string
           lead_id?: string | null
           motivo_ganho?: string | null
           motivo_perda?: string | null
           nome?: string
+          nota?: string | null
           numero?: string
           observacoes?: string | null
           origem?: string | null
           probabilidade?: number | null
           proximos_passos?: string | null
+          responsavel_id?: string | null
           segmento?: string | null
+          status?: string | null
           tipo?: string | null
+          titulo?: string | null
+          updated_at?: string | null
+          valor?: number | null
           valor_estimado?: number | null
           valor_fechado?: number | null
           vendedor_id?: string
@@ -17349,6 +17513,68 @@ export type Database = {
           total_produtos: number | null
         }
         Relationships: []
+      }
+      view_crm_funil: {
+        Row: {
+          empresa_id: string | null
+          etapa: string | null
+          total: number | null
+          valor_total: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "oportunidades_empresa_id_fkey"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "oportunidades_empresa_id_fkey"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "mv_kpis_empresa"
+            referencedColumns: ["empresa_id"]
+          },
+          {
+            foreignKeyName: "oportunidades_empresa_id_fkey"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "view_empresas_sem_dpo"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      view_crm_pipeline_resumo: {
+        Row: {
+          empresa_id: string | null
+          probabilidade_media: number | null
+          total_oportunidades: number | null
+          valor_total: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "oportunidades_empresa_id_fkey"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "oportunidades_empresa_id_fkey"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "mv_kpis_empresa"
+            referencedColumns: ["empresa_id"]
+          },
+          {
+            foreignKeyName: "oportunidades_empresa_id_fkey"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "view_empresas_sem_dpo"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       view_dashboard_financeiro: {
         Row: {
