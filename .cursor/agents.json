@@ -73,6 +73,25 @@
             "@Contador:auditar-requisitos-fiscais",
             "@Tutor-Conselheiro:classificar-gaps"
           ]
+        },
+        {
+          "name": "migrar-make-para-v5",
+          "desc": "Orquestra a migração definitiva de tudo que foi desenvolvido em /users/daxmeneghel/icarus-make/ para /users/daxmeneghel/icarus-v5.0/, garantindo deduplicação, preferência pelas versões mais recentes, testes completos e verificação Supabase via CLI.",
+          "steps": [
+            "@Migracao-Repo:scan-diff",
+            "@Migracao-Repo:backup-prod-root",
+            "@Migracao-Repo:sync-make-para-v5",
+            "@Migracao-Repo:git-status-resumo",
+            "@Migracao-Repo:rodar-testes",
+            "@Migracao-Repo:verificar-supabase",
+            "@Migracao-Repo:relatorio-final",
+            "@Migracao-Repo:remover-make-opcional"
+          ],
+          "deliverables": [
+            "backups/migration/icarus-make.diff",
+            "backups/migration/icarus-v5.0-pre-migration.tar.gz",
+            "backups/migration/relatorio-migracao.md"
+          ]
         }
       ],
       "subagents": [
@@ -80,7 +99,8 @@
         "Advogado",
         "Gestao-Empresarial",
         "Tutor-Conselheiro",
-        "IA-Validator"
+        "IA-Validator",
+        "Migracao-Repo"
       ]
     },
     {
@@ -188,6 +208,68 @@
         "auditar-edge-functions": "node tools/ia/check-edge-functions.js",
         "corrigir-configs": "node tools/ia/auto-fix-configs.js"
       }
+    },
+    {
+      "name": "Migracao-Repo",
+      "role": "Agente orquestrador de migração entre /users/daxmeneghel/icarus-make/ (sandbox de desenvolvimento) e /users/daxmeneghel/icarus-v5.0/ (repositório oficial). Garante deduplicação, preferência por versões mais recentes, execução de testes e verificação de backend/Supabase, além de orientar a remoção segura do diretório icarus-make.",
+      "mission": [
+        "Mapear todas as diferenças entre /users/daxmeneghel/icarus-make/ e /users/daxmeneghel/icarus-v5.0/ gerando um diff completo para auditoria.",
+        "Criar backup de segurança do repositório oficial (/users/daxmeneghel/icarus-v5.0/) ANTES de qualquer sincronização.",
+        "Sincronizar arquivos e diretórios do icarus-make para icarus-v5.0 preferindo sempre os arquivos mais recentes, evitando duplicidades e não sobrescrevendo .git e node_modules.",
+        "Executar testes (lint, unit, e2e se configurados) e build do projeto em /users/daxmeneghel/icarus-v5.0/ após a migração.",
+        "Rodar checagens de backend e Supabase via CLI (supabase status, functions, migrations) garantindo que o projeto continue íntegro.",
+        "Gerar relatório final de migração e, opcionalmente, orientar/remover com segurança o diretório /users/daxmeneghel/icarus-make/ do ambiente do Cursor."
+      ],
+      "policies": {
+        "paths": {
+          "source": "/users/daxmeneghel/icarus-make/",
+          "target": "/users/daxmeneghel/icarus-v5.0/"
+        },
+        "fs": {
+          "denyWrite": [
+            "/users/daxmeneghel/icarus-v5.0/.git",
+            "/users/daxmeneghel/icarus-v5.0/node_modules",
+            "/users/daxmeneghel/icarus-make/.git",
+            "/users/daxmeneghel/icarus-make/node_modules"
+          ]
+        },
+        "safety": [
+          "Nunca apagar ou sobrescrever .git nem node_modules.",
+          "Qualquer comando de remoção definitiva (rm -rf) deve ser tratado como etapa OPCIONAL e executado somente depois da confirmação do usuário."
+        ]
+      },
+      "tools": ["bash", "git", "node", "deno", "supabase"],
+      "commands": {
+        "scan-diff": "bash -lc 'mkdir -p /users/daxmeneghel/icarus-v5.0/backups/migration && cd /users/daxmeneghel && diff -ru icarus-v5.0 icarus-make > icarus-v5.0/backups/migration/icarus-make.diff || true && echo \"[Migracao-Repo] Diff gerado em backups/migration/icarus-make.diff\"'",
+        "backup-prod-root": "bash -lc 'cd /users/daxmeneghel && mkdir -p icarus-v5.0/backups/migration && tar -czf icarus-v5.0/backups/migration/icarus-v5.0-pre-migration.tar.gz icarus-v5.0 --exclude=\"icarus-v5.0/node_modules\" --exclude=\"icarus-v5.0/.git\" && echo \"[Migracao-Repo] Backup de icarus-v5.0 criado em backups/migration/icarus-v5.0-pre-migration.tar.gz\"'",
+        "sync-make-para-v5": "bash -lc 'rsync -av --update --exclude \".git\" --exclude \"node_modules\" /users/daxmeneghel/icarus-make/ /users/daxmeneghel/icarus-v5.0/ && echo \"[Migracao-Repo] Sincronização concluída (preferindo arquivos mais recentes de icarus-make).\"'",
+        "git-status-resumo": "bash -lc 'cd /users/daxmeneghel/icarus-v5.0 && echo \"[Migracao-Repo] git status após sincronização:\" && git status --short'",
+        "rodar-testes": "bash -lc 'cd /users/daxmeneghel/icarus-v5.0 && echo \"[Migracao-Repo] Instalando dependências (se necessário) e executando lint/test/build...\" && npm install && npm run lint && npm test || echo \"[Migracao-Repo] npm test retornou erro, verifique os logs\" && npm run build'",
+        "verificar-supabase": "bash -lc 'cd /users/daxmeneghel/icarus-v5.0 && echo \"[Migracao-Repo] Verificando Supabase via CLI...\" && supabase status || echo \"[Migracao-Repo] supabase status retornou alerta\" && supabase functions list || echo \"[Migracao-Repo] supabase functions list retornou alerta\"'",
+        "relatorio-final": "bash -lc 'cd /users/daxmeneghel/icarus-v5.0 && mkdir -p backups/migration && { echo \"# Relatório de Migração icarus-make → icarus-v5.0\"; echo; echo \"- Data: $(date)\"; echo \"- Origem: /users/daxmeneghel/icarus-make/\"; echo \"- Destino: /users/daxmeneghel/icarus-v5.0/\"; echo \"- Diff: backups/migration/icarus-make.diff\"; echo \"- Backup pré-migração: backups/migration/icarus-v5.0-pre-migration.tar.gz\"; echo; echo \"## Próximos passos sugeridos\"; echo \"- Revisar git status e commitar as alterações relevantes.\"; echo \"- Rodar novamente testes específicos (e2e) se existirem.\"; echo \"- Após validação manual, executar etapa opcional de remoção do diretório icarus-make.\"; } > backups/migration/relatorio-migracao.md && echo \"[Migracao-Repo] Relatório criado em backups/migration/relatorio-migracao.md\"'",
+        "remover-make-opcional": "bash -lc 'echo \"[Migracao-Repo] ETAPA OPCIONAL: Remover diretório /users/daxmeneghel/icarus-make/ APENAS APÓS VALIDAÇÃO MANUAL.\" && echo \"Para remover definitivamente, execute conscientemente:\" && echo \"  rm -rf /users/daxmeneghel/icarus-make\"'"
+      },
+      "playbooks": [
+        {
+          "name": "migrar-make-para-v5",
+          "desc": "Executa todos os passos técnicos para migrar o trabalho do icarus-make para icarus-v5.0, com backup, diff, sincronização, testes e verificação Supabase.",
+          "steps": [
+            "scan-diff",
+            "backup-prod-root",
+            "sync-make-para-v5",
+            "git-status-resumo",
+            "rodar-testes",
+            "verificar-supabase",
+            "relatorio-final",
+            "remover-make-opcional"
+          ],
+          "deliverables": [
+            "backups/migration/icarus-make.diff",
+            "backups/migration/icarus-v5.0-pre-migration.tar.gz",
+            "backups/migration/relatorio-migracao.md"
+          ]
+        }
+      ]
     }
   ]
 }

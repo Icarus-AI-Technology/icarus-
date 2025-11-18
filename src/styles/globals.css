@@ -1,3 +1,6 @@
+/* Import Design Tokens First */
+@import "./design-tokens.css";
+
 /* Import OraclusX Design System */
 @import "./oraclusx-ds.css";
 
