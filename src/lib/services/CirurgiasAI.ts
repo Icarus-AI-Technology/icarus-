@@ -210,7 +210,7 @@ export class CirurgiasAI {
       // Buscar cirurgias similares
       const { data: cirurgiasSimilares } = await supabase
         .from('cirurgias')
-        .select<any>(`
+        .select(`
           id,
           cirurgias_produtos (
             produto_id,

@@ -20,6 +20,8 @@ export function useSupabaseQuery<T extends keyof Tables>(
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
+  const filterStr = JSON.stringify(options?.filter)
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -62,9 +64,9 @@ export function useSupabaseQuery<T extends keyof Tables>(
     table,
     options?.select,
     options?.limit,
-    options?.orderBy?.column,
-    options?.orderBy?.ascending,
-    JSON.stringify(options?.filter),
+    options?.orderBy,
+    options?.filter,
+    filterStr,
   ])
 
   return { data, loading, error }

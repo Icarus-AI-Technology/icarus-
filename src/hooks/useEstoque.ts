@@ -4,7 +4,6 @@ import { supabase } from '../lib/supabase'
 import { useSupabaseQuery } from './useSupabase'
 import type { Database } from '../lib/database.types.generated'
 
-type Estoque = Database['public']['Tables']['estoque']['Row']
 type EstoqueInsert = Database['public']['Tables']['estoque']['Insert']
 type EstoqueUpdate = Database['public']['Tables']['estoque']['Update']
 

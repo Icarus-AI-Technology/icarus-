@@ -227,7 +227,7 @@ export class MLService {
    * 
    * TODO: Integrar com OpenAI Embeddings API
    */
-  static async generateEmbedding(text: string): Promise<number[] | null> {
+  static async generateEmbedding(_text: string): Promise<number[] | null> {
     try {
       // TODO: Integrar com OpenAI API
       // const response = await openai.embeddings.create({

@@ -4,6 +4,11 @@
   "installCommand": "npm install --legacy-peer-deps",
   "framework": "vite",
   "devCommand": "npm run dev",
+  "functions": {
+    "api/**/*.ts": {
+      "runtime": "@vercel/node@3"
+    }
+  },
   "rewrites": [
     {
       "source": "/api/contact",
@@ -44,20 +49,6 @@
           "value": "public, max-age=0, must-revalidate"
         }
       ]
-    }
-  ],
-  "crons": [
-    {
-      "path": "/api/cron/recalcular-kpis",
-      "schedule": "0 */6 * * *"
-    },
-    {
-      "path": "/api/cron/refresh-views",
-      "schedule": "0 0 * * *"
-    },
-    {
-      "path": "/api/cron/cleanup-webhooks",
-      "schedule": "0 2 * * *"
     }
   ]
 }
