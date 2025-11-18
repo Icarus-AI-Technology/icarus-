@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Check, Loader2, Plus, Trash2, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { NeumoInput, NeumoTextarea, NeumoButton } from '@/components/oraclusx-ds';
+import { useDocumentTitle } from '@/hooks';
 
 interface MembroEquipe {
   medico_id: string;
@@ -38,6 +41,7 @@ const FUNCOES = [
 ];
 
 const CadastroEquipesMedicas: React.FC = () => {
+  useDocumentTitle('Cadastro de Equipes Médicas');
   const navigate = useNavigate();
   const [formData, setFormData] = useState<EquipeMedicaFormData>(INITIAL_STATE);
   const [loading, setLoading] = useState(false);
@@ -79,54 +83,57 @@ const CadastroEquipesMedicas: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validação
+    if (!formData.nome || !formData.medico_responsavel_id) {
+      toast.error('Preencha os campos obrigatórios');
+      return;
+    }
+
     setLoading(true);
 
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
       console.log('Equipe Médica salva:', formData);
+      toast.success('Equipe médica cadastrada com sucesso!');
       navigate('/cadastros');
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao salvar:', err);
+      toast.error('Erro ao salvar equipe médica');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ padding: '1.5rem' }}>
-      {/* Header */}
-      <div style={{ marginBottom: '2rem' }}>
-        <button
-          onClick={() => navigate('/cadastros')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            padding: '0.5rem 1rem',
-            background: 'var(--orx-bg-light)',
-            border: '1px solid var(--orx-border)',
-            borderRadius: '0.5rem',
-            color: 'var(--orx-text-primary)',
-            cursor: 'pointer',
-            marginBottom: '1rem'
-          }}
-        >
-          <ArrowLeft size={20} />
-          Voltar
-        </button>
-        <h1 style={{ 
-          fontSize: '0.813rem', 
-          fontWeight: 'bold',
-          color: 'var(--orx-text-primary)',
-          marginBottom: '0.5rem'
-        }}>
-          Cadastro de Equipes Médicas
-        </h1>
-        <p style={{ color: 'var(--orx-text-secondary)' }}>
-          Configure equipes para cirurgias e procedimentos
-        </p>
-      </div>
+    <div className="min-h-screen p-6 bg-orx-bg-app">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="mb-6">
+          <NeumoButton
+            variant="secondary"
+            leftIcon={ArrowLeft}
+            onClick={() => navigate('/cadastros')}
+            className="mb-4"
+          >
+            Voltar
+          </NeumoButton>
+          
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-3 rounded-xl bg-orx-bg-surface shadow-neumo-sm">
+              <Users className="w-6 h-6 text-orx-primary" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-orx-text-primary">
+                Cadastro de Equipes Médicas
+              </h1>
+              <p className="text-orx-text-secondary mt-1">
+                Configure equipes para cirurgias e procedimentos
+              </p>
+            </div>
+          </div>
+        </div>
 
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         {/* Identificação */}
