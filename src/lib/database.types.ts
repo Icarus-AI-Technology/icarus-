@@ -5177,13 +5177,21 @@ export type Database = {
       }
       contas_pagar: {
         Row: {
+          aprovacao_nivel1: Json | null
+          aprovacao_nivel2: Json | null
+          aprovacao_nivel3: Json | null
           atualizado_em: string | null
           atualizado_por: string | null
           banco_id: string | null
+          banco_pagamento: string | null
           categoria: string | null
           centro_custo_id: string | null
+          centro_custo_nome: string | null
+          comprovante_url: string | null
+          created_at: string | null
           criado_em: string | null
           criado_por: string | null
+          data_agendamento: string | null
           data_emissao: string
           data_pagamento: string | null
           data_vencimento: string
@@ -5192,8 +5200,10 @@ export type Database = {
           excluido_em: string | null
           forma_pagamento: string | null
           fornecedor_cnpj: string | null
+          fornecedor_cpf_cnpj: string | null
           fornecedor_id: string | null
           fornecedor_nome: string | null
+          historico_pagamentos: Json | null
           id: string
           nota_fiscal_id: string | null
           numero: string
@@ -5202,24 +5212,36 @@ export type Database = {
           observacoes: string | null
           pedido_compra_id: string | null
           plano_contas_id: string | null
+          requer_aprovacao: boolean | null
           status: string | null
           tipo: string | null
+          tipo_despesa: string | null
           total_parcelas: number | null
+          updated_at: string | null
           valor_desconto: number | null
           valor_juros: number | null
+          valor_liquido: number | null
           valor_multa: number | null
           valor_original: number
           valor_pago: number | null
           valor_saldo: number | null
         }
         Insert: {
+          aprovacao_nivel1?: Json | null
+          aprovacao_nivel2?: Json | null
+          aprovacao_nivel3?: Json | null
           atualizado_em?: string | null
           atualizado_por?: string | null
           banco_id?: string | null
+          banco_pagamento?: string | null
           categoria?: string | null
           centro_custo_id?: string | null
+          centro_custo_nome?: string | null
+          comprovante_url?: string | null
+          created_at?: string | null
           criado_em?: string | null
           criado_por?: string | null
+          data_agendamento?: string | null
           data_emissao: string
           data_pagamento?: string | null
           data_vencimento: string
@@ -5228,8 +5250,10 @@ export type Database = {
           excluido_em?: string | null
           forma_pagamento?: string | null
           fornecedor_cnpj?: string | null
+          fornecedor_cpf_cnpj?: string | null
           fornecedor_id?: string | null
           fornecedor_nome?: string | null
+          historico_pagamentos?: Json | null
           id?: string
           nota_fiscal_id?: string | null
           numero: string
@@ -5238,24 +5262,36 @@ export type Database = {
           observacoes?: string | null
           pedido_compra_id?: string | null
           plano_contas_id?: string | null
+          requer_aprovacao?: boolean | null
           status?: string | null
           tipo?: string | null
+          tipo_despesa?: string | null
           total_parcelas?: number | null
+          updated_at?: string | null
           valor_desconto?: number | null
           valor_juros?: number | null
+          valor_liquido?: number | null
           valor_multa?: number | null
           valor_original: number
           valor_pago?: number | null
           valor_saldo?: number | null
         }
         Update: {
+          aprovacao_nivel1?: Json | null
+          aprovacao_nivel2?: Json | null
+          aprovacao_nivel3?: Json | null
           atualizado_em?: string | null
           atualizado_por?: string | null
           banco_id?: string | null
+          banco_pagamento?: string | null
           categoria?: string | null
           centro_custo_id?: string | null
+          centro_custo_nome?: string | null
+          comprovante_url?: string | null
+          created_at?: string | null
           criado_em?: string | null
           criado_por?: string | null
+          data_agendamento?: string | null
           data_emissao?: string
           data_pagamento?: string | null
           data_vencimento?: string
@@ -5264,8 +5300,10 @@ export type Database = {
           excluido_em?: string | null
           forma_pagamento?: string | null
           fornecedor_cnpj?: string | null
+          fornecedor_cpf_cnpj?: string | null
           fornecedor_id?: string | null
           fornecedor_nome?: string | null
+          historico_pagamentos?: Json | null
           id?: string
           nota_fiscal_id?: string | null
           numero?: string
@@ -5274,11 +5312,15 @@ export type Database = {
           observacoes?: string | null
           pedido_compra_id?: string | null
           plano_contas_id?: string | null
+          requer_aprovacao?: boolean | null
           status?: string | null
           tipo?: string | null
+          tipo_despesa?: string | null
           total_parcelas?: number | null
+          updated_at?: string | null
           valor_desconto?: number | null
           valor_juros?: number | null
+          valor_liquido?: number | null
           valor_multa?: number | null
           valor_original?: number
           valor_pago?: number | null
@@ -5348,13 +5390,17 @@ export type Database = {
           atualizado_em: string | null
           atualizado_por: string | null
           banco_id: string | null
+          banco_recebimento: string | null
           boleto_nosso_numero: string | null
           boleto_url: string | null
           categoria: string | null
           centro_custo_id: string | null
           cliente_cnpj: string | null
+          cliente_cpf_cnpj: string | null
           cliente_id: string | null
           cliente_nome: string
+          comprovante_url: string | null
+          created_at: string | null
           criado_em: string | null
           criado_por: string | null
           data_emissao: string
@@ -5362,10 +5408,12 @@ export type Database = {
           data_recebimento: string | null
           data_vencimento: string
           descricao: string
+          dias_atraso: number | null
           empresa_id: string
           excluido_em: string | null
           fatura_id: string | null
           forma_recebimento: string | null
+          historico_pagamentos: Json | null
           id: string
           nota_fiscal_id: string | null
           numero: string
@@ -5373,11 +5421,16 @@ export type Database = {
           numero_parcela: number | null
           observacoes: string | null
           plano_contas_id: string | null
+          risco_inadimplencia: string | null
+          score_inadimplencia: number | null
           status: string | null
           tipo: string | null
+          tipo_receita: string | null
           total_parcelas: number | null
+          updated_at: string | null
           valor_desconto: number | null
           valor_juros: number | null
+          valor_liquido: number | null
           valor_original: number
           valor_recebido: number | null
           valor_saldo: number | null
@@ -5386,13 +5439,17 @@ export type Database = {
           atualizado_em?: string | null
           atualizado_por?: string | null
           banco_id?: string | null
+          banco_recebimento?: string | null
           boleto_nosso_numero?: string | null
           boleto_url?: string | null
           categoria?: string | null
           centro_custo_id?: string | null
           cliente_cnpj?: string | null
+          cliente_cpf_cnpj?: string | null
           cliente_id?: string | null
           cliente_nome: string
+          comprovante_url?: string | null
+          created_at?: string | null
           criado_em?: string | null
           criado_por?: string | null
           data_emissao: string
@@ -5400,10 +5457,12 @@ export type Database = {
           data_recebimento?: string | null
           data_vencimento: string
           descricao: string
+          dias_atraso?: number | null
           empresa_id: string
           excluido_em?: string | null
           fatura_id?: string | null
           forma_recebimento?: string | null
+          historico_pagamentos?: Json | null
           id?: string
           nota_fiscal_id?: string | null
           numero: string
@@ -5411,11 +5470,16 @@ export type Database = {
           numero_parcela?: number | null
           observacoes?: string | null
           plano_contas_id?: string | null
+          risco_inadimplencia?: string | null
+          score_inadimplencia?: number | null
           status?: string | null
           tipo?: string | null
+          tipo_receita?: string | null
           total_parcelas?: number | null
+          updated_at?: string | null
           valor_desconto?: number | null
           valor_juros?: number | null
+          valor_liquido?: number | null
           valor_original: number
           valor_recebido?: number | null
           valor_saldo?: number | null
@@ -5424,13 +5488,17 @@ export type Database = {
           atualizado_em?: string | null
           atualizado_por?: string | null
           banco_id?: string | null
+          banco_recebimento?: string | null
           boleto_nosso_numero?: string | null
           boleto_url?: string | null
           categoria?: string | null
           centro_custo_id?: string | null
           cliente_cnpj?: string | null
+          cliente_cpf_cnpj?: string | null
           cliente_id?: string | null
           cliente_nome?: string
+          comprovante_url?: string | null
+          created_at?: string | null
           criado_em?: string | null
           criado_por?: string | null
           data_emissao?: string
@@ -5438,10 +5506,12 @@ export type Database = {
           data_recebimento?: string | null
           data_vencimento?: string
           descricao?: string
+          dias_atraso?: number | null
           empresa_id?: string
           excluido_em?: string | null
           fatura_id?: string | null
           forma_recebimento?: string | null
+          historico_pagamentos?: Json | null
           id?: string
           nota_fiscal_id?: string | null
           numero?: string
@@ -5449,11 +5519,16 @@ export type Database = {
           numero_parcela?: number | null
           observacoes?: string | null
           plano_contas_id?: string | null
+          risco_inadimplencia?: string | null
+          score_inadimplencia?: number | null
           status?: string | null
           tipo?: string | null
+          tipo_receita?: string | null
           total_parcelas?: number | null
+          updated_at?: string | null
           valor_desconto?: number | null
           valor_juros?: number | null
+          valor_liquido?: number | null
           valor_original?: number
           valor_recebido?: number | null
           valor_saldo?: number | null
@@ -10145,11 +10220,20 @@ export type Database = {
           estoque_atual: number | null
           estoque_minimo: number | null
           fabricante: string | null
+          fornecedor_id: string | null
           id: string
+          localizacao: string | null
+          lote: string | null
           nome: string
+          observacoes: string | null
+          quantidade_estoque: number | null
+          quantidade_minima: number | null
+          registro_anvisa: string | null
           status: string | null
+          tipo: string | null
           unidade_medida: string | null
           updated_at: string | null
+          validade: string | null
           valor_unitario: number | null
         }
         Insert: {
@@ -10160,11 +10244,20 @@ export type Database = {
           estoque_atual?: number | null
           estoque_minimo?: number | null
           fabricante?: string | null
+          fornecedor_id?: string | null
           id?: string
+          localizacao?: string | null
+          lote?: string | null
           nome: string
+          observacoes?: string | null
+          quantidade_estoque?: number | null
+          quantidade_minima?: number | null
+          registro_anvisa?: string | null
           status?: string | null
+          tipo?: string | null
           unidade_medida?: string | null
           updated_at?: string | null
+          validade?: string | null
           valor_unitario?: number | null
         }
         Update: {
@@ -10175,11 +10268,20 @@ export type Database = {
           estoque_atual?: number | null
           estoque_minimo?: number | null
           fabricante?: string | null
+          fornecedor_id?: string | null
           id?: string
+          localizacao?: string | null
+          lote?: string | null
           nome?: string
+          observacoes?: string | null
+          quantidade_estoque?: number | null
+          quantidade_minima?: number | null
+          registro_anvisa?: string | null
           status?: string | null
+          tipo?: string | null
           unidade_medida?: string | null
           updated_at?: string | null
+          validade?: string | null
           valor_unitario?: number | null
         }
         Relationships: []
@@ -10189,6 +10291,7 @@ export type Database = {
           atualizado_em: string | null
           cep: string | null
           cirurgias_realizadas: number | null
+          created_at: string | null
           criado_em: string | null
           crm: string
           crm_uf: string
@@ -10201,7 +10304,9 @@ export type Database = {
           id: string
           nome: string
           status: string | null
-          telefone: string | null
+          taxa_sucesso: number | null
+          telefone: string
+          updated_at: string | null
           usuario_id: string | null
           volume_anual_estimado: number | null
         }
@@ -10209,6 +10314,7 @@ export type Database = {
           atualizado_em?: string | null
           cep?: string | null
           cirurgias_realizadas?: number | null
+          created_at?: string | null
           criado_em?: string | null
           crm: string
           crm_uf: string
@@ -10221,7 +10327,9 @@ export type Database = {
           id?: string
           nome: string
           status?: string | null
-          telefone?: string | null
+          taxa_sucesso?: number | null
+          telefone?: string
+          updated_at?: string | null
           usuario_id?: string | null
           volume_anual_estimado?: number | null
         }
@@ -10229,6 +10337,7 @@ export type Database = {
           atualizado_em?: string | null
           cep?: string | null
           cirurgias_realizadas?: number | null
+          created_at?: string | null
           criado_em?: string | null
           crm?: string
           crm_uf?: string
@@ -10241,7 +10350,9 @@ export type Database = {
           id?: string
           nome?: string
           status?: string | null
-          telefone?: string | null
+          taxa_sucesso?: number | null
+          telefone?: string
+          updated_at?: string | null
           usuario_id?: string | null
           volume_anual_estimado?: number | null
         }
@@ -12132,51 +12243,85 @@ export type Database = {
       }
       pedidos_compra: {
         Row: {
+          aprovado_por: string | null
           atualizado_em: string | null
+          created_at: string | null
           criado_em: string | null
+          data_aprovacao: string | null
           data_entrega_prevista: string | null
+          data_entrega_real: string | null
           data_pedido: string | null
+          desconto: number | null
           empresa_id: string
           excluido_em: string | null
           fornecedor_id: string | null
           id: string
           numero: string
+          numero_pedido: string | null
           observacoes: string | null
           status: string | null
+          status_en: string | null
+          updated_at: string | null
           urgencia: string | null
+          valor_frete: number | null
           valor_total: number
         }
         Insert: {
+          aprovado_por?: string | null
           atualizado_em?: string | null
+          created_at?: string | null
           criado_em?: string | null
+          data_aprovacao?: string | null
           data_entrega_prevista?: string | null
+          data_entrega_real?: string | null
           data_pedido?: string | null
+          desconto?: number | null
           empresa_id: string
           excluido_em?: string | null
           fornecedor_id?: string | null
           id?: string
           numero: string
+          numero_pedido?: string | null
           observacoes?: string | null
           status?: string | null
+          status_en?: string | null
+          updated_at?: string | null
           urgencia?: string | null
+          valor_frete?: number | null
           valor_total: number
         }
         Update: {
+          aprovado_por?: string | null
           atualizado_em?: string | null
+          created_at?: string | null
           criado_em?: string | null
+          data_aprovacao?: string | null
           data_entrega_prevista?: string | null
+          data_entrega_real?: string | null
           data_pedido?: string | null
+          desconto?: number | null
           empresa_id?: string
           excluido_em?: string | null
           fornecedor_id?: string | null
           id?: string
           numero?: string
+          numero_pedido?: string | null
           observacoes?: string | null
           status?: string | null
+          status_en?: string | null
+          updated_at?: string | null
           urgencia?: string | null
+          valor_frete?: number | null
           valor_total?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "pedidos_compra_aprovado_por_fkey"
+            columns: ["aprovado_por"]
+            isOneToOne: false
+            referencedRelation: "usuarios"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "pedidos_compra_empresa_id_fkey"
             columns: ["empresa_id"]
@@ -15788,60 +15933,95 @@ export type Database = {
       }
       transacoes: {
         Row: {
+          anexo_url: string | null
           atualizado_em: string | null
           categoria: string
+          cirurgia_id: string | null
           convenio_id: string | null
+          created_at: string | null
           criado_em: string | null
+          data: string | null
           data_pagamento: string | null
           data_vencimento: string
           descricao: string
           empresa_id: string
           excluido_em: string | null
           forma_pagamento: string | null
+          hospital_id: string | null
           id: string
           medico_id: string | null
           observacoes: string | null
           status: string | null
+          status_en: string | null
           tipo: string
+          updated_at: string | null
           valor: number
         }
         Insert: {
+          anexo_url?: string | null
           atualizado_em?: string | null
           categoria: string
+          cirurgia_id?: string | null
           convenio_id?: string | null
+          created_at?: string | null
           criado_em?: string | null
+          data?: string | null
           data_pagamento?: string | null
           data_vencimento: string
           descricao: string
           empresa_id: string
           excluido_em?: string | null
           forma_pagamento?: string | null
+          hospital_id?: string | null
           id?: string
           medico_id?: string | null
           observacoes?: string | null
           status?: string | null
+          status_en?: string | null
           tipo: string
+          updated_at?: string | null
           valor: number
         }
         Update: {
+          anexo_url?: string | null
           atualizado_em?: string | null
           categoria?: string
+          cirurgia_id?: string | null
           convenio_id?: string | null
+          created_at?: string | null
           criado_em?: string | null
+          data?: string | null
           data_pagamento?: string | null
           data_vencimento?: string
           descricao?: string
           empresa_id?: string
           excluido_em?: string | null
           forma_pagamento?: string | null
+          hospital_id?: string | null
           id?: string
           medico_id?: string | null
           observacoes?: string | null
           status?: string | null
+          status_en?: string | null
           tipo?: string
+          updated_at?: string | null
           valor?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "transacoes_cirurgia_id_fkey"
+            columns: ["cirurgia_id"]
+            isOneToOne: false
+            referencedRelation: "cirurgias"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transacoes_cirurgia_id_fkey"
+            columns: ["cirurgia_id"]
+            isOneToOne: false
+            referencedRelation: "vw_cirurgias_segura"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "transacoes_empresa_id_fkey"
             columns: ["empresa_id"]
@@ -15862,6 +16042,20 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "view_empresas_sem_dpo"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transacoes_hospital_id_fkey"
+            columns: ["hospital_id"]
+            isOneToOne: false
+            referencedRelation: "hospitais"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transacoes_hospital_id_fkey"
+            columns: ["hospital_id"]
+            isOneToOne: false
+            referencedRelation: "vw_consignacao_por_hospital"
+            referencedColumns: ["hospital_id"]
           },
           {
             foreignKeyName: "transacoes_medico_id_fkey"
@@ -17626,6 +17820,42 @@ export type Database = {
         }
         Relationships: []
       }
+      vw_active_sessions: {
+        Row: {
+          dispositivo: string | null
+          id: string | null
+          inicio_em: string | null
+          ip_address: unknown
+          navegador: string | null
+          session_token: string | null
+          termino_em: string | null
+          user_agent: string | null
+          usuario_id: string | null
+        }
+        Insert: {
+          dispositivo?: string | null
+          id?: string | null
+          inicio_em?: string | null
+          ip_address?: unknown
+          navegador?: string | null
+          session_token?: string | null
+          termino_em?: string | null
+          user_agent?: string | null
+          usuario_id?: string | null
+        }
+        Update: {
+          dispositivo?: string | null
+          id?: string | null
+          inicio_em?: string | null
+          ip_address?: unknown
+          navegador?: string | null
+          session_token?: string | null
+          termino_em?: string | null
+          user_agent?: string | null
+          usuario_id?: string | null
+        }
+        Relationships: []
+      }
       vw_api_metrics: {
         Row: {
           active_alerts: number | null
@@ -18732,6 +18962,7 @@ export type Database = {
           similarity: number
         }[]
       }
+      set_config: { Args: { setting: string; value: string }; Returns: boolean }
       set_validacao_cache: {
         Args: {
           p_chave: string
