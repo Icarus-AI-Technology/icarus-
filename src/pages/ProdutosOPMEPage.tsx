@@ -9,10 +9,10 @@ import {
   Search,
   Filter,
   Download,
-  CheckCircle2,
   XCircle,
   AlertTriangle,
   FileText,
+  CheckCircle2,
 } from 'lucide-react'
 
 export function ProdutosOPMEPage() {
@@ -20,7 +20,6 @@ export function ProdutosOPMEPage() {
   const { produtos, loading, error, fetchProdutosBaixoEstoque } = useProdutos(empresaId)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState<'todos' | 'ativo' | 'inativo'>('todos')
-  const [showBaixoEstoque, setShowBaixoEstoque] = useState(false)
 
   // Filtrar produtos
   const produtosFiltrados = produtos.filter((produto) => {
@@ -46,7 +45,6 @@ export function ProdutosOPMEPage() {
   }
 
   const handleShowBaixoEstoque = async () => {
-    setShowBaixoEstoque(true)
     await fetchProdutosBaixoEstoque()
   }
 

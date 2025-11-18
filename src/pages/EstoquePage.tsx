@@ -13,9 +13,6 @@ import {
   CheckCircle,
   XCircle,
 } from 'lucide-react'
-import type { Database } from '../lib/database.types.generated'
-
-type Estoque = Database['public']['Tables']['estoque']['Row']
 
 export function EstoquePage() {
   const empresaId = 'temp-empresa-id' // TODO: Pegar do context de autenticação
@@ -25,7 +22,7 @@ export function EstoquePage() {
 
   useEffect(() => {
     refreshEstoque()
-  }, [])
+  }, [refreshEstoque])
 
   // Filtrar estoques
   const estoquesFiltrados = estoques.filter((item) => {

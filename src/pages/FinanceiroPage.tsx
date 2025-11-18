@@ -8,13 +8,11 @@ import {
   TrendingUp,
   TrendingDown,
   Calendar,
-  CreditCard,
   FileText,
   Download,
   Search,
   Filter,
   AlertCircle,
-  CheckCircle2,
   Clock,
 } from 'lucide-react'
 import type { Database } from '../lib/database.types.generated'
