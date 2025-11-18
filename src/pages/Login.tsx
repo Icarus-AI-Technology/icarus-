@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/hooks';
 import { NeumoInput, NeumoButton } from '@/components/oraclusx-ds';
-import { Mail, Lock, AlertCircle, Loader2, BrainCircuit } from 'lucide-react';
+import { Mail, Lock, AlertCircle, Loader2, BrainCircuit, Rocket } from 'lucide-react';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -127,9 +127,10 @@ export default function Login() {
               type="submit"
               disabled={loading}
               loading={loading}
-              className="w-full h-12 text-base font-semibold bg-gradient-to-r from-orx-primary to-purple-500 text-white hover:from-orx-primary/90 hover:to-purple-600"
+              leftIcon={Rocket}
+              className="w-full h-12 text-base font-semibold bg-gradient-to-r from-orx-primary to-purple-500 text-white hover:from-orx-primary/90 hover:to-purple-600 shadow-lg hover:shadow-xl transition-all duration-200"
             >
-              {loading ? 'Entrando...' : '🚀 Entrar no Sistema'}
+              {loading ? 'Entrando...' : 'Entrar no Sistema'}
             </NeumoButton>
           </form>
 
