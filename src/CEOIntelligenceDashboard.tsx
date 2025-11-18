@@ -323,10 +323,10 @@ export default function CEOIntelligenceDashboard() {
                 <Activity size={24} className="text-[var(--orx-primary)]" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-[var(--orx-text-primary)]">
+                <h3 className="orx-text-xl orx-font-semibold text-[var(--orx-text-primary)]">
                   Feed Operacional
                 </h3>
-                <p className="text-sm text-[var(--orx-text-secondary)]">
+                <p className="orx-text-sm text-[var(--orx-text-secondary)]">
                   Eventos em tempo real de todos os agentes
                 </p>
               </div>
@@ -344,7 +344,7 @@ export default function CEOIntelligenceDashboard() {
                       <Badge variant={getSeverityVariant(event.severidade)} size="sm">
                         {event.agente_origem}
                       </Badge>
-                      <span className="text-xs text-[var(--orx-text-secondary)]">
+                      <span className="orx-text-xs text-[var(--orx-text-secondary)]">
                         {new Date(event.created_at).toLocaleString('pt-BR')}
                       </span>
                     </div>
@@ -352,10 +352,10 @@ export default function CEOIntelligenceDashboard() {
                       {event.severidade}
                     </Badge>
                   </div>
-                  <h4 className="font-semibold text-[var(--orx-text-primary)] mb-1">
+                  <h4 className="orx-font-semibold text-[var(--orx-text-primary)] mb-1">
                     {event.titulo}
                   </h4>
-                  <p className="text-sm text-[var(--orx-text-secondary)]">
+                  <p className="orx-text-sm text-[var(--orx-text-secondary)]">
                     {event.descricao}
                   </p>
                 </div>
@@ -376,10 +376,10 @@ export default function CEOIntelligenceDashboard() {
                 <AlertTriangle size={24} className="text-[var(--orx-warning)]" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-[var(--orx-text-primary)]">
+                <h3 className="orx-text-xl orx-font-semibold text-[var(--orx-text-primary)]">
                   Alertas Estratégicos
                 </h3>
-                <p className="text-sm text-[var(--orx-text-secondary)]">
+                <p className="orx-text-sm text-[var(--orx-text-secondary)]">
                   {alerts.length} alertas pendentes
                 </p>
               </div>
@@ -396,14 +396,14 @@ export default function CEOIntelligenceDashboard() {
                     <Badge variant={getSeverityVariant(alert.severidade)} size="sm">
                       {alert.categoria}
                     </Badge>
-                    <span className="text-xs text-[var(--orx-text-secondary)]">
+                    <span className="orx-text-xs text-[var(--orx-text-secondary)]">
                       {new Date(alert.created_at).toLocaleString('pt-BR')}
                     </span>
                   </div>
-                  <h4 className="font-semibold text-[var(--orx-text-primary)] mb-1">
+                  <h4 className="orx-font-semibold text-[var(--orx-text-primary)] mb-1">
                     {alert.titulo}
                   </h4>
-                  <p className="text-sm text-[var(--orx-text-secondary)]">
+                  <p className="orx-text-sm text-[var(--orx-text-secondary)]">
                     {alert.descricao}
                   </p>
                 </div>
@@ -424,10 +424,10 @@ export default function CEOIntelligenceDashboard() {
                 <Target size={24} className="text-[var(--orx-success)]" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-[var(--orx-text-primary)]">
+                <h3 className="orx-text-xl orx-font-semibold text-[var(--orx-text-primary)]">
                   Recomendações Estratégicas
                 </h3>
-                <p className="text-sm text-[var(--orx-text-secondary)]">
+                <p className="orx-text-sm text-[var(--orx-text-secondary)]">
                   Ações priorizadas por ROI estimado
                 </p>
               </div>
@@ -449,14 +449,14 @@ export default function CEOIntelligenceDashboard() {
                         {rec.prioridade}
                       </Badge>
                     </div>
-                    <span className="text-sm font-semibold text-[var(--orx-success)]">
+                    <span className="orx-text-sm orx-font-semibold text-[var(--orx-success)]">
                       ROI: {rec.roi_estimado}%
                     </span>
                   </div>
-                  <h4 className="font-semibold text-[var(--orx-text-primary)] mb-1">
+                  <h4 className="orx-font-semibold text-[var(--orx-text-primary)] mb-1">
                     {rec.acao}
                   </h4>
-                  <p className="text-sm text-[var(--orx-text-secondary)]">
+                  <p className="orx-text-sm text-[var(--orx-text-secondary)]">
                     Impacto: {rec.tipo_impacto} (+{rec.impacto_esperado}%)
                   </p>
                 </div>

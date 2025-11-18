@@ -86,7 +86,7 @@ export const WithForm: Story = {
         <Drawer isOpen={isOpen} onClose={() => setIsOpen(false)} position="right" title="Filtros">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Categoria</label>
+              <label className="block orx-text-sm orx-font-medium mb-1">Categoria</label>
               <select className="w-full orx-input">
                 <option>Todas</option>
                 <option>Eletrônicos</option>
@@ -94,22 +94,22 @@ export const WithForm: Story = {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Faixa de Preço</label>
+              <label className="block orx-text-sm orx-font-medium mb-1">Faixa de Preço</label>
               <div className="flex gap-2">
                 <input className="flex-1 orx-input" placeholder="Min" />
                 <input className="flex-1 orx-input" placeholder="Max" />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Status</label>
+              <label className="block orx-text-sm orx-font-medium mb-1">Status</label>
               <div className="space-y-2">
                 <label className="flex items-center gap-2">
                   <input type="checkbox" className="orx-checkbox" />
-                  <span className="text-sm">Ativo</span>
+                  <span className="orx-text-sm">Ativo</span>
                 </label>
                 <label className="flex items-center gap-2">
                   <input type="checkbox" className="orx-checkbox" />
-                  <span className="text-sm">Inativo</span>
+                  <span className="orx-text-sm">Inativo</span>
                 </label>
               </div>
             </div>

@@ -101,7 +101,7 @@ export const Dialog: React.FC<DialogProps> = ({
             <Icon className={color} size={24} />
           </div>
           <div className="flex-1">
-            <h2 className="text-heading-sm text-[var(--text-primary)] mb-2 font-medium">
+            <h2 className="text-heading-sm text-[var(--text-primary)] mb-2 orx-font-medium">
               {title}
             </h2>
             {description && (

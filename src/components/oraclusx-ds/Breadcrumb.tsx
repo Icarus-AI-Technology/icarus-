@@ -85,7 +85,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
               <li>
                 {isLast ? (
                   <span
-                    className="flex items-center gap-2 text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)] font-medium"
+                    className="flex items-center gap-2 text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)] orx-font-medium"
                     aria-current="page"
                   >
                     {item.icon && <span>{item.icon}</span>}

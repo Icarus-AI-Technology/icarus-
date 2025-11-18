@@ -83,7 +83,7 @@ export const CadastroPessoaJuridica = () => {
               onClick={handleBuscarCNPJ}
               disabled={cnpjAPI.loading || cnpj.length !== 14}
               className={cn(
-                'mt-8 px-6 py-2.5 rounded-lg font-medium transition-all',
+                'mt-8 px-6 py-2.5 rounded-lg orx-font-medium transition-all',
                 'bg-[var(--primary)] text-white',
                 'hover:bg-[var(--primary-hover)]',
                 'disabled:opacity-50 disabled:cursor-not-allowed',

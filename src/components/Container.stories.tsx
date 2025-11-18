@@ -40,7 +40,7 @@ export const Default: Story = {
   args: {
     children: (
       <Card className="p-6">
-        <h2 className="text-2xl font-bold mb-4">Container Padrão</h2>
+        <h2 className="orx-text-2xl orx-font-bold mb-4">Container Padrão</h2>
         <p className="text-[var(--orx-text-secondary)]">
           Este é um exemplo de Container com max-width 5xl e padding médio.
         </p>
@@ -55,7 +55,7 @@ export const LargeWidth: Story = {
   args: {
     children: (
       <Card className="p-6">
-        <h2 className="text-2xl font-bold mb-4">Container 7xl</h2>
+        <h2 className="orx-text-2xl orx-font-bold mb-4">Container 7xl</h2>
         <p className="text-[var(--orx-text-secondary)]">
           Container extra largo (7xl) ideal para dashboards complexos.
         </p>
@@ -70,7 +70,7 @@ export const NoPadding: Story = {
   args: {
     children: (
       <Card className="p-6">
-        <h2 className="text-2xl font-bold mb-4">Sem Padding</h2>
+        <h2 className="orx-text-2xl orx-font-bold mb-4">Sem Padding</h2>
         <p className="text-[var(--orx-text-secondary)]">
           Container sem padding interno para layouts full-width.
         </p>
@@ -85,7 +85,7 @@ export const WithAnimation: Story = {
   args: {
     children: (
       <Card className="p-6 orx-animate-fade-in">
-        <h2 className="text-2xl font-bold mb-4">Com Animação</h2>
+        <h2 className="orx-text-2xl orx-font-bold mb-4">Com Animação</h2>
         <p className="text-[var(--orx-text-secondary)]">
           Container com animação de fade-in ao carregar.
         </p>
@@ -102,18 +102,18 @@ export const NestedContainers: Story = {
     children: (
       <div className="space-y-4">
         <Card className="p-6">
-          <h2 className="text-2xl font-bold mb-4">Container Principal</h2>
+          <h2 className="orx-text-2xl orx-font-bold mb-4">Container Principal</h2>
           <p className="text-[var(--orx-text-secondary)] mb-4">
             Containers podem ser aninhados para criar layouts complexos.
           </p>
           <div className="grid grid-cols-2 gap-4">
             <Card className="p-4 neuro-inset">
-              <h3 className="font-semibold mb-2">Seção 1</h3>
-              <p className="text-sm text-[var(--orx-text-secondary)]">Conteúdo aninhado</p>
+              <h3 className="orx-font-semibold mb-2">Seção 1</h3>
+              <p className="orx-text-sm text-[var(--orx-text-secondary)]">Conteúdo aninhado</p>
             </Card>
             <Card className="p-4 neuro-inset">
-              <h3 className="font-semibold mb-2">Seção 2</h3>
-              <p className="text-sm text-[var(--orx-text-secondary)]">Conteúdo aninhado</p>
+              <h3 className="orx-font-semibold mb-2">Seção 2</h3>
+              <p className="orx-text-sm text-[var(--orx-text-secondary)]">Conteúdo aninhado</p>
             </Card>
           </div>
         </Card>

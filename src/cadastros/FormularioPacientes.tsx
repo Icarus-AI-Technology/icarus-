@@ -245,16 +245,16 @@ export default function FormularioPacientes() {
                 )}
               />
               <div className="flex-1">
-                <p className="text-sm font-medium text-[hsl(var(--text-primary))]">
+                <p className="orx-text-sm orx-font-medium text-[hsl(var(--text-primary))]">
                   Autorizo o tratamento dos meus dados pessoais <span className="text-[hsl(var(--destructive))]">*</span>
                 </p>
-                <p className="mt-1 text-xs text-[hsl(var(--text-muted))]">
+                <p className="mt-1 orx-text-xs text-[hsl(var(--text-muted))]">
                   Conforme Lei Geral de Proteção de Dados (LGPD - Lei 13.709/2018), autorizo o tratamento dos meus dados pessoais para fins de atendimento médico e gestão hospitalar.
                 </p>
               </div>
             </label>
             {errors.consentimento_lgpd && (
-              <p className="mt-2 text-sm text-[hsl(var(--destructive))]">{errors.consentimento_lgpd.message}</p>
+              <p className="mt-2 orx-text-sm text-[hsl(var(--destructive))]">{errors.consentimento_lgpd.message}</p>
             )}
           </div>
         </div>

@@ -99,12 +99,12 @@ export function ChatIA() {
             <Bot className="w-6 h-6 text-white" />
           </div>
           <div className="flex-1">
-            <h3 className="font-semibold text-slate-900 dark:text-white">Chat IA - Assistente ICARUS</h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400">
+            <h3 className="orx-font-semibold text-slate-900 dark:text-white">Chat IA - Assistente ICARUS</h3>
+            <p className="orx-text-xs text-slate-600 dark:text-slate-400">
               Powered by: Ollama + GPT-4 + Claude 3.5
             </p>
           </div>
-          <div className="flex items-center gap-2 text-xs">
+          <div className="flex items-center gap-2 orx-text-xs">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
             <span className="text-slate-600 dark:text-slate-400">Online</span>
           </div>
@@ -130,8 +130,8 @@ export function ChatIA() {
                 ? 'bg-indigo-600 text-white' 
                 : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white'}
             `}>
-              <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-              <div className="flex items-center gap-2 mt-2 text-xs opacity-70">
+              <p className="orx-text-sm whitespace-pre-wrap">{message.content}</p>
+              <div className="flex items-center gap-2 mt-2 orx-text-xs opacity-70">
                 <span>{message.timestamp.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
                 {message.model && message.model !== 'system' && (
                   <>
@@ -161,7 +161,7 @@ export function ChatIA() {
             <div className="bg-slate-100 dark:bg-slate-800 rounded-2xl px-4 py-3">
               <div className="flex items-center gap-2">
                 <Loader className="w-4 h-4 animate-spin" />
-                <span className="text-sm text-slate-600 dark:text-slate-400">Processando...</span>
+                <span className="orx-text-sm text-slate-600 dark:text-slate-400">Processando...</span>
               </div>
             </div>
           </div>
@@ -171,13 +171,13 @@ export function ChatIA() {
       {/* Sugestões (aparece quando não há mensagens do usuário) */}
       {messages.length === 1 && (
         <div className="px-4 pb-4">
-          <p className="text-xs text-slate-600 dark:text-slate-400 mb-2">Sugestões:</p>
+          <p className="orx-text-xs text-slate-600 dark:text-slate-400 mb-2">Sugestões:</p>
           <div className="grid grid-cols-2 gap-2">
             {sugestoes.map((sugestao, idx) => (
               <button
                 key={idx}
                 onClick={() => setInput(sugestao)}
-                className="text-left text-xs p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-300"
+                className="text-left orx-text-xs p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-300"
               >
                 {sugestao}
               </button>
@@ -206,7 +206,7 @@ export function ChatIA() {
             <Send className="w-5 h-5" />
           </button>
         </div>
-        <p className="text-xs text-slate-500 dark:text-slate-500 mt-2">
+        <p className="orx-text-xs text-slate-500 dark:text-slate-500 mt-2">
           💡 Este chat usa estratégia híbrida: 80% Ollama (grátis) + 20% GPT-4/Claude (casos complexos)
         </p>
       </div>

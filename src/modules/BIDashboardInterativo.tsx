@@ -168,7 +168,7 @@ export default function BIDashboardInterativo() {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <Calendar size={20} strokeWidth={1.5} className="text-[var(--orx-text-secondary)]" />
-              <span className="text-[0.813rem] font-semibold text-[var(--orx-text-primary)]">Filtros:</span>
+              <span className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)]">Filtros:</span>
             </div>
             <select
               value={selectedPeriod}
@@ -212,7 +212,7 @@ export default function BIDashboardInterativo() {
                 </div>
               </div>
               <div className="mb-2">
-                <p className="text-[0.813rem] font-bold text-[var(--orx-text-primary)] leading-none">{kpi.value}</p>
+                <p className="text-[0.813rem] orx-font-bold text-[var(--orx-text-primary)] leading-none">{kpi.value}</p>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1">
@@ -221,7 +221,7 @@ export default function BIDashboardInterativo() {
                   ) : (
                     <TrendingDown size={16} className={kpi.textClass} />
                   )}
-                  <span className={`text-[0.813rem] font-semibold ${kpi.textClass}`}>{kpi.trend}</span>
+                  <span className={`text-[0.813rem] orx-font-semibold ${kpi.textClass}`}>{kpi.trend}</span>
                 </div>
                 <span className="text-[0.813rem] text-[var(--orx-text-secondary)]">{kpi.periodo}</span>
               </div>
@@ -236,7 +236,7 @@ export default function BIDashboardInterativo() {
                 <div className="flex items-center justify-center rounded-xl w-12 h-12 shadow-orx-medium bg-gradient-to-br from-[var(--orx-warning)] to-[#D97706]">
                 <Package size={24} color="#ffffff" />
               </div>
-              <h2 className="text-[0.813rem] font-semibold text-[var(--orx-text-primary)]">Top 4 Produtos OPME</h2>
+              <h2 className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)]">Top 4 Produtos OPME</h2>
             </div>
           </div>
           <div className="overflow-x-auto">
@@ -244,27 +244,27 @@ export default function BIDashboardInterativo() {
               <thead>
                 <tr className="border-b border-[rgba(99,102,241,0.1)]">
                   <th
-                    className="p-4 text-left text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
+                    className="p-4 text-left text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Produto
                   </th>
                   <th
-                    className="p-4 text-center text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
+                    className="p-4 text-center text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Vendas
                   </th>
                   <th
-                    className="p-4 text-right text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
+                    className="p-4 text-right text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Receita
                   </th>
                   <th
-                    className="p-4 text-center text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
+                    className="p-4 text-center text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Margem
                   </th>
                   <th
-                    className="p-4 text-center text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
+                    className="p-4 text-center text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Variação
                   </th>
@@ -274,7 +274,7 @@ export default function BIDashboardInterativo() {
                 {topProdutos.map((produto, index) => (
                   <tr key={index} className="border-b border-[rgba(99,102,241,0.05)]">
                     <td
-                      className="p-4 text-[0.813rem] text-[var(--orx-text-primary)] font-semibold"
+                      className="p-4 text-[0.813rem] text-[var(--orx-text-primary)] orx-font-semibold"
                     >
                       {produto.nome}
                     </td>
@@ -284,18 +284,18 @@ export default function BIDashboardInterativo() {
                       {produto.vendas}
                     </td>
                     <td
-                      className="p-4 text-right text-[0.813rem] text-[var(--orx-text-primary)] font-semibold"
+                      className="p-4 text-right text-[0.813rem] text-[var(--orx-text-primary)] orx-font-semibold"
                     >
                       {formatCurrency(produto.receita)}
                     </td>
                     <td
-                      className="p-4 text-center text-[0.813rem] text-[var(--orx-success)] font-semibold"
+                      className="p-4 text-center text-[0.813rem] text-[var(--orx-success)] orx-font-semibold"
                     >
                       {produto.margem}%
                     </td>
                     <td className="p-4 text-center">
                       <span
-                        className={`inline-flex items-center gap-1 text-[0.813rem] font-semibold ${produto.variacaoUp ? 'text-[var(--orx-success)]' : 'text-[var(--orx-error)]'}`}
+                        className={`inline-flex items-center gap-1 text-[0.813rem] orx-font-semibold ${produto.variacaoUp ? 'text-[var(--orx-success)]' : 'text-[var(--orx-error)]'}`}
                       >
                         {produto.variacaoUp ? (
                           <TrendingUp size={14} />
@@ -319,7 +319,7 @@ export default function BIDashboardInterativo() {
                 <div className="flex items-center justify-center rounded-xl w-12 h-12 shadow-orx-medium bg-gradient-to-br from-[var(--orx-primary)] to-[var(--orx-primary-hover)]">
                 <Users size={24} color="#ffffff" />
               </div>
-              <h2 className="text-[0.813rem] font-semibold text-[var(--orx-text-primary)]">Top 4 Hospitais por Faturamento</h2>
+              <h2 className="text-[0.813rem] orx-font-semibold text-[var(--orx-text-primary)]">Top 4 Hospitais por Faturamento</h2>
             </div>
           </div>
           <div className="overflow-x-auto">
@@ -327,27 +327,27 @@ export default function BIDashboardInterativo() {
               <thead>
                 <tr className="border-b border-[rgba(99,102,241,0.1)]">
                   <th
-                    className="p-4 text-left text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
+                    className="p-4 text-left text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Hospital
                   </th>
                   <th
-                    className="p-4 text-center text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
+                    className="p-4 text-center text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Pedidos
                   </th>
                   <th
-                    className="p-4 text-right text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
+                    className="p-4 text-right text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Receita
                   </th>
                   <th
-                    className="p-4 text-right text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
+                    className="p-4 text-right text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Ticket Médio
                   </th>
                   <th
-                    className="p-4 text-center text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
+                    className="p-4 text-center text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Crescimento
                   </th>
@@ -357,7 +357,7 @@ export default function BIDashboardInterativo() {
                 {topHospitais.map((hospital, index) => (
                   <tr key={index} className="border-b border-[rgba(99,102,241,0.05)]">
                     <td
-                      className="p-4 text-[0.813rem] text-[var(--orx-text-primary)] font-semibold"
+                      className="p-4 text-[0.813rem] text-[var(--orx-text-primary)] orx-font-semibold"
                     >
                       {hospital.nome}
                     </td>
@@ -367,7 +367,7 @@ export default function BIDashboardInterativo() {
                       {hospital.pedidos}
                     </td>
                     <td
-                      className="p-4 text-right text-[0.813rem] text-[var(--orx-text-primary)] font-semibold"
+                      className="p-4 text-right text-[0.813rem] text-[var(--orx-text-primary)] orx-font-semibold"
                     >
                       {formatCurrency(hospital.receita)}
                     </td>
@@ -378,7 +378,7 @@ export default function BIDashboardInterativo() {
                     </td>
                     <td className="p-4 text-center">
                       <span
-                        className={`inline-flex items-center gap-1 text-[0.813rem] font-semibold ${hospital.crescimentoUp ? 'text-[var(--orx-success)]' : 'text-[var(--orx-error)]'}`}
+                        className={`inline-flex items-center gap-1 text-[0.813rem] orx-font-semibold ${hospital.crescimentoUp ? 'text-[var(--orx-success)]' : 'text-[var(--orx-error)]'}`}
                       >
                         {hospital.crescimentoUp ? (
                           <TrendingUp size={14} />

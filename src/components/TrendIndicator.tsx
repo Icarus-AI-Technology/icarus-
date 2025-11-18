@@ -19,9 +19,9 @@ export interface TrendIndicatorProps {
 }
 
 const SIZE_CONFIG = {
-  sm: { icon: 14, text: 'text-xs' },
-  md: { icon: 16, text: 'text-sm' },
-  lg: { icon: 20, text: 'text-base' }
+  sm: { icon: 14, text: 'orx-text-xs' },
+  md: { icon: 16, text: 'orx-text-sm' },
+  lg: { icon: 20, text: 'orx-text-base' }
 };
 
 export const TrendIndicator: React.FC<TrendIndicatorProps> = ({
@@ -67,7 +67,7 @@ export const TrendIndicator: React.FC<TrendIndicatorProps> = ({
         aria-hidden="true" 
       />
       {showPercentage && (
-        <span className={cn(sizing.text, 'font-medium', colorClass)}>
+        <span className={cn(sizing.text, 'orx-font-medium', colorClass)}>
           {formatted}
         </span>
       )}

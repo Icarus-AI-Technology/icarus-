@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/hooks';
 import { NeumoInput, NeumoButton } from '@/components/oraclusx-ds';
-import { Mail, Lock, AlertCircle, Loader2, BrainCircuit, Rocket } from 'lucide-react';
+import { Mail, Lock, AlertCircle, BrainCircuit, Rocket } from 'lucide-react';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -52,10 +52,10 @@ export default function Login() {
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-orx-primary to-purple-500 shadow-neumo-lg mb-4">
               <BrainCircuit size={40} className="text-white" strokeWidth={2} />
             </div>
-            <h1 className="text-3xl font-bold text-orx-text-primary mb-2">
+            <h1 className="orx-text-3xl orx-font-bold text-orx-text-primary mb-2">
               ICARUS v5.0
             </h1>
-            <p className="text-orx-text-secondary font-medium">
+            <p className="text-orx-text-secondary orx-font-medium">
               Gestão elevada pela IA
             </p>
           </div>
@@ -64,7 +64,7 @@ export default function Login() {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* E-mail */}
             <div>
-              <label htmlFor="email" className="block text-orx-text-primary text-sm font-medium mb-2">
+              <label htmlFor="email" className="block text-orx-text-primary orx-text-sm orx-font-medium mb-2">
                 E-mail
               </label>
               <div className="relative">
@@ -85,7 +85,7 @@ export default function Login() {
 
             {/* Senha */}
             <div>
-              <label htmlFor="password" className="block text-orx-text-primary text-sm font-medium mb-2">
+              <label htmlFor="password" className="block text-orx-text-primary orx-text-sm orx-font-medium mb-2">
                 Senha
               </label>
               <div className="relative">
@@ -108,7 +108,7 @@ export default function Login() {
             <div className="flex justify-center">
               <Link
                 to="/reset-password"
-                className="text-sm text-orx-text-secondary hover:text-orx-primary transition-colors font-medium"
+                className="orx-text-sm font-semibold text-orx-primary hover:text-orx-primary/80 underline decoration-transparent hover:decoration-current transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2"
               >
                 Esqueceu sua senha?
               </Link>
@@ -118,7 +118,7 @@ export default function Login() {
             {error && (
               <div className="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/30 rounded-xl shadow-neumo-sm">
                 <AlertCircle size={20} className="text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
-                <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
+                <p className="orx-text-sm text-red-700 dark:text-red-300">{error}</p>
               </div>
             )}
 
@@ -128,7 +128,7 @@ export default function Login() {
               disabled={loading}
               loading={loading}
               leftIcon={Rocket}
-              className="w-full h-12 text-base font-semibold bg-gradient-to-r from-orx-primary to-purple-500 text-white hover:from-orx-primary/90 hover:to-purple-600 shadow-lg hover:shadow-xl transition-all duration-200"
+              className="w-full h-12 orx-text-base orx-font-semibold bg-gradient-to-r from-orx-primary to-purple-500 text-white hover:from-orx-primary/90 hover:to-purple-600 shadow-lg hover:shadow-xl transition-all duration-200"
             >
               {loading ? 'Entrando...' : 'Entrar no Sistema'}
             </NeumoButton>
@@ -136,9 +136,9 @@ export default function Login() {
 
           {/* Rodapé */}
           <div className="mt-8 pt-6 border-t border-orx-border-subtle">
-            <p className="text-center text-xs text-orx-text-muted">
+            <p className="text-center orx-text-xs text-orx-text-muted">
               © 2025{' '}
-              <span className="font-bold bg-gradient-to-r from-orx-primary to-purple-500 bg-clip-text text-transparent">
+              <span className="orx-font-bold bg-gradient-to-r from-orx-primary to-purple-500 bg-clip-text text-transparent">
                 Icarus Technology
               </span>
               . Todos os direitos reservados.

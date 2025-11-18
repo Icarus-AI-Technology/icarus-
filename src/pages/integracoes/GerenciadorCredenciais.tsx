@@ -345,11 +345,11 @@ export default function GerenciadorCredenciais() {
       <div className="neumorphic-card p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-2xl font-bold flex items-center gap-2">
+            <h1 className="orx-text-2xl orx-font-bold flex items-center gap-2">
               <Lock className="w-6 h-6" />
               Gerenciador de Credenciais
             </h1>
-            <p className="text-sm" style={{ color: 'var(--orx-text-secondary)' }}>
+            <p className="orx-text-sm" style={{ color: 'var(--orx-text-secondary)' }}>
               Configure todas as credenciais das integrações do sistema
             </p>
           </div>
@@ -358,24 +358,24 @@ export default function GerenciadorCredenciais() {
         {/* Estatísticas */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
           <div className="neumorphic-inset p-4 rounded-lg">
-            <div className="text-sm" style={{ color: 'var(--orx-text-secondary)' }}>Total</div>
-            <div className="text-2xl font-bold">{estatisticas.total}</div>
+            <div className="orx-text-sm" style={{ color: 'var(--orx-text-secondary)' }}>Total</div>
+            <div className="orx-text-2xl orx-font-bold">{estatisticas.total}</div>
           </div>
           <div className="neumorphic-inset p-4 rounded-lg">
-            <div className="text-sm" style={{ color: 'var(--orx-success)' }}>Configuradas</div>
-            <div className="text-2xl font-bold" style={{ color: 'var(--orx-success)' }}>
+            <div className="orx-text-sm" style={{ color: 'var(--orx-success)' }}>Configuradas</div>
+            <div className="orx-text-2xl orx-font-bold" style={{ color: 'var(--orx-success)' }}>
               {estatisticas.configuradas}
             </div>
           </div>
           <div className="neumorphic-inset p-4 rounded-lg">
-            <div className="text-sm" style={{ color: 'var(--orx-warning)' }}>Pendentes</div>
-            <div className="text-2xl font-bold" style={{ color: 'var(--orx-warning)' }}>
+            <div className="orx-text-sm" style={{ color: 'var(--orx-warning)' }}>Pendentes</div>
+            <div className="orx-text-2xl orx-font-bold" style={{ color: 'var(--orx-warning)' }}>
               {estatisticas.pendentes}
             </div>
           </div>
           <div className="neumorphic-inset p-4 rounded-lg">
-            <div className="text-sm" style={{ color: 'var(--orx-danger)' }}>Inválidas</div>
-            <div className="text-2xl font-bold" style={{ color: 'var(--orx-danger)' }}>
+            <div className="orx-text-sm" style={{ color: 'var(--orx-danger)' }}>Inválidas</div>
+            <div className="orx-text-2xl orx-font-bold" style={{ color: 'var(--orx-danger)' }}>
               {estatisticas.invalidas}
             </div>
           </div>
@@ -385,7 +385,7 @@ export default function GerenciadorCredenciais() {
       {/* Filtros */}
       <div className="neumorphic-card p-4 flex gap-4">
         <div className="flex-1">
-          <label className="block text-sm mb-2">Categoria</label>
+          <label className="block orx-text-sm mb-2">Categoria</label>
           <select
             value={categoria}
             onChange={(e) => setCategoria(e.target.value)}
@@ -399,7 +399,7 @@ export default function GerenciadorCredenciais() {
           </select>
         </div>
         <div className="flex-1">
-          <label className="block text-sm mb-2">Status</label>
+          <label className="block orx-text-sm mb-2">Status</label>
           <select
             value={filtroStatus}
             onChange={(e) => setFiltroStatus(e.target.value)}
@@ -420,7 +420,7 @@ export default function GerenciadorCredenciais() {
             <div className="flex items-start justify-between mb-4">
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 className="text-lg font-semibold">{cred.servico}</h3>
+                  <h3 className="orx-text-lg orx-font-semibold">{cred.servico}</h3>
                   {cred.status === 'configurado' && (
                     <CheckCircle className="w-5 h-5" style={{ color: 'var(--orx-success)' }} />
                   )}
@@ -431,7 +431,7 @@ export default function GerenciadorCredenciais() {
                     <XCircle className="w-5 h-5" style={{ color: 'var(--orx-danger)' }} />
                   )}
                   {cred.obrigatorio && (
-                    <span className="text-xs px-2 py-1 rounded" style={{ 
+                    <span className="orx-text-xs px-2 py-1 rounded" style={{ 
                       background: 'var(--orx-danger)',
                       color: 'white'
                     }}>
@@ -439,10 +439,10 @@ export default function GerenciadorCredenciais() {
                     </span>
                   )}
                 </div>
-                <p className="text-sm font-mono" style={{ color: 'var(--orx-text-secondary)' }}>
+                <p className="orx-text-sm font-mono" style={{ color: 'var(--orx-text-secondary)' }}>
                   {cred.nome}
                 </p>
-                <p className="text-sm mt-1" style={{ color: 'var(--orx-text-secondary)' }}>
+                <p className="orx-text-sm mt-1" style={{ color: 'var(--orx-text-secondary)' }}>
                   {cred.descricao}
                 </p>
               </div>

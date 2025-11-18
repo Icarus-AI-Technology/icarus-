@@ -95,8 +95,8 @@ export const WithActions: Story = {
         email: 'joao@email.com',
         actions: (
           <div className="flex gap-2">
-            <button className="text-sm text-[var(--orx-primary)] hover:underline">Editar</button>
-            <button className="text-sm text-[var(--orx-error)] hover:underline">Excluir</button>
+            <button className="orx-text-sm text-[var(--orx-primary)] hover:underline">Editar</button>
+            <button className="orx-text-sm text-[var(--orx-error)] hover:underline">Excluir</button>
           </div>
         ),
       },
@@ -106,8 +106,8 @@ export const WithActions: Story = {
         email: 'maria@email.com',
         actions: (
           <div className="flex gap-2">
-            <button className="text-sm text-[var(--orx-primary)] hover:underline">Editar</button>
-            <button className="text-sm text-[var(--orx-error)] hover:underline">Excluir</button>
+            <button className="orx-text-sm text-[var(--orx-primary)] hover:underline">Editar</button>
+            <button className="orx-text-sm text-[var(--orx-error)] hover:underline">Excluir</button>
           </div>
         ),
       },

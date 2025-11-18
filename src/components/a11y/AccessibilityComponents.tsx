@@ -15,12 +15,7 @@ export function SkipToContent() {
   return (
     <a
       href="#main-content"
-      className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-6 focus:py-3 focus:rounded-xl focus:neuro-raised bg-[var(--primary)] text-white"
-      style={{
-        fontFamily: 'var(--font-body)',
-        fontSize: '0.813rem',
-        fontWeight: 600,
-      }}
+      className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-6 focus:py-3 focus:rounded-xl focus:neuro-raised bg-[var(--primary)] text-white text-[0.813rem] orx-font-semibold"
     >
       Pular para o conteúdo principal
     </a>
@@ -117,6 +112,7 @@ export function AccessibleButton({
       disabled={disabled || loading}
       className={cn(
         'px-6 py-3 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-2',
+        'inline-flex items-center gap-2 text-[0.813rem] orx-font-semibold',
         variant === 'primary' && 'neuro-raised bg-[var(--orx-primary)] text-white hover:neuro-flat',
         variant === 'secondary' && 'neuro-raised hover:neuro-flat text-[var(--text-primary)]',
         variant === 'danger' && 'neuro-raised bg-destructive text-white hover:neuro-flat',
@@ -124,14 +120,6 @@ export function AccessibleButton({
         (disabled || loading) && 'neuro-inset opacity-50 cursor-not-allowed',
         className
       )}
-      style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-        fontFamily: 'var(--font-body)',
-        fontSize: '0.813rem',
-        fontWeight: 600,
-      }}
       {...props}
     >
       {loading ? (
@@ -174,12 +162,7 @@ export function AccessibleInput({
     <div className="space-y-2">
       <label
         htmlFor={inputId}
-        className="block text-[var(--text-primary)]"
-        style={{
-          fontFamily: 'var(--font-body)',
-          fontSize: '0.813rem',
-          fontWeight: 600,
-        }}
+        className="block text-[var(--text-primary)] text-[0.813rem] orx-font-semibold"
       >
         {label}
         {required && (
@@ -195,26 +178,18 @@ export function AccessibleInput({
         aria-invalid={!!error}
         aria-describedby={cn(error && errorId, helpText && helpId)}
         className={cn(
-          'w-full px-4 py-3 rounded-xl neuro-inset bg-[var(--bg-primary)] text-[var(--text-primary)] transition-all',
+          'w-full px-4 py-3 rounded-xl neuro-inset bg-[var(--bg-primary)] text-[var(--text-primary)] transition-all text-[0.813rem]',
           'focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-2',
           error && 'border-2 border-destructive',
           className
         )}
-        style={{
-          fontFamily: 'var(--font-body)',
-          fontSize: '0.813rem',
-        }}
         {...props}
       />
 
       {helpText && !error && (
         <p
           id={helpId}
-          className="text-[var(--text-secondary)]"
-          style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: '0.813rem',
-          }}
+          className="text-[var(--text-secondary)] text-[0.813rem]"
         >
           {helpText}
         </p>
@@ -224,12 +199,7 @@ export function AccessibleInput({
         <p
           id={errorId}
           role="alert"
-          className="text-destructive"
-          style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: '0.813rem',
-            fontWeight: 600,
-          }}
+          className="text-destructive text-[0.813rem] orx-font-semibold"
         >
           {error}
         </p>
@@ -318,12 +288,7 @@ export function ExemploFormularioAcessivel() {
       <div className="max-w-2xl mx-auto">
         <main id="main-content">
           <h1
-            className="text-[var(--text-primary)] mb-6"
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '0.813rem',
-              fontWeight: 700,
-            }}
+            className="text-[var(--text-primary)] mb-6 text-[0.813rem] orx-font-bold"
           >
             Formulário Acessível
           </h1>
@@ -382,11 +347,7 @@ export function ExemploFormularioAcessivel() {
             {sucesso && (
               <div
                 role="alert"
-                className="p-4 rounded-xl neuro-inset bg-success/10 text-success"
-                style={{
-                  fontFamily: 'var(--font-body)',
-                  fontSize: '0.813rem',
-                }}
+                className="p-4 rounded-xl neuro-inset bg-success/10 text-success text-[0.813rem]"
               >
                 {sucesso}
               </div>

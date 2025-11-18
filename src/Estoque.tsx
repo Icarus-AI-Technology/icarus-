@@ -66,7 +66,7 @@ export default function Estoque() {
             <div className="inline-flex items-center justify-center w-24 h-24 rounded-full neuro-inset bg-gradient-to-br from-[var(--orx-primary)]/10 to-[var(--orx-primary)]/5 mb-6">
               <Package size={48} className="text-[var(--orx-primary)]" />
             </div>
-            <h3 className="text-2xl font-semibold text-[var(--orx-text-primary)] mb-2">
+            <h3 className="orx-text-2xl orx-font-semibold text-[var(--orx-text-primary)] mb-2">
               Módulo de Estoque
             </h3>
             <p className="text-[var(--orx-text-secondary)] max-w-md mx-auto">

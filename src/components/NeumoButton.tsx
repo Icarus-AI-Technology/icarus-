@@ -55,8 +55,8 @@ const variantStyles = {
 };
 
 const sizeStyles = {
-  sm: 'h-9 px-3 text-sm gap-1.5',
-  md: 'h-11 px-5 text-base gap-2',
+  sm: 'h-9 px-3 orx-text-sm gap-1.5',
+  md: 'h-11 px-5 orx-text-base gap-2',
   lg: 'h-13 px-6 text-md gap-2.5',
 };
 
@@ -85,7 +85,7 @@ export const NeumoButton = forwardRef<HTMLButtonElement, NeumoButtonProps>(
         className={cn(
           // Base
           'inline-flex items-center justify-center',
-          'rounded-lg font-medium',
+          'rounded-lg orx-font-medium',
           'transition-all duration-200 ease-out',
           'focus:outline-none focus:ring-2 focus:ring-orx-primary/30 focus:ring-offset-2',
           // Variante

@@ -11,33 +11,33 @@ export default function VoiceAnalyticsDashboard(): JSX.Element {
   return (
     <div className="p-6">
       {!ffOn && (
-        <div className="p-3 mb-4 rounded bg-yellow-100 text-yellow-900 text-sm">
+        <div className="p-3 mb-4 rounded bg-yellow-100 text-yellow-900 orx-text-sm">
           Recurso em rollout: FF_VOICE_ANALYTICS desabilitado
         </div>
       )}
-      <h1 className="text-xl font-semibold mb-2">Voice Analytics</h1>
-      <p className="text-sm text-muted-foreground mb-4">Métricas de chamadas e reconhecimento de voz.</p>
+      <h1 className="orx-text-xl orx-font-semibold mb-2">Voice Analytics</h1>
+      <p className="orx-text-sm text-muted-foreground mb-4">Métricas de chamadas e reconhecimento de voz.</p>
 
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="text-base">Chamadas/dia</CardTitle></CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="orx-text-base">Chamadas/dia</CardTitle></CardHeader>
           <CardContent>
-            <div className="text-2xl font-semibold">128</div>
-            <div className="text-xs text-muted-foreground">Média móvel</div>
+            <div className="orx-text-2xl orx-font-semibold">128</div>
+            <div className="orx-text-xs text-muted-foreground">Média móvel</div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="text-base">Acurácia ASR</CardTitle></CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="orx-text-base">Acurácia ASR</CardTitle></CardHeader>
           <CardContent>
             <div className="flex items-center gap-2 mb-2"><Badge variant="default">94.2%</Badge></div>
             <Progress value={94.2} />
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="text-base">Sentimento</CardTitle></CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="orx-text-base">Sentimento</CardTitle></CardHeader>
           <CardContent>
-            <div className="text-2xl font-semibold">Positivo</div>
-            <div className="text-xs text-muted-foreground">Últimas 24h</div>
+            <div className="orx-text-2xl orx-font-semibold">Positivo</div>
+            <div className="orx-text-xs text-muted-foreground">Últimas 24h</div>
           </CardContent>
         </Card>
       </div>
@@ -49,19 +49,19 @@ export default function VoiceAnalyticsDashboard(): JSX.Element {
 
       <div className="grid gap-3 mt-6">
         <section>
-          <h2 className="font-medium">Objetivo</h2>
-          <p className="text-sm">Descrição breve do objetivo do módulo.</p>
+          <h2 className="orx-font-medium">Objetivo</h2>
+          <p className="orx-text-sm">Descrição breve do objetivo do módulo.</p>
         </section>
         <section>
-          <h2 className="font-medium">Funcionalidades</h2>
-          <ul className="list-disc ml-6 text-sm">
+          <h2 className="orx-font-medium">Funcionalidades</h2>
+          <ul className="list-disc ml-6 orx-text-sm">
             <li>Placeholder 1</li>
             <li>Placeholder 2</li>
           </ul>
         </section>
         <section>
-          <h2 className="font-medium">Passo a passo</h2>
-          <ol className="list-decimal ml-6 text-sm">
+          <h2 className="orx-font-medium">Passo a passo</h2>
+          <ol className="list-decimal ml-6 orx-text-sm">
             <li>Passo 1</li>
             <li>Passo 2</li>
           </ol>

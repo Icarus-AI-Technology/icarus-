@@ -48,23 +48,14 @@ function ChartContainer({ children, title, subtitle, className }: ChartContainer
         <div className="mb-4">
           {title && (
             <h3
-              className="text-[var(--text-primary)] mb-1"
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '0.813rem',
-                fontWeight: 700,
-              }}
+              className="text-[var(--text-primary)] mb-1 text-[0.813rem] font-bold"
             >
               {title}
             </h3>
           )}
           {subtitle && (
             <p
-              className="text-[var(--text-secondary)]"
-              style={{
-                fontFamily: 'var(--font-body)',
-                fontSize: '0.813rem',
-              }}
+              className="text-[var(--text-secondary)] text-[0.813rem]"
             >
               {subtitle}
             </p>
@@ -225,31 +216,18 @@ export function StatCard({ title, value, trend, icon: Icon, className }: StatCar
       <div className="flex items-start justify-between h-full">
         <div>
           <p
-            className="text-[var(--text-secondary)] mb-1"
-            style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '0.813rem',
-            }}
+            className="text-[var(--text-secondary)] mb-1 text-[0.813rem]"
           >
             {title}
           </p>
           <h3
-            className="text-[var(--text-primary)]"
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '0.813rem',
-              fontWeight: 700,
-            }}
+            className="text-[var(--text-primary)] text-[0.813rem] font-bold"
           >
             {value}
           </h3>
           {trend !== undefined && (
             <p
-              className={cn('mt-2 flex items-center gap-1', trendColor)}
-              style={{
-                fontFamily: 'var(--font-body)',
-                fontSize: '0.813rem',
-              }}
+              className={cn('mt-2 flex items-center gap-1 text-[0.813rem]', trendColor)}
             >
               <TrendIcon className="w-3 h-3" />
               {Math.abs(trend)}%

@@ -351,44 +351,44 @@ export default function IntegrationsManager() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card className="p-6 neuro-raised bg-gradient-to-br from-emerald-500 to-emerald-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90 text-[0.813rem] font-medium">Integrações Ativas</h3>
+              <h3 className="opacity-90 text-[0.813rem] orx-font-medium">Integrações Ativas</h3>
               <CheckCircle className="w-5 h-5 opacity-80" />
             </div>
-            <p className="text-[0.813rem] font-bold">{integracoesAtivas}/{integracoesTotal}</p>
+            <p className="text-[0.813rem] orx-font-bold">{integracoesAtivas}/{integracoesTotal}</p>
             <p className="opacity-80 mt-2 text-[0.813rem]">{formatPercent((integracoesAtivas / integracoesTotal) * 100)} operacionais</p>
           </Card>
 
           <Card className="p-6 neuro-raised bg-gradient-to-br from-blue-500 to-blue-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90 text-[0.813rem] font-medium">Chamadas (24h)</h3>
+              <h3 className="opacity-90 text-[0.813rem] orx-font-medium">Chamadas (24h)</h3>
               <Activity className="w-5 h-5 opacity-80" />
             </div>
-            <p className="text-[0.813rem] font-bold">{formatNumber(chamadas24h)}</p>
+            <p className="text-[0.813rem] orx-font-bold">{formatNumber(chamadas24h)}</p>
             <p className="opacity-80 mt-2 text-[0.813rem]">Média: {Math.round(chamadas24h / 24)}/hora</p>
           </Card>
 
           <Card className="p-6 neuro-raised bg-gradient-to-br from-purple-500 to-purple-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90 text-[0.813rem] font-medium">Taxa de Sucesso</h3>
+              <h3 className="opacity-90 text-[0.813rem] orx-font-medium">Taxa de Sucesso</h3>
               <BarChart3 className="w-5 h-5 opacity-80" />
             </div>
-            <p className="text-[0.813rem] font-bold">{taxaSucessoMedia.toFixed(1)}%</p>
+            <p className="text-[0.813rem] orx-font-bold">{taxaSucessoMedia.toFixed(1)}%</p>
             <p className="opacity-80 mt-2 text-[0.813rem]">Meta: ≥ 95%</p>
           </Card>
 
           <Card className="p-6 neuro-raised bg-gradient-to-br from-orange-500 to-orange-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90 text-[0.813rem] font-medium">Tempo Médio</h3>
+              <h3 className="opacity-90 text-[0.813rem] orx-font-medium">Tempo Médio</h3>
               <Clock className="w-5 h-5 opacity-80" />
             </div>
-            <p className="text-[0.813rem] font-bold">{Math.round(tempoMedio)}ms</p>
+            <p className="text-[0.813rem] orx-font-bold">{Math.round(tempoMedio)}ms</p>
             <p className="opacity-80 mt-2 text-[0.813rem]">Meta: &lt; 1000ms</p>
           </Card>
         </div>
 
         {/* Status das Integrações */}
         <Card className="p-6 neuro-raised">
-          <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] font-semibold">
+          <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] orx-font-semibold">
             <Plug className="w-5 h-5 text-[var(--primary)]" />
             Status das Integrações
           </h3>
@@ -404,7 +404,7 @@ export default function IntegrationsManager() {
                     <div className="flex items-center gap-3">
                       <TypeIcon className={`w-5 h-5 ${INTEGRATION_TYPES[integration.tipo as keyof typeof INTEGRATION_TYPES]?.color}`} />
                       <div>
-                        <h4 className="font-semibold">{integration.nome}</h4>
+                        <h4 className="orx-font-semibold">{integration.nome}</h4>
                         <p className="text-[var(--text-secondary)] text-[0.813rem]">{integration.descricao}</p>
                       </div>
                     </div>
@@ -416,15 +416,15 @@ export default function IntegrationsManager() {
                   <div className="grid grid-cols-3 gap-2 text-[0.813rem]">
                     <div>
                       <p className="text-[var(--text-secondary)] text-[0.813rem]">Chamadas</p>
-                      <p className="font-semibold">{formatNumber(integration.total_chamadas)}</p>
+                      <p className="orx-font-semibold">{formatNumber(integration.total_chamadas)}</p>
                     </div>
                     <div>
                       <p className="text-[var(--text-secondary)] text-[0.813rem]">Sucesso</p>
-                      <p className="font-semibold">{integration.taxa_sucesso.toFixed(1)}%</p>
+                      <p className="orx-font-semibold">{integration.taxa_sucesso.toFixed(1)}%</p>
                     </div>
                     <div>
                       <p className="text-[var(--text-secondary)] text-[0.813rem]">Tempo</p>
-                      <p className="font-semibold">{integration.tempo_resposta_medio.toFixed(0)}ms</p>
+                      <p className="orx-font-semibold">{integration.tempo_resposta_medio.toFixed(0)}ms</p>
                     </div>
                   </div>
                   <div className="flex gap-2 mt-3">
@@ -447,7 +447,7 @@ export default function IntegrationsManager() {
   const renderIntegrations = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-[0.813rem] font-semibold">Gerenciar Integrações</h2>
+        <h2 className="text-[0.813rem] orx-font-semibold">Gerenciar Integrações</h2>
         <Button icon={<Plus />} onClick={() => setIsConfigDialogOpen(true)}>
           Nova Integração
         </Button>
@@ -473,7 +473,7 @@ export default function IntegrationsManager() {
 
               return (
                 <TableRow key={integration.id}>
-                  <TableCell className="font-medium">{integration.nome}</TableCell>
+                  <TableCell className="orx-font-medium">{integration.nome}</TableCell>
                   <TableCell>
                     <Badge variant="default">{integration.tipo}</Badge>
                   </TableCell>
@@ -541,7 +541,7 @@ export default function IntegrationsManager() {
   const renderWebhooks = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-[0.813rem] font-semibold">Webhooks</h2>
+        <h2 className="text-[0.813rem] orx-font-semibold">Webhooks</h2>
         <Button icon={<Plus />}>Novo Webhook</Button>
       </div>
 
@@ -552,7 +552,7 @@ export default function IntegrationsManager() {
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
                   <Webhook className="w-5 h-5 text-[var(--primary)]" />
-                  <h3 className="font-semibold">{webhook.nome}</h3>
+                  <h3 className="orx-font-semibold">{webhook.nome}</h3>
                   <Switch
                     checked={webhook.is_ativo}
                     onCheckedChange={(checked) => handleToggleWebhook(webhook.id, checked)}
@@ -575,15 +575,15 @@ export default function IntegrationsManager() {
             <div className="grid grid-cols-4 gap-4 pt-4 border-t border-[var(--text-secondary)]/20">
               <div>
                 <p className="text-[var(--text-secondary)] text-[0.813rem]">Total Chamadas</p>
-                <p className="font-semibold">{webhook.total_chamadas}</p>
+                <p className="orx-font-semibold">{webhook.total_chamadas}</p>
               </div>
               <div>
                 <p className="text-[var(--text-secondary)] text-[0.813rem]">Sucessos</p>
-                <p className="text-success font-semibold">{webhook.total_sucessos}</p>
+                <p className="text-success orx-font-semibold">{webhook.total_sucessos}</p>
               </div>
               <div>
                 <p className="text-[var(--text-secondary)] text-[0.813rem]">Falhas</p>
-                <p className="text-error font-semibold">{webhook.total_falhas}</p>
+                <p className="text-error orx-font-semibold">{webhook.total_falhas}</p>
               </div>
               <div>
                 <p className="text-[var(--text-secondary)] text-[0.813rem]">Última Chamada</p>
@@ -603,7 +603,7 @@ export default function IntegrationsManager() {
   const renderLogs = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-[0.813rem] font-semibold">Logs de Integrações</h2>
+        <h2 className="text-[0.813rem] orx-font-semibold">Logs de Integrações</h2>
         <div className="flex gap-2">
           <Input placeholder="Buscar logs..." icon={<Code />} className="w-[300px]" />
           <Button variant="secondary" icon={<Download />} onClick={handleExportarLogs}>
@@ -688,7 +688,7 @@ export default function IntegrationsManager() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 ${
+              className={`px-6 py-3 rounded-xl orx-font-medium transition-all flex items-center gap-2 ${
                 activeTab === tab.id
                   ? 'neuro-raised text-[var(--primary)]'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'

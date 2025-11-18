@@ -210,7 +210,7 @@ export default function Microsoft365IntegrationPanel() {
               <Building2 size={32} className="text-[var(--orx-primary)]" />
             </div>
           </div>
-          <h1 className="mb-2 text-[0.813rem] font-bold">Integração Microsoft 365</h1>
+          <h1 className="mb-2 text-[0.813rem] orx-font-bold">Integração Microsoft 365</h1>
           <p className="text-[var(--text-secondary)] mb-6">
             Conecte sua conta Microsoft 365 para acessar Teams, Outlook e OneDrive diretamente do ICARUS.
           </p>
@@ -234,14 +234,14 @@ export default function Microsoft365IntegrationPanel() {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="mb-2 text-[0.813rem] font-bold">Microsoft 365</h1>
+              <h1 className="mb-2 text-[0.813rem] orx-font-bold">Microsoft 365</h1>
               <p className="text-[var(--text-secondary)]">
                 Gerencie reuniões, emails e contatos integrados ao Microsoft 365
               </p>
             </div>
             <div className="flex items-center gap-2 neuro-raised px-4 py-2 rounded-lg">
               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-[0.813rem] font-medium">Conectado</span>
+              <span className="text-[0.813rem] orx-font-medium">Conectado</span>
             </div>
           </div>
         </div>
@@ -257,7 +257,7 @@ export default function Microsoft365IntegrationPanel() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 ${
+              className={`px-6 py-3 rounded-xl orx-font-medium transition-all flex items-center gap-2 ${
                 activeTab === tab.id
                   ? 'neuro-raised text-[var(--orx-primary)]'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -274,7 +274,7 @@ export default function Microsoft365IntegrationPanel() {
           <div className="space-y-6">
             <Card className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-[0.813rem] font-semibold">Próximas Reuniões</h2>
+                <h2 className="text-[0.813rem] orx-font-semibold">Próximas Reuniões</h2>
                 <div className="flex items-center gap-3">
                   <button
                     onClick={carregarProximasReunioes}
@@ -303,7 +303,7 @@ export default function Microsoft365IntegrationPanel() {
 
               {showFormularioReuniao && (
                 <div className="mb-6 p-6 neuro-inset rounded-xl space-y-4">
-                  <h3 className="mb-4 text-[0.813rem] font-semibold">Criar Nova Reunião</h3>
+                  <h3 className="mb-4 text-[0.813rem] orx-font-semibold">Criar Nova Reunião</h3>
                   
                   <input
                     type="text"
@@ -323,7 +323,7 @@ export default function Microsoft365IntegrationPanel() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block mb-2 text-[0.813rem] font-medium">Data/Hora Início</label>
+                      <label className="block mb-2 text-[0.813rem] orx-font-medium">Data/Hora Início</label>
                       <input
                         type="datetime-local"
                         value={novaReuniao.data_inicio}
@@ -332,7 +332,7 @@ export default function Microsoft365IntegrationPanel() {
                       />
                     </div>
                     <div>
-                      <label className="block mb-2 text-[0.813rem] font-medium">Data/Hora Fim</label>
+                      <label className="block mb-2 text-[0.813rem] orx-font-medium">Data/Hora Fim</label>
                       <input
                         type="datetime-local"
                         value={novaReuniao.data_fim}
@@ -344,7 +344,7 @@ export default function Microsoft365IntegrationPanel() {
 
                   {/* Tipo de Entidade */}
                   <div>
-                    <label className="block mb-3 text-[0.813rem] font-medium">Tipo de Entidade</label>
+                    <label className="block mb-3 text-[0.813rem] orx-font-medium">Tipo de Entidade</label>
                     <div className="grid grid-cols-3 gap-3">
                       <button
                         type="button"
@@ -356,7 +356,7 @@ export default function Microsoft365IntegrationPanel() {
                         }`}
                       >
                         <Building2 className="w-6 h-6 text-[var(--orx-primary)]" />
-                        <span className="text-[0.813rem] font-medium">Hospital</span>
+                        <span className="text-[0.813rem] orx-font-medium">Hospital</span>
                       </button>
                       <button
                         type="button"
@@ -368,7 +368,7 @@ export default function Microsoft365IntegrationPanel() {
                         }`}
                       >
                         <Heart className="w-6 h-6 text-emerald-500" />
-                        <span className="text-[0.813rem] font-medium">Plano de Saúde</span>
+                        <span className="text-[0.813rem] orx-font-medium">Plano de Saúde</span>
                       </button>
                       <button
                         type="button"
@@ -380,7 +380,7 @@ export default function Microsoft365IntegrationPanel() {
                         }`}
                       >
                         <Factory className="w-6 h-6 text-orange-500" />
-                        <span className="text-[0.813rem] font-medium">Indústria</span>
+                        <span className="text-[0.813rem] orx-font-medium">Indústria</span>
                       </button>
                     </div>
                   </div>
@@ -405,7 +405,7 @@ export default function Microsoft365IntegrationPanel() {
                   {/* Finalidade da Reunião */}
                   {novaReuniao.entidade_tipo && (
                     <div>
-                      <label className="block mb-2 text-[0.813rem] font-medium">Finalidade da Reunião</label>
+                      <label className="block mb-2 text-[0.813rem] orx-font-medium">Finalidade da Reunião</label>
                       <select
                         value={novaReuniao.tipo_reuniao}
                         onChange={(e) => setNovaReuniao({ ...novaReuniao, tipo_reuniao: e.target.value })}
@@ -477,7 +477,7 @@ export default function Microsoft365IntegrationPanel() {
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <h3 className="mb-1 font-semibold">{reuniao.subject}</h3>
+                          <h3 className="mb-1 orx-font-semibold">{reuniao.subject}</h3>
                           <div className="flex items-center gap-4 text-[var(--text-secondary)] text-[0.813rem]">
                             <div className="flex items-center gap-1">
                               <Clock size={14} />
@@ -515,7 +515,7 @@ export default function Microsoft365IntegrationPanel() {
         {activeTab !== 'teams' && (
           <Card className="p-8 text-center">
             <AlertCircle size={48} className="mx-auto mb-4 text-[var(--text-secondary)]" />
-            <h3 className="mb-2 text-[0.813rem] font-semibold">Em Desenvolvimento</h3>
+            <h3 className="mb-2 text-[0.813rem] orx-font-semibold">Em Desenvolvimento</h3>
             <p className="text-[var(--text-secondary)]">
               Esta funcionalidade estará disponível em breve.
             </p>

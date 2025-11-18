@@ -62,7 +62,7 @@ export default function GestaoLotes() {
               <Package className="w-6 h-6 text-orx-primary" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-orx-text-primary">
+              <h1 className="orx-text-3xl orx-font-bold text-orx-text-primary">
                 Gestão de Lotes
               </h1>
               <p className="text-orx-text-secondary mt-1">
@@ -89,11 +89,11 @@ export default function GestaoLotes() {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-lg font-semibold text-orx-text-primary">
+                    <h3 className="orx-text-lg orx-font-semibold text-orx-text-primary">
                       Lote: {lote.numero_lote}
                     </h3>
                     <span className={`
-                      px-3 py-1 text-xs font-medium rounded-lg
+                      px-3 py-1 orx-text-xs orx-font-medium rounded-lg
                       ${lote.status === 'ativo' ? 'bg-orx-success/10 text-orx-success' : ''}
                       ${lote.status === 'vencido' ? 'bg-orx-danger/10 text-orx-danger' : ''}
                       ${lote.status === 'bloqueado' ? 'bg-orx-warning/10 text-orx-warning' : ''}
@@ -106,23 +106,23 @@ export default function GestaoLotes() {
                   
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1">Fabricante</p>
-                      <p className="text-sm font-medium text-orx-text-primary">
+                      <p className="orx-text-xs text-orx-text-muted mb-1">Fabricante</p>
+                      <p className="orx-text-sm orx-font-medium text-orx-text-primary">
                         {lote.fabricante}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1 flex items-center gap-1">
+                      <p className="orx-text-xs text-orx-text-muted mb-1 flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
                         Validade
                       </p>
-                      <p className="text-sm font-medium text-orx-text-primary">
+                      <p className="orx-text-sm orx-font-medium text-orx-text-primary">
                         {new Date(lote.data_validade).toLocaleDateString('pt-BR')}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1">Quantidade</p>
-                      <p className="text-sm font-medium text-orx-text-primary">
+                      <p className="orx-text-xs text-orx-text-muted mb-1">Quantidade</p>
+                      <p className="orx-text-sm orx-font-medium text-orx-text-primary">
                         {lote.quantidade} unidades
                       </p>
                     </div>

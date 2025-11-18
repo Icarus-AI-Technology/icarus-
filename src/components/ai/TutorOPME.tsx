@@ -319,8 +319,8 @@ RESPOSTA:`;
         <div className="flex items-center gap-3">
           <Sparkles className="w-6 h-6" />
           <div>
-            <h3 className="font-bold text-lg">Tutor IA OPME</h3>
-            <p className="text-xs opacity-90">Especialista em materiais cirúrgicos</p>
+            <h3 className="orx-font-bold orx-text-lg">Tutor IA OPME</h3>
+            <p className="orx-text-xs opacity-90">Especialista em materiais cirúrgicos</p>
           </div>
         </div>
         <button
@@ -342,7 +342,7 @@ RESPOSTA:`;
           }`}
         >
           <MessageSquare className="w-4 h-4" />
-          <span className="font-medium text-sm">Chat</span>
+          <span className="orx-font-medium orx-text-sm">Chat</span>
         </button>
         <button
           onClick={() => setActiveTab('ocr')}
@@ -353,7 +353,7 @@ RESPOSTA:`;
           }`}
         >
           <ImageIcon className="w-4 h-4" />
-          <span className="font-medium text-sm">Scan</span>
+          <span className="orx-font-medium orx-text-sm">Scan</span>
         </button>
         <button
           onClick={() => setActiveTab('search')}
@@ -364,7 +364,7 @@ RESPOSTA:`;
           }`}
         >
           <BookOpen className="w-4 h-4" />
-          <span className="font-medium text-sm">Busca</span>
+          <span className="orx-font-medium orx-text-sm">Busca</span>
         </button>
       </div>
 
@@ -373,10 +373,10 @@ RESPOSTA:`;
         {messages.length === 0 && (
           <div className="text-center py-8">
             <Sparkles className="w-16 h-16 mx-auto text-blue-500 mb-4" />
-            <h4 className="font-bold text-lg mb-2 text-gray-900 dark:text-white">
+            <h4 className="orx-font-bold orx-text-lg mb-2 text-gray-900 dark:text-white">
               Olá! Sou seu Tutor IA especializado em OPME
             </h4>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
+            <p className="orx-text-sm text-gray-600 dark:text-gray-400 mb-6">
               Posso ajudar com:
             </p>
             <div className="grid grid-cols-2 gap-2 mb-6">
@@ -390,7 +390,7 @@ RESPOSTA:`;
                   className="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-left"
                 >
                   <shortcut.icon className="w-4 h-4 text-blue-600" />
-                  <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                  <span className="orx-text-xs orx-font-medium text-gray-700 dark:text-gray-300">
                     {shortcut.label}
                   </span>
                 </button>
@@ -411,8 +411,8 @@ RESPOSTA:`;
                   : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white'
               }`}
             >
-              <div className="text-sm whitespace-pre-wrap">{message.content}</div>
-              <div className="text-xs opacity-70 mt-1">
+              <div className="orx-text-sm whitespace-pre-wrap">{message.content}</div>
+              <div className="orx-text-xs opacity-70 mt-1">
                 {message.timestamp.toLocaleTimeString('pt-BR', { 
                   hour: '2-digit', 
                   minute: '2-digit' 
@@ -438,7 +438,7 @@ RESPOSTA:`;
         {selectedFile && (
           <div className="mb-2 flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 p-2 rounded-lg">
             <ImageIcon className="w-4 h-4 text-blue-600" />
-            <span className="text-sm text-gray-700 dark:text-gray-300 flex-1">
+            <span className="orx-text-sm text-gray-700 dark:text-gray-300 flex-1">
               {selectedFile.name}
             </span>
             <button

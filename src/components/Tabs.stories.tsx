@@ -71,11 +71,11 @@ export const AllVariants: Story = {
   render: () => (
     <div className="flex flex-col gap-6 p-6 bg-[var(--bg-primary)]">
       <div>
-        <h3 className="text-sm font-semibold mb-3 text-[var(--text-secondary)]">Horizontal</h3>
+        <h3 className="orx-text-sm orx-font-semibold mb-3 text-[var(--text-secondary)]">Horizontal</h3>
         <Tabs tabs={sampleTabs} variant="horizontal" />
       </div>
       <div>
-        <h3 className="text-sm font-semibold mb-3 text-[var(--text-secondary)]">Vertical</h3>
+        <h3 className="orx-text-sm orx-font-semibold mb-3 text-[var(--text-secondary)]">Vertical</h3>
         <Tabs tabs={sampleTabs} variant="vertical" />
       </div>
     </div>

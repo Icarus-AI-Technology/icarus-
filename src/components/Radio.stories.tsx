@@ -91,7 +91,7 @@ export const RadioGroup: Story = {
           checked={selected === 'option3'}
           onChange={() => setSelected('option3')}
         />
-        <p className="mt-4 text-sm text-[var(--text-secondary)]">
+        <p className="mt-4 orx-text-sm text-[var(--text-secondary)]">
           Selecionado: {selected}
         </p>
       </div>

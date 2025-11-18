@@ -335,7 +335,7 @@ export default function GestaoUsuariosPermissoes() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Lista de usuários */}
         <Card className="lg:col-span-1 p-4 neuro-raised">
-          <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] font-semibold">
+          <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] orx-font-semibold">
             <Users className="w-5 h-5 text-[var(--primary)]" />
             Usuários ({usuariosFiltrados.length})
           </h3>
@@ -350,7 +350,7 @@ export default function GestaoUsuariosPermissoes() {
                     : 'neuro-flat hover:neuro-raised'
                 }`}
               >
-                <div className="truncate text-[0.813rem] font-medium">{usuario.email}</div>
+                <div className="truncate text-[0.813rem] orx-font-medium">{usuario.email}</div>
                 {usuario.user_metadata?.nome && (
                   <div className="text-[var(--text-secondary)] truncate text-[0.813rem]">
                     {usuario.user_metadata.nome}
@@ -370,7 +370,7 @@ export default function GestaoUsuariosPermissoes() {
             <div className="space-y-6">
               <div className="flex items-start justify-between">
                 <div>
-                  <h3 className="mb-1 text-[0.813rem] font-semibold">{usuarioSelecionado.email}</h3>
+                  <h3 className="mb-1 text-[0.813rem] orx-font-semibold">{usuarioSelecionado.email}</h3>
                   {usuarioSelecionado.user_metadata?.nome && (
                     <p className="text-[var(--text-secondary)]">{usuarioSelecionado.user_metadata.nome}</p>
                   )}
@@ -398,7 +398,7 @@ export default function GestaoUsuariosPermissoes() {
               {/* Roles do usuário */}
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <h4 className="flex items-center gap-2 font-semibold">
+                  <h4 className="flex items-center gap-2 orx-font-semibold">
                     <Shield className="w-4 h-4 text-[var(--primary)]" />
                     Funções Atribuídas
                   </h4>
@@ -423,7 +423,7 @@ export default function GestaoUsuariosPermissoes() {
                         className="p-3 neuro-flat rounded-lg flex items-center justify-between"
                       >
                         <div className="flex-1">
-                          <div className="font-medium">{ur.role.nome}</div>
+                          <div className="orx-font-medium">{ur.role.nome}</div>
                           <div className="text-[var(--text-secondary)] text-[0.813rem]">
                             {ur.role.descricao}
                           </div>
@@ -450,11 +450,11 @@ export default function GestaoUsuariosPermissoes() {
               <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[var(--text-secondary)]/20">
                 <div className="neuro-inset p-3 rounded-lg">
                   <div className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">Cadastrado em</div>
-                  <div className="font-medium">{formatDate(usuarioSelecionado.created_at)}</div>
+                  <div className="orx-font-medium">{formatDate(usuarioSelecionado.created_at)}</div>
                 </div>
                 <div className="neuro-inset p-3 rounded-lg">
                   <div className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">Último acesso</div>
-                  <div className="font-medium">
+                  <div className="orx-font-medium">
                     {usuarioSelecionado.last_sign_in_at
                       ? formatDateTime(usuarioSelecionado.last_sign_in_at)
                       : 'Nunca'}
@@ -491,7 +491,7 @@ export default function GestaoUsuariosPermissoes() {
                 }}
                 className="w-full p-3 neuro-flat hover:neuro-raised rounded-lg transition-all text-left"
               >
-                <div className="font-medium">{role.nome}</div>
+                <div className="orx-font-medium">{role.nome}</div>
                 <div className="text-[var(--text-secondary)] text-[0.813rem]">{role.descricao}</div>
                 <Badge variant="default" className="mt-2">
                   {role.tipo_role}
@@ -507,7 +507,7 @@ export default function GestaoUsuariosPermissoes() {
   const renderTabRoles = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-[0.813rem] font-semibold">Funções e Permissões</h2>
+        <h2 className="text-[0.813rem] orx-font-semibold">Funções e Permissões</h2>
         <Button icon={<UserPlus />} onClick={() => setShowNovaRoleDialog(true)}>
           Nova Função
         </Button>
@@ -516,7 +516,7 @@ export default function GestaoUsuariosPermissoes() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Lista de roles */}
         <Card className="lg:col-span-1 p-4 neuro-raised">
-          <h3 className="mb-4 text-[0.813rem] font-semibold">Funções ({roles.length})</h3>
+          <h3 className="mb-4 text-[0.813rem] orx-font-semibold">Funções ({roles.length})</h3>
           <div className="space-y-2">
             {roles.map((role) => (
               <button
@@ -529,7 +529,7 @@ export default function GestaoUsuariosPermissoes() {
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-[0.813rem] font-medium">{role.nome}</span>
+                  <span className="text-[0.813rem] orx-font-medium">{role.nome}</span>
                   {!role.is_active && (
                     <Badge variant="default" className="bg-error/20 text-error">
                       Inativa
@@ -551,7 +551,7 @@ export default function GestaoUsuariosPermissoes() {
             <div className="space-y-4">
               <div className="flex items-start justify-between">
                 <div>
-                  <h3 className="text-[0.813rem] font-semibold">{roleSelecionada.nome}</h3>
+                  <h3 className="text-[0.813rem] orx-font-semibold">{roleSelecionada.nome}</h3>
                   <p className="text-[var(--text-secondary)]">{roleSelecionada.descricao}</p>
                 </div>
                 <div className="flex gap-2">
@@ -563,7 +563,7 @@ export default function GestaoUsuariosPermissoes() {
               </div>
 
               <div>
-                <h4 className="mb-3 font-semibold">
+                <h4 className="mb-3 orx-font-semibold">
                   Permissões ({permissoesRole.length})
                 </h4>
                 {permissoesRole.length === 0 ? (
@@ -579,7 +579,7 @@ export default function GestaoUsuariosPermissoes() {
                         className="p-3 neuro-flat rounded-lg flex items-center justify-between"
                       >
                         <div className="flex-1">
-                          <div className="text-[0.813rem] font-medium">{perm.nome}</div>
+                          <div className="text-[0.813rem] orx-font-medium">{perm.nome}</div>
                           <div className="text-[var(--text-secondary)] text-[0.813rem]">
                             {perm.modulo}.{perm.acao}
                           </div>
@@ -587,7 +587,7 @@ export default function GestaoUsuariosPermissoes() {
                         <div className="flex items-center gap-2">
                           <Badge
                             variant="default"
-                            className={`text-xs ${
+                            className={`orx-text-xs ${
                               perm.nivel_criticidade === 'critico'
                                 ? 'bg-error/20 text-error'
                                 : perm.nivel_criticidade === 'alto'
@@ -749,7 +749,7 @@ export default function GestaoUsuariosPermissoes() {
                 <TableCell>
                   <Badge
                     variant="default"
-                    className={`text-xs ${
+                    className={`orx-text-xs ${
                       log.nivel_sensibilidade === 'restrito'
                         ? 'bg-error/20 text-error'
                         : log.nivel_sensibilidade === 'confidencial'
@@ -783,7 +783,7 @@ export default function GestaoUsuariosPermissoes() {
           </div>
           <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
             <Shield className="w-4 h-4 text-success" />
-            <span className="text-body-sm text-[var(--text-primary)] font-medium">
+            <span className="text-body-sm text-[var(--text-primary)] orx-font-medium">
               Conformidade LGPD
             </span>
           </div>
@@ -800,7 +800,7 @@ export default function GestaoUsuariosPermissoes() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 ${
+              className={`px-6 py-3 rounded-xl orx-font-medium transition-all flex items-center gap-2 ${
                 activeTab === tab.id
                   ? 'neuro-raised text-[var(--primary)]'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'

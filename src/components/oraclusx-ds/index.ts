@@ -114,6 +114,16 @@ export type { ChatbotWithResearchProps, Message as ChatbotMessage } from"./Chatb
 export { Table } from"./Table";
 export type { TableProps, TableColumn } from"./Table";
 
+// HTML Table Primitives (para tabelas customizadas)
+export { 
+  TableContainer,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell
+} from"./TablePrimitives";
+
 export { Tabs } from"./Tabs";
 export type { TabsProps, Tab } from"./Tabs";
 

@@ -82,7 +82,7 @@ const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
   const variant = variants[status] || variants.disponivel;
   
   return (
-    <Badge variant="default" className={cn(variant.bg, variant.color, "font-medium")}>
+    <Badge variant="default" className={cn(variant.bg, variant.color, "orx-font-medium")}>
       {variant.label}
     </Badge>
   );
@@ -139,7 +139,7 @@ export const ConsignacaoAvancada: React.FC = () => {
   const renderHeader = () => (
     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
       <div>
-        <h1 className="text-foreground text-body-sm font-extrabold">Consignação Avançada</h1>
+        <h1 className="text-foreground text-body-sm orx-font-extrabold">Consignação Avançada</h1>
         <p className="text-muted-foreground mt-1">
           Gestão completa de materiais OPME em consignação com controle financeiro e logístico
         </p>
@@ -258,7 +258,7 @@ export const ConsignacaoAvancada: React.FC = () => {
         <NeomorphicCard className="border-l-4 border-red-500">
           <div className="flex items-center gap-3 mb-4">
             <AlertCircle className="w-5 h-5 text-red-500" />
-            <h3 className="text-foreground font-semibold">Alertas de Conferência Semanal</h3>
+            <h3 className="text-foreground orx-font-semibold">Alertas de Conferência Semanal</h3>
             <Badge variant="error" className="ml-auto">
               {alertas.filter(a => a.status === 'ativo').length} pendentes
             </Badge>
@@ -266,7 +266,7 @@ export const ConsignacaoAvancada: React.FC = () => {
           <div className="space-y-3">
             {alertas.slice(0, 3).map(alerta => (
               <div key={alerta.id} className="p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border-l-2 border-red-500">
-                <h4 className="text-foreground text-body-sm font-medium">{alerta.titulo}</h4>
+                <h4 className="text-foreground text-body-sm orx-font-medium">{alerta.titulo}</h4>
                 <p className="text-muted-foreground mt-1 text-body-sm">{alerta.descricao}</p>
                 <div className="flex gap-2 mt-2">
                   <Badge variant="default" className="bg-red-100 text-red-800 text-body-sm">
@@ -292,14 +292,14 @@ export const ConsignacaoAvancada: React.FC = () => {
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-700">
-                <th className="text-left p-3 text-foreground text-body-sm font-semibold">Código</th>
-                <th className="text-left p-3 text-foreground text-body-sm font-semibold">Material</th>
-                <th className="text-left p-3 text-foreground text-body-sm font-semibold">Hospital</th>
-                <th className="text-right p-3 text-foreground text-body-sm font-semibold">Quantidade</th>
-                <th className="text-right p-3 text-foreground text-body-sm font-semibold">Valor Total</th>
-                <th className="text-center p-3 text-foreground text-body-sm font-semibold">Status</th>
-                <th className="text-center p-3 text-foreground text-body-sm font-semibold">Dias Estoque</th>
-                <th className="text-right p-3 text-foreground text-body-sm font-semibold">Ações</th>
+                <th className="text-left p-3 text-foreground text-body-sm orx-font-semibold">Código</th>
+                <th className="text-left p-3 text-foreground text-body-sm orx-font-semibold">Material</th>
+                <th className="text-left p-3 text-foreground text-body-sm orx-font-semibold">Hospital</th>
+                <th className="text-right p-3 text-foreground text-body-sm orx-font-semibold">Quantidade</th>
+                <th className="text-right p-3 text-foreground text-body-sm orx-font-semibold">Valor Total</th>
+                <th className="text-center p-3 text-foreground text-body-sm orx-font-semibold">Status</th>
+                <th className="text-center p-3 text-foreground text-body-sm orx-font-semibold">Dias Estoque</th>
+                <th className="text-right p-3 text-foreground text-body-sm orx-font-semibold">Ações</th>
               </tr>
             </thead>
             <tbody>
@@ -308,7 +308,7 @@ export const ConsignacaoAvancada: React.FC = () => {
                   <td className="p-3 text-foreground font-mono text-body-sm">{material.codigo_interno}</td>
                   <td className="p-3">
                     <div>
-                      <div className="text-foreground text-body-sm font-medium">{material.nome}</div>
+                      <div className="text-foreground text-body-sm orx-font-medium">{material.nome}</div>
                       {material.lote && (
                         <div className="text-muted-foreground text-body-sm">Lote: {material.lote}</div>
                       )}
@@ -316,7 +316,7 @@ export const ConsignacaoAvancada: React.FC = () => {
                   </td>
                   <td className="p-3 text-foreground text-body-sm">{material.hospital_nome}</td>
                   <td className="p-3 text-right text-foreground text-body-sm">{material.quantidade}</td>
-                  <td className="p-3 text-right text-foreground text-body-sm font-medium">
+                  <td className="p-3 text-right text-foreground text-body-sm orx-font-medium">
                     {formatCurrency(material.valor_total)}
                   </td>
                   <td className="p-3 text-center">
@@ -387,11 +387,11 @@ export const ConsignacaoAvancada: React.FC = () => {
                 <div key={fat.id} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="text-foreground font-medium">{fat.numero_fatura}</h4>
+                      <h4 className="text-foreground orx-font-medium">{fat.numero_fatura}</h4>
                       <p className="text-muted-foreground text-body-sm">{fat.hospital_nome}</p>
                     </div>
                     <div className="text-right">
-                      <div className="text-foreground font-semibold">{formatCurrency(fat.valor_liquido)}</div>
+                      <div className="text-foreground orx-font-semibold">{formatCurrency(fat.valor_liquido)}</div>
                       <Badge variant={fat.status === 'pago' ? 'success' : 'warning'}>
                         {fat.status}
                       </Badge>
@@ -430,15 +430,15 @@ export const ConsignacaoAvancada: React.FC = () => {
           <div className="space-y-4">
             <div className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
               <span className="text-muted-foreground text-body-sm">Taxa de Utilização</span>
-              <span className="text-foreground font-semibold">{metricas.taxaUtilizacao.toFixed(1)}%</span>
+              <span className="text-foreground orx-font-semibold">{metricas.taxaUtilizacao.toFixed(1)}%</span>
             </div>
             <div className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
               <span className="text-muted-foreground text-body-sm">Dias Médio de Estoque</span>
-              <span className="text-foreground font-semibold">{metricas.diasMedioEstoque} dias</span>
+              <span className="text-foreground orx-font-semibold">{metricas.diasMedioEstoque} dias</span>
             </div>
             <div className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
               <span className="text-muted-foreground text-body-sm">Hospitais Ativos</span>
-              <span className="text-foreground font-semibold">{metricas.hospitaisAtivos}</span>
+              <span className="text-foreground orx-font-semibold">{metricas.hospitaisAtivos}</span>
             </div>
           </div>
         </CardContent>
@@ -462,7 +462,7 @@ export const ConsignacaoAvancada: React.FC = () => {
               <div className="flex items-start gap-3 mb-4">
                 <NeomorphicIcon icon={Building2} color="text-indigo-500" size="md" />
                 <div className="flex-1">
-                  <h3 className="text-foreground font-semibold">{hospital}</h3>
+                  <h3 className="text-foreground orx-font-semibold">{hospital}</h3>
                   <p className="text-muted-foreground text-body-sm">
                     {materiaisHospital.length} {materiaisHospital.length === 1 ? 'material' : 'materiais'}
                   </p>
@@ -471,7 +471,7 @@ export const ConsignacaoAvancada: React.FC = () => {
               <div className="space-y-2">
                 <div className="flex justify-between text-body-sm">
                   <span className="text-muted-foreground">Valor Total</span>
-                  <span className="text-foreground font-semibold">{formatCurrency(valorTotal)}</span>
+                  <span className="text-foreground orx-font-semibold">{formatCurrency(valorTotal)}</span>
                 </div>
                 <div className="flex justify-between text-body-sm">
                   <span className="text-muted-foreground">Disponíveis</span>

@@ -36,7 +36,7 @@ export const SistemaNotificacoes: React.FC = () => {
           <div className="flex items-center gap-2 px-4 py-2 bg-primary rounded-full">
             <Settings className="text-inverse animate-spin-slow" size={20} />
             <div className="text-left">
-              <p className="text-inverse text-body-sm font-medium">IA Priorização</p>
+              <p className="text-inverse text-body-sm orx-font-medium">IA Priorização</p>
               <p className="text-indigo-100 text-body-xs">97.2% precisão</p>
             </div>
           </div>
@@ -54,7 +54,7 @@ export const SistemaNotificacoes: React.FC = () => {
                       <Icon size={24} />
                     </div>
                     <div className="text-center">
-                      <p className="text-body-xs mb-1 font-medium">{category.label}</p>
+                      <p className="text-body-xs mb-1 orx-font-medium">{category.label}</p>
                       <div className="flex items-center justify-center gap-2">
                         <span className="text-heading font-display text-[0.813rem]">{category.count}</span>
                         <span className={`text-body-xs ${isActive ?"text-inverse/80" :"text-success dark:text-green-400"}`}>

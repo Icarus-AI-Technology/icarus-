@@ -113,7 +113,7 @@ export function GestaoEntregas({
     };
 
     return (
-      <span className={`px-2 py-1 rounded-full text-body-xs font-medium ${colors[status] || 'bg-[var(--muted)] text-[var(--text-primary)]'}`}>
+      <span className={`px-2 py-1 rounded-full text-body-xs orx-font-medium ${colors[status] || 'bg-[var(--muted)] text-[var(--text-primary)]'}`}>
         {labels[status] || status}
       </span>
     );
@@ -140,7 +140,7 @@ export function GestaoEntregas({
         <div className="flex flex-wrap items-end gap-4">
           {/* Busca */}
           <div className="flex-1 min-w-[200px]">
-            <label className="block mb-2 text-[0.813rem] font-medium">
+            <label className="block mb-2 text-[0.813rem] orx-font-medium">
               Buscar
             </label>
             <div className="relative">
@@ -161,7 +161,7 @@ export function GestaoEntregas({
 
           {/* Status */}
           <div className="w-[180px]">
-            <label className="block mb-2 text-[0.813rem] font-medium">
+            <label className="block mb-2 text-[0.813rem] orx-font-medium">
               Status
             </label>
             <select
@@ -187,7 +187,7 @@ export function GestaoEntregas({
 
           {/* Transportadora */}
           <div className="w-[180px]">
-            <label className="block mb-2 text-[0.813rem] font-medium">
+            <label className="block mb-2 text-[0.813rem] orx-font-medium">
               Transportadora
             </label>
             <select
@@ -211,7 +211,7 @@ export function GestaoEntregas({
 
           {/* Período */}
           <div className="w-[180px]">
-            <label className="block mb-2 text-[0.813rem] font-medium">
+            <label className="block mb-2 text-[0.813rem] orx-font-medium">
               Período
             </label>
             <select
@@ -296,25 +296,25 @@ export function GestaoEntregas({
               <table className="w-full">
                 <thead className="border-b border-[var(--border)]">
                   <tr>
-                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] font-medium">
+                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] orx-font-medium">
                       Código
                     </th>
-                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] font-medium">
+                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] orx-font-medium">
                       Transportadora
                     </th>
-                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] font-medium">
+                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] orx-font-medium">
                       Destino
                     </th>
-                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] font-medium">
+                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] orx-font-medium">
                       Status
                     </th>
-                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] font-medium">
+                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] orx-font-medium">
                       Previsão
                     </th>
-                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] font-medium">
+                    <th className="px-6 py-3 text-left text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] orx-font-medium">
                       Valor
                     </th>
-                    <th className="px-6 py-3 text-right text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] font-medium">
+                    <th className="px-6 py-3 text-right text-[var(--text-secondary)] uppercase tracking-wider text-[0.813rem] orx-font-medium">
                       Ações
                     </th>
                   </tr>
@@ -352,11 +352,11 @@ export function GestaoEntregas({
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="text-[0.813rem] font-medium">
+                        <span className="text-[0.813rem] orx-font-medium">
                           {formatCurrency(entrega.valor_frete)}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-[0.813rem] font-medium">
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-[0.813rem] orx-font-medium">
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => onRastrear(entrega)}

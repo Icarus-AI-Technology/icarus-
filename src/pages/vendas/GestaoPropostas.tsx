@@ -63,7 +63,7 @@ export default function GestaoPropostas() {
                 <FileText className="w-6 h-6 text-orx-primary" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-orx-text-primary">
+                <h1 className="orx-text-3xl orx-font-bold text-orx-text-primary">
                   Gestão de Propostas
                 </h1>
                 <p className="text-orx-text-secondary mt-1">
@@ -89,8 +89,8 @@ export default function GestaoPropostas() {
             <div key={idx} className="bg-orx-bg-surface rounded-xl p-4 shadow-neumo">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-orx-text-muted mb-1">{stat.label}</p>
-                  <p className="text-2xl font-bold text-orx-text-primary">{stat.value}</p>
+                  <p className="orx-text-xs text-orx-text-muted mb-1">{stat.label}</p>
+                  <p className="orx-text-2xl orx-font-bold text-orx-text-primary">{stat.value}</p>
                 </div>
                 <div className={`p-3 rounded-lg ${stat.color}`}>
                   <stat.icon className="w-5 h-5" />
@@ -117,11 +117,11 @@ export default function GestaoPropostas() {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-lg font-semibold text-orx-text-primary">
+                    <h3 className="orx-text-lg orx-font-semibold text-orx-text-primary">
                       {prop.numero}
                     </h3>
                     <span className={`
-                      px-3 py-1 text-xs font-medium rounded-lg
+                      px-3 py-1 orx-text-xs orx-font-medium rounded-lg
                       ${prop.status === 'aprovada' ? 'bg-orx-success/10 text-orx-success' : ''}
                       ${prop.status === 'em_negociacao' ? 'bg-orx-warning/10 text-orx-warning' : ''}
                       ${prop.status === 'enviada' ? 'bg-orx-info/10 text-orx-info' : ''}
@@ -136,26 +136,26 @@ export default function GestaoPropostas() {
                   
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1 flex items-center gap-1">
+                      <p className="orx-text-xs text-orx-text-muted mb-1 flex items-center gap-1">
                         <DollarSign className="w-3 h-3" />
                         Valor Total
                       </p>
-                      <p className="text-sm font-semibold text-orx-success">
+                      <p className="orx-text-sm orx-font-semibold text-orx-success">
                         R$ {prop.valor_total.toLocaleString('pt-BR')}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1">Vendedor</p>
-                      <p className="text-sm font-medium text-orx-text-primary">
+                      <p className="orx-text-xs text-orx-text-muted mb-1">Vendedor</p>
+                      <p className="orx-text-sm orx-font-medium text-orx-text-primary">
                         {prop.vendedor}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1 flex items-center gap-1">
+                      <p className="orx-text-xs text-orx-text-muted mb-1 flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
                         Validade
                       </p>
-                      <p className="text-sm font-medium text-orx-text-primary">
+                      <p className="orx-text-sm orx-font-medium text-orx-text-primary">
                         {new Date(prop.validade).toLocaleDateString('pt-BR')}
                       </p>
                     </div>

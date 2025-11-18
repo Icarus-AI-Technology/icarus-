@@ -63,7 +63,7 @@ export const Select: React.FC<SelectProps> = ({
   return (
     <div className={cn("w-full", className)} ref={containerRef}>
       {label && (
-        <label className="block text-body-sm text-secondary dark:text-muted mb-1 font-medium">
+        <label className="block text-body-sm text-secondary dark:text-muted mb-1 orx-font-medium">
           {label}
         </label>
       )}

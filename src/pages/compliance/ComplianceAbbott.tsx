@@ -47,7 +47,7 @@ export default function ComplianceAbbott() {
               <Shield className="w-6 h-6 text-orx-primary" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-orx-text-primary">Compliance Abbott</h1>
+              <h1 className="orx-text-3xl orx-font-bold text-orx-text-primary">Compliance Abbott</h1>
               <p className="text-orx-text-secondary mt-1">Monitoramento de conformidade e auditoria</p>
             </div>
           </div>
@@ -58,11 +58,11 @@ export default function ComplianceAbbott() {
           <div className="flex items-center justify-center gap-4 mb-4">
             <Shield className="w-12 h-12 text-orx-success" />
             <div>
-              <h2 className="text-6xl font-bold text-orx-success">{scoreGlobal}%</h2>
-              <p className="text-orx-text-secondary text-lg mt-2">Score Global de Conformidade</p>
+              <h2 className="text-6xl orx-font-bold text-orx-success">{scoreGlobal}%</h2>
+              <p className="text-orx-text-secondary orx-text-lg mt-2">Score Global de Conformidade</p>
             </div>
           </div>
-          <div className="flex items-center justify-center gap-6 text-sm">
+          <div className="flex items-center justify-center gap-6 orx-text-sm">
             <div className="flex items-center gap-2">
               <CheckCircle className="w-5 h-5 text-orx-success" />
               <span className="text-orx-text-primary">6 Conformes</span>
@@ -81,11 +81,11 @@ export default function ComplianceAbbott() {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="px-3 py-1 bg-orx-primary/10 text-orx-primary text-xs font-medium rounded-lg">
+                    <span className="px-3 py-1 bg-orx-primary/10 text-orx-primary orx-text-xs orx-font-medium rounded-lg">
                       {req.codigo}
                     </span>
-                    <h3 className="text-lg font-semibold text-orx-text-primary">{req.descricao}</h3>
-                    <span className={`px-3 py-1 text-xs font-medium rounded-lg flex items-center gap-1 ${
+                    <h3 className="orx-text-lg orx-font-semibold text-orx-text-primary">{req.descricao}</h3>
+                    <span className={`px-3 py-1 orx-text-xs orx-font-medium rounded-lg flex items-center gap-1 ${
                       req.status === 'conforme' ? 'bg-orx-success/10 text-orx-success' :
                       req.status === 'atencao' ? 'bg-orx-warning/10 text-orx-warning' :
                       'bg-orx-danger/10 text-orx-danger'
@@ -98,7 +98,7 @@ export default function ComplianceAbbott() {
                   
                   <div className="grid grid-cols-2 gap-4 mt-4">
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1 flex items-center gap-1">
+                      <p className="orx-text-xs text-orx-text-muted mb-1 flex items-center gap-1">
                         <TrendingUp className="w-3 h-3" />
                         Score
                       </p>
@@ -109,7 +109,7 @@ export default function ComplianceAbbott() {
                             style={{ width: `${req.score}%` }}
                           />
                         </div>
-                        <span className={`text-sm font-bold ${
+                        <span className={`orx-text-sm orx-font-bold ${
                           req.score >= 95 ? 'text-orx-success' : req.score >= 90 ? 'text-orx-warning' : 'text-orx-danger'
                         }`}>
                           {req.score}%
@@ -117,8 +117,8 @@ export default function ComplianceAbbott() {
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1">Última Auditoria</p>
-                      <p className="text-sm font-medium text-orx-text-primary">
+                      <p className="orx-text-xs text-orx-text-muted mb-1">Última Auditoria</p>
+                      <p className="orx-text-sm orx-font-medium text-orx-text-primary">
                         {new Date(req.ultima_auditoria).toLocaleDateString('pt-BR')}
                       </p>
                     </div>

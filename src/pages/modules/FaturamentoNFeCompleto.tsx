@@ -194,10 +194,10 @@ export default function FaturamentoNFeCompleto() {
                 </div>
               </div>
               <div className="mb-2">
-                <p className="text-[0.813rem] font-bold text-[var(--orx-text-primary)] leading-none">{kpi.value}</p>
+                <p className="text-[0.813rem] orx-font-bold text-[var(--orx-text-primary)] leading-none">{kpi.value}</p>
               </div>
               <div className="flex items-center gap-1">
-                <span className={`text-[0.813rem] font-semibold ${kpi.textClass}`}>
+                <span className={`text-[0.813rem] orx-font-semibold ${kpi.textClass}`}>
                   {kpi.trend}
                 </span>
               </div>
@@ -248,37 +248,37 @@ export default function FaturamentoNFeCompleto() {
               <thead>
                 <tr className="border-b border-[rgba(99,102,241,0.1)]">
                   <th
-                    className="p-4 text-left text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
+                    className="p-4 text-left text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Número
                   </th>
                   <th
-                    className="p-4 text-left text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
+                    className="p-4 text-left text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Destinatário
                   </th>
                   <th
-                    className="p-4 text-left text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
+                    className="p-4 text-left text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)]"
                   >
                     CNPJ
                   </th>
                   <th
-                    className="p-4 text-right text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
+                    className="p-4 text-right text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Valor
                   </th>
                   <th
-                    className="p-4 text-center text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
+                    className="p-4 text-center text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Status
                   </th>
                   <th
-                    className="p-4 text-left text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
+                    className="p-4 text-left text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Emissão
                   </th>
                   <th
-                    className="p-4 text-center text-[0.813rem] font-semibold text-[var(--orx-text-secondary)]"
+                    className="p-4 text-center text-[0.813rem] orx-font-semibold text-[var(--orx-text-secondary)]"
                   >
                     Ações
                   </th>
@@ -288,7 +288,7 @@ export default function FaturamentoNFeCompleto() {
                 {nfes.map((nfe) => (
                   <tr key={nfe.id} className="border-b border-[rgba(99,102,241,0.05)]">
                     <td
-                      className="p-4 text-[0.813rem] text-[var(--orx-text-primary)] font-semibold"
+                      className="p-4 text-[0.813rem] text-[var(--orx-text-primary)] orx-font-semibold"
                     >
                       {nfe.numero}
                     </td>
@@ -303,7 +303,7 @@ export default function FaturamentoNFeCompleto() {
                       {nfe.cnpj}
                     </td>
                     <td
-                      className="p-4 text-right text-[0.813rem] text-[var(--orx-text-primary)] font-semibold"
+                      className="p-4 text-right text-[0.813rem] text-[var(--orx-text-primary)] orx-font-semibold"
                     >
                       {formatCurrency(nfe.valor)}
                     </td>
@@ -311,7 +311,7 @@ export default function FaturamentoNFeCompleto() {
                       className="p-4 text-center"
                     >
                     <span
-                      className={`inline-block px-3 py-1.5 rounded-lg text-[0.813rem] font-semibold ${getStatusBadgeClasses(nfe.status)}`}
+                      className={`inline-block px-3 py-1.5 rounded-lg text-[0.813rem] orx-font-semibold ${getStatusBadgeClasses(nfe.status)}`}
                     >
                         {getStatusLabel(nfe.status)}
                       </span>

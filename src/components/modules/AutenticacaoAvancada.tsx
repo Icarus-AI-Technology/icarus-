@@ -139,7 +139,7 @@ export const AutenticacaoAvancada: React.FC = () => {
           <div className="flex items-center gap-2 px-4 py-2 bg-[var(--primary)] rounded-full">
             <Settings className="text-[var(--primary-foreground)] animate-spin-slow" size={20} />
             <div className="text-left">
-              <p className="text-[var(--primary-foreground)] text-body-sm font-medium">IA Anti-Fraude</p>
+              <p className="text-[var(--primary-foreground)] text-body-sm orx-font-medium">IA Anti-Fraude</p>
               <p className="text-[var(--primary-foreground)]/70 text-body-xs">99.6% precisão</p>
             </div>
           </div>
@@ -173,7 +173,7 @@ export const AutenticacaoAvancada: React.FC = () => {
                       <Icon size={24} />
                     </div>
                     <div className="text-center">
-                      <p className="text-body-xs mb-1 font-medium">{category.label}</p>
+                      <p className="text-body-xs mb-1 orx-font-medium">{category.label}</p>
                       <div className="flex items-center justify-center gap-2">
                         <span className="text-heading font-display text-[0.813rem]">{category.count}</span>
                         <span
@@ -259,28 +259,28 @@ export const AutenticacaoAvancada: React.FC = () => {
               <table className="w-full">
                 <thead className="bg-surface dark:bg-card border-b border-[var(--border)]">
                   <tr>
-                    <th className="px-6 py-3 text-left text-body-xs text-[var(--text-secondary)] uppercase tracking-wider font-medium">
+                    <th className="px-6 py-3 text-left text-body-xs text-[var(--text-secondary)] uppercase tracking-wider orx-font-medium">
                       ID ↕
                     </th>
-                    <th className="px-6 py-3 text-left text-body-xs text-[var(--text-secondary)] uppercase tracking-wider font-medium">
+                    <th className="px-6 py-3 text-left text-body-xs text-[var(--text-secondary)] uppercase tracking-wider orx-font-medium">
                       Nome ↕
                     </th>
-                    <th className="px-6 py-3 text-left text-body-xs text-[var(--text-secondary)] uppercase tracking-wider font-medium">
+                    <th className="px-6 py-3 text-left text-body-xs text-[var(--text-secondary)] uppercase tracking-wider orx-font-medium">
                       Cargo
                     </th>
-                    <th className="px-6 py-3 text-left text-body-xs text-[var(--text-secondary)] uppercase tracking-wider font-medium">
+                    <th className="px-6 py-3 text-left text-body-xs text-[var(--text-secondary)] uppercase tracking-wider orx-font-medium">
                       Nível ↕
                     </th>
-                    <th className="px-6 py-3 text-left text-body-xs text-[var(--text-secondary)] uppercase tracking-wider font-medium">
+                    <th className="px-6 py-3 text-left text-body-xs text-[var(--text-secondary)] uppercase tracking-wider orx-font-medium">
                       2FA
                     </th>
-                    <th className="px-6 py-3 text-left text-body-xs text-[var(--text-secondary)] uppercase tracking-wider font-medium">
+                    <th className="px-6 py-3 text-left text-body-xs text-[var(--text-secondary)] uppercase tracking-wider orx-font-medium">
                       Biometria
                     </th>
-                    <th className="px-6 py-3 text-left text-body-xs text-[var(--text-secondary)] uppercase tracking-wider font-medium">
+                    <th className="px-6 py-3 text-left text-body-xs text-[var(--text-secondary)] uppercase tracking-wider orx-font-medium">
                       Último Acesso ↕
                     </th>
-                    <th className="px-6 py-3 text-left text-body-xs text-[var(--text-secondary)] uppercase tracking-wider font-medium">
+                    <th className="px-6 py-3 text-left text-body-xs text-[var(--text-secondary)] uppercase tracking-wider orx-font-medium">
                       Status
                     </th>
                   </tr>
@@ -294,14 +294,14 @@ export const AutenticacaoAvancada: React.FC = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center gap-2">
                           <Shield size={14} className="text-[var(--primary)]" />
-                          <span className="text-body-sm text-[var(--text-primary)] font-medium">
+                          <span className="text-body-sm text-[var(--text-primary)] orx-font-medium">
                             {user.id}
                           </span>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div>
-                          <p className="text-body-sm text-[var(--text-primary)] font-medium">
+                          <p className="text-body-sm text-[var(--text-primary)] orx-font-medium">
                             {user.nome}
                           </p>
                           <p className="text-body-xs text-[var(--text-secondary)]">{user.email}</p>

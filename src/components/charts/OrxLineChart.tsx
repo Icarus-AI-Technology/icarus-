@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ResponsiveLine, Serie } from '@nivo/line';
 import { OrxChartTheme } from './OrxChartTheme';
 
@@ -17,8 +17,16 @@ export const OrxLineChart: React.FC<OrxLineChartProps> = ({
   curve = 'monotoneX',
   enablePoints = false
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.style.height = `${height}px`;
+    }
+  }, [height]);
+
   return (
-    <div style={{ height }}>
+    <div ref={containerRef} className="h-[300px]">
       <ResponsiveLine
         data={data}
         theme={OrxChartTheme}

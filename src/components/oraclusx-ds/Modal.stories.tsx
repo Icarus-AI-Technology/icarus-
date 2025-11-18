@@ -53,11 +53,11 @@ export const WithForm: Story = {
         <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title="Criar Novo Item">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Nome</label>
+              <label className="block orx-text-sm orx-font-medium mb-1">Nome</label>
               <input className="w-full orx-input" placeholder="Digite o nome" />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Categoria</label>
+              <label className="block orx-text-sm orx-font-medium mb-1">Categoria</label>
               <select className="w-full orx-input">
                 <option>Selecione...</option>
                 <option>Categoria 1</option>

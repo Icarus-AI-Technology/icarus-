@@ -60,7 +60,7 @@ export default function GestaoInventario() {
                 <ClipboardList className="w-6 h-6 text-orx-primary" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-orx-text-primary">
+                <h1 className="orx-text-3xl orx-font-bold text-orx-text-primary">
                   Inventário de Estoque
                 </h1>
                 <p className="text-orx-text-secondary mt-1">
@@ -92,11 +92,11 @@ export default function GestaoInventario() {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-4">
-                    <h3 className="text-lg font-semibold text-orx-text-primary">
+                    <h3 className="orx-text-lg orx-font-semibold text-orx-text-primary">
                       {item.produto_nome}
                     </h3>
                     <span className={`
-                      px-3 py-1 text-xs font-medium rounded-lg
+                      px-3 py-1 orx-text-xs orx-font-medium rounded-lg
                       ${item.status === 'ajustado' ? 'bg-orx-success/10 text-orx-success' : ''}
                       ${item.status === 'contado' ? 'bg-orx-info/10 text-orx-info' : ''}
                       ${item.status === 'pendente' ? 'bg-orx-warning/10 text-orx-warning' : ''}
@@ -107,20 +107,20 @@ export default function GestaoInventario() {
                   
                   <div className="grid grid-cols-4 gap-4">
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1">Qtd. Sistema</p>
-                      <p className="text-lg font-bold text-orx-text-primary">
+                      <p className="orx-text-xs text-orx-text-muted mb-1">Qtd. Sistema</p>
+                      <p className="orx-text-lg orx-font-bold text-orx-text-primary">
                         {item.quantidade_sistema}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1">Qtd. Física</p>
-                      <p className="text-lg font-bold text-orx-text-primary">
+                      <p className="orx-text-xs text-orx-text-muted mb-1">Qtd. Física</p>
+                      <p className="orx-text-lg orx-font-bold text-orx-text-primary">
                         {item.quantidade_fisica || '-'}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1">Diferença</p>
-                      <p className={`text-lg font-bold ${
+                      <p className="orx-text-xs text-orx-text-muted mb-1">Diferença</p>
+                      <p className={`orx-text-lg orx-font-bold ${
                         (item.diferenca || 0) < 0 ? 'text-orx-danger' :
                         (item.diferenca || 0) > 0 ? 'text-orx-warning' :
                         'text-orx-success'

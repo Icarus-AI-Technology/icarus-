@@ -319,7 +319,7 @@ export const GestaoCotacoes: React.FC = () => {
           <h1
             style={{
               fontSize: '0.813rem',
-              fontWeight: 'var(--orx-font-bold)',
+              fontWeight: 'var(--orx-orx-font-bold)',
               color: 'var(--orx-text-primary)',
               marginBottom: '0.5rem',
             }}
@@ -429,7 +429,7 @@ export const GestaoCotacoes: React.FC = () => {
                 <div
                   style={{
                     fontSize: '0.813rem',
-                    fontWeight: 'var(--orx-font-bold)',
+                    fontWeight: 'var(--orx-orx-font-bold)',
                     color: 'var(--orx-text-primary)',
                     marginBottom: '0.25rem',
                   }}
@@ -563,7 +563,7 @@ export const GestaoCotacoes: React.FC = () => {
                     padding: '1rem',
                     textAlign: 'left',
                     fontSize: '0.813rem',
-                    fontWeight: 'var(--orx-font-semibold)',
+                    fontWeight: 'var(--orx-orx-font-semibold)',
                     color: 'var(--orx-text-secondary)',
                     borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
                   }}
@@ -575,7 +575,7 @@ export const GestaoCotacoes: React.FC = () => {
                     padding: '1rem',
                     textAlign: 'left',
                     fontSize: '0.813rem',
-                    fontWeight: 'var(--orx-font-semibold)',
+                    fontWeight: 'var(--orx-orx-font-semibold)',
                     color: 'var(--orx-text-secondary)',
                     borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
                   }}
@@ -587,7 +587,7 @@ export const GestaoCotacoes: React.FC = () => {
                     padding: '1rem',
                     textAlign: 'left',
                     fontSize: '0.813rem',
-                    fontWeight: 'var(--orx-font-semibold)',
+                    fontWeight: 'var(--orx-orx-font-semibold)',
                     color: 'var(--orx-text-secondary)',
                     borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
                   }}
@@ -599,7 +599,7 @@ export const GestaoCotacoes: React.FC = () => {
                     padding: '1rem',
                     textAlign: 'left',
                     fontSize: '0.813rem',
-                    fontWeight: 'var(--orx-font-semibold)',
+                    fontWeight: 'var(--orx-orx-font-semibold)',
                     color: 'var(--orx-text-secondary)',
                     borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
                   }}
@@ -611,7 +611,7 @@ export const GestaoCotacoes: React.FC = () => {
                     padding: '1rem',
                     textAlign: 'left',
                     fontSize: '0.813rem',
-                    fontWeight: 'var(--orx-font-semibold)',
+                    fontWeight: 'var(--orx-orx-font-semibold)',
                     color: 'var(--orx-text-secondary)',
                     borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
                   }}
@@ -623,7 +623,7 @@ export const GestaoCotacoes: React.FC = () => {
                     padding: '1rem',
                     textAlign: 'left',
                     fontSize: '0.813rem',
-                    fontWeight: 'var(--orx-font-semibold)',
+                    fontWeight: 'var(--orx-orx-font-semibold)',
                     color: 'var(--orx-text-secondary)',
                     borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
                   }}
@@ -635,7 +635,7 @@ export const GestaoCotacoes: React.FC = () => {
                     padding: '1rem',
                     textAlign: 'left',
                     fontSize: '0.813rem',
-                    fontWeight: 'var(--orx-font-semibold)',
+                    fontWeight: 'var(--orx-orx-font-semibold)',
                     color: 'var(--orx-text-secondary)',
                     borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
                   }}
@@ -647,7 +647,7 @@ export const GestaoCotacoes: React.FC = () => {
                     padding: '1rem',
                     textAlign: 'center',
                     fontSize: '0.813rem',
-                    fontWeight: 'var(--orx-font-semibold)',
+                    fontWeight: 'var(--orx-orx-font-semibold)',
                     color: 'var(--orx-text-secondary)',
                     borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
                   }}

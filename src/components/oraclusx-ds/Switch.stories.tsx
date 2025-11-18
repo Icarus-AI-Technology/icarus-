@@ -67,7 +67,7 @@ export const Interactive: Story = {
           checked={enabled}
           onChange={(e) => setEnabled(e.target.checked)}
         />
-        <p className="mt-4 text-sm text-[var(--text-secondary)]">
+        <p className="mt-4 orx-text-sm text-[var(--text-secondary)]">
           Estado: {enabled ? 'Ligado' : 'Desligado'}
         </p>
       </div>

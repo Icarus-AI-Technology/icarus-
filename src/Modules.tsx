@@ -334,7 +334,7 @@ export default function ModulesPage() {
 
     return (
       <span
-        className={`px-2 py-1 rounded-full text-body-xs font-medium ${badges[status]}`}
+        className={`px-2 py-1 rounded-full text-body-xs orx-font-medium ${badges[status]}`}
       >
         {labels[status]}
       </span>

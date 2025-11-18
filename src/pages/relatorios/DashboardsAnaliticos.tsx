@@ -71,7 +71,7 @@ export default function DashboardsAnaliticos() {
               <BarChart3 className="w-6 h-6 text-orx-primary" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-orx-text-primary">Dashboards Analíticos</h1>
+              <h1 className="orx-text-3xl orx-font-bold text-orx-text-primary">Dashboards Analíticos</h1>
               <p className="text-orx-text-secondary mt-1">Centro de inteligência e análise de dados</p>
             </div>
           </div>
@@ -90,10 +90,10 @@ export default function DashboardsAnaliticos() {
                 
                 <div className="flex-1">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-xl font-semibold text-orx-text-primary">
+                    <h3 className="orx-text-xl orx-font-semibold text-orx-text-primary">
                       {dashboard.nome}
                     </h3>
-                    <span className={`px-3 py-1 text-xs font-medium rounded-lg ${
+                    <span className={`px-3 py-1 orx-text-xs orx-font-medium rounded-lg ${
                       dashboard.categoria === 'financeiro' ? 'bg-orx-success/10 text-orx-success' :
                       dashboard.categoria === 'comercial' ? 'bg-orx-info/10 text-orx-info' :
                       dashboard.categoria === 'operacional' ? 'bg-orx-warning/10 text-orx-warning' :
@@ -109,8 +109,8 @@ export default function DashboardsAnaliticos() {
                   
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-xs text-orx-text-muted">Métricas-chave</p>
-                      <p className="text-lg font-bold text-orx-text-primary">
+                      <p className="orx-text-xs text-orx-text-muted">Métricas-chave</p>
+                      <p className="orx-text-lg orx-font-bold text-orx-text-primary">
                         {dashboard.metricas_chave} KPIs
                       </p>
                     </div>
@@ -127,7 +127,7 @@ export default function DashboardsAnaliticos() {
 
         {/* Quick Actions */}
         <div className="mt-8 bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
-          <h2 className="text-lg font-semibold text-orx-text-primary mb-4">Ações Rápidas</h2>
+          <h2 className="orx-text-lg orx-font-semibold text-orx-text-primary mb-4">Ações Rápidas</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {['Exportar Dados', 'Configurar Alertas', 'Agendar Relatório', 'Compartilhar'].map((action, idx) => (
               <NeumoButton key={idx} variant="secondary" size="sm" className="w-full">

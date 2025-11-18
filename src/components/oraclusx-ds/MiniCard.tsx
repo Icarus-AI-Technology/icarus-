@@ -119,12 +119,12 @@ export const MiniCard: React.FC<MiniCardProps> = ({
         {/* Conteúdo Principal */}
         <div className="flex-1 min-w-0">
           {/* Título */}
-          <p className="text-xs font-medium text-orx-text-secondary mb-1 truncate">
+          <p className="orx-text-xs orx-font-medium text-orx-text-secondary mb-1 truncate">
             {title}
           </p>
 
           {/* Valor */}
-          <p className="text-2xl font-bold text-orx-text-primary truncate">
+          <p className="orx-text-2xl orx-font-bold text-orx-text-primary truncate">
             {value}
           </p>
 
@@ -132,7 +132,7 @@ export const MiniCard: React.FC<MiniCardProps> = ({
           {trend ? (
             <div
               className={cn(
-                'flex items-center gap-1 mt-1.5 text-xs font-semibold',
+                'flex items-center gap-1 mt-1.5 orx-text-xs orx-font-semibold',
                 trend.direction === 'up' && 'text-green-500',
                 trend.direction === 'down' && 'text-red-500',
                 trend.direction === 'neutral' && 'text-orx-text-muted'
@@ -144,7 +144,7 @@ export const MiniCard: React.FC<MiniCardProps> = ({
               <span>{trend.value}</span>
             </div>
           ) : hint ? (
-            <p className="mt-1.5 text-xs text-orx-text-muted truncate">
+            <p className="mt-1.5 orx-text-xs text-orx-text-muted truncate">
               {hint}
             </p>
           ) : null}

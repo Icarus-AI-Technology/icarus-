@@ -261,8 +261,8 @@ export function CRMVendas() {
               <div key={estagio} className="flex-1 min-w-[280px]">
                 <Card className="neuro-raised p-4">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-[var(--text-primary)] font-medium">{getStageLabel(estagio)}</h3>
-                    <span className="px-3 py-1 rounded-full bg-surface text-body-sm font-medium">
+                    <h3 className="text-[var(--text-primary)] orx-font-medium">{getStageLabel(estagio)}</h3>
+                    <span className="px-3 py-1 rounded-full bg-surface text-body-sm orx-font-medium">
                       {leadsEstagio.length}
                     </span>
                   </div>
@@ -274,7 +274,7 @@ export function CRMVendas() {
                         className="p-4 rounded-lg neuro-inset hover:neuro-raised transition-all cursor-pointer"
                       >
                         <div className="flex items-start justify-between mb-2">
-                          <h4 className="text-[var(--text-primary)] text-body-sm font-medium">{lead.nome}</h4>
+                          <h4 className="text-[var(--text-primary)] text-body-sm orx-font-medium">{lead.nome}</h4>
                           <span className={`px-2 py-0.5 rounded-full text-body-xs ${getStageColor(lead.estagio)}`}>
                             {getStageLabel(lead.estagio)}
                           </span>
@@ -363,7 +363,7 @@ export function CRMVendas() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-6 py-3 rounded-xl font-medium transition-all ${
+            className={`px-6 py-3 rounded-xl orx-font-medium transition-all ${
               activeTab === tab.id
                 ?"neuro-raised text-[var(--primary)]"
                 :"text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
@@ -388,13 +388,13 @@ export function CRMVendas() {
             <table className="w-full">
               <thead className="border-b border-[var(--border)]">
                 <tr>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Nome</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Empresa</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Contato</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Valor Est.</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Prob.</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Estágio</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Ações</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Nome</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Empresa</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Contato</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Valor Est.</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Prob.</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Estágio</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-font-medium">Ações</th>
                 </tr>
               </thead>
               <tbody>
@@ -408,7 +408,7 @@ export function CRMVendas() {
                         <div className="w-10 h-10 rounded-full neuro-inset flex items-center justify-center text-[var(--primary)] font-display">
                           {lead.nome[0]}
                         </div>
-                        <span className="text-[var(--text-primary)] font-medium">{lead.nome}</span>
+                        <span className="text-[var(--text-primary)] orx-font-medium">{lead.nome}</span>
                       </div>
                     </td>
                     <td className="p-4 text-[var(--text-primary)]">{lead.empresa ||"N/A"}</td>
@@ -427,7 +427,7 @@ export function CRMVendas() {
                     <td className="p-4 text-[var(--text-primary)]">{formatCurrency(lead.valor_estimado)}</td>
                     <td className="p-4 text-[var(--text-primary)]">{lead.probabilidade}%</td>
                     <td className="p-4" aria-label="Estágio do lead">
-                      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs font-medium ${getStageColor(lead.estagio)}`}>
+                      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs orx-font-medium ${getStageColor(lead.estagio)}`}>
                         {getStageLabel(lead.estagio)}
                       </span>
                     </td>
@@ -479,7 +479,7 @@ export function CRMVendas() {
           </div>
           <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-success/50 animate-pulse" />
-            <span className="text-body-sm text-[var(--text-primary)] font-medium">
+            <span className="text-body-sm text-[var(--text-primary)] orx-font-medium">
               {leads.length} leads ativos
             </span>
           </div>
@@ -496,7 +496,7 @@ export function CRMVendas() {
               }`}
             >
               <category.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
-              <span className="text-body-xs text-[var(--text-primary)] font-medium">{category.label}</span>
+              <span className="text-body-xs text-[var(--text-primary)] orx-font-medium">{category.label}</span>
               <div className="flex items-center gap-1 mt-1">
                 <span className="text-body-lg font-display text-[var(--text-primary)]">{category.count}</span>
                 {category.trend && category.trend !=="0" && (
@@ -537,7 +537,7 @@ export function CRMVendas() {
         {activeCategory ==="relatorios" && (
           <Card className="neuro-raised p-12 text-center">
             <FileText className="w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4" />
-            <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 font-medium">Relatórios de Vendas</h3>
+            <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 orx-font-medium">Relatórios de Vendas</h3>
             <p className="text-[var(--text-secondary)]">Módulo em desenvolvimento</p>
           </Card>
         )}

@@ -3,11 +3,11 @@
  * Autenticação com Supabase
  */
 
-import React, { useState } from"react";
-import { useNavigate, Link } from"react-router-dom";
-import { useAuth } from"@/hooks";
-import { Card, CardHeader, CardTitle, CardContent, Button, Input } from"@/components/oraclusx-ds";
-import { Mail, Lock, AlertCircle, Loader2, BrainCircuit, LogIn } from"lucide-react";
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "@/hooks";
+import { Card, CardContent, Button, Input } from "@/components/oraclusx-ds";
+import { Mail, Lock, AlertCircle, Loader2, BrainCircuit, LogIn } from "lucide-react";
 
 export default function Login() {
   const navigate = useNavigate();

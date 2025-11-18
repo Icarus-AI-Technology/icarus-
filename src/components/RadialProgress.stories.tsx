@@ -80,19 +80,19 @@ export const AllVariants: Story = {
     <div className="flex flex-wrap gap-6 p-6 bg-[var(--bg-primary)] rounded-2xl neuro-raised">
       <div className="flex flex-col items-center gap-2">
         <RadialProgress value={25} size={100} showPercentage />
-        <span className="text-sm text-[var(--text-secondary)]">25%</span>
+        <span className="orx-text-sm text-[var(--text-secondary)]">25%</span>
       </div>
       <div className="flex flex-col items-center gap-2">
         <RadialProgress value={50} size={100} showPercentage />
-        <span className="text-sm text-[var(--text-secondary)]">50%</span>
+        <span className="orx-text-sm text-[var(--text-secondary)]">50%</span>
       </div>
       <div className="flex flex-col items-center gap-2">
         <RadialProgress value={75} size={100} showPercentage />
-        <span className="text-sm text-[var(--text-secondary)]">75%</span>
+        <span className="orx-text-sm text-[var(--text-secondary)]">75%</span>
       </div>
       <div className="flex flex-col items-center gap-2">
         <RadialProgress value={100} size={100} showPercentage />
-        <span className="text-sm text-[var(--text-secondary)]">100%</span>
+        <span className="orx-text-sm text-[var(--text-secondary)]">100%</span>
       </div>
     </div>
   ),

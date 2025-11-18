@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Badge, type BadgeProps } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -20,6 +20,32 @@ import {
 import { FileText, Eye, Download, Check, X } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
+
+type ReportStatus =
+  | "draft"
+  | "pending_review"
+  | "reviewed"
+  | "approved"
+  | "published"
+  | "rejected"
+  | "archived";
+
+type BadgeVariant = NonNullable<BadgeProps["variant"]>;
+
+interface StatusConfig {
+  variant: BadgeVariant;
+  label: string;
+}
+
+const STATUS_CONFIG: Record<ReportStatus, StatusConfig> = {
+  draft: { variant: "secondary", label: "Rascunho" },
+  pending_review: { variant: "default", label: "Aguardando Revisão" },
+  reviewed: { variant: "default", label: "Revisado" },
+  approved: { variant: "default", label: "Aprovado" },
+  published: { variant: "default", label: "Publicado" },
+  rejected: { variant: "destructive", label: "Rejeitado" },
+  archived: { variant: "secondary", label: "Arquivado" },
+};
 
 interface AgentReport {
   report_id: string;
@@ -76,18 +102,14 @@ export function AgentReportsList() {
     }
   }
 
-  function getStatusBadge(status: string) {
-    const variants: Record<string, any> = {
-      draft: { variant: "secondary", label: "Rascunho" },
-      pending_review: { variant: "default", label: "Aguardando Revisão" },
-      reviewed: { variant: "default", label: "Revisado" },
-      approved: { variant: "success", label: "Aprovado" },
-      published: { variant: "success", label: "Publicado" },
-      rejected: { variant: "destructive", label: "Rejeitado" },
-      archived: { variant: "secondary", label: "Arquivado" },
-    };
+  function isReportStatus(value: string): value is ReportStatus {
+    return value in STATUS_CONFIG;
+  }
 
-    const config = variants[status] || variants.draft;
+  function getStatusBadge(status: string) {
+    const config = isReportStatus(status)
+      ? STATUS_CONFIG[status]
+      : STATUS_CONFIG.draft;
 
     return <Badge variant={config.variant}>{config.label}</Badge>;
   }
@@ -142,7 +164,7 @@ export function AgentReportsList() {
             ) : (
               reports.map((report) => (
                 <TableRow key={report.report_id}>
-                  <TableCell className="font-medium">
+                  <TableCell className="orx-font-medium">
                     <div className="flex items-center gap-2">
                       <FileText className="h-4 w-4 text-muted-foreground" />
                       {report.title}
@@ -157,13 +179,13 @@ export function AgentReportsList() {
                   <TableCell>
                     <Badge variant="secondary">v{report.version}</Badge>
                   </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
+                  <TableCell className="orx-text-sm text-muted-foreground">
                     {formatDistanceToNow(new Date(report.created_at), {
                       addSuffix: true,
                       locale: ptBR,
                     })}
                   </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
+                  <TableCell className="orx-text-sm text-muted-foreground">
                     {report.published_at
                       ? formatDistanceToNow(new Date(report.published_at), {
                           addSuffix: true,

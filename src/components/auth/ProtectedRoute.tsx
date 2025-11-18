@@ -71,14 +71,14 @@ function AcessoNegado({ tipo, nome }: { tipo: string; nome: string }) {
       <div className="max-w-md w-full">
         <Alert className="bg-red-900/20 border-red-900/50">
           <Shield className="h-5 w-5 text-red-500" />
-          <AlertTitle className="text-red-400 text-lg mb-2">
+          <AlertTitle className="text-red-400 orx-text-lg mb-2">
             Acesso Negado
           </AlertTitle>
           <AlertDescription className="text-slate-300 space-y-2">
             <p>
               Você não tem permissão para acessar este recurso.
             </p>
-            <div className="mt-4 p-3 bg-slate-800/50 rounded-lg text-sm">
+            <div className="mt-4 p-3 bg-slate-800/50 rounded-lg orx-text-sm">
               <p className="text-slate-400">
                 <strong>Usuário:</strong> {usuario?.nome_completo}
               </p>
@@ -92,7 +92,7 @@ function AcessoNegado({ tipo, nome }: { tipo: string; nome: string }) {
                 <strong>Recurso:</strong> {nome}
               </p>
             </div>
-            <p className="text-slate-500 text-xs mt-4">
+            <p className="text-slate-500 orx-text-xs mt-4">
               Entre em contato com o administrador do sistema para solicitar acesso.
             </p>
           </AlertDescription>

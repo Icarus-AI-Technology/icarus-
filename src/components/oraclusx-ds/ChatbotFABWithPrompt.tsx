@@ -45,7 +45,7 @@ export const ChatbotFABWithPrompt: React.FC<ChatbotFABWithPromptProps> = ({
       {isExpanded ? (
         <div className="orx-card p-4 w-80 mb-4 animate-in slide-in-from-bottom-5 fade-in duration-300">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-primary dark:text-gray-100 font-medium">
+            <h3 className="text-primary dark:text-gray-100 orx-font-medium">
               Em que posso ajudar?
             </h3>
             <button

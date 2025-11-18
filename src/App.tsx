@@ -63,6 +63,10 @@ const ComplianceAbbott = lazy(() => import("./pages/compliance/ComplianceAbbott"
 const ComplianceANVISA = lazy(() => import("./pages/compliance/ComplianceANVISA"));
 const DashboardsAnaliticos = lazy(() => import("./pages/relatorios/DashboardsAnaliticos"));
 
+// Módulos de Observabilidade
+const ObservabilityDashboard = lazy(() => import("./components/observability/ObservabilityDashboard"));
+const TrainingReports = lazy(() => import("./components/training/TrainingReports"));
+
 // Módulos de Integrações
 import GerenciadorCredenciais from"./pages/integracoes/GerenciadorCredenciais";
 
@@ -640,12 +644,16 @@ function AppShell() {
                       <Route path="/relatorios" element={<PrivateRoute><RelatoriosRegulatorios /></PrivateRoute>} />
                       <Route path="/relatorios/dashboards" element={<PrivateRoute><DashboardsAnaliticos /></PrivateRoute>} />
 
-                      {/* Chatbot / Assistente IA */}
-                      <Route path="/chatbot" element={<PrivateRoute><GPTResearcherDemo /></PrivateRoute>} />
+                     {/* Chatbot / Assistente IA */}
+                     <Route path="/chatbot" element={<PrivateRoute><GPTResearcherDemo /></PrivateRoute>} />
 
-                      {/* Usuários e Configurações */}
-                      <Route path="/usuarios" element={<PrivateRoute><GestaoUsuariosPermissoes /></PrivateRoute>} />
-                      <Route path="/configuracoes" element={<PrivateRoute><ConfiguracoesSistema /></PrivateRoute>} />
+                     {/* Observabilidade e Treinamento */}
+                     <Route path="/observability/dashboard" element={<PrivateRoute><ObservabilityDashboard /></PrivateRoute>} />
+                     <Route path="/training/reports" element={<PrivateRoute><TrainingReports /></PrivateRoute>} />
+
+                     {/* Usuários e Configurações */}
+                     <Route path="/usuarios" element={<PrivateRoute><GestaoUsuariosPermissoes /></PrivateRoute>} />
+                     <Route path="/configuracoes" element={<PrivateRoute><ConfiguracoesSistema /></PrivateRoute>} />
                 {/* Fallback */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

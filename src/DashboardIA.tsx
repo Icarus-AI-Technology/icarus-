@@ -33,7 +33,7 @@ export default function DashboardIA() {
             <Sparkles className="w-8 h-8 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
+            <h1 className="orx-text-3xl orx-font-bold text-slate-900 dark:text-white">
               Dashboard de Inteligência Artificial
             </h1>
             <p className="text-slate-600 dark:text-slate-400">
@@ -47,53 +47,53 @@ export default function DashboardIA() {
           <div className="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-200 dark:border-slate-700">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-600 dark:text-slate-400">Modelos Ativos</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">12</p>
+                <p className="orx-text-sm text-slate-600 dark:text-slate-400">Modelos Ativos</p>
+                <p className="orx-text-2xl orx-font-bold text-slate-900 dark:text-white">12</p>
               </div>
               <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
                 <Brain className="w-6 h-6 text-blue-600 dark:text-blue-400" />
               </div>
             </div>
-            <p className="text-xs text-green-600 dark:text-green-400 mt-2">✓ Todos operacionais</p>
+            <p className="orx-text-xs text-green-600 dark:text-green-400 mt-2">✓ Todos operacionais</p>
           </div>
 
           <div className="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-200 dark:border-slate-700">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-600 dark:text-slate-400">Taxa de Acerto</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">94.2%</p>
+                <p className="orx-text-sm text-slate-600 dark:text-slate-400">Taxa de Acerto</p>
+                <p className="orx-text-2xl orx-font-bold text-slate-900 dark:text-white">94.2%</p>
               </div>
               <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
                 <TrendingUp className="w-6 h-6 text-green-600 dark:text-green-400" />
               </div>
             </div>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Média ponderada</p>
+            <p className="orx-text-xs text-slate-600 dark:text-slate-400 mt-2">Média ponderada</p>
           </div>
 
           <div className="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-200 dark:border-slate-700">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-600 dark:text-slate-400">Previsões Hoje</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">1,247</p>
+                <p className="orx-text-sm text-slate-600 dark:text-slate-400">Previsões Hoje</p>
+                <p className="orx-text-2xl orx-font-bold text-slate-900 dark:text-white">1,247</p>
               </div>
               <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
                 <Activity className="w-6 h-6 text-purple-600 dark:text-purple-400" />
               </div>
             </div>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">+18% vs ontem</p>
+            <p className="orx-text-xs text-slate-600 dark:text-slate-400 mt-2">+18% vs ontem</p>
           </div>
 
           <div className="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-200 dark:border-slate-700">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-600 dark:text-slate-400">Economia Mensal</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">$402</p>
+                <p className="orx-text-sm text-slate-600 dark:text-slate-400">Economia Mensal</p>
+                <p className="orx-text-2xl orx-font-bold text-slate-900 dark:text-white">$402</p>
               </div>
               <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
                 <Sparkles className="w-6 h-6 text-orange-600 dark:text-orange-400" />
               </div>
             </div>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">80% Ollama grátis</p>
+            <p className="orx-text-xs text-slate-600 dark:text-slate-400 mt-2">80% Ollama grátis</p>
           </div>
         </div>
       </div>
@@ -109,7 +109,7 @@ export default function DashboardIA() {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`
-                  flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap
+                  flex items-center gap-2 px-4 py-2 rounded-lg orx-font-medium transition-all whitespace-nowrap
                   ${isActive 
                     ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg' 
                     : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
@@ -140,7 +140,7 @@ export default function DashboardIA() {
         <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl p-4 border border-indigo-200 dark:border-indigo-800">
           <div className="flex items-center gap-3">
             <Sparkles className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-            <p className="text-sm text-slate-700 dark:text-slate-300">
+            <p className="orx-text-sm text-slate-700 dark:text-slate-300">
               <strong>Powered by:</strong> Ollama (Llama 3.1) + GPT-4 Turbo + Claude 3.5 Sonnet
               <span className="ml-2 text-slate-600 dark:text-slate-400">•</span>
               <span className="ml-2">Abbott Score: 98.2%</span>

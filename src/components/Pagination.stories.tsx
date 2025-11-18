@@ -59,7 +59,7 @@ export const Interactive: Story = {
     return (
       <div className="p-6 bg-[var(--bg-primary)] rounded-2xl neuro-raised">
         <div className="mb-4 text-center">
-          <p className="text-sm text-[var(--text-secondary)]">Página atual: {page}</p>
+          <p className="orx-text-sm text-[var(--text-secondary)]">Página atual: {page}</p>
         </div>
         <Pagination currentPage={page} totalPages={15} onPageChange={setPage} />
       </div>

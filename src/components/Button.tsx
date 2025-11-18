@@ -55,7 +55,7 @@ const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         className={cn(
           "inline-flex items-center justify-center gap-2",
-          "font-medium rounded-lg",
+          "orx-font-medium rounded-lg",
           "transition-all duration-150",
           "disabled:opacity-50 disabled:cursor-not-allowed",
           sizeClasses[size],

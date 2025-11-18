@@ -148,11 +148,7 @@ export const CardKpi: React.FC<CardKpiProps> = ({
     >
       {/* Highlight sutil no topo */}
       <div
-        className="absolute top-0 left-0 right-0 h-1/3 pointer-events-none"
-        style={{
-          background: 'var(--highlight-top)',
-          borderRadius: 'inherit',
-        }}
+        className="absolute top-0 left-0 right-0 h-1/3 pointer-events-none bg-[var(--highlight-top)] rounded-[inherit]"
       />
 
       <div className="relative z-10 flex items-start justify-between gap-4">
@@ -171,12 +167,12 @@ export const CardKpi: React.FC<CardKpiProps> = ({
         {/* Conteúdo */}
         <div className="flex-1 min-w-0">
           {/* Label */}
-          <p className="text-sm font-medium text-orx-text-secondary mb-1 truncate">
+          <p className="orx-text-sm orx-font-medium text-orx-text-secondary mb-1 truncate">
             {label}
           </p>
 
           {/* Valor */}
-          <p className="text-3xl font-bold text-orx-text-primary truncate">
+          <p className="orx-text-3xl orx-font-bold text-orx-text-primary truncate">
             {value}
           </p>
 
@@ -184,7 +180,7 @@ export const CardKpi: React.FC<CardKpiProps> = ({
           {trend && (
             <div
               className={cn(
-                'flex items-center gap-1 mt-2 text-sm font-semibold',
+                'flex items-center gap-1 mt-2 orx-text-sm orx-font-semibold',
                 styles.trendColor[trend.direction]
               )}
             >

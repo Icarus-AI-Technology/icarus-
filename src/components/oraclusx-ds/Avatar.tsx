@@ -77,7 +77,7 @@ export const Avatar: React.FC<AvatarProps> = ({
             onError={() => setImageError(true)}
           />
         ) : getFallbackText() ? (
-          <span className="text-secondary dark:text-muted font-medium">
+          <span className="text-secondary dark:text-muted orx-font-medium">
             {getFallbackText()}
           </span>
         ) : (

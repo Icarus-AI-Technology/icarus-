@@ -114,7 +114,7 @@ export const RadialProgress: React.FC<RadialProgressProps> = ({
 
       {label && (
         <div className="absolute text-center select-none">
-          <div className="text-[var(--text-primary)] text-[0.813rem] font-medium">
+          <div className="text-[var(--text-primary)] text-[0.813rem] orx-font-medium">
             {label}
           </div>
         </div>

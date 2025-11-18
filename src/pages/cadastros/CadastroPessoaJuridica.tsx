@@ -178,7 +178,7 @@ export default function CadastroPessoaJuridica() {
               <Building2 className="w-6 h-6 text-orx-primary" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-orx-text-primary">
+              <h1 className="orx-text-3xl orx-font-bold text-orx-text-primary">
                 Cadastro de Pessoa Jurídica
               </h1>
               <p className="text-orx-text-secondary mt-1">
@@ -191,7 +191,7 @@ export default function CadastroPessoaJuridica() {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Busca CNPJ */}
           <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
-            <h2 className="text-lg font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
+            <h2 className="orx-text-lg orx-font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
               <Search className="w-5 h-5 text-orx-primary" />
               Buscar por CNPJ
             </h2>
@@ -228,7 +228,7 @@ export default function CadastroPessoaJuridica() {
             {cnpjEncontrado && (
               <div className="mt-4 p-4 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-900/30 rounded-lg flex items-center gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600" />
-                <span className="text-sm text-green-800 dark:text-green-200">
+                <span className="orx-text-sm text-green-800 dark:text-green-200">
                   Dados encontrados e preenchidos automaticamente
                 </span>
               </div>
@@ -239,7 +239,7 @@ export default function CadastroPessoaJuridica() {
           {cnpjEncontrado && (
             <>
               <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
-                <h2 className="text-lg font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
+                <h2 className="orx-text-lg orx-font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
                   <Building2 className="w-5 h-5 text-orx-primary" />
                   Dados Cadastrais
                 </h2>
@@ -300,7 +300,7 @@ export default function CadastroPessoaJuridica() {
 
               {/* Endereço */}
               <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
-                <h2 className="text-lg font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
+                <h2 className="orx-text-lg orx-font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
                   <MapPin className="w-5 h-5 text-orx-primary" />
                   Endereço
                 </h2>
@@ -420,7 +420,7 @@ export default function CadastroPessoaJuridica() {
 
               {/* Dados Bancários */}
               <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
-                <h2 className="text-lg font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
+                <h2 className="orx-text-lg orx-font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
                   <Phone className="w-5 h-5 text-orx-primary" />
                   Dados Bancários (Opcional)
                 </h2>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import {
   Card,
@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Badge, type BadgeProps } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -34,8 +34,44 @@ import {
   RefreshCw,
   X,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
+
+type AgentTaskStatus =
+  | "pending"
+  | "in_progress"
+  | "completed"
+  | "failed"
+  | "cancelled";
+
+type BadgeVariant = NonNullable<BadgeProps["variant"]>;
+
+interface StatusDisplay {
+  icon: LucideIcon;
+  variant: BadgeVariant;
+  label: string;
+  className?: string;
+}
+
+const STATUS_CONFIG: Record<AgentTaskStatus, StatusDisplay> = {
+  pending: { icon: Clock, variant: "secondary", label: "Pendente" },
+  in_progress: {
+    icon: RefreshCw,
+    variant: "default",
+    label: "Em Progresso",
+    className: "animate-pulse",
+  },
+  completed: {
+    icon: CheckCircle,
+    variant: "default",
+    label: "Concluída",
+    className:
+      "bg-emerald-500 text-white hover:bg-emerald-600 border-transparent",
+  },
+  failed: { icon: XCircle, variant: "destructive", label: "Falhou" },
+  cancelled: { icon: X, variant: "secondary", label: "Cancelada" },
+};
 
 interface AgentTask {
   task_id: string;
@@ -57,31 +93,8 @@ export function AgentTasksList() {
     "all" | "active" | "completed" | "failed"
   >("active");
 
-  useEffect(() => {
-    loadTasks();
-
-    // Realtime subscription
-    const subscription = supabase
-      .channel("tasks-list")
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "agent_tasks",
-        },
-        () => {
-          loadTasks();
-        },
-      )
-      .subscribe();
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [filter]);
-
-  async function loadTasks() {
+  const loadTasks = useCallback(async () => {
+    setLoading(true);
     try {
       let query = supabase
         .from("agent_tasks")
@@ -100,29 +113,45 @@ export function AgentTasksList() {
       const { data, error } = await query;
 
       if (error) throw error;
-      setTasks(data || []);
+      setTasks((data as AgentTask[] | null) ?? []);
     } catch (error) {
       console.error("Error loading tasks:", error);
     } finally {
       setLoading(false);
     }
+  }, [filter]);
+
+  useEffect(() => {
+    loadTasks();
+
+    const subscription = supabase
+      .channel("tasks-list")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "agent_tasks",
+        },
+        () => {
+          loadTasks();
+        },
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [loadTasks]);
+
+  function isAgentTaskStatus(value: string): value is AgentTaskStatus {
+    return value in STATUS_CONFIG;
   }
 
   function getStatusBadge(status: string) {
-    const variants: Record<string, any> = {
-      pending: { icon: Clock, variant: "secondary", label: "Pendente" },
-      in_progress: {
-        icon: RefreshCw,
-        variant: "default",
-        label: "Em Progresso",
-        className: "animate-pulse",
-      },
-      completed: { icon: CheckCircle, variant: "success", label: "Concluída" },
-      failed: { icon: XCircle, variant: "destructive", label: "Falhou" },
-      cancelled: { icon: X, variant: "secondary", label: "Cancelada" },
-    };
-
-    const config = variants[status] || variants.pending;
+    const config = isAgentTaskStatus(status)
+      ? STATUS_CONFIG[status]
+      : STATUS_CONFIG.pending;
     const Icon = config.icon;
 
     return (
@@ -221,7 +250,7 @@ export function AgentTasksList() {
             ) : (
               tasks.map((task) => (
                 <TableRow key={task.task_id}>
-                  <TableCell className="font-medium max-w-xs truncate">
+                  <TableCell className="orx-font-medium max-w-xs truncate">
                     {task.query_text}
                   </TableCell>
                   <TableCell>
@@ -229,7 +258,7 @@ export function AgentTasksList() {
                       {getTaskTypeLabel(task.task_type)}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
+                  <TableCell className="orx-text-sm text-muted-foreground">
                     {task.assigned_agent || "-"}
                   </TableCell>
                   <TableCell>{getStatusBadge(task.status)}</TableCell>
@@ -246,14 +275,14 @@ export function AgentTasksList() {
                       P{task.priority}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-sm">
+                  <TableCell className="orx-text-sm">
                     {task.execution_time_ms
                       ? `${(task.execution_time_ms / 1000).toFixed(1)}s`
                       : task.started_at
                         ? "Em execução"
                         : "-"}
                   </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
+                  <TableCell className="orx-text-sm text-muted-foreground">
                     {formatDistanceToNow(new Date(task.created_at), {
                       addSuffix: true,
                       locale: ptBR,

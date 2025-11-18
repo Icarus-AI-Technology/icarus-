@@ -130,8 +130,8 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
             />
             <span
               className={cn(
-                'font-medium text-[var(--orx-text-primary)]',
-                variant === 'default' ? 'text-xs' : 'text-sm'
+                'orx-font-medium text-[var(--orx-text-primary)]',
+                variant === 'default' ? 'orx-text-xs' : 'orx-text-sm'
               )}
             >
               {category.label}
@@ -142,7 +142,7 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
                   <span
                     className={cn(
                       'font-display text-[var(--orx-text-primary)]',
-                      variant === 'default' ? 'text-lg' : 'text-base'
+                      variant === 'default' ? 'orx-text-lg' : 'orx-text-base'
                     )}
                   >
                     {category.count}
@@ -151,7 +151,7 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
                 {category.trend && (
                   <span
                     className={cn(
-                      'text-xs',
+                      'orx-text-xs',
                       category.trend.startsWith('+')
                         ? 'text-[var(--orx-success)]'
                         : category.trend.startsWith('-')

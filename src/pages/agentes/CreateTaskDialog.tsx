@@ -117,7 +117,7 @@ export function CreateTaskDialog({
                 rows={4}
                 required
               />
-              <p className="text-sm text-muted-foreground">
+              <p className="orx-text-sm text-muted-foreground">
                 Seja específico sobre o que você quer analisar
               </p>
             </div>

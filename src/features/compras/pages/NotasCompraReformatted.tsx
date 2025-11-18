@@ -373,7 +373,7 @@ export const NotasCompraReformatted: React.FC = () => {
         <h1
           style={{
             fontSize: '1.875rem',
-            fontWeight: 'var(--orx-font-bold)',
+            fontWeight: 'var(--orx-orx-font-bold)',
             color: 'var(--orx-text-primary)',
             marginBottom: '0.5rem',
           }}
@@ -420,7 +420,7 @@ export const NotasCompraReformatted: React.FC = () => {
               <h3
                 style={{
                   fontSize: '1.125rem',
-                  fontWeight: 'var(--orx-font-semibold)',
+                  fontWeight: 'var(--orx-orx-font-semibold)',
                   color: 'var(--orx-text-primary)',
                   marginBottom: '0.25rem',
                 }}
@@ -537,7 +537,7 @@ export const NotasCompraReformatted: React.FC = () => {
                   <div
                     style={{
                       fontSize: '2rem',
-                      fontWeight: 'var(--orx-font-bold)',
+                      fontWeight: 'var(--orx-orx-font-bold)',
                       color: 'var(--orx-text-primary)',
                       marginBottom: '0.25rem',
                     }}
@@ -634,7 +634,7 @@ export const NotasCompraReformatted: React.FC = () => {
               <h3
                 style={{
                   fontSize: '1.125rem',
-                  fontWeight: 'var(--orx-font-semibold)',
+                  fontWeight: 'var(--orx-orx-font-semibold)',
                   color: 'var(--orx-text-primary)',
                   marginBottom: '0.5rem',
                 }}
@@ -700,7 +700,7 @@ export const NotasCompraReformatted: React.FC = () => {
               <h3
                 style={{
                   fontSize: '1.125rem',
-                  fontWeight: 'var(--orx-font-semibold)',
+                  fontWeight: 'var(--orx-orx-font-semibold)',
                   color: 'var(--orx-text-primary)',
                   marginBottom: '0.5rem',
                 }}
@@ -768,7 +768,7 @@ export const NotasCompraReformatted: React.FC = () => {
               <h3
                 style={{
                   fontSize: '1.125rem',
-                  fontWeight: 'var(--orx-font-semibold)',
+                  fontWeight: 'var(--orx-orx-font-semibold)',
                   color: validacaoStatus.sefaz ? 'var(--orx-success-dark)' : 'var(--orx-error-dark)',
                 }}
               >
@@ -840,7 +840,7 @@ export const NotasCompraReformatted: React.FC = () => {
             <h3
               style={{
                 fontSize: '1.125rem',
-                fontWeight: 'var(--orx-font-semibold)',
+                fontWeight: 'var(--orx-orx-font-semibold)',
                 color: 'var(--orx-text-primary)',
                 marginBottom: '1rem',
               }}
@@ -895,7 +895,7 @@ export const NotasCompraReformatted: React.FC = () => {
                 <p
                   style={{
                     fontSize: '1.25rem',
-                    fontWeight: 'var(--orx-font-bold)',
+                    fontWeight: 'var(--orx-orx-font-bold)',
                     color: 'var(--orx-primary)',
                   }}
                 >
@@ -994,7 +994,7 @@ export const NotasCompraReformatted: React.FC = () => {
           <h3
             style={{
               fontSize: '1.125rem',
-              fontWeight: 'var(--orx-font-semibold)',
+              fontWeight: 'var(--orx-orx-font-semibold)',
               color: 'var(--orx-text-primary)',
             }}
           >
@@ -1030,7 +1030,7 @@ export const NotasCompraReformatted: React.FC = () => {
                     padding: '1rem',
                     textAlign: 'left',
                     fontSize: '0.813rem',
-                    fontWeight: 'var(--orx-font-semibold)',
+                    fontWeight: 'var(--orx-orx-font-semibold)',
                     color: 'var(--orx-text-secondary)',
                     borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
                   }}
@@ -1042,7 +1042,7 @@ export const NotasCompraReformatted: React.FC = () => {
                     padding: '1rem',
                     textAlign: 'left',
                     fontSize: '0.813rem',
-                    fontWeight: 'var(--orx-font-semibold)',
+                    fontWeight: 'var(--orx-orx-font-semibold)',
                     color: 'var(--orx-text-secondary)',
                     borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
                   }}
@@ -1054,7 +1054,7 @@ export const NotasCompraReformatted: React.FC = () => {
                     padding: '1rem',
                     textAlign: 'left',
                     fontSize: '0.813rem',
-                    fontWeight: 'var(--orx-font-semibold)',
+                    fontWeight: 'var(--orx-orx-font-semibold)',
                     color: 'var(--orx-text-secondary)',
                     borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
                   }}
@@ -1066,7 +1066,7 @@ export const NotasCompraReformatted: React.FC = () => {
                     padding: '1rem',
                     textAlign: 'left',
                     fontSize: '0.813rem',
-                    fontWeight: 'var(--orx-font-semibold)',
+                    fontWeight: 'var(--orx-orx-font-semibold)',
                     color: 'var(--orx-text-secondary)',
                     borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
                   }}
@@ -1078,7 +1078,7 @@ export const NotasCompraReformatted: React.FC = () => {
                     padding: '1rem',
                     textAlign: 'left',
                     fontSize: '0.813rem',
-                    fontWeight: 'var(--orx-font-semibold)',
+                    fontWeight: 'var(--orx-orx-font-semibold)',
                     color: 'var(--orx-text-secondary)',
                     borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
                   }}
@@ -1090,7 +1090,7 @@ export const NotasCompraReformatted: React.FC = () => {
                     padding: '1rem',
                     textAlign: 'center',
                     fontSize: '0.813rem',
-                    fontWeight: 'var(--orx-font-semibold)',
+                    fontWeight: 'var(--orx-orx-font-semibold)',
                     color: 'var(--orx-text-secondary)',
                     borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
                   }}

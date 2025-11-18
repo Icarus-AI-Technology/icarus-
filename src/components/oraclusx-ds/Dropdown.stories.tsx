@@ -50,7 +50,7 @@ export const UserMenu: Story = {
   args: {
     trigger: (
       <button className="flex items-center gap-2 orx-button px-3 py-2">
-        <div className="w-8 h-8 rounded-full bg-[var(--orx-primary)] text-white flex items-center justify-center text-sm font-semibold">
+        <div className="w-8 h-8 rounded-full bg-[var(--orx-primary)] text-white flex items-center justify-center orx-text-sm orx-font-semibold">
           JD
         </div>
         <span>John Doe</span>

@@ -235,10 +235,10 @@ export function APIGatewayDashboard() {
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <h3 className="opacity-80 text-[0.813rem] font-medium">{kpi.title}</h3>
+                  <h3 className="opacity-80 text-[0.813rem] orx-font-medium">{kpi.title}</h3>
                   <kpi.icon className="w-5 h-5 opacity-80" />
                 </div>
-                <div className="mt-4 text-[0.813rem] font-bold">{kpi.value}</div>
+                <div className="mt-4 text-[0.813rem] orx-font-bold">{kpi.value}</div>
                 {kpi.trend && <p className="opacity-70 mt-2 text-[0.813rem]">{kpi.trend}</p>}
               </Card>
             ))}
@@ -251,7 +251,7 @@ export function APIGatewayDashboard() {
         <Card className="p-4 neuro-inset bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700">
           <div className="flex items-center gap-3 text-red-700 dark:text-red-300">
             <AlertTriangle className="w-5 h-5" />
-            <h4 className="font-medium">Alertas Críticos</h4>
+            <h4 className="orx-font-medium">Alertas Críticos</h4>
           </div>
           <div className="mt-3 space-y-2">
             {alerts
@@ -271,7 +271,7 @@ export function APIGatewayDashboard() {
 
       {/* Gráfico de Sucesso vs Erros */}
       <Card className="p-6 neuro-raised">
-        <h3 className="mb-4 text-[0.813rem] font-semibold">Performance por Endpoint</h3>
+        <h3 className="mb-4 text-[0.813rem] orx-font-semibold">Performance por Endpoint</h3>
         <OrxBarChart
           data={metrics.slice(0, 10).map(m => ({ name: m.endpoint_nome, sucesso: m.success_count, erro: m.error_count }))}
           keys={["sucesso", "erro"]}
@@ -303,7 +303,7 @@ export function APIGatewayDashboard() {
           <TableBody>
             {metrics.map((metric) => (
               <TableRow key={metric.endpoint_id}>
-                <TableCell className="font-medium">{metric.endpoint_nome}</TableCell>
+                <TableCell className="orx-font-medium">{metric.endpoint_nome}</TableCell>
                 <TableCell>
                   <Badge variant="default">{metric.servico}</Badge>
                 </TableCell>
@@ -398,7 +398,7 @@ export function APIGatewayDashboard() {
   const renderAlerts = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-[0.813rem] font-semibold">Alertas Ativos ({alerts.filter((alert) => !alert.is_resolved).length})</h2>
+        <h2 className="text-[0.813rem] orx-font-semibold">Alertas Ativos ({alerts.filter((alert) => !alert.is_resolved).length})</h2>
         <Button variant="secondary" icon={RefreshCw} onClick={carregarDados}>
           Atualizar
         </Button>
@@ -444,7 +444,7 @@ export function APIGatewayDashboard() {
                         {alert.endpoint_nome}
                       </span>
                     </div>
-                    <p className="mb-1 text-[0.813rem] font-medium">{alert.mensagem}</p>
+                    <p className="mb-1 text-[0.813rem] orx-font-medium">{alert.mensagem}</p>
                     <p className="text-[var(--text-secondary)] text-[0.813rem]">
                       {new Date(alert.created_at).toLocaleString('pt-BR')}
                     </p>
@@ -463,7 +463,7 @@ export function APIGatewayDashboard() {
   const renderPerformance = () => (
     <div className="space-y-6">
       <Card className="p-6 neuro-raised">
-        <h3 className="mb-4 text-[0.813rem] font-semibold">Tempo de Resposta por Endpoint</h3>
+        <h3 className="mb-4 text-[0.813rem] orx-font-semibold">Tempo de Resposta por Endpoint</h3>
         <OrxBarChart
           data={metrics.slice(0, 10).map(m => ({ name: m.endpoint_nome, tempo: m.avg_response_time_ms }))}
           keys={["tempo"]}
@@ -475,7 +475,7 @@ export function APIGatewayDashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card className="p-6 neuro-raised">
-          <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] font-semibold">
+          <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] orx-font-semibold">
             <Database className="w-5 h-5 text-[var(--primary)]" />
             Cache Performance
           </h3>
@@ -498,14 +498,14 @@ export function APIGatewayDashboard() {
         </Card>
 
         <Card className="p-6 neuro-raised">
-          <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] font-semibold">
+          <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] orx-font-semibold">
             <GitBranch className="w-5 h-5 text-[var(--primary)]" />
             Circuit Breaker Status
           </h3>
           <div className="space-y-3">
             <div className="p-4 neuro-inset rounded-lg">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-[0.813rem] font-medium">Fechados (Normal)</span>
+                  <span className="text-[0.813rem] orx-font-medium">Fechados (Normal)</span>
                 <Badge variant="default" className="bg-success/20 text-success">
                   {endpointsHealthy}
                 </Badge>
@@ -516,7 +516,7 @@ export function APIGatewayDashboard() {
             {endpointsWarning > 0 && (
               <div className="p-4 neuro-inset rounded-lg">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-[0.813rem] font-medium">Meio-Abertos (Teste)</span>
+                  <span className="text-[0.813rem] orx-font-medium">Meio-Abertos (Teste)</span>
                   <Badge variant="default" className="bg-warning/20 text-warning">
                     {endpointsWarning}
                   </Badge>
@@ -528,7 +528,7 @@ export function APIGatewayDashboard() {
             {endpointsDown > 0 && (
               <div className="p-4 neuro-inset rounded-lg">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-[0.813rem] font-medium">Abertos (Offline)</span>
+                  <span className="text-[0.813rem] orx-font-medium">Abertos (Offline)</span>
                   <Badge variant="default" className="bg-error/20 text-error">
                     {endpointsDown}
                   </Badge>
@@ -582,7 +582,7 @@ export function APIGatewayDashboard() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 ${
+              className={`px-6 py-3 rounded-xl orx-font-medium transition-all flex items-center gap-2 ${
                 activeTab === tab.id
                   ? 'neuro-raised text-[var(--primary)]'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'

@@ -347,7 +347,7 @@ export default function CadastroMedicos() {
             <div className="md:col-span-2">
               <label 
                 htmlFor="nome_completo"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 Nome Completo <span className="text-[var(--orx-error)]">*</span>
               </label>
@@ -368,7 +368,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="cpf"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 CPF
               </label>
@@ -392,7 +392,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="rg"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 RG
               </label>
@@ -410,7 +410,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="data_nascimento"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 Data de Nascimento
               </label>
@@ -427,7 +427,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="sexo"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 Sexo
               </label>
@@ -459,7 +459,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="crm"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 CRM <span className="text-[var(--orx-error)]">*</span>
               </label>
@@ -487,7 +487,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="uf_crm"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 UF do CRM <span className="text-[var(--orx-error)]">*</span>
               </label>
@@ -511,7 +511,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="especialidade"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 Especialidade <span className="text-[var(--orx-error)]">*</span>
               </label>
@@ -535,7 +535,7 @@ export default function CadastroMedicos() {
             <div className="md:col-span-3">
               <label 
                 htmlFor="registro_ans"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 Registro ANS (opcional)
               </label>
@@ -565,7 +565,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="telefone"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 Telefone Fixo
               </label>
@@ -583,7 +583,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="celular"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 Celular (WhatsApp) <span className="text-[var(--orx-error)]">*</span>
               </label>
@@ -604,7 +604,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="email"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 Email <span className="text-[var(--orx-error)]">*</span>
               </label>
@@ -625,7 +625,7 @@ export default function CadastroMedicos() {
             <div className="md:col-span-3">
               <label 
                 htmlFor="linkedin"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 LinkedIn (opcional)
               </label>
@@ -655,7 +655,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="cep"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 CEP
               </label>
@@ -681,7 +681,7 @@ export default function CadastroMedicos() {
             <div className="md:col-span-3">
               <label 
                 htmlFor="logradouro"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 Logradouro
               </label>
@@ -702,7 +702,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="numero"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 Número
               </label>
@@ -723,7 +723,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="complemento"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 Complemento
               </label>
@@ -744,7 +744,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="bairro"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 Bairro
               </label>
@@ -764,7 +764,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="cidade"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 Cidade
               </label>
@@ -796,7 +796,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="banco"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 Banco
               </label>
@@ -817,7 +817,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="agencia"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 Agência
               </label>
@@ -838,7 +838,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="conta"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 Conta
               </label>
@@ -859,7 +859,7 @@ export default function CadastroMedicos() {
             <div>
               <label 
                 htmlFor="tipo_conta"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 Tipo de Conta
               </label>
@@ -881,7 +881,7 @@ export default function CadastroMedicos() {
             <div className="md:col-span-4">
               <label 
                 htmlFor="pix"
-                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium"
+                className="block text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-font-medium"
               >
                 Chave PIX
               </label>
