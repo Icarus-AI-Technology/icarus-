@@ -154,7 +154,7 @@ export default function CadastroEquipesMedicas() {
               <Users className="w-6 h-6 text-orx-primary" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-orx-text-primary">
+              <h1 className="orx-text-3xl orx-orx-font-bold text-orx-text-primary">
                 Cadastro de Equipes Médicas
               </h1>
               <p className="text-orx-text-secondary mt-1">
@@ -167,7 +167,7 @@ export default function CadastroEquipesMedicas() {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Identificação */}
           <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
-            <h2 className="text-lg font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
+            <h2 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
               <Stethoscope className="w-5 h-5 text-orx-primary" />
               Identificação da Equipe
             </h2>
@@ -185,13 +185,13 @@ export default function CadastroEquipesMedicas() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-orx-text-primary mb-2">
+                <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2">
                   Especialidade
                 </label>
                 <select
                   value={formData.especialidade || ''}
                   onChange={(e) => setFormData({ ...formData, especialidade: e.target.value })}
-                  className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2 focus-visible:shadow-neumo-sm"
+                  className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary orx-text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2 focus-visible:shadow-neumo-sm"
                 >
                   <option value="">Selecione...</option>
                   {ESPECIALIDADES.map(esp => (
@@ -201,13 +201,13 @@ export default function CadastroEquipesMedicas() {
               </div>
               
               <div className="lg:col-span-2">
-                <label className="block text-sm font-medium text-orx-text-primary mb-2">
+                <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2">
                   Médico Responsável <span className="text-orx-danger">*</span>
                 </label>
                 <select
                   value={formData.medico_responsavel_id}
                   onChange={(e) => setFormData({ ...formData, medico_responsavel_id: e.target.value })}
-                  className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2 focus-visible:shadow-neumo-sm"
+                  className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary orx-text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2 focus-visible:shadow-neumo-sm"
                   required
                 >
                   <option value="">Selecione o médico responsável...</option>
@@ -218,13 +218,13 @@ export default function CadastroEquipesMedicas() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-orx-text-primary mb-2">
+                <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2">
                   Hospital Preferencial
                 </label>
                 <select
                   value={formData.hospital_id || ''}
                   onChange={(e) => setFormData({ ...formData, hospital_id: e.target.value })}
-                  className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2 focus-visible:shadow-neumo-sm"
+                  className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary orx-text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2 focus-visible:shadow-neumo-sm"
                 >
                   <option value="">Nenhum específico</option>
                   <option value="1">Hospital São Paulo</option>
@@ -238,7 +238,7 @@ export default function CadastroEquipesMedicas() {
           {/* Membros da Equipe */}
           <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-orx-text-primary flex items-center gap-2">
+              <h2 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary flex items-center gap-2">
                 <Users className="w-5 h-5 text-orx-primary" />
                 Membros da Equipe
               </h2>
@@ -257,7 +257,7 @@ export default function CadastroEquipesMedicas() {
               <div className="text-center py-8 text-orx-text-muted">
                 <Users className="w-12 h-12 mx-auto mb-2 opacity-50" />
                 <p>Nenhum membro adicionado</p>
-                <p className="text-sm">Clique em "Adicionar Membro" para começar</p>
+                <p className="orx-text-sm">Clique em "Adicionar Membro" para começar</p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -265,13 +265,13 @@ export default function CadastroEquipesMedicas() {
                   <div key={index} className="bg-orx-bg-app rounded-lg p-4 shadow-neumo-sm">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-orx-text-primary mb-2">
+                        <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2">
                           Médico/Profissional
                         </label>
                         <select
                           value={membro.medico_id}
                           onChange={(e) => handleUpdateMembro(index, 'medico_id', e.target.value)}
-                          className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2"
+                          className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary orx-text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2"
                         >
                           <option value="">Selecione...</option>
                           <option value="1">Dr. João Silva - CRM 12345/SP</option>
@@ -282,13 +282,13 @@ export default function CadastroEquipesMedicas() {
                       
                       <div className="flex gap-2">
                         <div className="flex-1">
-                          <label className="block text-sm font-medium text-orx-text-primary mb-2">
+                          <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2">
                             Função
                           </label>
                           <select
                             value={membro.funcao}
                             onChange={(e) => handleUpdateMembro(index, 'funcao', e.target.value)}
-                            className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2"
+                            className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary orx-text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2"
                           >
                             <option value="">Selecione...</option>
                             {FUNCOES.map(funcao => (
@@ -319,14 +319,14 @@ export default function CadastroEquipesMedicas() {
 
           {/* Disponibilidade */}
           <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
-            <h2 className="text-lg font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
+            <h2 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
               <Calendar className="w-5 h-5 text-orx-primary" />
               Disponibilidade
             </h2>
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-orx-text-primary mb-3">
+                <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-3">
                   Dias de Atuação
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
@@ -336,7 +336,7 @@ export default function CadastroEquipesMedicas() {
                       type="button"
                       onClick={() => handleToggleDia(dia.id)}
                       className={`
-                        px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200
+                        px-4 py-2 rounded-lg orx-text-sm orx-orx-font-medium transition-all duration-200
                         ${formData.dias_atuacao?.includes(dia.id)
                           ? 'bg-orx-primary text-white shadow-neumo'
                           : 'bg-orx-bg-app text-orx-text-secondary shadow-neumo-sm hover:shadow-neumo'

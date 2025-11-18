@@ -72,7 +72,7 @@ const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
   const variant = variants[status] || variants.conforme;
   
   return (
-    <Badge variant="default" className={cn(variant.bg, variant.color,"font-medium")}>
+    <Badge variant="default" className={cn(variant.bg, variant.color,"orx-orx-font-medium")}>
       {variant.label}
     </Badge>
   );

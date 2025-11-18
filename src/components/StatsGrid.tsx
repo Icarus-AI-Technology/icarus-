@@ -3,10 +3,10 @@
  * Grid de estatísticas/KPIs reutilizável
  */
 
-import React from 'react';
+import { type FC } from 'react';
 import { cn } from '@/lib/utils';
 import { KPICard, type KPIColorScheme } from './KPICard';
-import { KPI_GRID, KPI_COL } from './kpiLayout';
+import { KPI_COL } from './kpiLayout';
 import type { LucideIcon } from 'lucide-react';
 
 export interface StatItem {
@@ -70,7 +70,7 @@ const columnClasses = {
  * />
  * ```
  */
-export const StatsGrid: React.FC<StatsGridProps> = ({
+export const StatsGrid: FC<StatsGridProps> = ({
   stats,
   columns = 4,
   animated = true,

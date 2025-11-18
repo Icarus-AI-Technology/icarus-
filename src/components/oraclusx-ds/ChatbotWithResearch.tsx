@@ -149,7 +149,11 @@ export const ChatbotWithResearch: React.FC<ChatbotWithResearchProps> = ({
   // BUSCA NA BASE DE CONHECIMENTO LOCAL (RAG)
   // ============================================
   
-  const searchLocalKnowledge = async (query: string): Promise<Array<{ categoria: string; conteudo_texto: string; modulo?: string }>> => {
+  type KnowledgeDoc = { categoria: string; conteudo_texto: string; modulo?: string };
+  type UserActivity = { modulo: string; total_acoes: number; acoes_unicas: string[]; taxa_sucesso: number; tempo_medio_ms: number };
+  type HandoverDiff = { modulo: string; precisa_treinamento: boolean; experiencia_sainte: number; experiencia_substituto: number; diferenca_experiencia: number };
+
+  const searchLocalKnowledge = async (query: string): Promise<KnowledgeDoc[]> => {
     try {
       const { data, error } = await supabase
         .rpc('buscar_conhecimento', {
@@ -159,7 +163,8 @@ export const ChatbotWithResearch: React.FC<ChatbotWithResearchProps> = ({
         });
 
       if (error) throw error;
-      return data || [];
+
+      return (data as KnowledgeDoc[] | null) ?? [];
     } catch (error) {
    const err = error as Error;
       console.error('Erro ao buscar conhecimento local:', err);
@@ -171,7 +176,7 @@ export const ChatbotWithResearch: React.FC<ChatbotWithResearchProps> = ({
   // BUSCAR ATIVIDADES DE USUÁRIO
   // ============================================
 
-  const searchUserActivities = async (userEmail: string, days: number = 30): Promise<Array<{ modulo: string; total_acoes: number; acoes_unicas: string[]; taxa_sucesso: number; tempo_medio_ms: number }>> => {
+  const searchUserActivities = async (userEmail: string, days: number = 30): Promise<UserActivity[]> => {
     try {
       const { data, error } = await supabase
         .rpc('buscar_atividades_usuario', {
@@ -180,7 +185,8 @@ export const ChatbotWithResearch: React.FC<ChatbotWithResearchProps> = ({
         });
 
       if (error) throw error;
-      return data || [];
+
+      return (data as UserActivity[] | null) ?? [];
     } catch (error) {
    const err = error as Error;
       console.error('Erro ao buscar atividades do usuário:', err);
@@ -188,7 +194,7 @@ export const ChatbotWithResearch: React.FC<ChatbotWithResearchProps> = ({
     }
   };
 
-  const compareUsersForHandover = async (userEmailLeaving: string, userEmailReplacing: string): Promise<Array<{ modulo: string; precisa_treinamento: boolean; experiencia_sainte: number; experiencia_substituto: number; diferenca_experiencia: number }>> => {
+  const compareUsersForHandover = async (userEmailLeaving: string, userEmailReplacing: string): Promise<HandoverDiff[]> => {
     try {
       const { data, error } = await supabase
         .rpc('comparar_usuarios_handover', {
@@ -197,7 +203,8 @@ export const ChatbotWithResearch: React.FC<ChatbotWithResearchProps> = ({
         });
 
       if (error) throw error;
-      return data || [];
+
+      return (data as HandoverDiff[] | null) ?? [];
     } catch (error) {
    const err = error as Error;
       console.error('Erro ao comparar usuários:', err);
@@ -454,7 +461,7 @@ RESPOSTA:`;
                 <Bot className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h3 className="text-[0.813rem] text-[var(--orx-text-primary)] leading-[1.2] font-semibold m-0">
+                <h3 className="text-[0.813rem] text-[var(--orx-text-primary)] leading-[1.2] orx-orx-font-semibold m-0">
                   ICARUS AI Assistant
                 </h3>
                 <div className="flex items-center gap-1">
@@ -515,7 +522,7 @@ RESPOSTA:`;
                   {message.sources && message.sources.length > 0 && (
                     <div className="mt-2 pt-2 border-t border-t-[rgba(0,0,0,0.1)]">
                       <p 
-                        className="mb-1 text-[0.813rem] text-[var(--orx-text-secondary)] font-medium"
+                        className="mb-1 text-[0.813rem] text-[var(--orx-text-secondary)] orx-orx-font-medium"
                       >
                         Fontes:
                       </p>
@@ -558,7 +565,7 @@ RESPOSTA:`;
           {/* Suggestions (when no messages) */}
           {messages.length <= 1 && (
             <div className="pb-2 space-y-2 px-4">
-              <p className="text-[0.813rem] text-[var(--orx-text-primary)] mb-2 font-medium">
+              <p className="text-[0.813rem] text-[var(--orx-text-primary)] mb-2 orx-orx-font-medium">
                 Sugestões:
               </p>
               {suggestions.map((suggestion, idx) => (
@@ -567,7 +574,7 @@ RESPOSTA:`;
                   onClick={() => {
                     setInputMessage(suggestion);
                   }}
-                  className="w-full text-left px-4 py-3 rounded-lg transition-all text-[0.813rem] text-[var(--orx-text-primary)] bg-[var(--orx-bg-light)] shadow-[4px_4px_8px_rgba(0,0,0,0.18),_-2px_-2px_6px_rgba(0,0,0,0.1),_inset_1px_1px_2px_rgba(255,255,255,0.3),_inset_-1px_-1px_2px_rgba(0,0,0,0.1)] font-medium hover:-translate-y-[3px] hover:scale-[1.02] hover:shadow-[6px_6px_12px_rgba(0,0,0,0.25),_-3px_-3px_8px_rgba(0,0,0,0.15),_inset_1px_1px_3px_rgba(255,255,255,0.4),_inset_-1px_-1px_3px_rgba(0,0,0,0.12),_0_3px_12px_rgba(99,102,241,0.12)] hover:text-[rgba(99,102,241,1)] active:scale-[0.98]"
+                  className="w-full text-left px-4 py-3 rounded-lg transition-all text-[0.813rem] text-[var(--orx-text-primary)] bg-[var(--orx-bg-light)] shadow-[4px_4px_8px_rgba(0,0,0,0.18),_-2px_-2px_6px_rgba(0,0,0,0.1),_inset_1px_1px_2px_rgba(255,255,255,0.3),_inset_-1px_-1px_2px_rgba(0,0,0,0.1)] orx-orx-font-medium hover:-translate-y-[3px] hover:scale-[1.02] hover:shadow-[6px_6px_12px_rgba(0,0,0,0.25),_-3px_-3px_8px_rgba(0,0,0,0.15),_inset_1px_1px_3px_rgba(255,255,255,0.4),_inset_-1px_-1px_3px_rgba(0,0,0,0.12),_0_3px_12px_rgba(99,102,241,0.12)] hover:text-[rgba(99,102,241,1)] active:scale-[0.98]"
                 >
                   {suggestion}
                 </button>
@@ -661,7 +668,7 @@ RESPOSTA:`;
         <div 
           className="absolute mb-2 right-0 bottom-[105px] bg-[rgba(255,255,255,0.7)] backdrop-blur-[12px] px-5 py-3 rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.1)] whitespace-nowrap border border-white/30"
         >
-          <p className="text-[0.813rem] text-[#4B5563] m-0 font-medium">
+          <p className="text-[0.813rem] text-[#4B5563] m-0 orx-orx-font-medium">
             Em que posso ajudar?
           </p>
         </div>
@@ -685,7 +692,7 @@ RESPOSTA:`;
       >
         <MessageCircle size={37} /> {/* 31 * 1.2 ≈ 37 (aumento de 20%) */}
         <span 
-          className="absolute -top-1 -right-1 flex items-center justify-center min-w-[20px] h-[20px] px-1 text-white rounded-full bg-[var(--orx-error)] text-[0.813rem] shadow-[0_2px_4px_rgba(239,68,68,0.3)] font-bold"
+          className="absolute -top-1 -right-1 flex items-center justify-center min-w-[20px] h-[20px] px-1 text-white rounded-full bg-[var(--orx-error)] text-[0.813rem] shadow-[0_2px_4px_rgba(239,68,68,0.3)] orx-orx-font-bold"
         >
           3
         </span>

@@ -36,7 +36,7 @@ export const Small: Story = {
     intensity: 'sm',
     children: (
       <div className="p-6 min-w-[300px]">
-        <h3 className="text-lg font-semibold mb-2 text-[var(--orx-text-primary)]">
+        <h3 className="orx-text-lg orx-orx-font-semibold mb-2 text-[var(--orx-text-primary)]">
           Glass Effect Small
         </h3>
         <p className="text-[var(--orx-text-secondary)]">
@@ -52,7 +52,7 @@ export const Medium: Story = {
     intensity: 'md',
     children: (
       <div className="p-6 min-w-[300px]">
-        <h3 className="text-lg font-semibold mb-2 text-[var(--orx-text-primary)]">
+        <h3 className="orx-text-lg orx-orx-font-semibold mb-2 text-[var(--orx-text-primary)]">
           Glass Effect Medium
         </h3>
         <p className="text-[var(--orx-text-secondary)]">
@@ -68,7 +68,7 @@ export const Large: Story = {
     intensity: 'lg',
     children: (
       <div className="p-6 min-w-[300px]">
-        <h3 className="text-lg font-semibold mb-2 text-[var(--orx-text-primary)]">
+        <h3 className="orx-text-lg orx-orx-font-semibold mb-2 text-[var(--orx-text-primary)]">
           Glass Effect Large
         </h3>
         <p className="text-[var(--orx-text-secondary)]">
@@ -84,7 +84,7 @@ export const ExtraLarge: Story = {
     intensity: 'xl',
     children: (
       <div className="p-6 min-w-[300px]">
-        <h3 className="text-lg font-semibold mb-2 text-[var(--orx-text-primary)]">
+        <h3 className="orx-text-lg orx-orx-font-semibold mb-2 text-[var(--orx-text-primary)]">
           Glass Effect XL
         </h3>
         <p className="text-[var(--orx-text-secondary)]">
@@ -105,10 +105,10 @@ export const WithIcon: Story = {
             <Sparkles size={24} className="text-[var(--orx-primary)]" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-[var(--orx-text-primary)]">
+            <h3 className="orx-text-lg orx-orx-font-semibold text-[var(--orx-text-primary)]">
               AI Insights
             </h3>
-            <p className="text-sm text-[var(--orx-text-secondary)]">
+            <p className="orx-text-sm text-[var(--orx-text-secondary)]">
               Powered by Machine Learning
             </p>
           </div>
@@ -128,16 +128,16 @@ export const WithStats: Story = {
       <div className="p-6 min-w-[300px]">
         <div className="flex items-start justify-between mb-4">
           <div>
-            <p className="text-sm text-[var(--orx-text-secondary)] mb-1">Usuários Ativos</p>
-            <p className="text-3xl font-bold text-[var(--orx-text-primary)]">1.284</p>
+            <p className="orx-text-sm text-[var(--orx-text-secondary)] mb-1">Usuários Ativos</p>
+            <p className="orx-text-3xl orx-orx-font-bold text-[var(--orx-text-primary)]">1.284</p>
           </div>
           <div className="p-2 rounded-lg bg-[var(--orx-success)]/10">
             <Users size={24} className="text-[var(--orx-success)]" />
           </div>
         </div>
-        <div className="flex items-center gap-2 text-sm">
+        <div className="flex items-center gap-2 orx-text-sm">
           <TrendingUp size={16} className="text-[var(--orx-success)]" />
-          <span className="text-[var(--orx-success)] font-medium">+12.5%</span>
+          <span className="text-[var(--orx-success)] orx-orx-font-medium">+12.5%</span>
           <span className="text-[var(--orx-text-secondary)]">vs último mês</span>
         </div>
       </div>
@@ -150,14 +150,14 @@ export const MultipleCards: Story = {
     <div className="grid grid-cols-2 gap-4">
       <GlassCard intensity="md">
         <div className="p-6">
-          <h3 className="font-semibold mb-2">Card 1</h3>
-          <p className="text-sm text-[var(--orx-text-secondary)]">Efeito glass médio</p>
+          <h3 className="orx-orx-font-semibold mb-2">Card 1</h3>
+          <p className="orx-text-sm text-[var(--orx-text-secondary)]">Efeito glass médio</p>
         </div>
       </GlassCard>
       <GlassCard intensity="lg">
         <div className="p-6">
-          <h3 className="font-semibold mb-2">Card 2</h3>
-          <p className="text-sm text-[var(--orx-text-secondary)]">Efeito glass intenso</p>
+          <h3 className="orx-orx-font-semibold mb-2">Card 2</h3>
+          <p className="orx-text-sm text-[var(--orx-text-secondary)]">Efeito glass intenso</p>
         </div>
       </GlassCard>
     </div>

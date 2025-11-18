@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ResponsivePie } from '@nivo/pie';
 import { OrxChartTheme } from './OrxChartTheme';
 
@@ -22,8 +22,16 @@ export const OrxPieChart: React.FC<OrxPieChartProps> = ({
   colors = ['var(--orx-primary)', 'var(--orx-accent)', 'var(--orx-success)', 'var(--orx-warning)'],
   innerRadius = 0.5
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.style.height = `${height}px`;
+    }
+  }, [height]);
+
   return (
-    <div style={{ height }}>
+    <div ref={containerRef} className="h-[280px]">
       <ResponsivePie
         data={data}
         theme={OrxChartTheme}

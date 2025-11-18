@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import {
   Card,
@@ -25,15 +25,53 @@ import {
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"];
 
+type AgentTaskStatus = "pending" | "in_progress" | "completed" | "failed";
+
+interface AgentPerformanceSummaryRow {
+  task_type: string | null;
+  total_tasks: number;
+  completed_count: number;
+  failed_count: number;
+  avg_execution_time_ms: number;
+}
+
+interface AgentTaskDailyRow {
+  created_at: string;
+  status: AgentTaskStatus;
+}
+
+interface DailyStats {
+  date: string;
+  total: number;
+  completed: number;
+  failed: number;
+  pending: number;
+}
+
+interface PerformanceData {
+  agentPerformance: AgentPerformanceSummaryRow[];
+  dailyStats: DailyStats[];
+}
+
+interface AgentChartData {
+  name: string;
+  total: number;
+  completed: number;
+  failed: number;
+  avgTime: number;
+}
+
+interface StatusSummary {
+  completed: number;
+  failed: number;
+  pending: number;
+}
+
 export function AgentPerformance() {
-  const [performanceData, setPerformanceData] = useState<any>(null);
+  const [performanceData, setPerformanceData] = useState<PerformanceData | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadPerformanceData();
-  }, []);
-
-  async function loadPerformanceData() {
+  const loadPerformanceData = useCallback(async () => {
     try {
       // Buscar dados da view de performance
       const { data: agentPerf } = await supabase
@@ -50,21 +88,25 @@ export function AgentPerformance() {
         .gte("created_at", sevenDaysAgo.toISOString());
 
       // Processar dados
-      const dailyStats = processTasksByDay(tasksByDay || []);
+      const dailyStats = processTasksByDay((tasksByDay as AgentTaskDailyRow[] | null) || []);
 
       setPerformanceData({
-        agentPerformance: agentPerf || [],
-        dailyStats: dailyStats,
+        agentPerformance: (agentPerf as AgentPerformanceSummaryRow[] | null) || [],
+        dailyStats,
       });
     } catch (error) {
       console.error("Error loading performance data:", error);
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
 
-  function processTasksByDay(tasks: any[]) {
-    const dayMap: Record<string, any> = {};
+  useEffect(() => {
+    loadPerformanceData();
+  }, [loadPerformanceData]);
+
+  function processTasksByDay(tasks: AgentTaskDailyRow[]): DailyStats[] {
+    const dayMap: Record<string, DailyStats> = {};
 
     tasks.forEach((task) => {
       const date = new Date(task.created_at).toLocaleDateString("pt-BR");
@@ -92,21 +134,27 @@ export function AgentPerformance() {
     return <div>Carregando...</div>;
   }
 
-  const agentData = performanceData.agentPerformance.map((agent: any) => ({
-    name: agent.task_type || "Desconhecido",
+  if (!performanceData) {
+    return <div>Não há dados disponíveis.</div>;
+  }
+
+  const agentData: AgentChartData[] = performanceData.agentPerformance.map((agent) => ({
+    name: agent.task_type ?? "Desconhecido",
     total: agent.total_tasks,
     completed: agent.completed_count,
     failed: agent.failed_count,
     avgTime: agent.avg_execution_time_ms / 1000,
   }));
 
-  const statusData = agentData.reduce((acc: any, agent: any) => {
-    acc.completed = (acc.completed || 0) + agent.completed;
-    acc.failed = (acc.failed || 0) + agent.failed;
-    acc.pending =
-      (acc.pending || 0) + (agent.total - agent.completed - agent.failed);
-    return acc;
-  }, {});
+  const statusData = agentData.reduce<StatusSummary>(
+    (acc, agent) => {
+      acc.completed += agent.completed;
+      acc.failed += agent.failed;
+      acc.pending += agent.total - agent.completed - agent.failed;
+      return acc;
+    },
+    { completed: 0, failed: 0, pending: 0 },
+  );
 
   const pieData = [
     { name: "Concluídas", value: statusData.completed || 0 },

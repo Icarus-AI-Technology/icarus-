@@ -175,7 +175,7 @@ export function Table<T extends Record<string, unknown>>({
                   checked={selectedRows.size === data.length && data.length > 0}
                   onChange={handleSelectAll}
                   aria-label="Selecionar todos"
-                  className="w-4 h-4 rounded focus:ring-2 focus:ring-[var(--primary)] cursor-pointer"
+                  className="w-4 h-4 rounded focus:ring-3 focus:ring-[var(--primary)] cursor-pointer"
                 />
               </th>
             )}
@@ -244,7 +244,7 @@ export function Table<T extends Record<string, unknown>>({
                       onChange={() => handleSelectRow(rowIdx)}
                       onClick={(e) => e.stopPropagation()}
                       aria-label={`Selecionar linha ${rowIdx + 1}`}
-                      className="w-4 h-4 rounded focus:ring-2 focus:ring-[var(--primary)] cursor-pointer"
+                      className="w-4 h-4 rounded focus:ring-3 focus:ring-[var(--primary)] cursor-pointer"
                     />
                   </td>
                 )}

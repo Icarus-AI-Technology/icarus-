@@ -37,7 +37,7 @@ export const ChatbotFAB: React.FC<ChatbotFABProps> = ({
     >
       <MessageCircle size={34} strokeWidth={2.2} className="drop-shadow-sm" />
       {badge !== undefined && badge > 0 && (
-        <span className="absolute -top-1 -right-1 w-[18px] h-[18px] bg-destructive text-inverse text-[10px] rounded-full flex items-center justify-center border border-[var(--background)] font-bold">
+        <span className="absolute -top-1 -right-1 w-[18px] h-[18px] bg-destructive text-inverse text-[10px] rounded-full flex items-center justify-center border border-[var(--background)] orx-orx-font-bold">
           {badge > 9 ?"9+" : badge}
         </span>
       )}

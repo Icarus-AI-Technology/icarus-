@@ -277,7 +277,9 @@ export class TotalExpressService {
   /**
    * Cria uma solicitação de coleta
    */
-  async schedulePickup(data: any): Promise<any> {
+  async schedulePickup(
+    data: Record<string, unknown>,
+  ): Promise<Record<string, unknown>> {
     try {
       const response = await fetchWithRetry(`${this.baseUrl}/coleta`, {
         method: 'POST',
@@ -289,7 +291,8 @@ export class TotalExpressService {
         throw new Error(`Total Express API error: ${response.status}`);
       }
 
-      return await response.json();
+      const result: Record<string, unknown> = await response.json();
+      return result;
     } catch (error: unknown) {
       const err = toAppError(error);
       console.error('❌ Erro ao agendar coleta Total Express:', err);
@@ -300,7 +303,7 @@ export class TotalExpressService {
   /**
    * Consulta CEP
    */
-  async consultaCEP(cep: string): Promise<any> {
+  async consultaCEP(cep: string): Promise<Record<string, unknown>> {
     try {
       const cepLimpo = cep.replace(/\D/g, '');
 
@@ -313,7 +316,8 @@ export class TotalExpressService {
         throw new Error(`Total Express API error: ${response.status}`);
       }
 
-      return await response.json();
+      const result: Record<string, unknown> = await response.json();
+      return result;
     } catch (error: unknown) {
       const err = toAppError(error);
       console.error('❌ Erro ao consultar CEP Total Express:', err);

@@ -53,7 +53,7 @@ const PesquisaPrecos = () => {
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-[var(--text-primary)] mb-2 text-[0.813rem] font-extrabold">
+          <h1 className="text-[var(--text-primary)] mb-2 text-[0.813rem] orx-orx-font-extrabold">
             Pesquisa de Preços e Viabilidade
           </h1>
           <p className="text-[var(--text-secondary)] text-[0.813rem]">
@@ -65,14 +65,14 @@ const PesquisaPrecos = () => {
         <Card className="p-6">
           <div className="flex items-center gap-3 mb-6">
             <Package className="w-6 h-6 text-[var(--primary)]" />
-            <h2 className="text-[var(--text-primary)] text-[0.813rem] font-semibold">
+            <h2 className="text-[var(--text-primary)] text-[0.813rem] orx-orx-font-semibold">
               Validação ANVISA
             </h2>
           </div>
 
           <div className="flex items-start gap-4">
             <div className="flex-1">
-              <label className="block text-[var(--text-primary)] mb-2 text-[0.813rem] font-medium">
+              <label className="block text-[var(--text-primary)] mb-2 text-[0.813rem] orx-orx-font-medium">
                 Registro ANVISA
               </label>
               <input
@@ -87,7 +87,7 @@ const PesquisaPrecos = () => {
               onClick={handleBuscarANVISA}
               disabled={anvisaAPI.loading}
               className={cn(
-                'mt-7 px-6 py-2.5 rounded-lg font-medium transition-all',
+                'mt-7 px-6 py-2.5 rounded-lg orx-orx-font-medium transition-all',
                 'bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)]',
                 'disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2'
               )}
@@ -102,7 +102,7 @@ const PesquisaPrecos = () => {
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-[var(--orx-success)] mt-0.5" />
                 <div className="flex-1">
-                  <p className="text-[var(--orx-success)] mb-2 text-[0.813rem] font-semibold">
+                  <p className="text-[var(--orx-success)] mb-2 text-[0.813rem] orx-orx-font-semibold">
                     Produto validado na ANVISA ✓
                   </p>
                   <div className="grid grid-cols-2 gap-3 text-[var(--text-primary)] text-[0.813rem]">
@@ -149,14 +149,14 @@ const PesquisaPrecos = () => {
         <Card className="p-6">
           <div className="flex items-center gap-3 mb-6">
             <DollarSign className="w-6 h-6 text-[var(--primary)]" />
-            <h2 className="text-[var(--text-primary)] text-[0.813rem] font-semibold">
+            <h2 className="text-[var(--text-primary)] text-[0.813rem] orx-orx-font-semibold">
               Pesquisa de Preços SEFAZ
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
-              <label className="block text-[var(--text-primary)] mb-2 text-[0.813rem] font-medium">
+              <label className="block text-[var(--text-primary)] mb-2 text-[0.813rem] orx-orx-font-medium">
                 NCM do Produto <span className="text-[var(--orx-error)]">*</span>
               </label>
               <input
@@ -170,7 +170,7 @@ const PesquisaPrecos = () => {
             </div>
 
             <div>
-              <label className="block text-[var(--text-primary)] mb-2 text-[0.813rem] font-medium">
+              <label className="block text-[var(--text-primary)] mb-2 text-[0.813rem] orx-orx-font-medium">
                 Descrição do Produto
               </label>
               <input
@@ -184,7 +184,7 @@ const PesquisaPrecos = () => {
           </div>
 
           <div className="mb-6">
-            <label className="block text-[var(--text-primary)] mb-3 text-[0.813rem] font-medium">
+            <label className="block text-[var(--text-primary)] mb-3 text-[0.813rem] orx-orx-font-medium">
               Estados para Consulta
             </label>
             <div className="flex flex-wrap gap-2">
@@ -199,7 +199,7 @@ const PesquisaPrecos = () => {
                     }
                   }}
                   className={cn(
-                    'px-4 py-2 rounded-lg font-medium transition-all',
+                    'px-4 py-2 rounded-lg orx-orx-font-medium transition-all',
                     estadosSelecionados.includes(uf)
                       ? 'bg-[var(--primary)] text-white'
                       : 'bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)]'
@@ -215,7 +215,7 @@ const PesquisaPrecos = () => {
             onClick={handlePesquisarPrecos}
             disabled={sefazAPI.loading || ncm.length !== 8}
             className={cn(
-              'w-full px-6 py-3 rounded-lg font-medium transition-all',
+              'w-full px-6 py-3 rounded-lg orx-orx-font-medium transition-all',
               'bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)]',
               'disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
             )}
@@ -231,7 +231,7 @@ const PesquisaPrecos = () => {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <TrendingDown className="w-6 h-6 text-[var(--orx-success)]" />
-                <h2 className="text-[var(--text-primary)] text-[0.813rem] font-semibold">
+                <h2 className="text-[var(--text-primary)] text-[0.813rem] orx-orx-font-semibold">
                   Análise de Preços
                 </h2>
               </div>
@@ -250,7 +250,7 @@ const PesquisaPrecos = () => {
                   </p>
                   <TrendingDown className="w-5 h-5 text-[var(--orx-success)]" />
                 </div>
-                <p className="text-[var(--orx-success)] text-[0.813rem] font-bold">
+                <p className="text-[var(--orx-success)] text-[0.813rem] orx-orx-font-bold">
                   R$ {precosSEFAZ.precoMinimo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                 </p>
               </Card>
@@ -262,7 +262,7 @@ const PesquisaPrecos = () => {
                   </p>
                   <DollarSign className="w-5 h-5 text-[var(--primary)]" />
                 </div>
-                <p className="text-[var(--primary)] text-[0.813rem] font-bold">
+                <p className="text-[var(--primary)] text-[0.813rem] orx-orx-font-bold">
                   R$ {precosSEFAZ.precoMedio.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                 </p>
               </Card>
@@ -274,7 +274,7 @@ const PesquisaPrecos = () => {
                   </p>
                   <TrendingUp className="w-5 h-5 text-[var(--orx-error)]" />
                 </div>
-                <p className="text-[var(--orx-error)] text-[0.813rem] font-bold">
+                <p className="text-[var(--orx-error)] text-[0.813rem] orx-orx-font-bold">
                   R$ {precosSEFAZ.precoMaximo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                 </p>
               </Card>
@@ -286,7 +286,7 @@ const PesquisaPrecos = () => {
                 <p className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">
                   NCM
                 </p>
-                <p className="text-[var(--text-primary)] font-mono text-[0.813rem] font-semibold">
+                <p className="text-[var(--text-primary)] font-mono text-[0.813rem] orx-orx-font-semibold">
                   {precosSEFAZ.ncm}
                 </p>
               </div>
@@ -294,7 +294,7 @@ const PesquisaPrecos = () => {
                 <p className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">
                   Notas Fiscais Analisadas
                 </p>
-                <p className="text-[var(--text-primary)] text-[0.813rem] font-semibold">
+                <p className="text-[var(--text-primary)] text-[0.813rem] orx-orx-font-semibold">
                   {precosSEFAZ.quantidadeNotas}
                 </p>
               </div>
@@ -302,7 +302,7 @@ const PesquisaPrecos = () => {
                 <p className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">
                   Estados Consultados
                 </p>
-                <p className="text-[var(--text-primary)] text-[0.813rem] font-semibold">
+                <p className="text-[var(--text-primary)] text-[0.813rem] orx-orx-font-semibold">
                   {precosSEFAZ.estadosConsultados.length}
                 </p>
               </div>
@@ -310,7 +310,7 @@ const PesquisaPrecos = () => {
                 <p className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">
                   Variação
                 </p>
-                <p className="text-[var(--orx-warning)] text-[0.813rem] font-semibold">
+                <p className="text-[var(--orx-warning)] text-[0.813rem] orx-orx-font-semibold">
                   {((precosSEFAZ.precoMaximo - precosSEFAZ.precoMinimo) / precosSEFAZ.precoMinimo * 100).toFixed(1)}%
                 </p>
               </div>
@@ -325,7 +325,7 @@ const PesquisaPrecos = () => {
                 {precosSEFAZ.estadosConsultados.map((uf) => (
                   <span
                     key={uf}
-                    className="px-3 py-1 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] text-[0.813rem] font-medium"
+                    className="px-3 py-1 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] text-[0.813rem] orx-orx-font-medium"
                   >
                     {uf}
                   </span>

@@ -64,7 +64,7 @@ export function NeomorphicIconBox({
   colorVariant ="indigo",
   size ="md",
   className ="",
-  iconColor ="#ffffff",
+  iconColor ="var(--orx-text-white)",
 }: NeomorphicIconBoxProps) {
   const dimensions = SIZES[size];
   const background = COLOR_VARIANTS[colorVariant] || colorVariant;

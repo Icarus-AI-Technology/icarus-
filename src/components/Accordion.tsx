@@ -94,7 +94,7 @@ export const Accordion: React.FC<AccordionProps> = ({
             >
               <div className="flex items-center gap-3">
                 {item.icon && <span>{item.icon}</span>}
-                <span className="font-medium">{item.title}</span>
+                <span className="orx-orx-font-medium">{item.title}</span>
               </div>
 
               <ChevronDown

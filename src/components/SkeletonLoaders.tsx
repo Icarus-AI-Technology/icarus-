@@ -4,6 +4,7 @@
  * Componentes de loading skeleton para diferentes layouts
  */
 
+import React, { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 
 interface SkeletonProps {
@@ -67,10 +68,23 @@ export function StatsGridSkeleton({ columns = 4 }: { columns?: number }) {
  * Skeleton para Tabela
  */
 export function TableSkeleton({ rows = 5, columns = 4 }: { rows?: number; columns?: number }) {
+  const headerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (headerRef.current) {
+      headerRef.current.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+    }
+  }, [columns]);
+
+  const setGridTemplate = (el: HTMLDivElement | null) => {
+    if (el) {
+      el.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+    }
+  };
   return (
     <div className="neuro-flat rounded-lg overflow-hidden">
       {/* Header */}
-      <div className="grid gap-4 p-4 border-b border-[var(--orx-border-muted)]" style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
+      <div ref={headerRef} className="grid gap-4 p-4 border-b border-[var(--orx-border-muted)]">
         {Array.from({ length: columns }).map((_, i) => (
           <Skeleton key={`header-${i}`} className="h-4 w-full" variant="shimmer" />
         ))}
@@ -80,8 +94,8 @@ export function TableSkeleton({ rows = 5, columns = 4 }: { rows?: number; column
       {Array.from({ length: rows }).map((_, rowIndex) => (
         <div
           key={`row-${rowIndex}`}
+          ref={setGridTemplate}
           className="grid gap-4 p-4 border-b border-[var(--orx-border-muted)]"
-          style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}
         >
           {Array.from({ length: columns }).map((_, colIndex) => (
             <Skeleton key={`cell-${rowIndex}-${colIndex}`} className="h-4 w-full" variant="shimmer" />

@@ -31,6 +31,13 @@ const ConfiguracoesSistema = lazy(() => import("./components/modules/Configuraco
 const ConsignacaoAvancada = lazy(() => import("./pages/ConsignacaoAvancada"));
 const DashboardIA = lazy(() => import("./pages/DashboardIA"));
 
+// Novas páginas principais integradas com Supabase
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const EstoquePage = lazy(() => import("./pages/EstoquePage"));
+const ProdutosOPMEPage = lazy(() => import("./pages/ProdutosOPMEPage"));
+const CirurgiasPage = lazy(() => import("./pages/CirurgiasPage"));
+const FinanceiroPage = lazy(() => import("./pages/FinanceiroPage"));
+
 // Módulos de Cadastros
 import { DashboardCadastros } from"./pages/cadastros/DashboardCadastros";
 import TabelasPrecos from"./pages/cadastros/TabelasPrecos";
@@ -62,6 +69,114 @@ const GestaoNFe = lazy(() => import("./pages/financeiro/GestaoNFe"));
 const ComplianceAbbott = lazy(() => import("./pages/compliance/ComplianceAbbott"));
 const ComplianceANVISA = lazy(() => import("./pages/compliance/ComplianceANVISA"));
 const DashboardsAnaliticos = lazy(() => import("./pages/relatorios/DashboardsAnaliticos"));
+
+// Módulos Analytics e BI (8 rotas)
+const AnalyticsBI = lazy(() => import("./components/modules/AnalyticsBI"));
+const AnalyticsPredicao = lazy(() => import("./components/modules/AnalyticsPredicao"));
+const BIAnalytics = lazy(() => import("./components/modules/BIAnalytics"));
+const BIDashboardInterativo = lazy(() => import("./components/modules/BIDashboardInterativo"));
+const KPIDashboardConsolidado = lazy(() => import("./components/modules/KPIDashboardConsolidado"));
+const ModulosAnalytics = lazy(() => import("./components/modules/ModulosAnalytics"));
+const TooltipAnalyticsDashboard = lazy(() => import("./components/modules/TooltipAnalyticsDashboard"));
+const VoiceAnalyticsDashboard = lazy(() => import("./components/modules/VoiceAnalyticsDashboard"));
+
+// Módulos de Marketing (9 rotas)
+const AnunciosPagos = lazy(() => import("./components/modules/AnunciosPagos"));
+const CampanhasAutomaticas = lazy(() => import("./components/modules/CampanhasAutomaticas"));
+const CampanhasMarketing = lazy(() => import("./components/modules/CampanhasMarketing"));
+const ConversaoVendas = lazy(() => import("./components/modules/ConversaoVendas"));
+const EmailMarketing = lazy(() => import("./components/modules/EmailMarketing"));
+const LeadsQualificados = lazy(() => import("./components/modules/LeadsQualificados"));
+const MarketingDigital = lazy(() => import("./components/modules/MarketingDigital"));
+const RedesSociais = lazy(() => import("./components/modules/RedesSociais"));
+const SEOOtimizado = lazy(() => import("./components/modules/SEOOtimizado"));
+
+// Módulos de RH e Gestão de Pessoas (9 rotas)
+const AvaliacaoDesempenho = lazy(() => import("./components/modules/AvaliacaoDesempenho"));
+const BeneficiosColaboradores = lazy(() => import("./components/modules/BeneficiosColaboradores"));
+const EscalasFuncionarios = lazy(() => import("./components/modules/EscalasFuncionarios"));
+const FolhaPagamento = lazy(() => import("./components/modules/FolhaPagamento"));
+const OnboardingDigital = lazy(() => import("./components/modules/OnboardingDigital"));
+const PontoEletronico = lazy(() => import("./components/modules/PontoEletronico"));
+const RecrutamentoIA = lazy(() => import("./components/modules/RecrutamentoIA"));
+const RHGestaoPessoas = lazy(() => import("./components/modules/RHGestaoPessoas"));
+const TreinamentoEquipes = lazy(() => import("./components/modules/TreinamentoEquipes"));
+
+// Módulos de Logística e Transporte (9 rotas)
+const EntregasAutomaticas = lazy(() => import("./components/modules/EntregasAutomaticas"));
+const ExpedicaoMercadorias = lazy(() => import("./components/modules/ExpedicaoMercadorias"));
+const FrotaVeiculos = lazy(() => import("./components/modules/FrotaVeiculos"));
+const LogisticaAvancada = lazy(() => import("./components/modules/LogisticaAvancada"));
+const LogisticaTransportadoras = lazy(() => import("./components/modules/LogisticaTransportadoras"));
+const ManutencaoFrota = lazy(() => import("./components/modules/ManutencaoFrota"));
+const RotasOtimizadas = lazy(() => import("./components/modules/RotasOtimizadas"));
+const TelemetriaVeiculos = lazy(() => import("./components/modules/TelemetriaVeiculos"));
+const TransportadorasIA = lazy(() => import("./components/modules/TransportadorasIA"));
+
+// Módulos Restantes - Financeiro e Contábil (4 rotas)
+const ContasReceberIA = lazy(() => import("./components/modules/ContasReceberIA"));
+const FinanceiroAvancado = lazy(() => import("./components/modules/FinanceiroAvancado"));
+const GestaoContabil = lazy(() => import("./components/modules/GestaoContabil"));
+const RelatoriosFinanceiros = lazy(() => import("./components/modules/RelatoriosFinanceiros"));
+
+// Módulos Restantes - Compras e Fornecedores (2 rotas)
+const CotacoesAutomaticas = lazy(() => import("./components/modules/CotacoesAutomaticas"));
+const FornecedoresAvancado = lazy(() => import("./components/modules/FornecedoresAvancado"));
+
+// Módulos Restantes - Estoque e Inventário (2 rotas)
+const EstoqueAvancado = lazy(() => import("./components/modules/EstoqueAvancado"));
+const InventarioInteligente = lazy(() => import("./components/modules/InventarioInteligente"));
+
+// Módulos Restantes - Compliance e Auditoria (3 rotas)
+const AuditoriaInterna = lazy(() => import("./components/modules/AuditoriaInterna"));
+const CertificacoesAnvisa = lazy(() => import("./components/modules/CertificacoesAnvisa"));
+const ModulosCompliance = lazy(() => import("./components/modules/ModulosCompliance"));
+
+// Módulos Restantes - IA e Automação (4 rotas)
+const AutomacaoIA = lazy(() => import("./components/modules/AutomacaoIA"));
+const CapacitacaoIA = lazy(() => import("./components/modules/CapacitacaoIA"));
+const IACentral = lazy(() => import("./components/modules/IACentral"));
+const IAVendasDashboard = lazy(() => import("./components/modules/IAVendasDashboard"));
+
+// Módulos Restantes - OPME (3 rotas)
+const GruposProdutosOPME = lazy(() => import("./components/modules/GruposProdutosOPME"));
+const ProdutosOPME = lazy(() => import("./components/modules/ProdutosOPME"));
+const QualidadeOPME = lazy(() => import("./components/modules/QualidadeOPME"));
+const RastreabilidadeOPME = lazy(() => import("./components/modules/RastreabilidadeOPME"));
+
+// Módulos Restantes - Outros (14 rotas)
+const AdminConfiguracoes = lazy(() => import("./components/modules/AdminConfiguracoes"));
+const APIGatewayDashboard = lazy(() => import("./components/modules/APIGatewayDashboard"));
+const AgendamentoCirurgico = lazy(() => import("./components/modules/AgendamentoCirurgico"));
+const AutenticacaoAvancada = lazy(() => import("./components/modules/AutenticacaoAvancada"));
+const CombustivelIA = lazy(() => import("./components/modules/CombustivelIA"));
+const DashboardContratos = lazy(() => import("./components/modules/DashboardContratos"));
+const Faturamento = lazy(() => import("./components/modules/Faturamento"));
+const FaturamentoNFeCompleto = lazy(() => import("./components/modules/FaturamentoNFeCompleto"));
+const GestaoLeads = lazy(() => import("./components/modules/GestaoLeads"));
+const GestaoRiscos = lazy(() => import("./components/modules/GestaoRiscos"));
+const IntegracoesExternas = lazy(() => import("./components/modules/IntegracoesExternas"));
+const IntegrationsManager = lazy(() => import("./components/modules/IntegrationsManager"));
+const LicitacoesPropostas = lazy(() => import("./components/modules/LicitacoesPropostas"));
+const Microsoft365IntegrationPanel = lazy(() => import("./components/modules/Microsoft365IntegrationPanel"));
+const ModulosAvancados = lazy(() => import("./components/modules/ModulosAvancados"));
+const NFeAutomatica = lazy(() => import("./components/modules/NFeAutomatica"));
+const PerformanceEquipes = lazy(() => import("./components/modules/PerformanceEquipes"));
+const RelacionamentoCliente = lazy(() => import("./components/modules/RelacionamentoCliente"));
+const RelatoriosAvancados = lazy(() => import("./components/modules/RelatoriosAvancados"));
+const RelatoriosExecutivos = lazy(() => import("./components/modules/RelatoriosExecutivos"));
+const SegurancaTrabalho = lazy(() => import("./components/modules/SegurancaTrabalho"));
+const SistemaNotificacoes = lazy(() => import("./components/modules/SistemaNotificacoes"));
+const SystemHealthDashboard = lazy(() => import("./components/modules/SystemHealthDashboard"));
+const VideoCallsManager = lazy(() => import("./components/modules/VideoCallsManager"));
+const VoiceBiometricsManager = lazy(() => import("./components/modules/VoiceBiometricsManager"));
+const VoiceCommandsManager = lazy(() => import("./components/modules/VoiceCommandsManager"));
+const VoiceMacrosManager = lazy(() => import("./components/modules/VoiceMacrosManager"));
+const WorkflowBuilderVisual = lazy(() => import("./components/modules/WorkflowBuilderVisual"));
+
+// Módulos de Observabilidade
+const ObservabilityDashboard = lazy(() => import("./components/observability/ObservabilityDashboard"));
+const TrainingReports = lazy(() => import("./components/training/TrainingReports"));
 
 // Módulos de Integrações
 import GerenciadorCredenciais from"./pages/integracoes/GerenciadorCredenciais";
@@ -240,13 +355,13 @@ function AppShell() {
               position:"fixed",
               top:"16px",
               left:"16px",
-              width: sidebarCollapsed ?"64px" :"290px",
+              width: sidebarCollapsed ?"64px" :"260px",
               height:"64px",
               zIndex: 100,
               display:"flex",
               justifyContent:"center",
               alignItems:"center",
-              transition:"all 0.3s ease"
+              transition:"all 0.2s ease"
             }}
           >
             <div
@@ -279,7 +394,7 @@ function AppShell() {
                 size={sidebarCollapsed ? 24 : 32}
                 color="#ffffff" 
                 strokeWidth={2} 
-                style={{ transition:"all 0.3s ease", flexShrink: 0 }}
+                style={{ transition:"all 0.2s ease", flexShrink: 0 }}
               />
               {!sidebarCollapsed && (
                 <h2 style={{
@@ -301,9 +416,9 @@ function AppShell() {
             className="neumorphic-container fixed left-4"
             style={{ 
               top: '96px',
-              width: sidebarCollapsed ? '64px' : '290px',
+              width: sidebarCollapsed ? '64px' : '260px',
               padding: sidebarCollapsed ? '16px 8px' : '16px',
-              transition: 'all 0.3s ease',
+              transition: 'all 0.2s ease',
               overflow: 'hidden',
               maxHeight: 'calc(100vh - 112px)',
               overflowY: 'auto',
@@ -327,10 +442,10 @@ function AppShell() {
           />
 
           <main style={{
-            marginLeft: sidebarCollapsed ?"88px" :"314px",
+            marginLeft: sidebarCollapsed ?"88px" :"284px",
             marginRight:"16px",
             marginTop:"96px",
-            transition:"margin-left 0.3s ease"
+            transition:"margin-left 0.2s ease"
           }}>
             <div 
               className="neumorphic-card p-6" 
@@ -377,6 +492,14 @@ function AppShell() {
               )}
               <Suspense fallback={<SkeletonRouteFallback /> }>
                 <Routes>
+                  {/* Novas páginas principais integradas com Supabase */}
+                  <Route path="/dashboard-supabase" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
+                  <Route path="/estoque-supabase" element={<PrivateRoute><EstoquePage /></PrivateRoute>} />
+                  <Route path="/produtos-opme-supabase" element={<PrivateRoute><ProdutosOPMEPage /></PrivateRoute>} />
+                  <Route path="/cirurgias-supabase" element={<PrivateRoute><CirurgiasPage /></PrivateRoute>} />
+                  <Route path="/financeiro-supabase" element={<PrivateRoute><FinanceiroPage /></PrivateRoute>} />
+
+                  {/* Rotas QA existentes */}
                   <Route path="/qa/compras" element={<DashboardCompras />} />
                   <Route path="/qa/financeiro" element={<DashboardFinanceiro />} />
                   <Route path="/qa/cadastros" element={<DashboardCadastros />} />
@@ -412,7 +535,7 @@ function AppShell() {
             display:"flex",
             justifyContent:"center",
             alignItems:"center",
-            transition:"all 0.3s ease"
+            transition:"all 0.2s ease"
           }}
         >
           <div
@@ -477,7 +600,7 @@ function AppShell() {
               size={sidebarCollapsed ? 24 : 32}
               color="#ffffff" 
               strokeWidth={2} 
-              style={{ transition:"all 0.3s ease", flexShrink: 0 }}
+              style={{ transition:"all 0.2s ease", flexShrink: 0 }}
             />
             {!sidebarCollapsed && (
               <h2 style={{
@@ -502,7 +625,7 @@ function AppShell() {
             top: '96px', // 16px (top) + 64px (altura Icarus) + 16px (gap)
             width: sidebarCollapsed ? '64px' : '290px',
             padding: sidebarCollapsed ? '16px 8px' : '16px',
-            transition: 'all 0.3s ease',
+            transition: 'all 0.2s ease',
             overflow: 'hidden',
             maxHeight: 'calc(100vh - 112px)', // Ajustado para novo top
             overflowY: 'auto',
@@ -545,7 +668,7 @@ function AppShell() {
 
         {/* Main Content - Expande quando sidebar colapsa */}
         <main style={{
-          marginLeft: sidebarCollapsed ?"88px" :"314px", // Dinâmico: 64px + 24px = 88px | 290px + 24px = 314px
+          marginLeft: sidebarCollapsed ?"88px" :"284px", // Dinâmico: 64px + 24px = 88px | 260px + 24px = 284px
           marginRight:"16px",
           marginTop:"96px",
           transition:"margin-left 0.3s ease" // Transição suave
@@ -562,6 +685,14 @@ function AppShell() {
               <Suspense fallback={<SkeletonRouteFallback /> }>
               <Routes>
                 <Route path="/contato" element={<Contato />} />
+                
+                {/* Novas páginas principais integradas com Supabase */}
+                <Route path="/dashboard-supabase" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
+                <Route path="/estoque-supabase" element={<PrivateRoute><EstoquePage /></PrivateRoute>} />
+                <Route path="/produtos-opme-supabase" element={<PrivateRoute><ProdutosOPMEPage /></PrivateRoute>} />
+                <Route path="/cirurgias-supabase" element={<PrivateRoute><CirurgiasPage /></PrivateRoute>} />
+                <Route path="/financeiro-supabase" element={<PrivateRoute><FinanceiroPage /></PrivateRoute>} />
+
                 <Route
                   path="/"
                   element={
@@ -637,15 +768,133 @@ function AppShell() {
                       <Route path="/compliance/anvisa" element={<PrivateRoute><ComplianceANVISA /></PrivateRoute>} />
 
                       {/* Relatórios */}
-                      <Route path="/relatorios" element={<PrivateRoute><RelatoriosRegulatorios /></PrivateRoute>} />
-                      <Route path="/relatorios/dashboards" element={<PrivateRoute><DashboardsAnaliticos /></PrivateRoute>} />
+                     <Route path="/relatorios" element={<PrivateRoute><RelatoriosRegulatorios /></PrivateRoute>} />
+                     <Route path="/relatorios/dashboards" element={<PrivateRoute><DashboardsAnaliticos /></PrivateRoute>} />
 
-                      {/* Chatbot / Assistente IA */}
-                      <Route path="/chatbot" element={<PrivateRoute><GPTResearcherDemo /></PrivateRoute>} />
+                     {/* Analytics e BI */}
+                     <Route path="/analytics" element={<PrivateRoute><AnalyticsBI /></PrivateRoute>} />
+                     <Route path="/analytics/predicao" element={<PrivateRoute><AnalyticsPredicao /></PrivateRoute>} />
+                     <Route path="/bi" element={<PrivateRoute><BIAnalytics /></PrivateRoute>} />
+                     <Route path="/bi/dashboard-interativo" element={<PrivateRoute><BIDashboardInterativo /></PrivateRoute>} />
+                     <Route path="/kpi-dashboard" element={<PrivateRoute><KPIDashboardConsolidado /></PrivateRoute>} />
+                     <Route path="/modulos-analytics" element={<PrivateRoute><ModulosAnalytics /></PrivateRoute>} />
+                     <Route path="/analytics/tooltip-dashboard" element={<PrivateRoute><TooltipAnalyticsDashboard /></PrivateRoute>} />
+                     <Route path="/analytics/voice-dashboard" element={<PrivateRoute><VoiceAnalyticsDashboard /></PrivateRoute>} />
 
-                      {/* Usuários e Configurações */}
-                      <Route path="/usuarios" element={<PrivateRoute><GestaoUsuariosPermissoes /></PrivateRoute>} />
-                      <Route path="/configuracoes" element={<PrivateRoute><ConfiguracoesSistema /></PrivateRoute>} />
+                     {/* Marketing Digital */}
+                     <Route path="/marketing" element={<PrivateRoute><MarketingDigital /></PrivateRoute>} />
+                     <Route path="/marketing/campanhas" element={<PrivateRoute><CampanhasMarketing /></PrivateRoute>} />
+                     <Route path="/marketing/campanhas-automaticas" element={<PrivateRoute><CampanhasAutomaticas /></PrivateRoute>} />
+                     <Route path="/marketing/email" element={<PrivateRoute><EmailMarketing /></PrivateRoute>} />
+                     <Route path="/marketing/redes-sociais" element={<PrivateRoute><RedesSociais /></PrivateRoute>} />
+                     <Route path="/marketing/seo" element={<PrivateRoute><SEOOtimizado /></PrivateRoute>} />
+                     <Route path="/marketing/anuncios" element={<PrivateRoute><AnunciosPagos /></PrivateRoute>} />
+                     <Route path="/marketing/leads" element={<PrivateRoute><LeadsQualificados /></PrivateRoute>} />
+                     <Route path="/marketing/conversao" element={<PrivateRoute><ConversaoVendas /></PrivateRoute>} />
+
+                     {/* RH e Gestão de Pessoas */}
+                     <Route path="/rh" element={<PrivateRoute><RHGestaoPessoas /></PrivateRoute>} />
+                     <Route path="/rh/folha-pagamento" element={<PrivateRoute><FolhaPagamento /></PrivateRoute>} />
+                     <Route path="/rh/ponto" element={<PrivateRoute><PontoEletronico /></PrivateRoute>} />
+                     <Route path="/rh/escalas" element={<PrivateRoute><EscalasFuncionarios /></PrivateRoute>} />
+                     <Route path="/rh/recrutamento" element={<PrivateRoute><RecrutamentoIA /></PrivateRoute>} />
+                     <Route path="/rh/avaliacao" element={<PrivateRoute><AvaliacaoDesempenho /></PrivateRoute>} />
+                     <Route path="/rh/beneficios" element={<PrivateRoute><BeneficiosColaboradores /></PrivateRoute>} />
+                     <Route path="/rh/onboarding" element={<PrivateRoute><OnboardingDigital /></PrivateRoute>} />
+                     <Route path="/rh/treinamentos" element={<PrivateRoute><TreinamentoEquipes /></PrivateRoute>} />
+
+                     {/* Logística e Transporte */}
+                     <Route path="/logistica" element={<PrivateRoute><LogisticaAvancada /></PrivateRoute>} />
+                     <Route path="/logistica/entregas" element={<PrivateRoute><EntregasAutomaticas /></PrivateRoute>} />
+                     <Route path="/logistica/expedicao" element={<PrivateRoute><ExpedicaoMercadorias /></PrivateRoute>} />
+                     <Route path="/logistica/frota" element={<PrivateRoute><FrotaVeiculos /></PrivateRoute>} />
+                     <Route path="/logistica/manutencao" element={<PrivateRoute><ManutencaoFrota /></PrivateRoute>} />
+                     <Route path="/logistica/rotas" element={<PrivateRoute><RotasOtimizadas /></PrivateRoute>} />
+                     <Route path="/logistica/transportadoras" element={<PrivateRoute><LogisticaTransportadoras /></PrivateRoute>} />
+                     <Route path="/logistica/transportadoras-ia" element={<PrivateRoute><TransportadorasIA /></PrivateRoute>} />
+                     <Route path="/logistica/telemetria" element={<PrivateRoute><TelemetriaVeiculos /></PrivateRoute>} />
+
+                     {/* Financeiro Avançado */}
+                     <Route path="/financeiro/avancado" element={<PrivateRoute><FinanceiroAvancado /></PrivateRoute>} />
+                     <Route path="/financeiro/contas-receber-ia" element={<PrivateRoute><ContasReceberIA /></PrivateRoute>} />
+                     <Route path="/financeiro/contabilidade" element={<PrivateRoute><GestaoContabil /></PrivateRoute>} />
+                     <Route path="/financeiro/relatorios" element={<PrivateRoute><RelatoriosFinanceiros /></PrivateRoute>} />
+
+                     {/* Compras Avançado */}
+                     <Route path="/compras/cotacoes-automaticas" element={<PrivateRoute><CotacoesAutomaticas /></PrivateRoute>} />
+                     <Route path="/compras/fornecedores-avancado" element={<PrivateRoute><FornecedoresAvancado /></PrivateRoute>} />
+
+                     {/* Estoque Avançado */}
+                     <Route path="/estoque/avancado" element={<PrivateRoute><EstoqueAvancado /></PrivateRoute>} />
+                     <Route path="/estoque/inventario-inteligente" element={<PrivateRoute><InventarioInteligente /></PrivateRoute>} />
+
+                     {/* Compliance Avançado */}
+                     <Route path="/compliance/auditoria" element={<PrivateRoute><AuditoriaInterna /></PrivateRoute>} />
+                     <Route path="/compliance/certificacoes" element={<PrivateRoute><CertificacoesAnvisa /></PrivateRoute>} />
+                     <Route path="/compliance/modulos" element={<PrivateRoute><ModulosCompliance /></PrivateRoute>} />
+
+                     {/* IA e Automação */}
+                     <Route path="/ia" element={<PrivateRoute><IACentral /></PrivateRoute>} />
+                     <Route path="/ia/automacao" element={<PrivateRoute><AutomacaoIA /></PrivateRoute>} />
+                     <Route path="/ia/capacitacao" element={<PrivateRoute><CapacitacaoIA /></PrivateRoute>} />
+                     <Route path="/ia/vendas-dashboard" element={<PrivateRoute><IAVendasDashboard /></PrivateRoute>} />
+
+                     {/* OPME */}
+                     <Route path="/opme/grupos-produtos" element={<PrivateRoute><GruposProdutosOPME /></PrivateRoute>} />
+                     <Route path="/opme/produtos" element={<PrivateRoute><ProdutosOPME /></PrivateRoute>} />
+                     <Route path="/opme/qualidade" element={<PrivateRoute><QualidadeOPME /></PrivateRoute>} />
+                     <Route path="/opme/rastreabilidade" element={<PrivateRoute><RastreabilidadeOPME /></PrivateRoute>} />
+
+                     {/* Módulos Administrativos */}
+                     <Route path="/admin/configuracoes" element={<PrivateRoute><AdminConfiguracoes /></PrivateRoute>} />
+                     <Route path="/admin/api-gateway" element={<PrivateRoute><APIGatewayDashboard /></PrivateRoute>} />
+                     <Route path="/admin/autenticacao" element={<PrivateRoute><AutenticacaoAvancada /></PrivateRoute>} />
+                     <Route path="/admin/system-health" element={<PrivateRoute><SystemHealthDashboard /></PrivateRoute>} />
+
+                     {/* Cirurgias Avançado */}
+                     <Route path="/cirurgias/agendamento" element={<PrivateRoute><AgendamentoCirurgico /></PrivateRoute>} />
+
+                     {/* Gestão e Contratos */}
+                     <Route path="/contratos/dashboard" element={<PrivateRoute><DashboardContratos /></PrivateRoute>} />
+                     <Route path="/licitacoes" element={<PrivateRoute><LicitacoesPropostas /></PrivateRoute>} />
+                     <Route path="/leads" element={<PrivateRoute><GestaoLeads /></PrivateRoute>} />
+                     <Route path="/riscos" element={<PrivateRoute><GestaoRiscos /></PrivateRoute>} />
+
+                     {/* Faturamento e NFe */}
+                     <Route path="/faturamento/detalhado" element={<PrivateRoute><Faturamento /></PrivateRoute>} />
+                     <Route path="/faturamento/nfe-completo" element={<PrivateRoute><FaturamentoNFeCompleto /></PrivateRoute>} />
+                     <Route path="/nfe/automatica" element={<PrivateRoute><NFeAutomatica /></PrivateRoute>} />
+
+                     {/* Integrações e Comunicação */}
+                     <Route path="/integracoes/externas" element={<PrivateRoute><IntegracoesExternas /></PrivateRoute>} />
+                     <Route path="/integracoes/manager" element={<PrivateRoute><IntegrationsManager /></PrivateRoute>} />
+                     <Route path="/integracoes/microsoft365" element={<PrivateRoute><Microsoft365IntegrationPanel /></PrivateRoute>} />
+                     <Route path="/comunicacao/video-calls" element={<PrivateRoute><VideoCallsManager /></PrivateRoute>} />
+                     <Route path="/comunicacao/voice-commands" element={<PrivateRoute><VoiceCommandsManager /></PrivateRoute>} />
+                     <Route path="/comunicacao/voice-biometrics" element={<PrivateRoute><VoiceBiometricsManager /></PrivateRoute>} />
+                     <Route path="/comunicacao/voice-macros" element={<PrivateRoute><VoiceMacrosManager /></PrivateRoute>} />
+
+                     {/* Outros Módulos */}
+                     <Route path="/combustivel-ia" element={<PrivateRoute><CombustivelIA /></PrivateRoute>} />
+                     <Route path="/modulos-avancados" element={<PrivateRoute><ModulosAvancados /></PrivateRoute>} />
+                     <Route path="/performance-equipes" element={<PrivateRoute><PerformanceEquipes /></PrivateRoute>} />
+                     <Route path="/relacionamento-cliente" element={<PrivateRoute><RelacionamentoCliente /></PrivateRoute>} />
+                     <Route path="/relatorios/avancados" element={<PrivateRoute><RelatoriosAvancados /></PrivateRoute>} />
+                     <Route path="/relatorios/executivos" element={<PrivateRoute><RelatoriosExecutivos /></PrivateRoute>} />
+                     <Route path="/seguranca-trabalho" element={<PrivateRoute><SegurancaTrabalho /></PrivateRoute>} />
+                     <Route path="/notificacoes" element={<PrivateRoute><SistemaNotificacoes /></PrivateRoute>} />
+                     <Route path="/workflow-builder" element={<PrivateRoute><WorkflowBuilderVisual /></PrivateRoute>} />
+
+                     {/* Chatbot / Assistente IA */}
+                     <Route path="/chatbot" element={<PrivateRoute><GPTResearcherDemo /></PrivateRoute>} />
+
+                     {/* Observabilidade e Treinamento */}
+                     <Route path="/observability/dashboard" element={<PrivateRoute><ObservabilityDashboard /></PrivateRoute>} />
+                     <Route path="/training/reports" element={<PrivateRoute><TrainingReports /></PrivateRoute>} />
+
+                     {/* Usuários e Configurações */}
+                     <Route path="/usuarios" element={<PrivateRoute><GestaoUsuariosPermissoes /></PrivateRoute>} />
+                     <Route path="/configuracoes" element={<PrivateRoute><ConfiguracoesSistema /></PrivateRoute>} />
                 {/* Fallback */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

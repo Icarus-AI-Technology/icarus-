@@ -312,7 +312,9 @@ export class JadlogService {
   /**
    * Cria uma nova coleta/postagem
    */
-  async createShipment(data: any): Promise<any> {
+  async createShipment(
+    data: Record<string, unknown>,
+  ): Promise<Record<string, unknown>> {
     try {
       const token = await this.authenticate();
 
@@ -329,7 +331,8 @@ export class JadlogService {
         throw new Error(`Jadlog API error: ${response.status}`);
       }
 
-      return await response.json();
+      const result: Record<string, unknown> = await response.json();
+      return result;
     } catch (error: unknown) {
       const err = toAppError(error);
       console.error('❌ Erro ao criar envio Jadlog:', err);

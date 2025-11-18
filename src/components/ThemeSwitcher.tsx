@@ -16,7 +16,6 @@ import {
 import {
   applyTheme,
   getCurrentTheme,
-  toggleDarkMode,
   downloadTokensJSON,
   applyBrandVariant,
   THEMES,
@@ -26,8 +25,6 @@ import {
 import {
   Button,
   Card,
-  Badge,
-  Dropdown,
 } from '@/components/oraclusx-ds';
 
 export function ThemeSwitcher() {
@@ -35,18 +32,13 @@ export function ThemeSwitcher() {
   const [showPanel, setShowPanel] = useState(false);
 
   useEffect(() => {
-    // Aplicar tema inicial
+    // Aplicar tema inicial e reagir a mudanças vindas de fora
     applyTheme(currentTheme);
-  }, []);
+  }, [currentTheme]);
 
   const handleThemeChange = (theme: ThemeName) => {
     applyTheme(theme);
     setCurrentTheme(theme);
-  };
-
-  const handleToggleDarkMode = () => {
-    toggleDarkMode();
-    setCurrentTheme(getCurrentTheme());
   };
 
   const handleBrandVariant = (variantKey: string) => {
@@ -85,7 +77,7 @@ export function ThemeSwitcher() {
           <div className="space-y-4">
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-[var(--orx-text-primary)]">
+              <h3 className="orx-text-lg orx-orx-font-semibold text-[var(--orx-text-primary)]">
                 Personalização
               </h3>
               <Button
@@ -122,7 +114,7 @@ export function ThemeSwitcher() {
 
             {/* All Themes */}
             <div>
-              <h4 className="text-sm font-medium text-[var(--orx-text-secondary)] mb-2">
+              <h4 className="orx-text-sm orx-orx-font-medium text-[var(--orx-text-secondary)] mb-2">
                 Todos os Temas
               </h4>
               <div className="space-y-2">
@@ -138,7 +130,7 @@ export function ThemeSwitcher() {
                   >
                     <div className="flex items-center gap-3">
                       {getThemeIcon(key as ThemeName)}
-                      <span className="text-sm font-medium text-[var(--orx-text-primary)]">
+                      <span className="orx-text-sm orx-orx-font-medium text-[var(--orx-text-primary)]">
                         {label}
                       </span>
                     </div>
@@ -152,7 +144,7 @@ export function ThemeSwitcher() {
 
             {/* Brand Variants */}
             <div>
-              <h4 className="text-sm font-medium text-[var(--orx-text-secondary)] mb-2">
+              <h4 className="orx-text-sm orx-orx-font-medium text-[var(--orx-text-secondary)] mb-2">
                 Variantes de Marca
               </h4>
               <div className="grid grid-cols-2 gap-2">
@@ -176,7 +168,7 @@ export function ThemeSwitcher() {
                         }}
                       />
                     </div>
-                    <span className="text-xs font-medium text-[var(--orx-text-primary)]">
+                    <span className="orx-text-xs orx-orx-font-medium text-[var(--orx-text-primary)]">
                       {variant.name}
                     </span>
                   </button>
@@ -186,7 +178,7 @@ export function ThemeSwitcher() {
 
             {/* Info */}
             <div className="pt-3 border-t border-[var(--orx-border-muted)]">
-              <p className="text-xs text-[var(--orx-text-secondary)]">
+              <p className="orx-text-xs text-[var(--orx-text-secondary)]">
                 As preferências são salvas automaticamente no navegador.
               </p>
             </div>

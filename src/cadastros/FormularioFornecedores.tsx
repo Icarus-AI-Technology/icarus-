@@ -6,7 +6,6 @@
  * @version 1.0.0
  */
 
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,7 +14,7 @@ import { Truck, Phone, MapPin } from 'lucide-react';
 import { toast } from 'sonner';
 import InputMask from 'react-input-mask';
 
-import { FormTemplate, FormField, NeuInput, NeuSelect, NeuTextarea } from '@/components/forms';
+import { FormTemplate, FormField, NeuInput, NeuSelect } from '@/components/forms';
 import { FORM_GRID, FORM_COL } from '@/components/forms/formLayout';
 import { insertRecord, getSupabaseErrorMessage } from '@/lib/form-helpers';
 
@@ -48,16 +47,10 @@ const CATEGORIAS = [
   { value: 'descartaveis', label: 'Materiais Descartáveis' }
 ];
 
-const ESTADOS = [
-  { value: 'SP', label: 'São Paulo' }, { value: 'RJ', label: 'Rio de Janeiro' }, { value: 'MG', label: 'Minas Gerais' }
-];
-
-
 export default function FormularioFornecedores() {
   const navigate = useNavigate();
-  const [validatingCEP, setValidatingCEP] = useState(false);
 
-  const { register, control, handleSubmit, formState: { errors, isSubmitting }, setValue } = useForm<FormFornecedorData>({
+  const { register, control, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormFornecedorData>({
     resolver: zodResolver(schemaFornecedor),
     defaultValues: { status: 'ativo', rating: 0 }
   });

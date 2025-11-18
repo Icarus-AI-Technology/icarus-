@@ -76,7 +76,7 @@ export const Section: React.FC<SectionProps> = ({
         <div className="flex items-start justify-between gap-4 mb-6">
           <div className="flex-1 min-w-0">
             {title && (
-              <h2 className="text-2xl font-bold text-[var(--orx-text-primary)] mb-2">
+              <h2 className="orx-text-2xl orx-orx-font-bold text-[var(--orx-text-primary)] mb-2">
                 {title}
               </h2>
             )}

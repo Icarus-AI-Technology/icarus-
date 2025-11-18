@@ -7,6 +7,9 @@
 import { emailWorker } from './workers/email.worker';
 import { smsWorker } from './workers/sms.worker';
 
+void emailWorker;
+void smsWorker;
+
 console.log('🚀 Iniciando workers...\n');
 
 // Verificar se Redis está disponível

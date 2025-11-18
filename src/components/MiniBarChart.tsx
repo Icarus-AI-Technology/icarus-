@@ -6,7 +6,7 @@
  * Design: OraclusX DS
  */
 
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef, type FC } from 'react';
 import { cn } from '@/lib/utils';
 
 export type BarColorScheme = 'error' | 'success' | 'accent';
@@ -39,14 +39,17 @@ const COLOR_VARIANTS = {
   }
 } as const;
 
-export const MiniBarChart: React.FC<MiniBarChartProps> = ({
+export const MiniBarChart: FC<MiniBarChartProps> = ({
   data,
   colorScheme,
   label = 'Últimos 8 dias',
   className = ''
 }) => {
   // Garantir 8 valores
-  const normalizedData = data.length === 8 ? data : [...data, ...Array(8 - data.length).fill(0)];
+  const normalizedData = useMemo(
+    () => (data.length === 8 ? data : [...data, ...Array(8 - data.length).fill(0)]),
+    [data]
+  );
   const barRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   const getColorClass = (value: number): string => {

@@ -249,9 +249,10 @@ export const useAlertasEstoque = () => {
       // 1. Alertas de Ponto de Reposição
       const { data: produtosAbaixoPonto } = await supabase
         .rpc('produtos_abaixo_ponto_reposicao');
+      const produtosAbaixoList = (produtosAbaixoPonto as Array<Record<string, unknown>> | null) ?? [];
       
-      if (produtosAbaixoPonto && produtosAbaixoPonto.length > 0) {
-        for (const produto of produtosAbaixoPonto) {
+      if (produtosAbaixoList.length > 0) {
+        for (const produto of produtosAbaixoList) {
           await criarAlerta(
             produto.produto_id,
             'ponto_reposicao',

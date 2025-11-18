@@ -35,8 +35,8 @@ export interface NeumoSearchBarProps
 }
 
 const sizeStyles = {
-  sm: 'h-9 pl-9 pr-3 text-sm',
-  md: 'h-11 pl-10 pr-4 text-base',
+  sm: 'h-9 pl-9 pr-3 orx-text-sm',
+  md: 'h-11 pl-10 pr-4 orx-text-base',
   lg: 'h-13 pl-12 pr-5 text-md',
 };
 
@@ -116,7 +116,7 @@ export const NeumoSearchBar = forwardRef<HTMLInputElement, NeumoSearchBarProps>(
             'shadow-neumo-sm-inset',
             'focus:shadow-neumo-inset',
             // Estados
-            'focus:outline-none focus:ring-2 focus:ring-orx-primary/20',
+            'focus:outline-none focus:ring-3 focus:ring-orx-primary/20',
             // Tamanho
             sizeStyles[size],
             // Espaçamento para botões à direita
@@ -139,7 +139,7 @@ export const NeumoSearchBar = forwardRef<HTMLInputElement, NeumoSearchBarProps>(
                   'text-orx-text-muted hover:text-orx-text-primary',
                   'hover:bg-orx-bg-light',
                   'transition-colors',
-                  'focus:outline-none focus:ring-2 focus:ring-orx-primary/20'
+                  'focus:outline-none focus:ring-3 focus:ring-orx-primary/20'
                 )}
                 aria-label="Limpar busca"
               >
@@ -157,7 +157,7 @@ export const NeumoSearchBar = forwardRef<HTMLInputElement, NeumoSearchBarProps>(
                   'text-orx-text-muted hover:text-orx-primary',
                   'hover:bg-orx-primary-light',
                   'transition-colors',
-                  'focus:outline-none focus:ring-2 focus:ring-orx-primary/20'
+                  'focus:outline-none focus:ring-3 focus:ring-orx-primary/20'
                 )}
                 aria-label="Abrir filtros"
               >

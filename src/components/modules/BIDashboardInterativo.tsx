@@ -302,11 +302,11 @@ export function BIDashboardInterativo() {
             }`}
           >
             <div className="flex items-center justify-between">
-              <h3 className="opacity-90 text-[0.813rem] font-medium">{kpi.title}</h3>
+              <h3 className="opacity-90 text-[0.813rem] orx-orx-font-medium">{kpi.title}</h3>
               <kpi.icon className="w-6 h-6 opacity-80" />
             </div>
             <div className="mt-4">
-              <p className="text-[0.813rem] font-bold">{kpi.value}</p>
+              <p className="text-[0.813rem] orx-orx-font-bold">{kpi.value}</p>
               <div className="flex items-center gap-2 mt-3">
                 {kpi.change > 0 ? (
                   <TrendingUp className="w-4 h-4" />
@@ -322,7 +322,7 @@ export function BIDashboardInterativo() {
 
       {/* Evolução Mensal */}
       <Card className="p-6 neuro-raised">
-        <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] font-semibold">
+        <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] orx-orx-font-semibold">
           <LineChartIcon className="w-5 h-5 text-[var(--primary)]" />
           Evolução Mensal de Faturamento
         </h3>
@@ -336,7 +336,7 @@ export function BIDashboardInterativo() {
       {/* Top 5 Produtos e Clientes */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="p-6 neuro-raised">
-          <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] font-semibold">
+          <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] orx-orx-font-semibold">
             <Package className="w-5 h-5 text-[var(--primary)]" />
             Top 5 Produtos
           </h3>
@@ -344,11 +344,11 @@ export function BIDashboardInterativo() {
             {vendasPorProduto.slice(0, 5).map((produto, index) => (
               <div key={index} className="flex items-center justify-between p-3 neuro-flat rounded-lg">
                 <div className="flex-1">
-                  <p className="text-[0.813rem] font-medium">{produto.descricao}</p>
+                  <p className="text-[0.813rem] orx-orx-font-medium">{produto.descricao}</p>
                   <p className="text-[var(--text-secondary)] text-[0.813rem]">{produto.categoria}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[var(--primary)] font-semibold">
+                  <p className="text-[var(--primary)] orx-orx-font-semibold">
                     {formatCurrency(produto.valor_total)}
                   </p>
                   <p className="text-[var(--text-secondary)] text-[0.813rem]">
@@ -361,7 +361,7 @@ export function BIDashboardInterativo() {
         </Card>
 
         <Card className="p-6 neuro-raised">
-          <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] font-semibold">
+          <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] orx-orx-font-semibold">
             <Users className="w-5 h-5 text-[var(--primary)]" />
             Top 5 Clientes
           </h3>
@@ -369,13 +369,13 @@ export function BIDashboardInterativo() {
             {vendasPorCliente.slice(0, 5).map((cliente, index) => (
               <div key={index} className="flex items-center justify-between p-3 neuro-flat rounded-lg">
                 <div className="flex-1">
-                  <p className="text-[0.813rem] font-medium">{cliente.razao_social}</p>
+                  <p className="text-[0.813rem] orx-orx-font-medium">{cliente.razao_social}</p>
                   <p className="text-[var(--text-secondary)] text-[0.813rem]">
                     {cliente.cidade}/{cliente.estado}
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[var(--primary)] font-semibold">
+                  <p className="text-[var(--primary)] orx-orx-font-semibold">
                     {formatCurrency(cliente.valor_total)}
                   </p>
                   <p className="text-success text-[0.813rem]">
@@ -393,7 +393,7 @@ export function BIDashboardInterativo() {
   const renderProdutos = () => (
     <div className="space-y-6">
       <Card className="p-6 neuro-raised">
-        <h3 className="mb-4 text-[0.813rem] font-semibold">Análise de Produtos OPME</h3>
+        <h3 className="mb-4 text-[0.813rem] orx-orx-font-semibold">Análise de Produtos OPME</h3>
         <OrxBarChart
           data={vendasPorProduto.map(p => ({ name: p.codigo, faturamento: p.valor_total, margem: p.margem_total }))}
           keys={["faturamento", "margem"]}
@@ -406,7 +406,7 @@ export function BIDashboardInterativo() {
 
       {/* Distribuição por Categoria */}
       <Card className="p-6 neuro-raised">
-        <h3 className="mb-4 text-[0.813rem] font-semibold">Distribuição por Categoria</h3>
+        <h3 className="mb-4 text-[0.813rem] orx-orx-font-semibold">Distribuição por Categoria</h3>
         <OrxPieChart
           data={vendasPorProduto.map((p, i) => ({ id: p.categoria, value: p.valor_total }))}
           height={300}
@@ -419,7 +419,7 @@ export function BIDashboardInterativo() {
   const renderVendedores = () => (
     <div className="space-y-6">
       <Card className="p-6 neuro-raised">
-        <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] font-semibold">
+        <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] orx-orx-font-semibold">
           <Award className="w-5 h-5 text-[var(--primary)]" />
           Performance de Vendedores
         </h3>
@@ -428,11 +428,11 @@ export function BIDashboardInterativo() {
             <div key={index} className="p-4 neuro-flat rounded-lg">
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <p className="font-semibold">{vendedor.nome}</p>
+                  <p className="orx-orx-font-semibold">{vendedor.nome}</p>
                   <p className="text-[var(--text-secondary)] text-[0.813rem]">{vendedor.equipe}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[var(--primary)] font-bold">
+                  <p className="text-[var(--primary)] orx-orx-font-bold">
                     {formatCurrency(vendedor.valor_total)}
                   </p>
                   <p className="text-[var(--text-secondary)] text-[0.813rem]">
@@ -443,7 +443,7 @@ export function BIDashboardInterativo() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-[0.813rem]">
                   <span>Atingimento da Meta</span>
-                  <span className={`font-semibold ${vendedor.atingimento_meta_percentual >= 100 ? 'text-success' : 'text-warning'}`}>
+                  <span className={`orx-orx-font-semibold ${vendedor.atingimento_meta_percentual >= 100 ? 'text-success' : 'text-warning'}`}>
                     {vendedor.atingimento_meta_percentual}%
                   </span>
                 </div>
@@ -459,7 +459,7 @@ export function BIDashboardInterativo() {
   const renderPrevisao = () => (
     <div className="space-y-6">
       <Card className="p-6 neuro-raised">
-        <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] font-semibold">
+        <h3 className="mb-4 flex items-center gap-2 text-[0.813rem] orx-orx-font-semibold">
           <Brain className="w-5 h-5 text-[var(--primary)]" />
           Previsão de Demanda (Machine Learning)
         </h3>
@@ -524,7 +524,7 @@ export function BIDashboardInterativo() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 ${
+              className={`px-6 py-3 rounded-xl orx-orx-font-medium transition-all flex items-center gap-2 ${
                 activeTab === tab.id
                   ? 'neuro-raised text-[var(--primary)]'
                   : 'neuro-flat text-[var(--text-secondary)] hover:neuro-raised'

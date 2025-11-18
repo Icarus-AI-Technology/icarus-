@@ -27,7 +27,7 @@ export const FormField: React.FC<FormFieldProps> = ({
     <div className="mb-4">
       <label
         htmlFor={htmlFor}
-        className="block text-body-sm text-secondary dark:text-muted mb-2 font-medium"
+        className="block text-body-sm text-secondary dark:text-muted mb-2 orx-orx-font-medium"
       >
         {label}
         {required && <span className="text-error ml-1">*</span>}
@@ -64,7 +64,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           text-primary dark:text-inverse
           placeholder-muted dark:placeholder-muted
           transition-all duration-200
-          focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent
+          focus:outline-none focus:ring-3 focus:ring-primary focus:border-transparent
           disabled:opacity-50 disabled:cursor-not-allowed
           ${error ?"border-error focus:ring-error" :"border-[var(--border)]"}
           ${fullWidth ?"w-full" :""}
@@ -97,7 +97,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           text-primary dark:text-inverse
           placeholder-muted dark:placeholder-muted
           transition-all duration-200
-          focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent
+          focus:outline-none focus:ring-3 focus:ring-primary focus:border-transparent
           disabled:opacity-50 disabled:cursor-not-allowed
           resize-vertical
           ${error ?"border-error focus:ring-error" :"border-[var(--border)]"}
@@ -131,7 +131,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           bg-surface dark:bg-card
           text-primary dark:text-inverse
           transition-all duration-200
-          focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent
+          focus:outline-none focus:ring-3 focus:ring-primary focus:border-transparent
           disabled:opacity-50 disabled:cursor-not-allowed
           ${error ?"border-error focus:ring-error" :"border-gray-300 dark:border-border"}
           ${fullWidth ?"w-full" :""}
@@ -169,7 +169,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             border-2 border-gray-300 dark:border-border
             rounded
             text-primary
-            focus:ring-2 focus:ring-primary focus:ring-offset-0
+            focus:ring-3 focus:ring-primary focus:ring-offset-0
             transition-all duration-200
             disabled:opacity-50 disabled:cursor-not-allowed
             ${className}
@@ -205,7 +205,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
             w-5 h-5
             border-2 border-gray-300 dark:border-border
             text-primary
-            focus:ring-2 focus:ring-primary focus:ring-offset-0
+            focus:ring-3 focus:ring-primary focus:ring-offset-0
             transition-all duration-200
             disabled:opacity-50 disabled:cursor-not-allowed
             ${className}

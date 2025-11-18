@@ -53,12 +53,12 @@ export const Progress: React.FC<ProgressProps> = ({
       {(label || showPercentage) && (
         <div className="flex items-center justify-between mb-2">
           {label && (
-            <span className="text-body-sm text-secondary dark:text-muted font-medium">
+            <span className="text-body-sm text-secondary dark:text-muted orx-orx-font-medium">
               {label}
             </span>
           )}
           {showPercentage && (
-            <span className="text-body-sm text-secondary dark:text-muted font-medium">
+            <span className="text-body-sm text-secondary dark:text-muted orx-orx-font-medium">
               {percentage.toFixed(0)}%
             </span>
           )}

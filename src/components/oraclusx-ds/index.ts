@@ -13,6 +13,32 @@
  * - Neumórfico 3D Premium: 5 (NOVOS!)
  */
 
+// ===== LAYOUT COMPONENTS (NEW) =====
+export { Container } from "../Container";
+export type { ContainerProps } from "../Container";
+
+export { Section } from "../Section";
+export type { SectionProps } from "../Section";
+
+export { GlassCard } from "../GlassCard";
+export type { GlassCardProps } from "../GlassCard";
+
+export { AnimatedCard } from "../AnimatedCard";
+export type { AnimatedCardProps } from "../AnimatedCard";
+
+export {
+  CadastroPageLayout,
+  CadastroSection,
+  FormGrid,
+  FormActions,
+} from "../CadastroLayout";
+export type {
+  CadastroPageLayoutProps,
+  CadastroSectionProps,
+  FormGridProps,
+  FormActionsProps,
+} from "../CadastroLayout";
+
 // ===== CORE COMPONENTS (8) =====
 export { Button } from"./Button";
 export type { ButtonProps } from"./Button";
@@ -113,6 +139,16 @@ export type { ChatbotWithResearchProps, Message as ChatbotMessage } from"./Chatb
 // ===== ENTERPRISE COMPONENTS (11) =====
 export { Table } from"./Table";
 export type { TableProps, TableColumn } from"./Table";
+
+// HTML Table Primitives (para tabelas customizadas)
+export { 
+  TableContainer,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell
+} from"./TablePrimitives";
 
 export { Tabs } from"./Tabs";
 export type { TabsProps, Tab } from"./Tabs";

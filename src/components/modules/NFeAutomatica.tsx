@@ -35,7 +35,7 @@ export const NFeAutomatica: React.FC = () => {
           <div className="flex items-center gap-2 px-4 py-2 bg-[var(--primary)] rounded-full">
             <Settings className="text-[var(--primary-foreground)] animate-spin-slow" size={20} />
             <div className="text-left">
-              <p className="text-[var(--primary-foreground)] text-body-sm font-medium">IA Automação</p>
+              <p className="text-[var(--primary-foreground)] text-body-sm orx-orx-font-medium">IA Automação</p>
               <p className="text-[var(--primary-foreground)]/70 text-body-xs">98.9% precisão</p>
             </div>
           </div>
@@ -53,7 +53,7 @@ export const NFeAutomatica: React.FC = () => {
                       <Icon size={24} />
                     </div>
                     <div className="text-center">
-                      <p className="text-body-xs mb-1 font-medium">{category.label}</p>
+                      <p className="text-body-xs mb-1 orx-orx-font-medium">{category.label}</p>
                       <div className="flex items-center justify-center gap-2">
                         <span className="text-heading font-display text-[0.813rem]">{category.count}</span>
                         <span className={`text-body-xs ${isActive ?"text-[var(--primary)]/80" :"text-success"}`}>

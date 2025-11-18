@@ -38,8 +38,8 @@ export interface NeumoInputProps
 }
 
 const sizeStyles = {
-  sm: 'h-9 px-3 text-sm',
-  md: 'h-11 px-4 text-base',
+  sm: 'h-9 px-3 orx-text-sm',
+  md: 'h-11 px-4 orx-text-base',
   lg: 'h-13 px-5 text-md',
 };
 
@@ -72,7 +72,7 @@ export const NeumoInput = forwardRef<HTMLInputElement, NeumoInputProps>(
           <label
             htmlFor={inputId}
             className={cn(
-              'block text-sm font-medium text-orx-text-primary mb-2',
+              'block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2',
               disabled && 'opacity-50 cursor-not-allowed',
               labelClassName
             )}
@@ -119,7 +119,7 @@ export const NeumoInput = forwardRef<HTMLInputElement, NeumoInputProps>(
               'shadow-neumo-sm-inset',
               'focus:shadow-neumo-inset',
               // Estados
-              'focus:outline-none focus:ring-2 focus:ring-orx-primary/20',
+              'focus:outline-none focus:ring-3 focus:ring-orx-primary/20',
               hasError && 'border-orx-danger focus:ring-orx-danger/20',
               disabled &&
                 'opacity-50 cursor-not-allowed bg-orx-bg-light',
@@ -152,7 +152,7 @@ export const NeumoInput = forwardRef<HTMLInputElement, NeumoInputProps>(
         {error && (
           <p
             id={`${inputId}-error`}
-            className="mt-1.5 text-sm text-orx-danger"
+            className="mt-1.5 orx-text-sm text-orx-danger"
             role="alert"
           >
             {error}
@@ -163,7 +163,7 @@ export const NeumoInput = forwardRef<HTMLInputElement, NeumoInputProps>(
         {hint && !error && (
           <p
             id={`${inputId}-hint`}
-            className="mt-1.5 text-sm text-orx-text-muted"
+            className="mt-1.5 orx-text-sm text-orx-text-muted"
           >
             {hint}
           </p>

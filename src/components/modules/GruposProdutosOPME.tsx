@@ -41,7 +41,7 @@ export default function GruposProdutosOPME() {
             <button key={category.id} onClick={() => setActiveCategory(category.id)}
               className={`flex flex-col items-center justify-center h-24 text-center rounded-xl transition-all duration-200 ${activeCategory === category.id ?"neuro-raised scale-105" :"neuro-flat hover:neuro-raised"}`}>
               <category.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
-              <span className="text-body-xs text-[var(--text-primary)] font-medium">{category.label}</span>
+              <span className="text-body-xs text-[var(--text-primary)] orx-orx-font-medium">{category.label}</span>
               <span className="text-body-lg font-display text-[var(--text-primary)] mt-1">{category.count}</span>
             </button>
           ))}
@@ -66,7 +66,7 @@ export default function GruposProdutosOPME() {
 
         <Card className="neuro-raised p-12 text-center">
           <Layers className="w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4" />
-          <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 font-medium">Grupos de Produtos OPME</h3>
+          <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 orx-orx-font-medium">Grupos de Produtos OPME</h3>
           <p className="text-[var(--text-secondary)]">Módulo em desenvolvimento</p>
         </Card>
       </div>

@@ -49,7 +49,7 @@ export default function RelatoriosExecutivos() {
           </div>
           <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
             <Award className="w-4 h-4 text-[var(--primary)]" />
-            <span className="text-body-sm text-[var(--text-primary)] font-medium">C-Level</span>
+            <span className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">C-Level</span>
           </div>
         </div>
 
@@ -63,7 +63,7 @@ export default function RelatoriosExecutivos() {
               }`}
             >
               <category.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
-              <span className="text-body-xs text-[var(--text-primary)] font-medium">{category.label}</span>
+              <span className="text-body-xs text-[var(--text-primary)] orx-orx-font-medium">{category.label}</span>
               <div className="flex items-center gap-1 mt-1">
                 <span className="text-body-lg font-display text-[var(--text-primary)]">{category.count}</span>
               </div>
@@ -93,7 +93,7 @@ export default function RelatoriosExecutivos() {
 
         <Card className="neuro-raised p-12 text-center">
           <BarChart3 className="w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4" />
-          <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 font-medium">Relatórios Executivos</h3>
+          <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 orx-orx-font-medium">Relatórios Executivos</h3>
           <p className="text-[var(--text-secondary)]">Módulo em desenvolvimento</p>
         </Card>
       </div>

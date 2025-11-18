@@ -138,17 +138,17 @@ export const KPICard: React.FC<KPICardProps> = ({
         <div className="kpi-card__icon" style={iconStyle} aria-hidden="true">
           <Icon className="h-6 w-6" />
         </div>
-        <h3 className="kpi-card__title text-[0.75rem] font-medium uppercase">
+        <h3 className="kpi-card__title text-[0.75rem] orx-orx-font-medium uppercase">
           {title}
         </h3>
       </div>
 
       <div className="mb-3">
-        <p className="kpi-card__value text-4xl font-bold leading-none tracking-tight">
+        <p className="kpi-card__value orx-text-4xl orx-orx-font-bold leading-none tracking-tight">
           {value}
         </p>
         {subtitle && (
-          <p className="kpi-card__subtitle mt-1 text-sm">
+          <p className="kpi-card__subtitle mt-1 orx-text-sm">
             {subtitle}
           </p>
         )}
@@ -156,7 +156,7 @@ export const KPICard: React.FC<KPICardProps> = ({
 
       {trend && TrendIcon && (
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1 rounded-lg px-2.5 py-1 text-sm font-semibold" style={trendConfig}>
+          <div className="flex items-center gap-1 rounded-lg px-2.5 py-1 orx-text-sm orx-orx-font-semibold" style={trendConfig}>
             <TrendIcon className="h-4 w-4" aria-hidden="true" />
             <span>
               {trend.value > 0 ? '+' : ''}
@@ -164,7 +164,7 @@ export const KPICard: React.FC<KPICardProps> = ({
             </span>
           </div>
           {trend.label && (
-            <span className="text-xs text-[hsl(var(--text-muted))]">
+            <span className="orx-text-xs text-[hsl(var(--text-muted))]">
               {trend.label}
             </span>
           )}

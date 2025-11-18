@@ -35,7 +35,7 @@ export const Default: Story = {
   args: {
     children: (
       <Card className="p-6">
-        <h2 className="text-xl font-bold mb-2">Seção Padrão</h2>
+        <h2 className="orx-text-xl orx-orx-font-bold mb-2">Seção Padrão</h2>
         <p className="text-[var(--orx-text-secondary)]">
           Seção com espaçamento médio padrão.
         </p>
@@ -49,7 +49,7 @@ export const SmallPadding: Story = {
   args: {
     children: (
       <Card className="p-6">
-        <h2 className="text-xl font-bold mb-2">Seção com Padding Pequeno</h2>
+        <h2 className="orx-text-xl orx-orx-font-bold mb-2">Seção com Padding Pequeno</h2>
         <p className="text-[var(--orx-text-secondary)]">
           Ideal para seções compactas.
         </p>
@@ -63,7 +63,7 @@ export const LargePadding: Story = {
   args: {
     children: (
       <Card className="p-6">
-        <h2 className="text-xl font-bold mb-2">Seção com Padding Grande</h2>
+        <h2 className="orx-text-xl orx-orx-font-bold mb-2">Seção com Padding Grande</h2>
         <p className="text-[var(--orx-text-secondary)]">
           Mais espaço para respiração visual.
         </p>
@@ -77,7 +77,7 @@ export const NoPadding: Story = {
   args: {
     children: (
       <Card className="p-6">
-        <h2 className="text-xl font-bold mb-2">Seção Sem Padding</h2>
+        <h2 className="orx-text-xl orx-orx-font-bold mb-2">Seção Sem Padding</h2>
         <p className="text-[var(--orx-text-secondary)]">
           Controle total sobre o espaçamento.
         </p>
@@ -92,19 +92,19 @@ export const MultipleSections: Story = {
     <div>
       <Section padding="md">
         <Card className="p-6">
-          <h2 className="text-xl font-bold mb-2">Primeira Seção</h2>
+          <h2 className="orx-text-xl orx-orx-font-bold mb-2">Primeira Seção</h2>
           <p className="text-[var(--orx-text-secondary)]">Conteúdo da primeira seção.</p>
         </Card>
       </Section>
       <Section padding="md">
         <Card className="p-6">
-          <h2 className="text-xl font-bold mb-2">Segunda Seção</h2>
+          <h2 className="orx-text-xl orx-orx-font-bold mb-2">Segunda Seção</h2>
           <p className="text-[var(--orx-text-secondary)]">Conteúdo da segunda seção.</p>
         </Card>
       </Section>
       <Section padding="md">
         <Card className="p-6">
-          <h2 className="text-xl font-bold mb-2">Terceira Seção</h2>
+          <h2 className="orx-text-xl orx-orx-font-bold mb-2">Terceira Seção</h2>
           <p className="text-[var(--orx-text-secondary)]">Conteúdo da terceira seção.</p>
         </Card>
       </Section>
@@ -117,12 +117,12 @@ export const WithGrid: Story = {
     children: (
       <div className="grid grid-cols-2 gap-4">
         <Card className="p-6">
-          <h3 className="font-semibold mb-2">Card 1</h3>
-          <p className="text-sm text-[var(--orx-text-secondary)]">Conteúdo em grid.</p>
+          <h3 className="orx-orx-font-semibold mb-2">Card 1</h3>
+          <p className="orx-text-sm text-[var(--orx-text-secondary)]">Conteúdo em grid.</p>
         </Card>
         <Card className="p-6">
-          <h3 className="font-semibold mb-2">Card 2</h3>
-          <p className="text-sm text-[var(--orx-text-secondary)]">Conteúdo em grid.</p>
+          <h3 className="orx-orx-font-semibold mb-2">Card 2</h3>
+          <p className="orx-text-sm text-[var(--orx-text-secondary)]">Conteúdo em grid.</p>
         </Card>
       </div>
     ),

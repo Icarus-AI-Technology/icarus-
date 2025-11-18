@@ -88,13 +88,13 @@ export const Accordion: React.FC<AccordionProps> = ({
               disabled={item.disabled}
               {...ariaExpandedProps}
               aria-controls={`accordion-content-${item.id}`}
-              className={cn("w-full px-4 py-3 flex items-center justify-between","text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]","hover:bg-[var(--surface-hover)] transition-colors","focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-inset",
+              className={cn("w-full px-4 py-3 flex items-center justify-between","text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]","hover:bg-[var(--surface-hover)] transition-colors","focus:outline-none focus:ring-3 focus:ring-[var(--primary)] focus:ring-inset",
                 item.disabled &&"opacity-50 cursor-not-allowed"
               )}
             >
               <div className="flex items-center gap-3">
                 {item.icon && <span>{item.icon}</span>}
-                <span className="font-medium">{item.title}</span>
+                <span className="orx-orx-font-medium">{item.title}</span>
               </div>
 
               <ChevronDown

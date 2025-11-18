@@ -59,7 +59,7 @@ export function Slider({
   return (
     <div className={clsx('w-full', className)}>
       {label && (
-        <label htmlFor={id} className="mb-2 block text-sm font-medium text-[var(--orx-text-primary)] dark:text-[var(--orx-text-secondary)]">
+        <label htmlFor={id} className="mb-2 block orx-text-sm orx-orx-font-medium text-[var(--orx-text-primary)] dark:text-[var(--orx-text-secondary)]">
           {label}
         </label>
       )}
@@ -104,7 +104,7 @@ export function Slider({
         />
       </SliderPrimitive.Root>
       {showValue && (value ?? defaultValue)?.length > 0 && (
-        <div className="mt-2 text-xs text-[var(--orx-text-secondary)] dark:text-[var(--orx-text-muted)]">
+        <div className="mt-2 orx-text-xs text-[var(--orx-text-secondary)] dark:text-[var(--orx-text-muted)]">
           {(value ?? defaultValue)[0]}%
         </div>
       )}

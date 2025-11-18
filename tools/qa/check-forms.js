@@ -5,9 +5,8 @@
  * ICARUS v5.0
  */
 
-import { glob } from 'globby';
+import { globby } from 'globby';
 import fs from 'fs/promises';
-import path from 'path';
 
 /**
  * @typedef {'error' | 'warning'} FormIssueSeverity
@@ -27,7 +26,7 @@ async function checkForms() {
   console.log('🔍 Verificando formulários...\n');
 
   // Busca arquivos com formulários
-  const files = await glob(['src/**/*.tsx', 'src/**/*.ts'], {
+  const files = await globby(['src/**/*.tsx', 'src/**/*.ts'], {
     ignore: ['**/node_modules/**', '**/*.test.*', '**/*.spec.*'],
   });
 
@@ -72,7 +71,8 @@ async function checkForms() {
 
       // Detecta inputs sem label
       if (line.match(/<input[^>]*>/)) {
-        if (!lines.slice(Math.max(0, index - 2), index + 1).some(l => l.includes('<label') || l.includes('aria-label'))) {
+        const context = lines.slice(Math.max(0, index - 2), index + 1);
+        if (!context.some((l) => l.includes('<label') || l.includes('aria-label'))) {
           issues.push({
             file,
             line: lineNum,
@@ -103,13 +103,16 @@ async function checkForms() {
       }
 
       // Detecta required sem indicação visual
-      if (line.includes('required') && !lines.slice(Math.max(0, index - 2), index + 2).some(l => l.includes('*') || l.includes('obrigatório'))) {
-        issues.push({
-          file,
-          line: lineNum,
-          issue: 'Campo required sem indicação visual',
-          severity: 'warning',
-        });
+      if (line.includes('required')) {
+        const context = lines.slice(Math.max(0, index - 2), index + 2);
+        if (!context.some((l) => l.includes('*') || l.toLowerCase().includes('obrigatório'))) {
+          issues.push({
+            file,
+            line: lineNum,
+            issue: 'Campo required sem indicação visual',
+            severity: 'warning',
+          });
+        }
       }
     });
 
@@ -151,7 +154,7 @@ async function checkForms() {
         });
       }
 
-      if (issues.some(i => i.file === file)) {
+      if (issues.some((i) => i.file === file)) {
         formsWithIssues++;
       }
     }
@@ -165,9 +168,8 @@ function printReport() {
   console.log(`❌ Formulários com issues: ${formsWithIssues}`);
   console.log(`📊 Issues encontradas: ${issues.length}\n`);
 
-  // Agrupa por severidade
-  const errors = issues.filter(i => i.severity === 'error');
-  const warnings = issues.filter(i => i.severity === 'warning');
+  const errors = issues.filter((i) => i.severity === 'error');
+  const warnings = issues.filter((i) => i.severity === 'warning');
 
   if (errors.length > 0) {
     console.log(`\n🔴 ERRORS (${errors.length}):`);
@@ -183,7 +185,6 @@ function printReport() {
     });
   }
 
-  // Summary
   console.log(`\n📈 SUMMARY:`);
   console.log(`  Total Forms: ${formsChecked}`);
   console.log(`  Forms OK: ${formsChecked - formsWithIssues}`);
@@ -191,7 +192,6 @@ function printReport() {
   console.log(`  Errors: ${errors.length}`);
   console.log(`  Warnings: ${warnings.length}`);
 
-  // Exit code
   if (errors.length > 0) {
     console.log(`\n❌ QA Check FAILED\n`);
     process.exit(1);
@@ -201,8 +201,8 @@ function printReport() {
   }
 }
 
-// Run
 checkForms().catch((error) => {
   console.error('❌ Error:', error);
   process.exit(1);
 });
+

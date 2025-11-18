@@ -87,7 +87,7 @@ export function AnaliseFinanceira() {
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Análise Financeira IA</h2>
+          <h2 className="orx-text-2xl orx-orx-font-bold text-slate-900 dark:text-white">Análise Financeira IA</h2>
           <p className="text-slate-600 dark:text-slate-400">
             Score de Inadimplência, Fluxo de Caixa, Análise de Risco
           </p>
@@ -105,13 +105,13 @@ export function AnaliseFinanceira() {
         <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-6 border border-green-200 dark:border-green-800">
           <div className="flex items-start justify-between mb-4">
             <div>
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-1">
+              <h3 className="orx-text-lg orx-orx-font-semibold text-slate-900 dark:text-white mb-1">
                 {score.cliente_nome}
               </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Score de Inadimplência</p>
+              <p className="orx-text-sm text-slate-600 dark:text-slate-400">Score de Inadimplência</p>
             </div>
             <div className={`
-              px-4 py-2 rounded-full font-bold text-lg
+              px-4 py-2 rounded-full orx-orx-font-bold orx-text-lg
               ${score.categoria_risco === 'baixo' ? 'bg-green-600 text-white' :
                 score.categoria_risco === 'medio' ? 'bg-yellow-600 text-white' :
                 score.categoria_risco === 'alto' ? 'bg-orange-600 text-white' :
@@ -123,32 +123,32 @@ export function AnaliseFinanceira() {
 
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
             <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
-              <p className="text-xs text-slate-600 dark:text-slate-400">Histórico</p>
-              <p className="text-xl font-bold text-slate-900 dark:text-white">
+              <p className="orx-text-xs text-slate-600 dark:text-slate-400">Histórico</p>
+              <p className="orx-text-xl orx-orx-font-bold text-slate-900 dark:text-white">
                 {score.fatores.historico_pagamento}%
               </p>
             </div>
             <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
-              <p className="text-xs text-slate-600 dark:text-slate-400">Ticket Médio</p>
-              <p className="text-xl font-bold text-slate-900 dark:text-white">
+              <p className="orx-text-xs text-slate-600 dark:text-slate-400">Ticket Médio</p>
+              <p className="orx-text-xl orx-orx-font-bold text-slate-900 dark:text-white">
                 R$ {(score.fatores.valor_medio_compras / 1000).toFixed(0)}k
               </p>
             </div>
             <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
-              <p className="text-xs text-slate-600 dark:text-slate-400">Atraso Médio</p>
-              <p className="text-xl font-bold text-slate-900 dark:text-white">
+              <p className="orx-text-xs text-slate-600 dark:text-slate-400">Atraso Médio</p>
+              <p className="orx-text-xl orx-orx-font-bold text-slate-900 dark:text-white">
                 {score.fatores.dias_atraso_medio.toFixed(1)} dias
               </p>
             </div>
             <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
-              <p className="text-xs text-slate-600 dark:text-slate-400">Títulos Abertos</p>
-              <p className="text-xl font-bold text-slate-900 dark:text-white">
+              <p className="orx-text-xs text-slate-600 dark:text-slate-400">Títulos Abertos</p>
+              <p className="orx-text-xl orx-orx-font-bold text-slate-900 dark:text-white">
                 {score.fatores.quantidade_titulos_abertos}
               </p>
             </div>
             <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
-              <p className="text-xs text-slate-600 dark:text-slate-400">Relacionamento</p>
-              <p className="text-xl font-bold text-slate-900 dark:text-white">
+              <p className="orx-text-xs text-slate-600 dark:text-slate-400">Relacionamento</p>
+              <p className="orx-text-xl orx-orx-font-bold text-slate-900 dark:text-white">
                 {Math.floor(score.fatores.tempo_relacionamento_dias / 30)}m
               </p>
             </div>
@@ -158,9 +158,9 @@ export function AnaliseFinanceira() {
             <div className="flex items-start gap-3">
               <CreditCard className="w-5 h-5 text-green-600 mt-0.5" />
               <div>
-                <p className="font-medium text-slate-900 dark:text-white mb-1">Recomendação IA</p>
-                <p className="text-sm text-slate-700 dark:text-slate-300">{score.recomendacao}</p>
-                <p className="text-xs text-slate-500 dark:text-slate-500 mt-2">
+                <p className="orx-orx-font-medium text-slate-900 dark:text-white mb-1">Recomendação IA</p>
+                <p className="orx-text-sm text-slate-700 dark:text-slate-300">{score.recomendacao}</p>
+                <p className="orx-text-xs text-slate-500 dark:text-slate-500 mt-2">
                   Probabilidade de inadimplência: {score.probabilidade_inadimplencia.toFixed(1)}%
                 </p>
               </div>
@@ -171,7 +171,7 @@ export function AnaliseFinanceira() {
 
       {/* Previsão de Fluxo de Caixa */}
       <div className="space-y-4">
-        <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+        <h3 className="orx-text-xl orx-orx-font-bold text-slate-900 dark:text-white flex items-center gap-2">
           <Activity className="w-6 h-6 text-blue-600" />
           Previsão de Fluxo de Caixa (15 dias)
         </h3>
@@ -201,11 +201,11 @@ export function AnaliseFinanceira() {
                     `}
                     style={{ height: `${Math.max(altura, 5)}%` }}
                   />
-                  <div className="absolute -top-20 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                    <p className="font-medium">{dia.data.split('-').slice(1).join('/')}</p>
+                  <div className="absolute -top-20 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white orx-text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                    <p className="orx-orx-font-medium">{dia.data.split('-').slice(1).join('/')}</p>
                     <p className="text-green-300">↑ R$ {(dia.entradas_previstas / 1000).toFixed(0)}k</p>
                     <p className="text-red-300">↓ R$ {(dia.saidas_previstas / 1000).toFixed(0)}k</p>
-                    <p className="font-bold">= R$ {(dia.saldo_previsto / 1000).toFixed(0)}k</p>
+                    <p className="orx-orx-font-bold">= R$ {(dia.saldo_previsto / 1000).toFixed(0)}k</p>
                   </div>
                 </div>
               );
@@ -214,20 +214,20 @@ export function AnaliseFinanceira() {
 
           <div className="mt-6 grid grid-cols-3 gap-4">
             <div className="text-center">
-              <p className="text-sm text-slate-600 dark:text-slate-400">Entradas Previstas</p>
-              <p className="text-2xl font-bold text-green-600">
+              <p className="orx-text-sm text-slate-600 dark:text-slate-400">Entradas Previstas</p>
+              <p className="orx-text-2xl orx-orx-font-bold text-green-600">
                 R$ {(fluxoCaixa.reduce((sum, d) => sum + d.entradas_previstas, 0) / 1000).toFixed(0)}k
               </p>
             </div>
             <div className="text-center">
-              <p className="text-sm text-slate-600 dark:text-slate-400">Saídas Previstas</p>
-              <p className="text-2xl font-bold text-red-600">
+              <p className="orx-text-sm text-slate-600 dark:text-slate-400">Saídas Previstas</p>
+              <p className="orx-text-2xl orx-orx-font-bold text-red-600">
                 R$ {(fluxoCaixa.reduce((sum, d) => sum + d.saidas_previstas, 0) / 1000).toFixed(0)}k
               </p>
             </div>
             <div className="text-center">
-              <p className="text-sm text-slate-600 dark:text-slate-400">Saldo Final</p>
-              <p className={`text-2xl font-bold ${fluxoCaixa[fluxoCaixa.length - 1]?.saldo_previsto > 0 ? 'text-green-600' : 'text-red-600'}`}>
+              <p className="orx-text-sm text-slate-600 dark:text-slate-400">Saldo Final</p>
+              <p className={`orx-text-2xl orx-orx-font-bold ${fluxoCaixa[fluxoCaixa.length - 1]?.saldo_previsto > 0 ? 'text-green-600' : 'text-red-600'}`}>
                 R$ {((fluxoCaixa[fluxoCaixa.length - 1]?.saldo_previsto || 0) / 1000).toFixed(0)}k
               </p>
             </div>
@@ -240,8 +240,8 @@ export function AnaliseFinanceira() {
         <div className="flex items-start gap-3">
           <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5" />
           <div>
-            <p className="font-medium text-blue-900 dark:text-blue-200">Insights IA</p>
-            <ul className="text-sm text-blue-800 dark:text-blue-300 mt-2 space-y-1">
+            <p className="orx-orx-font-medium text-blue-900 dark:text-blue-200">Insights IA</p>
+            <ul className="orx-text-sm text-blue-800 dark:text-blue-300 mt-2 space-y-1">
               <li>• Fluxo de caixa positivo previsto para os próximos 15 dias</li>
               <li>• Recomenda-se negociar prazos maiores com 3 fornecedores principais</li>
               <li>• Oportunidade de investir R$ 50k em títulos de curto prazo</li>

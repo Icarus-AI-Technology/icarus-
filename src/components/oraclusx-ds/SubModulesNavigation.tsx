@@ -28,7 +28,7 @@ export const SubModulesNavigation: React.FC<SubModulesNavigationProps> = ({
 }) => {
   return (
     <div className={cn("w-full", className)}>
-      <h3 className="text-body-lg text-primary dark:text-gray-100 mb-4 font-medium">
+      <h3 className="text-body-lg text-primary dark:text-gray-100 mb-4 orx-orx-font-medium">
         {title}
       </h3>
       <div className="grid gap-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -46,7 +46,7 @@ export const SubModulesNavigation: React.FC<SubModulesNavigationProps> = ({
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-primary dark:text-gray-100 mb-1 font-medium">
+                  <h4 className="text-primary dark:text-gray-100 mb-1 orx-orx-font-medium">
                     {subModule.label}
                   </h4>
                   {subModule.description && (

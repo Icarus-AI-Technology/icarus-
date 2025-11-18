@@ -370,7 +370,8 @@ export function useCacheStats() {
 
         if (error) throw error;
 
-        setStats(data || []);
+        const typedData = (data as CacheStat[] | null) ?? [];
+        setStats(typedData);
       } catch (error) {
         const err = error as Error;
         console.error("Erro ao buscar estatísticas:", err);

@@ -15,6 +15,10 @@
 import sgMail from '@sendgrid/mail';
 import type { MailDataRequired, ResponseError } from '@sendgrid/mail';
 
+function isResponseError(error: unknown): error is ResponseError {
+  return typeof error === 'object' && error !== null && 'response' in error;
+}
+
 export interface EmailParams {
   para: string | string[];
   assunto: string;
@@ -39,7 +43,7 @@ export interface EmailParams {
 export interface EmailTemplateParams {
   para: string | string[];
   templateId: string;
-  dados: Record<string, any>;
+  dados: Record<string, unknown>;
   cc?: string[];
   bcc?: string[];
   agendarPara?: Date;
@@ -61,6 +65,15 @@ export interface EmailEvent {
   url?: string; // Para eventos de click
   razao?: string; // Para bounce/dropped
 }
+
+type SendGridWebhookEvent = {
+  email: string;
+  event: EmailEvent['evento'];
+  timestamp: number;
+  url?: string;
+  reason?: string;
+  status?: string;
+};
 
 export class SendGridService {
   private apiKey: string;
@@ -142,15 +155,17 @@ export class SendGridService {
         para: Array.isArray(params.para) ? params.para : [params.para],
         enviado: response.statusCode >= 200 && response.statusCode < 300
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Erro ao enviar email:', error);
-      
-      if (error.response) {
-        const err = error as ResponseError;
-        throw new Error(`Falha ao enviar email: ${err.response.body.errors[0]?.message}`);
+
+      if (isResponseError(error)) {
+        const message =
+          error.response.body?.errors?.[0]?.message ?? 'Erro desconhecido';
+        throw new Error(`Falha ao enviar email: ${message}`);
       }
-      
-      throw new Error(`Falha ao enviar email: ${error.message}`);
+
+      const message = error instanceof Error ? error.message : String(error);
+      throw new Error(`Falha ao enviar email: ${message}`);
     }
   }
 
@@ -189,15 +204,17 @@ export class SendGridService {
         para: Array.isArray(params.para) ? params.para : [params.para],
         enviado: response.statusCode >= 200 && response.statusCode < 300
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Erro ao enviar email template:', error);
-      
-      if (error.response) {
-        const err = error as ResponseError;
-        throw new Error(`Falha ao enviar email template: ${err.response.body.errors[0]?.message}`);
+
+      if (isResponseError(error)) {
+        const message =
+          error.response.body?.errors?.[0]?.message ?? 'Erro desconhecido';
+        throw new Error(`Falha ao enviar email template: ${message}`);
       }
-      
-      throw new Error(`Falha ao enviar email template: ${error.message}`);
+
+      const message = error instanceof Error ? error.message : String(error);
+      throw new Error(`Falha ao enviar email template: ${message}`);
     }
   }
 
@@ -219,11 +236,11 @@ export class SendGridService {
         try {
           const status = await this.enviarEmail(emailParams);
           sucesso.push(status);
-        } catch (error: any) {
+        } catch (error: unknown) {
           const para = Array.isArray(emailParams.para) ? emailParams.para[0] : emailParams.para;
           falhas.push({
             email: para,
-            erro: error.message
+            erro: error instanceof Error ? error.message : String(error)
           });
         }
       });
@@ -296,7 +313,7 @@ export class SendGridService {
   /**
    * Processa webhook de eventos do SendGrid
    */
-  processarWebhook(body: any[]): EmailEvent[] {
+  processarWebhook(body: SendGridWebhookEvent[]): EmailEvent[] {
     return body.map(event => ({
       email: event.email,
       evento: event.event,

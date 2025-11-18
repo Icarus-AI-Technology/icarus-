@@ -168,8 +168,7 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
       {/* Seletor de Tipo de Documento */}
       <div>
         <label
-          className="block text-[var(--text-primary)] mb-2"
-          style={{ fontSize: '0.813rem', fontWeight: 500 }}
+          className="block text-[var(--text-primary)] mb-2 text-[0.813rem] font-medium"
         >
           Tipo de Documento
         </label>
@@ -230,15 +229,14 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
         >
           <Upload className="w-12 h-12 text-[var(--primary)] mb-4" />
           <p
-            className="text-[var(--text-primary)] mb-2"
-            style={{ fontSize: '0.813rem', fontWeight: 500 }}
+            className="text-[var(--text-primary)] mb-2 text-[0.813rem] font-medium"
           >
             Arraste arquivos aqui ou clique para selecionar
           </p>
-          <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+          <p className="text-[var(--text-secondary)] text-[0.813rem]">
             PDF, JPEG, PNG ou WEBP • Máximo {maxSize}MB por arquivo
           </p>
-          <p className="text-[var(--text-muted)] mt-2" style={{ fontSize: '0.813rem' }}>
+          <p className="text-[var(--text-muted)] mt-2 text-[0.813rem]">
             {documentos.length} de {maxFiles} arquivos enviados
           </p>
         </label>
@@ -248,8 +246,7 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
       {documentosPessoais.length > 0 && (
         <Card className="p-4">
           <h3
-            className="text-[var(--text-primary)] mb-3"
-            style={{ fontSize: '0.813rem', fontWeight: 600 }}
+            className="text-[var(--text-primary)] mb-3 text-[0.813rem] font-semibold"
           >
             Documentos Pessoais
           </h3>
@@ -264,12 +261,11 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
                   <Icone className="w-5 h-5 text-[var(--primary)]" />
                   <div className="flex-1 min-w-0">
                     <p
-                      className="text-[var(--text-primary)] truncate"
-                      style={{ fontSize: '0.813rem', fontWeight: 500 }}
+                      className="text-[var(--text-primary)] truncate text-[0.813rem] font-medium"
                     >
                       {doc.nome}
                     </p>
-                    <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+                    <p className="text-[var(--text-secondary)] text-[0.813rem]">
                       {TIPOS_DOCUMENTO[doc.tipo].label}
                     </p>
                   </div>
@@ -296,8 +292,7 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
       {documentosProfissionais.length > 0 && (
         <Card className="p-4">
           <h3
-            className="text-[var(--text-primary)] mb-3"
-            style={{ fontSize: '0.813rem', fontWeight: 600 }}
+            className="text-[var(--text-primary)] mb-3 text-[0.813rem] font-semibold"
           >
             Documentos Profissionais
           </h3>
@@ -312,12 +307,11 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
                   <Icone className="w-5 h-5 text-[var(--primary)]" />
                   <div className="flex-1 min-w-0">
                     <p
-                      className="text-[var(--text-primary)] truncate"
-                      style={{ fontSize: '0.813rem', fontWeight: 500 }}
+                      className="text-[var(--text-primary)] truncate text-[0.813rem] font-medium"
                     >
                       {doc.nome}
                     </p>
-                    <p className="text-[var(--text-secondary)]" style={{ fontSize: '0.813rem' }}>
+                    <p className="text-[var(--text-secondary)] text-[0.813rem]">
                       {TIPOS_DOCUMENTO[doc.tipo].label}
                     </p>
                   </div>
@@ -344,8 +338,7 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
       {documentosGerais.length > 0 && (
         <Card className="p-4">
           <h3
-            className="text-[var(--text-primary)] mb-3"
-            style={{ fontSize: '0.813rem', fontWeight: 600 }}
+            className="text-[var(--text-primary)] mb-3 text-[0.813rem] font-semibold"
           >
             Outros Documentos
           </h3>
@@ -358,8 +351,7 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
                 <File className="w-5 h-5 text-[var(--primary)]" />
                 <div className="flex-1 min-w-0">
                   <p
-                    className="text-[var(--text-primary)] truncate"
-                    style={{ fontSize: '0.813rem', fontWeight: 500 }}
+                    className="text-[var(--text-primary)] truncate text-[0.813rem] font-medium"
                   >
                     {doc.nome}
                   </p>

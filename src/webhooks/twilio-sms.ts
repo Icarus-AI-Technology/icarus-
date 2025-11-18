@@ -74,7 +74,7 @@ export async function twilioWebhookHandler(req: Request, res: Response) {
     }
 
     res.status(200).send('OK');
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ Erro ao processar webhook Twilio:', error);
     res.status(500).send('Internal Server Error');
   }
@@ -83,14 +83,14 @@ export async function twilioWebhookHandler(req: Request, res: Response) {
 // ===== Event Handlers =====
 
 async function handleMessageDelivered(sid: string, from: string, to: string) {
-  console.log(`✅ Mensagem entregue: ${sid}`);
+  console.log(`✅ Mensagem entregue: ${sid} de ${from} para ${to}`);
   
   // TODO: Atualizar status no banco de dados
   // TODO: Registrar métrica de entrega
 }
 
 async function handleMessageSent(sid: string, from: string, to: string) {
-  console.log(`📤 Mensagem enviada: ${sid}`);
+  console.log(`📤 Mensagem enviada: ${sid} de ${from} para ${to}`);
   
   // TODO: Atualizar status no banco
 }
@@ -102,7 +102,7 @@ async function handleMessageFailed(
   errorCode?: string,
   errorMessage?: string
 ) {
-  console.log(`❌ Mensagem falhou: ${sid} - ${errorCode}: ${errorMessage}`);
+  console.log(`❌ Mensagem falhou: ${sid} de ${from} para ${to} - ${errorCode}: ${errorMessage}`);
   
   // TODO: Registrar falha
   // TODO: Notificar administrador se erro crítico

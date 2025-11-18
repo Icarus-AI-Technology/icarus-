@@ -147,7 +147,7 @@ export const TrainingReports: React.FC = () => {
     <div className="max-w-7xl mx-auto p-6">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+        <h1 className="orx-text-3xl orx-orx-font-bold text-gray-900 flex items-center gap-3">
           <GraduationCap className="w-8 h-8 text-blue-600" />
           Relatórios de Treinamento
         </h1>
@@ -163,8 +163,8 @@ export const TrainingReports: React.FC = () => {
             <GraduationCap className="w-8 h-8 opacity-80" />
             <TrendingUp className="w-6 h-6" />
           </div>
-          <p className="text-sm opacity-90">Total de Lições</p>
-          <p className="text-3xl font-bold">{overallStats.totalLessons}</p>
+          <p className="orx-text-sm opacity-90">Total de Lições</p>
+          <p className="orx-text-3xl orx-orx-font-bold">{overallStats.totalLessons}</p>
         </div>
 
         <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-lg shadow-lg p-6 text-white">
@@ -172,9 +172,9 @@ export const TrainingReports: React.FC = () => {
             <CheckCircle2 className="w-8 h-8 opacity-80" />
             <BarChart3 className="w-6 h-6" />
           </div>
-          <p className="text-sm opacity-90">Concluídas</p>
-          <p className="text-3xl font-bold">{overallStats.completed}</p>
-          <p className="text-xs opacity-80 mt-1">
+          <p className="orx-text-sm opacity-90">Concluídas</p>
+          <p className="orx-text-3xl orx-orx-font-bold">{overallStats.completed}</p>
+          <p className="orx-text-xs opacity-80 mt-1">
             {overallStats.totalLessons > 0
               ? Math.round((overallStats.completed / overallStats.totalLessons) * 100)
               : 0}% de progresso
@@ -186,8 +186,8 @@ export const TrainingReports: React.FC = () => {
             <Award className="w-8 h-8 opacity-80" />
             <Target className="w-6 h-6" />
           </div>
-          <p className="text-sm opacity-90">Pontuação Média</p>
-          <p className="text-3xl font-bold">{Math.round(overallStats.avgScore)}</p>
+          <p className="orx-text-sm opacity-90">Pontuação Média</p>
+          <p className="orx-text-3xl orx-orx-font-bold">{Math.round(overallStats.avgScore)}</p>
         </div>
 
         <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg shadow-lg p-6 text-white">
@@ -195,14 +195,14 @@ export const TrainingReports: React.FC = () => {
             <Clock className="w-8 h-8 opacity-80" />
             <TrendingUp className="w-6 h-6" />
           </div>
-          <p className="text-sm opacity-90">Tempo Total</p>
-          <p className="text-3xl font-bold">{formatTime(overallStats.totalTime)}</p>
+          <p className="orx-text-sm opacity-90">Tempo Total</p>
+          <p className="orx-text-3xl orx-orx-font-bold">{formatTime(overallStats.totalTime)}</p>
         </div>
       </div>
 
       {/* Progress by Module */}
       <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-        <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+        <h2 className="orx-text-xl orx-orx-font-bold text-gray-900 mb-6 flex items-center gap-2">
           <BarChart3 className="w-5 h-5 text-blue-600" />
           Progresso por Módulo
         </h2>
@@ -210,8 +210,8 @@ export const TrainingReports: React.FC = () => {
           {progressByModule.map((progress) => (
             <div key={progress.modulo} className="border border-gray-200 rounded-lg p-4">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="font-semibold text-gray-900">{progress.modulo}</h3>
-                <span className="text-sm text-gray-600">
+                <h3 className="orx-orx-font-semibold text-gray-900">{progress.modulo}</h3>
+                <span className="orx-text-sm text-gray-600">
                   {progress.concluidas} / {progress.total_licoes} lições
                 </span>
               </div>
@@ -224,18 +224,18 @@ export const TrainingReports: React.FC = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-4 text-sm">
+              <div className="grid grid-cols-3 gap-4 orx-text-sm">
                 <div>
                   <p className="text-gray-600">Progresso</p>
-                  <p className="font-semibold text-blue-600">{Math.round(progress.progresso)}%</p>
+                  <p className="orx-orx-font-semibold text-blue-600">{Math.round(progress.progresso)}%</p>
                 </div>
                 <div>
                   <p className="text-gray-600">Pontuação Média</p>
-                  <p className="font-semibold text-purple-600">{Math.round(progress.pontuacao_media)}</p>
+                  <p className="orx-orx-font-semibold text-purple-600">{Math.round(progress.pontuacao_media)}</p>
                 </div>
                 <div>
                   <p className="text-gray-600">Tempo Gasto</p>
-                  <p className="font-semibold text-orange-600">{formatTime(progress.tempo_total)}</p>
+                  <p className="orx-orx-font-semibold text-orange-600">{formatTime(progress.tempo_total)}</p>
                 </div>
               </div>
             </div>
@@ -252,7 +252,7 @@ export const TrainingReports: React.FC = () => {
 
       {/* Recent Lessons */}
       <div className="bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+        <h2 className="orx-text-xl orx-orx-font-bold text-gray-900 mb-6 flex items-center gap-2">
           <Clock className="w-5 h-5 text-blue-600" />
           Atividade Recente
         </h2>
@@ -269,20 +269,20 @@ export const TrainingReports: React.FC = () => {
                   {lesson.concluido ? <CheckCircle2 className="w-5 h-5" /> : getLessonIcon(lesson.tipo)}
                 </div>
                 <div>
-                  <h4 className="font-medium text-gray-900">{lesson.licao}</h4>
-                  <p className="text-sm text-gray-600">{lesson.modulo}</p>
+                  <h4 className="orx-orx-font-medium text-gray-900">{lesson.licao}</h4>
+                  <p className="orx-text-sm text-gray-600">{lesson.modulo}</p>
                 </div>
               </div>
               <div className="text-right">
                 {lesson.concluido ? (
                   <div>
-                    <p className="text-sm font-semibold text-green-600">Concluído</p>
-                    <p className="text-xs text-gray-500">Pontuação: {lesson.pontuacao}</p>
+                    <p className="orx-text-sm orx-orx-font-semibold text-green-600">Concluído</p>
+                    <p className="orx-text-xs text-gray-500">Pontuação: {lesson.pontuacao}</p>
                   </div>
                 ) : (
                   <div>
-                    <p className="text-sm font-semibold text-gray-600">Em progresso</p>
-                    <p className="text-xs text-gray-500">{lesson.tentativas} tentativa(s)</p>
+                    <p className="orx-text-sm orx-orx-font-semibold text-gray-600">Em progresso</p>
+                    <p className="orx-text-xs text-gray-500">{lesson.tentativas} tentativa(s)</p>
                   </div>
                 )}
               </div>

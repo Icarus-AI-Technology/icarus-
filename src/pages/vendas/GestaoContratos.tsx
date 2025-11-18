@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import { ArrowLeft, Search, FileSignature, Calendar, Building2, AlertCircle } from 'lucide-react';
+import { ArrowLeft, FileSignature, Calendar, Building2, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { NeumoButton, NeumoSearchBar } from '@/components/oraclusx-ds';
 import { useDocumentTitle } from '@/hooks';
@@ -65,7 +65,7 @@ export default function GestaoContratos() {
                 <FileSignature className="w-6 h-6 text-orx-primary" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-orx-text-primary">
+                <h1 className="orx-text-3xl orx-orx-font-bold text-orx-text-primary">
                   Gestão de Contratos
                 </h1>
                 <p className="text-orx-text-secondary mt-1">
@@ -97,11 +97,11 @@ export default function GestaoContratos() {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-lg font-semibold text-orx-text-primary">
+                    <h3 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary">
                       {contrato.numero}
                     </h3>
                     <span className={`
-                      px-3 py-1 text-xs font-medium rounded-lg
+                      px-3 py-1 orx-text-xs orx-orx-font-medium rounded-lg
                       ${contrato.status === 'ativo' ? 'bg-orx-success/10 text-orx-success' : ''}
                       ${contrato.status === 'expirado' ? 'bg-orx-danger/10 text-orx-danger' : ''}
                       ${contrato.status === 'suspenso' ? 'bg-orx-warning/10 text-orx-warning' : ''}
@@ -110,7 +110,7 @@ export default function GestaoContratos() {
                       {contrato.status.toUpperCase()}
                     </span>
                     {contrato.renovacao_automatica && (
-                      <span className="px-3 py-1 bg-orx-info/10 text-orx-info text-xs font-medium rounded-lg flex items-center gap-1">
+                      <span className="px-3 py-1 bg-orx-info/10 text-orx-info orx-text-xs orx-orx-font-medium rounded-lg flex items-center gap-1">
                         <AlertCircle className="w-3 h-3" />
                         Renovação Automática
                       </span>
@@ -124,32 +124,32 @@ export default function GestaoContratos() {
                   
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1">Tipo</p>
-                      <p className="text-sm font-medium text-orx-text-primary capitalize">
+                      <p className="orx-text-xs text-orx-text-muted mb-1">Tipo</p>
+                      <p className="orx-text-sm orx-orx-font-medium text-orx-text-primary capitalize">
                         {contrato.tipo.replace('_', ' ')}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1">Valor Total</p>
-                      <p className="text-sm font-semibold text-orx-success">
+                      <p className="orx-text-xs text-orx-text-muted mb-1">Valor Total</p>
+                      <p className="orx-text-sm orx-orx-font-semibold text-orx-success">
                         R$ {contrato.valor_total.toLocaleString('pt-BR')}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1 flex items-center gap-1">
+                      <p className="orx-text-xs text-orx-text-muted mb-1 flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
                         Início
                       </p>
-                      <p className="text-sm font-medium text-orx-text-primary">
+                      <p className="orx-text-sm orx-orx-font-medium text-orx-text-primary">
                         {new Date(contrato.data_inicio).toLocaleDateString('pt-BR')}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1 flex items-center gap-1">
+                      <p className="orx-text-xs text-orx-text-muted mb-1 flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
                         Término
                       </p>
-                      <p className="text-sm font-medium text-orx-text-primary">
+                      <p className="orx-text-sm orx-orx-font-medium text-orx-text-primary">
                         {new Date(contrato.data_fim).toLocaleDateString('pt-BR')}
                       </p>
                     </div>

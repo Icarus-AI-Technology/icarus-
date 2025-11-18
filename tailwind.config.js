@@ -47,6 +47,31 @@ export default {
         card: '1.5rem',
       },
       colors: {
+        // OraclusX Design Tokens - Neumórfico 3D Premium
+        'orx-bg-app': 'var(--orx-bg-app)',
+        'orx-bg-light': 'var(--orx-bg-light)',
+        'orx-bg-surface': 'var(--orx-bg-surface)',
+        'orx-bg-surface-elevated': 'var(--orx-bg-surface-elevated)',
+        'orx-text-primary': 'var(--orx-text-primary)',
+        'orx-text-secondary': 'var(--orx-text-secondary)',
+        'orx-text-muted': 'var(--orx-text-muted)',
+        'orx-text-disabled': 'var(--orx-text-disabled)',
+        'orx-border-subtle': 'var(--orx-border-subtle)',
+        'orx-border-default': 'var(--orx-border-default)',
+        'orx-border-strong': 'var(--orx-border-strong)',
+        'orx-primary': 'var(--orx-primary)',
+        'orx-primary-hover': 'var(--orx-primary-hover)',
+        'orx-primary-light': 'var(--orx-primary-light)',
+        'orx-success': 'var(--orx-success)',
+        'orx-success-light': 'var(--orx-success-light)',
+        'orx-warning': 'var(--orx-warning)',
+        'orx-warning-light': 'var(--orx-warning-light)',
+        'orx-danger': 'var(--orx-danger)',
+        'orx-danger-light': 'var(--orx-danger-light)',
+        'orx-info': 'var(--orx-info)',
+        'orx-info-light': 'var(--orx-info-light)',
+        
+        // Shadcn UI colors (mantidos para compatibilidade)
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
@@ -110,6 +135,17 @@ export default {
         },
       },
       boxShadow: {
+        // OraclusX Neumorphic Shadows
+        'neumo-none': 'var(--shadow-neumo-none)',
+        'neumo-sm': 'var(--shadow-neumo-sm)',
+        'neumo': 'var(--shadow-neumo)',
+        'neumo-lg': 'var(--shadow-neumo-lg)',
+        'neumo-hover': 'var(--shadow-neumo-hover)',
+        'neumo-sm-inset': 'var(--shadow-neumo-sm-inset)',
+        'neumo-inset': 'var(--shadow-neumo-inset)',
+        'neumo-lg-inset': 'var(--shadow-neumo-lg-inset)',
+        
+        // Legacy neu shadows (mantidos para compatibilidade)
         neu: '12px 12px 30px rgba(26, 33, 52, 0.35), -12px -12px 28px rgba(255, 255, 255, 0.9)',
         'neu-soft': '20px 20px 60px rgba(24, 31, 54, 0.3), -20px -20px 60px rgba(255, 255, 255, 0.85)',
         'neu-card': '18px 22px 45px rgba(28, 35, 56, 0.26), -18px -22px 45px rgba(255, 255, 255, 0.75)',

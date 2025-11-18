@@ -107,7 +107,7 @@ export const Tabs: React.FC<TabsProps> = ({
             aria-selected={activeTab === tab.id}
             aria-controls={`tabpanel-${tab.id}`}
             tabIndex={activeTab === tab.id ? 0 : -1}
-            className={cn("relative px-4 py-2 rounded-md transition-all duration-200","focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-2",
+            className={cn("relative px-4 py-2 rounded-md transition-all duration-200","focus:outline-none focus:ring-3 focus:ring-[var(--primary)] focus:ring-offset-2",
               fullWidth &&"flex-1",
               activeTab === tab.id
                 ?"bg-[var(--primary)] text-inverse shadow-md"

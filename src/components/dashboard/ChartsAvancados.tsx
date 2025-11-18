@@ -49,12 +49,7 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
   return (
     <div className="neuro-raised rounded-xl p-4 bg-[var(--bg-primary)] border border-[var(--border)]">
       <p
-        className="text-[var(--text-primary)] mb-2"
-        style={{
-          fontFamily: 'var(--font-body)',
-          fontSize: '0.813rem',
-          fontWeight: 600,
-        }}
+        className="text-[var(--text-primary)] mb-2 text-[0.813rem] orx-font-semibold"
       >
         {label}
       </p>
@@ -62,14 +57,12 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
         <div key={index} className="flex items-center gap-2">
           <div
             className="w-3 h-3 rounded-full"
-            style={{ backgroundColor: entry.color }}
+            ref={(el) => {
+              if (el) el.style.backgroundColor = entry.color;
+            }}
           />
           <span
-            className="text-[var(--text-secondary)]"
-            style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '0.813rem',
-            }}
+            className="text-[var(--text-secondary)] text-[0.813rem]"
           >
             {entry.name}: {entry.value}
           </span>
@@ -97,23 +90,14 @@ function ChartContainer({ children, title, subtitle, className }: ChartContainer
         <div className="mb-4">
           {title && (
             <h3
-              className="text-[var(--text-primary)] mb-1"
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '0.813rem',
-                fontWeight: 700,
-              }}
+              className="text-[var(--text-primary)] mb-1 text-[0.813rem] orx-font-bold"
             >
               {title}
             </h3>
           )}
           {subtitle && (
             <p
-              className="text-[var(--text-secondary)]"
-              style={{
-                fontFamily: 'var(--font-body)',
-                fontSize: '0.813rem',
-              }}
+              className="text-[var(--text-secondary)] text-[0.813rem]"
             >
               {subtitle}
             </p>
@@ -184,11 +168,11 @@ export function RadarChartComponent({
           <PolarAngleAxis
             dataKey="name"
             stroke="var(--text-secondary)"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '0.813rem' }}
+            tick={{ fontSize: 13 }}
           />
           <PolarRadiusAxis
             stroke="var(--text-secondary)"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '0.813rem' }}
+            tick={{ fontSize: 13 }}
           />
           <Radar
             name={dataKey}
@@ -238,14 +222,14 @@ export function ScatterChartComponent({
             dataKey={xKey}
             name={xKey}
             stroke="var(--text-secondary)"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '0.813rem' }}
+            tick={{ fontSize: 13 }}
           />
           <YAxis
             type="number"
             dataKey={yKey}
             name={yKey}
             stroke="var(--text-secondary)"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '0.813rem' }}
+            tick={{ fontSize: 13 }}
           />
           {zKey && <ZAxis type="number" dataKey={zKey} range={[60, 400]} />}
           <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: '3 3' }} />
@@ -293,11 +277,11 @@ export function MultiRadarChartComponent({
           <PolarAngleAxis
             dataKey="name"
             stroke="var(--text-secondary)"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '0.813rem' }}
+            tick={{ fontSize: 13 }}
           />
           <PolarRadiusAxis
             stroke="var(--text-secondary)"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '0.813rem' }}
+            tick={{ fontSize: 13 }}
           />
           {dataKeys.map((key, index) => (
             <Radar

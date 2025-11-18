@@ -308,7 +308,9 @@ export class BraspressService {
   /**
    * Cria conhecimento de transporte
    */
-  async createShipment(data: any): Promise<any> {
+  async createShipment(
+    data: Record<string, unknown>,
+  ): Promise<Record<string, unknown>> {
     try {
       const response = await fetchWithRetry(`${this.baseUrl}/v1/conhecimento`, {
         method: "POST",
@@ -320,7 +322,8 @@ export class BraspressService {
         throw new Error(`Braspress API error: ${response.status}`);
       }
 
-      return await response.json();
+      const result: Record<string, unknown> = await response.json();
+      return result;
     } catch (error: unknown) {
       const err = toAppError(error);
       console.error("❌ Erro ao criar envio Braspress:", err);

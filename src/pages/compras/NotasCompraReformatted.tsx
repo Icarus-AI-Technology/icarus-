@@ -25,7 +25,7 @@ export default function NotasCompraReformatted(): JSX.Element {
               setArquivo(file);
             }}
           />
-          {arquivo && <p className="text-sm text-muted-foreground mt-2">{arquivo.name}</p>}
+          {arquivo && <p className="orx-text-sm text-muted-foreground mt-2">{arquivo.name}</p>}
         </CardContent>
       </Card>
     </ModulePage>

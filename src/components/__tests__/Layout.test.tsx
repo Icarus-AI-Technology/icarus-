@@ -20,7 +20,7 @@ describe('Container', () => {
       <Container maxWidth="5xl">Content</Container>
     );
     const element = container.firstChild as HTMLElement;
-    expect(element.className).toContain('max-w-5xl');
+    expect(element.className).toContain('max-w-[2048px]');
   });
 
   it('applies padding prop correctly', () => {
@@ -28,7 +28,7 @@ describe('Container', () => {
       <Container padding="lg">Content</Container>
     );
     const element = container.firstChild as HTMLElement;
-    expect(element.className).toContain('lg');
+    expect(element.className).toContain('p-8');
   });
 });
 
@@ -42,12 +42,12 @@ describe('Section', () => {
     expect(screen.getByText('Section Content')).toBeInTheDocument();
   });
 
-  it('applies padding classes', () => {
+  it('aplica espaçamento configurável', () => {
     const { container } = render(
-      <Section padding="md">Content</Section>
+      <Section spacing="lg">Content</Section>
     );
     const element = container.firstChild as HTMLElement;
-    expect(element.className).toContain('py');
+    expect(element.className).toContain('space-y-8');
   });
 });
 
@@ -60,12 +60,12 @@ describe('GlassCard', () => {
     expect(element.className).toContain('glass');
   });
 
-  it('supports different intensities', () => {
+  it('supports different blur levels', () => {
     const { container: container1 } = render(
-      <GlassCard intensity="sm">Content</GlassCard>
+      <GlassCard blur="sm">Content</GlassCard>
     );
     const { container: container2 } = render(
-      <GlassCard intensity="xl">Content</GlassCard>
+      <GlassCard blur="xl">Content</GlassCard>
     );
     
     expect(container1.firstChild).toHaveClass('orx-glass-sm');
@@ -75,26 +75,24 @@ describe('GlassCard', () => {
 
 describe('AnimatedCard', () => {
   it('renders with animation', () => {
-    const { container } = render(
-      <AnimatedCard animation="fadeIn">Animated Content</AnimatedCard>
-    );
+    render(<AnimatedCard animation="fadeIn">Animated Content</AnimatedCard>);
     expect(screen.getByText('Animated Content')).toBeInTheDocument();
   });
 
   it('applies animation classes', () => {
     const { container } = render(
-      <AnimatedCard animation="slideUp">Content</AnimatedCard>
+      <AnimatedCard animation="slide">Content</AnimatedCard>
     );
     const element = container.firstChild as HTMLElement;
-    expect(element.className).toContain('animate');
+    expect(element.className).toContain('orx-animate-slide-up');
   });
 
-  it('supports hover effects', () => {
+  it('supports hover lift effect', () => {
     const { container } = render(
-      <AnimatedCard hoverEffect="lift">Content</AnimatedCard>
+      <AnimatedCard hoverLift>Content</AnimatedCard>
     );
     const element = container.firstChild as HTMLElement;
-    expect(element.className).toContain('hover');
+    expect(element.className).toContain('orx-hover-lift');
   });
 });
 

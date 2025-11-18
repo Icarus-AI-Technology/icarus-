@@ -162,7 +162,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             >
               ←
             </button>
-            <span className="text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)] font-medium">
+            <span className="text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)] orx-orx-font-medium">
               {viewMonth.toLocaleDateString("pt-BR", { month:"long", year:"numeric" })}
             </span>
             <button

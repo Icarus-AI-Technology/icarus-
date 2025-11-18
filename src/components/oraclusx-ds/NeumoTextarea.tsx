@@ -62,7 +62,7 @@ export const NeumoTextarea = forwardRef<
           <label
             htmlFor={textareaId}
             className={cn(
-              'block text-sm font-medium text-orx-text-primary mb-2',
+              'block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2',
               disabled && 'opacity-50 cursor-not-allowed',
               labelClassName
             )}
@@ -103,7 +103,7 @@ export const NeumoTextarea = forwardRef<
               'shadow-neumo-sm-inset',
               'focus:shadow-neumo-inset',
               // Estados
-              'focus:outline-none focus:ring-2 focus:ring-orx-primary/20',
+              'focus:outline-none focus:ring-3 focus:ring-orx-primary/20',
               hasError && 'border-orx-danger focus:ring-orx-danger/20',
               disabled &&
                 'opacity-50 cursor-not-allowed bg-orx-bg-light',
@@ -115,7 +115,7 @@ export const NeumoTextarea = forwardRef<
 
         {/* Contador de Caracteres */}
         {showCharCount && maxLength && (
-          <div className="mt-1.5 text-sm text-orx-text-muted text-right">
+          <div className="mt-1.5 orx-text-sm text-orx-text-muted text-right">
             {charCount}/{maxLength}
           </div>
         )}
@@ -124,7 +124,7 @@ export const NeumoTextarea = forwardRef<
         {error && (
           <p
             id={`${textareaId}-error`}
-            className="mt-1.5 text-sm text-orx-danger"
+            className="mt-1.5 orx-text-sm text-orx-danger"
             role="alert"
           >
             {error}
@@ -135,7 +135,7 @@ export const NeumoTextarea = forwardRef<
         {hint && !error && (
           <p
             id={`${textareaId}-hint`}
-            className="mt-1.5 text-sm text-orx-text-muted"
+            className="mt-1.5 orx-text-sm text-orx-text-muted"
           >
             {hint}
           </p>

@@ -8,13 +8,13 @@
       "name": "axe"
     },
     "testEnvironment": {
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.0.0 Safari/537.36",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/142.0.0.0 Safari/537.36",
       "windowWidth": 756,
       "windowHeight": 417,
       "orientationAngle": 0,
       "orientationType": "landscape-primary"
     },
-    "timestamp": "2025-10-25T10:31:12.156Z",
+    "timestamp": "2025-11-18T11:34:48.307Z",
     "url": "http://localhost:4173/login",
     "toolOptions": {
       "runOnly": {
@@ -52,23 +52,6 @@
         "nodes": []
       },
       {
-        "id": "aria-allowed-attr",
-        "impact": null,
-        "tags": [
-          "cat.aria",
-          "wcag2a",
-          "wcag412",
-          "EN-301-549",
-          "EN-9.4.1.2",
-          "RGAAv4",
-          "RGAA-7.1.1"
-        ],
-        "description": "Ensure an element's role supports its ARIA attributes",
-        "help": "Elements must only use supported ARIA attributes",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/aria-allowed-attr?application=webdriverjs",
-        "nodes": []
-      },
-      {
         "id": "aria-braille-equivalent",
         "impact": null,
         "tags": [
@@ -101,23 +84,6 @@
         "description": "Ensure every ARIA button, link and menuitem has an accessible name",
         "help": "ARIA commands must have an accessible name",
         "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/aria-command-name?application=webdriverjs",
-        "nodes": []
-      },
-      {
-        "id": "aria-conditional-attr",
-        "impact": null,
-        "tags": [
-          "cat.aria",
-          "wcag2a",
-          "wcag412",
-          "EN-301-549",
-          "EN-9.4.1.2",
-          "RGAAv4",
-          "RGAA-7.1.1"
-        ],
-        "description": "Ensure ARIA attributes are used as described in the specification of the element's role",
-        "help": "ARIA attributes must be used as specified for the element's role",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/aria-conditional-attr?application=webdriverjs",
         "nodes": []
       },
       {
@@ -208,23 +174,6 @@
         "description": "Ensure every ARIA progressbar node has an accessible name",
         "help": "ARIA progressbar nodes must have an accessible name",
         "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/aria-progressbar-name?application=webdriverjs",
-        "nodes": []
-      },
-      {
-        "id": "aria-prohibited-attr",
-        "impact": null,
-        "tags": [
-          "cat.aria",
-          "wcag2a",
-          "wcag412",
-          "EN-301-549",
-          "EN-9.4.1.2",
-          "RGAAv4",
-          "RGAA-7.1.1"
-        ],
-        "description": "Ensure ARIA attributes are not prohibited for an element's role",
-        "help": "Elements must only use permitted ARIA attributes",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/aria-prohibited-attr?application=webdriverjs",
         "nodes": []
       },
       {
@@ -328,40 +277,6 @@
         "description": "Ensure every ARIA tooltip node has an accessible name",
         "help": "ARIA tooltip nodes must have an accessible name",
         "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/aria-tooltip-name?application=webdriverjs",
-        "nodes": []
-      },
-      {
-        "id": "aria-valid-attr-value",
-        "impact": null,
-        "tags": [
-          "cat.aria",
-          "wcag2a",
-          "wcag412",
-          "EN-301-549",
-          "EN-9.4.1.2",
-          "RGAAv4",
-          "RGAA-7.1.1"
-        ],
-        "description": "Ensure all ARIA attributes have valid values",
-        "help": "ARIA attributes must conform to valid values",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/aria-valid-attr-value?application=webdriverjs",
-        "nodes": []
-      },
-      {
-        "id": "aria-valid-attr",
-        "impact": null,
-        "tags": [
-          "cat.aria",
-          "wcag2a",
-          "wcag412",
-          "EN-301-549",
-          "EN-9.4.1.2",
-          "RGAAv4",
-          "RGAA-7.1.1"
-        ],
-        "description": "Ensure attributes that begin with aria- are valid ARIA attributes",
-        "help": "ARIA attributes must conform to valid names",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/aria-valid-attr?application=webdriverjs",
         "nodes": []
       },
       {
@@ -908,6 +823,130 @@
     ],
     "passes": [
       {
+        "id": "aria-allowed-attr",
+        "impact": null,
+        "tags": [
+          "cat.aria",
+          "wcag2a",
+          "wcag412",
+          "EN-301-549",
+          "EN-9.4.1.2",
+          "RGAAv4",
+          "RGAA-7.1.1"
+        ],
+        "description": "Ensure an element's role supports its ARIA attributes",
+        "help": "Elements must only use supported ARIA attributes",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/aria-allowed-attr?application=webdriverjs",
+        "nodes": [
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-allowed-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attributes are used correctly for the defined role"
+              }
+            ],
+            "none": [
+              {
+                "id": "aria-unsupported-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute is supported"
+              }
+            ],
+            "impact": null,
+            "html": "<input id=\"email\" required=\"\" aria-invalid=\"false\" class=\"w-full rounded-lg bg...\" type=\"email\" placeholder=\"seu@email.com\" autocomplete=\"email\" value=\"\">",
+            "target": [
+              "#email"
+            ]
+          },
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-allowed-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attributes are used correctly for the defined role"
+              }
+            ],
+            "none": [
+              {
+                "id": "aria-unsupported-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute is supported"
+              }
+            ],
+            "impact": null,
+            "html": "<input id=\"password\" required=\"\" aria-invalid=\"false\" class=\"w-full rounded-lg bg...\" type=\"password\" placeholder=\"••••••••\" autocomplete=\"current-password\" value=\"\">",
+            "target": [
+              "#password"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "aria-conditional-attr",
+        "impact": null,
+        "tags": [
+          "cat.aria",
+          "wcag2a",
+          "wcag412",
+          "EN-301-549",
+          "EN-9.4.1.2",
+          "RGAAv4",
+          "RGAA-7.1.1"
+        ],
+        "description": "Ensure ARIA attributes are used as described in the specification of the element's role",
+        "help": "ARIA attributes must be used as specified for the element's role",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/aria-conditional-attr?application=webdriverjs",
+        "nodes": [
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-conditional-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "ARIA attribute is allowed"
+              }
+            ],
+            "none": [],
+            "impact": null,
+            "html": "<input id=\"email\" required=\"\" aria-invalid=\"false\" class=\"w-full rounded-lg bg...\" type=\"email\" placeholder=\"seu@email.com\" autocomplete=\"email\" value=\"\">",
+            "target": [
+              "#email"
+            ]
+          },
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-conditional-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "ARIA attribute is allowed"
+              }
+            ],
+            "none": [],
+            "impact": null,
+            "html": "<input id=\"password\" required=\"\" aria-invalid=\"false\" class=\"w-full rounded-lg bg...\" type=\"password\" placeholder=\"••••••••\" autocomplete=\"current-password\" value=\"\">",
+            "target": [
+              "#password"
+            ]
+          }
+        ]
+      },
+      {
         "id": "aria-hidden-body",
         "impact": null,
         "tags": [
@@ -946,6 +985,196 @@
         ]
       },
       {
+        "id": "aria-prohibited-attr",
+        "impact": null,
+        "tags": [
+          "cat.aria",
+          "wcag2a",
+          "wcag412",
+          "EN-301-549",
+          "EN-9.4.1.2",
+          "RGAAv4",
+          "RGAA-7.1.1"
+        ],
+        "description": "Ensure ARIA attributes are not prohibited for an element's role",
+        "help": "Elements must only use permitted ARIA attributes",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/aria-prohibited-attr?application=webdriverjs",
+        "nodes": [
+          {
+            "any": [],
+            "all": [],
+            "none": [
+              {
+                "id": "aria-prohibited-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "ARIA attribute is allowed"
+              }
+            ],
+            "impact": null,
+            "html": "<input id=\"email\" required=\"\" aria-invalid=\"false\" class=\"w-full rounded-lg bg...\" type=\"email\" placeholder=\"seu@email.com\" autocomplete=\"email\" value=\"\">",
+            "target": [
+              "#email"
+            ]
+          },
+          {
+            "any": [],
+            "all": [],
+            "none": [
+              {
+                "id": "aria-prohibited-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "ARIA attribute is allowed"
+              }
+            ],
+            "impact": null,
+            "html": "<input id=\"password\" required=\"\" aria-invalid=\"false\" class=\"w-full rounded-lg bg...\" type=\"password\" placeholder=\"••••••••\" autocomplete=\"current-password\" value=\"\">",
+            "target": [
+              "#password"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "impact": null,
+        "tags": [
+          "cat.aria",
+          "wcag2a",
+          "wcag412",
+          "EN-301-549",
+          "EN-9.4.1.2",
+          "RGAAv4",
+          "RGAA-7.1.1"
+        ],
+        "description": "Ensure all ARIA attributes have valid values",
+        "help": "ARIA attributes must conform to valid values",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/aria-valid-attr-value?application=webdriverjs",
+        "nodes": [
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-valid-attr-value",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute values are valid"
+              },
+              {
+                "id": "aria-errormessage",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+              },
+              {
+                "id": "aria-level",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-level values are valid"
+              }
+            ],
+            "none": [],
+            "impact": null,
+            "html": "<input id=\"email\" required=\"\" aria-invalid=\"false\" class=\"w-full rounded-lg bg...\" type=\"email\" placeholder=\"seu@email.com\" autocomplete=\"email\" value=\"\">",
+            "target": [
+              "#email"
+            ]
+          },
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-valid-attr-value",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute values are valid"
+              },
+              {
+                "id": "aria-errormessage",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+              },
+              {
+                "id": "aria-level",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-level values are valid"
+              }
+            ],
+            "none": [],
+            "impact": null,
+            "html": "<input id=\"password\" required=\"\" aria-invalid=\"false\" class=\"w-full rounded-lg bg...\" type=\"password\" placeholder=\"••••••••\" autocomplete=\"current-password\" value=\"\">",
+            "target": [
+              "#password"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "aria-valid-attr",
+        "impact": null,
+        "tags": [
+          "cat.aria",
+          "wcag2a",
+          "wcag412",
+          "EN-301-549",
+          "EN-9.4.1.2",
+          "RGAAv4",
+          "RGAA-7.1.1"
+        ],
+        "description": "Ensure attributes that begin with aria- are valid ARIA attributes",
+        "help": "ARIA attributes must conform to valid names",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/aria-valid-attr?application=webdriverjs",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "aria-valid-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute name is valid"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<input id=\"email\" required=\"\" aria-invalid=\"false\" class=\"w-full rounded-lg bg...\" type=\"email\" placeholder=\"seu@email.com\" autocomplete=\"email\" value=\"\">",
+            "target": [
+              "#email"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "aria-valid-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute name is valid"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<input id=\"password\" required=\"\" aria-invalid=\"false\" class=\"w-full rounded-lg bg...\" type=\"password\" placeholder=\"••••••••\" autocomplete=\"current-password\" value=\"\">",
+            "target": [
+              "#password"
+            ]
+          }
+        ]
+      },
+      {
         "id": "button-name",
         "impact": null,
         "tags": [
@@ -979,7 +1208,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<button class=\"font-medium rounded-...\" type=\"submit\" style=\"background: linear-g...\">",
+            "html": "<button class=\"inline-flex items-ce...\" type=\"submit\">",
             "target": [
               "button"
             ]
@@ -1013,9 +1242,9 @@
                 "data": null,
                 "relatedNodes": [
                   {
-                    "html": "<h2 style=\"font-size: 1.5rem; font-family: var(--orx-font-family); font-weight: 700; color: rgb(255, 255, 255); margin: 0px; line-height: 1; white-space: nowrap;\">ICARUS v5.0</h2>",
+                    "html": "<h1 class=\"orx-text-3xl orx-font-bold text-orx-text-primary mb-2\">ICARUS v5.0</h1>",
                     "target": [
-                      "h2"
+                      "h1"
                     ]
                   }
                 ],
@@ -1057,24 +1286,24 @@
               {
                 "id": "color-contrast",
                 "data": {
-                  "fgColor": "#4b5563",
-                  "bgColor": "#d6dce6",
-                  "contrastRatio": 5.48,
-                  "fontSize": "12.0pt (16px)",
+                  "fgColor": "#312e81",
+                  "bgColor": "#ebf0f6",
+                  "contrastRatio": 9.96,
+                  "fontSize": "10.5pt (14px)",
                   "fontWeight": "normal",
                   "expectedContrastRatio": "4.5:1"
                 },
                 "relatedNodes": [],
                 "impact": "serious",
-                "message": "Element has sufficient color contrast of 5.48"
+                "message": "Element has sufficient color contrast of 9.96"
               }
             ],
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<input id=\"email\" class=\"orx-input pl-10 w-full text-gray-600\" type=\"email\" placeholder=\"seu@email.com\" required=\"\" autocomplete=\"email\" value=\"\">",
+            "html": "<a class=\"orx-text-sm orx-font-semibold text-orx-primary hover:text-orx-primary/80 underline decoration-transparent hover:decoration-current transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2\" href=\"/reset-password\">",
             "target": [
-              "#email"
+              "a"
             ]
           },
           {
@@ -1082,24 +1311,24 @@
               {
                 "id": "color-contrast",
                 "data": {
-                  "fgColor": "#4b5563",
-                  "bgColor": "#d6dce6",
-                  "contrastRatio": 5.48,
-                  "fontSize": "12.0pt (16px)",
+                  "fgColor": "#4a5568",
+                  "bgColor": "#ebf0f6",
+                  "contrastRatio": 6.56,
+                  "fontSize": "9.0pt (12px)",
                   "fontWeight": "normal",
                   "expectedContrastRatio": "4.5:1"
                 },
                 "relatedNodes": [],
                 "impact": "serious",
-                "message": "Element has sufficient color contrast of 5.48"
+                "message": "Element has sufficient color contrast of 6.56"
               }
             ],
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<input id=\"password\" class=\"orx-input pl-10 w-full text-gray-600\" type=\"password\" placeholder=\"••••••••\" required=\"\" autocomplete=\"current-password\" value=\"\">",
+            "html": "<p class=\"text-center orx-text-xs text-orx-text-muted\">© 2025 <span class=\"orx-font-bold bg-gradient-to-r from-orx-primary to-purple-500 bg-clip-text text-transparent\">Icarus Technology</span>. Todos os direitos reservados.</p>",
             "target": [
-              "#password"
+              ".orx-text-xs"
             ]
           }
         ]
@@ -1172,7 +1401,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<input id=\"email\" class=\"orx-input pl-10 w-full text-gray-600\" type=\"email\" placeholder=\"seu@email.com\" required=\"\" autocomplete=\"email\" value=\"\">",
+            "html": "<input id=\"email\" required=\"\" aria-invalid=\"false\" class=\"w-full rounded-lg bg...\" type=\"email\" placeholder=\"seu@email.com\" autocomplete=\"email\" value=\"\">",
             "target": [
               "#email"
             ]
@@ -1190,7 +1419,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<input id=\"password\" class=\"orx-input pl-10 w-full text-gray-600\" type=\"password\" placeholder=\"••••••••\" required=\"\" autocomplete=\"current-password\" value=\"\">",
+            "html": "<input id=\"password\" required=\"\" aria-invalid=\"false\" class=\"w-full rounded-lg bg...\" type=\"password\" placeholder=\"••••••••\" autocomplete=\"current-password\" value=\"\">",
             "target": [
               "#password"
             ]
@@ -1224,7 +1453,7 @@
                 "data": null,
                 "relatedNodes": [
                   {
-                    "html": "<label for=\"email\" class=\"block text-body-sm  mb-2\" style=\"font-weight: 500; color: rgb(107, 114, 128);\">E-mail</label>",
+                    "html": "<label for=\"email\" class=\"block text-orx-text-primary orx-text-sm orx-font-medium mb-2\">E-mail</label>",
                     "target": [
                       "label[for=\"email\"]"
                     ]
@@ -1235,7 +1464,7 @@
               }
             ],
             "impact": null,
-            "html": "<input id=\"email\" class=\"orx-input pl-10 w-full text-gray-600\" type=\"email\" placeholder=\"seu@email.com\" required=\"\" autocomplete=\"email\" value=\"\">",
+            "html": "<input id=\"email\" required=\"\" aria-invalid=\"false\" class=\"w-full rounded-lg bg...\" type=\"email\" placeholder=\"seu@email.com\" autocomplete=\"email\" value=\"\">",
             "target": [
               "#email"
             ]
@@ -1249,7 +1478,7 @@
                 "data": null,
                 "relatedNodes": [
                   {
-                    "html": "<label for=\"password\" class=\"block text-body-sm  mb-2\" style=\"font-weight: 500; color: rgb(107, 114, 128);\">Senha</label>",
+                    "html": "<label for=\"password\" class=\"block text-orx-text-primary orx-text-sm orx-font-medium mb-2\">Senha</label>",
                     "target": [
                       "label[for=\"password\"]"
                     ]
@@ -1260,7 +1489,7 @@
               }
             ],
             "impact": null,
-            "html": "<input id=\"password\" class=\"orx-input pl-10 w-full text-gray-600\" type=\"password\" placeholder=\"••••••••\" required=\"\" autocomplete=\"current-password\" value=\"\">",
+            "html": "<input id=\"password\" required=\"\" aria-invalid=\"false\" class=\"w-full rounded-lg bg...\" type=\"password\" placeholder=\"••••••••\" autocomplete=\"current-password\" value=\"\">",
             "target": [
               "#password"
             ]
@@ -1375,7 +1604,7 @@
                 },
                 "relatedNodes": [
                   {
-                    "html": "<label for=\"email\" class=\"block text-body-sm  mb-2\" style=\"font-weight: 500; color: rgb(107, 114, 128);\">E-mail</label>",
+                    "html": "<label for=\"email\" class=\"block text-orx-text-primary orx-text-sm orx-font-medium mb-2\">E-mail</label>",
                     "target": [
                       "label[for=\"email\"]"
                     ]
@@ -1403,7 +1632,7 @@
               }
             ],
             "impact": null,
-            "html": "<input id=\"email\" class=\"orx-input pl-10 w-full text-gray-600\" type=\"email\" placeholder=\"seu@email.com\" required=\"\" autocomplete=\"email\" value=\"\">",
+            "html": "<input id=\"email\" required=\"\" aria-invalid=\"false\" class=\"w-full rounded-lg bg...\" type=\"email\" placeholder=\"seu@email.com\" autocomplete=\"email\" value=\"\">",
             "target": [
               "#email"
             ]
@@ -1417,7 +1646,7 @@
                 },
                 "relatedNodes": [
                   {
-                    "html": "<label for=\"password\" class=\"block text-body-sm  mb-2\" style=\"font-weight: 500; color: rgb(107, 114, 128);\">Senha</label>",
+                    "html": "<label for=\"password\" class=\"block text-orx-text-primary orx-text-sm orx-font-medium mb-2\">Senha</label>",
                     "target": [
                       "label[for=\"password\"]"
                     ]
@@ -1445,7 +1674,7 @@
               }
             ],
             "impact": null,
-            "html": "<input id=\"password\" class=\"orx-input pl-10 w-full text-gray-600\" type=\"password\" placeholder=\"••••••••\" required=\"\" autocomplete=\"current-password\" value=\"\">",
+            "html": "<input id=\"password\" required=\"\" aria-invalid=\"false\" class=\"w-full rounded-lg bg...\" type=\"password\" placeholder=\"••••••••\" autocomplete=\"current-password\" value=\"\">",
             "target": [
               "#password"
             ]
@@ -1496,7 +1725,7 @@
               }
             ],
             "impact": null,
-            "html": "<a class=\"text-body-sm\" href=\"/reset-password\" style=\"color: rgb(107, 114, 128);\">Esqueceu sua senha?</a>",
+            "html": "<a class=\"orx-text-sm orx-font-semibold text-orx-primary hover:text-orx-primary/80 underline decoration-transparent hover:decoration-current transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2\" href=\"/reset-password\">",
             "target": [
               "a"
             ]
@@ -1571,7 +1800,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<button class=\"font-medium rounded-...\" type=\"submit\" style=\"background: linear-g...\">",
+            "html": "<button class=\"inline-flex items-ce...\" type=\"submit\">",
             "target": [
               "button"
             ]
@@ -1605,31 +1834,149 @@
                 "id": "color-contrast",
                 "data": {
                   "contrastRatio": 0,
-                  "fontSize": "18.0pt (24px)",
+                  "fontSize": "22.5pt (30px)",
                   "fontWeight": "bold",
-                  "messageKey": "bgGradient",
+                  "messageKey": "bgOverlap",
                   "expectedContrastRatio": "3:1"
                 },
-                "relatedNodes": [
-                  {
-                    "html": "<div style=\"width: 100%; max-wid...\">",
-                    "target": [
-                      ".orx-card > div > div:nth-child(1) > div"
-                    ]
-                  }
-                ],
+                "relatedNodes": [],
                 "impact": "serious",
-                "message": "Element's background color could not be determined due to a background gradient"
+                "message": "Element's background color could not be determined because it is overlapped by another element"
               }
             ],
             "all": [],
             "none": [],
             "impact": "serious",
-            "html": "<h2 style=\"font-size: 1.5rem; font-family: var(--orx-font-family); font-weight: 700; color: rgb(255, 255, 255); margin: 0px; line-height: 1; white-space: nowrap;\">ICARUS v5.0</h2>",
+            "html": "<h1 class=\"orx-text-3xl orx-font-bold text-orx-text-primary mb-2\">ICARUS v5.0</h1>",
             "target": [
-              "h2"
+              "h1"
             ],
-            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "contrastRatio": 0,
+                  "fontSize": "12.0pt (16px)",
+                  "fontWeight": "normal",
+                  "messageKey": "bgOverlap",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element's background color could not be determined because it is overlapped by another element"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p class=\"text-orx-text-secondary orx-font-medium\">Gestão elevada pela IA</p>",
+            "target": [
+              ".text-orx-text-secondary"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "contrastRatio": 0,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "messageKey": "bgOverlap",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element's background color could not be determined because it is overlapped by another element"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<label for=\"email\" class=\"block text-orx-text-primary orx-text-sm orx-font-medium mb-2\">E-mail</label>",
+            "target": [
+              "label[for=\"email\"]"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "contrastRatio": 0,
+                  "fontSize": "12.0pt (16px)",
+                  "fontWeight": "normal",
+                  "messageKey": "bgOverlap",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element's background color could not be determined because it is overlapped by another element"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<input id=\"email\" required=\"\" aria-invalid=\"false\" class=\"w-full rounded-lg bg...\" type=\"email\" placeholder=\"seu@email.com\" autocomplete=\"email\" value=\"\">",
+            "target": [
+              "#email"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "contrastRatio": 0,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "messageKey": "bgOverlap",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element's background color could not be determined because it is overlapped by another element"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<label for=\"password\" class=\"block text-orx-text-primary orx-text-sm orx-font-medium mb-2\">Senha</label>",
+            "target": [
+              "label[for=\"password\"]"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "contrastRatio": 0,
+                  "fontSize": "12.0pt (16px)",
+                  "fontWeight": "normal",
+                  "messageKey": "bgOverlap",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element's background color could not be determined because it is overlapped by another element"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<input id=\"password\" required=\"\" aria-invalid=\"false\" class=\"w-full rounded-lg bg...\" type=\"password\" placeholder=\"••••••••\" autocomplete=\"current-password\" value=\"\">",
+            "target": [
+              "#password"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
           },
           {
             "any": [
@@ -1644,7 +1991,7 @@
                 },
                 "relatedNodes": [
                   {
-                    "html": "<button class=\"font-medium rounded-...\" type=\"submit\" style=\"background: linear-g...\">",
+                    "html": "<button class=\"inline-flex items-ce...\" type=\"submit\">",
                     "target": [
                       "button"
                     ]
@@ -1657,7 +2004,7 @@
             "all": [],
             "none": [],
             "impact": "serious",
-            "html": "<button class=\"font-medium rounded-...\" type=\"submit\" style=\"background: linear-g...\">",
+            "html": "<button class=\"inline-flex items-ce...\" type=\"submit\">",
             "target": [
               "button"
             ],
@@ -1676,7 +2023,7 @@
                 },
                 "relatedNodes": [
                   {
-                    "html": "<span style=\"background: linear-gradient(90deg, rgb(99, 102, 241) 0%, rgb(168, 85, 247) 100%) text; color: transparent; font-weight: 700;\">Icarus Technology</span>",
+                    "html": "<span class=\"orx-font-bold bg-gradient-to-r from-orx-primary to-purple-500 bg-clip-text text-transparent\">Icarus Technology</span>",
                     "target": [
                       "span"
                     ]
@@ -1689,7 +2036,7 @@
             "all": [],
             "none": [],
             "impact": "serious",
-            "html": "<span style=\"background: linear-gradient(90deg, rgb(99, 102, 241) 0%, rgb(168, 85, 247) 100%) text; color: transparent; font-weight: 700;\">Icarus Technology</span>",
+            "html": "<span class=\"orx-font-bold bg-gradient-to-r from-orx-primary to-purple-500 bg-clip-text text-transparent\">Icarus Technology</span>",
             "target": [
               "span"
             ],
@@ -1698,198 +2045,6 @@
         ]
       }
     ],
-    "violations": [
-      {
-        "id": "color-contrast",
-        "impact": "serious",
-        "tags": [
-          "cat.color",
-          "wcag2aa",
-          "wcag143",
-          "TTv5",
-          "TT13.c",
-          "EN-301-549",
-          "EN-9.1.4.3",
-          "ACT",
-          "RGAAv4",
-          "RGAA-3.2.1"
-        ],
-        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
-        "help": "Elements must meet minimum color contrast ratio thresholds",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=webdriverjs",
-        "nodes": [
-          {
-            "any": [
-              {
-                "id": "color-contrast",
-                "data": {
-                  "fgColor": "#6b7280",
-                  "bgColor": "#d6dce6",
-                  "contrastRatio": 3.5,
-                  "fontSize": "12.0pt (16px)",
-                  "fontWeight": "bold",
-                  "messageKey": null,
-                  "expectedContrastRatio": "4.5:1"
-                },
-                "relatedNodes": [
-                  {
-                    "html": "<div class=\"orx-card p-6 orx-glass-card\">",
-                    "target": [
-                      ".orx-card"
-                    ]
-                  }
-                ],
-                "impact": "serious",
-                "message": "Element has insufficient color contrast of 3.5 (foreground color: #6b7280, background color: #d6dce6, font size: 12.0pt (16px), font weight: bold). Expected contrast ratio of 4.5:1"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "serious",
-            "html": "<div style=\"text-align: center; margin-top: 8px; margin-bottom: 12px; color: rgb(107, 114, 128); font-weight: 700;\">Gestão elevada pela IA</div>",
-            "target": [
-              ".orx-card > div > div:nth-child(2)"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.5 (foreground color: #6b7280, background color: #d6dce6, font size: 12.0pt (16px), font weight: bold). Expected contrast ratio of 4.5:1"
-          },
-          {
-            "any": [
-              {
-                "id": "color-contrast",
-                "data": {
-                  "fgColor": "#6b7280",
-                  "bgColor": "#d6dce6",
-                  "contrastRatio": 3.5,
-                  "fontSize": "12.0pt (16px)",
-                  "fontWeight": "normal",
-                  "messageKey": null,
-                  "expectedContrastRatio": "4.5:1"
-                },
-                "relatedNodes": [
-                  {
-                    "html": "<div class=\"orx-card p-6 orx-glass-card\">",
-                    "target": [
-                      ".orx-card"
-                    ]
-                  }
-                ],
-                "impact": "serious",
-                "message": "Element has insufficient color contrast of 3.5 (foreground color: #6b7280, background color: #d6dce6, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "serious",
-            "html": "<label for=\"email\" class=\"block text-body-sm  mb-2\" style=\"font-weight: 500; color: rgb(107, 114, 128);\">E-mail</label>",
-            "target": [
-              "label[for=\"email\"]"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.5 (foreground color: #6b7280, background color: #d6dce6, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
-          },
-          {
-            "any": [
-              {
-                "id": "color-contrast",
-                "data": {
-                  "fgColor": "#6b7280",
-                  "bgColor": "#d6dce6",
-                  "contrastRatio": 3.5,
-                  "fontSize": "12.0pt (16px)",
-                  "fontWeight": "normal",
-                  "messageKey": null,
-                  "expectedContrastRatio": "4.5:1"
-                },
-                "relatedNodes": [
-                  {
-                    "html": "<div class=\"orx-card p-6 orx-glass-card\">",
-                    "target": [
-                      ".orx-card"
-                    ]
-                  }
-                ],
-                "impact": "serious",
-                "message": "Element has insufficient color contrast of 3.5 (foreground color: #6b7280, background color: #d6dce6, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "serious",
-            "html": "<label for=\"password\" class=\"block text-body-sm  mb-2\" style=\"font-weight: 500; color: rgb(107, 114, 128);\">Senha</label>",
-            "target": [
-              "label[for=\"password\"]"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.5 (foreground color: #6b7280, background color: #d6dce6, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
-          },
-          {
-            "any": [
-              {
-                "id": "color-contrast",
-                "data": {
-                  "fgColor": "#6b7280",
-                  "bgColor": "#d6dce6",
-                  "contrastRatio": 3.5,
-                  "fontSize": "12.0pt (16px)",
-                  "fontWeight": "normal",
-                  "messageKey": null,
-                  "expectedContrastRatio": "4.5:1"
-                },
-                "relatedNodes": [
-                  {
-                    "html": "<div class=\"orx-card p-6 orx-glass-card\">",
-                    "target": [
-                      ".orx-card"
-                    ]
-                  }
-                ],
-                "impact": "serious",
-                "message": "Element has insufficient color contrast of 3.5 (foreground color: #6b7280, background color: #d6dce6, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "serious",
-            "html": "<a class=\"text-body-sm\" href=\"/reset-password\" style=\"color: rgb(107, 114, 128);\">Esqueceu sua senha?</a>",
-            "target": [
-              "a"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.5 (foreground color: #6b7280, background color: #d6dce6, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
-          },
-          {
-            "any": [
-              {
-                "id": "color-contrast",
-                "data": {
-                  "fgColor": "#6b7280",
-                  "bgColor": "#d6dce6",
-                  "contrastRatio": 3.5,
-                  "fontSize": "9.0pt (12px)",
-                  "fontWeight": "normal",
-                  "messageKey": null,
-                  "expectedContrastRatio": "4.5:1"
-                },
-                "relatedNodes": [
-                  {
-                    "html": "<div class=\"orx-card p-6 orx-glass-card\">",
-                    "target": [
-                      ".orx-card"
-                    ]
-                  }
-                ],
-                "impact": "serious",
-                "message": "Element has insufficient color contrast of 3.5 (foreground color: #6b7280, background color: #d6dce6, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "serious",
-            "html": "<p class=\"text-center\" style=\"margin-top: 24px; color: rgb(107, 114, 128); font-size: 0.75rem; white-space: nowrap;\">",
-            "target": [
-              "p"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.5 (foreground color: #6b7280, background color: #d6dce6, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
-          }
-        ]
-      }
-    ]
+    "violations": []
   }
 ]

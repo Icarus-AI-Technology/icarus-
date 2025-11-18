@@ -3,8 +3,20 @@
  * ICARUS v5.0
  */
 
+import { useState } from 'react';
+
 import { MaskedInput } from '@/components/ui/masked-input';
 import { Card } from '@/components/ui/card';
+
+type MaskField =
+  | 'cpf'
+  | 'cnpj'
+  | 'telefone'
+  | 'cep'
+  | 'data'
+  | 'moeda'
+  | 'porcentagem'
+  | 'placa';
 
 export const MasksExamplePage = () => {
   const [cpf, setCpf] = useState('');
@@ -16,11 +28,16 @@ export const MasksExamplePage = () => {
   const [porcentagem, setPorcentagem] = useState('');
   const [placa, setPlaca] = useState('');
 
-  const [validationStates, setValidationStates] = useState<Record<string, boolean>>({});
+  const [validationStates, setValidationStates] = useState<
+    Partial<Record<MaskField, boolean>>
+  >({});
 
-  const handleValueChange = (field: string) => (value: string, isValid: boolean) => {
-    setValidationStates((prev) => ({ ...prev, [field]: isValid }));
-  };
+  const createValueChangeHandler =
+    (field: MaskField, setter: (value: string) => void) =>
+    (value: string, isValid: boolean) => {
+      setter(value);
+      setValidationStates((prev) => ({ ...prev, [field]: isValid }));
+    };
 
   return (
     <div className="min-h-screen p-6 bg-[var(--background)]">
@@ -46,7 +63,7 @@ export const MasksExamplePage = () => {
               mask="CPF"
               label="CPF"
               value={cpf}
-              onValueChange={handleValueChange('cpf')}
+              onValueChange={createValueChangeHandler('cpf', setCpf)}
               helperText="Validação automática com dígitos verificadores"
               required
             />
@@ -63,7 +80,7 @@ export const MasksExamplePage = () => {
               mask="CNPJ"
               label="CNPJ"
               value={cnpj}
-              onValueChange={handleValueChange('cnpj')}
+              onValueChange={createValueChangeHandler('cnpj', setCnpj)}
               helperText="Validação automática com dígitos verificadores"
               required
             />
@@ -75,7 +92,7 @@ export const MasksExamplePage = () => {
               mask="Telefone"
               label="Telefone"
               value={telefone}
-              onValueChange={handleValueChange('telefone')}
+              onValueChange={createValueChangeHandler('telefone', setTelefone)}
               helperText="Aceita fixo (10 dígitos) e celular (11 dígitos)"
             />
           </Card>
@@ -86,7 +103,7 @@ export const MasksExamplePage = () => {
               mask="CEP"
               label="CEP"
               value={cep}
-              onValueChange={handleValueChange('cep')}
+              onValueChange={createValueChangeHandler('cep', setCep)}
               helperText="Formato: 00000-000"
             />
           </Card>
@@ -97,7 +114,7 @@ export const MasksExamplePage = () => {
               mask="Data"
               label="Data de Nascimento"
               value={data}
-              onValueChange={handleValueChange('data')}
+              onValueChange={createValueChangeHandler('data', setData)}
               helperText="Validação de data real (DD/MM/YYYY)"
               required
             />
@@ -109,7 +126,7 @@ export const MasksExamplePage = () => {
               mask="Moeda"
               label="Valor"
               value={moeda}
-              onValueChange={handleValueChange('moeda')}
+              onValueChange={createValueChangeHandler('moeda', setMoeda)}
               helperText="Formatação automática de moeda"
             />
           </Card>
@@ -120,7 +137,7 @@ export const MasksExamplePage = () => {
               mask="Porcentagem"
               label="Taxa"
               value={porcentagem}
-              onValueChange={handleValueChange('porcentagem')}
+              onValueChange={createValueChangeHandler('porcentagem', setPorcentagem)}
               helperText="De 0,00% a 100,00%"
             />
           </Card>
@@ -131,7 +148,7 @@ export const MasksExamplePage = () => {
               mask="Placa"
               label="Placa do Veículo"
               value={placa}
-              onValueChange={handleValueChange('placa')}
+              onValueChange={createValueChangeHandler('placa', setPlaca)}
               helperText="Formato Mercosul (AAA-0A00) ou antigo (AAA-0000)"
             />
           </Card>

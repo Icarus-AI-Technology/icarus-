@@ -11,7 +11,7 @@
     "grepInvert": null,
     "maxFailures": 5,
     "metadata": {
-      "actualWorkers": 2
+      "actualWorkers": 5
     },
     "preserveOutput": "always",
     "reporter": [
@@ -43,7 +43,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 2
+          "actualWorkers": 5
         },
         "id": "chromium",
         "name": "chromium",
@@ -73,21 +73,21 @@
   },
   "suites": [
     {
-      "title": "contact-form.spec.ts",
-      "file": "contact-form.spec.ts",
+      "title": "06-integrations.spec.ts",
+      "file": "06-integrations.spec.ts",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "Contato - Smoke",
-          "file": "contact-form.spec.ts",
-          "line": 3,
+          "title": "Integração - OCR (Tesseract)",
+          "file": "06-integrations.spec.ts",
+          "line": 8,
           "column": 6,
           "specs": [
             {
-              "title": "formulário de contato aceita entrada mínima",
-              "ok": true,
+              "title": "deve fazer upload de documento",
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -100,45 +100,68 @@
                     {
                       "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 1569,
-                      "errors": [],
+                      "status": "failed",
+                      "duration": 7065,
+                      "error": {
+                        "message": "TimeoutError: locator.setInputFiles: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[type=\"file\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: locator.setInputFiles: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[type=\"file\"]')\u001b[22m\n\n    at /Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts:13:5",
+                        "location": {
+                          "file": "/Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts",
+                          "column": 5,
+                          "line": 13
+                        },
+                        "snippet": "  11 |\n  12 |     const fileInput = page.locator('input[type=\"file\"]');\n> 13 |     await fileInput.setInputFiles(\"./tests/fixtures/documento-teste.pdf\");\n     |     ^\n  14 |\n  15 |     await expect(page.locator(\"text=/processando/i\")).toBeVisible({\n  16 |       timeout: 3000,"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts",
+                            "column": 5,
+                            "line": 13
+                          },
+                          "message": "TimeoutError: locator.setInputFiles: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[type=\"file\"]')\u001b[22m\n\n\n  11 |\n  12 |     const fileInput = page.locator('input[type=\"file\"]');\n> 13 |     await fileInput.setInputFiles(\"./tests/fixtures/documento-teste.pdf\");\n     |     ^\n  14 |\n  15 |     await expect(page.locator(\"text=/processando/i\")).toBeVisible({\n  16 |       timeout: 3000,\n    at /Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts:13:5"
+                        }
+                      ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-17T23:44:47.820Z",
+                      "startTime": "2025-11-18T11:21:57.957Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/daxmeneghel/icarus-make/test-results/06-integrations-Integração-a4286-e-fazer-upload-de-documento-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/daxmeneghel/icarus-make/test-results/06-integrations-Integração-a4286-e-fazer-upload-de-documento-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/daxmeneghel/icarus-make/test-results/06-integrations-Integração-a4286-e-fazer-upload-de-documento-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts",
+                        "column": 5,
+                        "line": 13
+                      }
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
-              "id": "19bfce10c51128c14abd-7281b54ceb02a44cfcdb",
-              "file": "contact-form.spec.ts",
-              "line": 4,
+              "id": "ee32c022926ef39a7eb6-38f796d0599f1ec85ce9",
+              "file": "06-integrations.spec.ts",
+              "line": 9,
               "column": 3
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "smoke-login.spec.ts",
-      "file": "smoke-login.spec.ts",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "Autenticação - Smoke",
-          "file": "smoke-login.spec.ts",
-          "line": 3,
-          "column": 6,
-          "specs": [
+            },
             {
-              "title": "login básico renderiza elementos principais",
-              "ok": true,
+              "title": "deve exibir resultado do OCR",
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -151,23 +174,537 @@
                     {
                       "workerIndex": 1,
                       "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 575,
+                      "status": "failed",
+                      "duration": 6926,
+                      "error": {
+                        "message": "TimeoutError: locator.setInputFiles: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[type=\"file\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: locator.setInputFiles: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[type=\"file\"]')\u001b[22m\n\n    at /Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts:34:5",
+                        "location": {
+                          "file": "/Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts",
+                          "column": 5,
+                          "line": 34
+                        },
+                        "snippet": "  32 |\n  33 |     const fileInput = page.locator('input[type=\"file\"]');\n> 34 |     await fileInput.setInputFiles(\"./tests/fixtures/nota-fiscal.jpg\");\n     |     ^\n  35 |\n  36 |     await expect(page.locator(\"text=NOTA FISCAL\")).toBeVisible({\n  37 |       timeout: 5000,"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts",
+                            "column": 5,
+                            "line": 34
+                          },
+                          "message": "TimeoutError: locator.setInputFiles: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[type=\"file\"]')\u001b[22m\n\n\n  32 |\n  33 |     const fileInput = page.locator('input[type=\"file\"]');\n> 34 |     await fileInput.setInputFiles(\"./tests/fixtures/nota-fiscal.jpg\");\n     |     ^\n  35 |\n  36 |     await expect(page.locator(\"text=NOTA FISCAL\")).toBeVisible({\n  37 |       timeout: 5000,\n    at /Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts:34:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-18T11:21:57.968Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/daxmeneghel/icarus-make/test-results/06-integrations-Integração-8857a-eve-exibir-resultado-do-OCR-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/daxmeneghel/icarus-make/test-results/06-integrations-Integração-8857a-eve-exibir-resultado-do-OCR-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/daxmeneghel/icarus-make/test-results/06-integrations-Integração-8857a-eve-exibir-resultado-do-OCR-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts",
+                        "column": 5,
+                        "line": 34
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "ee32c022926ef39a7eb6-05ef6fece97f023c87cf",
+              "file": "06-integrations.spec.ts",
+              "line": 20,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Integração - Email (SendGrid)",
+          "file": "06-integrations.spec.ts",
+          "line": 42,
+          "column": 6,
+          "specs": [
+            {
+              "title": "deve enviar email de notificação",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 6694,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Enviar Teste\")')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Enviar Teste\")')\u001b[22m\n\n    at /Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts:53:16",
+                        "location": {
+                          "file": "/Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts",
+                          "column": 16,
+                          "line": 53
+                        },
+                        "snippet": "  51 |     });\n  52 |\n> 53 |     await page.click('button:has-text(\"Enviar Teste\")');\n     |                ^\n  54 |\n  55 |     await expect(page.locator(\"text=/email enviado/i\")).toBeVisible({\n  56 |       timeout: 3000,"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts",
+                            "column": 16,
+                            "line": 53
+                          },
+                          "message": "TimeoutError: page.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Enviar Teste\")')\u001b[22m\n\n\n  51 |     });\n  52 |\n> 53 |     await page.click('button:has-text(\"Enviar Teste\")');\n     |                ^\n  54 |\n  55 |     await expect(page.locator(\"text=/email enviado/i\")).toBeVisible({\n  56 |       timeout: 3000,\n    at /Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts:53:16"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-18T11:21:57.979Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/daxmeneghel/icarus-make/test-results/06-integrations-Integração-daa29-enviar-email-de-notificação-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/daxmeneghel/icarus-make/test-results/06-integrations-Integração-daa29-enviar-email-de-notificação-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/daxmeneghel/icarus-make/test-results/06-integrations-Integração-daa29-enviar-email-de-notificação-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts",
+                        "column": 16,
+                        "line": 53
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "ee32c022926ef39a7eb6-9af97c073c1ad7a5ad6f",
+              "file": "06-integrations.spec.ts",
+              "line": 43,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Integração - SMS (Twilio)",
+          "file": "06-integrations.spec.ts",
+          "line": 61,
+          "column": 6,
+          "specs": [
+            {
+              "title": "deve enviar SMS",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 6507,
+                      "error": {
+                        "message": "TimeoutError: page.fill: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"telefone\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.fill: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"telefone\"]')\u001b[22m\n\n    at /Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts:72:16",
+                        "location": {
+                          "file": "/Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts",
+                          "column": 16,
+                          "line": 72
+                        },
+                        "snippet": "  70 |     });\n  71 |\n> 72 |     await page.fill('input[name=\"telefone\"]', \"+5511999999999\");\n     |                ^\n  73 |     await page.fill('textarea[name=\"mensagem\"]', \"Mensagem de teste\");\n  74 |     await page.click('button:has-text(\"Enviar SMS\")');\n  75 |"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts",
+                            "column": 16,
+                            "line": 72
+                          },
+                          "message": "TimeoutError: page.fill: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"telefone\"]')\u001b[22m\n\n\n  70 |     });\n  71 |\n> 72 |     await page.fill('input[name=\"telefone\"]', \"+5511999999999\");\n     |                ^\n  73 |     await page.fill('textarea[name=\"mensagem\"]', \"Mensagem de teste\");\n  74 |     await page.click('button:has-text(\"Enviar SMS\")');\n  75 |\n    at /Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts:72:16"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-18T11:21:57.966Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/daxmeneghel/icarus-make/test-results/06-integrations-Integração---SMS-Twilio-deve-enviar-SMS-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/daxmeneghel/icarus-make/test-results/06-integrations-Integração---SMS-Twilio-deve-enviar-SMS-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/daxmeneghel/icarus-make/test-results/06-integrations-Integração---SMS-Twilio-deve-enviar-SMS-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts",
+                        "column": 16,
+                        "line": 72
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "ee32c022926ef39a7eb6-54c537ffdeea027e36c8",
+              "file": "06-integrations.spec.ts",
+              "line": 62,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Integração - GPT Researcher",
+          "file": "06-integrations.spec.ts",
+          "line": 82,
+          "column": 6,
+          "specs": [
+            {
+              "title": "deve fazer pesquisa com IA",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 6876,
+                      "error": {
+                        "message": "TimeoutError: page.fill: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"query\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.fill: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"query\"]')\u001b[22m\n\n    at /Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts:99:16",
+                        "location": {
+                          "file": "/Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts",
+                          "column": 16,
+                          "line": 99
+                        },
+                        "snippet": "   97 |     });\n   98 |\n>  99 |     await page.fill('input[name=\"query\"]', \"Tendências em OPME 2025\");\n      |                ^\n  100 |     await page.click('button:has-text(\"Pesquisar\")');\n  101 |\n  102 |     await expect(page.locator(\"text=/relatório gerado/i\")).toBeVisible({"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts",
+                            "column": 16,
+                            "line": 99
+                          },
+                          "message": "TimeoutError: page.fill: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"query\"]')\u001b[22m\n\n\n   97 |     });\n   98 |\n>  99 |     await page.fill('input[name=\"query\"]', \"Tendências em OPME 2025\");\n      |                ^\n  100 |     await page.click('button:has-text(\"Pesquisar\")');\n  101 |\n  102 |     await expect(page.locator(\"text=/relatório gerado/i\")).toBeVisible({\n    at /Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts:99:16"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-18T11:21:57.960Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/daxmeneghel/icarus-make/test-results/06-integrations-Integração-c60c8--deve-fazer-pesquisa-com-IA-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/daxmeneghel/icarus-make/test-results/06-integrations-Integração-c60c8--deve-fazer-pesquisa-com-IA-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/daxmeneghel/icarus-make/test-results/06-integrations-Integração-c60c8--deve-fazer-pesquisa-com-IA-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/daxmeneghel/icarus-make/tests/e2e/06-integrations.spec.ts",
+                        "column": 16,
+                        "line": 99
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "ee32c022926ef39a7eb6-31ab5f2790360c180b37",
+              "file": "06-integrations.spec.ts",
+              "line": 83,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Integração - Analytics (PostHog)",
+          "file": "06-integrations.spec.ts",
+          "line": 108,
+          "column": 6,
+          "specs": [
+            {
+              "title": "deve rastrear eventos",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "interrupted",
+                      "duration": 1,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-17T23:44:47.820Z",
+                      "startTime": "2025-11-18T11:22:05.421Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "expected"
+                  "status": "skipped"
                 }
               ],
-              "id": "eaec42e0ae069e51776a-23947addbb967d1a9610",
-              "file": "smoke-login.spec.ts",
-              "line": 4,
+              "id": "ee32c022926ef39a7eb6-cf9cad5808a8657109fa",
+              "file": "06-integrations.spec.ts",
+              "line": 109,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Integração - Filas (BullMQ)",
+          "file": "06-integrations.spec.ts",
+          "line": 128,
+          "column": 6,
+          "specs": [
+            {
+              "title": "deve adicionar job à fila",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 2,
+                      "status": "interrupted",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-18T11:22:05.500Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ee32c022926ef39a7eb6-01880ae6bd3d0380e4a7",
+              "file": "06-integrations.spec.ts",
+              "line": 129,
+              "column": 3
+            },
+            {
+              "title": "deve monitorar progresso do job",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 4,
+                      "status": "interrupted",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-18T11:22:05.572Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ee32c022926ef39a7eb6-49777e8d7da19deaf484",
+              "file": "06-integrations.spec.ts",
+              "line": 146,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Integração - Supabase",
+          "file": "06-integrations.spec.ts",
+          "line": 165,
+          "column": 6,
+          "specs": [
+            {
+              "title": "deve autenticar com Supabase",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 1,
+                      "status": "interrupted",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-18T11:22:05.591Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ee32c022926ef39a7eb6-84768b47dcd52fad2e62",
+              "file": "06-integrations.spec.ts",
+              "line": 166,
+              "column": 3
+            },
+            {
+              "title": "deve fazer query no Supabase",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ee32c022926ef39a7eb6-3f2bdeb1b1c355536c0f",
+              "file": "06-integrations.spec.ts",
+              "line": 186,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Integração - Brasil API",
+          "file": "06-integrations.spec.ts",
+          "line": 205,
+          "column": 6,
+          "specs": [
+            {
+              "title": "deve buscar CEP",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ee32c022926ef39a7eb6-84d3f82023e1c738d90d",
+              "file": "06-integrations.spec.ts",
+              "line": 206,
+              "column": 3
+            },
+            {
+              "title": "deve buscar CNPJ",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ee32c022926ef39a7eb6-2109a24e05be432b4337",
+              "file": "06-integrations.spec.ts",
+              "line": 231,
               "column": 3
             }
           ]
@@ -175,13 +712,17 @@
       ]
     }
   ],
-  "errors": [],
+  "errors": [
+    {
+      "message": "Testing stopped early after 5 maximum allowed failures."
+    }
+  ],
   "stats": {
-    "startTime": "2025-11-17T23:44:47.517Z",
-    "duration": 2102.341,
-    "expected": 2,
-    "skipped": 0,
-    "unexpected": 0,
+    "startTime": "2025-11-18T11:21:57.284Z",
+    "duration": 8309.288,
+    "expected": 0,
+    "skipped": 7,
+    "unexpected": 5,
     "flaky": 0
   }
 }

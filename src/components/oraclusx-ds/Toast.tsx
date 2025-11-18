@@ -77,7 +77,7 @@ export const Toast: React.FC<ToastProps> = ({
       <div className="flex items-start gap-3">
         <Icon className="flex-shrink-0 mt-0.5" size={20} />
         <div className="flex-1 min-w-0">
-          {title && <h4 className="mb-1 font-medium">{title}</h4>}
+          {title && <h4 className="mb-1 orx-orx-font-medium">{title}</h4>}
           <p className="text-body-sm">{message}</p>
         </div>
         {onClose && (

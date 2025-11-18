@@ -7,7 +7,7 @@
  */
 
 import { useState } from 'react';
-import { ArrowLeft, Truck, Phone, MapPin, Link as LinkIcon, DollarSign, Star, Eye, EyeOff } from 'lucide-react';
+import { ArrowLeft, Truck, MapPin, Link as LinkIcon, Star, Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { NeumoInput, NeumoTextarea, NeumoButton } from '@/components/oraclusx-ds';
@@ -107,7 +107,7 @@ export default function CadastroTransportadoras() {
               <Truck className="w-6 h-6 text-orx-primary" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-orx-text-primary">
+              <h1 className="orx-text-3xl orx-orx-font-bold text-orx-text-primary">
                 Cadastro de Transportadoras
               </h1>
               <p className="text-orx-text-secondary mt-1">
@@ -120,7 +120,7 @@ export default function CadastroTransportadoras() {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Dados Institucionais */}
           <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
-            <h2 className="text-lg font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
+            <h2 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
               <Truck className="w-5 h-5 text-orx-primary" />
               Dados Institucionais
             </h2>
@@ -148,13 +148,18 @@ export default function CadastroTransportadoras() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-orx-text-primary mb-2">
+                <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2">
                   Tipo de Transporte <span className="text-orx-danger">*</span>
                 </label>
                 <select
                   value={formData.tipo}
-                  onChange={(e) => setFormData({ ...formData, tipo: e.target.value as any })}
-                  className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2 focus-visible:shadow-neumo-sm"
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      tipo: e.target.value as TransportadoraFormData['tipo'],
+                    })
+                  }
+                  className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary orx-text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2 focus-visible:shadow-neumo-sm"
                   required
                 >
                   <option value="">Selecione...</option>
@@ -199,7 +204,7 @@ export default function CadastroTransportadoras() {
 
           {/* Dados Operacionais */}
           <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
-            <h2 className="text-lg font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
+            <h2 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
               <MapPin className="w-5 h-5 text-orx-primary" />
               Dados Operacionais
             </h2>
@@ -251,7 +256,7 @@ export default function CadastroTransportadoras() {
             </div>
             
             <div className="mt-4">
-              <label className="block text-sm font-medium text-orx-text-primary mb-2">
+              <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2">
                 Avaliação
               </label>
               <div className="flex items-center gap-2">
@@ -272,7 +277,7 @@ export default function CadastroTransportadoras() {
                   </button>
                 ))}
                 {formData.avaliacao && (
-                  <span className="ml-2 text-sm text-orx-text-secondary">
+                  <span className="ml-2 orx-text-sm text-orx-text-secondary">
                     {formData.avaliacao}/5
                   </span>
                 )}
@@ -282,7 +287,7 @@ export default function CadastroTransportadoras() {
 
           {/* Integração API */}
           <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
-            <h2 className="text-lg font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
+            <h2 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
               <LinkIcon className="w-5 h-5 text-orx-primary" />
               Integração de API
             </h2>
@@ -295,7 +300,7 @@ export default function CadastroTransportadoras() {
                   onChange={(e) => setFormData({ ...formData, possui_api: e.target.checked })}
                   className="w-4 h-4 rounded border-orx-border-subtle"
                 />
-                <span className="text-sm text-orx-text-primary">
+                <span className="orx-text-sm text-orx-text-primary">
                   Esta transportadora possui API de rastreamento
                 </span>
               </label>
@@ -315,13 +320,18 @@ export default function CadastroTransportadoras() {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-orx-text-primary mb-2">
+                    <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2">
                       Tipo de Autenticação
                     </label>
                     <select
                       value={formData.api_auth_type || ''}
-                      onChange={(e) => setFormData({ ...formData, api_auth_type: e.target.value as any })}
-                      className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          api_auth_type: e.target.value as TransportadoraFormData['api_auth_type'],
+                        })
+                      }
+                      className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary orx-text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2"
                     >
                       <option value="">Selecione...</option>
                       {TIPOS_AUTH.map(tipo => (
@@ -331,7 +341,7 @@ export default function CadastroTransportadoras() {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-orx-text-primary mb-2">
+                    <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2">
                       Token/Chave de API
                     </label>
                     <div className="relative">
@@ -340,7 +350,7 @@ export default function CadastroTransportadoras() {
                         value={formData.api_token || ''}
                         onChange={(e) => setFormData({ ...formData, api_token: e.target.value })}
                         placeholder="••••••••••••••••"
-                        className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 pr-10 text-orx-text-primary text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2"
+                        className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 pr-10 text-orx-text-primary orx-text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2"
                       />
                       <button
                         type="button"

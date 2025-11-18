@@ -50,21 +50,12 @@ export default function DashboardExemplo() {
         {/* Header */}
         <div className="mb-8">
           <h1
-            className="text-[var(--text-primary)] mb-2"
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '0.813rem',
-              fontWeight: 700,
-            }}
+            className="text-[var(--text-primary)] mb-2 text-[0.813rem] orx-font-bold"
           >
             Dashboard Executivo
           </h1>
           <p
-            className="text-[var(--text-secondary)]"
-            style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '0.813rem',
-            }}
+            className="text-[var(--text-secondary)] text-[0.813rem]"
           >
             Visão geral das operações em tempo real
           </p>

@@ -235,7 +235,16 @@ export class CirurgiasAI {
         quantidadeTotal: number;
       }>();
 
-      for (const cirurgia of cirurgiasSimilares || []) {
+      const cirurgiasList = (cirurgiasSimilares as Array<{
+        cirurgias_produtos?: Array<{
+          produto_id: string;
+          quantidade_consumida?: number;
+          quantidade_planejada?: number;
+          produto?: { descricao?: string };
+        }>;
+      }> | null) ?? [];
+
+      for (const cirurgia of cirurgiasList) {
         const produtos = cirurgia.cirurgias_produtos || [];
         for (const item of produtos as Array<{ produto_id: string; quantidade_consumida?: number; quantidade_planejada?: number; produto?: { descricao?: string } }>) {
           const produtoId = item.produto_id;

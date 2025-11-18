@@ -79,14 +79,14 @@ export const WithForm: Story = {
         <Dialog isOpen={isOpen} onClose={() => setIsOpen(false)} title="Adicionar Item">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Nome</label>
+              <label className="block orx-text-sm orx-orx-font-medium mb-1">Nome</label>
               <input 
                 className="w-full orx-input" 
                 placeholder="Digite o nome"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Descrição</label>
+              <label className="block orx-text-sm orx-orx-font-medium mb-1">Descrição</label>
               <textarea 
                 className="w-full orx-input min-h-[100px]" 
                 placeholder="Digite a descrição"

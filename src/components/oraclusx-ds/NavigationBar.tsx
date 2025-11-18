@@ -52,7 +52,7 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({
           <button
             key={tab.id}
             onClick={() => handleTabClick(tab.id)}
-            className={cn("relative inline-flex items-center gap-2 px-6 py-2.5 rounded-lg","font-medium text-body-sm transition-all duration-200","focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary",
+            className={cn("relative inline-flex items-center gap-2 px-6 py-2.5 rounded-lg","orx-orx-font-medium text-body-sm transition-all duration-200","focus:outline-none focus:ring-3 focus:ring-offset-2 focus:ring-primary",
               isActive
                 ?"bg-primary text-inverse shadow-md"
                 :"text-secondary dark:text-muted hover:bg-surface dark:hover:bg-gray-700",
@@ -62,7 +62,7 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({
             <span>{tab.label}</span>
             {tab.badge !== undefined && tab.badge > 0 && (
               <span
-                className={cn("ml-2 px-2 py-0.5 rounded-full text-body-xs font-medium",
+                className={cn("ml-2 px-2 py-0.5 rounded-full text-body-xs orx-orx-font-medium",
                   isActive
                     ?"bg-surface text-primary"
                     :"bg-primary text-inverse",

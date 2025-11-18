@@ -1,11 +1,13 @@
 /**
  * Hook: useAuth
  * Gerenciamento de autenticação com Supabase
+ * Compatível com AuthContext (usuario) e Supabase (user)
  */
 
 import { useState, useEffect, useCallback } from 'react';
 import type { Session as SupabaseSession, User as SupabaseUser } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
+import { useAuth as useAuthContext } from '@/contexts/AuthContext';
 
 interface Profile {
   id: string;
@@ -23,6 +25,9 @@ interface Empresa {
 }
 
 export function useAuth() {
+  // Importar contexto para compatibilidade
+  const authContext = useAuthContext();
+  
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [empresaAtual, setEmpresaAtual] = useState<Empresa | null>(null);
@@ -163,6 +168,7 @@ export function useAuth() {
   };
 
   return {
+    // Supabase Auth (compatibilidade com código existente)
     user,
     profile,
     empresaAtual,
@@ -175,6 +181,20 @@ export function useAuth() {
     updateProfile,
     isAuthenticated: !!user,
     isAdmin: profile?.role === 'admin',
+    
+    // AuthContext (compatibilidade com novos hooks)
+    usuario: authContext?.usuario || (user ? {
+      id: user.id,
+      email: user.email || '',
+      nome_completo: profile?.full_name || '',
+      cargo: profile?.role || '',
+      empresa_id: empresaAtual?.id || '',
+      empresa_nome: empresaAtual?.nome,
+      avatar_url: profile?.avatar_url,
+    } : null),
+    permissoes: authContext?.permissoes || [],
+    temPermissao: authContext?.temPermissao || (() => false),
+    temAcessoRecurso: authContext?.temAcessoRecurso || (() => false),
   };
 }
 

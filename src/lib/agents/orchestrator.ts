@@ -9,12 +9,12 @@ const execAsync = promisify(exec);
 export type AgentCommand = {
   agent: 'IA-Validator' | 'Contador' | 'Advogado' | 'Gestao' | 'Tutor';
   action: string;
-  params?: Record<string, any>;
+  params?: Record<string, unknown>;
 };
 
 export type AgentResponse = {
   success: boolean;
-  data?: any;
+  data?: unknown;
   error?: string;
   executionTime?: number;
 };
@@ -73,7 +73,7 @@ export class AgentOrchestrator {
         };
       }
 
-      const { stdout, stderr } = await execAsync(script);
+      const { stdout } = await execAsync(script);
       const executionTime = Date.now() - startTime;
 
       return {
@@ -81,10 +81,11 @@ export class AgentOrchestrator {
         data: stdout,
         executionTime,
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
       return {
         success: false,
-        error: error.message,
+        error: message,
         executionTime: Date.now() - startTime,
       };
     }

@@ -216,7 +216,7 @@ export default function FormularioEntregas() {
                 <input type="checkbox" checked={field.value} onChange={field.onChange}
                        className="h-4 w-4 rounded border-[hsl(var(--border))] text-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]" />
               )} />
-              <span className="text-sm text-[hsl(var(--text-secondary))]">Temperatura Controlada</span>
+              <span className="orx-text-sm text-[hsl(var(--text-secondary))]">Temperatura Controlada</span>
             </label>
 
             <label className="flex items-center gap-2 cursor-pointer">
@@ -224,7 +224,7 @@ export default function FormularioEntregas() {
                 <input type="checkbox" checked={field.value} onChange={field.onChange}
                        className="h-4 w-4 rounded border-[hsl(var(--border))] text-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]" />
               )} />
-              <span className="text-sm text-[hsl(var(--text-secondary))]">Frágil</span>
+              <span className="orx-text-sm text-[hsl(var(--text-secondary))]">Frágil</span>
             </label>
 
             <label className="flex items-center gap-2 cursor-pointer">
@@ -232,7 +232,7 @@ export default function FormularioEntregas() {
                 <input type="checkbox" checked={field.value} onChange={field.onChange}
                        className="h-4 w-4 rounded border-[hsl(var(--border))] text-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]" />
               )} />
-              <span className="text-sm text-[hsl(var(--text-secondary))]">Urgente</span>
+              <span className="orx-text-sm text-[hsl(var(--text-secondary))]">Urgente</span>
             </label>
           </div>
 

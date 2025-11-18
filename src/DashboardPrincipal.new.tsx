@@ -38,10 +38,10 @@ export default function DashboardPrincipal() {
         {/* Header */}
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-[var(--orx-text-primary)] mb-1">
+            <h1 className="orx-text-2xl orx-orx-font-bold text-[var(--orx-text-primary)] mb-1">
               Dashboard Principal
             </h1>
-            <p className="text-sm text-[var(--orx-text-secondary)]">
+            <p className="orx-text-sm text-[var(--orx-text-secondary)]">
               Visão geral do sistema ICARUS v5.0
             </p>
           </div>
@@ -49,14 +49,14 @@ export default function DashboardPrincipal() {
           <div className="flex items-center gap-3">
             <button
               onClick={handleRefresh}
-              className="orx-button-primary px-4 py-2.5 rounded-xl flex items-center gap-2 text-sm font-semibold"
+              className="orx-button-primary px-4 py-2.5 rounded-xl flex items-center gap-2 orx-text-sm orx-orx-font-semibold"
               disabled={loading}
             >
               <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
               Atualizar Dados
             </button>
             <button
-              className="orx-button-primary px-4 py-2.5 rounded-xl flex items-center gap-2 text-sm font-semibold"
+              className="orx-button-primary px-4 py-2.5 rounded-xl flex items-center gap-2 orx-text-sm orx-orx-font-semibold"
             >
               <FileText size={16} />
               Relatório Completo
@@ -74,13 +74,13 @@ export default function DashboardPrincipal() {
               </div>
             </div>
             <div className="space-y-1">
-              <p className="text-sm text-[var(--orx-text-secondary)] font-medium">
+              <p className="orx-text-sm text-[var(--orx-text-secondary)] orx-orx-font-medium">
                 Sistema Status
               </p>
-              <p className="text-3xl font-bold text-[var(--orx-text-primary)]">
+              <p className="orx-text-3xl orx-orx-font-bold text-[var(--orx-text-primary)]">
                 98%
               </p>
-              <div className="flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+              <div className="flex items-center gap-1 orx-text-xs orx-orx-font-medium text-emerald-600 dark:text-emerald-400">
                 <TrendingUp size={14} />
                 <span>+2.3%</span>
               </div>
@@ -95,13 +95,13 @@ export default function DashboardPrincipal() {
               </div>
             </div>
             <div className="space-y-1">
-              <p className="text-sm text-[var(--orx-text-secondary)] font-medium">
+              <p className="orx-text-sm text-[var(--orx-text-secondary)] orx-orx-font-medium">
                 Médicos Ativos
               </p>
-              <p className="text-3xl font-bold text-[var(--orx-text-primary)]">
+              <p className="orx-text-3xl orx-orx-font-bold text-[var(--orx-text-primary)]">
                 1.847
               </p>
-              <div className="flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+              <div className="flex items-center gap-1 orx-text-xs orx-orx-font-medium text-emerald-600 dark:text-emerald-400">
                 <TrendingUp size={14} />
                 <span>+12.5%</span>
               </div>
@@ -116,13 +116,13 @@ export default function DashboardPrincipal() {
               </div>
             </div>
             <div className="space-y-1">
-              <p className="text-sm text-[var(--orx-text-secondary)] font-medium">
+              <p className="orx-text-sm text-[var(--orx-text-secondary)] orx-orx-font-medium">
                 Produtos OPME
               </p>
-              <p className="text-3xl font-bold text-[var(--orx-text-primary)]">
+              <p className="orx-text-3xl orx-orx-font-bold text-[var(--orx-text-primary)]">
                 12.4K
               </p>
-              <div className="flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+              <div className="flex items-center gap-1 orx-text-xs orx-orx-font-medium text-emerald-600 dark:text-emerald-400">
                 <TrendingUp size={14} />
                 <span>+5.2%</span>
               </div>
@@ -137,13 +137,13 @@ export default function DashboardPrincipal() {
               </div>
             </div>
             <div className="space-y-1">
-              <p className="text-sm text-[var(--orx-text-secondary)] font-medium">
+              <p className="orx-text-sm text-[var(--orx-text-secondary)] orx-orx-font-medium">
                 Pedidos Urgentes
               </p>
-              <p className="text-3xl font-bold text-[var(--orx-text-primary)]">
+              <p className="orx-text-3xl orx-orx-font-bold text-[var(--orx-text-primary)]">
                 89
               </p>
-              <div className="flex items-center gap-1 text-xs font-medium text-red-600 dark:text-red-400">
+              <div className="flex items-center gap-1 orx-text-xs orx-orx-font-medium text-red-600 dark:text-red-400">
                 <TrendingDown size={14} />
                 <span>-8.1%</span>
               </div>
@@ -160,15 +160,15 @@ export default function DashboardPrincipal() {
                 <DollarSign className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
               </div>
               <div className="flex-1">
-                <p className="text-sm text-[var(--orx-text-secondary)] font-medium mb-2">
+                <p className="orx-text-sm text-[var(--orx-text-secondary)] orx-orx-font-medium mb-2">
                   Faturamento Mensal
                 </p>
-                <p className="text-4xl font-bold text-[var(--orx-text-primary)] mb-1">
+                <p className="orx-text-4xl orx-orx-font-bold text-[var(--orx-text-primary)] mb-1">
                   R$ 3.8M
                 </p>
-                <div className="flex items-center gap-3 text-xs">
+                <div className="flex items-center gap-3 orx-text-xs">
                   <span className="text-[var(--orx-text-secondary)]">R$ 127K média diária</span>
-                  <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium">
+                  <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 orx-orx-font-medium">
                     <TrendingUp size={12} />
                     <span>+15.3%</span>
                   </div>
@@ -184,15 +184,15 @@ export default function DashboardPrincipal() {
                 <MapPin className="w-7 h-7 text-indigo-600 dark:text-indigo-400" />
               </div>
               <div className="flex-1">
-                <p className="text-sm text-[var(--orx-text-secondary)] font-medium mb-2">
+                <p className="orx-text-sm text-[var(--orx-text-secondary)] orx-orx-font-medium mb-2">
                   Distribuição Geográfica
                 </p>
-                <p className="text-4xl font-bold text-[var(--orx-text-primary)] mb-1">
+                <p className="orx-text-4xl orx-orx-font-bold text-[var(--orx-text-primary)] mb-1">
                   147
                 </p>
-                <div className="flex items-center gap-3 text-xs">
+                <div className="flex items-center gap-3 orx-text-xs">
                   <span className="text-[var(--orx-text-secondary)]">28 cidades</span>
-                  <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium">
+                  <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 orx-orx-font-medium">
                     <TrendingUp size={12} />
                     <span>+8.7%</span>
                   </div>
@@ -211,15 +211,15 @@ export default function DashboardPrincipal() {
                 <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />
               </div>
               <div className="flex-1">
-                <p className="text-sm font-semibold text-[var(--orx-text-primary)]">
+                <p className="orx-text-sm orx-orx-font-semibold text-[var(--orx-text-primary)]">
                   Estoque Crítico
                 </p>
               </div>
             </div>
-            <p className="text-3xl font-bold text-[var(--orx-text-primary)] mb-1">
+            <p className="orx-text-3xl orx-orx-font-bold text-[var(--orx-text-primary)] mb-1">
               8
             </p>
-            <p className="text-xs text-[var(--orx-text-secondary)]">
+            <p className="orx-text-xs text-[var(--orx-text-secondary)]">
               produtos em falta
             </p>
           </div>
@@ -231,15 +231,15 @@ export default function DashboardPrincipal() {
                 <Truck className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
               </div>
               <div className="flex-1">
-                <p className="text-sm font-semibold text-[var(--orx-text-primary)]">
+                <p className="orx-text-sm orx-orx-font-semibold text-[var(--orx-text-primary)]">
                   Logística
                 </p>
               </div>
             </div>
-            <p className="text-3xl font-bold text-[var(--orx-text-primary)] mb-1">
+            <p className="orx-text-3xl orx-orx-font-bold text-[var(--orx-text-primary)] mb-1">
               96.2%
             </p>
-            <p className="text-xs text-[var(--orx-text-secondary)]">
+            <p className="orx-text-xs text-[var(--orx-text-secondary)]">
               entregas no prazo
             </p>
           </div>
@@ -251,15 +251,15 @@ export default function DashboardPrincipal() {
                 <Brain className="w-5 h-5 text-purple-600 dark:text-purple-400" />
               </div>
               <div className="flex-1">
-                <p className="text-sm font-semibold text-[var(--orx-text-primary)]">
+                <p className="orx-text-sm orx-orx-font-semibold text-[var(--orx-text-primary)]">
                   Performance IA
                 </p>
               </div>
             </div>
-            <p className="text-3xl font-bold text-[var(--orx-text-primary)] mb-1">
+            <p className="orx-text-3xl orx-orx-font-bold text-[var(--orx-text-primary)] mb-1">
               97.3%
             </p>
-            <p className="text-xs text-[var(--orx-text-secondary)]">
+            <p className="orx-text-xs text-[var(--orx-text-secondary)]">
               precisão do sistema
             </p>
           </div>

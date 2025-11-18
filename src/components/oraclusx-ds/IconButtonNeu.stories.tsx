@@ -78,7 +78,7 @@ export const AllVariants: Story = {
   render: () => (
     <div className="flex flex-col gap-6 p-6 bg-[var(--bg-primary)] rounded-2xl neuro-raised">
       <div>
-        <p className="text-xs text-[var(--text-secondary)] mb-3">Tamanhos</p>
+        <p className="orx-text-xs text-[var(--text-secondary)] mb-3">Tamanhos</p>
         <div className="flex items-end gap-3">
           <IconButtonNeu icon={<Heart className="w-4 h-4" />} size="sm" aria-label="Pequeno" />
           <IconButtonNeu icon={<Heart className="w-5 h-5" />} size="md" aria-label="Médio" />
@@ -87,7 +87,7 @@ export const AllVariants: Story = {
       </div>
       
       <div>
-        <p className="text-xs text-[var(--text-secondary)] mb-3">Variantes</p>
+        <p className="orx-text-xs text-[var(--text-secondary)] mb-3">Variantes</p>
         <div className="flex gap-3">
           <IconButtonNeu icon={<Settings className="w-5 h-5" />} variant="default" aria-label="Default" />
           <IconButtonNeu icon={<Plus className="w-5 h-5" />} variant="primary" aria-label="Primary" />
@@ -95,7 +95,7 @@ export const AllVariants: Story = {
       </div>
       
       <div>
-        <p className="text-xs text-[var(--text-secondary)] mb-3">Ícones Diversos</p>
+        <p className="orx-text-xs text-[var(--text-secondary)] mb-3">Ícones Diversos</p>
         <div className="flex gap-3">
           <IconButtonNeu icon={<Search className="w-5 h-5" />} aria-label="Buscar" />
           <IconButtonNeu icon={<Bell className="w-5 h-5" />} aria-label="Notificações" />
@@ -105,7 +105,7 @@ export const AllVariants: Story = {
       </div>
       
       <div>
-        <p className="text-xs text-[var(--text-secondary)] mb-3">Desabilitado</p>
+        <p className="orx-text-xs text-[var(--text-secondary)] mb-3">Desabilitado</p>
         <div className="flex gap-3">
           <IconButtonNeu icon={<Settings className="w-5 h-5" />} disabled aria-label="Desabilitado" />
         </div>

@@ -13,15 +13,15 @@
        ======================================== */
     
     /* Background Principal */
-    --orx-bg-app: #e8ecf2;
-    --orx-bg-light: #edf1f7;
-    --orx-bg-surface: #f4f7fb;
-    --orx-bg-surface-elevated: #ffffff;
+    --orx-bg-app: #dce3eb;
+    --orx-bg-light: #e4eaf1;
+    --orx-bg-surface: #ebf0f6;
+    --orx-bg-surface-elevated: #f5f8fb;
     
     /* Cores de Texto */
     --orx-text-primary: #1a202c;
-    --orx-text-secondary: #4a5568;
-    --orx-text-muted: #718096;
+    --orx-text-secondary: #374151;
+    --orx-text-muted: #4a5568;
     --orx-text-disabled: #cbd5e0;
     
     /* Borders e Separadores */
@@ -30,9 +30,9 @@
     --orx-border-strong: rgba(0, 0, 0, 0.18);
     
     /* Cores de Acento */
-    --orx-primary: #6366f1;
-    --orx-primary-hover: #5558e3;
-    --orx-primary-light: rgba(99, 102, 241, 0.1);
+    --orx-primary: #4f46e5;
+    --orx-primary-hover: #4338ca;
+    --orx-primary-light: rgba(79, 70, 229, 0.15);
     
     --orx-success: #10b981;
     --orx-success-light: rgba(16, 185, 129, 0.1);
@@ -55,35 +55,35 @@
     
     /* Nível 1 - Cards de conteúdo padrão */
     --shadow-neumo-sm: 
-      6px 6px 12px rgba(163, 177, 198, 0.4),
-      -6px -6px 12px rgba(255, 255, 255, 0.8);
+      8px 8px 16px rgba(136, 151, 176, 0.5),
+      -8px -8px 16px rgba(255, 255, 255, 0.9);
     
     --shadow-neumo-sm-inset:
-      inset 4px 4px 8px rgba(163, 177, 198, 0.3),
-      inset -4px -4px 8px rgba(255, 255, 255, 0.7);
+      inset 5px 5px 10px rgba(136, 151, 176, 0.4),
+      inset -5px -5px 10px rgba(255, 255, 255, 0.8);
     
     /* Nível 2 - KPIs principais / elementos interativos */
     --shadow-neumo: 
-      10px 10px 20px rgba(163, 177, 198, 0.5),
-      -10px -10px 20px rgba(255, 255, 255, 0.9);
+      12px 12px 24px rgba(136, 151, 176, 0.6),
+      -12px -12px 24px rgba(255, 255, 255, 0.95);
     
     --shadow-neumo-inset:
-      inset 5px 5px 10px rgba(163, 177, 198, 0.4),
-      inset -5px -5px 10px rgba(255, 255, 255, 0.8);
+      inset 6px 6px 12px rgba(136, 151, 176, 0.5),
+      inset -6px -6px 12px rgba(255, 255, 255, 0.85);
     
     /* Nível 3 - Overlays (modais, popovers, chatbot) */
     --shadow-neumo-lg: 
-      14px 14px 28px rgba(163, 177, 198, 0.6),
-      -14px -14px 28px rgba(255, 255, 255, 1);
+      16px 16px 32px rgba(136, 151, 176, 0.7),
+      -16px -16px 32px rgba(255, 255, 255, 1);
     
     --shadow-neumo-lg-inset:
-      inset 6px 6px 12px rgba(163, 177, 198, 0.5),
-      inset -6px -6px 12px rgba(255, 255, 255, 0.9);
+      inset 8px 8px 16px rgba(136, 151, 176, 0.6),
+      inset -8px -8px 16px rgba(255, 255, 255, 0.95);
     
     /* Hover States */
     --shadow-neumo-hover:
-      12px 12px 24px rgba(163, 177, 198, 0.6),
-      -12px -12px 24px rgba(255, 255, 255, 0.95);
+      14px 14px 28px rgba(136, 151, 176, 0.65),
+      -14px -14px 28px rgba(255, 255, 255, 1);
     
     /* ========================================
        HIGHLIGHTS E GRADIENTES
@@ -153,8 +153,8 @@
     
     /* Cores de Texto */
     --orx-text-primary: #f7fafc;
-    --orx-text-secondary: #e2e8f0;
-    --orx-text-muted: #a0aec0;
+    --orx-text-secondary: #e5e7eb;
+    --orx-text-muted: #d1d5db;
     --orx-text-disabled: #4a5568;
     
     /* Borders e Separadores */
@@ -163,9 +163,9 @@
     --orx-border-strong: rgba(255, 255, 255, 0.16);
     
     /* Cores de Acento (mantém as mesmas, mas ajusta opacidade dos light) */
-    --orx-primary: #6366f1;
-    --orx-primary-hover: #7c3aed;
-    --orx-primary-light: rgba(99, 102, 241, 0.15);
+    --orx-primary: #818cf8;
+    --orx-primary-hover: #a5b4fc;
+    --orx-primary-light: rgba(129, 140, 248, 0.2);
     
     --orx-success: #10b981;
     --orx-success-light: rgba(16, 185, 129, 0.15);

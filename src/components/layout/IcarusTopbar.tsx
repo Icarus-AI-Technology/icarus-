@@ -6,7 +6,6 @@
 
 import React from"react";
 import { 
-  Bell, 
   HelpCircle, 
   Menu, 
   Moon, 
@@ -15,14 +14,13 @@ import {
   User
 } from"lucide-react";
 import { SearchContainer } from"../oraclusx-ds/SearchContainer";
+import { NotificationSystem } from"../notifications/NotificationSystem";
 
 export interface IcarusTopbarProps {
   sidebarCollapsed: boolean;
   darkMode: boolean;
-  unreadCount?: number;
   onToggleSidebar: () => void;
   onToggleDarkMode: () => void;
-  onOpenNotifications?: () => void;
   onOpenSettings?: () => void;
   onOpenHelp?: () => void;
   userName?: string;
@@ -32,10 +30,8 @@ export interface IcarusTopbarProps {
 export const IcarusTopbar: React.FC<IcarusTopbarProps> = ({
   sidebarCollapsed,
   darkMode,
-  unreadCount: _unreadCount = 0,
   onToggleSidebar,
   onToggleDarkMode,
-  onOpenNotifications,
   onOpenSettings,
   onOpenHelp,
   userName ="Roberto Silva",
@@ -46,10 +42,10 @@ export const IcarusTopbar: React.FC<IcarusTopbarProps> = ({
       className="neumorphic-card fixed left-0 right-0 z-40 flex items-center justify-between px-6 py-2" 
       style={{ 
         top: '16px', 
-        marginLeft: sidebarCollapsed ? '88px' : '314px', // Dinâmico: 64px (sidebar) + 24px (gap) = 88px
+        marginLeft: sidebarCollapsed ? '88px' : '284px', // Dinâmico: 64px (sidebar) + 24px (gap) = 88px | 260px + 24px = 284px
         marginRight: '16px',
         height: '64px',
-        transition: 'margin-left 0.3s ease' // Transição suave
+        transition: 'margin-left 0.2s ease' // Transição suave
       }}
     >
       {/* Esquerda: Menu + Busca */}
@@ -93,29 +89,8 @@ export const IcarusTopbar: React.FC<IcarusTopbarProps> = ({
           <HelpCircle size={20} />
         </button>
 
-        {/* Botão Notificações com Badge - SEM BORDA */}
-        <button
-          onClick={onOpenNotifications}
-          className="neumorphic-button p-2.5 rounded-full relative"
-          aria-label="3 notificações não lidas"
-          title="3 notificações não lidas"
-          style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem', border: 'none', outline: 'none' }}
-        >
-          <Bell size={20} />
-          <span 
-            className="absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-white rounded-full" style={{ 
-              background: 'var(--orx-error)',
-              fontSize: '0.813rem',
-              border: 'none', // SEM BORDA BRANCA
-              boxShadow: '0 2px 4px rgba(239, 68, 68, 0.3)'
-            , fontWeight: 700 }}
-          >
-            3
-          </span>
-        </button>
+        {/* Sistema de Notificações em Tempo Real */}
+        <NotificationSystem />
 
         {/* Botão Tema Claro/Escuro - SEM BORDA */}
         <button

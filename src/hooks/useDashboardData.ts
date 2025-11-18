@@ -156,11 +156,19 @@ export const useDashboardData = (useRealData = false) => {
           throw new Error(supabaseError.message);
         }
         
-        if (result) {
+        type DashboardRpcResult = {
+          kpis: DashboardData['kpis'];
+          miniGraphs: DashboardData['miniGraphs'];
+          lastUpdate: string;
+        };
+
+        const typedResult = result as DashboardRpcResult | null;
+
+        if (typedResult) {
           setData({
-            kpis: result.kpis,
-            miniGraphs: result.miniGraphs,
-            lastUpdate: new Date(result.lastUpdate)
+            kpis: typedResult.kpis,
+            miniGraphs: typedResult.miniGraphs,
+            lastUpdate: new Date(typedResult.lastUpdate)
           });
         }
       } else {

@@ -6,7 +6,7 @@
 import { useState } from 'react';
 import { ArrowLeft, Search, Plus, FileText, DollarSign, Package } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { NeumoButton, NeumoInput, NeumoSearchBar } from '@/components/oraclusx-ds';
+import { NeumoButton, NeumoSearchBar } from '@/components/oraclusx-ds';
 import { useDocumentTitle } from '@/hooks';
 
 interface Procedimento {
@@ -73,7 +73,7 @@ export default function GestaoProcedimentos() {
                 <FileText className="w-6 h-6 text-orx-primary" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-orx-text-primary">
+                <h1 className="orx-text-3xl orx-orx-font-bold text-orx-text-primary">
                   Gestão de Procedimentos
                 </h1>
                 <p className="text-orx-text-secondary mt-1">
@@ -114,11 +114,11 @@ export default function GestaoProcedimentos() {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-lg font-semibold text-orx-text-primary">
+                    <h3 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary">
                       {proc.nome}
                     </h3>
                     {proc.codigo_tuss && (
-                      <span className="px-3 py-1 bg-orx-primary/10 text-orx-primary text-xs font-medium rounded-lg">
+                      <span className="px-3 py-1 bg-orx-primary/10 text-orx-primary orx-text-xs orx-orx-font-medium rounded-lg">
                         TUSS: {proc.codigo_tuss}
                       </span>
                     )}
@@ -126,25 +126,25 @@ export default function GestaoProcedimentos() {
                   
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1">Especialidade</p>
-                      <p className="text-sm font-medium text-orx-text-primary">
+                      <p className="orx-text-xs text-orx-text-muted mb-1">Especialidade</p>
+                      <p className="orx-text-sm orx-orx-font-medium text-orx-text-primary">
                         {proc.especialidade}
                       </p>
                     </div>
                     
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1">Duração Média</p>
-                      <p className="text-sm font-medium text-orx-text-primary">
+                      <p className="orx-text-xs text-orx-text-muted mb-1">Duração Média</p>
+                      <p className="orx-text-sm orx-orx-font-medium text-orx-text-primary">
                         {proc.duracao_media_minutos ? `${proc.duracao_media_minutos} min` : 'N/A'}
                       </p>
                     </div>
                     
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1 flex items-center gap-1">
+                      <p className="orx-text-xs text-orx-text-muted mb-1 flex items-center gap-1">
                         <DollarSign className="w-3 h-3" />
                         Valor Tabela
                       </p>
-                      <p className="text-sm font-medium text-orx-success">
+                      <p className="orx-text-sm orx-orx-font-medium text-orx-success">
                         {proc.valor_tabela 
                           ? `R$ ${proc.valor_tabela.toLocaleString('pt-BR')}`
                           : 'Sob consulta'
@@ -153,9 +153,9 @@ export default function GestaoProcedimentos() {
                     </div>
                     
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1">Complexidade</p>
+                      <p className="orx-text-xs text-orx-text-muted mb-1">Complexidade</p>
                       <span className={`
-                        px-2 py-1 rounded text-xs font-medium
+                        px-2 py-1 rounded orx-text-xs orx-orx-font-medium
                         ${proc.complexidade === 'muito_alta' ? 'bg-orx-danger/10 text-orx-danger' : ''}
                         ${proc.complexidade === 'alta' ? 'bg-orx-warning/10 text-orx-warning' : ''}
                         ${proc.complexidade === 'media' ? 'bg-orx-info/10 text-orx-info' : ''}
@@ -183,7 +183,7 @@ export default function GestaoProcedimentos() {
         {filteredProcedimentos.length === 0 && (
           <div className="bg-orx-bg-surface rounded-xl p-12 shadow-neumo text-center">
             <FileText className="w-16 h-16 mx-auto mb-4 text-orx-text-muted opacity-50" />
-            <h3 className="text-xl font-semibold text-orx-text-primary mb-2">
+            <h3 className="orx-text-xl orx-orx-font-semibold text-orx-text-primary mb-2">
               Nenhum procedimento encontrado
             </h3>
             <p className="text-orx-text-secondary">

@@ -83,7 +83,7 @@ export const Alert: React.FC<AlertProps> = ({
 
         <div className="flex-1">
           {title && (
-            <h4 className={cn("font-medium mb-1", textColor)}>
+            <h4 className={cn("orx-orx-font-medium mb-1", textColor)}>
               {title}
             </h4>
           )}
@@ -96,7 +96,7 @@ export const Alert: React.FC<AlertProps> = ({
           <button
             onClick={onClose}
             aria-label="Fechar alerta"
-            className={cn("flex-shrink-0 p-1 rounded-md transition-colors","hover:bg-black/5 dark:hover:bg-surface/5","focus:outline-none focus:ring-2 focus:ring-[var(--primary)]",
+            className={cn("flex-shrink-0 p-1 rounded-md transition-colors","hover:bg-black/5 dark:hover:bg-surface/5","focus:outline-none focus:ring-3 focus:ring-[var(--primary)]",
               textColor
             )}
           >

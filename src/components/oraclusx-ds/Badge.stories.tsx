@@ -84,19 +84,19 @@ export const StatusExamples: Story = {
     <div className="flex flex-col gap-3 p-6 bg-[var(--bg-primary)] rounded-2xl neuro-raised">
       <div className="flex items-center gap-2">
         <Badge variant="success">Ativo</Badge>
-        <span className="text-sm">Sistema operacional</span>
+        <span className="orx-text-sm">Sistema operacional</span>
       </div>
       <div className="flex items-center gap-2">
         <Badge variant="warning">Pendente</Badge>
-        <span className="text-sm">Aguardando aprovação</span>
+        <span className="orx-text-sm">Aguardando aprovação</span>
       </div>
       <div className="flex items-center gap-2">
         <Badge variant="error">Inativo</Badge>
-        <span className="text-sm">Serviço indisponível</span>
+        <span className="orx-text-sm">Serviço indisponível</span>
       </div>
       <div className="flex items-center gap-2">
         <Badge variant="primary">Novo</Badge>
-        <span className="text-sm">Recurso recém-lançado</span>
+        <span className="orx-text-sm">Recurso recém-lançado</span>
       </div>
     </div>
   ),

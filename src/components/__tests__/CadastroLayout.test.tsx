@@ -5,7 +5,7 @@
 import { render, screen } from '@testing-library/react';
 import { CadastroPageLayout, CadastroSection, FormGrid, FormActions } from '@/components/oraclusx-ds/CadastroLayout';
 import { Button } from '@/components/oraclusx-ds';
-import {  } from 'lucide-react';
+import { Users } from 'lucide-react';
 
 describe('CadastroPageLayout', () => {
   it('renders title correctly', () => {
@@ -58,12 +58,12 @@ describe('CadastroSection', () => {
     expect(screen.getByText('Personal Data')).toBeInTheDocument();
   });
 
-  it('applies neumorphic styling', () => {
+  it('applies default animation styling', () => {
     const { container } = render(
       <CadastroSection>Content</CadastroSection>
     );
     const section = container.firstChild as HTMLElement;
-    expect(section.className).toContain('neuro');
+    expect(section.className).toContain('orx-animate-slide-up');
   });
 });
 

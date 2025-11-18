@@ -304,7 +304,7 @@ export default function GestaoContabil() {
         <Card className="p-6 neuro-raised">
           <div className="flex items-center gap-4">
             <div className="flex-1">
-              <label className="block mb-2 text-[0.813rem] font-medium">Data Início</label>
+              <label className="block mb-2 text-[0.813rem] orx-orx-font-medium">Data Início</label>
               <Input
                 type="date"
                 value={dreDataInicio}
@@ -312,7 +312,7 @@ export default function GestaoContabil() {
               />
             </div>
             <div className="flex-1">
-              <label className="block mb-2 text-[0.813rem] font-medium">Data Fim</label>
+              <label className="block mb-2 text-[0.813rem] orx-orx-font-medium">Data Fim</label>
               <Input
                 type="date"
                 value={dreDataFim}
@@ -334,19 +334,19 @@ export default function GestaoContabil() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="p-6 neuro-raised bg-gradient-to-br from-blue-500 to-blue-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90 text-[0.813rem] font-medium">Receita Bruta</h3>
+              <h3 className="opacity-90 text-[0.813rem] orx-orx-font-medium">Receita Bruta</h3>
               <DollarSign className="w-5 h-5 opacity-80" />
             </div>
-            <p className="text-[0.813rem] font-bold">{formatCurrency(receitaBruta)}</p>
+            <p className="text-[0.813rem] orx-orx-font-bold">{formatCurrency(receitaBruta)}</p>
             <p className="opacity-80 mt-2 text-[0.813rem]">100% da base</p>
           </Card>
 
           <Card className="p-6 neuro-raised bg-gradient-to-br from-emerald-500 to-emerald-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90 text-[0.813rem] font-medium">Lucro Líquido</h3>
+              <h3 className="opacity-90 text-[0.813rem] orx-orx-font-medium">Lucro Líquido</h3>
               <TrendingUp className="w-5 h-5 opacity-80" />
             </div>
-            <p className="text-[0.813rem] font-bold">{formatCurrency(lucroLiquido)}</p>
+            <p className="text-[0.813rem] orx-orx-font-bold">{formatCurrency(lucroLiquido)}</p>
             <p className="opacity-80 mt-2 text-[0.813rem]">
               {lucroLiquido >= 0 ? 'Positivo' : 'Negativo'}
             </p>
@@ -354,24 +354,24 @@ export default function GestaoContabil() {
 
           <Card className="p-6 neuro-raised bg-gradient-to-br from-purple-500 to-purple-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90 text-[0.813rem] font-medium">Margem Líquida</h3>
+              <h3 className="opacity-90 text-[0.813rem] orx-orx-font-medium">Margem Líquida</h3>
               <PieChart className="w-5 h-5 opacity-80" />
             </div>
-            <p className="text-[0.813rem] font-bold">{margemLiquida.toFixed(1)}%</p>
+            <p className="text-[0.813rem] orx-orx-font-bold">{margemLiquida.toFixed(1)}%</p>
             <p className="opacity-80 mt-2 text-[0.813rem]">Meta: ≥ 15%</p>
           </Card>
         </div>
 
         {/* Gráfico */}
         <Card className="p-6 neuro-raised">
-          <h3 className="mb-4 text-[0.813rem] font-semibold">Análise Visual</h3>
+          <h3 className="mb-4 text-[0.813rem] orx-orx-font-semibold">Análise Visual</h3>
           <OrxBarChart data={chartData} keys={["value"]} indexBy="name" height={300} colors={colors} />
         </Card>
 
         {/* Tabela DRE */}
         <Card className="neuro-raised p-0">
           <div className="p-6 border-b border-[var(--text-secondary)]/20">
-            <h3 className="text-[0.813rem] font-semibold">
+            <h3 className="text-[0.813rem] orx-orx-font-semibold">
               Demonstração do Resultado do Exercício (DRE)
             </h3>
             <p className="text-[var(--text-secondary)] mt-1 text-[0.813rem]">
@@ -397,13 +397,13 @@ export default function GestaoContabil() {
                 return (
                   <TableRow
                     key={idx}
-                    className={isTotal ? 'bg-[var(--primary)]/5 font-semibold' : ''}
+                    className={isTotal ? 'bg-[var(--primary)]/5 orx-orx-font-semibold' : ''}
                   >
-                    <TableCell className={isTotal ? 'font-bold' : ''}>
+                    <TableCell className={isTotal ? 'orx-orx-font-bold' : ''}>
                       {item.descricao}
                     </TableCell>
                     <TableCell
-                      className={`text-right ${isTotal ? 'font-bold' : ''} ${
+                      className={`text-right ${isTotal ? 'orx-orx-font-bold' : ''} ${
                         isNegative ? 'text-error' : item.valor > 0 ? 'text-success' : ''
                       }`}
                     >
@@ -434,33 +434,33 @@ export default function GestaoContabil() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="p-6 neuro-raised">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-[var(--text-secondary)] text-[0.813rem] font-medium">Total Ativo</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">Total Ativo</h3>
               <ArrowUpRight className="w-5 h-5 text-success" />
             </div>
-            <p className="text-[0.813rem] font-bold">{formatCurrency(totalAtivo)}</p>
+            <p className="text-[0.813rem] orx-orx-font-bold">{formatCurrency(totalAtivo)}</p>
           </Card>
 
           <Card className="p-6 neuro-raised">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-[var(--text-secondary)] text-[0.813rem] font-medium">Total Passivo</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">Total Passivo</h3>
               <ArrowDownRight className="w-5 h-5 text-error" />
             </div>
-            <p className="text-[0.813rem] font-bold">{formatCurrency(totalPassivo)}</p>
+            <p className="text-[0.813rem] orx-orx-font-bold">{formatCurrency(totalPassivo)}</p>
           </Card>
 
           <Card className="p-6 neuro-raised">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-[var(--text-secondary)] text-[0.813rem] font-medium">Patrimônio Líquido</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">Patrimônio Líquido</h3>
               <Calculator className="w-5 h-5 text-[var(--primary)]" />
             </div>
-            <p className="text-[0.813rem] font-bold">{formatCurrency(totalAtivo - totalPassivo)}</p>
+            <p className="text-[0.813rem] orx-orx-font-bold">{formatCurrency(totalAtivo - totalPassivo)}</p>
           </Card>
         </div>
 
         {/* Tabela */}
         <Card className="neuro-raised p-0">
           <div className="p-6 border-b border-[var(--text-secondary)]/20">
-            <h3 className="text-[0.813rem] font-semibold">Balancete de Verificação</h3>
+            <h3 className="text-[0.813rem] orx-orx-font-semibold">Balancete de Verificação</h3>
           </div>
           <Table>
             <TableHeader>
@@ -488,7 +488,7 @@ export default function GestaoContabil() {
                     {formatCurrency(item.total_credito)}
                   </TableCell>
                   <TableCell
-                    className={`text-right font-semibold ${
+                    className={`text-right orx-orx-font-semibold ${
                       item.tipo_saldo === 'devedor' ? 'text-success' : 'text-error'
                     }`}
                   >
@@ -506,7 +506,7 @@ export default function GestaoContabil() {
   const renderLancamentos = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-[0.813rem] font-semibold">Lançamentos Contábeis</h2>
+        <h2 className="text-[0.813rem] orx-orx-font-semibold">Lançamentos Contábeis</h2>
         <Button icon={<Plus />}>Novo Lançamento</Button>
       </div>
 
@@ -534,7 +534,7 @@ export default function GestaoContabil() {
                 <TableCell>
                   <Badge variant="default">{lanc.tipo_lancamento}</Badge>
                 </TableCell>
-                <TableCell className="text-right font-semibold">
+                <TableCell className="text-right orx-orx-font-semibold">
                   {formatCurrency(lanc.valor_total)}
                 </TableCell>
                 <TableCell>
@@ -565,7 +565,7 @@ export default function GestaoContabil() {
   const renderCentrosCusto = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-[0.813rem] font-semibold">Centros de Custo</h2>
+        <h2 className="text-[0.813rem] orx-orx-font-semibold">Centros de Custo</h2>
         <Button icon={<Plus />}>Novo Centro</Button>
       </div>
 
@@ -577,14 +577,14 @@ export default function GestaoContabil() {
                 <Badge variant="default" className="mb-2">
                   {centro.codigo}
                 </Badge>
-                <h3 className="text-[0.813rem] font-semibold">{centro.nome}</h3>
+                <h3 className="text-[0.813rem] orx-orx-font-semibold">{centro.nome}</h3>
                 <p className="text-[var(--text-secondary)] text-[0.813rem]">{centro.tipo}</p>
               </div>
               <Layers className="w-6 h-6 text-[var(--primary)]" />
             </div>
             <div className="pt-4 border-t border-[var(--text-secondary)]/20">
               <p className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">Orçamento Mensal</p>
-              <p className="text-[0.813rem] font-bold">{formatCurrency(centro.orcamento_mensal)}</p>
+              <p className="text-[0.813rem] orx-orx-font-bold">{formatCurrency(centro.orcamento_mensal)}</p>
             </div>
           </Card>
         ))}
@@ -621,7 +621,7 @@ export default function GestaoContabil() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 ${
+              className={`px-6 py-3 rounded-xl orx-orx-font-medium transition-all flex items-center gap-2 ${
                 activeTab === tab.id
                   ? 'neuro-raised text-[var(--primary)]'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'

@@ -296,7 +296,7 @@ export default function GestãoCadastros() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-6 py-3 rounded-xl font-medium transition-all ${
+            className={`px-6 py-3 rounded-xl orx-orx-font-medium transition-all ${
               activeTab === tab.id
                 ?"neuro-raised text-[var(--primary)]"
                 :"text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
@@ -321,13 +321,13 @@ export default function GestãoCadastros() {
             <table className="w-full">
               <thead className="border-b border-[var(--border)]">
                 <tr>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Nome</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">CRM</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Especialidade</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Hospital</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Contato</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Status</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Ações</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Nome</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">CRM</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Especialidade</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Hospital</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Contato</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Status</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Ações</th>
                 </tr>
               </thead>
               <tbody>
@@ -341,12 +341,12 @@ export default function GestãoCadastros() {
                         <div className="w-10 h-10 rounded-full neuro-inset flex items-center justify-center text-[var(--primary)] font-display">
                           {medico.nome[0]}
                         </div>
-                        <span className="text-[var(--text-primary)] font-medium">{medico.nome}</span>
+                        <span className="text-[var(--text-primary)] orx-orx-font-medium">{medico.nome}</span>
                       </div>
                     </td>
                     <td className="p-4 text-[var(--text-primary)]">{medico.crm}</td>
                     <td className="p-4">
-                      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs bg-accent/10 text-accent font-medium">
+                      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs bg-accent/10 text-accent orx-orx-font-medium">
                         {medico.especialidade ||"N/A"}
                       </span>
                     </td>
@@ -364,7 +364,7 @@ export default function GestãoCadastros() {
                       </div>
                     </td>
                     <td className="p-4">
-                      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs font-medium ${getStatusColor(medico.status)}`}>
+                      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs orx-orx-font-medium ${getStatusColor(medico.status)}`}>
                         {medico.status}
                       </span>
                     </td>
@@ -446,7 +446,7 @@ export default function GestãoCadastros() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-6 py-3 rounded-xl font-medium transition-all ${
+            className={`px-6 py-3 rounded-xl orx-orx-font-medium transition-all ${
               activeTab === tab.id
                 ?"neuro-raised text-[var(--primary)]"
                 :"text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
@@ -471,13 +471,13 @@ export default function GestãoCadastros() {
             <table className="w-full">
               <thead className="border-b border-[var(--border)]">
                 <tr>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Nome</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">CNPJ</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Cidade/UF</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Tipo</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Contato</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Status</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] font-medium">Ações</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Nome</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">CNPJ</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Cidade/UF</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Tipo</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Contato</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Status</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Ações</th>
                 </tr>
               </thead>
               <tbody>
@@ -489,7 +489,7 @@ export default function GestãoCadastros() {
                     <td className="p-4">
                       <div className="flex items-center gap-3">
                         <Building2 className="w-5 h-5 text-[var(--primary)]" />
-                        <span className="text-[var(--text-primary)] font-medium">{hospital.nome}</span>
+                        <span className="text-[var(--text-primary)] orx-orx-font-medium">{hospital.nome}</span>
                       </div>
                     </td>
                     <td className="p-4 text-[var(--text-primary)]">{hospital.cnpj}</td>
@@ -497,7 +497,7 @@ export default function GestãoCadastros() {
                       {hospital.cidade}/{hospital.estado}
                     </td>
                     <td className="p-4">
-                      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs bg-accent/10 text-accent font-medium">
+                      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs bg-accent/10 text-accent orx-orx-font-medium">
                         {hospital.tipo}
                       </span>
                     </td>
@@ -514,7 +514,7 @@ export default function GestãoCadastros() {
                       </div>
                     </td>
                     <td className="p-4">
-                      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs font-medium ${getStatusColor(hospital.status)}`}>
+                      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs orx-orx-font-medium ${getStatusColor(hospital.status)}`}>
                         {hospital.status}
                       </span>
                     </td>
@@ -573,7 +573,7 @@ export default function GestãoCadastros() {
           </div>
           <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-success/50 animate-pulse" />
-            <span className="text-body-sm text-[var(--text-primary)] font-medium">IA: 99.2% precisão</span>
+            <span className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">IA: 99.2% precisão</span>
           </div>
         </div>
 
@@ -592,7 +592,7 @@ export default function GestãoCadastros() {
               }`}
             >
               <category.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
-              <span className="text-body-xs text-[var(--text-primary)] font-medium">{category.label}</span>
+              <span className="text-body-xs text-[var(--text-primary)] orx-orx-font-medium">{category.label}</span>
               <div className="flex items-center gap-1 mt-1">
                 <span className="text-body-lg font-display text-[var(--text-primary)]">{category.count}</span>
                 {category.trend && <TrendingUp className="w-3 h-3 text-success" />}
@@ -632,7 +632,7 @@ export default function GestãoCadastros() {
             {React.createElement(categories.find((c) => c.id === activeCategory)?.icon || Package, {
               className:"w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4",
             })}
-            <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 font-medium">
+            <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 orx-orx-font-medium">
               {categories.find((c) => c.id === activeCategory)?.label}
             </h3>
             <p className="text-[var(--text-secondary)]">Módulo em desenvolvimento</p>

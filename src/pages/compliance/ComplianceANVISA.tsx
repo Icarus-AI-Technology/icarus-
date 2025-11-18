@@ -55,7 +55,7 @@ export default function ComplianceANVISA() {
               <Shield className="w-6 h-6 text-orx-primary" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-orx-text-primary">Compliance ANVISA</h1>
+              <h1 className="orx-text-3xl orx-orx-font-bold text-orx-text-primary">Compliance ANVISA</h1>
               <p className="text-orx-text-secondary mt-1">Rastreabilidade OPME - RDC 16/2013</p>
             </div>
           </div>
@@ -71,8 +71,8 @@ export default function ComplianceANVISA() {
             <div key={idx} className="bg-orx-bg-surface rounded-xl p-4 shadow-neumo">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-orx-text-muted mb-1">{stat.label}</p>
-                  <p className="text-2xl font-bold text-orx-text-primary">{stat.value}</p>
+                  <p className="orx-text-xs text-orx-text-muted mb-1">{stat.label}</p>
+                  <p className="orx-text-2xl orx-orx-font-bold text-orx-text-primary">{stat.value}</p>
                 </div>
                 <div className={`p-3 rounded-lg ${stat.color}`}><stat.icon className="w-5 h-5" /></div>
               </div>
@@ -90,8 +90,8 @@ export default function ComplianceANVISA() {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-lg font-semibold text-orx-text-primary">{prod.nome}</h3>
-                    <span className={`px-3 py-1 text-xs font-medium rounded-lg ${
+                    <h3 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary">{prod.nome}</h3>
+                    <span className={`px-3 py-1 orx-text-xs orx-orx-font-medium rounded-lg ${
                       prod.status_rastreabilidade === 'completa' ? 'bg-orx-success/10 text-orx-success' :
                       prod.status_rastreabilidade === 'parcial' ? 'bg-orx-warning/10 text-orx-warning' :
                       'bg-orx-danger/10 text-orx-danger'
@@ -102,20 +102,20 @@ export default function ComplianceANVISA() {
                   
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1">Lote</p>
-                      <p className="text-sm font-medium text-orx-text-primary">{prod.lote}</p>
+                      <p className="orx-text-xs text-orx-text-muted mb-1">Lote</p>
+                      <p className="orx-text-sm orx-orx-font-medium text-orx-text-primary">{prod.lote}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1">Registro ANVISA</p>
-                      <p className="text-sm font-medium text-orx-text-primary">{prod.registro_anvisa}</p>
+                      <p className="orx-text-xs text-orx-text-muted mb-1">Registro ANVISA</p>
+                      <p className="orx-text-sm orx-orx-font-medium text-orx-text-primary">{prod.registro_anvisa}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1">Fabricante</p>
-                      <p className="text-sm font-medium text-orx-text-primary">{prod.fabricante}</p>
+                      <p className="orx-text-xs text-orx-text-muted mb-1">Fabricante</p>
+                      <p className="orx-text-sm orx-orx-font-medium text-orx-text-primary">{prod.fabricante}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1">Validade</p>
-                      <p className="text-sm font-medium text-orx-text-primary">
+                      <p className="orx-text-xs text-orx-text-muted mb-1">Validade</p>
+                      <p className="orx-text-sm orx-orx-font-medium text-orx-text-primary">
                         {new Date(prod.validade).toLocaleDateString('pt-BR')}
                       </p>
                     </div>

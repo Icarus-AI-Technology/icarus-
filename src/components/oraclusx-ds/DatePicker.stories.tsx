@@ -72,7 +72,7 @@ export const Interactive: Story = {
           onChange={(e) => setDate(e.target.value)}
         />
         {date && (
-          <p className="mt-4 text-sm text-[var(--text-secondary)]">
+          <p className="mt-4 orx-text-sm text-[var(--text-secondary)]">
             Data selecionada: {new Date(date).toLocaleDateString('pt-BR')}
           </p>
         )}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import { OrxChartTheme } from './OrxChartTheme';
 
@@ -23,8 +23,16 @@ export const OrxBarChart: React.FC<OrxBarChartProps> = ({
   layout = 'vertical',
   groupMode = 'grouped'
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.style.height = `${height}px`;
+    }
+  }, [height]);
+
   return (
-    <div style={{ height }}>
+    <div ref={containerRef} className="h-[300px]">
       <ResponsiveBar
         data={data}
         theme={OrxChartTheme}

@@ -163,20 +163,7 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
   
   return (
     <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: 'rgba(0, 0, 0, 0.5)',
-        backdropFilter: 'blur(4px)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 9999,
-        padding: '1rem',
-      }}
+      className="fixed inset-0 bg-[rgba(0,0,0,0.5)] backdrop-blur-sm flex items-center justify-center z-[9999] p-4"
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           onClose?.();
@@ -184,64 +171,25 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
       }}
     >
       <div
-        className="neumorphic-container"
-        style={{
-          width: '100%',
-          maxWidth: '500px',
-          maxHeight: '90vh',
-          overflowY: 'auto',
-          padding: '2rem',
-          position: 'relative',
-        }}
+        className="neumorphic-container w-full max-w-[500px] max-h-[90vh] overflow-y-auto p-8 relative"
       >
         {/* Close button */}
         <button
           onClick={onClose}
-          style={{
-            position: 'absolute',
-            top: '1rem',
-            right: '1rem',
-            width: '2rem',
-            height: '2rem',
-            borderRadius: '50%',
-            border: 'none',
-            background: 'var(--orx-gray-100)',
-            color: 'var(--orx-text-primary)',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+          className="absolute top-4 right-4 w-8 h-8 rounded-full border-0 bg-[var(--orx-gray-100)] text-[var(--orx-text-primary)] cursor-pointer flex items-center justify-center"
         >
-          <X style={{ width: '1rem', height: '1rem' }} />
+          <X className="w-4 h-4" />
         </button>
         
         {/* Header */}
-        <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
-          <div style={{
-            width: '4rem',
-            height: '4rem',
-            borderRadius: '50%',
-            background: 'linear-gradient(135deg, var(--orx-primary), var(--orx-secondary))',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 1rem',
-          }}>
-            <Building2 style={{ width: '2rem', height: '2rem', color: 'white' }} />
+        <div className="mb-8 text-center">
+          <div className="w-16 h-16 rounded-full bg-[linear-gradient(135deg,var(--orx-primary),var(--orx-secondary))] flex items-center justify-center mx-auto mb-4">
+            <Building2 className="w-8 h-8 text-white" />
           </div>
-          <h2 style={{
-            fontSize: '0.813rem',
-            fontWeight: 'bold',
-            color: 'var(--orx-text-primary)',
-            marginBottom: '0.5rem',
-          }}>
+          <h2 className="text-[0.813rem] orx-orx-font-bold text-[var(--orx-text-primary)] mb-2">
             Conectar Banco
           </h2>
-          <p style={{
-            fontSize: '0.813rem',
-            color: 'var(--orx-text-secondary)',
-          }}>
+          <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">
             {pluggyEnabled 
               ? 'Conecte sua conta bancária de forma segura via Open Finance Brasil'
               : '⚠️ Modo MOCK: Simule a conexão para desenvolvimento'
@@ -251,15 +199,9 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
         
         {/* Loading */}
         {loading && (
-          <div style={{ textAlign: 'center', padding: '2rem 0' }}>
-            <Loader2 style={{
-              width: '3rem',
-              height: '3rem',
-              color: 'var(--orx-primary)',
-              animation: 'spin 1s linear infinite',
-              margin: '0 auto 1rem',
-            }} />
-            <p style={{ color: 'var(--orx-text-secondary)' }}>
+          <div className="text-center py-8">
+            <Loader2 className="w-12 h-12 text-[var(--orx-primary)] animate-spin mx-auto mb-4" />
+            <p className="text-[var(--orx-text-secondary)]">
               Inicializando widget...
             </p>
           </div>
@@ -267,26 +209,9 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
         
         {/* Error */}
         {error && !loading && !success && (
-          <div style={{
-            padding: '1rem',
-            borderRadius: '0.75rem',
-            background: 'var(--orx-error-light)',
-            border: '1px solid var(--orx-error)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.75rem',
-            marginBottom: '1rem',
-          }}>
-            <AlertCircle style={{ 
-              width: '1.25rem', 
-              height: '1.25rem', 
-              color: 'var(--orx-error)',
-              flexShrink: 0,
-            }} />
-            <p style={{
-              fontSize: '0.813rem',
-              color: 'var(--orx-error-dark)',
-            }}>
+          <div className="p-4 rounded-xl bg-[var(--orx-error-light)] border border-[var(--orx-error)] flex items-center gap-3 mb-4">
+            <AlertCircle className="w-5 h-5 text-[var(--orx-error)] shrink-0" />
+            <p className="text-[0.813rem] text-[var(--orx-error-dark)]">
               {error}
             </p>
           </div>
@@ -294,34 +219,14 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
         
         {/* Success */}
         {success && (
-          <div style={{
-            textAlign: 'center',
-            padding: '2rem 0',
-          }}>
-            <div style={{
-              width: '4rem',
-              height: '4rem',
-              borderRadius: '50%',
-              background: 'var(--orx-success)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 1rem',
-            }}>
-              <CheckCircle style={{ width: '2rem', height: '2rem', color: 'white' }} />
+          <div className="text-center py-8">
+            <div className="w-16 h-16 rounded-full bg-[var(--orx-success)] flex items-center justify-center mx-auto mb-4">
+              <CheckCircle className="w-8 h-8 text-white" />
             </div>
-            <h3 style={{
-              fontSize: '0.813rem',
-              fontWeight: 'bold',
-              color: 'var(--orx-success)',
-              marginBottom: '0.5rem',
-            }}>
+            <h3 className="text-[0.813rem] orx-orx-font-bold text-[var(--orx-success)] mb-2">
               Banco Conectado!
             </h3>
-            <p style={{
-              fontSize: '0.813rem',
-              color: 'var(--orx-text-secondary)',
-            }}>
+            <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">
               Sincronizando dados...
             </p>
           </div>
@@ -330,42 +235,19 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
         {/* MOCK: Bank Selection */}
         {!pluggyEnabled && !loading && !success && step === 'select' && (
           <div>
-            <h3 style={{
-              fontSize: '0.813rem',
-              fontWeight: '600',
-              color: 'var(--orx-text-primary)',
-              marginBottom: '1rem',
-            }}>
+            <h3 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-4">
               Selecione seu banco
             </h3>
             
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '0.75rem',
-            }}>
+            <div className="grid grid-cols-2 gap-3">
               {MOCK_BANKS.map(bank => (
                 <button
                   key={bank.id}
                   onClick={() => handleSelectBank(bank.id)}
-                  className="neumorphic-button"
-                  style={{
-                    padding: '1rem',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    borderRadius: '0.75rem',
-                    transition: 'all 0.2s ease',
-                  }}
+                  className="neumorphic-button p-4 flex flex-col items-center gap-2 rounded-xl transition-all"
                 >
-                  <span style={{ fontSize: '0.813rem' }}>{bank.logo}</span>
-                  <span style={{
-                    fontSize: '0.813rem',
-                    fontWeight: '600',
-                    color: 'var(--orx-text-primary)',
-                    textAlign: 'center',
-                  }}>
+                  <span className="text-[0.813rem]">{bank.logo}</span>
+                  <span className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] text-center">
                     {bank.name}
                   </span>
                 </button>
@@ -379,39 +261,17 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
           <div>
             <button
               onClick={handleBack}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                marginBottom: '1rem',
-                fontSize: '0.813rem',
-                color: 'var(--orx-primary)',
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-                fontWeight: '600',
-              }}
+              className="inline-flex items-center gap-2 mb-4 text-[0.813rem] text-[var(--orx-primary)] bg-transparent border-0 cursor-pointer orx-orx-font-semibold"
             >
               ← Voltar
             </button>
             
-            <h3 style={{
-              fontSize: '0.813rem',
-              fontWeight: '600',
-              color: 'var(--orx-text-primary)',
-              marginBottom: '1rem',
-            }}>
+            <h3 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-4">
               Conectar {MOCK_BANKS.find(b => b.id === selectedBank)?.name}
             </h3>
             
-            <div style={{ marginBottom: '1rem' }}>
-              <label style={{
-                fontSize: '0.813rem',
-                fontWeight: '600',
-                color: 'var(--orx-text-secondary)',
-                marginBottom: '0.5rem',
-                display: 'block',
-              }}>
+            <div className="mb-4">
+              <label className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-secondary)] mb-2 block">
                 Usuário / CPF / Agência
               </label>
               <input
@@ -419,26 +279,12 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
                 value={credentials.username}
                 onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
                 placeholder="Digite seu usuário"
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid var(--orx-gray-300)',
-                  background: 'var(--orx-bg-light)',
-                  color: 'var(--orx-text-primary)',
-                  fontSize: '0.813rem',
-                }}
+                className="w-full p-3 rounded-lg border border-[var(--orx-gray-300)] bg-[var(--orx-bg-light)] text-[var(--orx-text-primary)] text-[0.813rem]"
               />
             </div>
             
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{
-                fontSize: '0.813rem',
-                fontWeight: '600',
-                color: 'var(--orx-text-secondary)',
-                marginBottom: '0.5rem',
-                display: 'block',
-              }}>
+            <div className="mb-6">
+              <label className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-secondary)] mb-2 block">
                 Senha
               </label>
               <input
@@ -446,44 +292,18 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
                 value={credentials.password}
                 onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
                 placeholder="Digite sua senha"
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid var(--orx-gray-300)',
-                  background: 'var(--orx-bg-light)',
-                  color: 'var(--orx-text-primary)',
-                  fontSize: '0.813rem',
-                }}
+                className="w-full p-3 rounded-lg border border-[var(--orx-gray-300)] bg-[var(--orx-bg-light)] text-[var(--orx-text-primary)] text-[0.813rem]"
               />
             </div>
             
             <button
               onClick={handleMockConnect}
-              className="neumorphic-button"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                width: '100%',
-                padding: '0.75rem',
-                borderRadius: '0.75rem',
-                background: 'var(--orx-primary)',
-                color: 'white',
-                fontWeight: '600',
-                fontSize: '0.813rem',
-                cursor: 'pointer',
-              }}
+              className="neumorphic-button inline-flex items-center gap-2 w-full p-3 rounded-xl bg-[var(--orx-primary)] text-white orx-orx-font-semibold text-[0.813rem] cursor-pointer"
             >
               Conectar
             </button>
             
-            <p style={{
-              marginTop: '1rem',
-              fontSize: '0.813rem',
-              color: 'var(--orx-text-secondary)',
-              textAlign: 'center',
-            }}>
+            <p className="mt-4 text-[0.813rem] text-[var(--orx-text-secondary)] text-center">
               🔒 Suas credenciais são criptografadas e protegidas
             </p>
           </div>
@@ -491,15 +311,9 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
         
         {/* MOCK: Connecting */}
         {!pluggyEnabled && !loading && !success && step === 'connecting' && (
-          <div style={{ textAlign: 'center', padding: '2rem 0' }}>
-            <Loader2 style={{
-              width: '3rem',
-              height: '3rem',
-              color: 'var(--orx-primary)',
-              animation: 'spin 1s linear infinite',
-              margin: '0 auto 1rem',
-            }} />
-            <p style={{ color: 'var(--orx-text-secondary)' }}>
+          <div className="text-center py-8">
+            <Loader2 className="w-12 h-12 text-[var(--orx-primary)] animate-spin mx-auto mb-4" />
+            <p className="text-[var(--orx-text-secondary)]">
               Conectando ao banco...
             </p>
           </div>
@@ -507,7 +321,7 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
         
         {/* Real mode placeholder */}
         {pluggyEnabled && !loading && !success && !error && (
-          <div id="pluggy-connect-container" style={{ minHeight: '400px' }} />
+          <div id="pluggy-connect-container" className="min-h-[400px]" />
         )}
       </div>
     </div>

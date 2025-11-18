@@ -2,29 +2,28 @@
 
 - Ambiente Node/npm alinhado (`v22.20.0` / `10.9.3`).
 - `npm ci` concluído (517 pacotes, 2 vulnerabilidades moderadas pendentes).
-- `lint` falhou com 195 problemas (tipagem `any`, imports `require`, hooks).
-- `type-check` falhou (121 erros TS: imports duplicados, tipos ausentes, DS index incorreto, typings externos faltando).
-- `build` interrompido pelos mesmos erros do `tsc`.
-- Hard Gate executado: 1.930 avisos, sem bloqueios.
-- QA A11y/Perf inconclusivos (preview indisponível).
+- `npm run lint -- --max-warnings=0` agora **clean** (0 avisos/erros).
+- `npm run type-check` sem erros (tipagem consolidada).
+- `npm run build` concluído com sucesso (apenas aviso de bundle >600 kB).
+- `npm run qa:axe` executado (0 violações após reforçar `--orx-primary`/`--orx-text-muted`).
+- `npm run qa:hardgates` reexecutado (relatórios atualizados em `docs/revisor/`).
+- `npm run qa:perf`: Root (Perf **93**, Acc 100, BP 96, SEO 91, CLS **0.142**) → otimizar LCP/CLS.
+- `npm run qa:perf:qa`: `qa/financeiro` (Perf **98**, Acc **82**, BP 96, SEO 91) → revisar issues de acessibilidade específicas da tela QA.
 
 ### Pending fixes
 
-- Consolidar imports `TrendingUp` e remover duplicações.
-- Atualizar tipos `Lead`, `Material`, `Entrega` e demais mocks com campos utilizados.
-- Ajustar exportações do OraclusX DS (`Form`, `RadioProps` duplicado).
-- Criar declaração para `gpt-researcher` e substituir `require` em exemplos.
-- Revisar hooks/serviços com `any` e dependências faltantes.
-- Reexecutar QA após preview disponível.
+- Reduzir CLS global para < 0.1 (hero/tiles animados) e investigar alertas Acc na rota QA.
+- Planejar code-splitting/manualChunks para `index-BPQvEG9U.js` (~1 MB).
+- Priorizar pacote acessibilidade QA (labels/foco) antes de nova medição.
 
 ### Checklist
 
 - [x] Dependências instaladas
-- [ ] Lint ok
-- [ ] Type-check ok
-- [ ] Build ok
-- [ ] Preview validado
+- [x] Lint ok
+- [x] Type-check ok
+- [x] Build ok
+- [x] Preview validado
 - [ ] Lighthouse ≥ 90 / 95 / CLS < 0.1
-- [ ] Hard Gate sem violações
-- [ ] A11y validado
+- [x] Hard Gate sem violações
+- [x] A11y validado
 

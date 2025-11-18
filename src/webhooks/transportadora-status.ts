@@ -23,6 +23,12 @@ interface TransportadoraWebhookPayload {
   signature?: string;
 }
 
+type EnvioRecord = {
+  id: string;
+  usuario_id: string;
+  [key: string]: unknown;
+};
+
 /**
  * Webhook para receber atualizações de status das transportadoras
  */
@@ -59,11 +65,12 @@ export async function handleTransportadoraStatus(
       message: 'Status atualizado com sucesso' 
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ Erro ao processar webhook:', error);
+    const message = error instanceof Error ? error.message : 'Unknown error';
     res.status(500).json({ 
       error: 'Internal server error',
-      message: error.message 
+      message 
     });
   }
 }
@@ -126,6 +133,8 @@ async function processarAtualizacaoStatus(
       return;
     }
 
+    const envioRecord = envio as EnvioRecord;
+
     // Atualizar status do envio
     const { error: updateError } = await supabase
       .from('envios')
@@ -134,7 +143,7 @@ async function processarAtualizacaoStatus(
         ultimo_evento: payload.evento,
         updated_at: new Date().toISOString(),
       })
-      .eq('id', envio.id);
+      .eq('id', envioRecord.id);
 
     if (updateError) {
       throw updateError;
@@ -144,7 +153,7 @@ async function processarAtualizacaoStatus(
     const { error: historicoError } = await supabase
       .from('envios_historico')
       .insert({
-        envio_id: envio.id,
+        envio_id: envioRecord.id,
         evento_tipo: payload.evento.tipo,
         evento_data: `${payload.evento.data} ${payload.evento.hora}`,
         evento_local: payload.evento.local,
@@ -158,7 +167,7 @@ async function processarAtualizacaoStatus(
 
     // Notificar usuário se for evento importante
     if (['ENTREGUE', 'EXTRAVIADO', 'DEVOLUCAO'].includes(payload.evento.tipo)) {
-      await notificarUsuario(envio, payload);
+      await notificarUsuario(envioRecord, payload);
     }
 
     console.log(
@@ -174,7 +183,7 @@ async function processarAtualizacaoStatus(
  * Notifica usuário sobre evento importante
  */
 async function notificarUsuario(
-  envio: any,
+  envio: EnvioRecord,
   payload: TransportadoraWebhookPayload
 ): Promise<void> {
   try {

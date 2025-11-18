@@ -56,7 +56,7 @@ export const AllVariants: Story = {
   render: () => (
     <div className="flex flex-col gap-6 p-6 bg-[var(--bg-primary)] rounded-2xl neuro-raised w-[600px]">
       <div>
-        <p className="text-xs text-[var(--text-secondary)] mb-2">Navegação Simples</p>
+        <p className="orx-text-xs text-[var(--text-secondary)] mb-2">Navegação Simples</p>
         <Breadcrumb
           items={[
             { label: 'Home', href: '/' },
@@ -65,7 +65,7 @@ export const AllVariants: Story = {
         />
       </div>
       <div>
-        <p className="text-xs text-[var(--text-secondary)] mb-2">Navegação Média</p>
+        <p className="orx-text-xs text-[var(--text-secondary)] mb-2">Navegação Média</p>
         <Breadcrumb
           items={[
             { label: 'Home', href: '/' },
@@ -76,7 +76,7 @@ export const AllVariants: Story = {
         />
       </div>
       <div>
-        <p className="text-xs text-[var(--text-secondary)] mb-2">Navegação Profunda</p>
+        <p className="orx-text-xs text-[var(--text-secondary)] mb-2">Navegação Profunda</p>
         <Breadcrumb
           items={[
             { label: 'Home', href: '/' },

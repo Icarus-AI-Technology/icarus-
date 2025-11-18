@@ -70,7 +70,7 @@ export default function Contato() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8" style={{ color: "var(--orx-text-primary)" }}>
+      <h1 className="orx-text-3xl orx-orx-font-bold mb-8" style={{ color: "var(--orx-text-primary)" }}>
         Fale Conosco
       </h1>
 
@@ -78,7 +78,7 @@ export default function Contato() {
         <div className="neumorphic-card">
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <div className="mb-4">
-              <label className="block mb-2 font-medium" htmlFor="name">
+              <label className="block mb-2 orx-orx-font-medium" htmlFor="name">
                 Nome
               </label>
               <input
@@ -90,14 +90,14 @@ export default function Contato() {
                 aria-describedby={errors.name ? "name-error" : undefined}
               />
               {errors.name && (
-                <p id="name-error" className="mt-1 text-sm text-red-600">
+                <p id="name-error" className="mt-1 orx-text-sm text-red-600">
                   {errors.name.message}
                 </p>
               )}
             </div>
 
             <div className="mb-4">
-              <label className="block mb-2 font-medium" htmlFor="email">
+              <label className="block mb-2 orx-orx-font-medium" htmlFor="email">
                 E-mail
               </label>
               <input
@@ -109,14 +109,14 @@ export default function Contato() {
                 aria-describedby={errors.email ? "email-error" : undefined}
               />
               {errors.email && (
-                <p id="email-error" className="mt-1 text-sm text-red-600">
+                <p id="email-error" className="mt-1 orx-text-sm text-red-600">
                   {errors.email.message}
                 </p>
               )}
             </div>
 
             <div className="mb-4">
-              <label className="block mb-2 font-medium" htmlFor="subject">
+              <label className="block mb-2 orx-orx-font-medium" htmlFor="subject">
                 Assunto
               </label>
               <input
@@ -128,14 +128,14 @@ export default function Contato() {
                 aria-describedby={errors.subject ? "subject-error" : undefined}
               />
               {errors.subject && (
-                <p id="subject-error" className="mt-1 text-sm text-red-600">
+                <p id="subject-error" className="mt-1 orx-text-sm text-red-600">
                   {errors.subject.message}
                 </p>
               )}
             </div>
 
             <div className="mb-6">
-              <label className="block mb-2 font-medium" htmlFor="message">
+              <label className="block mb-2 orx-orx-font-medium" htmlFor="message">
                 Mensagem
               </label>
               <textarea
@@ -147,7 +147,7 @@ export default function Contato() {
                 aria-describedby={errors.message ? "message-error" : undefined}
               />
               {errors.message && (
-                <p id="message-error" className="mt-1 text-sm text-red-600">
+                <p id="message-error" className="mt-1 orx-text-sm text-red-600">
                   {errors.message.message}
                 </p>
               )}
@@ -163,27 +163,27 @@ export default function Contato() {
                 {status === "sending" ? "Enviando..." : "Enviar"}
               </button>
               {status === "success" && (
-                <span className="text-green-600 text-sm">Mensagem enviada com sucesso!</span>
+                <span className="text-green-600 orx-text-sm">Mensagem enviada com sucesso!</span>
               )}
               {status === "error" && (
-                <span className="text-red-600 text-sm">{errorMessage || "Falha ao enviar"}</span>
+                <span className="text-red-600 orx-text-sm">{errorMessage || "Falha ao enviar"}</span>
               )}
             </div>
           </form>
         </div>
 
         <div className="neumorphic-card">
-          <h2 className="text-xl font-semibold mb-3">Canais Oficiais</h2>
-          <div className="space-y-4 text-sm">
+          <h2 className="orx-text-xl orx-orx-font-semibold mb-3">Canais Oficiais</h2>
+          <div className="space-y-4 orx-text-sm">
             <div>
-              <p className="font-medium">🛠️ Suporte Técnico</p>
+              <p className="orx-orx-font-medium">🛠️ Suporte Técnico</p>
               <a className="text-blue-600 hover:underline" href="mailto:suporte@icarusai.com.br">
                 suporte@icarusai.com.br
               </a>
               <p className="text-gray-500">Resposta em até 24h (dias úteis)</p>
             </div>
             <div>
-              <p className="font-medium">🛡️ Proteção de Dados (DPO)</p>
+              <p className="orx-orx-font-medium">🛡️ Proteção de Dados (DPO)</p>
               <a className="text-blue-600 hover:underline" href="mailto:dpo@icarusai.com.br">
                 dpo@icarusai.com.br
               </a>

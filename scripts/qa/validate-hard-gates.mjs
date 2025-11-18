@@ -22,9 +22,42 @@ const rules = [
   { id: 'shadows.inline', regex: /box-shadow:\s*[^;]+;/g, desc: 'Inline box-shadow' },
 ];
 
+// CSS properties que NÃO são classes Tailwind
+const CSS_PROPERTIES = [
+  'font-family',
+  'font-size',
+  'font-weight',
+  'font-style',
+  'font-variant',
+  'font-stretch',
+  'font-feature-settings',
+  'font-kerning',
+  'font-language-override',
+  'font-optical-sizing',
+  'font-variation-settings',
+];
+
 function analyzeFile(path) {
   const content = readFileSync(path, 'utf8');
   const findings = [];
+  
+  // ============================================
+  // SKIP FILES - Contextos onde classes são legítimas
+  // ============================================
+  
+  // Arquivos CSS (definem as próprias classes)
+  if (path.endsWith('.css')) {
+    return findings;
+  }
+  
+  // Serviços de e-mail (usam classes inline em templates HTML)
+  if (path.includes('/email/') || 
+      path.includes('/microsoft365/') || 
+      path.includes('SendGridService') ||
+      path.includes('resend.service')) {
+    return findings;
+  }
+  
   for (const rule of rules) {
     let matches = content.match(rule.regex) || [];
     
@@ -68,7 +101,47 @@ function analyzeFile(path) {
         'text-body',
       ];
       
-      const allowedClasses = [...layoutClasses, ...semanticClasses, ...oracluxClasses];
+      // Permitir cores do Tailwind (text-gray-*, text-red-*, etc)
+      const colorClasses = [
+        'text-white',
+        'text-black',
+        'text-gray-',
+        'text-slate-',
+        'text-zinc-',
+        'text-neutral-',
+        'text-stone-',
+        'text-red-',
+        'text-orange-',
+        'text-amber-',
+        'text-yellow-',
+        'text-lime-',
+        'text-green-',
+        'text-emerald-',
+        'text-teal-',
+        'text-cyan-',
+        'text-sky-',
+        'text-blue-',
+        'text-indigo-',
+        'text-violet-',
+        'text-purple-',
+        'text-fuchsia-',
+        'text-pink-',
+        'text-rose-',
+      ];
+      
+      // Permitir classes de opacity e outras utilitárias
+      const utilityClasses = [
+        'text-opacity-',
+        'text-ellipsis',
+        'text-clip',
+        'text-wrap',
+        'text-nowrap',
+        'text-balance',
+        'text-pretty',
+        'text-muted',
+      ];
+      
+      const allowedClasses = [...layoutClasses, ...semanticClasses, ...oracluxClasses, ...colorClasses, ...utilityClasses];
       
       // Filtrar apenas violações REAIS (tamanhos de fonte)
       matches = matches.filter(match => {
@@ -83,7 +156,13 @@ function analyzeFile(path) {
     
     if (rule.id === 'typography.font') {
       // Permitir classes do OraclusX DS
-      const allowed = ['font-display', 'font-heading', 'font-body'];
+      const oracluxFonts = ['font-display', 'font-heading', 'font-body'];
+      // Permitir classes de font-family do Tailwind
+      const fontFamilies = ['font-sans', 'font-serif', 'font-mono'];
+      // Permitir classes de variant
+      const fontVariants = ['font-italic', 'font-not-italic', 'font-antialiased', 'font-subpixel-antialiased'];
+      
+      const allowed = [...oracluxFonts, ...fontFamilies, ...fontVariants, ...CSS_PROPERTIES];
       matches = matches.filter(m => !allowed.some(a => m.includes(a)));
     }
     

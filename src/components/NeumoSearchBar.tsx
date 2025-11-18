@@ -35,8 +35,8 @@ export interface NeumoSearchBarProps
 }
 
 const sizeStyles = {
-  sm: 'h-9 pl-9 pr-3 text-sm',
-  md: 'h-11 pl-10 pr-4 text-base',
+  sm: 'h-9 pl-9 pr-3 orx-text-sm',
+  md: 'h-11 pl-10 pr-4 orx-text-base',
   lg: 'h-13 pl-12 pr-5 text-md',
 };
 

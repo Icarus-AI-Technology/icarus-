@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import { ArrowLeft, Search, FileText, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { ArrowLeft, FileText, CheckCircle, XCircle, Clock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { NeumoButton, NeumoSearchBar } from '@/components/oraclusx-ds';
 import { useDocumentTitle } from '@/hooks';
@@ -56,7 +56,7 @@ export default function GestaoNFe() {
                 <FileText className="w-6 h-6 text-orx-primary" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-orx-text-primary">Gestão de NF-e</h1>
+                <h1 className="orx-text-3xl orx-orx-font-bold text-orx-text-primary">Gestão de NF-e</h1>
                 <p className="text-orx-text-secondary mt-1">Notas Fiscais Eletrônicas</p>
               </div>
             </div>
@@ -74,8 +74,8 @@ export default function GestaoNFe() {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-lg font-semibold text-orx-text-primary">NF-e: {nfe.numero}</h3>
-                    <span className={`px-3 py-1 text-xs font-medium rounded-lg flex items-center gap-1 ${
+                    <h3 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary">NF-e: {nfe.numero}</h3>
+                    <span className={`px-3 py-1 orx-text-xs orx-orx-font-medium rounded-lg flex items-center gap-1 ${
                       nfe.status === 'autorizada' ? 'bg-orx-success/10 text-orx-success' :
                       nfe.status === 'emitida' ? 'bg-orx-info/10 text-orx-info' :
                       nfe.status === 'processando' ? 'bg-orx-warning/10 text-orx-warning' :
@@ -87,19 +87,19 @@ export default function GestaoNFe() {
                       {nfe.status.toUpperCase()}
                     </span>
                   </div>
-                  <p className="text-xs text-orx-text-muted mb-2">Chave: {nfe.chave_acesso}</p>
+                  <p className="orx-text-xs text-orx-text-muted mb-2">Chave: {nfe.chave_acesso}</p>
                   <div className="grid grid-cols-3 gap-4">
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1">Cliente</p>
-                      <p className="text-sm font-medium text-orx-text-primary">{nfe.cliente}</p>
+                      <p className="orx-text-xs text-orx-text-muted mb-1">Cliente</p>
+                      <p className="orx-text-sm orx-orx-font-medium text-orx-text-primary">{nfe.cliente}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1">Valor Total</p>
-                      <p className="text-sm font-semibold text-orx-success">R$ {nfe.valor_total.toLocaleString('pt-BR')}</p>
+                      <p className="orx-text-xs text-orx-text-muted mb-1">Valor Total</p>
+                      <p className="orx-text-sm orx-orx-font-semibold text-orx-success">R$ {nfe.valor_total.toLocaleString('pt-BR')}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-orx-text-muted mb-1">Emissão</p>
-                      <p className="text-sm font-medium text-orx-text-primary">
+                      <p className="orx-text-xs text-orx-text-muted mb-1">Emissão</p>
+                      <p className="orx-text-sm orx-orx-font-medium text-orx-text-primary">
                         {new Date(nfe.data_emissao).toLocaleDateString('pt-BR')}
                       </p>
                     </div>

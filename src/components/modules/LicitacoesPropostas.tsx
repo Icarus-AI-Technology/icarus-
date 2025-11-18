@@ -27,9 +27,6 @@ import {
   TableBody,
   TableCell,
   Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-  TooltipProvider,
   Progress,
 } from '@/components/oraclusx-ds';
 import { FileText, Award, Clock, XCircle, AlertTriangle, Plus, Eye, Send, RefreshCw, FileCheck, Target, ThumbsUp, Timer } from 'lucide-react';
@@ -267,28 +264,28 @@ export default function LicitacoesPropostas() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card className="p-6 neuro-raised bg-gradient-to-br from-blue-500 to-blue-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90 text-[0.813rem] font-medium">Licitações Ativas</h3>
+              <h3 className="opacity-90 text-[0.813rem] orx-orx-font-medium">Licitações Ativas</h3>
               <FileText className="w-5 h-5 opacity-80" />
             </div>
-            <p className="text-[0.813rem] font-bold">{licitacoesAbertas}</p>
+            <p className="text-[0.813rem] orx-orx-font-bold">{licitacoesAbertas}</p>
             <p className="opacity-80 mt-2 text-[0.813rem]">Participando ativamente</p>
           </Card>
 
           <Card className="p-6 neuro-raised bg-gradient-to-br from-orange-500 to-orange-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90 text-[0.813rem] font-medium">Propostas Pendentes</h3>
+              <h3 className="opacity-90 text-[0.813rem] orx-orx-font-medium">Propostas Pendentes</h3>
               <Clock className="w-5 h-5 opacity-80" />
             </div>
-            <p className="text-[0.813rem] font-bold">{propostasPendentes}</p>
+            <p className="text-[0.813rem] orx-orx-font-bold">{propostasPendentes}</p>
             <p className="opacity-80 mt-2 text-[0.813rem]">Aguardando aprovação</p>
           </Card>
 
           <Card className="p-6 neuro-raised bg-gradient-to-br from-emerald-500 to-emerald-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90 text-[0.813rem] font-medium">Taxa de Sucesso</h3>
+              <h3 className="opacity-90 text-[0.813rem] orx-orx-font-medium">Taxa de Sucesso</h3>
               <Target className="w-5 h-5 opacity-80" />
             </div>
-            <p className="text-[0.813rem] font-bold">{taxaSucesso?.taxa_sucesso.toFixed(1)}%</p>
+            <p className="text-[0.813rem] orx-orx-font-bold">{taxaSucesso?.taxa_sucesso.toFixed(1)}%</p>
             <p className="opacity-80 mt-2 text-[0.813rem]">
               {taxaSucesso?.total_vencidas} de {taxaSucesso?.total_participadas} licitações
             </p>
@@ -296,10 +293,10 @@ export default function LicitacoesPropostas() {
 
           <Card className="p-6 neuro-raised bg-gradient-to-br from-purple-500 to-purple-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90 text-[0.813rem] font-medium">Valor Vencido (Ano)</h3>
+              <h3 className="opacity-90 text-[0.813rem] orx-orx-font-medium">Valor Vencido (Ano)</h3>
               <Award className="w-5 h-5 opacity-80" />
             </div>
-            <p className="text-[0.813rem] font-bold">
+            <p className="text-[0.813rem] orx-orx-font-bold">
               {formatCurrency(taxaSucesso?.valor_total_vencido || 0)}
             </p>
             <p className="opacity-80 mt-2 text-[0.813rem]">Contratos ganhos</p>
@@ -310,7 +307,7 @@ export default function LicitacoesPropostas() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Gráfico de Sucesso */}
           <Card className="p-6 neuro-raised">
-            <h3 className="mb-4 text-[0.813rem] font-semibold">Performance (Últimos 12 meses)</h3>
+            <h3 className="mb-4 text-[0.813rem] orx-orx-font-semibold">Performance (Últimos 12 meses)</h3>
             <OrxPieChart data={chartData} height={250} colors={["var(--orx-success)", "var(--orx-error)"]} />
             <div className="flex justify-center gap-6 mt-4">
               <div className="flex items-center gap-2">
@@ -326,7 +323,7 @@ export default function LicitacoesPropostas() {
 
           {/* Próximas Aberturas */}
           <Card className="p-6 neuro-raised">
-            <h3 className="mb-4 text-[0.813rem] font-semibold">Próximas Aberturas</h3>
+            <h3 className="mb-4 text-[0.813rem] orx-orx-font-semibold">Próximas Aberturas</h3>
             <div className="space-y-3">
               {licitacoes.slice(0, 5).map((lic) => (
                 <div
@@ -334,7 +331,7 @@ export default function LicitacoesPropostas() {
                   className="p-4 neuro-flat rounded-lg flex items-center justify-between"
                 >
                   <div className="flex-1">
-                    <p className="text-[0.813rem] font-semibold">{lic.titulo}</p>
+                    <p className="text-[0.813rem] orx-orx-font-semibold">{lic.titulo}</p>
                     <p className="text-[var(--text-secondary)] mt-1 text-[0.813rem]">
                       {lic.orgao_comprador_nome} - {lic.orgao_comprador_uf}
                     </p>
@@ -363,7 +360,7 @@ export default function LicitacoesPropostas() {
   const renderLicitacoes = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-[0.813rem] font-semibold">Licitações Ativas</h2>
+        <h2 className="text-[0.813rem] orx-orx-font-semibold">Licitações Ativas</h2>
         <Button icon={<Plus />}>Nova Licitação</Button>
       </div>
 
@@ -392,7 +389,7 @@ export default function LicitacoesPropostas() {
                   <TableCell className="font-mono text-[0.813rem]">{lic.numero_edital}</TableCell>
                   <TableCell>
                     <div>
-                      <p className="font-medium">{lic.titulo}</p>
+                      <p className="orx-orx-font-medium">{lic.titulo}</p>
                       {(lic.dias_para_abertura || 0) <= 7 && (
                         <Badge variant="default" className="bg-warning/20 text-warning mt-1 text-[0.813rem]">
                           <Timer className="w-3 h-3 mr-1" />
@@ -416,7 +413,7 @@ export default function LicitacoesPropostas() {
                     </div>
                   </TableCell>
                   <TableCell>{new Date(lic.data_abertura).toLocaleDateString('pt-BR')}</TableCell>
-                  <TableCell className="text-right font-semibold">
+                  <TableCell className="text-right orx-orx-font-semibold">
                     {formatCurrency(lic.valor_estimado)}
                   </TableCell>
                   <TableCell>
@@ -427,22 +424,12 @@ export default function LicitacoesPropostas() {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button variant="ghost" size="sm" icon={<Eye />} />
-                          </TooltipTrigger>
-                          <TooltipContent>Ver Detalhes</TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button variant="ghost" size="sm" icon={<FileCheck />} />
-                          </TooltipTrigger>
-                          <TooltipContent>Elaborar Proposta</TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <Tooltip content="Ver Detalhes">
+                        <Button variant="ghost" size="sm" icon={<Eye />} />
+                      </Tooltip>
+                      <Tooltip content="Elaborar Proposta">
+                        <Button variant="ghost" size="sm" icon={<FileCheck />} />
+                      </Tooltip>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -457,7 +444,7 @@ export default function LicitacoesPropostas() {
   const renderPropostas = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-[0.813rem] font-semibold">Propostas Pendentes de Aprovação</h2>
+        <h2 className="text-[0.813rem] orx-orx-font-semibold">Propostas Pendentes de Aprovação</h2>
       </div>
 
       <div className="space-y-4">
@@ -467,7 +454,7 @@ export default function LicitacoesPropostas() {
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
                   <FileCheck className="w-5 h-5 text-[var(--primary)]" />
-                  <h3 className="text-[0.813rem] font-semibold">{prop.numero_proposta}</h3>
+                  <h3 className="text-[0.813rem] orx-orx-font-semibold">{prop.numero_proposta}</h3>
                   <Badge
                     variant="default"
                     className={
@@ -487,7 +474,7 @@ export default function LicitacoesPropostas() {
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-[0.813rem] font-bold">{formatCurrency(prop.valor_total)}</p>
+                <p className="text-[0.813rem] orx-orx-font-bold">{formatCurrency(prop.valor_total)}</p>
                 <div className="flex gap-2 mt-2">
                   <Badge variant="default" className="bg-success/20 text-success">
                     MB: {prop.margem_bruta_percentual}%
@@ -509,7 +496,7 @@ export default function LicitacoesPropostas() {
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-[0.813rem] font-medium">Comercial</p>
+                  <p className="text-[0.813rem] orx-orx-font-medium">Comercial</p>
                   {prop.aprovada_comercial ? (
                     <ThumbsUp className="w-5 h-5 text-success" />
                   ) : (
@@ -535,7 +522,7 @@ export default function LicitacoesPropostas() {
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-[0.813rem] font-medium">Financeiro</p>
+                  <p className="text-[0.813rem] orx-orx-font-medium">Financeiro</p>
                   {prop.aprovada_financeiro ? (
                     <ThumbsUp className="w-5 h-5 text-success" />
                   ) : (
@@ -561,7 +548,7 @@ export default function LicitacoesPropostas() {
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-[0.813rem] font-medium">Diretoria</p>
+                  <p className="text-[0.813rem] orx-orx-font-medium">Diretoria</p>
                   {prop.aprovada_diretoria ? (
                     <ThumbsUp className="w-5 h-5 text-success" />
                   ) : (
@@ -583,7 +570,7 @@ export default function LicitacoesPropostas() {
             {/* Progresso */}
             <div className="mt-4">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-[0.813rem] font-medium">Progresso de Aprovação</p>
+                <p className="text-[0.813rem] orx-orx-font-medium">Progresso de Aprovação</p>
                 <p className="text-[var(--text-secondary)] text-[0.813rem]">
                   {[prop.aprovada_comercial, prop.aprovada_financeiro, prop.aprovada_diretoria].filter(
                     Boolean
@@ -635,7 +622,7 @@ export default function LicitacoesPropostas() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 ${
+              className={`px-6 py-3 rounded-xl orx-orx-font-medium transition-all flex items-center gap-2 ${
                 activeTab === tab.id
                   ? 'neuro-raised text-[var(--primary)]'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
