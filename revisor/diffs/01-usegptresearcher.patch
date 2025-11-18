@@ -1,0 +1,34 @@
+*** Begin Patch
+*** Update File: src/hooks/useGPTResearcher.ts
+@@
+-export interface ResearchLog {
+-  type: 'info' | 'warning' | 'error' | 'progress';
+-  message: string;
+-  timestamp: Date;
+-  metadata?: Record<string, unknown>;
+-}
++export interface ResearchLog {
++  // Compatível com componentes que esperam 'content'/'output' e tipo 'logs'
++  type: 'info' | 'warning' | 'error' | 'progress' | 'logs';
++  message?: string;
++  content?: string;
++  output?: string;
++  timestamp: Date;
++  metadata?: Record<string, unknown>;
++}
+@@
+-  const addLog = useCallback((log: Omit<ResearchLog, 'timestamp'>) => {
+-    const fullLog: ResearchLog = {
+-      ...log,
+-      timestamp: new Date(),
+-    };
++  const addLog = useCallback((log: Omit<ResearchLog, 'timestamp'>) => {
++    const fullLog: ResearchLog = {
++      type: log.type,
++      message: log.message,
++      content: log.content ?? log.message,
++      output: log.output,
++      metadata: log.metadata,
++      timestamp: new Date(),
++    };
+*** End Patch

@@ -111,6 +111,286 @@ body,
 }
 
 @layer components {
+  /* ========================================
+     ORACLUSX DS - TYPOGRAPHY UTILITIES
+     ======================================== */
+  
+  /* Font Sizes */
+  .orx-text-xs {
+    font-size: var(--orx-font-size-xs); /* 0.75rem / 12px */
+    font-family: var(--orx-font-family);
+  }
+
+  .orx-text-sm {
+    font-size: var(--orx-font-size-sm); /* 0.875rem / 14px */
+    font-family: var(--orx-font-family);
+  }
+
+  .orx-text-base {
+    font-size: var(--orx-font-size-base); /* 1rem / 16px */
+    font-family: var(--orx-font-family);
+  }
+
+  .orx-text-lg {
+    font-size: var(--orx-font-size-lg); /* 1.125rem / 18px */
+    font-family: var(--orx-font-family);
+  }
+
+  .orx-text-xl {
+    font-size: var(--orx-font-size-xl); /* 1.25rem / 20px */
+    font-family: var(--orx-font-family);
+  }
+
+  .orx-text-2xl {
+    font-size: var(--orx-font-size-2xl); /* 1.5rem / 24px */
+    font-family: var(--orx-font-family);
+  }
+
+  .orx-text-3xl {
+    font-size: var(--orx-font-size-3xl); /* 1.875rem / 30px */
+    font-family: var(--orx-font-family);
+  }
+
+  .orx-text-4xl {
+    font-size: var(--orx-font-size-4xl); /* 2.25rem / 36px */
+    font-family: var(--orx-font-family);
+  }
+
+  .orx-text-5xl {
+    font-size: var(--orx-font-size-5xl); /* 3rem / 48px */
+    font-family: var(--orx-font-family);
+  }
+
+  /* Font Weights */
+  .orx-font-normal {
+    font-weight: 400;
+  }
+
+  .orx-font-medium {
+    font-weight: 500;
+  }
+
+  .orx-font-semibold {
+    font-weight: 600;
+  }
+
+  .orx-font-bold {
+    font-weight: 700;
+  }
+
+  .orx-font-extrabold {
+    font-weight: 800;
+  }
+
+  .orx-font-black {
+    font-weight: 900;
+  }
+
+  /* ========================================
+     ESTADOS - HOVER, ACTIVE, DISABLED
+     ======================================== */
+  
+  /* Buttons - Estados */
+  .neumorphic-button,
+  .orx-button {
+    transition: all 0.2s ease-in-out;
+  }
+
+  .neumorphic-button:hover:not(:disabled),
+  .orx-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: var(--orx-shadow-lg);
+  }
+
+  .neumorphic-button:active:not(:disabled),
+  .orx-button:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: var(--orx-shadow-inner);
+  }
+
+  .neumorphic-button:disabled,
+  .orx-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Cards - Estados */
+  .neumorphic-card {
+    transition: all 0.3s ease-in-out;
+  }
+
+  .neumorphic-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--orx-shadow-xl);
+  }
+
+  /* Inputs - Estados */
+  .orx-input:hover:not(:disabled) {
+    border-color: var(--orx-primary);
+  }
+
+  .orx-input:focus {
+    outline: none;
+    border-color: var(--orx-primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  }
+
+  .orx-input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: var(--orx-bg-disabled);
+  }
+
+  /* ========================================
+     A11Y - FOCUS VISIBLE & KEYBOARD NAV
+     ======================================== */
+  
+  /* Focus ring universal */
+  *:focus-visible {
+    outline: 3px solid var(--orx-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Focus ring para botões primários */
+  .neumorphic-button:focus-visible,
+  .orx-button:focus-visible,
+  button:focus-visible {
+    outline: 3px solid rgba(99, 102, 241, 0.5);
+    outline-offset: 3px;
+  }
+
+  /* Focus ring para inputs */
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 3px solid var(--orx-primary);
+    outline-offset: 2px;
+  }
+
+  /* Focus ring para links */
+  a:focus-visible {
+    outline: 3px solid var(--orx-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* ARIA States */
+  [aria-disabled="true"],
+  [disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  [aria-hidden="true"] {
+    display: none !important;
+  }
+
+  [aria-current="page"],
+  [aria-selected="true"] {
+    font-weight: 600;
+    color: var(--orx-primary);
+    background-color: rgba(99, 102, 241, 0.1);
+  }
+
+  /* Keyboard navigation highlights */
+  [data-keyboard-focus="true"] {
+    outline: 3px solid var(--orx-primary) !important;
+    outline-offset: 2px !important;
+  }
+
+  /* Skip navigation link */
+  .skip-to-main {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--orx-primary);
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 0 0 8px 0;
+    font-weight: 600;
+    z-index: 9999;
+    transition: top 0.2s;
+  }
+
+  .skip-to-main:focus {
+    top: 0;
+  }
+
+  /* ========================================
+     DARK MODE - COMPLETE SUPPORT
+     ======================================== */
+  
+  @media (prefers-color-scheme: dark) {
+    .neumorphic-card {
+      background: linear-gradient(145deg, #1e2433, #252a3f);
+      box-shadow: var(--orx-shadow-dark-outer);
+    }
+
+    .neumorphic-button {
+      background: linear-gradient(145deg, #1e2433, #252a3f);
+      box-shadow: var(--orx-shadow-dark-outer);
+    }
+
+    .orx-input {
+      background-color: var(--orx-surface-dark);
+      border-color: rgba(255, 255, 255, 0.1);
+      color: var(--orx-text-primary-dark);
+    }
+
+    .orx-input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+  }
+
+  /* Dark mode manual (data-theme) */
+  [data-theme="dark"] .neumorphic-card {
+    background: linear-gradient(145deg, #1e2433, #252a3f);
+    box-shadow: var(--orx-shadow-dark-outer);
+  }
+
+  [data-theme="dark"] .neumorphic-button {
+    background: linear-gradient(145deg, #1e2433, #252a3f);
+    box-shadow: var(--orx-shadow-dark-outer);
+  }
+
+  [data-theme="dark"] .orx-input {
+    background-color: var(--orx-surface-dark);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--orx-text-primary-dark);
+  }
+
+  /* ========================================
+     RESPONSIVIDADE - MOBILE FIRST
+     ======================================== */
+  
+  @media (max-width: 768px) {
+    .orx-text-2xl {
+      font-size: var(--orx-font-size-xl); /* Reduz em mobile */
+    }
+
+    .orx-text-xl {
+      font-size: var(--orx-font-size-lg);
+    }
+
+    .neumorphic-card {
+      padding: 16px; /* Reduz padding em mobile */
+    }
+  }
+
+  @media (max-width: 640px) {
+    .orx-text-xl {
+      font-size: var(--orx-font-size-base);
+    }
+
+    .orx-text-lg {
+      font-size: var(--orx-font-size-sm);
+    }
+  }
+
   /* Screen Reader Only (visível apenas em foco) */
   .sr-only {
     position: absolute;

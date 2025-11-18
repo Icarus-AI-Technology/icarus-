@@ -1,0 +1,116 @@
+{
+  "$schema": "dre-mapping-schema-v1",
+  "meta": {
+    "descricao": "Mapeamento da DRE inteligente utilizando as tabelas reais do Supabase (transacoes como lançamentos e plano simplificado).",
+    "versao": "0.2.0",
+    "fonte": "https://gvbkviozlhxorjoavmky.supabase.co"
+  },
+  "origem": {
+    "tabela_plano_contas": "transacoes",
+    "tabela_lancamentos": "transacoes",
+    "tabela_centros_custos": "empresas",
+    "campo_conta_codigo": "categoria",
+    "campo_conta_nome": "descricao",
+    "campo_conta_tipo": "tipo",
+    "campo_lanc_data": "data_pagamento",
+    "campo_lanc_valor": "valor",
+    "campo_lanc_conta_codigo": "categoria",
+    "campo_lanc_ccusto_id": "empresa_id",
+    "campo_lanc_medico_id": "medico_id",
+    "campo_lanc_convenio_id": "convenio_id"
+  },
+  "estrutura_dre": [
+    {
+      "secao": "RECEITA BRUTA",
+      "codigo": "1.0.0",
+      "sinal": "+",
+      "contas": ["RB%"],
+      "descricao": "Transações de receita operacional (categoria iniciando por 'RB')."
+    },
+    {
+      "secao": "DEDUÇÕES DA RECEITA",
+      "codigo": "1.1.0",
+      "sinal": "-",
+      "contas": ["DR%"],
+      "descricao": "Impostos, glosas e devoluções (categoria com prefixo 'DR')."
+    },
+    {
+      "secao": "RECEITA LÍQUIDA",
+      "codigo": "1.2.0",
+      "sinal": "=",
+      "formula": "RECEITA BRUTA - DEDUÇÕES DA RECEITA"
+    },
+    {
+      "secao": "CUSTO DOS SERVIÇOS",
+      "codigo": "2.0.0",
+      "sinal": "-",
+      "contas": ["CS%"],
+      "descricao": "Custos diretos de OPME, materiais e equipe (prefixo 'CS')."
+    },
+    {
+      "secao": "LUCRO BRUTO",
+      "codigo": "2.1.0",
+      "sinal": "=",
+      "formula": "RECEITA LÍQUIDA - CUSTO DOS SERVIÇOS"
+    },
+    {
+      "secao": "DESPESAS OPERACIONAIS",
+      "codigo": "3.0.0",
+      "sinal": "-",
+      "contas": ["DO%"],
+      "descricao": "Despesas administrativas, comerciais e logísticas (prefixo 'DO')."
+    },
+    {
+      "secao": "RESULTADO OPERACIONAL",
+      "codigo": "3.1.0",
+      "sinal": "=",
+      "formula": "LUCRO BRUTO - DESPESAS OPERACIONAIS"
+    },
+    {
+      "secao": "OUTRAS RECEITAS",
+      "codigo": "4.0.0",
+      "sinal": "+",
+      "contas": ["OR%"],
+      "descricao": "Receitas financeiras e não operacionais (prefixo 'OR')."
+    },
+    {
+      "secao": "OUTRAS DESPESAS",
+      "codigo": "4.1.0",
+      "sinal": "-",
+      "contas": ["OD%"],
+      "descricao": "Despesas extraordinárias (prefixo 'OD')."
+    },
+    {
+      "secao": "RESULTADO ANTES DOS IMPOSTOS",
+      "codigo": "4.2.0",
+      "sinal": "=",
+      "formula": "RESULTADO OPERACIONAL + OUTRAS RECEITAS - OUTRAS DESPESAS"
+    }
+  ],
+  "dimensoes_analiticas": {
+    "centro_custo": {
+      "habilitado": true,
+      "fonte": "empresas",
+      "campo_relacao": "empresa_id",
+      "campo_nome": "nome_fantasia"
+    },
+    "medico": {
+      "habilitado": true,
+      "fonte": "medicos",
+      "campo_relacao": "medico_id",
+      "campo_nome": "nome"
+    },
+    "convenio": {
+      "habilitado": true,
+      "fonte": "convenios",
+      "campo_relacao": "convenio_id",
+      "campo_nome": "nome"
+    },
+    "periodicidade": ["mensal", "trimestral", "anual"]
+  },
+  "notas": [
+    "Use os prefixos RB, DR, CS, DO, OR e OD no campo public.transacoes.categoria para classificar cada lançamento.",
+    "Caso precise segmentar médicos ou convênios, adicione colunas correspondentes em public.transacoes e atualize este mapeamento."
+  ]
+}
+

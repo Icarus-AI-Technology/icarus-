@@ -326,7 +326,7 @@ Conforme `MODULOS_CADASTROS_COMPRAS_COMPLETO.md`, os seguintes módulos **devem 
 | **CRM (CFM)** | ✅ 100% | Supabase Edge Function |
 | **ANVISA** | ✅ 100% | InfoSimples agregador |
 | **SEFAZ (27 UFs)** | ✅ 100% | InfoSimples (NF-e + Preços NCM) |
-| **InfoSimples Token** | ✅ 100% | `fzxpq47PdYnoOi93sqQhC_BdJJFMaD5_zVZmq3o6` |
+| **InfoSimples Token** | ✅ 100% | Definido via `INFOSIMPLES_TOKEN` (ambiente seguro) |
 
 ---
 

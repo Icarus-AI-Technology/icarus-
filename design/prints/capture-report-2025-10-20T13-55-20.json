@@ -1,0 +1,233 @@
+{
+  "timestamp": "2025-10-20T13:55:20.719Z",
+  "config": {
+    "baseUrl": "http://localhost:4173",
+    "viewport": {
+      "width": 1920,
+      "height": 1080
+    },
+    "totalRoutes": 15,
+    "themes": [
+      "light",
+      "dark"
+    ]
+  },
+  "summary": {
+    "total": 30,
+    "successful": 0,
+    "failed": 30,
+    "elapsedSeconds": 901.58
+  },
+  "results": [
+    {
+      "route": "welcome",
+      "theme": "light",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:40:50.453Z"
+    },
+    {
+      "route": "welcome",
+      "theme": "dark",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:41:20.473Z"
+    },
+    {
+      "route": "dashboard",
+      "theme": "light",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/dashboard\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:41:50.479Z"
+    },
+    {
+      "route": "dashboard",
+      "theme": "dark",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/dashboard\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:42:20.484Z"
+    },
+    {
+      "route": "cirurgias",
+      "theme": "light",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/cirurgias\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:42:50.489Z"
+    },
+    {
+      "route": "cirurgias",
+      "theme": "dark",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/cirurgias\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:43:20.496Z"
+    },
+    {
+      "route": "consignacao",
+      "theme": "light",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/consignacao\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:43:50.502Z"
+    },
+    {
+      "route": "consignacao",
+      "theme": "dark",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/consignacao\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:44:20.512Z"
+    },
+    {
+      "route": "estoque",
+      "theme": "light",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/estoque\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:44:50.517Z"
+    },
+    {
+      "route": "estoque",
+      "theme": "dark",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/estoque\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:45:20.521Z"
+    },
+    {
+      "route": "financeiro",
+      "theme": "light",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/financeiro\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:45:50.522Z"
+    },
+    {
+      "route": "financeiro",
+      "theme": "dark",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/financeiro\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:46:20.523Z"
+    },
+    {
+      "route": "cadastros",
+      "theme": "light",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/cadastros\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:46:50.526Z"
+    },
+    {
+      "route": "cadastros",
+      "theme": "dark",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/cadastros\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:47:20.528Z"
+    },
+    {
+      "route": "compras",
+      "theme": "light",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/compras\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:47:50.532Z"
+    },
+    {
+      "route": "compras",
+      "theme": "dark",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/compras\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:48:20.541Z"
+    },
+    {
+      "route": "contratos",
+      "theme": "light",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/contratos\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:48:50.545Z"
+    },
+    {
+      "route": "contratos",
+      "theme": "dark",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/contratos\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:49:20.549Z"
+    },
+    {
+      "route": "vendas",
+      "theme": "light",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/vendas\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:49:50.555Z"
+    },
+    {
+      "route": "vendas",
+      "theme": "dark",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/vendas\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:50:20.560Z"
+    },
+    {
+      "route": "compliance",
+      "theme": "light",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/compliance\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:50:50.568Z"
+    },
+    {
+      "route": "compliance",
+      "theme": "dark",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/compliance\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:51:20.572Z"
+    },
+    {
+      "route": "rastreabilidade",
+      "theme": "light",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/rastreabilidade\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:51:50.578Z"
+    },
+    {
+      "route": "rastreabilidade",
+      "theme": "dark",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/rastreabilidade\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:52:20.581Z"
+    },
+    {
+      "route": "analytics",
+      "theme": "light",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/analytics\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:52:50.585Z"
+    },
+    {
+      "route": "analytics",
+      "theme": "dark",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/analytics\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:53:20.586Z"
+    },
+    {
+      "route": "logistica",
+      "theme": "light",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/logistica\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:53:50.588Z"
+    },
+    {
+      "route": "logistica",
+      "theme": "dark",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/logistica\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:54:20.590Z"
+    },
+    {
+      "route": "ia-central",
+      "theme": "light",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/ia-central\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:54:50.607Z"
+    },
+    {
+      "route": "ia-central",
+      "theme": "dark",
+      "success": false,
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"http://localhost:4173/ia-central\", waiting until \"networkidle\"\n",
+      "timestamp": "2025-10-20T13:55:20.613Z"
+    }
+  ]
+}

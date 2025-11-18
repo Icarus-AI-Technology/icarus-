@@ -1,15 +1,15 @@
 /**
  * API ANVISA - Consulta de Produtos para Saúde
  * ICARUS v5.0
- * 
+ *
  * Consulta registro de produtos médicos na ANVISA
  * Preenchimento automático de data de validade do registro
- * 
+ *
  * APIs disponíveis:
  * - ANVISA Datavisa (oficial)
  * - InfoSimples ANVISA API
  */
-
+import { getInfoSimplesToken } from "./infosimples.service";
 export interface ANVISAProduto {
   registro: string;
   nome: string;
@@ -37,12 +37,18 @@ export interface ANVISAResponse {
  */
 export async function consultarProdutoANVISA(
   registro: string,
-  token: string = 'fzxpq47PdYnoOi93sqQhC_BdJJFMaD5_zVZmq3o6'
+  token?: string
 ): Promise<ANVISAProduto> {
   const registroLimpo = registro.replace(/[^\d]/g, '');
   
   if (!registroLimpo) {
     throw new Error('Número de registro inválido');
+  }
+
+  const apiToken = token ?? getInfoSimplesToken();
+  
+  if (!apiToken) {
+    throw new Error('Token InfoSimples não configurado. Defina VITE_INFOSIMPLES_TOKEN ou INFOSIMPLES_TOKEN.');
   }
   
   try {
@@ -52,7 +58,7 @@ export async function consultarProdutoANVISA(
       {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${apiToken}`,
           'Content-Type': 'application/json',
         },
       }

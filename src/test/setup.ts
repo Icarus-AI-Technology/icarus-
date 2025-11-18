@@ -2,7 +2,7 @@
  * Setup global para testes Vitest
  */
 
-import { expect, afterEach } from 'vitest';
+import { expect, afterEach, beforeEach } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import * as matchers from '@testing-library/jest-dom/matchers';
 
@@ -12,6 +12,11 @@ expect.extend(matchers);
 // Cleanup após cada teste
 afterEach(() => {
   cleanup();
+});
+
+// Garante que sempre exista um elemento com role=document
+beforeEach(() => {
+  document.body.setAttribute('role', 'document');
 });
 
 // Mock de window.matchMedia (para testes de responsividade)

@@ -1,0 +1,568 @@
+# ============================================================================
+# ICARUS - VARIÁVEIS DE AMBIENTE - TEMPLATE COMPLETO
+# ============================================================================
+# Preencha este arquivo e copie para `.env` na raiz do projeto.
+# Nunca commitar segredos!
+# ============================================================================
+
+# ============================================================================
+# AMBIENTE
+# ============================================================================
+NODE_ENV=production
+VITE_APP_ENV=production
+VITE_APP_URL=https://icarus.oficial
+
+# ============================================================================
+# SUPABASE (OBRIGATÓRIO)
+# ============================================================================
+VITE_SUPABASE_URL=https://seu-project-ref.supabase.co
+VITE_SUPABASE_ANON_KEY=
+SUPABASE_URL=https://seu-project-ref.supabase.co
+SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+DATABASE_URL=
+
+# ============================================================================
+# ADMIN INICIAL
+# ============================================================================
+ADMIN_INITIAL_EMAIL=admin@icarus.com.br
+ADMIN_INITIAL_PASSWORD=SenhaForte123!
+ADMIN_INITIAL_NAME=Administrador Icarus
+
+# ============================================================================
+# FEATURE FLAGS / IA
+# ============================================================================
+FF_AI_TUTOR_CIRURGIAS=true
+FF_ML_QUEUE=true
+
+# ============================================================================
+# ML / IA SERVICES
+# ============================================================================
+ML_SERVICE_URL=http://localhost:8765
+VITE_OLLAMA_URL=http://localhost:11434
+VITE_OLLAMA_DEFAULT_MODEL=llama3.1:8b
+VITE_OPENAI_API_KEY=
+VITE_OPENAI_MODEL=gpt-4-turbo-preview
+VITE_ANTHROPIC_API_KEY=
+VITE_ANTHROPIC_MODEL=claude-3-5-sonnet-20241022
+
+# ============================================================================
+# TRANSPORTADORAS
+# ============================================================================
+# Correios
+CORREIOS_API_KEY=
+CORREIOS_USER=
+CORREIOS_PASSWORD=
+
+# Jadlog
+JADLOG_API_KEY=
+JADLOG_CNPJ=
+JADLOG_PASSWORD=
+
+# Braspress
+BRASPRESS_API_KEY=
+BRASPRESS_CNPJ=
+
+# Total Express
+TOTAL_EXPRESS_API_KEY=
+TOTAL_EXPRESS_CLIENT_ID=
+
+# ============================================================================
+# COMUNICAÇÃO
+# ============================================================================
+# Twilio
+TWILIO_ACCOUNT_SID=
+TWILIO_AUTH_TOKEN=
+TWILIO_PHONE_NUMBER=
+TWILIO_WHATSAPP_NUMBER=
+
+# SendGrid
+SENDGRID_API_KEY=
+SENDGRID_FROM_EMAIL=noreply@icarus.com.br
+SENDGRID_FROM_NAME=Icarus Make
+SENDGRID_WEBHOOK_PUBLIC_KEY=
+
+# ============================================================================
+# FINANCEIRO / OPEN BANKING
+# ============================================================================
+VITE_PLUGGY_ENABLED=false
+VITE_PLUGGY_CLIENT_ID=
+VITE_PLUGGY_CLIENT_SECRET=
+PLUGGY_CLIENT_ID=
+PLUGGY_CLIENT_SECRET=
+STRIPE_API_KEY=
+STRIPE_WEBHOOK_SECRET=
+
+# ============================================================================
+# QUEUE SYSTEM (BullMQ / Redis)
+# ============================================================================
+REDIS_URL=redis://localhost:6379
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWORD=
+REDIS_DB=0
+
+# Upstash (opcional)
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
+
+# ============================================================================
+# OUTROS SERVIÇOS
+# ============================================================================
+MEILISEARCH_HOST=http://localhost:7700
+MEILISEARCH_API_KEY=masterKey
+SENTRY_DSN=
+POSTHOG_API_KEY=
+
+# ============================================================================
+# VERCEL
+# ============================================================================
+VERCEL_ENV=production
+VERCEL_ANALYTICS_ID=
+
+# ============================================================================
+# ICARUS - VARIÁVEIS DE AMBIENTE - TEMPLATE COMPLETO
+# ============================================================================
+# Sistema OPME Multi-tenant
+# Versão: 1.0.0
+# Data: 2025-01-26
+# ============================================================================
+# 
+# INSTRUÇÕES:
+# 1. Copie este arquivo para .env na raiz do projeto
+# 2. Preencha TODAS as variáveis obrigatórias (marcadas com ⚠️)
+# 3. Preencha as variáveis opcionais conforme necessidade
+# 4. NUNCA comite o arquivo .env no Git
+# 5. Use este arquivo como referência para configurar na Vercel
+#
+# ============================================================================
+
+# ============================================================================
+# AMBIENTE
+# ============================================================================
+NODE_ENV=production
+VITE_APP_ENV=production
+
+# ============================================================================
+# ⚠️ SUPABASE (OBRIGATÓRIO - Configure primeiro!)
+# ============================================================================
+# Obtenha em: Supabase Dashboard → Settings → API
+# NUNCA comite estas credenciais no Git!
+
+# Frontend (público)
+VITE_SUPABASE_URL=https://seu-project-ref.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+# Backend/Edge Functions (privado - NÃO expor no frontend)
+SUPABASE_URL=https://seu-project-ref.supabase.co
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+# Database Connection (Direto via psql/migrations)
+DATABASE_URL=postgresql://postgres:sua-senha@db.seu-project-ref.supabase.co:5432/postgres
+
+# URL da aplicação
+VITE_APP_URL=https://icarus-oficial.vercel.app
+
+# ============================================================================
+# ⚠️ ADMIN INICIAL (Edge Function: create-admin)
+# ============================================================================
+# Usado pela Edge Function create-admin para criar primeiro usuário
+ADMIN_INITIAL_EMAIL=admin@icarus.com.br
+ADMIN_INITIAL_PASSWORD=SuaSenhaForteAqui123!
+ADMIN_INITIAL_NAME=Administrador Sistema
+
+# ============================================================================
+# FEATURE FLAGS (ML/IA)
+# ============================================================================
+# Habilitar/Desabilitar funcionalidades de IA
+FF_AI_TUTOR_CIRURGIAS=true
+FF_TUTOR_CIRURGIAS=true
+FF_ML_QUEUE=true
+FF_EDR_RESEARCH=true
+FF_AGENT_ORCHESTRATION=true
+
+# ============================================================================
+# ML/AI SERVICES
+# ============================================================================
+
+# Serviço ML Local (Python/FastAPI)
+ML_SERVICE_URL=http://localhost:8765
+
+# Ollama (LLM Local)
+VITE_OLLAMA_URL=http://localhost:11434
+VITE_OLLAMA_DEFAULT_MODEL=llama3.1:8b
+
+# OpenAI (GPT-4)
+VITE_OPENAI_API_KEY=sk-...
+VITE_OPENAI_MODEL=gpt-4-turbo-preview
+OPENAI_API_KEY=sk-...
+
+# Anthropic (Claude)
+VITE_ANTHROPIC_API_KEY=sk-ant-...
+VITE_ANTHROPIC_MODEL=claude-3-5-sonnet-20241022
+ANTHROPIC_API_KEY=sk-ant-...
+
+# ============================================================================
+# TRANSPORTADORAS (Integrações de Logística)
+# ============================================================================
+
+# Correios (Rastreamento)
+CORREIOS_API_KEY=
+CORREIOS_USER=
+CORREIOS_PASSWORD=
+CORREIOS_API_URL=https://api.correios.com.br/v1
+
+# Jadlog
+JADLOG_API_KEY=
+JADLOG_CNPJ=
+JADLOG_PASSWORD=
+JADLOG_API_URL=https://api.jadlog.com.br/v1
+
+# Braspress
+BRASPRESS_API_KEY=
+BRASPRESS_CNPJ=
+BRASPRESS_API_URL=https://api.braspress.com.br
+
+# Total Express
+TOTAL_EXPRESS_API_KEY=
+TOTAL_EXPRESS_CLIENT_ID=
+TOTAL_EXPRESS_API_URL=https://edi.totalexpress.com.br/api
+
+# DHL (Internacional)
+DHL_API_KEY=
+DHL_API_SECRET=
+DHL_API_URL=https://api-eu.dhl.com/track/shipments
+
+# Fedex
+FEDEX_API_KEY=
+FEDEX_API_SECRET=
+
+# Loggi
+LOGGI_API_KEY=
+LOGGI_API_URL=https://api.loggi.com/v1
+
+# ============================================================================
+# COMUNICAÇÃO
+# ============================================================================
+
+# Twilio (SMS/WhatsApp)
+TWILIO_ACCOUNT_SID=
+TWILIO_AUTH_TOKEN=
+TWILIO_PHONE_NUMBER=+5511999999999
+TWILIO_WHATSAPP_NUMBER=+5511999999999
+
+# SendGrid (Email)
+SENDGRID_API_KEY=
+SENDGRID_FROM_EMAIL=noreply@icarus.com.br
+SENDGRID_FROM_NAME=ICARUS OPME
+SENDGRID_WEBHOOK_PUBLIC_KEY=
+
+# MailChimp (Marketing - Opcional)
+MAILCHIMP_API_KEY=
+MAILCHIMP_LIST_ID=
+
+# ============================================================================
+# FINANCEIRO & OPEN BANKING
+# ============================================================================
+
+# Pluggy (Open Banking)
+VITE_PLUGGY_ENABLED=false
+VITE_PLUGGY_CLIENT_ID=
+VITE_PLUGGY_CLIENT_SECRET=
+PLUGGY_CLIENT_ID=
+PLUGGY_CLIENT_SECRET=
+PLUGGY_API_URL=https://api.pluggy.ai
+
+# Stripe (Pagamentos Internacionais)
+STRIPE_API_KEY=
+STRIPE_WEBHOOK_SECRET=
+STRIPE_PUBLIC_KEY=
+
+# Mercado Pago (Brasil)
+MERCADO_PAGO_ACCESS_TOKEN=
+MERCADO_PAGO_PUBLIC_KEY=
+
+# PagSeguro
+PAGSEGURO_EMAIL=
+PAGSEGURO_TOKEN=
+
+# ============================================================================
+# MICROSOFT 365 INTEGRATION
+# ============================================================================
+# Para sincronização de calendário, tarefas e emails
+
+MICROSOFT_CLIENT_ID=
+MICROSOFT_CLIENT_SECRET=
+MICROSOFT_TENANT_ID=
+MICROSOFT_REDIRECT_URI=https://icarus-oficial.vercel.app/api/auth/microsoft/callback
+
+# ============================================================================
+# APIS EXTERNAS (Validações e Consultas)
+# ============================================================================
+
+# ANVISA (Consulta de Registros OPME)
+ANVISA_API_KEY=
+ANVISA_API_URL=https://consultas.anvisa.gov.br/api/v1
+
+# CFM (Conselho Federal de Medicina - Validação CRM)
+CFM_API_KEY=
+CFM_API_URL=https://portal.cfm.org.br/api/v1
+
+# ReceitaWS (Consulta CNPJ - Gratuito)
+RECEITA_WS_API_URL=https://www.receitaws.com.br/v1
+
+# ViaCEP (Consulta CEP - Gratuito)
+VIACEP_API_URL=https://viacep.com.br/ws
+
+# ============================================================================
+# QUEUE SYSTEM (BullMQ/Redis)
+# ============================================================================
+# Para processamento assíncrono de jobs
+
+REDIS_URL=redis://localhost:6379
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWORD=
+REDIS_DB=0
+
+# Upstash Redis (Alternativa serverless)
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
+
+# ============================================================================
+# SEARCH ENGINE (MeiliSearch)
+# ============================================================================
+# Para busca full-text rápida
+
+MEILISEARCH_HOST=http://localhost:7700
+MEILISEARCH_API_KEY=
+MEILISEARCH_INDEX_PREFIX=icarus_
+
+# ============================================================================
+# STORAGE (Alternativo/Complementar ao Supabase Storage)
+# ============================================================================
+
+# AWS S3
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_REGION=us-east-1
+AWS_S3_BUCKET=icarus-documentos
+
+# Vercel Blob
+BLOB_READ_WRITE_TOKEN=
+
+# Cloudflare R2
+R2_ACCOUNT_ID=
+R2_ACCESS_KEY_ID=
+R2_SECRET_ACCESS_KEY=
+
+# ============================================================================
+# MONITORAMENTO & ANALYTICS
+# ============================================================================
+
+# Sentry (Error Tracking)
+VITE_SENTRY_DSN=
+SENTRY_DSN=
+SENTRY_ORG=
+SENTRY_PROJECT=
+SENTRY_AUTH_TOKEN=
+
+# PostHog (Product Analytics)
+VITE_POSTHOG_API_KEY=
+VITE_POSTHOG_HOST=https://app.posthog.com
+POSTHOG_API_KEY=
+
+# Google Analytics
+VITE_GA_TRACKING_ID=
+
+# Vercel Analytics (Automático se deployado na Vercel)
+VERCEL_ANALYTICS_ID=
+
+# ============================================================================
+# RATE LIMITING & CACHE
+# ============================================================================
+
+# Upstash Rate Limit
+UPSTASH_RATE_LIMIT_REST_URL=
+UPSTASH_RATE_LIMIT_REST_TOKEN=
+
+# Vercel KV (Cache)
+KV_REST_API_URL=
+KV_REST_API_TOKEN=
+
+# ============================================================================
+# WEBHOOKS (Saída - Para notificar sistemas externos)
+# ============================================================================
+# Configurados dinamicamente via dashboard, mas podem ter defaults aqui
+
+WEBHOOK_DEFAULT_TIMEOUT=30
+WEBHOOK_MAX_RETRIES=3
+WEBHOOK_RETRY_DELAY=60
+
+# ============================================================================
+# CRON JOBS & SCHEDULED TASKS
+# ============================================================================
+
+# Recálculo de KPIs (cron)
+CRON_RECALCULATE_KPI=0 */6 * * *
+
+# Refresh Materialized Views (cron)
+CRON_REFRESH_VIEWS=0 */12 * * *
+
+# Limpeza de webhooks antigos (cron)
+CRON_CLEANUP_WEBHOOKS=0 2 * * *
+
+# Backup automático (cron)
+CRON_BACKUP_DB=0 3 * * *
+
+# ============================================================================
+# SEGURANÇA & AUTH
+# ============================================================================
+
+# JWT Secret (para tokens customizados, se necessário)
+JWT_SECRET=sua-chave-secreta-aqui-min-32-chars
+
+# Encryption Key (para dados sensíveis)
+ENCRYPTION_KEY=sua-chave-encriptacao-aqui-min-32-chars
+
+# Session Secret
+SESSION_SECRET=sua-chave-sessao-aqui-min-32-chars
+
+# CORS Origins (separado por vírgula)
+CORS_ORIGINS=https://icarus-oficial.vercel.app,http://localhost:5173
+
+# ============================================================================
+# COMPLIANCE & LGPD
+# ============================================================================
+
+# DPO (Data Protection Officer)
+DPO_EMAIL=dpo@icarus.com.br
+DPO_NOME=Nome do DPO
+
+# Tempo de retenção de dados (dias)
+DATA_RETENTION_DAYS=2555
+
+# Auto-exclusão de dados (soft delete) após inatividade (dias)
+AUTO_DELETE_INACTIVE_DAYS=1825
+
+# ============================================================================
+# DESENVOLVIMENTO & TESTES
+# ============================================================================
+
+# Mock Services (apenas desenvolvimento)
+USE_MOCK_SERVICES=false
+MOCK_API_PORT=9900
+
+# Testes E2E
+E2E_BASE_URL=http://localhost:5173
+E2E_HEADLESS=true
+
+# Playwright
+PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=false
+
+# ============================================================================
+# VERCEL (Automático quando deployado)
+# ============================================================================
+VERCEL_ENV=production
+VERCEL_URL=
+VERCEL_PROJECT_ID=prj_fvvSsAM9e5qB1ORYSiTjrlEugQv5
+VERCEL_ORG_ID=
+
+# ============================================================================
+# OBSERVABILIDADE (Logging)
+# ============================================================================
+
+# Log Level (debug, info, warn, error)
+LOG_LEVEL=info
+
+# Structured Logging
+LOG_FORMAT=json
+
+# Log Retention (dias)
+LOG_RETENTION_DAYS=30
+
+# ============================================================================
+# PERFORMANCE & OPTIMIZATION
+# ============================================================================
+
+# CDN
+CDN_URL=https://cdn.icarus.com.br
+
+# Image Optimization
+IMAGE_OPTIMIZATION_ENABLED=true
+IMAGE_MAX_SIZE_MB=5
+
+# Cache TTL (segundos)
+CACHE_TTL_SHORT=300
+CACHE_TTL_MEDIUM=3600
+CACHE_TTL_LONG=86400
+
+# ============================================================================
+# INTERNACIONALIZAÇÃO (I18N)
+# ============================================================================
+
+DEFAULT_LOCALE=pt-BR
+SUPPORTED_LOCALES=pt-BR,en-US,es-ES
+
+# ============================================================================
+# BACKUP & DISASTER RECOVERY
+# ============================================================================
+
+# Backup Storage
+BACKUP_STORAGE_PROVIDER=s3
+BACKUP_BUCKET=icarus-backups
+BACKUP_RETENTION_DAYS=90
+
+# ============================================================================
+# NOTIFICAÇÕES INTERNAS (Slack, Discord, etc)
+# ============================================================================
+
+# Slack (Alertas de Sistema)
+SLACK_WEBHOOK_URL=
+SLACK_CHANNEL_ALERTS=#alerts
+SLACK_CHANNEL_DEPLOYMENTS=#deployments
+
+# Discord
+DISCORD_WEBHOOK_URL=
+
+# ============================================================================
+# RATE LIMITS (Aplicação)
+# ============================================================================
+
+# API Rate Limits (requests per minute)
+RATE_LIMIT_WINDOW_MS=60000
+RATE_LIMIT_MAX_REQUESTS=100
+
+# Webhooks Rate Limits
+WEBHOOK_RATE_LIMIT_MAX=50
+
+# ============================================================================
+# MISCELÂNEA
+# ============================================================================
+
+# Timezone
+TZ=America/Sao_Paulo
+
+# App Version (automático via CI/CD)
+VITE_APP_VERSION=1.0.0
+
+# Build Number (automático via CI/CD)
+BUILD_NUMBER=
+
+# Git Commit Hash (automático via CI/CD)
+GIT_COMMIT_SHA=
+
+# ============================================================================
+# FIM DAS VARIÁVEIS
+# ============================================================================
+#
+# ⚠️ LEMBRETE:
+# - Adicione .env ao .gitignore
+# - Use 1Password, Bitwarden ou AWS Secrets Manager para produção
+# - Nunca compartilhe credenciais via email/slack
+# - Rotacione chaves regularmente
+# - Use variáveis diferentes para dev/staging/prod
+#
+# ============================================================================
+

@@ -5,7 +5,8 @@ import { AnunciosPagos } from "@/components/modules/AnunciosPagos";
 describe("AnunciosPagos", () => {
   it("deve estar definido", () => {
     render(<AnunciosPagos />);
-    expect(screen.getByRole("document")).toBeInTheDocument();
+    const headings = screen.getAllByRole("heading", { level: 1 });
+    expect(headings.length).toBeGreaterThan(0);
   });
 
   // TODO: Adicionar mais testes específicos

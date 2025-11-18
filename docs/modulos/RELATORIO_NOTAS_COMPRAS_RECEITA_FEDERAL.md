@@ -174,7 +174,7 @@ await consultarNota(chaveNFe: string, uf: string)
 
 ### 2. **InfoSimples API** (Token já configurado)
 ```typescript
-Token: 'fzxpq47PdYnoOi93sqQhC_BdJJFMaD5_zVZmq3o6'
+Token: '<defina INFOSIMPLES_TOKEN via ambiente seguro>'
 Endpoint SEFAZ: https://api.infosimples.com/api/v2/consultas/sefaz/{uf}/nfe/{chave}
 Estados suportados: Todos os 26 estados + DF
 ```

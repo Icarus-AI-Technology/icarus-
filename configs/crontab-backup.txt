@@ -1,0 +1,34 @@
+# ============================================================================
+# CRONTAB - BACKUP AUTOMÁTICO DIÁRIO
+# ============================================================================
+# Para instalar este cron job:
+# 1. Execute: crontab -e
+# 2. Cole as linhas abaixo
+# 3. Salve e saia
+# ============================================================================
+
+# Configurar PATH e variáveis de ambiente
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin
+SUPABASE_ACCESS_TOKEN=sbp_70b788dfc360f2dfa18ebe130c09af492c36d21c
+
+# ============================================================================
+# BACKUP DIÁRIO ÀS 03:00 AM (Horário de Brasília)
+# ============================================================================
+# Formato: MIN HORA DIA MÊS DIA_SEMANA COMANDO
+0 3 * * * cd /Users/daxmeneghel/icarus-make && ./scripts/backup-database.sh >> ./logs/backup.log 2>&1
+
+# ============================================================================
+# BACKUP SEMANAL (Domingos às 04:00 AM) - Cópia extra de segurança
+# ============================================================================
+0 4 * * 0 cd /Users/daxmeneghel/icarus-make && ./scripts/backup-database.sh >> ./logs/backup-weekly.log 2>&1
+
+# ============================================================================
+# NOTAS:
+# ============================================================================
+# - O backup diário mantém últimos 30 dias
+# - Logs são salvos em ./logs/backup.log
+# - Backup semanal é uma cópia extra de segurança
+# - Para testar manualmente: ./scripts/backup-database.sh
+# ============================================================================
+

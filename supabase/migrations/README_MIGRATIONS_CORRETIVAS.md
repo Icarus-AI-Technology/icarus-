@@ -146,6 +146,42 @@ SELECT empresa_nome, atualizado_em FROM public.mv_kpis_empresa;
 
 ---
 
+### **4. `20251117_backend_multitenant_fix.sql`**
+
+**Gap corrigido:** Multi-tenant inconsistent no módulo de estoque + função KPI quebrada + ausência de `calcular_score_global_abbott()`  
+**Severidade:** 🔴 ALTA (segurança + relatórios)
+
+**O que faz:**
+1. ✅ Adiciona `empresa_id` + FKs em **9 tabelas** (`estoque`, `estoque_reservas`, `estoque_movimentacoes`, `estoque_lotes`, `estoque_inventarios`, etc.)
+2. ✅ Recria políticas RLS para estoque e derivados (SELECT/INSERT/UPDATE/DELETE por empresa)
+3. ✅ Corrige função `get_dashboard_kpis()` (`medicos.status = 'ativo'`)
+4. ✅ Cria função `calcular_score_global_abbott()` reutilizando `calcular_abbott_score`
+
+**Aplicar:**
+```bash
+psql -U postgres -d icarus_staging -f 20251117_backend_multitenant_fix.sql
+```
+
+**Rollback (manual):**
+- Remover policies recriadas
+- Dropar colunas `empresa_id` (se realmente necessário)
+- Recriar versão anterior das funções (usar histórico do git)
+
+**Validação pós-migration:**
+```sql
+-- Verificar se colunas foram populadas
+SELECT COUNT(*) FROM public.estoque WHERE empresa_id IS NULL;     -- Esperado: 0
+SELECT COUNT(*) FROM public.estoque_movimentacoes WHERE empresa_id IS NULL; -- Esperado: 0
+
+-- Testar função KPI
+SELECT get_dashboard_kpis();
+
+-- Score Abbott consolidado
+SELECT * FROM calcular_score_global_abbott();
+```
+
+---
+
 ## 📊 ORDEM DE APLICAÇÃO
 
 ### **Recomendação:**

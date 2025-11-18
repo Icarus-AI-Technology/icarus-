@@ -5,7 +5,8 @@ import { ChatEnterprise } from "@/components/modules/ChatEnterprise";
 describe("ChatEnterprise", () => {
   it("deve estar definido", () => {
     render(<ChatEnterprise />);
-    expect(screen.getByRole("document")).toBeInTheDocument();
+    const headings = screen.getAllByRole("heading", { level: 1 });
+    expect(headings.length).toBeGreaterThan(0);
   });
 
   // TODO: Adicionar mais testes específicos

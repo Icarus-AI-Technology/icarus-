@@ -37,7 +37,7 @@ export interface ANVISAResponse {
  */
 export async function consultarProdutoANVISA(
   registro: string,
-  token: string = "fzxpq47PdYnoOi93sqQhC_BdJJFMaD5_zVZmq3o6",
+  token: string = "<INFOSIMPLES_TOKEN>",
 ): Promise<ANVISAProduto> {
   const registroLimpo = registro.replace(/[^\d]/g, "");
 

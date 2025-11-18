@@ -55,7 +55,7 @@ export interface PrecoProdutoSEFAZ {
   estadosConsultados: string[];
 }
 
-const INFOSIMPLES_TOKEN = "fzxpq47PdYnoOi93sqQhC_BdJJFMaD5_zVZmq3o6";
+const INFOSIMPLES_TOKEN = "<INFOSIMPLES_TOKEN>";
 
 /**
  * Consulta Nota Fiscal via SEFAZ usando InfoSimples

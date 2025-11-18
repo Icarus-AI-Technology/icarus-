@@ -157,7 +157,7 @@ export default function Contato() {
               <button
                 type="submit"
                 className="neumorphic-button colored-button"
-                style={{ background: "rgba(99, 102, 241, 0.95)", color: "#fff" }}
+                style={{ background: "rgba(99, 102, 241, 0.95)", color: "var(--orx-text-white)" }}
                 disabled={status === "sending"}
               >
                 {status === "sending" ? "Enviando..." : "Enviar"}

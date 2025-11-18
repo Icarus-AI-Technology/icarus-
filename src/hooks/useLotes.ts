@@ -1,151 +1,192 @@
-/**
- * Hook: useLotes
- * Gerenciamento de lotes OPME
- */
+import { useState, useEffect, useCallback } from 'react';
+import { supabase } from '../lib/supabase';
 
-import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabase";
+/**
+ * Hook para Lotes OPME (Rastreabilidade ANVISA)
+ * Tabela: lotes
+ */
 
 export interface Lote {
   id: string;
   empresa_id: string;
   produto_id: string;
   numero_lote: string;
+  numero_serie?: string;
   data_fabricacao: string;
   data_validade: string;
-  quantidade: number;
+  quantidade_inicial: number;
   quantidade_disponivel: number;
-  fornecedor_id: string;
-  nota_fiscal?: string;
-  certificado_qualidade?: string;
-  anvisa_registro?: string;
-  status: "disponivel" | "em_uso" | "bloqueado" | "vencido" | "recall";
-  motivo_bloqueio?: string;
-  localizacao?: string;
+  status: 'disponivel' | 'reservado' | 'utilizado' | 'vencido';
+  fornecedor_id?: string;
   observacoes?: string;
-  criado_em: string;
-  atualizado_em: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
-export function useLotes() {
+export const useLotes = () => {
   const [lotes, setLotes] = useState<Lote[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchLotes();
+  // Alertas
+  const [lotesProximosVencimento, setLotesProximosVencimento] = useState<Lote[]>([]);
+  const [lotesVencidos, setLotesVencidos] = useState<Lote[]>([]);
+
+  const handleError = useCallback((err: unknown, fallback: string) => {
+    const message = err instanceof Error ? err.message : fallback;
+    setError(message);
   }, []);
 
-  async function fetchLotes() {
+  const fetchLotes = useCallback(async () => {
     try {
       setLoading(true);
+
       const { data, error: fetchError } = await supabase
-        .from("lotes")
-        .select("*")
-        .order("data_validade");
+        .from('lotes')
+        .select(`
+          *,
+          produto:produtos(nome, codigo, categoria)
+        `)
+        .order('data_validade', { ascending: true });
 
       if (fetchError) throw fetchError;
-      setLotes(data || []);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Erro ao carregar lotes");
+
+      const hoje = new Date();
+      const em30Dias = new Date();
+      em30Dias.setDate(hoje.getDate() + 30);
+
+      // Filtrar lotes por vencimento
+      const proximosVencimento = ((data ?? []) as Lote[]).filter(lote => {
+        const validade = new Date(lote.data_validade);
+        return validade > hoje && validade <= em30Dias;
+      });
+
+      const vencidos = ((data ?? []) as Lote[]).filter(lote => {
+        const validade = new Date(lote.data_validade);
+        return validade <= hoje;
+      });
+
+      setLotes((data as Lote[] | null) ?? []);
+      setLotesProximosVencimento(proximosVencimento);
+      setLotesVencidos(vencidos);
+      setError(null);
+    } catch (error) {
+   const err = error as Error;
+      handleError(err, 'Erro ao carregar lotes');
+      setLotes([]);
     } finally {
       setLoading(false);
     }
-  }
+  }, [handleError]);
 
-  async function createLote(
-    loteData: Omit<Lote, "id" | "criado_em" | "atualizado_em">,
-  ) {
+  useEffect(() => {
+    fetchLotes().catch((err: unknown) => handleError(err, 'Erro ao carregar lotes'));
+  }, [fetchLotes, handleError]);
+
+  const criarLote = async (lote: Omit<Lote, 'id'>) => {
     try {
-      const { data, error: createError } = await supabase
-        .from("lotes")
-        .insert([loteData])
+      const { data, error } = await supabase
+        .from('lotes')
+        .insert(lote)
         .select()
         .single();
 
-      if (createError) throw createError;
-      await fetchLotes();
-      return data;
-    } catch (err) {
-      throw new Error(
-        err instanceof Error ? err.message : "Erro ao criar lote",
-      );
-    }
-  }
+      if (error) throw error;
 
-  async function updateLote(id: string, updates: Partial<Lote>) {
+      await fetchLotes();
+      return data as Lote;
+    } catch (error) {
+   const err = error as Error;
+      handleError(err, 'Erro ao criar lote');
+      throw err;
+    }
+  };
+
+  const atualizarLote = async (id: string, updates: Partial<Lote>) => {
     try {
-      const { data, error: updateError } = await supabase
-        .from("lotes")
+      const { error } = await supabase
+        .from('lotes')
         .update(updates)
-        .eq("id", id)
-        .select()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      await fetchLotes();
+    } catch (error) {
+   const err = error as Error;
+      handleError(err, 'Erro ao atualizar lote');
+      throw err;
+    }
+  };
+
+  const consumirLote = async (id: string, quantidade: number) => {
+    try {
+      // Busca lote atual
+      const { data: lote, error: fetchError } = await supabase
+        .from('lotes')
+        .select('quantidade_disponivel')
+        .eq('id', id)
         .single();
 
-      if (updateError) throw updateError;
+      if (fetchError) throw fetchError;
+
+      const quantidadeDisponivel = (lote?.quantidade_disponivel ?? 0) - quantidade;
+
+      if (quantidadeDisponivel < 0) {
+        throw new Error('Quantidade insuficiente no lote');
+      }
+
+      // Atualiza quantidade
+      const { error } = await supabase
+        .from('lotes')
+        .update({
+          quantidade_disponivel: quantidadeDisponivel,
+          status: quantidadeDisponivel === 0 ? 'utilizado' : 'disponivel'
+        })
+        .eq('id', id);
+
+      if (error) throw error;
+
       await fetchLotes();
-      return data;
-    } catch (err) {
-      throw new Error(
-        err instanceof Error ? err.message : "Erro ao atualizar lote",
-      );
+    } catch (error) {
+   const err = error as Error;
+      handleError(err, 'Erro ao consumir lote');
+      throw err;
     }
-  }
+  };
 
-  async function bloquearLote(id: string, motivo: string) {
+  const buscarPorNumeroLote = async (numeroLote: string) => {
     try {
-      await updateLote(id, {
-        status: "bloqueado",
-        motivo_bloqueio: motivo,
-      });
-    } catch (err) {
-      throw new Error(
-        err instanceof Error ? err.message : "Erro ao bloquear lote",
-      );
+      const { data, error } = await supabase
+        .from('lotes')
+        .select(`
+          *,
+          produto:produtos(*)
+        `)
+        .eq('numero_lote', numeroLote)
+        .single();
+
+      if (error) throw error;
+
+      return data as Lote;
+    } catch (error) {
+   const err = error as Error;
+      handleError(err, 'Erro ao buscar lote');
+      throw err;
     }
-  }
-
-  async function buscarPorProduto(produtoId: string) {
-    try {
-      const { data, error: searchError } = await supabase
-        .from("lotes")
-        .select("*")
-        .eq("produto_id", produtoId)
-        .eq("status", "disponivel")
-        .order("data_validade");
-
-      if (searchError) throw searchError;
-      return data;
-    } catch (err) {
-      throw new Error(err instanceof Error ? err.message : "Erro na busca");
-    }
-  }
-
-  async function buscarVencidos() {
-    try {
-      const hoje = new Date().toISOString().split("T")[0];
-      const { data, error: searchError } = await supabase
-        .from("lotes")
-        .select("*")
-        .lt("data_validade", hoje)
-        .neq("status", "vencido");
-
-      if (searchError) throw searchError;
-      return data;
-    } catch (err) {
-      throw new Error(err instanceof Error ? err.message : "Erro na busca");
-    }
-  }
+  };
 
   return {
     lotes,
     loading,
     error,
-    createLote,
-    updateLote,
-    bloquearLote,
-    buscarPorProduto,
-    buscarVencidos,
-    refresh: fetchLotes,
+    lotesProximosVencimento,
+    lotesVencidos,
+    fetchLotes,
+    criarLote,
+    atualizarLote,
+    consumirLote,
+    buscarPorNumeroLote
   };
-}
+};
+

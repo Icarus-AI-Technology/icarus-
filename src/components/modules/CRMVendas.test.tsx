@@ -1,11 +1,17 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { CRMVendas } from "@/components/modules/CRMVendas";
+import { ToastProvider } from "@/contexts/ToastContext";
 
 describe("CRMVendas", () => {
   it("deve estar definido", () => {
-    render(<CRMVendas />);
-    expect(screen.getByRole("document")).toBeInTheDocument();
+    render(
+      <ToastProvider>
+        <CRMVendas />
+      </ToastProvider>
+    );
+    const headings = screen.getAllByRole("heading", { level: 1 });
+    expect(headings.length).toBeGreaterThan(0);
   });
 
   // TODO: Adicionar mais testes específicos

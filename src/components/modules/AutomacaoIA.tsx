@@ -8,7 +8,7 @@ import { Card } from"@/components/oraclusx-ds";
 import { Zap, Calendar, CheckCircle, AlertCircle, TrendingUp, BarChart3 } from"lucide-react";
 import { useDocumentTitle } from"@/hooks";
 
-export default function AutomacaoIA() {
+export function AutomacaoIA() {
   useDocumentTitle("Automação IA");
   const [activeCategory, setActiveCategory] = useState("dashboard");
 
@@ -74,4 +74,6 @@ export default function AutomacaoIA() {
     </div>
   );
 }
+
+export default AutomacaoIA;
 

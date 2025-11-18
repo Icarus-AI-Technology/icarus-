@@ -1,0 +1,413 @@
+-- ============================================
+-- MIGRATION: Feature Flags & Compliance
+-- ============================================
+-- Versão: 1.0.0
+-- Data: 2025-10-20
+-- Equipe: AGENTE_EQUIPE_ECONOMIA_AI_TUTORES
+-- ============================================
+
+-- ============================================
+-- 1. FEATURE FLAGS
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS feature_flags (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name TEXT UNIQUE NOT NULL,
+  description TEXT,
+  enabled BOOLEAN DEFAULT FALSE,
+  rollout_percentage INTEGER DEFAULT 0 CHECK (rollout_percentage BETWEEN 0 AND 100),
+  user_segments TEXT[], -- ['admin', 'beta_testers', 'enterprise']
+  created_by UUID REFERENCES auth.users(id),
+  criado_em TIMESTAMPTZ DEFAULT NOW(),
+  atualizado_em TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Audit de mudanças em feature flags
+CREATE TABLE IF NOT EXISTS feature_flags_audit (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  flag_id UUID REFERENCES feature_flags(id),
+  action TEXT NOT NULL, -- 'enabled', 'disabled', 'rollout_changed'
+  old_value JSONB,
+  new_value JSONB,
+  changed_by UUID REFERENCES auth.users(id),
+  criado_em TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Trigger para auditoria
+CREATE OR REPLACE FUNCTION audit_feature_flag_changes()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO feature_flags_audit (flag_id, action, old_value, new_value, changed_by)
+  VALUES (
+    NEW.id,
+    CASE
+      WHEN TG_OP = 'INSERT' THEN 'created'
+      WHEN OLD.enabled <> NEW.enabled THEN 
+        CASE WHEN NEW.enabled THEN 'enabled' ELSE 'disabled' END
+      WHEN OLD.rollout_percentage <> NEW.rollout_percentage THEN 'rollout_changed'
+      ELSE 'updated'
+    END,
+    CASE WHEN TG_OP = 'UPDATE' THEN row_to_json(OLD) ELSE NULL END,
+    row_to_json(NEW),
+    NEW.created_by
+  );
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_audit_feature_flags
+AFTER INSERT OR UPDATE ON feature_flags
+FOR EACH ROW
+EXECUTE FUNCTION audit_feature_flag_changes();
+
+-- Índices
+CREATE INDEX idx_feature_flags_name ON feature_flags(name);
+CREATE INDEX idx_feature_flags_enabled ON feature_flags(enabled);
+
+-- ============================================
+-- 2. CONHECIMENTO_BASE (RAG para Tutores IA)
+-- ============================================
+
+-- Habilitar extensão pgvector (se ainda não estiver)
+CREATE EXTENSION IF NOT EXISTS vector;
+
+CREATE TABLE IF NOT EXISTS conhecimento_base (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  categoria TEXT NOT NULL, -- 'ANVISA', 'LGPD', 'POP', 'SOP', 'FISCAL', 'PGR'
+  modulo TEXT, -- 'cirurgias', 'estoque', 'faturamento', 'compliance', etc.
+  titulo TEXT NOT NULL,
+  conteudo TEXT NOT NULL,
+  embedding VECTOR(768), -- Embeddings para RAG (all-MiniLM-L6-v2 ou similar)
+  metadata JSONB, -- { fonte: 'Manual ANVISA 2024', pagina: 42, url: '...' }
+  tags TEXT[],
+  ativo BOOLEAN DEFAULT TRUE,
+  criado_em TIMESTAMPTZ DEFAULT NOW(),
+  atualizado_em TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Índices para performance
+CREATE INDEX idx_conhecimento_categoria ON conhecimento_base(categoria);
+CREATE INDEX idx_conhecimento_modulo ON conhecimento_base(modulo);
+CREATE INDEX idx_conhecimento_tags ON conhecimento_base USING GIN(tags);
+CREATE INDEX idx_conhecimento_busca ON conhecimento_base USING GIN(to_tsvector('portuguese', conteudo));
+
+-- Índice HNSW para busca vetorial rápida (pgvector)
+CREATE INDEX idx_conhecimento_embedding ON conhecimento_base 
+USING hnsw (embedding vector_cosine_ops);
+
+-- ============================================
+-- 3. DOCUMENTOS REGULATÓRIOS
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS documentos_regulatorios (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  empresa_id UUID NOT NULL REFERENCES empresas(id),
+  categoria TEXT NOT NULL, -- 'PGR', 'ANVISA', 'FISCAL', 'CONTABIL', 'RH'
+  nome TEXT NOT NULL,
+  descricao TEXT,
+  url TEXT NOT NULL, -- Path no Supabase Storage
+  tamanho_bytes INTEGER,
+  tipo_arquivo TEXT, -- 'pdf', 'doc', 'docx', 'xlsx'
+  
+  -- Análise automática
+  status TEXT DEFAULT 'pendente', -- 'pendente', 'conforme', 'nao_conforme', 'vencido'
+  score_conformidade INTEGER CHECK (score_conformidade BETWEEN 0 AND 100),
+  problemas_identificados TEXT[],
+  recomendacoes TEXT[],
+  data_analise TIMESTAMPTZ,
+  
+  -- Metadados
+  data_emissao DATE,
+  data_validade DATE,
+  orgao_emissor TEXT,
+  numero_documento TEXT,
+  
+  -- Controle
+  analisado_por TEXT, -- 'IA' ou UUID do usuário
+  revisado_por UUID REFERENCES auth.users(id),
+  revisado_em TIMESTAMPTZ,
+  
+  criado_por UUID REFERENCES auth.users(id),
+  criado_em TIMESTAMPTZ DEFAULT NOW(),
+  atualizado_em TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Índices
+CREATE INDEX idx_docs_empresa ON documentos_regulatorios(empresa_id);
+CREATE INDEX idx_docs_categoria ON documentos_regulatorios(categoria);
+CREATE INDEX idx_docs_status ON documentos_regulatorios(status);
+CREATE INDEX idx_docs_validade ON documentos_regulatorios(data_validade);
+
+-- ============================================
+-- 4. LEGISLAÇÃO E ATUALIZAÇÕES
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS legislacao_updates (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  fonte TEXT NOT NULL, -- 'ANVISA', 'RFB', 'CFM', 'ANS'
+  tipo TEXT NOT NULL, -- 'RDC', 'IN', 'Portaria', 'Lei', 'Decreto'
+  numero TEXT NOT NULL,
+  ano INTEGER,
+  titulo TEXT NOT NULL,
+  resumo TEXT,
+  data_publicacao DATE NOT NULL,
+  data_vigencia DATE,
+  url TEXT,
+  
+  -- Impacto
+  impacto_modulos TEXT[], -- ['estoque', 'cirurgias', 'compliance', 'fiscal']
+  criticidade TEXT DEFAULT 'media', -- 'baixa', 'media', 'alta', 'critica'
+  
+  -- Processamento
+  processado BOOLEAN DEFAULT FALSE,
+  conteudo_extraido TEXT,
+  embedding VECTOR(768),
+  
+  criado_em TIMESTAMPTZ DEFAULT NOW(),
+  atualizado_em TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Índices
+CREATE INDEX idx_legislacao_fonte ON legislacao_updates(fonte);
+CREATE INDEX idx_legislacao_tipo ON legislacao_updates(tipo);
+CREATE INDEX idx_legislacao_data ON legislacao_updates(data_publicacao DESC);
+CREATE INDEX idx_legislacao_processado ON legislacao_updates(processado);
+CREATE INDEX idx_legislacao_impacto ON legislacao_updates USING GIN(impacto_modulos);
+
+-- ============================================
+-- 5. NOTIFICAÇÕES DE LEGISLAÇÃO
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS notificacoes_legislacao (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  legislacao_id UUID REFERENCES legislacao_updates(id),
+  usuario_id UUID REFERENCES auth.users(id),
+  empresa_id UUID REFERENCES empresas(id),
+  modulo TEXT NOT NULL,
+  
+  -- Notificação
+  titulo TEXT NOT NULL,
+  mensagem TEXT NOT NULL,
+  tipo TEXT DEFAULT 'info', -- 'info', 'warning', 'alert', 'critical'
+  
+  -- Status
+  lida BOOLEAN DEFAULT FALSE,
+  lida_em TIMESTAMPTZ,
+  descartada BOOLEAN DEFAULT FALSE,
+  
+  criado_em TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Índices
+CREATE INDEX idx_notif_legislacao_usuario ON notificacoes_legislacao(usuario_id);
+CREATE INDEX idx_notif_legislacao_lida ON notificacoes_legislacao(lida);
+CREATE INDEX idx_notif_legislacao_modulo ON notificacoes_legislacao(modulo);
+
+-- ============================================
+-- 6. LOGS DE TUTORES IA
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS tutor_logs (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  usuario_id UUID REFERENCES auth.users(id),
+  empresa_id UUID REFERENCES empresas(id),
+  modulo TEXT NOT NULL,
+  tutor_tipo TEXT NOT NULL, -- 'pgr', 'anvisa', 'financeiro', 'fiscal', etc.
+  
+  -- Interação
+  pergunta TEXT NOT NULL,
+  resposta TEXT NOT NULL,
+  contexto JSONB, -- Documentos/chunks usados no RAG
+  
+  -- Performance
+  tokens_usados INTEGER,
+  latencia_ms INTEGER,
+  modelo TEXT, -- 'ollama_llama3', 'openai_gpt4', 'claude3'
+  
+  -- Feedback
+  satisfacao INTEGER CHECK (satisfacao BETWEEN 1 AND 5), -- 1-5 estrelas
+  feedback_texto TEXT,
+  util BOOLEAN, -- Thumbs up/down
+  
+  criado_em TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Índices
+CREATE INDEX idx_tutor_logs_usuario ON tutor_logs(usuario_id);
+CREATE INDEX idx_tutor_logs_modulo ON tutor_logs(modulo);
+CREATE INDEX idx_tutor_logs_data ON tutor_logs(criado_em DESC);
+CREATE INDEX idx_tutor_logs_modelo ON tutor_logs(modelo);
+
+-- ============================================
+-- 7. CERTIFICAÇÕES DE USUÁRIOS
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS certificacoes_usuario (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  usuario_id UUID NOT NULL REFERENCES auth.users(id),
+  papel TEXT NOT NULL, -- 'separacao_kit', 'faturamento', 'compras', 'compliance', etc.
+  modulo TEXT NOT NULL,
+  
+  -- Status
+  status TEXT NOT NULL DEFAULT 'em_progresso', -- 'em_progresso', 'aprovado', 'reprovado', 'vencido'
+  pontuacao INTEGER CHECK (pontuacao BETWEEN 0 AND 100),
+  pontuacao_minima INTEGER DEFAULT 70,
+  tentativas INTEGER DEFAULT 0,
+  max_tentativas INTEGER DEFAULT 3,
+  
+  -- Datas
+  data_inicio TIMESTAMPTZ DEFAULT NOW(),
+  data_conclusao TIMESTAMPTZ,
+  validade_ate TIMESTAMPTZ, -- Revalidação anual
+  
+  -- Evidências
+  evidencias JSONB, -- { prova_id: '...', respostas: [...], tempo_total: 1800 }
+  certificado_url TEXT, -- PDF do certificado no Storage
+  
+  -- Controle
+  criado_em TIMESTAMPTZ DEFAULT NOW(),
+  atualizado_em TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Índices
+CREATE INDEX idx_certificacoes_usuario ON certificacoes_usuario(usuario_id);
+CREATE INDEX idx_certificacoes_status ON certificacoes_usuario(status);
+CREATE INDEX idx_certificacoes_validade ON certificacoes_usuario(validade_ate);
+
+-- ============================================
+-- 8. VIEWS MATERIALIZADAS (KPIs)
+-- ============================================
+
+-- Dashboard de Compliance (atualizado a cada 30min)
+CREATE MATERIALIZED VIEW IF NOT EXISTS mv_compliance_dashboard AS
+SELECT 
+  e.id as empresa_id,
+  COUNT(DISTINCT dr.id) as total_documentos,
+  COUNT(DISTINCT dr.id) FILTER (WHERE dr.status = 'conforme') as documentos_conformes,
+  COUNT(DISTINCT dr.id) FILTER (WHERE dr.status = 'nao_conforme') as documentos_nao_conformes,
+  COUNT(DISTINCT dr.id) FILTER (WHERE dr.status = 'vencido') as documentos_vencidos,
+  ROUND(AVG(dr.score_conformidade), 2) as score_medio,
+  COUNT(DISTINCT lu.id) FILTER (WHERE lu.processado = FALSE) as legislacao_pendente
+FROM empresas e
+LEFT JOIN documentos_regulatorios dr ON dr.empresa_id = e.id
+LEFT JOIN legislacao_updates lu ON lu.criado_em > NOW() - INTERVAL '30 days'
+GROUP BY e.id;
+
+-- Criar índice único para REFRESH CONCURRENTLY
+CREATE UNIQUE INDEX idx_mv_compliance_empresa ON mv_compliance_dashboard(empresa_id);
+
+-- ============================================
+-- 9. RLS POLICIES (Row Level Security)
+-- ============================================
+
+-- Feature Flags (apenas admins podem modificar)
+ALTER TABLE feature_flags ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Admins podem gerenciar feature flags"
+  ON feature_flags
+  FOR ALL
+  TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM profiles 
+      WHERE profiles.id = auth.uid() 
+      AND profiles.role = 'admin'
+    )
+  );
+
+CREATE POLICY "Todos podem ler feature flags"
+  ON feature_flags
+  FOR SELECT
+  TO authenticated
+  USING (true);
+
+-- Conhecimento Base (público para leitura, admin para escrita)
+ALTER TABLE conhecimento_base ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Todos podem ler conhecimento base"
+  ON conhecimento_base
+  FOR SELECT
+  TO authenticated
+  USING (ativo = TRUE);
+
+CREATE POLICY "Admins podem gerenciar conhecimento base"
+  ON conhecimento_base
+  FOR ALL
+  TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM profiles 
+      WHERE profiles.id = auth.uid() 
+      AND profiles.role = 'admin'
+    )
+  );
+
+-- Documentos Regulatórios (por empresa)
+ALTER TABLE documentos_regulatorios ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Usuários podem ver documentos de sua empresa"
+  ON documentos_regulatorios
+  FOR SELECT
+  TO authenticated
+  USING (
+    empresa_id IN (
+      SELECT empresa_id FROM profiles WHERE id = auth.uid()
+    )
+  );
+
+CREATE POLICY "Usuários podem fazer upload de documentos"
+  ON documentos_regulatorios
+  FOR INSERT
+  TO authenticated
+  WITH CHECK (
+    empresa_id IN (
+      SELECT empresa_id FROM profiles WHERE id = auth.uid()
+    )
+  );
+
+-- Logs de Tutores (por empresa)
+ALTER TABLE tutor_logs ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Usuários podem ver seus próprios logs"
+  ON tutor_logs
+  FOR SELECT
+  TO authenticated
+  USING (usuario_id = auth.uid());
+
+CREATE POLICY "Sistema pode criar logs"
+  ON tutor_logs
+  FOR INSERT
+  TO authenticated
+  WITH CHECK (usuario_id = auth.uid());
+
+-- ============================================
+-- 10. FUNÇÕES AUXILIARES
+-- ============================================
+
+-- Função para atualizar score de compliance
+CREATE OR REPLACE FUNCTION recalcular_score_compliance(p_empresa_id UUID)
+RETURNS INTEGER AS $$
+DECLARE
+  v_score INTEGER;
+BEGIN
+  SELECT ROUND(AVG(score_conformidade))
+  INTO v_score
+  FROM documentos_regulatorios
+  WHERE empresa_id = p_empresa_id
+    AND status IN ('conforme', 'nao_conforme');
+  
+  RETURN COALESCE(v_score, 0);
+END;
+$$ LANGUAGE plpgsql;
+
+-- ============================================
+-- COMMIT
+-- ============================================
+
+COMMENT ON TABLE feature_flags IS 'Sistema de feature flags para A/B testing e rollout gradual';
+COMMENT ON TABLE conhecimento_base IS 'Base de conhecimento para RAG dos Tutores IA';
+COMMENT ON TABLE documentos_regulatorios IS 'Documentos regulatórios uploadados pelas empresas';
+COMMENT ON TABLE legislacao_updates IS 'Atualizações de legislação (scraping ANVISA/RFB)';
+COMMENT ON TABLE tutor_logs IS 'Logs de interações com Tutores IA';
+COMMENT ON TABLE certificacoes_usuario IS 'Certificações de usuários por função';
+

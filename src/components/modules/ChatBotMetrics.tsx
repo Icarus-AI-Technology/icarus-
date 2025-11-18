@@ -8,7 +8,7 @@ import { Card } from"@/components/oraclusx-ds";
 import { MessageCircle, Users, TrendingUp, Clock, Bot, Star, BarChart3 } from"lucide-react";
 import { useDocumentTitle } from"@/hooks";
 
-export default function ChatBotMetrics() {
+export function ChatBotMetrics() {
   useDocumentTitle("ChatBot Metrics");
   const [activeCategory, setActiveCategory] = useState("dashboard");
 
@@ -74,4 +74,6 @@ export default function ChatBotMetrics() {
     </div>
   );
 }
+
+export default ChatBotMetrics;
 

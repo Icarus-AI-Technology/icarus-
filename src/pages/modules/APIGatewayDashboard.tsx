@@ -201,7 +201,7 @@ export default function APIGatewayDashboard() {
                     boxShadow:"0 4px 12px rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  <kpi.icon size={24} color="#ffffff" strokeWidth={1.5} />
+                  <kpi.icon size={24} color="var(--orx-text-white)" strokeWidth={1.5} />
                 </div>
                 <div className="flex-1">
                   <p
@@ -274,9 +274,9 @@ export default function APIGatewayDashboard() {
                       }}
                     >
                       {api.tipo === "interna" ? (
-                        <Database size={24} color="#ffffff" strokeWidth={1.5} />
+                        <Database size={24} color="var(--orx-text-white)" strokeWidth={1.5} />
                       ) : (
-                        <Globe size={24} color="#ffffff" strokeWidth={1.5} />
+                        <Globe size={24} color="var(--orx-text-white)" strokeWidth={1.5} />
                       )}
                     </div>
                     <div>

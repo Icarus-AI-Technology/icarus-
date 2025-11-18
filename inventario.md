@@ -66,9 +66,8 @@ Observações:
 Amostra (existem dezenas):
 - Operação: CirurgiasProcedimentos, ConsignacaoAvancada, EstoqueIA, LogisticaAvancada, LogisticaTransportadoras, RastreabilidadeOPME
 - BI/Relatórios: BIDashboardInterativo, APIGatewayDashboard, GestaoContabil, RelatoriosRegulatorios, RelatoriosExecutivos, RelatoriosFinanceiros, AnalyticsBI, BIAnalytics
-- Administração: GestaoUsuariosPermissoes, ConfiguracoesSistema, AdminConfiguracoes (novo), QualidadeOPME, ComplianceRegulatorio, FinanceiroAvancado
+- Administração: GestaoUsuariosPermissoes, ConfiguracoesSistema, QualidadeOPME, ComplianceRegulatorio, FinanceiroAvancado
 - Integrações/IA: IntegrationsManager, IntegracoesExternas, Microsoft365IntegrationPanel, AutomacaoIA, IACentral, ChatBotMetrics
-- Vendas/CRM: IAVendasDashboard (novo)
 
 Muitos desses módulos estão prontos para composição, porém ainda sem mapeamento no Router principal.
 
@@ -76,8 +75,6 @@ Muitos desses módulos estão prontos para composição, porém ainda sem mapeam
 - Rotas faltantes para itens do menu listados acima. Sugestão:
   - Adicionar rotas protegidas placeholder para /cirurgias, /estoque/*, /financeiro/*, /vendas, /compliance, /relatorios, /usuarios, /configuracoes.
   - Conectar páginas existentes em src/pages/modules/* e src/components/modules/* às rotas.
-  - Mapear `IAVendasDashboard` para a rota protegida `/vendas`.
-  - Mapear `AdminConfiguracoes` (ou `ConfiguracoesSistema`) para a rota protegida `/configuracoes`.
 - Duplicatas a consolidar:
   - Unificar LoginPage.tsx vs Login.tsx (manter LoginPage.tsx).
   - Unificar DashboardPrincipal.tsx vs Dashboard.tsx (manter DashboardPrincipal.tsx).
@@ -91,9 +88,5 @@ Muitos desses módulos estão prontos para composição, porém ainda sem mapeam
 - Menu auditado: OK (com gaps mapeados)
 - Páginas e módulos listados: OK
 - Próximo passo opcional: criar rotas placeholders e vincular módulos existentes.
-
-Notas recentes:
-- Design System atualizado: remoção total de inline styles no diretório `src/components/oraclusx-ds` e adição do componente `RadialProgress` para KPIs circulares.
-- Novos módulos adicionados: `IAVendasDashboard` (KPIs Diretor/Gerente/Operador, sparklines, barras e gradientes) e `AdminConfiguracoes` (certificado PFX, logo, CNPJ com auto-preenchimento e templates WYSIWYG).
 
 > Baseado em: src/App.tsx, src/config/menuConfig.ts, src/pages/**/*, src/features/**/pages/**/*, src/components/modules/*.

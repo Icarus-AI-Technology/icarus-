@@ -5,7 +5,8 @@ import { CapacitacaoIA } from "@/components/modules/CapacitacaoIA";
 describe("CapacitacaoIA", () => {
   it("deve estar definido", () => {
     render(<CapacitacaoIA />);
-    expect(screen.getByRole("document")).toBeInTheDocument();
+    const headings = screen.getAllByRole("heading", { level: 1 });
+    expect(headings.length).toBeGreaterThan(0);
   });
 
   // TODO: Adicionar mais testes específicos

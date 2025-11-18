@@ -226,7 +226,7 @@ export default function LicitacoesPropostas() {
                     boxShadow:"0 4px 12px rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  <kpi.icon size={24} color="#ffffff" strokeWidth={2} />
+                  <kpi.icon size={24} color="var(--orx-text-white)" strokeWidth={2} />
                 </div>
                 <div className="flex-1">
                   <p

@@ -37,13 +37,13 @@ export default function ResetPassword() {
       <div className="w-full max-w-md">
         <Card className="orx-glass-card">
           <CardContent>
-            <div className="text-center mb-4" style={{ color: '#6b7280' }}>
+            <div className="text-center mb-4" style={{ color: 'var(--orx-text-secondary)' }}>
               <h1 className="font-display" style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0 }}>Redefinir senha</h1>
               <p className="mt-1" style={{ fontWeight: 500 }}>Informe seu e-mail para receber o link</p>
             </div>
 
             {sent ? (
-              <div className="flex flex-col items-center gap-2 text-center" style={{ color: '#6b7280' }}>
+              <div className="flex flex-col items-center gap-2 text-center" style={{ color: 'var(--orx-text-secondary)' }}>
                 <CheckCircle2 size={28} className="text-green-500" />
                 <p>E-mail enviado para {email}. Verifique sua caixa de entrada.</p>
                 <Link to="/login" className="orx-contrast-link" style={{ fontWeight: 600 }}>Voltar ao login</Link>
@@ -51,7 +51,7 @@ export default function ResetPassword() {
             ) : (
               <form onSubmit={handleSend} className="space-y-4">
                 <div>
-                  <label htmlFor="email" className="block text-body-sm mb-2" style={{ fontWeight: 500, color: '#6b7280' }}>E-mail</label>
+                  <label htmlFor="email" className="block text-body-sm mb-2" style={{ fontWeight: 500, color: 'var(--orx-text-secondary)' }}>E-mail</label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" size={20} />
                     <Input

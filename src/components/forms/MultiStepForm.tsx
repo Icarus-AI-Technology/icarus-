@@ -299,7 +299,7 @@ export function StepNavigation() {
           fontFamily: 'var(--font-body)',
           fontSize: '0.813rem',
           fontWeight: 500,
-          color: '#ffffff',
+          color: 'var(--orx-text-white)',
         }}
       >
         {isLastStep ? 'Concluir' : 'Próximo'}

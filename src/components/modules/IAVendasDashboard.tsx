@@ -43,7 +43,7 @@ export const IAVendasDashboard: React.FC = () => {
       title: "Vendas Departamento",
       value: 78,
       gradient: [
-        { offset: "0%", color: "#4f46e5" },
+        { offset: "0%", color: "var(--orx-primary-hover)" },
         { offset: "100%", color: "#22d3ee" },
       ],
       icon: <TrendingUp size={16} />,
@@ -61,7 +61,7 @@ export const IAVendasDashboard: React.FC = () => {
       title: "Pipeline",
       value: 45,
       gradient: [
-        { offset: "0%", color: "#f59e0b" },
+        { offset: "0%", color: "var(--orx-warning)" },
         { offset: "100%", color: "#f97316" },
       ],
       icon: <FileText size={16} />,

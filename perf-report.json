@@ -1,0 +1,7 @@
+{
+  "timestamp": "2025-10-19T17:01:02.469Z",
+  "url": "http://localhost:4174",
+  "status": "failed",
+  "note": "Lighthouse under Xvfb failed",
+  "stderr": "no-stderr"
+}

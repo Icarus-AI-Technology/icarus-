@@ -13,11 +13,11 @@
  * - Cadastro Positivo (SPC/Serasa)
  *
  * Referência: https://api.infosimples.com/
- * Token: fzxpq47PdYnoOi93sqQhC_BdJJFMaD5_zVZmq3o6
+ * Token: <INFOSIMPLES_TOKEN>
  */
 
 const INFOSIMPLES_BASE_URL = "https://api.infosimples.com/api/v2";
-const INFOSIMPLES_TOKEN = "fzxpq47PdYnoOi93sqQhC_BdJJFMaD5_zVZmq3o6";
+const INFOSIMPLES_TOKEN = "<INFOSIMPLES_TOKEN>";
 
 export interface InfoSimplesConfig {
   token?: string;

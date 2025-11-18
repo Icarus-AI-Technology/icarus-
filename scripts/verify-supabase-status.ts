@@ -1,167 +1,197 @@
 #!/usr/bin/env tsx
 
-import { createClient } from "@supabase/supabase-js";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+/**
+ * ICARUS-PRO: Supabase Status Verification
+ * Checks current database state without requiring migrations
+ */
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { createClient } from '@supabase/supabase-js';
+import 'dotenv/config';
 
-const projectRoot = path.resolve(__dirname, "..");
-
-console.log("🔍 Verificando status do Supabase...\n");
-
-// Ler variáveis de ambiente
-const envPath = path.join(projectRoot, ".env.local");
-let supabaseUrl = process.env.VITE_SUPABASE_URL;
-let supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
-
-if (!supabaseUrl && fs.existsSync(envPath)) {
-  const envContent = fs.readFileSync(envPath, "utf8");
-  const urlMatch = envContent.match(/VITE_SUPABASE_URL=(.+)/);
-  const keyMatch = envContent.match(/VITE_SUPABASE_ANON_KEY=(.+)/);
-
-  if (urlMatch) supabaseUrl = urlMatch[1].trim();
-  if (keyMatch) supabaseKey = keyMatch[1].trim();
-}
+const supabaseUrl = process.env.VITE_SUPABASE_URL!;
+const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY!;
 
 if (!supabaseUrl || !supabaseKey) {
-  console.error(
-    "❌ Variáveis VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY não configuradas!",
-  );
-  console.error("   Configure no arquivo .env.local");
+  console.error('❌ Missing Supabase credentials in .env');
   process.exit(1);
 }
-
-console.log(`📡 Supabase URL: ${supabaseUrl}`);
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const report: any = {
-  timestamp: new Date().toISOString(),
-  url: supabaseUrl,
-  checks: {},
-};
+console.log('🔍 ICARUS-PRO: Supabase Status Check');
+console.log('=====================================\n');
 
-// 1. Verificar conexão básica
-try {
-  console.log("1️⃣  Testando conexão básica...");
-  const { data, error } = await supabase
-    .from("usuarios")
-    .select("count")
-    .limit(1);
+console.log(`📡 Connecting to: ${supabaseUrl}\n`);
 
-  if (error && error.code !== "PGRST116") {
-    // PGRST116 = tabela não existe, mas conexão funcionou
-    if (error.code !== "42P01") {
-      // 42P01 = relation does not exist
-      throw error;
+// Critical tables to check
+const CRITICAL_TABLES = [
+  // Core system
+  'empresas',
+  'usuarios',
+  'produtos',
+  'lotes',
+  'fornecedores',
+  
+  // Medical/Operations
+  'medicos',
+  'hospitais',
+  'cirurgias',
+  'kits',
+  
+  // Business
+  'pedidos_compra',
+  'faturas',
+  'transacoes',
+  'leads',
+  
+  // EDR Integration
+  'edr_research_sessions',
+  'edr_agent_tasks',
+  'edr_search_results',
+  'edr_reflection_logs',
+  
+  // Audit & Logs
+  'audit_log',
+  'activity_logs',
+];
+
+async function checkTable(tableName: string): Promise<boolean> {
+  try {
+    const { data, error } = await supabase
+      .from(tableName)
+      .select('*')
+      .limit(1);
+    
+    if (error) {
+      console.log(`  ✗ ${tableName} - ${error.message}`);
+      return false;
+    }
+    
+    console.log(`  ✓ ${tableName}`);
+    return true;
+  } catch (err) {
+    console.log(`  ✗ ${tableName} - ${err instanceof Error ? err.message : 'Unknown error'}`);
+    return false;
+  }
+}
+
+async function checkEdgeFunctions() {
+  console.log('\n⚡ Checking Edge Functions:\n');
+  
+  const functions = [
+    'edr-orchestrator',
+    'edr-stream',
+  ];
+  
+  for (const funcName of functions) {
+    try {
+      const { data, error } = await supabase.functions.invoke(funcName, {
+        body: { test: true },
+      });
+      
+      if (error) {
+        console.log(`  ✗ ${funcName} - ${error.message}`);
+      } else {
+        console.log(`  ✓ ${funcName}`);
+      }
+    } catch {
+      console.log(`  ⊙ ${funcName} - Not deployed or not accessible`);
     }
   }
-
-  report.checks.connection = { status: "OK", message: "Conexão estabelecida" };
-  console.log("   ✅ Conexão estabelecida");
-} catch (error: any) {
-  report.checks.connection = { status: "ERROR", message: error.message };
-  console.error("   ❌ Erro na conexão:", error.message);
 }
 
-// 2. Verificar migrações aplicadas
-try {
-  console.log("2️⃣  Verificando migrações...");
-  const migrationsDir = path.join(projectRoot, "supabase", "migrations");
-
-  if (fs.existsSync(migrationsDir)) {
-    const migrations = fs
-      .readdirSync(migrationsDir)
-      .filter((f) => f.endsWith(".sql"))
-      .sort();
-
-    report.checks.migrations = {
-      status: "OK",
-      total: migrations.length,
-      files: migrations,
-    };
-
-    console.log(
-      `   ✅ ${migrations.length} arquivo(s) de migração encontrado(s)`,
-    );
-  } else {
-    report.checks.migrations = {
-      status: "WARN",
-      message: "Diretório de migrações não encontrado",
-    };
-    console.log("   ⚠️  Diretório de migrações não encontrado");
-  }
-} catch (error: any) {
-  report.checks.migrations = { status: "ERROR", message: error.message };
-  console.error("   ❌ Erro ao verificar migrações:", error.message);
-}
-
-// 3. Verificar Edge Functions
-try {
-  console.log("3️⃣  Verificando Edge Functions...");
-  const functionsDir = path.join(projectRoot, "supabase", "functions");
-
-  if (fs.existsSync(functionsDir)) {
-    const functions = fs.readdirSync(functionsDir).filter((item) => {
-      const itemPath = path.join(functionsDir, item);
-      return fs.statSync(itemPath).isDirectory();
+async function checkStorageBuckets() {
+  console.log('\n🗄️  Checking Storage Buckets:\n');
+  
+  try {
+    const { data: buckets, error } = await supabase.storage.listBuckets();
+    
+    if (error) {
+      console.log(`  ✗ Error listing buckets: ${error.message}`);
+      return;
+    }
+    
+    if (!buckets || buckets.length === 0) {
+      console.log('  ⊙ No storage buckets found');
+      return;
+    }
+    
+    buckets.forEach((bucket) => {
+      console.log(`  ✓ ${bucket.name} (${bucket.public ? 'public' : 'private'})`);
     });
-
-    report.checks.edgeFunctions = {
-      status: "OK",
-      total: functions.length,
-      functions,
-    };
-
-    console.log(`   ✅ ${functions.length} Edge Function(s) encontrada(s)`);
-  } else {
-    report.checks.edgeFunctions = {
-      status: "WARN",
-      message: "Diretório de Edge Functions não encontrado",
-    };
-    console.log("   ⚠️  Diretório de Edge Functions não encontrado");
+  } catch (err) {
+    console.log(`  ✗ Error: ${err instanceof Error ? err.message : 'Unknown error'}`);
   }
-} catch (error: any) {
-  report.checks.edgeFunctions = { status: "ERROR", message: error.message };
-  console.error("   ❌ Erro ao verificar Edge Functions:", error.message);
 }
 
-// 4. Verificar Storage
-try {
-  console.log("4️⃣  Verificando Storage...");
-  const { data: buckets, error } = await supabase.storage.listBuckets();
-
-  if (error) throw error;
-
-  report.checks.storage = {
-    status: "OK",
-    buckets: buckets?.map((b) => b.name) || [],
-  };
-
-  console.log(`   ✅ ${buckets?.length || 0} bucket(s) configurado(s)`);
-} catch (error: any) {
-  report.checks.storage = { status: "ERROR", message: error.message };
-  console.error("   ❌ Erro ao verificar Storage:", error.message);
+async function getStatistics() {
+  console.log('\n📊 Database Statistics:\n');
+  
+  const statsQueries = [
+    { label: 'Empresas', table: 'empresas' },
+    { label: 'Usuários', table: 'usuarios' },
+    { label: 'Produtos', table: 'produtos' },
+    { label: 'Cirurgias', table: 'cirurgias' },
+    { label: 'EDR Sessions', table: 'edr_research_sessions' },
+  ];
+  
+  for (const { label, table } of statsQueries) {
+    try {
+      const { count, error } = await supabase
+        .from(table)
+        .select('*', { count: 'exact', head: true });
+      
+      if (!error && count !== null) {
+        console.log(`  ${label}: ${count} records`);
+      }
+    } catch {
+      // Skip if table doesn't exist
+    }
+  }
 }
 
-// Salvar relatório
-const reportPath = path.join(projectRoot, "supabase-status-report.json");
-fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
+async function main() {
+  console.log('📋 Checking Critical Tables:\n');
+  
+  let existingCount = 0;
+  let missingCount = 0;
+  
+  for (const table of CRITICAL_TABLES) {
+    const exists = await checkTable(table);
+    if (exists) {
+      existingCount++;
+    } else {
+      missingCount++;
+    }
+  }
+  
+  await checkEdgeFunctions();
+  await checkStorageBuckets();
+  await getStatistics();
+  
+  console.log('\n==========================================');
+  console.log('Summary:');
+  console.log(`  ✓ Existing tables: ${existingCount}/${CRITICAL_TABLES.length}`);
+  console.log(`  ✗ Missing tables: ${missingCount}/${CRITICAL_TABLES.length}`);
+  
+  const completeness = (existingCount / CRITICAL_TABLES.length) * 100;
+  console.log(`  📊 Completeness: ${completeness.toFixed(1)}%`);
+  console.log('==========================================\n');
+  
+  if (completeness < 50) {
+    console.log('⚠️  Database needs significant setup');
+    console.log('Recommendation: Run migrations manually via Supabase Dashboard\n');
+  } else if (completeness < 100) {
+    console.log('⚠️  Some tables are missing');
+    console.log('Recommendation: Apply missing migrations\n');
+  } else {
+    console.log('✅ Database is fully set up!\n');
+  }
+  
+  process.exit(0);
+}
 
-console.log(`\n📊 Relatório salvo: ${reportPath}`);
-
-// Determinar status geral
-const hasErrors = Object.values(report.checks).some(
-  (check: any) => check.status === "ERROR",
-);
-
-if (hasErrors) {
-  console.error("\n❌ Verificação do Supabase concluída com erros!");
+main().catch((err) => {
+  console.error('\n❌ Error:', err.message);
   process.exit(1);
-}
-
-console.log("\n✅ Verificação do Supabase concluída com sucesso!");
-process.exit(0);
+});

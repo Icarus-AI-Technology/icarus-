@@ -11,11 +11,17 @@ import { initBrowserCompatibility, checkFeatureSupport } from"./utils/browserCom
 import { Analytics } from'@vercel/analytics/react';
 import { SpeedInsights } from'@vercel/speed-insights/react';
 
+// Sentry Error Tracking
+import { initSentry, SentryErrorBoundary } from'./lib/sentry';
+
 // ========================================
 // INICIALIZAÇÃO DO SISTEMA
 // ========================================
 
 console.log("🚀 ICARUS v5.0 - Iniciando sistema...");
+
+// Inicializar Sentry (primeiro para capturar erros de inicialização)
+initSentry();
 
 // Detectar navegador e aplicar polyfills
 const browserInfo = initBrowserCompatibility();
@@ -63,9 +69,30 @@ console.log("✅ Renderizando aplicação...");
 
 createRoot(rootElement).render(
   <StrictMode>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <SentryErrorBoundary
+      fallback={({ error }) => (
+        <div style={{ padding: '2rem', textAlign: 'center' }}>
+          <h1>Ops! Algo deu errado 😔</h1>
+          <p>Nossa equipe já foi notificada do problema.</p>
+          <button onClick={() => window.location.reload()}>
+            Recarregar Página
+          </button>
+          {import.meta.env.DEV && (
+            <details style={{ marginTop: '1rem', textAlign: 'left' }}>
+              <summary>Detalhes do erro (apenas em desenvolvimento)</summary>
+              <pre style={{ background: '#f5f5f5', padding: '1rem', overflow: 'auto' }}>
+                {error.toString()}
+              </pre>
+            </details>
+          )}
+        </div>
+      )}
+      showDialog={import.meta.env.DEV}
+    >
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </SentryErrorBoundary>
     {!isQAMode && <Analytics />}
     {!isQAMode && <SpeedInsights />}
   </StrictMode>

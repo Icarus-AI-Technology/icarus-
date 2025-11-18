@@ -14,8 +14,8 @@
 ### Credenciais Fornecidas
 
 ```bash
-# Token de API (armazenar em .env)
-INFOSIMPLES_API_TOKEN=fzxpq47PdYnoOi93sqQhC_BdJJFMaD5_zVZmq3o6
+# Token de API (armazenar em .env privado)
+INFOSIMPLES_API_TOKEN=<seu-token-infosimples>
 ```
 
 ⚠️ **IMPORTANTE:** Token já adicionado ao `.env.example` (sem expor token real)

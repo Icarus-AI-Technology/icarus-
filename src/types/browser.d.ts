@@ -83,3 +83,8 @@ interface CSSStyleDeclaration {
   webkitBackdropFilter?: string;
 }
 
+// Ambiente genérico (browser + Vite)
+declare const process: {
+  env?: Record<string, string | undefined>;
+};
+

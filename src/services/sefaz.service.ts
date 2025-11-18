@@ -1,15 +1,15 @@
 /**
  * API SEFAZ - Consulta de Notas Fiscais e Preços
  * ICARUS v5.0
- * 
+ *
  * Integração com SEFAZ de todos os estados brasileiros
  * Consulta preços praticados, invoices e validação de NF-e
- * 
+ *
  * APIs disponíveis:
  * - InfoSimples SEFAZ (26 estados + DF)
  * - SEFAZ direto (quando disponível)
  */
-
+import { getInfoSimplesToken } from './infosimples.service';
 export interface NotaFiscalSEFAZ {
   chave: string;
   numero: string;
@@ -55,7 +55,13 @@ export interface PrecoProdutoSEFAZ {
   estadosConsultados: string[];
 }
 
-const INFOSIMPLES_TOKEN = 'fzxpq47PdYnoOi93sqQhC_BdJJFMaD5_zVZmq3o6';
+const ensureInfoSimplesToken = (): string => {
+  const token = getInfoSimplesToken();
+  if (!token) {
+    throw new Error('Token InfoSimples não configurado. Defina VITE_INFOSIMPLES_TOKEN ou INFOSIMPLES_TOKEN.');
+  }
+  return token;
+};
 
 /**
  * Consulta Nota Fiscal via SEFAZ usando InfoSimples
@@ -73,13 +79,14 @@ export async function consultarNotaFiscal(
   const ufUpper = uf.toUpperCase();
   
   try {
+    const token = ensureInfoSimplesToken();
     // InfoSimples - SEFAZ de todos os estados
     const response = await fetch(
       `https://api.infosimples.com/api/v2/consultas/sefaz/${ufUpper.toLowerCase()}/nfe/${chaveLimpa}`,
       {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${INFOSIMPLES_TOKEN}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       }
@@ -153,13 +160,14 @@ export async function consultarPrecosProduto(
   }
   
   try {
+    const token = ensureInfoSimplesToken();
     // InfoSimples - Agregador de preços SEFAZ
     const response = await fetch(
       `https://api.infosimples.com/api/v2/consultas/sefaz/precos/ncm/${ncmLimpo}`,
       {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${INFOSIMPLES_TOKEN}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({

@@ -1,0 +1,41 @@
+{
+  "timestamp": "2025-11-17T22:33:54.842Z",
+  "checks": [
+    {
+      "name": "Análise Básica",
+      "command": "node .cursor/scripts/basic-analysis.js",
+      "exitCode": 0,
+      "status": "✅ PASSOU",
+      "duration": "0.02s"
+    },
+    {
+      "name": "TypeScript Check",
+      "command": "pnpm run type-check",
+      "exitCode": 0,
+      "status": "✅ PASSOU",
+      "duration": "1.91s"
+    },
+    {
+      "name": "ESLint",
+      "command": "pnpm run lint",
+      "exitCode": 1,
+      "status": "❌ FALHOU",
+      "duration": "3.14s"
+    },
+    {
+      "name": "Build Production",
+      "command": "pnpm run build",
+      "exitCode": 0,
+      "status": "✅ PASSOU",
+      "duration": "5.26s"
+    },
+    {
+      "name": "Testes Unitários",
+      "command": "pnpm run test -- --run",
+      "exitCode": 1,
+      "status": "❌ FALHOU",
+      "duration": "12.42s"
+    }
+  ],
+  "overallStatus": "WARNING"
+}

@@ -1,206 +1,308 @@
-# 🎯 Quick Start - Sistema de Agentes ICARUS
+# 🚀 ICARUS v5.0 - Quick Start Guide
 
-## ✅ Tudo Está Pronto!
-
-O sistema completo de agentes está operacional. Aqui está como usar:
+> Guia rápido para iniciar o ICARUS v5.0 em menos de 5 minutos.
 
 ---
 
-## 🚀 1. Iniciar Aplicação
+## ⚡ Início Rápido (3 Passos)
+
+### 1️⃣ Instalação
 
 ```bash
-cd /Users/daxmeneghel/icarus-make
-pnpm dev
+# Clone o repositório
+git clone https://github.com/seu-usuario/icarus-v5.git
+cd icarus-v5
+
+# Instale as dependências
+npm install
+```
+
+### 2️⃣ Configuração
+
+```bash
+# Copie o arquivo de ambiente
+cp env.example .env
+
+# Edite .env e configure (opcional):
+# - VITE_SUPABASE_URL
+# - VITE_SUPABASE_ANON_KEY
+```
+
+### 3️⃣ Executar
+
+```bash
+# Inicie o servidor de desenvolvimento
+npm run dev
+```
+
+**Pronto!** Acesse: **http://localhost:3000**
+
+---
+
+## 🎯 Primeiro Acesso
+
+### Credenciais Padrão (Mock)
+
+- **Email:** `admin@newortho.com.br`
+- **Senha:** `Admin@123`
+
+> ⚠️ **Nota:** Sistema funciona em modo mock sem Supabase. Para produção, configure o banco de dados.
+
+---
+
+## 📱 Navegação Inicial
+
+### Topbar (Topo)
+
+- **Logo ICARUS** - Página inicial
+- **Busca Global** - Atalho: `Ctrl + K` / `Cmd + K`
+- **Notificações** - Badge de notificações não lidas
+- **Tema** - Toggle claro/escuro
+- **Perfil** - Menu do usuário
+
+### Sidebar (Lateral)
+
+- **Dashboard** - Visão geral e KPIs
+- **Gestão** - Estoque, Cirurgias, Logística
+- **Financeiro** - Faturamento, Contas, NFe
+- **CRM** - Vendas e relacionamento
+- **Compliance** - Rastreabilidade e auditoria
+- **Configurações** - Usuários e sistema
+
+---
+
+## ⌨️ Atalhos de Teclado
+
+| Atalho | Ação |
+|--------|------|
+| `Ctrl/Cmd + K` | Busca global |
+| `Ctrl/Cmd + B` | Toggle sidebar |
+| `Ctrl/Cmd + /` | Atalhos de teclado |
+| `Ctrl/Cmd + Shift + N` | Nova cirurgia |
+| `Ctrl/Cmd + Shift + P` | Novo produto |
+| `Ctrl/Cmd + Shift + C` | Novo cliente |
+| `Esc` | Fechar modal/drawer |
+
+**Ver todos:** Pressione `Ctrl/Cmd + /`
+
+---
+
+## 🎨 Explorando Módulos
+
+### Dashboard Principal
+```
+http://localhost:3000/
+```
+- KPIs em tempo real
+- Gráficos interativos
+- Cards com IA
+
+### Estoque IA
+```
+http://localhost:3000/estoque-ia
+```
+- Gestão inteligente
+- Reposição automática
+- Alertas preditivos
+
+### Cirurgias
+```
+http://localhost:3000/cirurgias
+```
+- Agenda cirúrgica
+- Materiais por cirurgia
+- Previsão de demanda IA
+
+### CRM & Vendas
+```
+http://localhost:3000/crm-vendas
+```
+- Pipeline de vendas
+- Recomendações IA
+- Métricas de conversão
+
+---
+
+## 🔧 Configurações Recomendadas
+
+### 1. Tema
+
+**Recomendado:** Modo Claro (padrão)
+
+- Design neuromórfico otimizado para light mode
+- Contraste WCAG AA garantido
+- Toggle: botão no topbar
+
+### 2. Acessibilidade
+
+Ative no menu **Configurações → Acessibilidade:**
+
+- ✅ Screen reader announcements
+- ✅ Keyboard navigation
+- ✅ High contrast mode (se necessário)
+
+### 3. Notificações
+
+Configure em **Configurações → Notificações:**
+
+- ✅ Desktop notifications
+- ✅ Sound alerts
+- ✅ Email digest
+
+---
+
+## 📊 Testando Funcionalidades
+
+### Criar um Produto OPME
+
+1. Sidebar → **Gestão de Cadastros**
+2. Aba **Produtos OPME**
+3. Botão **+ Novo Produto**
+4. Preencha o formulário
+5. **Salvar**
+
+### Agendar uma Cirurgia
+
+1. Sidebar → **Cirurgias e Procedimentos**
+2. Botão **+ Nova Cirurgia**
+3. Preencha:
+   - Hospital
+   - Médico
+   - Paciente
+   - Data/Hora
+   - Materiais
+4. **Agendar**
+
+### Ver Insights de IA
+
+1. Dashboard Principal
+2. Cards com ícone de cérebro 🧠
+3. Clique para ver detalhes
+4. Insights são atualizados em tempo real
+
+---
+
+## 🧪 Executar Testes
+
+### Testes Unitários
+
+```bash
+npm run test
+```
+
+### Testes E2E
+
+```bash
+npm run test:e2e
+```
+
+### Coverage Report
+
+```bash
+npm run test:coverage
 ```
 
 ---
 
-## 💬 2. Chatbot de Agentes
+## 🐛 Troubleshooting
 
-**URL:** http://localhost:3000/chat-agentes
-
-### Como usar:
-
-1. Selecione um agente no dropdown
-2. Escolha um comando
-3. Click em "Executar"
-4. Veja o resultado em tempo real
-
-### Agentes disponíveis:
-
-- **IA-Validator** - Validação de topologia IA
-- **Contador** - Compliance fiscal
-- **Advogado** - Compliance legal
-- **Gestao** - KPIs e métricas
-- **Tutor** - Diagnóstico e parecer
-
----
-
-## 📊 3. Dashboard de Monitoramento
-
-**URL:** http://localhost:3000/admin/agentes
-
-### Features:
-
-- ✅ Status de todos os agentes
-- 📈 Métricas em tempo real
-- 🔄 Auto-refresh (5 segundos)
-- 📝 Log de execuções recentes
-- ⏱️ Performance tracking
-
----
-
-## 🧪 4. Executar Testes
-
-### Testes de Integração
+### Porta 3000 já está em uso
 
 ```bash
-# Executar todos os testes
-pnpm test
-
-# Com interface visual
-pnpm test:ui
-
-# Com cobertura
-pnpm test:coverage
+# Use outra porta
+PORT=3001 npm run dev
 ```
 
-### Testes E2E (Playwright)
+### Erro ao instalar dependências
 
 ```bash
-# Executar E2E
-pnpm test:e2e
+# Limpe o cache
+npm cache clean --force
+rm -rf node_modules package-lock.json
+npm install
+```
 
-# Com interface visual
-pnpm test:e2e:ui
+### Erro de TypeScript
 
-# Ver relatório HTML
-pnpm test:e2e:report
+```bash
+# Verifique tipos
+npm run type-check
+```
+
+### Build falha
+
+```bash
+# Limpe e rebuild
+npm run clean
+npm run build
 ```
 
 ---
 
-## 🔧 5. CI/CD (Git Hooks)
+## 📚 Próximos Passos
 
-O sistema valida automaticamente antes de cada commit:
+### 1. Explorar Documentação
+
+- [Manual do Usuário Completo](./docs/usuario/MANUAL_USUARIO_FINAL_ICARUS_V5.md)
+- [OraclusX Design System](./docs/design/INDEX-ORACLUSX-DS.md)
+- [Guia de Desenvolvimento](./docs/README.md)
+
+### 2. Configurar Banco de Dados
+
+- [Setup Supabase](./supabase/README_PTBR.md)
+- Importar schemas SQL
+- Configurar `.env`
+
+### 3. Personalizar Sistema
+
+- Ajustar cores (manter `#6366F1` nos botões)
+- Configurar integrações externas
+- Adicionar usuários
+
+### 4. Deploy
 
 ```bash
-git add .
-git commit -m "feat: nova feature"
+# Build para produção
+npm run build
 
-# Automaticamente executa:
-# ✅ Validação de topologia IA
-# ✅ Lint dos arquivos staged
-# ✅ Type check TypeScript
+# Testar build localmente
+npm run preview
 ```
 
 ---
 
-## 📋 6. Validação Manual
+## 🤝 Precisa de Ajuda?
 
-Se quiser validar manualmente:
+### Recursos
 
-```bash
-# Validar topologia IA
-node tools/ia/ia-validator.js
+- 📚 [Documentação Completa](./docs/README.md)
+- 🎯 [Lista de Módulos](./docs/ICARUS-INDEX-MODULOS.md)
+- 🎨 [OraclusX DS](./docs/design/INDEX-ORACLUSX-DS.md)
+- 🧪 [Guia de Testes](./docs/testes/GUIA_COMPLETO_TESTES_E2E.md)
 
-# Auditar Edge Functions
-node tools/ia/check-edge-functions.js
+### Suporte
 
-# Auto-corrigir configs
-node tools/ia/auto-fix-configs.js
-
-# Lint
-pnpm lint
-
-# Type check
-pnpm type-check
-```
+- 📧 Email: suporte@icarus.tech
+- 📚 Docs: [docs.icarus.tech](https://docs.icarus.tech)
 
 ---
 
-## 🎯 7. Exemplos de Uso
+## ✅ Checklist de Início
 
-### Executar comando via chatbot:
-
-1. Abrir http://localhost:3000/chat-agentes
-2. Selecionar "IA-Validator"
-3. Selecionar "validar-topologia"
-4. Click "Executar"
-5. Ver resultado em < 5 segundos
-
-### Monitorar performance:
-
-1. Abrir http://localhost:3000/admin/agentes
-2. Ver métricas atualizando
-3. Click "Auto-refresh ON"
-4. Observar em tempo real
-
-### Testar via API:
-
-```bash
-curl -X POST http://localhost:3000/api/agents/execute \
-  -H "Content-Type: application/json" \
-  -d '{
-    "agent": "IA-Validator",
-    "action": "validar-topologia"
-  }'
-```
+- [ ] Instalação concluída (`npm install`)
+- [ ] `.env` configurado
+- [ ] Servidor rodando (`npm run dev`)
+- [ ] Acesso em http://localhost:3000
+- [ ] Login realizado
+- [ ] Dashboard visualizado
+- [ ] Módulos explorados
+- [ ] Atalhos de teclado testados
+- [ ] Tema configurado
+- [ ] Primeira cirurgia criada
 
 ---
 
-## 📚 8. Documentação Completa
+**Versão:** 5.0.2  
+**Última Atualização:** 17 de outubro de 2025
 
-- `FASE2_COMPLETA.md` - Resumo completo
-- `TAREFA_2_1_CONCLUIDA.md` - Chatbot
-- `TAREFA_2_4_CONCLUIDA.md` - CI/CD
-- `GUIA_CONFIGURACAO_CI_CD.md` - Setup CI/CD
-- `.cursor/agents/PROGRESSO_FASE2.md` - Progresso
-
----
-
-## ✅ Checklist Rápido
-
-Verifique se tudo está funcionando:
-
-```bash
-# 1. Aplicação sobe sem erros
-pnpm dev
-# ✅ Deve abrir em http://localhost:3000
-
-# 2. Testes passam
-pnpm test
-# ✅ Deve mostrar todos os testes passando
-
-# 3. Dashboard carrega
-# Abrir http://localhost:3000/admin/agentes
-# ✅ Deve mostrar 6 agentes online
-
-# 4. Chatbot funciona
-# Abrir http://localhost:3000/chat-agentes
-# ✅ Deve mostrar interface de chat
-
-# 5. Hook funciona
-git add .
-git commit -m "test" --allow-empty
-# ✅ Deve executar validações antes do commit
-```
-
----
-
-## 🎉 Pronto para Usar!
-
-Tudo está configurado e funcionando. Comece agora:
-
-```bash
-pnpm dev
-```
-
-Depois acesse:
-
-- 💬 Chat: http://localhost:3000/chat-agentes
-- 📊 Dashboard: http://localhost:3000/admin/agentes
-
----
-
-**Dúvidas?** Consulte `FASE2_COMPLETA.md` para detalhes técnicos.
+© 2025 ICARUS v5.0 - Icarus AI Technology

@@ -1,6 +1,17 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Check, Loader2, Link as LinkIcon } from 'lucide-react';
+/**
+ * Cadastro de Transportadoras - ICARUS v5.0
+ * Design System: OraclusX DS - Neumórfico 3D Premium
+ * 
+ * Formulário completo para cadastro de transportadoras
+ * com integração de APIs e design neumórfico padronizado.
+ */
+
+import { useState } from 'react';
+import { ArrowLeft, Truck, Phone, MapPin, Link as LinkIcon, DollarSign, Star, Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { NeumoInput, NeumoTextarea, NeumoButton } from '@/components/oraclusx-ds';
+import { useDocumentTitle } from '@/hooks';
 
 interface TransportadoraFormData {
   nome: string;
@@ -27,7 +38,22 @@ const INITIAL_STATE: TransportadoraFormData = {
   possui_api: false
 };
 
-const CadastroTransportadoras: React.FC = () => {
+const TIPOS_TRANSPORTE = [
+  { value: 'rodoviario', label: 'Rodoviário' },
+  { value: 'aereo', label: 'Aéreo' },
+  { value: 'courier', label: 'Courier (Motoboy/Entrega Rápida)' },
+  { value: 'multimodal', label: 'Multimodal' }
+];
+
+const TIPOS_AUTH = [
+  { value: 'bearer', label: 'Bearer Token' },
+  { value: 'basic', label: 'Basic Auth' },
+  { value: 'api_key', label: 'API Key' },
+  { value: 'oauth2', label: 'OAuth 2.0' }
+];
+
+export default function CadastroTransportadoras() {
+  useDocumentTitle('Cadastro de Transportadoras');
   const navigate = useNavigate();
   const [formData, setFormData] = useState<TransportadoraFormData>(INITIAL_STATE);
   const [loading, setLoading] = useState(false);
@@ -35,533 +61,334 @@ const CadastroTransportadoras: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validações
+    if (!formData.nome) {
+      toast.error('Nome da transportadora é obrigatório');
+      return;
+    }
+    
+    if (!formData.tipo) {
+      toast.error('Tipo de transporte é obrigatório');
+      return;
+    }
+
     setLoading(true);
 
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
       console.log('Transportadora salva:', formData);
+      toast.success('Transportadora cadastrada com sucesso!');
       navigate('/cadastros');
     } catch (error) {
-   const err = error as Error;
-      console.error('Erro ao salvar:', err);
+      console.error('Erro ao salvar:', error);
+      toast.error('Erro ao salvar transportadora');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ padding: '1.5rem' }}>
-      {/* Header */}
-      <div style={{ marginBottom: '2rem' }}>
-        <button
-          onClick={() => navigate('/cadastros')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            padding: '0.5rem 1rem',
-            background: 'var(--orx-bg-light)',
-            border: '1px solid var(--orx-border)',
-            borderRadius: '0.5rem',
-            color: 'var(--orx-text-primary)',
-            cursor: 'pointer',
-            marginBottom: '1rem'
-          }}
-        >
-          <ArrowLeft size={20} />
-          Voltar
-        </button>
-        <h1 style={{ 
-          fontSize: '0.813rem', 
-          fontWeight: 'bold',
-          color: 'var(--orx-text-primary)',
-          marginBottom: '0.5rem'
-        }}>
-          Cadastro de Transportadoras
-        </h1>
-        <p style={{ color: 'var(--orx-text-secondary)' }}>
-          Configure empresas de transporte e logística
-        </p>
-      </div>
-
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        {/* Dados Institucionais */}
-        <div className="neumorphic-card" style={{ padding: '1.5rem', borderRadius: '1rem' }}>
-          <h2 style={{ 
-            fontSize: '0.813rem', 
-            fontWeight: '600',
-            color: 'var(--orx-text-primary)',
-            marginBottom: '1.5rem'
-          }}>
-            Dados Institucionais
-          </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
-            <div>
-              <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                Nome/Razão Social <span style={{ color: 'var(--orx-error)', fontSize: '0.813rem' }}>*</span>
-              </label>
-              <input
-                type="text"
-                value={formData.nome}
-                onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
-                required
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid var(--orx-border)',
-                  background: 'var(--orx-bg-light)',
-                  color: 'var(--orx-text-primary)'
-                }}
-              />
+    <div className="min-h-screen p-6 bg-orx-bg-app">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="mb-6">
+          <NeumoButton
+            variant="secondary"
+            leftIcon={ArrowLeft}
+            onClick={() => navigate('/cadastros')}
+            className="mb-4"
+          >
+            Voltar
+          </NeumoButton>
+          
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-3 rounded-xl bg-orx-bg-surface shadow-neumo-sm">
+              <Truck className="w-6 h-6 text-orx-primary" />
             </div>
-
             <div>
-              <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                CNPJ
-              </label>
-              <input
-                type="text"
-                value={formData.cnpj || ''}
-                onChange={(e) => setFormData({ ...formData, cnpj: e.target.value })}
-                placeholder="00.000.000/0000-00"
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid var(--orx-border)',
-                  background: 'var(--orx-bg-light)',
-                  color: 'var(--orx-text-primary)'
-                }}
-              />
-            </div>
-
-            <div>
-              <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                Tipo de Transporte <span style={{ color: 'var(--orx-error)' }}>*</span>
-              </label>
-              <select
-                value={formData.tipo}
-                onChange={(e) => setFormData({ ...formData, tipo: e.target.value as TransportadoraFormData['tipo'] })}
-                required
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid var(--orx-border)',
-                  background: 'var(--orx-bg-light)',
-                  color: 'var(--orx-text-primary)'
-                }}
-              >
-                <option value="">Selecione...</option>
-                <option value="rodoviario">Rodoviário</option>
-                <option value="aereo">Aéreo</option>
-                <option value="courier">Courier/Motoboy</option>
-                <option value="multimodal">Multimodal</option>
-              </select>
+              <h1 className="text-3xl font-bold text-orx-text-primary">
+                Cadastro de Transportadoras
+              </h1>
+              <p className="text-orx-text-secondary mt-1">
+                Configure empresas de transporte e logística
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Contato */}
-        <div className="neumorphic-card" style={{ padding: '1.5rem', borderRadius: '1rem' }}>
-          <h2 style={{ 
-            fontSize: '0.813rem', 
-            fontWeight: '600',
-            color: 'var(--orx-text-primary)',
-            marginBottom: '1.5rem'
-          }}>
-            Contato
-          </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
-            <div>
-              <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                Telefone
-              </label>
-              <input
-                type="tel"
-                value={formData.telefone || ''}
-                onChange={(e) => setFormData({ ...formData, telefone: e.target.value })}
-                placeholder="(11) 3456-7890"
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid var(--orx-border)',
-                  background: 'var(--orx-bg-light)',
-                  color: 'var(--orx-text-primary)'
-                }}
-              />
-            </div>
-
-            <div>
-              <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                Email
-              </label>
-              <input
-                type="email"
-                value={formData.email || ''}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid var(--orx-border)',
-                  background: 'var(--orx-bg-light)',
-                  color: 'var(--orx-text-primary)'
-                }}
-              />
-            </div>
-
-            <div>
-              <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                Site
-              </label>
-              <input
-                type="url"
-                value={formData.site || ''}
-                onChange={(e) => setFormData({ ...formData, site: e.target.value })}
-                placeholder="https://..."
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid var(--orx-border)',
-                  background: 'var(--orx-bg-light)',
-                  color: 'var(--orx-text-primary)'
-                }}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Dados Operacionais */}
-        <div className="neumorphic-card" style={{ padding: '1.5rem', borderRadius: '1rem' }}>
-          <h2 style={{ 
-            fontSize: '0.813rem', 
-            fontWeight: '600',
-            color: 'var(--orx-text-primary)',
-            marginBottom: '1.5rem'
-          }}>
-            Dados Operacionais
-          </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-            <div>
-              <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                Prazo Médio Entrega (dias)
-              </label>
-              <input
-                type="number"
-                value={formData.prazo_entrega_medio || ''}
-                onChange={(e) => setFormData({ ...formData, prazo_entrega_medio: parseInt(e.target.value) })}
-                min="0"
-                placeholder="Ex: 3"
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid var(--orx-border)',
-                  background: 'var(--orx-bg-light)',
-                  color: 'var(--orx-text-primary)'
-                }}
-              />
-            </div>
-
-            <div>
-              <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                Custo por KM (R$)
-              </label>
-              <input
-                type="number"
-                value={formData.custo_km || ''}
-                onChange={(e) => setFormData({ ...formData, custo_km: parseFloat(e.target.value) })}
-                min="0"
-                step="0.01"
-                placeholder="Ex: 1.50"
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid var(--orx-border)',
-                  background: 'var(--orx-bg-light)',
-                  color: 'var(--orx-text-primary)'
-                }}
-              />
-            </div>
-
-            <div>
-              <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                Raio de Atendimento (km)
-              </label>
-              <input
-                type="number"
-                value={formData.raio_atendimento || ''}
-                onChange={(e) => setFormData({ ...formData, raio_atendimento: parseInt(e.target.value) })}
-                min="0"
-                placeholder="Ex: 100"
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid var(--orx-border)',
-                  background: 'var(--orx-bg-light)',
-                  color: 'var(--orx-text-primary)'
-                }}
-              />
-            </div>
-
-            <div>
-              <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                Horário de Coleta
-              </label>
-              <input
-                type="text"
-                value={formData.horario_coleta || ''}
-                onChange={(e) => setFormData({ ...formData, horario_coleta: e.target.value })}
-                placeholder="Ex: 8h-17h"
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid var(--orx-border)',
-                  background: 'var(--orx-bg-light)',
-                  color: 'var(--orx-text-primary)'
-                }}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Integração API */}
-        <div className="neumorphic-card" style={{ padding: '1.5rem', borderRadius: '1rem' }}>
-          <h2 style={{ 
-            fontSize: '0.813rem', 
-            fontWeight: '600',
-            color: 'var(--orx-text-primary)',
-            marginBottom: '1.5rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem'
-          }}>
-            <LinkIcon size={24} />
-            Integração API
-          </h2>
-
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-              <input
-                type="checkbox"
-                checked={formData.possui_api}
-                onChange={(e) => setFormData({ ...formData, possui_api: e.target.checked })}
-                style={{ width: '1.25rem', height: '1.25rem', cursor: 'pointer' }}
-              />
-              <span style={{ color: 'var(--orx-text-primary)' }}>Possui API de Integração</span>
-            </label>
-          </div>
-
-          {formData.possui_api && (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Dados Institucionais */}
+          <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
+            <h2 className="text-lg font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
+              <Truck className="w-5 h-5 text-orx-primary" />
+              Dados Institucionais
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                  URL da API
-                </label>
-                <input
-                  type="url"
-                  value={formData.api_url || ''}
-                  onChange={(e) => setFormData({ ...formData, api_url: e.target.value })}
-                  placeholder="https://api.transportadora.com.br"
-                  style={{
-                    width: '100%',
-                    padding: '0.75rem',
-                    borderRadius: '0.5rem',
-                    border: '1px solid var(--orx-border)',
-                    background: 'var(--orx-bg-light)',
-                    color: 'var(--orx-text-primary)'
-                  }}
+                <NeumoInput
+                  id="nome"
+                  label="Nome da Transportadora"
+                  value={formData.nome}
+                  onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
+                  placeholder="Ex: Transportes Rápidos Ltda"
+                  required
                 />
               </div>
-
+              
               <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                  Token/API Key
-                </label>
-                <div style={{ position: 'relative' }}>
-                  <input
-                    type={showApiToken ? 'text' : 'password'}
-                    value={formData.api_token || ''}
-                    onChange={(e) => setFormData({ ...formData, api_token: e.target.value })}
-                    placeholder="••••••••"
-                    style={{
-                      width: '100%',
-                      padding: '0.75rem',
-                      paddingRight: '3rem',
-                      borderRadius: '0.5rem',
-                      border: '1px solid var(--orx-border)',
-                      background: 'var(--orx-bg-light)',
-                      color: 'var(--orx-text-primary)'
-                    }}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowApiToken(!showApiToken)}
-                    style={{
-                      position: 'absolute',
-                      right: '0.5rem',
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      background: 'transparent',
-                      border: 'none',
-                      cursor: 'pointer',
-                      color: 'var(--orx-text-secondary)',
-                      fontSize: '0.813rem'
-                    }}
-                  >
-                    {showApiToken ? '👁️' : '👁️‍🗨️'}
-                  </button>
-                </div>
+                <NeumoInput
+                  id="cnpj"
+                  label="CNPJ"
+                  value={formData.cnpj || ''}
+                  onChange={(e) => setFormData({ ...formData, cnpj: e.target.value })}
+                  placeholder="00.000.000/0000-00"
+                />
               </div>
-
+              
               <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                  Tipo de Autenticação
+                <label className="block text-sm font-medium text-orx-text-primary mb-2">
+                  Tipo de Transporte <span className="text-orx-danger">*</span>
                 </label>
                 <select
-                  value={formData.api_auth_type || ''}
-                onChange={(e) => setFormData({ ...formData, api_auth_type: e.target.value as TransportadoraFormData['api_auth_type'] })}
-                  style={{
-                    width: '100%',
-                    padding: '0.75rem',
-                    borderRadius: '0.5rem',
-                    border: '1px solid var(--orx-border)',
-                    background: 'var(--orx-bg-light)',
-                    color: 'var(--orx-text-primary)'
-                  }}
+                  value={formData.tipo}
+                  onChange={(e) => setFormData({ ...formData, tipo: e.target.value as any })}
+                  className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2 focus-visible:shadow-neumo-sm"
+                  required
                 >
                   <option value="">Selecione...</option>
-                  <option value="bearer">Bearer Token</option>
-                  <option value="basic">Basic Auth</option>
-                  <option value="api_key">API Key</option>
-                  <option value="oauth2">OAuth 2.0</option>
+                  {TIPOS_TRANSPORTE.map(tipo => (
+                    <option key={tipo.value} value={tipo.value}>{tipo.label}</option>
+                  ))}
                 </select>
               </div>
-            </div>
-          )}
-        </div>
-
-        {/* Avaliação */}
-        <div className="neumorphic-card" style={{ padding: '1.5rem', borderRadius: '1rem' }}>
-          <h2 style={{ 
-            fontSize: '0.813rem', 
-            fontWeight: '600',
-            color: 'var(--orx-text-primary)',
-            marginBottom: '1.5rem'
-          }}>
-            Avaliação
-          </h2>
-          <div>
-            <label style={{ display: 'block', marginBottom: '0.75rem', color: 'var(--orx-text-primary)' }}>
-              Avaliação Geral (0-5)
-            </label>
-            <input
-              type="range"
-              min="0"
-              max="5"
-              step="0.5"
-              value={formData.avaliacao || 0}
-              onChange={(e) => setFormData({ ...formData, avaliacao: parseFloat(e.target.value) })}
-              style={{ width: '100%', accentColor: 'var(--orx-indigo-500)' }}
-            />
-            <div style={{ 
-              textAlign: 'center', 
-              fontSize: '0.813rem', 
-              fontWeight: 'bold', 
-              color: 'var(--orx-indigo-500)',
-              marginTop: '0.5rem'
-            }}>
-              {(formData.avaliacao || 0).toFixed(1)} ⭐
+              
+              <div>
+                <NeumoInput
+                  id="telefone"
+                  label="Telefone"
+                  value={formData.telefone || ''}
+                  onChange={(e) => setFormData({ ...formData, telefone: e.target.value })}
+                  placeholder="(11) 98765-4321"
+                />
+              </div>
+              
+              <div>
+                <NeumoInput
+                  id="email"
+                  label="E-mail"
+                  type="email"
+                  value={formData.email || ''}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  placeholder="contato@transportadora.com.br"
+                />
+              </div>
+              
+              <div>
+                <NeumoInput
+                  id="site"
+                  label="Website"
+                  value={formData.site || ''}
+                  onChange={(e) => setFormData({ ...formData, site: e.target.value })}
+                  placeholder="https://www.transportadora.com.br"
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Observações */}
-        <div className="neumorphic-card" style={{ padding: '1.5rem', borderRadius: '1rem' }}>
-          <h2 style={{ 
-            fontSize: '0.813rem', 
-            fontWeight: '600',
-            color: 'var(--orx-text-primary)',
-            marginBottom: '1.5rem'
-          }}>
-            Observações
-          </h2>
-          <textarea
-            value={formData.observacoes || ''}
-            onChange={(e) => setFormData({ ...formData, observacoes: e.target.value })}
-            rows={4}
-            placeholder="Informações adicionais sobre a transportadora..."
-            style={{
-              width: '100%',
-              padding: '0.75rem',
-              borderRadius: '0.5rem',
-              border: '1px solid var(--orx-border)',
-              background: 'var(--orx-bg-light)',
-              color: 'var(--orx-text-primary)',
-              resize: 'vertical'
-            }}
-          />
-        </div>
+          {/* Dados Operacionais */}
+          <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
+            <h2 className="text-lg font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
+              <MapPin className="w-5 h-5 text-orx-primary" />
+              Dados Operacionais
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div>
+                <NeumoInput
+                  id="prazo_entrega_medio"
+                  label="Prazo Médio Entrega (dias)"
+                  type="number"
+                  value={formData.prazo_entrega_medio || ''}
+                  onChange={(e) => setFormData({ ...formData, prazo_entrega_medio: parseInt(e.target.value) || undefined })}
+                  placeholder="Ex: 3"
+                />
+              </div>
+              
+              <div>
+                <NeumoInput
+                  id="custo_km"
+                  label="Custo por KM (R$)"
+                  type="number"
+                  step="0.01"
+                  value={formData.custo_km || ''}
+                  onChange={(e) => setFormData({ ...formData, custo_km: parseFloat(e.target.value) || undefined })}
+                  placeholder="Ex: 1.50"
+                />
+              </div>
+              
+              <div>
+                <NeumoInput
+                  id="raio_atendimento"
+                  label="Raio de Atendimento (km)"
+                  type="number"
+                  value={formData.raio_atendimento || ''}
+                  onChange={(e) => setFormData({ ...formData, raio_atendimento: parseInt(e.target.value) || undefined })}
+                  placeholder="Ex: 100"
+                />
+              </div>
+              
+              <div>
+                <NeumoInput
+                  id="horario_coleta"
+                  label="Horário de Coleta"
+                  value={formData.horario_coleta || ''}
+                  onChange={(e) => setFormData({ ...formData, horario_coleta: e.target.value })}
+                  placeholder="Ex: 08:00 - 18:00"
+                />
+              </div>
+            </div>
+            
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-orx-text-primary mb-2">
+                Avaliação
+              </label>
+              <div className="flex items-center gap-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    type="button"
+                    onClick={() => setFormData({ ...formData, avaliacao: star })}
+                    className="focus:outline-none"
+                  >
+                    <Star
+                      className={`w-8 h-8 transition-all duration-200 ${
+                        (formData.avaliacao || 0) >= star
+                          ? 'fill-yellow-400 text-yellow-400'
+                          : 'text-orx-text-muted'
+                      }`}
+                    />
+                  </button>
+                ))}
+                {formData.avaliacao && (
+                  <span className="ml-2 text-sm text-orx-text-secondary">
+                    {formData.avaliacao}/5
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
 
-        {/* Botões */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
-          <button
-            type="button"
-            onClick={() => navigate('/cadastros')}
-            disabled={loading}
-            style={{
-              padding: '0.75rem 1.5rem',
-              borderRadius: '0.5rem',
-              border: '1px solid var(--orx-border)',
-              background: 'var(--orx-bg-light)',
-              color: 'var(--orx-text-primary)',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              opacity: loading ? 0.5 : 1
-            }}
-          >
-            Cancelar
-          </button>
-          <button
-            type="submit"
-            disabled={loading}
-            className="colored-button"
-            style={{
-              padding: '0.75rem 1.5rem',
-              borderRadius: '0.5rem',
-              border: 'none',
-              background: 'var(--orx-indigo-500)',
-              color: 'white',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              opacity: loading ? 0.5 : 1,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem'
-            }}
-          >
-            {loading ? (
-              <>
-                <Loader2 size={20} className="animate-spin" />
-                Salvando...
-              </>
-            ) : (
-              <>
-                <Check size={20} />
-                Cadastrar Transportadora
-              </>
+          {/* Integração API */}
+          <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
+            <h2 className="text-lg font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
+              <LinkIcon className="w-5 h-5 text-orx-primary" />
+              Integração de API
+            </h2>
+            
+            <div className="mb-4">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={formData.possui_api}
+                  onChange={(e) => setFormData({ ...formData, possui_api: e.target.checked })}
+                  className="w-4 h-4 rounded border-orx-border-subtle"
+                />
+                <span className="text-sm text-orx-text-primary">
+                  Esta transportadora possui API de rastreamento
+                </span>
+              </label>
+            </div>
+            
+            {formData.possui_api && (
+              <div className="space-y-4 mt-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="md:col-span-2">
+                    <NeumoInput
+                      id="api_url"
+                      label="URL da API"
+                      value={formData.api_url || ''}
+                      onChange={(e) => setFormData({ ...formData, api_url: e.target.value })}
+                      placeholder="https://api.transportadora.com.br/v1"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-orx-text-primary mb-2">
+                      Tipo de Autenticação
+                    </label>
+                    <select
+                      value={formData.api_auth_type || ''}
+                      onChange={(e) => setFormData({ ...formData, api_auth_type: e.target.value as any })}
+                      className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2"
+                    >
+                      <option value="">Selecione...</option>
+                      {TIPOS_AUTH.map(tipo => (
+                        <option key={tipo.value} value={tipo.value}>{tipo.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-orx-text-primary mb-2">
+                      Token/Chave de API
+                    </label>
+                    <div className="relative">
+                      <input
+                        type={showApiToken ? 'text' : 'password'}
+                        value={formData.api_token || ''}
+                        onChange={(e) => setFormData({ ...formData, api_token: e.target.value })}
+                        placeholder="••••••••••••••••"
+                        className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 pr-10 text-orx-text-primary text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowApiToken(!showApiToken)}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-orx-text-muted hover:text-orx-text-primary"
+                      >
+                        {showApiToken ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             )}
-          </button>
-        </div>
-      </form>
+          </div>
+
+          {/* Observações */}
+          <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
+            <NeumoTextarea
+              id="observacoes"
+              label="Observações"
+              value={formData.observacoes || ''}
+              onChange={(e) => setFormData({ ...formData, observacoes: e.target.value })}
+              placeholder="Informações adicionais sobre a transportadora..."
+              rows={4}
+            />
+          </div>
+
+          {/* Ações */}
+          <div className="flex items-center justify-end gap-3">
+            <NeumoButton
+              type="button"
+              variant="secondary"
+              onClick={() => navigate('/cadastros')}
+              disabled={loading}
+            >
+              Cancelar
+            </NeumoButton>
+            
+            <NeumoButton
+              type="submit"
+              loading={loading}
+              leftIcon={loading ? undefined : Truck}
+            >
+              {loading ? 'Salvando...' : 'Salvar Transportadora'}
+            </NeumoButton>
+          </div>
+        </form>
+      </div>
     </div>
   );
-};
-
-export default CadastroTransportadoras;
-
+}

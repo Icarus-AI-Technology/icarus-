@@ -8,7 +8,7 @@ import { Card } from"@/components/oraclusx-ds";
 import { BarChart3, PieChart, LineChart, TrendingUp, Download, Calendar } from"lucide-react";
 import { useDocumentTitle } from"@/hooks";
 
-export default function AnalyticsBI() {
+export function AnalyticsBI() {
   useDocumentTitle("Analytics BI");
   const [activeCategory, setActiveCategory] = useState("dashboard");
 
@@ -74,4 +74,6 @@ export default function AnalyticsBI() {
     </div>
   );
 }
+
+export default AnalyticsBI;
 

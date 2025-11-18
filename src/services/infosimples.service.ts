@@ -13,11 +13,27 @@
  * - Cadastro Positivo (SPC/Serasa)
  * 
  * Referência: https://api.infosimples.com/
- * Token: fzxpq47PdYnoOi93sqQhC_BdJJFMaD5_zVZmq3o6
  */
+import { getRuntimeEnvVar } from '@/lib/runtime-env';
 
 const INFOSIMPLES_BASE_URL = 'https://api.infosimples.com/api/v2';
-const INFOSIMPLES_TOKEN = 'fzxpq47PdYnoOi93sqQhC_BdJJFMaD5_zVZmq3o6';
+
+const resolveInfoSimplesToken = (): string | undefined => {
+  return (
+    getRuntimeEnvVar('VITE_INFOSIMPLES_TOKEN') ??
+    getRuntimeEnvVar('INFOSIMPLES_TOKEN')
+  );
+};
+
+export const getInfoSimplesToken = resolveInfoSimplesToken;
+
+const warnMissingToken = () => {
+  if (typeof console !== 'undefined') {
+    console.warn(
+      '[InfoSimplesAPI] Token não configurado. Defina VITE_INFOSIMPLES_TOKEN ou INFOSIMPLES_TOKEN.'
+    );
+  }
+};
 
 export interface InfoSimplesConfig {
   token?: string;
@@ -29,8 +45,22 @@ export class InfoSimplesAPI {
   private timeout: number;
   
   constructor(config?: InfoSimplesConfig) {
-    this.token = config?.token || INFOSIMPLES_TOKEN;
+    this.token = config?.token || resolveInfoSimplesToken() || '';
     this.timeout = config?.timeout || 30000; // 30s
+
+    if (!this.token) {
+      warnMissingToken();
+    }
+  }
+
+  private ensureToken(): string {
+    if (this.token) return this.token;
+    const dynamicToken = resolveInfoSimplesToken();
+    if (dynamicToken) {
+      this.token = dynamicToken;
+      return dynamicToken;
+    }
+    throw new Error('InfoSimples token não configurado. Defina VITE_INFOSIMPLES_TOKEN ou INFOSIMPLES_TOKEN.');
   }
   
   /**
@@ -48,7 +78,7 @@ export class InfoSimplesAPI {
       const response = await fetch(`${INFOSIMPLES_BASE_URL}${endpoint}`, {
         method,
         headers: {
-          'Authorization': `Bearer ${this.token}`,
+          'Authorization': `Bearer ${this.ensureToken()}`,
           'Content-Type': 'application/json',
         },
         body: body ? JSON.stringify(body) : undefined,

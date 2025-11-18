@@ -13,6 +13,8 @@
 
 import twilio from "twilio";
 import type { Twilio, MessageInstance } from "twilio/lib/rest/Twilio";
+import { toAppError } from "@/utils/error";
+import { toAppError } from "@/utils/error";
 
 export interface SMSParams {
   para: string; // Número de telefone com código do país: +5511999999999
@@ -97,8 +99,9 @@ export class TwilioService {
 
       return this.formatarMessageStatus(message);
     } catch (error: unknown) {
-      console.error("Erro ao enviar SMS:", error);
-      throw new Error(`Falha ao enviar SMS: ${error.message}`);
+      const err = toAppError(error);
+      console.error("Erro ao enviar SMS:", err);
+      throw new Error(`Falha ao enviar SMS: ${err.message}`);
     }
   }
 
@@ -130,8 +133,9 @@ export class TwilioService {
 
       return this.formatarMessageStatus(message);
     } catch (error: unknown) {
-      console.error("Erro ao enviar WhatsApp:", error);
-      throw new Error(`Falha ao enviar WhatsApp: ${error.message}`);
+      const err = toAppError(error);
+      console.error("Erro ao enviar WhatsApp:", err);
+      throw new Error(`Falha ao enviar WhatsApp: ${err.message}`);
     }
   }
 
@@ -162,7 +166,7 @@ export class TwilioService {
         } catch (error: unknown) {
           falhas.push({
             telefone,
-            erro: error.message,
+            erro: toAppError(error).message,
           });
         }
       });
@@ -181,8 +185,9 @@ export class TwilioService {
       const message = await this.client.messages(messageSid).fetch();
       return this.formatarMessageStatus(message);
     } catch (error: unknown) {
-      console.error("Erro ao consultar status:", error);
-      throw new Error(`Falha ao consultar status: ${error.message}`);
+      const err = toAppError(error);
+      console.error("Erro ao consultar status:", err);
+      throw new Error(`Falha ao consultar status: ${err.message}`);
     }
   }
 
@@ -210,8 +215,9 @@ export class TwilioService {
 
       return messages.map((msg) => this.formatarMessageStatus(msg));
     } catch (error: unknown) {
-      console.error("Erro ao listar mensagens:", error);
-      throw new Error(`Falha ao listar mensagens: ${error.message}`);
+      const err = toAppError(error);
+      console.error("Erro ao listar mensagens:", err);
+      throw new Error(`Falha ao listar mensagens: ${err.message}`);
     }
   }
 

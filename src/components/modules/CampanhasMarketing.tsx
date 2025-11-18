@@ -3,7 +3,7 @@ import { isFeatureEnabled } from '@/lib/flags';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
-export default function CampanhasMarketing(): JSX.Element {
+export function CampanhasMarketing(): JSX.Element {
   const ffOn = isFeatureEnabled('FF_MARKETING_CAMPANHAS');
   return (
     <div className="p-6">
@@ -60,3 +60,5 @@ export default function CampanhasMarketing(): JSX.Element {
     </div>
   );
 }
+
+export default CampanhasMarketing;

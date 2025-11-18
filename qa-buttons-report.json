@@ -1,0 +1,109 @@
+{
+  "base": "http://localhost:4173",
+  "ts": "2025-10-25T02:33:51.284Z",
+  "results": [
+    {
+      "route": "/qa/compras",
+      "url": "http://localhost:4173/qa/compras?qa=1",
+      "roleButtons": 26,
+      "tagButtons": 26,
+      "inputButtons": 0,
+      "roleLikeButtons": 0,
+      "anchorButtons": 20,
+      "neuroButtons": 41,
+      "visibleEnabled": 26,
+      "sampleNames": [
+        "QA QA Ação A",
+        "QA QA Ação B",
+        "QA QA Ação C",
+        "Abrir/Fechar Menu",
+        "Central de Ajuda",
+        "3 notificações não lidas",
+        "Modo Escuro",
+        "Configurações",
+        "Perfil do Usuário",
+        "QA Global Filtrar"
+      ]
+    },
+    {
+      "route": "/qa/financeiro",
+      "url": "http://localhost:4173/qa/financeiro?qa=1",
+      "roleButtons": 22,
+      "tagButtons": 22,
+      "inputButtons": 0,
+      "roleLikeButtons": 0,
+      "anchorButtons": 20,
+      "neuroButtons": 40,
+      "visibleEnabled": 22,
+      "sampleNames": [
+        "QA QA Ação A",
+        "QA QA Ação B",
+        "QA QA Ação C",
+        "Abrir/Fechar Menu",
+        "Central de Ajuda",
+        "3 notificações não lidas",
+        "Modo Escuro",
+        "Configurações",
+        "Perfil do Usuário",
+        "QA Global Filtrar"
+      ]
+    },
+    {
+      "route": "/qa/cadastros",
+      "url": "http://localhost:4173/qa/cadastros?qa=1",
+      "roleButtons": 3,
+      "tagButtons": 3,
+      "inputButtons": 0,
+      "roleLikeButtons": 0,
+      "anchorButtons": 0,
+      "neuroButtons": 3,
+      "visibleEnabled": 6,
+      "sampleNames": [
+        "QA QA Ação A",
+        "QA QA Ação B",
+        "QA QA Ação C",
+        "QA QA Ação A",
+        "QA QA Ação B",
+        "QA QA Ação C"
+      ]
+    },
+    {
+      "route": "/qa/cirurgias",
+      "url": "http://localhost:4173/qa/cirurgias?qa=1",
+      "roleButtons": 3,
+      "tagButtons": 3,
+      "inputButtons": 0,
+      "roleLikeButtons": 0,
+      "anchorButtons": 0,
+      "neuroButtons": 3,
+      "visibleEnabled": 6,
+      "sampleNames": [
+        "QA QA Ação A",
+        "QA QA Ação B",
+        "QA QA Ação C",
+        "QA QA Ação A",
+        "QA QA Ação B",
+        "QA QA Ação C"
+      ]
+    },
+    {
+      "route": "/qa/estoque",
+      "url": "http://localhost:4173/qa/estoque?qa=1",
+      "roleButtons": 3,
+      "tagButtons": 3,
+      "inputButtons": 0,
+      "roleLikeButtons": 0,
+      "anchorButtons": 0,
+      "neuroButtons": 3,
+      "visibleEnabled": 6,
+      "sampleNames": [
+        "QA QA Ação A",
+        "QA QA Ação B",
+        "QA QA Ação C",
+        "QA QA Ação A",
+        "QA QA Ação B",
+        "QA QA Ação C"
+      ]
+    }
+  ]
+}

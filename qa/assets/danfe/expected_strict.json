@@ -1,0 +1,6 @@
+{
+  "cliente-new-ortho-2025-10-13.png": {
+    "ChaveAcesso": "chave\s*de\s*acesso[\s:]*([0-9\s-]{40,})",
+    "Total": "total\s*(?:da\s*)?nf[- ]?e\s*:\s*(?:r\$\s*)?42[\.,\s]?0{3}[\.,\s]?0{2}"
+  }
+}

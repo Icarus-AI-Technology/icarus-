@@ -1,0 +1,75 @@
+{
+  "$schema": "dre-mapping-schema-v1",
+  "meta": {
+    "descricao": "Exemplo de mapeamento de plano de contas para DRE inteligente do ICARUS v5.0.",
+    "versao": "0.1.0"
+  },
+  "origem": {
+    "tabela_plano_contas": "plano_contas",
+    "tabela_lancamentos": "lancamentos",
+    "tabela_centros_custos": "centros_custos",
+    "campo_conta_codigo": "codigo",
+    "campo_conta_nome": "nome",
+    "campo_conta_tipo": "tipo",
+    "campo_lanc_data": "data_lancamento",
+    "campo_lanc_valor": "valor",
+    "campo_lanc_conta_codigo": "conta_codigo",
+    "campo_lanc_ccusto_id": "centro_custo_id",
+    "campo_lanc_medico_id": "medico_id",
+    "campo_lanc_convenio_id": "convenio_id"
+  },
+  "estrutura_dre": [
+    {
+      "secao": "RECEITA BRUTA",
+      "codigo": "1.0.0",
+      "sinal": "+",
+      "contas": ["3.01%", "3.02%"],
+      "descricao": "Receitas totais de OPME, honorários e demais serviços."
+    },
+    {
+      "secao": "DEDUÇÕES DA RECEITA",
+      "codigo": "1.1.0",
+      "sinal": "-",
+      "contas": ["3.09%", "3.10%"],
+      "descricao": "Impostos sobre vendas, glosas, descontos e devoluções."
+    },
+    {
+      "secao": "RECEITA LÍQUIDA",
+      "codigo": "1.2.0",
+      "sinal": "=",
+      "formula": "RECEITA BRUTA - DEDUÇÕES DA RECEITA"
+    },
+    {
+      "secao": "CUSTO DOS SERVIÇOS",
+      "codigo": "2.0.0",
+      "sinal": "-",
+      "contas": ["4.01%", "4.02%"],
+      "descricao": "Custo das OPMEs, materiais, equipe técnica, etc."
+    },
+    {
+      "secao": "LUCRO BRUTO",
+      "codigo": "2.1.0",
+      "sinal": "=",
+      "formula": "RECEITA LÍQUIDA - CUSTO DOS SERVIÇOS"
+    },
+    {
+      "secao": "DESPESAS OPERACIONAIS",
+      "codigo": "3.0.0",
+      "sinal": "-",
+      "contas": ["5.01%", "5.02%"]
+    },
+    {
+      "secao": "RESULTADO OPERACIONAL",
+      "codigo": "3.1.0",
+      "sinal": "=",
+      "formula": "LUCRO BRUTO - DESPESAS OPERACIONAIS"
+    }
+  ],
+  "dimensoes_analiticas": {
+    "centro_custo": true,
+    "medico": true,
+    "convenio": true,
+    "periodicidade": ["mensal", "trimestral", "anual"]
+  }
+}
+

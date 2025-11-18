@@ -29,6 +29,7 @@ type QdrantPoint = {
 };
 
 const featureFlags = ['FF_AI_TUTOR_CIRURGIAS', 'FF_TUTOR_CIRURGIAS', 'FF_ML_QUEUE'];
+const MODULE_FILTER_REGEX = /^[A-Za-z0-9_-]{1,64}$/;
 const VECTOR_BACKEND = process.env.VECTOR_BACKEND || 'pgvector';
 
 function featureEnabled() {
@@ -36,6 +37,16 @@ function featureEnabled() {
     const raw = process.env[key];
     return raw ? /^(1|true|on|enabled)$/i.test(raw) : false;
   });
+}
+
+function sanitizeModuleFilter(module?: string | null): string | undefined {
+  if (!module) return undefined;
+  const trimmed = module.trim();
+  if (!trimmed) return undefined;
+  if (!MODULE_FILTER_REGEX.test(trimmed)) {
+    throw new Error('Filtro "module" inválido. Use apenas letras, números, hífen ou underscore (máx. 64 caracteres).');
+  }
+  return trimmed;
 }
 
 async function searchFaiss(query: number[], topK: number): Promise<VectorResult[]> {
@@ -191,6 +202,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     const topK = payload.topK ?? 5;
+    const safeModule = sanitizeModuleFilter(payload.module);
     let results: VectorResult[] = [];
 
     switch (VECTOR_BACKEND) {
@@ -198,16 +210,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         results = await searchFaiss(payload.query, topK);
         break;
       case 'pgvector':
-        results = await searchPgvector(payload.query, topK, payload.module);
+        results = await searchPgvector(payload.query, topK, safeModule);
         break;
       case 'milvus':
-        results = await searchMilvus(payload.query, topK, payload.module);
+        results = await searchMilvus(payload.query, topK, safeModule);
         break;
       case 'weaviate':
-        results = await searchWeaviate(payload.query, topK, payload.module);
+        results = await searchWeaviate(payload.query, topK, safeModule);
         break;
       case 'qdrant':
-        results = await searchQdrant(payload.query, topK, payload.module);
+        results = await searchQdrant(payload.query, topK, safeModule);
         break;
       default:
         throw new Error(`VECTOR_BACKEND não suportado: ${VECTOR_BACKEND}`);

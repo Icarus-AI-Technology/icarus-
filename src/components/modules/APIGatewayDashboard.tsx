@@ -5,6 +5,7 @@
  * Rate limiting, circuit breaker, cache e health checks
  */
 
+import { useState, useEffect, useCallback } from 'react';
 import {
   Card,
   Button,
@@ -15,12 +16,29 @@ import {
   TableHead,
   TableBody,
   TableCell,
+  Progress,
+} from '@/components/oraclusx-ds';
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  Progress,
-} from '@/components/oraclusx-ds';
-import { Server, CheckCircle, AlertTriangle, Database, GitBranch, Power, Activity, Clock } from 'lucide-react';
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import {
+  Server,
+  CheckCircle,
+  AlertTriangle,
+  AlertCircle,
+  Database,
+  GitBranch,
+  Power,
+  Activity,
+  Clock,
+  RefreshCw,
+  Download,
+  Gauge,
+  Eye,
+} from 'lucide-react';
 import { useDocumentTitle } from '@/hooks';
 import { useToast } from '@/contexts/ToastContext';
 import { APIGatewayService } from '@/lib/services/APIGatewayService';
@@ -55,7 +73,7 @@ interface APIAlert {
   is_resolved: boolean;
 }
 
-export default function APIGatewayDashboard() {
+export function APIGatewayDashboard() {
   useDocumentTitle('API Gateway - Monitoramento');
   const { addToast } = useToast();
 
@@ -64,17 +82,6 @@ export default function APIGatewayDashboard() {
   const [metrics, setMetrics] = useState<APIMetric[]>([]);
   const [alerts, setAlerts] = useState<APIAlert[]>([]);
   const [autoRefresh, setAutoRefresh] = useState(false);
-
-  useEffect(() => {
-    carregarDados();
-  }, [carregarDados]);
-
-  useEffect(() => {
-    if (autoRefresh) {
-      const interval = setInterval(carregarDados, 30000); // 30 segundos
-      return () => clearInterval(interval);
-    }
-  }, [autoRefresh, carregarDados]);
 
   const carregarDados = useCallback(async () => {
     setIsLoading(true);
@@ -94,6 +101,17 @@ export default function APIGatewayDashboard() {
       setIsLoading(false);
     }
   }, [addToast]);
+
+  useEffect(() => {
+    carregarDados();
+  }, [carregarDados]);
+
+  useEffect(() => {
+    if (autoRefresh) {
+      const interval = setInterval(carregarDados, 30000); // 30 segundos
+      return () => clearInterval(interval);
+    }
+  }, [autoRefresh, carregarDados]);
 
   const handleResolverAlerta = useCallback(async (alertId: string) => {
     const result = await APIGatewayService.resolveAlert(alertId);
@@ -347,7 +365,7 @@ export default function APIGatewayDashboard() {
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Button variant="ghost" size="sm" icon={<Eye />} />
+                          <Button variant="ghost" size="sm" icon={Eye} />
                         </TooltipTrigger>
                         <TooltipContent>Ver Detalhes</TooltipContent>
                       </Tooltip>
@@ -381,7 +399,7 @@ export default function APIGatewayDashboard() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-[0.813rem] font-semibold">Alertas Ativos ({alerts.filter((alert) => !alert.is_resolved).length})</h2>
-        <Button variant="secondary" icon={<RefreshCw />} onClick={carregarDados}>
+        <Button variant="secondary" icon={RefreshCw} onClick={carregarDados}>
           Atualizar
         </Button>
       </div>
@@ -547,7 +565,7 @@ export default function APIGatewayDashboard() {
               <RefreshCw className={`w-4 h-4 ${autoRefresh ? 'animate-spin' : ''}`} />
               Auto-refresh {autoRefresh && '(30s)'}
             </button>
-            <Button icon={<Download />} variant="secondary">
+            <Button icon={Download} variant="secondary">
               Exportar Relatório
             </Button>
           </div>
@@ -585,4 +603,6 @@ export default function APIGatewayDashboard() {
     </div>
   );
 }
+
+export default APIGatewayDashboard;
 

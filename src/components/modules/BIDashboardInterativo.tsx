@@ -78,7 +78,7 @@ interface PerformanceVendedor {
 
 const COLORS = ['var(--orx-primary)', 'var(--orx-success)', 'var(--orx-warning)', 'var(--orx-error)', 'var(--orx-purple-500)', 'var(--orx-pink-500)', 'var(--orx-teal-500)', '#f97316'];
 
-export default function BIDashboardInterativo() {
+export function BIDashboardInterativo() {
   useDocumentTitle('BI Dashboard Interativo');
   const { addToast } = useToast();
 
@@ -92,28 +92,6 @@ export default function BIDashboardInterativo() {
   const [vendasPorCliente, setVendasPorCliente] = useState<VendaPorCliente[]>([]);
   const [evolucaoMensal, setEvolucaoMensal] = useState<EvolucaoMensal[]>([]);
   const [performanceVendedores, setPerformanceVendedores] = useState<PerformanceVendedor[]>([]);
-
-  const carregarDados = useCallback(async () => {
-    setLoading(true);
-    try {
-      await Promise.all([
-        carregarKPIs(),
-        carregarVendasPorProduto(),
-        carregarVendasPorCliente(),
-        carregarEvolucaoMensal(),
-        carregarPerformanceVendedores(),
-      ]);
-    } catch (error: unknown) {
-      const err = error as Error;
-      addToast(`Erro ao carregar dados: ${err.message}`, 'error');
-    } finally {
-      setLoading(false);
-    }
-  }, [addToast, carregarKPIs, carregarVendasPorProduto, carregarVendasPorCliente, carregarEvolucaoMensal, carregarPerformanceVendedores]);
-
-  useEffect(() => {
-    carregarDados();
-  }, [carregarDados, periodo]);
 
   const carregarKPIs = useCallback(async () => {
     try {
@@ -274,6 +252,28 @@ export default function BIDashboardInterativo() {
       ]);
     }
   }, []);
+
+  const carregarDados = useCallback(async () => {
+    setLoading(true);
+    try {
+      await Promise.all([
+        carregarKPIs(),
+        carregarVendasPorProduto(),
+        carregarVendasPorCliente(),
+        carregarEvolucaoMensal(),
+        carregarPerformanceVendedores(),
+      ]);
+    } catch (error: unknown) {
+      const err = error as Error;
+      addToast(`Erro ao carregar dados: ${err.message}`, 'error');
+    } finally {
+      setLoading(false);
+    }
+  }, [addToast, carregarKPIs, carregarVendasPorProduto, carregarVendasPorCliente, carregarEvolucaoMensal, carregarPerformanceVendedores]);
+
+  useEffect(() => {
+    carregarDados();
+  }, [carregarDados, periodo]);
 
   const handleExportar = () => {
     addToast('Exportando relatório...', 'info');
@@ -492,7 +492,9 @@ export default function BIDashboardInterativo() {
           <div className="flex items-center gap-3">
             <Select
               value={periodo}
-              onValueChange={(value) => setPeriodo(value as typeof periodo)}
+              onChange={(event) =>
+                setPeriodo(event.target.value as typeof periodo)
+              }
               options={[
                 { value: '30d', label: 'Últimos 30 dias' },
                 { value: '90d', label: 'Últimos 90 dias' },
@@ -501,10 +503,10 @@ export default function BIDashboardInterativo() {
               ]}
               className="w-[180px]"
             />
-            <Button icon={<Filter />} variant="secondary">
+            <Button icon={Filter} variant="secondary">
               Filtros
             </Button>
-            <Button icon={<Download />} onClick={handleExportar}>
+            <Button icon={Download} onClick={handleExportar}>
               Exportar
             </Button>
           </div>
@@ -559,4 +561,6 @@ export default function BIDashboardInterativo() {
     </div>
   );
 }
+
+export default BIDashboardInterativo;
 

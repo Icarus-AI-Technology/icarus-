@@ -8,7 +8,7 @@ import { Card } from"@/components/oraclusx-ds";
 import { Brain, TrendingUp, Target, Zap, Calendar, BarChart3, LineChart } from"lucide-react";
 import { useDocumentTitle } from"@/hooks";
 
-export default function AnalyticsPredicao() {
+export function AnalyticsPredicao() {
   useDocumentTitle("Analytics Predição");
   const [activeCategory, setActiveCategory] = useState("dashboard");
 
@@ -78,4 +78,6 @@ export default function AnalyticsPredicao() {
     </div>
   );
 }
+
+export default AnalyticsPredicao;
 

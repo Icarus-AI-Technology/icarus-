@@ -36,7 +36,7 @@ interface Category {
   trend?: string;
 }
 
-export default function CRMVendas() {
+export function CRMVendas() {
   useDocumentTitle("CRM & Vendas");
 
   // Navegação
@@ -182,19 +182,6 @@ export default function CRMVendas() {
     }
   }, [deleteLead, addToast]);
 
-  const handleStageChange = useCallback(async (
-    id: string,
-    newStage: Lead["estagio"]
-  ) => {
-    try {
-      await updateLead(id, { estagio: newStage });
-      addToast(`Estágio atualizado para: ${getStageLabel(newStage)}`,"success");
-    } catch {
-      addToast("Erro ao atualizar estágio","error");
-    }
-  }, [updateLead, addToast, getStageLabel]);
-
-  // Helpers
   const getStageColor = useCallback((estagio: Lead["estagio"]): string => {
     const colors: Partial<Record<Lead["estagio"], string>> = {
       novo:"text-[var(--text-secondary)] bg-surface",
@@ -230,6 +217,18 @@ export default function CRMVendas() {
       currency:"BRL",
     }).format(value);
   }, []);
+
+  const handleStageChange = useCallback(async (
+    id: string,
+    newStage: Lead["estagio"]
+  ) => {
+    try {
+      await updateLead(id, { estagio: newStage });
+      addToast(`Estágio atualizado para: ${getStageLabel(newStage)}`,"success");
+    } catch {
+      addToast("Erro ao atualizar estágio","error");
+    }
+  }, [updateLead, addToast, getStageLabel]);
 
   // Filtrar leads
   const filteredLeads = useMemo(() => leads.filter((lead) => {
@@ -546,3 +545,5 @@ export default function CRMVendas() {
     </div>
   );
 }
+
+export default CRMVendas;

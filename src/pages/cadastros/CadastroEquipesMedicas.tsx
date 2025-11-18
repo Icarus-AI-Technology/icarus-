@@ -1,5 +1,13 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Check, Loader2, Plus, Trash2, Users } from 'lucide-react';
+/**
+ * Cadastro de Equipes Médicas - ICARUS v5.0
+ * Design System: OraclusX DS - Neumórfico 3D Premium
+ * 
+ * Formulário completo para cadastro de equipes médicas cirúrgicas
+ * com validações, integrações e design neumórfico padronizado.
+ */
+
+import { useState } from 'react';
+import { ArrowLeft, Users, Stethoscope, Plus, Trash2, Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { NeumoInput, NeumoTextarea, NeumoButton } from '@/components/oraclusx-ds';
@@ -30,7 +38,15 @@ const INITIAL_STATE: EquipeMedicaFormData = {
   dias_atuacao: []
 };
 
-const DIAS_SEMANA = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+const DIAS_SEMANA = [
+  { id: 'segunda', label: 'Segunda' },
+  { id: 'terca', label: 'Terça' },
+  { id: 'quarta', label: 'Quarta' },
+  { id: 'quinta', label: 'Quinta' },
+  { id: 'sexta', label: 'Sexta' },
+  { id: 'sabado', label: 'Sábado' },
+  { id: 'domingo', label: 'Domingo' }
+];
 
 const FUNCOES = [
   { value: 'cirurgiao_principal', label: 'Cirurgião Principal' },
@@ -40,7 +56,16 @@ const FUNCOES = [
   { value: 'auxiliar_enfermagem', label: 'Auxiliar de Enfermagem' }
 ];
 
-const CadastroEquipesMedicas: React.FC = () => {
+const ESPECIALIDADES = [
+  { value: 'cardiologia', label: 'Cardiologia' },
+  { value: 'ortopedia', label: 'Ortopedia' },
+  { value: 'neurologia', label: 'Neurologia' },
+  { value: 'cirurgia_geral', label: 'Cirurgia Geral' },
+  { value: 'vascular', label: 'Cirurgia Vascular' },
+  { value: 'plastica', label: 'Cirurgia Plástica' }
+];
+
+export default function CadastroEquipesMedicas() {
   useDocumentTitle('Cadastro de Equipes Médicas');
   const navigate = useNavigate();
   const [formData, setFormData] = useState<EquipeMedicaFormData>(INITIAL_STATE);
@@ -84,9 +109,14 @@ const CadastroEquipesMedicas: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validação
-    if (!formData.nome || !formData.medico_responsavel_id) {
-      toast.error('Preencha os campos obrigatórios');
+    // Validações
+    if (!formData.nome) {
+      toast.error('Nome da equipe é obrigatório');
+      return;
+    }
+    
+    if (!formData.medico_responsavel_id) {
+      toast.error('Médico responsável é obrigatório');
       return;
     }
 
@@ -98,8 +128,7 @@ const CadastroEquipesMedicas: React.FC = () => {
       toast.success('Equipe médica cadastrada com sucesso!');
       navigate('/cadastros');
     } catch (error) {
-      const err = error as Error;
-      console.error('Erro ao salvar:', err);
+      console.error('Erro ao salvar:', error);
       toast.error('Erro ao salvar equipe médica');
     } finally {
       setLoading(false);
@@ -135,391 +164,245 @@ const CadastroEquipesMedicas: React.FC = () => {
           </div>
         </div>
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        {/* Identificação */}
-        <div className="neumorphic-card" style={{ padding: '1.5rem', borderRadius: '1rem' }}>
-          <h2 style={{ 
-            fontSize: '0.813rem', 
-            fontWeight: '600',
-            color: 'var(--orx-text-primary)',
-            marginBottom: '1.5rem'
-          }}>
-            Identificação da Equipe
-          </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
-            <div>
-              <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                Nome da Equipe <span style={{ color: 'var(--orx-error)', fontSize: '0.813rem' }}>*</span>
-              </label>
-              <input
-                type="text"
-                value={formData.nome}
-                onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
-                required
-                placeholder="Ex: Equipe de Ortopedia Dr. Silva"
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid var(--orx-border)',
-                  background: 'var(--orx-bg-light)',
-                  color: 'var(--orx-text-primary)'
-                }}
-              />
-            </div>
-
-            <div>
-              <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                Médico Responsável <span style={{ color: 'var(--orx-error)' }}>*</span>
-              </label>
-              <input
-                type="text"
-                value={formData.medico_responsavel_id}
-                onChange={(e) => setFormData({ ...formData, medico_responsavel_id: e.target.value })}
-                required
-                placeholder="Digite o nome ou CRM..."
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid var(--orx-border)',
-                  background: 'var(--orx-bg-light)',
-                  color: 'var(--orx-text-primary)'
-                }}
-              />
-            </div>
-
-            <div>
-              <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                Especialidade Principal
-              </label>
-              <input
-                type="text"
-                value={formData.especialidade || ''}
-                onChange={(e) => setFormData({ ...formData, especialidade: e.target.value })}
-                placeholder="Ex: Ortopedia"
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid var(--orx-border)',
-                  background: 'var(--orx-bg-light)',
-                  color: 'var(--orx-text-primary)'
-                }}
-              />
-            </div>
-
-            <div>
-              <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                Hospital Principal
-              </label>
-              <input
-                type="text"
-                value={formData.hospital_id || ''}
-                onChange={(e) => setFormData({ ...formData, hospital_id: e.target.value })}
-                placeholder="Selecione o hospital..."
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid var(--orx-border)',
-                  background: 'var(--orx-bg-light)',
-                  color: 'var(--orx-text-primary)'
-                }}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Membros da Equipe */}
-        <div className="neumorphic-card" style={{ padding: '1.5rem', borderRadius: '1rem' }}>
-          <h2 style={{ 
-            fontSize: '0.813rem', 
-            fontWeight: '600',
-            color: 'var(--orx-text-primary)',
-            marginBottom: '1.5rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem'
-          }}>
-            <Users size={24} />
-            Membros da Equipe
-          </h2>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            {formData.membros.map((membro, index) => (
-              <div 
-                key={index}
-                className="neumorphic-card"
-                style={{ 
-                  padding: '1rem',
-                  borderRadius: '0.75rem',
-                  display: 'flex',
-                  alignItems: 'end',
-                  gap: '1rem'
-                }}
-              >
-                <div style={{ flex: 1 }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                    Médico
-                  </label>
-                  <input
-                    type="text"
-                    value={membro.medico_nome || ''}
-                    onChange={(e) => handleUpdateMembro(index, 'medico_nome', e.target.value)}
-                    placeholder="Digite o nome ou CRM..."
-                    style={{
-                      width: '100%',
-                      padding: '0.75rem',
-                      borderRadius: '0.5rem',
-                      border: '1px solid var(--orx-border)',
-                      background: 'var(--orx-bg-light)',
-                      color: 'var(--orx-text-primary)'
-                    }}
-                  />
-                </div>
-
-                <div style={{ flex: 1 }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                    Função
-                  </label>
-                  <select
-                    value={membro.funcao}
-                    onChange={(e) => handleUpdateMembro(index, 'funcao', e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '0.75rem',
-                      borderRadius: '0.5rem',
-                      border: '1px solid var(--orx-border)',
-                      background: 'var(--orx-bg-light)',
-                      color: 'var(--orx-text-primary)'
-                    }}
-                  >
-                    <option value="">Selecione...</option>
-                    {FUNCOES.map(f => (
-                      <option key={f.value} value={f.value}>{f.label}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => handleRemoveMembro(index)}
-                  style={{
-                    padding: '0.75rem',
-                    borderRadius: '0.5rem',
-                    border: '1px solid var(--orx-error)',
-                    background: 'transparent',
-                    color: 'var(--orx-error)',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem'
-                  }}
-                >
-                  <Trash2 size={20} />
-                </button>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Identificação */}
+          <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
+            <h2 className="text-lg font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
+              <Stethoscope className="w-5 h-5 text-orx-primary" />
+              Identificação da Equipe
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="lg:col-span-2">
+                <NeumoInput
+                  id="nome"
+                  label="Nome da Equipe"
+                  value={formData.nome}
+                  onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
+                  placeholder="Ex: Equipe Cirurgia Cardíaca Dr. Silva"
+                  required
+                />
               </div>
-            ))}
-
-            <button
-              type="button"
-              onClick={handleAddMembro}
-              style={{
-                padding: '1rem',
-                borderRadius: '0.5rem',
-                border: '2px dashed var(--orx-border)',
-                background: 'transparent',
-                color: 'var(--orx-text-primary)',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '0.5rem',
-                transition: 'all 0.2s'
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.borderColor = 'var(--orx-indigo-500)';
-                e.currentTarget.style.color = 'var(--orx-indigo-500)';
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.borderColor = 'var(--orx-border)';
-                e.currentTarget.style.color = 'var(--orx-text-primary)';
-              }}
-            >
-              <Plus size={20} />
-              Adicionar Membro
-            </button>
-          </div>
-        </div>
-
-        {/* Configurações Operacionais */}
-        <div className="neumorphic-card" style={{ padding: '1.5rem', borderRadius: '1rem' }}>
-          <h2 style={{ 
-            fontSize: '0.813rem', 
-            fontWeight: '600',
-            color: 'var(--orx-text-primary)',
-            marginBottom: '1.5rem'
-          }}>
-            Configurações Operacionais
-          </h2>
-
-          {/* Dias de Atuação */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.75rem', color: 'var(--orx-text-primary)' }}>
-              Dias de Atuação
-            </label>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
-              {DIAS_SEMANA.map((dia) => (
-                <label
-                  key={dia}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    padding: '0.5rem 1rem',
-                    borderRadius: '0.5rem',
-                    border: `2px solid ${formData.dias_atuacao?.includes(dia) ? 'var(--orx-indigo-500)' : 'var(--orx-border)'}`,
-                    background: formData.dias_atuacao?.includes(dia) ? 'rgba(99, 102, 241, 0.1)' : 'transparent',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s'
-                  }}
-                >
-                  <input
-                    type="checkbox"
-                    checked={formData.dias_atuacao?.includes(dia) || false}
-                    onChange={() => handleToggleDia(dia)}
-                    style={{ width: '1.25rem', height: '1.25rem', cursor: 'pointer' }}
-                  />
-                  <span style={{ color: 'var(--orx-text-primary)', fontSize: '0.813rem' }}>{dia}</span>
+              
+              <div>
+                <label className="block text-sm font-medium text-orx-text-primary mb-2">
+                  Especialidade
                 </label>
-              ))}
+                <select
+                  value={formData.especialidade || ''}
+                  onChange={(e) => setFormData({ ...formData, especialidade: e.target.value })}
+                  className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2 focus-visible:shadow-neumo-sm"
+                >
+                  <option value="">Selecione...</option>
+                  {ESPECIALIDADES.map(esp => (
+                    <option key={esp.value} value={esp.value}>{esp.label}</option>
+                  ))}
+                </select>
+              </div>
+              
+              <div className="lg:col-span-2">
+                <label className="block text-sm font-medium text-orx-text-primary mb-2">
+                  Médico Responsável <span className="text-orx-danger">*</span>
+                </label>
+                <select
+                  value={formData.medico_responsavel_id}
+                  onChange={(e) => setFormData({ ...formData, medico_responsavel_id: e.target.value })}
+                  className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2 focus-visible:shadow-neumo-sm"
+                  required
+                >
+                  <option value="">Selecione o médico responsável...</option>
+                  <option value="1">Dr. João Silva - CRM 12345/SP - Cardiologia</option>
+                  <option value="2">Dra. Maria Santos - CRM 67890/SP - Ortopedia</option>
+                  <option value="3">Dr. Pedro Costa - CRM 11223/SP - Neurologia</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-orx-text-primary mb-2">
+                  Hospital Preferencial
+                </label>
+                <select
+                  value={formData.hospital_id || ''}
+                  onChange={(e) => setFormData({ ...formData, hospital_id: e.target.value })}
+                  className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2 focus-visible:shadow-neumo-sm"
+                >
+                  <option value="">Nenhum específico</option>
+                  <option value="1">Hospital São Paulo</option>
+                  <option value="2">Hospital Samaritano</option>
+                  <option value="3">Hospital Sírio-Libanês</option>
+                </select>
+              </div>
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
-            <div>
-              <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                Horários de Preferência
-              </label>
-              <input
-                type="text"
-                value={formData.horarios_preferencia || ''}
-                onChange={(e) => setFormData({ ...formData, horarios_preferencia: e.target.value })}
-                placeholder="Ex: Manhã (7h-12h)"
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid var(--orx-border)',
-                  background: 'var(--orx-bg-light)',
-                  color: 'var(--orx-text-primary)'
-                }}
-              />
+          {/* Membros da Equipe */}
+          <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-semibold text-orx-text-primary flex items-center gap-2">
+                <Users className="w-5 h-5 text-orx-primary" />
+                Membros da Equipe
+              </h2>
+              <NeumoButton
+                type="button"
+                variant="secondary"
+                size="sm"
+                leftIcon={Plus}
+                onClick={handleAddMembro}
+              >
+                Adicionar Membro
+              </NeumoButton>
             </div>
 
-            <div>
-              <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--orx-text-primary)' }}>
-                Número Médio de Cirurgias/Semana
-              </label>
-              <input
-                type="number"
-                value={formData.cirurgias_semana_media || ''}
-                onChange={(e) => setFormData({ ...formData, cirurgias_semana_media: parseInt(e.target.value) })}
-                min="0"
-                placeholder="Ex: 5"
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid var(--orx-border)',
-                  background: 'var(--orx-bg-light)',
-                  color: 'var(--orx-text-primary)'
-                }}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Observações */}
-        <div className="neumorphic-card" style={{ padding: '1.5rem', borderRadius: '1rem' }}>
-          <h2 style={{ 
-            fontSize: '0.813rem', 
-            fontWeight: '600',
-            color: 'var(--orx-text-primary)',
-            marginBottom: '1.5rem'
-          }}>
-            Observações
-          </h2>
-          <textarea
-            value={formData.observacoes || ''}
-            onChange={(e) => setFormData({ ...formData, observacoes: e.target.value })}
-            rows={3}
-            placeholder="Informações adicionais sobre a equipe..."
-            style={{
-              width: '100%',
-              padding: '0.75rem',
-              borderRadius: '0.5rem',
-              border: '1px solid var(--orx-border)',
-              background: 'var(--orx-bg-light)',
-              color: 'var(--orx-text-primary)',
-              resize: 'vertical'
-            }}
-          />
-        </div>
-
-        {/* Botões */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
-          <button
-            type="button"
-            onClick={() => navigate('/cadastros')}
-            disabled={loading}
-            style={{
-              padding: '0.75rem 1.5rem',
-              borderRadius: '0.5rem',
-              border: '1px solid var(--orx-border)',
-              background: 'var(--orx-bg-light)',
-              color: 'var(--orx-text-primary)',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              opacity: loading ? 0.5 : 1
-            }}
-          >
-            Cancelar
-          </button>
-          <button
-            type="submit"
-            disabled={loading || formData.membros.length === 0}
-            className="colored-button"
-            style={{
-              padding: '0.75rem 1.5rem',
-              borderRadius: '0.5rem',
-              border: 'none',
-              background: 'var(--orx-indigo-500)',
-              color: 'white',
-              cursor: (loading || formData.membros.length === 0) ? 'not-allowed' : 'pointer',
-              opacity: (loading || formData.membros.length === 0) ? 0.5 : 1,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem'
-            }}
-          >
-            {loading ? (
-              <>
-                <Loader2 size={20} className="animate-spin" />
-                Salvando...
-              </>
+            {formData.membros.length === 0 ? (
+              <div className="text-center py-8 text-orx-text-muted">
+                <Users className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                <p>Nenhum membro adicionado</p>
+                <p className="text-sm">Clique em "Adicionar Membro" para começar</p>
+              </div>
             ) : (
-              <>
-                <Check size={20} />
-                Cadastrar Equipe
-              </>
+              <div className="space-y-4">
+                {formData.membros.map((membro, index) => (
+                  <div key={index} className="bg-orx-bg-app rounded-lg p-4 shadow-neumo-sm">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-orx-text-primary mb-2">
+                          Médico/Profissional
+                        </label>
+                        <select
+                          value={membro.medico_id}
+                          onChange={(e) => handleUpdateMembro(index, 'medico_id', e.target.value)}
+                          className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2"
+                        >
+                          <option value="">Selecione...</option>
+                          <option value="1">Dr. João Silva - CRM 12345/SP</option>
+                          <option value="2">Dra. Maria Santos - CRM 67890/SP</option>
+                          <option value="3">Enf. Carlos Souza - COREN 98765/SP</option>
+                        </select>
+                      </div>
+                      
+                      <div className="flex gap-2">
+                        <div className="flex-1">
+                          <label className="block text-sm font-medium text-orx-text-primary mb-2">
+                            Função
+                          </label>
+                          <select
+                            value={membro.funcao}
+                            onChange={(e) => handleUpdateMembro(index, 'funcao', e.target.value)}
+                            className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2"
+                          >
+                            <option value="">Selecione...</option>
+                            {FUNCOES.map(funcao => (
+                              <option key={funcao.value} value={funcao.value}>
+                                {funcao.label}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        
+                        <div className="flex items-end">
+                          <NeumoButton
+                            type="button"
+                            variant="danger"
+                            size="icon"
+                            onClick={() => handleRemoveMembro(index)}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </NeumoButton>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
-          </button>
-        </div>
-      </form>
+          </div>
+
+          {/* Disponibilidade */}
+          <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
+            <h2 className="text-lg font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
+              <Calendar className="w-5 h-5 text-orx-primary" />
+              Disponibilidade
+            </h2>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-orx-text-primary mb-3">
+                  Dias de Atuação
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
+                  {DIAS_SEMANA.map((dia) => (
+                    <button
+                      key={dia.id}
+                      type="button"
+                      onClick={() => handleToggleDia(dia.id)}
+                      className={`
+                        px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200
+                        ${formData.dias_atuacao?.includes(dia.id)
+                          ? 'bg-orx-primary text-white shadow-neumo'
+                          : 'bg-orx-bg-app text-orx-text-secondary shadow-neumo-sm hover:shadow-neumo'
+                        }
+                      `}
+                    >
+                      {dia.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <NeumoInput
+                  id="horarios_preferencia"
+                  label="Horários de Preferência"
+                  value={formData.horarios_preferencia || ''}
+                  onChange={(e) => setFormData({ ...formData, horarios_preferencia: e.target.value })}
+                  placeholder="Ex: 08:00 - 12:00"
+                />
+                
+                <NeumoInput
+                  id="cirurgias_semana_media"
+                  label="Cirurgias/Semana (Média)"
+                  type="number"
+                  value={formData.cirurgias_semana_media || ''}
+                  onChange={(e) => setFormData({ ...formData, cirurgias_semana_media: parseInt(e.target.value) || 0 })}
+                  placeholder="Ex: 5"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Observações */}
+          <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
+            <NeumoTextarea
+              id="observacoes"
+              label="Observações"
+              value={formData.observacoes || ''}
+              onChange={(e) => setFormData({ ...formData, observacoes: e.target.value })}
+              placeholder="Informações adicionais sobre a equipe..."
+              rows={4}
+            />
+          </div>
+
+          {/* Ações */}
+          <div className="flex items-center justify-end gap-3">
+            <NeumoButton
+              type="button"
+              variant="secondary"
+              onClick={() => navigate('/cadastros')}
+              disabled={loading}
+            >
+              Cancelar
+            </NeumoButton>
+            
+            <NeumoButton
+              type="submit"
+              loading={loading}
+              leftIcon={loading ? undefined : Users}
+            >
+              {loading ? 'Salvando...' : 'Salvar Equipe'}
+            </NeumoButton>
+          </div>
+        </form>
+      </div>
     </div>
   );
-};
-
-export default CadastroEquipesMedicas;
-
+}

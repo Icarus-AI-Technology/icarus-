@@ -1,0 +1,418 @@
+{
+  "timestamp": "2025-11-01T12:51:45.756Z",
+  "total": 40,
+  "perfect": 0,
+  "needsWork": 40,
+  "avgScore": "20.5",
+  "results": [
+    {
+      "file": "src/pages/cadastros/CadastroConvenios.tsx",
+      "issues": [
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS"
+      ],
+      "score": 80
+    },
+    {
+      "file": "src/pages/cadastros/CadastroEquipesMedicas.tsx",
+      "issues": [
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS"
+      ],
+      "score": 80
+    },
+    {
+      "file": "src/pages/cadastros/CadastroFornecedores.tsx",
+      "issues": [
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS"
+      ],
+      "score": 80
+    },
+    {
+      "file": "src/pages/cadastros/CadastroHospitais.tsx",
+      "issues": [
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS"
+      ],
+      "score": 80
+    },
+    {
+      "file": "src/pages/cadastros/CadastroMedicos.tsx",
+      "issues": [
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS"
+      ],
+      "score": 80
+    },
+    {
+      "file": "src/pages/cadastros/CadastroPacientes.tsx",
+      "issues": [
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS"
+      ],
+      "score": 80
+    },
+    {
+      "file": "src/pages/cadastros/CadastroPessoaJuridica.tsx",
+      "issues": [
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS"
+      ],
+      "score": 80
+    },
+    {
+      "file": "src/pages/cadastros/CadastroProdutosOPME.tsx",
+      "issues": [
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS"
+      ],
+      "score": 80
+    },
+    {
+      "file": "src/pages/cadastros/CadastroTransportadoras.tsx",
+      "issues": [
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS"
+      ],
+      "score": 80
+    },
+    {
+      "file": "src/pages/cadastros/DashboardCadastros.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/pages/cadastros/FormularioConvenios.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/pages/cadastros/FormularioEquipesMedicas.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/pages/cadastros/FormularioFornecedores.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/pages/cadastros/FormularioHospitais.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/pages/cadastros/FormularioMedicos.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/pages/cadastros/FormularioPacientes.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/pages/cadastros/FormularioProdutos.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/pages/cadastros/FormularioTransportadoras.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/pages/cadastros/TabelasPrecos.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/pages/operacional/FormularioCirurgias.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/pages/operacional/FormularioCotacoes.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/pages/operacional/FormularioEntregas.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/pages/operacional/FormularioEstoque.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/pages/operacional/FormularioPedidosCompra.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/pages/operacional/FormularioRemessasConsignacao.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/pages/operacional/KanbanCirurgias.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/components/forms/ExemploCadastroPacienteMultiStep.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/components/forms/FormEmpresa.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/components/forms/FormEndereco.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/components/forms/FormField.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/components/forms/FormMedico.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/components/forms/FormTemplate.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 20
+    },
+    {
+      "file": "src/components/forms/FormTemplatePadrao.tsx",
+      "issues": [
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS"
+      ],
+      "score": 80
+    },
+    {
+      "file": "src/components/forms/FormularioMedicoAvancado.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/components/forms/MultiStepForm.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/components/forms/NeuInput.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/components/forms/NeuSelect.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/components/forms/NeuTextarea.tsx",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Usa componentes HTML nativos em vez de OraclusX DS",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/components/forms/formLayout.ts",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    },
+    {
+      "file": "src/components/forms/index.ts",
+      "issues": [
+        "❌ Não usa CadastroPageLayout",
+        "⚠️ Não usa CadastroSection",
+        "⚠️ Não usa FormGrid",
+        "⚠️ Não usa FormActions",
+        "❌ Não importa componentes do OraclusX DS"
+      ],
+      "score": 0
+    }
+  ]
+}

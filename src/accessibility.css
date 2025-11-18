@@ -1,0 +1,272 @@
+/**
+ * HIGH CONTRAST MODE & ACCESSIBILITY
+ * 
+ * Estilos para modo high contrast e melhorias de acessibilidade
+ */
+
+/* ============================================
+   HIGH CONTRAST MODE
+   ============================================ */
+
+.high-contrast {
+  --orx-text-primary: #000000;
+  --orx-text-secondary: #1a1a1a;
+  --orx-bg-light: #ffffff;
+  --orx-bg-dark: #000000;
+  --orx-border-muted: #000000;
+  
+  /* Aumentar contraste de cores */
+  --orx-primary: 221 100% 40%;
+  --orx-success: 150 100% 30%;
+  --orx-warning: 40 100% 40%;
+  --orx-error: 355 100% 40%;
+}
+
+.high-contrast.dark {
+  --orx-text-primary: #ffffff;
+  --orx-text-secondary: #e5e5e5;
+  --orx-bg-light: #000000;
+  --orx-bg-dark: #000000;
+  --orx-border-muted: #ffffff;
+}
+
+.high-contrast * {
+  /* Aumentar espessura de bordas */
+  border-width: max(var(--border-width, 1px), 2px) !important;
+}
+
+.high-contrast img,
+.high-contrast video {
+  /* Aumentar contraste de mídia */
+  filter: contrast(1.2);
+}
+
+/* ============================================
+   FOCUS INDICATORS
+   ============================================ */
+
+/* Focus visível apenas com teclado */
+.keyboard-navigation *:focus {
+  outline: 3px solid var(--orx-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.keyboard-navigation *:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Focus indicators aprimorados */
+:focus-visible {
+  outline: 3px solid var(--orx-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+  transition: outline-offset 0.2s ease;
+}
+
+:focus-visible:hover {
+  outline-offset: 4px;
+}
+
+/* Focus para botões */
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--orx-primary);
+  outline-offset: 3px;
+}
+
+/* Focus para inputs */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--orx-primary);
+  outline-offset: 0px;
+  box-shadow: 0 0 0 4px hsla(var(--orx-primary), 0.2);
+}
+
+/* High contrast focus */
+.high-contrast *:focus-visible {
+  outline: 4px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* ============================================
+   SKIP LINKS
+   ============================================ */
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--orx-primary);
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 0 0 4px 0;
+  font-weight: 600;
+  z-index: 9999;
+  transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* ============================================
+   SCREEN READER ONLY
+   ============================================ */
+
+.orx-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.orx-sr-only-focusable:focus,
+.orx-sr-only-focusable:active {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* ============================================
+   LARGE TEXT MODE
+   ============================================ */
+
+.large-text {
+  font-size: 125% !important;
+}
+
+.large-text h1 {
+  font-size: 3rem !important;
+}
+
+.large-text h2 {
+  font-size: 2.5rem !important;
+}
+
+.large-text h3 {
+  font-size: 2rem !important;
+}
+
+.large-text p,
+.large-text li,
+.large-text span {
+  font-size: 1.25rem !important;
+  line-height: 1.75 !important;
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .orx-animate-fade-in,
+  .orx-animate-slide-up,
+  .orx-animate-slide-down,
+  .orx-animate-slide-left,
+  .orx-animate-slide-right,
+  .orx-animate-scale-in,
+  .orx-animate-bounce-in,
+  .orx-animate-wave,
+  .orx-animate-shimmer,
+  .orx-scroll-reveal {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ============================================
+   TOUCH TARGET SIZE (AAA)
+   ============================================ */
+
+button,
+a,
+input[type="checkbox"],
+input[type="radio"],
+[role="button"],
+[role="link"] {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Para ícones pequenos, adicionar padding invisível */
+.orx-icon-button {
+  padding: 12px !important;
+}
+
+/* ============================================
+   COLOR BLIND SUPPORT
+   ============================================ */
+
+.color-blind-mode .orx-success {
+  /* Adicionar padrão além da cor */
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(0, 0, 0, 0.05) 10px,
+    rgba(0, 0, 0, 0.05) 20px
+  );
+}
+
+.color-blind-mode .orx-error {
+  /* Adicionar X pattern */
+  background-image: 
+    linear-gradient(45deg, transparent 45%, currentColor 45%, currentColor 55%, transparent 55%),
+    linear-gradient(-45deg, transparent 45%, currentColor 45%, currentColor 55%, transparent 55%);
+  background-size: 16px 16px;
+  background-repeat: repeat;
+}
+
+.color-blind-mode .orx-warning {
+  /* Adicionar ! pattern */
+  position: relative;
+}
+
+.color-blind-mode .orx-warning::before {
+  content: '!';
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  transform: translateY(-50%);
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+/* ============================================
+   KEYBOARD NAVIGATION HINTS
+   ============================================ */
+
+[data-keyboard-hint]::after {
+  content: attr(data-keyboard-hint);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--orx-bg-dark);
+  color: var(--orx-text-light);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 1000;
+}
+
+.keyboard-navigation [data-keyboard-hint]:focus::after {
+  opacity: 1;
+}
+

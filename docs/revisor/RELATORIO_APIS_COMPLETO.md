@@ -125,7 +125,7 @@ console.log(data.especialidades); // ['Cardiologia', 'Clínica Médica']
 - [InfoSimples ANVISA](https://api.infosimples.com/api/v2/consultas/anvisa/produtos-saude/{registro})
 - Portal ANVISA Datavisa (fallback)
 
-**Token InfoSimples**: `fzxpq47PdYnoOi93sqQhC_BdJJFMaD5_zVZmq3o6`
+**Token InfoSimples**: Defina `INFOSIMPLES_TOKEN` em ambiente seguro
 
 **Dados preenchidos automaticamente**:
 - ✅ Número de Registro ANVISA
@@ -161,7 +161,7 @@ console.log(data.dataValidade); // 2027-12-31
 - [InfoSimples SEFAZ](https://api.infosimples.com/api/v2/consultas/sefaz/{uf}/nfe/{chave})
 - InfoSimples Preços (agregador)
 
-**Token InfoSimples**: `fzxpq47PdYnoOi93sqQhC_BdJJFMaD5_zVZmq3o6`
+**Token InfoSimples**: Defina `INFOSIMPLES_TOKEN` em ambiente seguro
 
 #### 5.1. Consulta de NF-e (Nota Fiscal Eletrônica)
 
@@ -229,7 +229,7 @@ console.log(precos.quantidadeNotas); // 1.234 notas analisadas
 **Arquivo**: `src/services/infosimples.service.ts`
 
 **Site oficial**: [https://api.infosimples.com/](https://api.infosimples.com/)  
-**Token**: `fzxpq47PdYnoOi93sqQhC_BdJJFMaD5_zVZmq3o6`  
+**Token**: Defina `INFOSIMPLES_TOKEN` em ambiente seguro  
 **Documentação**: Acesso via login no portal
 
 #### Serviços Disponíveis na Classe `InfoSimplesAPI`:

@@ -5,7 +5,8 @@ import { BIAnalytics } from "@/components/modules/BIAnalytics";
 describe("BIAnalytics", () => {
   it("deve estar definido", () => {
     render(<BIAnalytics />);
-    expect(screen.getByRole("document")).toBeInTheDocument();
+    const headings = screen.getAllByRole("heading", { level: 1 });
+    expect(headings.length).toBeGreaterThan(0);
   });
 
   // TODO: Adicionar mais testes específicos

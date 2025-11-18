@@ -1,14 +1,14 @@
 {
   "summary": {
-    "timestamp": "2025-10-20T17:15:24.750Z",
-    "filesScanned": 334,
+    "timestamp": "2025-11-18T00:12:57.726Z",
+    "filesScanned": 560,
     "totals": {
-      "typography.text": 1188,
-      "typography.font": 48,
-      "colors.hex": 150,
-      "shadows.inline": 22
+      "typography.text": 2520,
+      "typography.font": 962,
+      "colors.hex": 227,
+      "shadows.inline": 39
     },
-    "violations": 170
+    "violations": 259
   },
   "results": [
     {
@@ -47,7 +47,7 @@
         {
           "rule": "colors.hex",
           "desc": "Hex colors",
-          "count": 2
+          "count": 4
         }
       ]
     },
@@ -92,7 +92,22 @@
         {
           "rule": "typography.font",
           "desc": "font-* classes",
-          "count": 1
+          "count": 21
+        }
+      ]
+    },
+    {
+      "file": "src/pages/Contato.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 11
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 6
         }
       ]
     },
@@ -107,12 +122,32 @@
       ]
     },
     {
+      "file": "src/pages/DashboardIA.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 22
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 6
+        }
+      ]
+    },
+    {
       "file": "src/pages/DashboardPrincipal.tsx",
       "findings": [
         {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 6
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 27
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 5
         }
       ]
     },
@@ -138,6 +173,11 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 5
+        },
+        {
+          "rule": "colors.hex",
+          "desc": "Hex colors",
+          "count": 3
         }
       ]
     },
@@ -152,12 +192,37 @@
       ]
     },
     {
+      "file": "src/pages/NeumoShowcase.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 3
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 14
+        }
+      ]
+    },
+    {
       "file": "src/pages/NotFound.tsx",
       "findings": [
         {
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/pages/ResetPassword.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 3
         }
       ]
     },
@@ -207,17 +272,42 @@
       ]
     },
     {
-      "file": "src/styles/globals.css",
+      "file": "src/styles/design-tokens.css",
       "findings": [
         {
           "rule": "colors.hex",
           "desc": "Hex colors",
-          "count": 6
+          "count": 28
         },
         {
           "rule": "shadows.inline",
           "desc": "Inline box-shadow",
-          "count": 7
+          "count": 8
+        }
+      ]
+    },
+    {
+      "file": "src/styles/globals.css",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 1
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 30
+        },
+        {
+          "rule": "colors.hex",
+          "desc": "Hex colors",
+          "count": 21
+        },
+        {
+          "rule": "shadows.inline",
+          "desc": "Inline box-shadow",
+          "count": 15
         }
       ]
     },
@@ -232,12 +322,32 @@
         {
           "rule": "colors.hex",
           "desc": "Hex colors",
-          "count": 74
+          "count": 80
         },
         {
           "rule": "shadows.inline",
           "desc": "Inline box-shadow",
           "count": 15
+        }
+      ]
+    },
+    {
+      "file": "src/styles/oraclusx-utils.css",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 1
+        },
+        {
+          "rule": "colors.hex",
+          "desc": "Hex colors",
+          "count": 4
+        },
+        {
+          "rule": "shadows.inline",
+          "desc": "Inline box-shadow",
+          "count": 1
         }
       ]
     },
@@ -262,17 +372,117 @@
       ]
     },
     {
+      "file": "src/components/auth/ProtectedRoute.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "file": "src/components/ai/AlertasCompliance.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 34
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 12
+        }
+      ]
+    },
+    {
+      "file": "src/components/ai/AnaliseFinanceira.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 35
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 12
+        }
+      ]
+    },
+    {
+      "file": "src/components/ai/ChatIA.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 17
+        }
+      ]
+    },
+    {
+      "file": "src/components/ai/PrevisaoCirurgias.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 43
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 14
+        }
+      ]
+    },
+    {
+      "file": "src/components/ai/PrevisaoEstoque.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 35
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 11
+        }
+      ]
+    },
+    {
+      "file": "src/components/ai/TutorOPME.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 23
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/cadastros/DocumentosUpload.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 15
+        }
+      ]
+    },
+    {
       "file": "src/components/dashboard/Charts.tsx",
       "findings": [
         {
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 2
-        },
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 1
         }
       ]
     },
@@ -338,11 +548,6 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 1
-        },
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 1
         }
       ]
     },
@@ -377,17 +582,87 @@
       ]
     },
     {
+      "file": "src/components/notifications/NotificationSystem.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 19
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "file": "src/components/observability/ObservabilityDashboard.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 49
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 11
+        }
+      ]
+    },
+    {
+      "file": "src/components/templates/ModulePage.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "file": "src/components/training/TrainingReports.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 26
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 9
+        }
+      ]
+    },
+    {
       "file": "src/components/modules/APIGatewayDashboard.tsx",
       "findings": [
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 13
+          "count": 25
         },
         {
           "rule": "typography.font",
           "desc": "font-* classes",
+          "count": 12
+        }
+      ]
+    },
+    {
+      "file": "src/components/modules/AdminConfiguracoes.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
           "count": 1
+        },
+        {
+          "rule": "colors.hex",
+          "desc": "Hex colors",
+          "count": 2
         }
       ]
     },
@@ -397,6 +672,11 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
+          "count": 3
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
           "count": 2
         }
       ]
@@ -408,6 +688,11 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 9
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -418,6 +703,11 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 11
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 3
         }
       ]
     },
@@ -437,6 +727,11 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
+          "count": 3
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
           "count": 2
         }
       ]
@@ -447,7 +742,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 24
+          "count": 25
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 12
         }
       ]
     },
@@ -458,6 +758,11 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 9
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -477,7 +782,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 12
+          "count": 13
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 6
         }
       ]
     },
@@ -487,12 +797,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 14
+          "count": 32
         },
         {
           "rule": "typography.font",
           "desc": "font-* classes",
-          "count": 1
+          "count": 15
         },
         {
           "rule": "colors.hex",
@@ -522,7 +832,7 @@
         {
           "rule": "typography.font",
           "desc": "font-* classes",
-          "count": 2
+          "count": 16
         }
       ]
     },
@@ -533,6 +843,21 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/components/modules/CampanhasMarketing.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 4
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 3
         }
       ]
     },
@@ -552,6 +877,11 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
+          "count": 3
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
           "count": 2
         }
       ]
@@ -563,6 +893,11 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 9
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -572,6 +907,11 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
+          "count": 3
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
           "count": 2
         }
       ]
@@ -587,7 +927,7 @@
         {
           "rule": "typography.font",
           "desc": "font-* classes",
-          "count": 3
+          "count": 33
         }
       ]
     },
@@ -597,6 +937,11 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
+          "count": 3
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
           "count": 2
         }
       ]
@@ -607,22 +952,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 2
-        }
-      ]
-    },
-    {
-      "file": "src/components/modules/ComprasFornecedores.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 14
+          "count": 3
         },
         {
           "rule": "typography.font",
           "desc": "font-* classes",
-          "count": 1
+          "count": 2
         }
       ]
     },
@@ -633,6 +968,11 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 9
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -642,7 +982,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 1
+          "count": 2
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -653,6 +998,11 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 9
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -663,6 +1013,11 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 11
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 3
         }
       ]
     },
@@ -682,7 +1037,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 8
+          "count": 9
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -692,7 +1052,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 1
+          "count": 2
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 4
         }
       ]
     },
@@ -712,7 +1077,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 8
+          "count": 9
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -732,17 +1102,7 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 8
-        }
-      ]
-    },
-    {
-      "file": "src/components/modules/EstoqueIA.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 32
+          "count": 9
         },
         {
           "rule": "typography.font",
@@ -752,11 +1112,31 @@
       ]
     },
     {
+      "file": "src/components/modules/EstoqueIA.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 40
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 15
+        }
+      ]
+    },
+    {
       "file": "src/components/modules/ExpedicaoMercadorias.tsx",
       "findings": [
         {
           "rule": "typography.text",
           "desc": "text-* classes",
+          "count": 3
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
           "count": 2
         }
       ]
@@ -772,7 +1152,7 @@
         {
           "rule": "typography.font",
           "desc": "font-* classes",
-          "count": 2
+          "count": 17
         }
       ]
     },
@@ -782,12 +1162,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 25
+          "count": 54
         },
         {
           "rule": "typography.font",
           "desc": "font-* classes",
-          "count": 1
+          "count": 16
         }
       ]
     },
@@ -802,7 +1182,7 @@
         {
           "rule": "typography.font",
           "desc": "font-* classes",
-          "count": 3
+          "count": 19
         }
       ]
     },
@@ -822,7 +1202,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 8
+          "count": 9
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -832,6 +1217,11 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
+          "count": 3
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
           "count": 2
         }
       ]
@@ -842,12 +1232,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 7
+          "count": 23
         },
         {
           "rule": "typography.font",
           "desc": "font-* classes",
-          "count": 3
+          "count": 25
         }
       ]
     },
@@ -858,6 +1248,11 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 26
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 6
         }
       ]
     },
@@ -868,6 +1263,11 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 9
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -878,6 +1278,11 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 10
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 3
         }
       ]
     },
@@ -887,7 +1292,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 7
+          "count": 8
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -897,12 +1307,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 17
+          "count": 34
         },
         {
           "rule": "typography.font",
           "desc": "font-* classes",
-          "count": 1
+          "count": 12
         }
       ]
     },
@@ -917,7 +1327,7 @@
         {
           "rule": "typography.font",
           "desc": "font-* classes",
-          "count": 4
+          "count": 25
         }
       ]
     },
@@ -928,6 +1338,11 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 9
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -938,6 +1353,21 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 11
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "file": "src/components/modules/IAVendasDashboard.tsx",
+      "findings": [
+        {
+          "rule": "colors.hex",
+          "desc": "Hex colors",
+          "count": 6
         }
       ]
     },
@@ -947,7 +1377,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 8
+          "count": 9
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -957,12 +1392,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 10
+          "count": 30
         },
         {
           "rule": "typography.font",
           "desc": "font-* classes",
-          "count": 1
+          "count": 15
         }
       ]
     },
@@ -972,7 +1407,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 8
+          "count": 9
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -982,7 +1422,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 6
+          "count": 18
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 7
         }
       ]
     },
@@ -1002,12 +1447,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 12
+          "count": 29
         },
         {
           "rule": "typography.font",
           "desc": "font-* classes",
-          "count": 1
+          "count": 21
         }
       ]
     },
@@ -1022,7 +1467,7 @@
         {
           "rule": "typography.font",
           "desc": "font-* classes",
-          "count": 2
+          "count": 16
         }
       ]
     },
@@ -1033,6 +1478,11 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 9
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -1042,6 +1492,11 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
+          "count": 3
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
           "count": 2
         }
       ]
@@ -1062,12 +1517,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 13
+          "count": 23
         },
         {
           "rule": "typography.font",
           "desc": "font-* classes",
-          "count": 1
+          "count": 15
         }
       ]
     },
@@ -1078,6 +1533,11 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 25
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -1107,17 +1567,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 8
-        }
-      ]
-    },
-    {
-      "file": "src/components/modules/NotasCompra.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
           "count": 9
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -1128,16 +1583,6 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 2
-        }
-      ]
-    },
-    {
-      "file": "src/components/modules/PedidosCompra.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 8
         }
       ]
     },
@@ -1167,7 +1612,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 8
+          "count": 9
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -1177,7 +1627,27 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
+          "count": 3
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
           "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/components/modules/RHGestaoPessoas.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
         }
       ]
     },
@@ -1188,6 +1658,11 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 9
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -1218,6 +1693,11 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 9
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -1227,7 +1707,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 8
+          "count": 9
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 3
         }
       ]
     },
@@ -1238,6 +1723,11 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 11
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 3
         }
       ]
     },
@@ -1248,6 +1738,11 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 11
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 3
         }
       ]
     },
@@ -1257,12 +1752,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 10
+          "count": 29
         },
         {
           "rule": "typography.font",
           "desc": "font-* classes",
-          "count": 1
+          "count": 24
         }
       ]
     },
@@ -1272,7 +1767,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 8
+          "count": 9
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -1292,7 +1792,12 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 7
+          "count": 8
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -1302,7 +1807,27 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
+          "count": 3
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
           "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/components/modules/SystemHealthDashboard.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 4
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 3
         }
       ]
     },
@@ -1317,7 +1842,7 @@
         {
           "rule": "typography.font",
           "desc": "font-* classes",
-          "count": 1
+          "count": 10
         }
       ]
     },
@@ -1328,6 +1853,11 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 9
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
         }
       ]
     },
@@ -1337,7 +1867,27 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 7
+          "count": 8
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/components/modules/TooltipAnalyticsDashboard.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
         }
       ]
     },
@@ -1347,6 +1897,11 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
+          "count": 3
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
           "count": 2
         }
       ]
@@ -1368,306 +1923,131 @@
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 9
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/Badge.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 5
         },
         {
           "rule": "typography.font",
           "desc": "font-* classes",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/Breadcrumb.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/Button.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 3
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/Card.tsx",
-      "findings": [
-        {
-          "rule": "typography.font",
-          "desc": "font-* classes",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/ChatbotFAB.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 3
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/ChatbotWithResearch.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 1
-        },
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/Checkbox.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
           "count": 2
         }
       ]
     },
     {
-      "file": "src/components/oraclusx-ds/DatePicker.tsx",
+      "file": "src/components/modules/VideoCallsManager.tsx",
       "findings": [
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 3
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/Dialog.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 2
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/FileUpload.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 2
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/Form.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/Input.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 3
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/InputContainer.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/NavigationBar.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 2
+          "count": 6
         },
         {
           "rule": "typography.font",
           "desc": "font-* classes",
-          "count": 1
+          "count": 3
         }
       ]
     },
     {
-      "file": "src/components/oraclusx-ds/NeomorphicIconBox.tsx",
-      "findings": [
-        {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/Pagination.tsx",
+      "file": "src/components/modules/VoiceAnalyticsDashboard.tsx",
       "findings": [
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 8
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/SearchContainer.tsx",
-      "findings": [
+          "count": 6
+        },
         {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 1
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 3
         }
       ]
     },
     {
-      "file": "src/components/oraclusx-ds/SearchField.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 2
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/Select.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/Stepper.tsx",
+      "file": "src/components/modules/VoiceBiometricsManager.tsx",
       "findings": [
         {
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 4
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/SubModulesNavigation.tsx",
-      "findings": [
+        },
         {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/Switch.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 2
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/Table.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 2
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/Tabs.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
+          "rule": "typography.font",
+          "desc": "font-* classes",
           "count": 3
         }
       ]
     },
     {
-      "file": "src/components/oraclusx-ds/Textarea.tsx",
+      "file": "src/components/modules/VoiceCommandsManager.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 4
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "file": "src/components/modules/VoiceMacrosManager.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 4
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "file": "src/components/modules/WorkflowBuilderVisual.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 4
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "file": "src/pages/agentes/AgentDashboard.tsx",
+      "findings": [
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 9
+        }
+      ]
+    },
+    {
+      "file": "src/pages/agentes/AgentPerformance.tsx",
+      "findings": [
+        {
+          "rule": "colors.hex",
+          "desc": "Hex colors",
+          "count": 12
+        }
+      ]
+    },
+    {
+      "file": "src/pages/agentes/AgentReportsList.tsx",
       "findings": [
         {
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 2
-        }
-      ]
-    },
-    {
-      "file": "src/components/oraclusx-ds/TopbarIconButton.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "file": "src/lib/microsoft365/Microsoft365Service.ts",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 1
-        },
-        {
-          "rule": "typography.font",
-          "desc": "font-* classes",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "file": "src/components/ui/Card.stories.tsx",
-      "findings": [
-        {
-          "rule": "typography.text",
-          "desc": "text-* classes",
-          "count": 1
         }
       ]
     },
@@ -1692,12 +2072,32 @@
       ]
     },
     {
+      "file": "src/components/ui/button.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 11
+        }
+      ]
+    },
+    {
       "file": "src/components/ui/checkbox.tsx",
       "findings": [
         {
           "rule": "typography.text",
           "desc": "text-* classes",
           "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/ui/masked-input.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 4
         }
       ]
     },
@@ -1732,6 +2132,31 @@
       ]
     },
     {
+      "file": "src/components/ui/textarea.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/pages/cadastros/CadastroEquipesMedicas.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 18
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 11
+        }
+      ]
+    },
+    {
       "file": "src/pages/cadastros/CadastroHospitais.tsx",
       "findings": [
         {
@@ -1747,7 +2172,42 @@
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 2
+          "count": 79
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 24
+        }
+      ]
+    },
+    {
+      "file": "src/pages/cadastros/CadastroPessoaJuridica.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 7
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "file": "src/pages/cadastros/CadastroTransportadoras.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 14
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 8
         }
       ]
     },
@@ -1755,9 +2215,14 @@
       "file": "src/pages/cadastros/DashboardCadastros.tsx",
       "findings": [
         {
-          "rule": "colors.hex",
-          "desc": "Hex colors",
-          "count": 2
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 24
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 9
         }
       ]
     },
@@ -1765,9 +2230,899 @@
       "file": "src/pages/cadastros/TabelasPrecos.tsx",
       "findings": [
         {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 50
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 15
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Avatar.tsx",
+      "findings": [
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Badge.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 5
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Breadcrumb.stories.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Breadcrumb.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 1
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Button.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Card.stories.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 4
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 6
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Card.tsx",
+      "findings": [
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/CardKpi.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 1
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/ChatbotFAB.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 3
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/ChatbotFABWithPrompt.tsx",
+      "findings": [
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/ChatbotWithResearch.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 31
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 6
+        },
+        {
           "rule": "colors.hex",
           "desc": "Hex colors",
           "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Checkbox.stories.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Checkbox.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/DatePicker.stories.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/DatePicker.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 3
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Dialog.stories.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 3
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Dialog.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Drawer.stories.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 5
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Dropdown.stories.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/FileUpload.stories.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 1
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/FileUpload.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Form.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 1
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/FormBanner.tsx",
+      "findings": [
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/FormFieldError.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/IconButtonNeu.stories.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Input.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 3
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/InputContainer.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 1
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/MiniBarChart.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/MiniCard.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 3
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Modal.stories.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/NavigationBar.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/NeumoButton.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 7
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/NeumoInput.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 8
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/NeumoSearchBar.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/NeumoTextarea.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 7
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Pagination.stories.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Pagination.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 8
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Progress.tsx",
+      "findings": [
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/RadialProgress.stories.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/RadialProgress.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 1
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Radio.stories.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Radio.tsx",
+      "findings": [
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/SearchContainer.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/SearchField.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Select.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 1
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Slider.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 4
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        },
+        {
+          "rule": "colors.hex",
+          "desc": "Hex colors",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Stepper.stories.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Stepper.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/SubModulesNavigation.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 1
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Switch.stories.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Switch.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Table.stories.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Table.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Tabs.stories.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Tabs.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Textarea.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Toast.tsx",
+      "findings": [
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/Tooltip.stories.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "file": "src/components/oraclusx-ds/TopbarIconButton.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/pages/cirurgias/GestaoProcedimentos.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 14
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 8
+        }
+      ]
+    },
+    {
+      "file": "src/pages/compliance/ComplianceANVISA.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 13
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 8
+        }
+      ]
+    },
+    {
+      "file": "src/pages/compliance/ComplianceAbbott.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 15
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 7
+        }
+      ]
+    },
+    {
+      "file": "src/pages/estoque/GestaoInventario.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 8
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 6
+        }
+      ]
+    },
+    {
+      "file": "src/pages/estoque/GestaoLotes.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 8
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 6
+        }
+      ]
+    },
+    {
+      "file": "src/pages/examples/MasksExample.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/pages/financeiro/GestaoFaturamento.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 16
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 7
+        }
+      ]
+    },
+    {
+      "file": "src/pages/financeiro/GestaoNFe.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 11
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 6
+        }
+      ]
+    },
+    {
+      "file": "src/pages/integracoes/GerenciadorCredenciais.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 2
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 7
         }
       ]
     },
@@ -1777,7 +3132,7 @@
         {
           "rule": "colors.hex",
           "desc": "Hex colors",
-          "count": 7
+          "count": 4
         }
       ]
     },
@@ -1785,9 +3140,19 @@
       "file": "src/pages/modules/BIDashboardInterativo.tsx",
       "findings": [
         {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 48
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 22
+        },
+        {
           "rule": "colors.hex",
           "desc": "Hex colors",
-          "count": 7
+          "count": 4
         }
       ]
     },
@@ -1795,9 +3160,19 @@
       "file": "src/pages/modules/FaturamentoNFeCompleto.tsx",
       "findings": [
         {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 35
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 12
+        },
+        {
           "rule": "colors.hex",
           "desc": "Hex colors",
-          "count": 4
+          "count": 3
         }
       ]
     },
@@ -1805,9 +3180,14 @@
       "file": "src/pages/modules/GestaoContabil.tsx",
       "findings": [
         {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 1
+        },
+        {
           "rule": "colors.hex",
           "desc": "Hex colors",
-          "count": 5
+          "count": 3
         }
       ]
     },
@@ -1815,9 +3195,14 @@
       "file": "src/pages/modules/GestaoUsuariosPermissoes.tsx",
       "findings": [
         {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 3
+        },
+        {
           "rule": "colors.hex",
           "desc": "Hex colors",
-          "count": 4
+          "count": 3
         }
       ]
     },
@@ -1827,7 +3212,7 @@
         {
           "rule": "colors.hex",
           "desc": "Hex colors",
-          "count": 4
+          "count": 3
         }
       ]
     },
@@ -1837,7 +3222,7 @@
         {
           "rule": "colors.hex",
           "desc": "Hex colors",
-          "count": 6
+          "count": 3
         }
       ]
     },
@@ -1847,7 +3232,87 @@
         {
           "rule": "colors.hex",
           "desc": "Hex colors",
-          "count": 4
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "src/pages/relatorios/DashboardsAnaliticos.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 8
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "file": "src/pages/vendas/GestaoContratos.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 13
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 8
+        }
+      ]
+    },
+    {
+      "file": "src/pages/vendas/GestaoPropostas.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 16
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 7
+        }
+      ]
+    },
+    {
+      "file": "src/lib/email/resend.service.ts",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 7
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 5
+        },
+        {
+          "rule": "colors.hex",
+          "desc": "Hex colors",
+          "count": 18
+        }
+      ]
+    },
+    {
+      "file": "src/lib/microsoft365/Microsoft365Service.ts",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 1
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 1
         }
       ]
     },
@@ -1862,17 +3327,132 @@
       ]
     },
     {
-      "file": "src/components/modules/logistica/GestaoEntregas.tsx",
+      "file": "src/services/integrations/SendGridService.ts",
       "findings": [
         {
           "rule": "typography.text",
           "desc": "text-* classes",
-          "count": 21
+          "count": 2
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 3
+        },
+        {
+          "rule": "colors.hex",
+          "desc": "Hex colors",
+          "count": 7
+        }
+      ]
+    },
+    {
+      "file": "src/features/compras/components/ComprasFornecedoresModule.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 14
         },
         {
           "rule": "typography.font",
           "desc": "font-* classes",
           "count": 1
+        }
+      ]
+    },
+    {
+      "file": "src/features/compras/components/NotasCompraModule.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 9
+        }
+      ]
+    },
+    {
+      "file": "src/features/compras/components/PedidosCompraModule.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 8
+        }
+      ]
+    },
+    {
+      "file": "src/features/compras/pages/DashboardCompras.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 16
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "file": "src/features/compras/pages/NotasCompra.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 45
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 18
+        }
+      ]
+    },
+    {
+      "file": "src/features/compras/pages/PedidosCompra.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 42
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 15
+        }
+      ]
+    },
+    {
+      "file": "src/features/compras/pages/PesquisaPrecos.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 49
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 21
+        }
+      ]
+    },
+    {
+      "file": "src/components/modules/logistica/GestaoEntregas.tsx",
+      "findings": [
+        {
+          "rule": "typography.text",
+          "desc": "text-* classes",
+          "count": 36
+        },
+        {
+          "rule": "typography.font",
+          "desc": "font-* classes",
+          "count": 14
         }
       ]
     }

@@ -5,7 +5,7 @@
  * - Cadastro Empresa via CNPJ (auto-preenchimento)
  * - Templates de Documentos (WYSIWYG placeholder)
  */
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -21,8 +21,11 @@ import {
 } from "@/components/oraclusx-ds";
 import { MaskedInput } from "@/components/ui/masked-input";
 import { Camera, ShieldCheck } from "lucide-react";
+import DOMPurify from "dompurify";
 
 const MAX_PFX = 10 * 1024 * 1024; // 10MB
+const TEMPLATE_PREVIEW_PLACEHOLDER =
+  'Ex.: Prezado {{"cliente.nome"}}, segue o documento de {{"tipo"}}...';
 
 export const AdminConfiguracoes: React.FC = () => {
   // Certificado
@@ -65,6 +68,14 @@ export const AdminConfiguracoes: React.FC = () => {
   >("idle");
   const [templateHtml, setTemplateHtml] = useState("");
   const editorRef = useRef<HTMLDivElement>(null);
+
+  const sanitizedTemplatePreview = useMemo(() => {
+    const preview =
+      templateHtml && templateHtml.trim().length > 0
+        ? templateHtml
+        : TEMPLATE_PREVIEW_PLACEHOLDER;
+    return DOMPurify.sanitize(preview, { USE_PROFILES: { html: true } });
+  }, [templateHtml]);
 
   const standardizeUppercase = (value: string): string => {
     return value.normalize("NFKC").replace(/\s+/g, " ").trim().toUpperCase();
@@ -488,7 +499,7 @@ export const AdminConfiguracoes: React.FC = () => {
           <CardHeader>
             <CardTitle>Templates de Documentos</CardTitle>
             <CardDescription>
-              Editor visual com variáveis {{ variable }}
+              Editor visual com variáveis {'{{ variable }}'}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -556,11 +567,7 @@ export const AdminConfiguracoes: React.FC = () => {
                 <p className="text-body-sm text-secondary mb-2">Preview</p>
                 <div
                   className="p-3 bg-surface dark:bg-card rounded-lg text-body-sm text-primary dark:text-gray-100"
-                  dangerouslySetInnerHTML={{
-                    __html:
-                      templateHtml ||
-                      'Ex.: Prezado {{"cliente.nome"}}, segue o documento de {{"tipo"}}...',
-                  }}
+                  dangerouslySetInnerHTML={{ __html: sanitizedTemplatePreview }}
                 />
               </div>
             </div>

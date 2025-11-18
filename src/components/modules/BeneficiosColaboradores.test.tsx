@@ -5,7 +5,8 @@ import { BeneficiosColaboradores } from "@/components/modules/BeneficiosColabora
 describe("BeneficiosColaboradores", () => {
   it("deve estar definido", () => {
     render(<BeneficiosColaboradores />);
-    expect(screen.getByRole("document")).toBeInTheDocument();
+    const headings = screen.getAllByRole("heading", { level: 1 });
+    expect(headings.length).toBeGreaterThan(0);
   });
 
   // TODO: Adicionar mais testes específicos

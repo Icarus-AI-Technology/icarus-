@@ -1,0 +1,273 @@
+/**
+ * OraclusX Design System - Design Tokens
+ * Version: 5.0.2
+ * 38 Semantic Tokens
+ */
+
+:root {
+  /* ========================================
+     CORES PRIMÁRIAS
+     ======================================== */
+
+  /* Indigo Médio - Cor Principal Universal */
+  --orx-primary: #6366f1;
+  --orx-primary-hover: #4f46e5;
+  --orx-primary-active: #4338ca;
+  --orx-primary-light: #818cf8;
+  --orx-primary-lighter: #a5b4fc;
+
+  /* ========================================
+     NEUMÓRFICO - MODO CLARO (AJUSTADO - Menos brilho, mais contraste)
+     ======================================== */
+  --orx-bg-light: #d6dce6; /* Reduzido de #e0e5ec para menos brilho */
+  --orx-shadow-light-1: 8px 8px 16px #8f9db3; /* Sombra escura mais forte (era #a3b1c6) */
+  --orx-shadow-light-2: -8px -8px 16px #f5f7fa; /* Sombra clara menos intensa (era #ffffff) */
+  --orx-shadow-inset-light-1: inset 8px 8px 16px #8f9db3;
+  --orx-shadow-inset-light-2: inset -8px -8px 16px #f5f7fa;
+
+  /* ========================================
+     NEUMÓRFICO - MODO ESCURO
+     ======================================== */
+  --orx-bg-dark: #2d3748;
+  --orx-shadow-dark-1: 8px 8px 16px #1a202c;
+  --orx-shadow-dark-2: -8px -8px 16px #3d4a5c;
+  --orx-shadow-inset-dark-1: inset 8px 8px 16px #1a202c;
+  --orx-shadow-inset-dark-2: inset -8px -8px 16px #3d4a5c;
+
+  /* ========================================
+     CORES SEMÂNTICAS
+     ======================================== */
+  --orx-success: #10b981;
+  --orx-success-light: #d1fae5;
+  --orx-success-dark: #15803d;
+  
+  --orx-warning: #f59e0b;
+  --orx-warning-light: #fef3c7;
+  --orx-warning-dark: #92400e;
+  
+  --orx-error: #ef4444;
+  --orx-error-light: #fecaca;
+  --orx-error-dark: #dc2626;
+  
+  --orx-info: #3b82f6;
+  --orx-info-light: #dbeafe;
+  --orx-info-dark: #1e40af;
+  
+  /* Paleta Indigo Extendida */
+  --orx-indigo-50: #eef2ff;
+  --orx-indigo-100: #e0e7ff;
+  --orx-indigo-200: #c7d2fe;
+  --orx-indigo-300: #a5b4fc;
+  --orx-indigo-400: #818cf8;
+  --orx-indigo-500: #6366f1;
+  --orx-indigo-600: #4f46e5;
+  --orx-indigo-700: #4338ca;
+  --orx-indigo-800: #3730a3;
+  --orx-indigo-900: #312e81;
+  
+  /* Paleta Teal Extendida */
+  --orx-teal-50: #f0fdfa;
+  --orx-teal-100: #ccfbf1;
+  --orx-teal-200: #99f6e4;
+  --orx-teal-300: #5eead4;
+  --orx-teal-400: #2dd4bf;
+  --orx-teal-500: #14b8a6;
+  --orx-teal-600: #0d9488;
+  --orx-teal-700: #0f766e;
+  --orx-teal-800: #115e59;
+  --orx-teal-900: #134e4a;
+  
+  /* Paleta Adicional - Pink, Purple, Cyan, Gray */
+  --orx-pink-500: #ec4899;
+  --orx-purple-500: #8b5cf6;
+  --orx-cyan-500: #06b6d4;
+  --orx-gray-50: #f9fafb;
+  --orx-gray-100: #f3f4f6;
+  --orx-gray-500: #6b7280;
+
+  /* ========================================
+     TIPOGRAFIA
+     ======================================== */
+  --orx-font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    sans-serif;
+  --orx-font-size-xs: 0.75rem; /* 12px */
+  --orx-font-size-sm: 0.875rem; /* 14px */
+  --orx-font-size-base: 1rem; /* 16px */
+  --orx-font-size-lg: 1.125rem; /* 18px */
+  --orx-font-size-xl: 1.25rem; /* 20px */
+  --orx-font-size-2xl: 1.5rem; /* 24px */
+  --orx-font-size-3xl: 1.875rem; /* 30px */
+
+  /* ========================================
+     ESPAÇAMENTOS
+     ======================================== */
+  --orx-spacing-xs: 0.25rem; /* 4px */
+  --orx-spacing-sm: 0.5rem; /* 8px */
+  --orx-spacing-md: 1rem; /* 16px */
+  --orx-spacing-lg: 1.5rem; /* 24px */
+  --orx-spacing-xl: 2rem; /* 32px */
+  --orx-spacing-2xl: 3rem; /* 48px */
+
+  /* ========================================
+     BORDER RADIUS
+     ======================================== */
+  --orx-radius-sm: 0.5rem; /* 8px */
+  --orx-radius-md: 1rem; /* 16px */
+  --orx-radius-lg: 1.5rem; /* 24px */
+  --orx-radius-full: 9999px; /* Circular */
+
+  /* ========================================
+     TRANSIÇÕES
+     ======================================== */
+  --orx-transition-fast: 150ms ease-in-out;
+  --orx-transition-normal: 300ms ease-in-out;
+  --orx-transition-slow: 500ms ease-in-out;
+
+  /* ========================================
+     Z-INDEX
+     ======================================== */
+  --orx-z-dropdown: 1000;
+  --orx-z-modal: 1500;
+  --orx-z-tooltip: 2000;
+  --orx-z-notification: 2500;
+
+  /* ========================================
+     CORES DE TEXTO E FUNDO (MODO CLARO - AJUSTADO)
+     ======================================== */
+  --orx-text-primary: #1a202c; /* Mais escuro para maior contraste (era #1f2937) */
+  --orx-text-secondary: #4b5563; /* Mais escuro para melhor legibilidade (era #6b7280) */
+  --orx-text-muted: #6b7280; /* Ajustado (era #9ca3af) */
+}
+
+/* ========================================
+   DARK MODE - Redefinições para modo escuro
+   ======================================== */
+.dark {
+  --orx-bg-light: #1f2937;
+  --orx-shadow-light-1: 8px 8px 16px #111827;
+  --orx-shadow-light-2: -8px -8px 16px #374151;
+  --orx-shadow-inset-light-1: inset 8px 8px 16px #111827;
+  --orx-shadow-inset-light-2: inset -8px -8px 16px #374151;
+  
+  --orx-text-primary: #f9fafb;
+  --orx-text-secondary: #d1d5db;
+  --orx-text-muted: #9ca3af;
+}
+
+/* ========================================
+   CLASSES UTILITÁRIAS NEUMÓRFICAS
+   ======================================== */
+
+.orx-card {
+  background: var(--orx-bg-light);
+  border-radius: var(--orx-radius-md);
+  box-shadow: var(--orx-shadow-light-1), var(--orx-shadow-light-2);
+  transition: var(--orx-transition-normal);
+}
+
+.orx-card-pressed {
+  background: var(--orx-bg-light);
+  border-radius: var(--orx-radius-md);
+  box-shadow: var(--orx-shadow-inset-light-1), var(--orx-shadow-inset-light-2);
+}
+
+.orx-button {
+  background: var(--orx-bg-light);
+  border: none;
+  border-radius: var(--orx-radius-sm);
+  box-shadow: var(--orx-shadow-light-1), var(--orx-shadow-light-2);
+  padding: var(--orx-spacing-sm) var(--orx-spacing-lg);
+  font-family: var(--orx-font-family);
+  font-size: var(--orx-font-size-base);
+  cursor: pointer;
+  transition: var(--orx-transition-fast);
+}
+
+.orx-button:hover {
+  box-shadow:
+    10px 10px 20px #8f9db3, /* Sombra mais forte */
+    -10px -10px 20px #f5f7fa; /* Highlight menos intenso */
+  transform: translateY(-1px);
+}
+
+.orx-button:active {
+  box-shadow: var(--orx-shadow-inset-light-1), var(--orx-shadow-inset-light-2);
+  transform: translateY(0);
+}
+
+.orx-button-primary {
+  background: var(--orx-primary);
+  color: white;
+  box-shadow: var(--orx-shadow-light-1), var(--orx-shadow-light-2);
+}
+
+.orx-button-primary:hover {
+  background: var(--orx-primary-hover);
+}
+
+.orx-button-primary:active {
+  background: var(--orx-primary-active);
+}
+
+.orx-input {
+  background: var(--orx-bg-light);
+  border: none;
+  border-radius: var(--orx-radius-sm);
+  box-shadow: var(--orx-shadow-inset-light-1), var(--orx-shadow-inset-light-2);
+  padding: var(--orx-spacing-sm) var(--orx-spacing-md);
+  font-family: var(--orx-font-family);
+  font-size: var(--orx-font-size-base);
+  outline: none;
+  transition: var(--orx-transition-fast);
+}
+
+.orx-input:focus {
+  box-shadow:
+    inset 8px 8px 16px #8f9db3,
+    inset -8px -8px 16px #f5f7fa,
+    0 0 0 3px var(--orx-primary-lighter);
+}
+
+/* ========================================
+   MODO ESCURO
+   ======================================== */
+
+.dark .orx-card {
+  background: var(--orx-bg-dark);
+  box-shadow: var(--orx-shadow-dark-1), var(--orx-shadow-dark-2);
+}
+
+.dark .orx-card-pressed {
+  background: var(--orx-bg-dark);
+  box-shadow: var(--orx-shadow-inset-dark-1), var(--orx-shadow-inset-dark-2);
+}
+
+.dark .orx-button {
+  background: var(--orx-bg-dark);
+  box-shadow: var(--orx-shadow-dark-1), var(--orx-shadow-dark-2);
+  color: #e2e8f0;
+}
+
+.dark .orx-button:hover {
+  box-shadow:
+    10px 10px 20px #1a202c,
+    -10px -10px 20px #3d4a5c;
+}
+
+.dark .orx-button:active {
+  box-shadow: var(--orx-shadow-inset-dark-1), var(--orx-shadow-inset-dark-2);
+}
+
+.dark .orx-input {
+  background: var(--orx-bg-dark);
+  box-shadow: var(--orx-shadow-inset-dark-1), var(--orx-shadow-inset-dark-2);
+  color: #e2e8f0;
+}
+
+.dark .orx-input:focus {
+  box-shadow:
+    inset 8px 8px 16px #1a202c,
+    inset -8px -8px 16px #3d4a5c,
+    0 0 0 3px var(--orx-primary-lighter);
+}

@@ -187,7 +187,7 @@ export default function FaturamentoNFeCompleto() {
             >
               <div className="flex items-start gap-4 mb-4">
                 <div className={`flex items-center justify-center rounded-2xl w-14 h-14 shadow-orx-medium ${kpi.bgClass}`}>
-                  <kpi.icon size={24} color="#ffffff" strokeWidth={1.5} />
+                  <kpi.icon size={24} color="var(--orx-text-white)" strokeWidth={1.5} />
                 </div>
                 <div className="flex-1">
                   <p className="text-[0.813rem] text-[var(--orx-text-secondary)] mb-1">{kpi.title}</p>
