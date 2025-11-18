@@ -31,6 +31,13 @@ const ConfiguracoesSistema = lazy(() => import("./components/modules/Configuraco
 const ConsignacaoAvancada = lazy(() => import("./pages/ConsignacaoAvancada"));
 const DashboardIA = lazy(() => import("./pages/DashboardIA"));
 
+// Novas páginas principais integradas com Supabase
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const EstoquePage = lazy(() => import("./pages/EstoquePage"));
+const ProdutosOPMEPage = lazy(() => import("./pages/ProdutosOPMEPage"));
+const CirurgiasPage = lazy(() => import("./pages/CirurgiasPage"));
+const FinanceiroPage = lazy(() => import("./pages/FinanceiroPage"));
+
 // Módulos de Cadastros
 import { DashboardCadastros } from"./pages/cadastros/DashboardCadastros";
 import TabelasPrecos from"./pages/cadastros/TabelasPrecos";
@@ -485,6 +492,14 @@ function AppShell() {
               )}
               <Suspense fallback={<SkeletonRouteFallback /> }>
                 <Routes>
+                  {/* Novas páginas principais integradas com Supabase */}
+                  <Route path="/dashboard-supabase" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
+                  <Route path="/estoque-supabase" element={<PrivateRoute><EstoquePage /></PrivateRoute>} />
+                  <Route path="/produtos-opme-supabase" element={<PrivateRoute><ProdutosOPMEPage /></PrivateRoute>} />
+                  <Route path="/cirurgias-supabase" element={<PrivateRoute><CirurgiasPage /></PrivateRoute>} />
+                  <Route path="/financeiro-supabase" element={<PrivateRoute><FinanceiroPage /></PrivateRoute>} />
+
+                  {/* Rotas QA existentes */}
                   <Route path="/qa/compras" element={<DashboardCompras />} />
                   <Route path="/qa/financeiro" element={<DashboardFinanceiro />} />
                   <Route path="/qa/cadastros" element={<DashboardCadastros />} />
@@ -670,6 +685,14 @@ function AppShell() {
               <Suspense fallback={<SkeletonRouteFallback /> }>
               <Routes>
                 <Route path="/contato" element={<Contato />} />
+                
+                {/* Novas páginas principais integradas com Supabase */}
+                <Route path="/dashboard-supabase" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
+                <Route path="/estoque-supabase" element={<PrivateRoute><EstoquePage /></PrivateRoute>} />
+                <Route path="/produtos-opme-supabase" element={<PrivateRoute><ProdutosOPMEPage /></PrivateRoute>} />
+                <Route path="/cirurgias-supabase" element={<PrivateRoute><CirurgiasPage /></PrivateRoute>} />
+                <Route path="/financeiro-supabase" element={<PrivateRoute><FinanceiroPage /></PrivateRoute>} />
+
                 <Route
                   path="/"
                   element={
