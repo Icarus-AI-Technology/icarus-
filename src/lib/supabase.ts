@@ -2,13 +2,13 @@
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from './database.types.generated'
 
-// Credenciais do projeto ICARUS
-const supabaseUrl = 'https://gvbkviozlhxorjoavmky.supabase.co'
-
-  // ANON KEY obtida via Supabase CLI (válida até 2078)
-  // Dashboard: https://supabase.com/dashboard/project/gvbkviozlhxorjoavmky/settings/api
-  const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd2Ymt2aW96bGh4b3Jqb2F2bWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM0MTQ3NjUsImV4cCI6MjA3ODk5MDc2NX0.RtCGqdZ8KE-sbqG1w4E9dg2tqSEdusO4vbbr-3456c8'
+// Supabase: sempre use variáveis de ambiente em produção; usamos placeholders para permitir build em preview.
+const supabaseUrl =
+  (import.meta.env.VITE_SUPABASE_URL as string | undefined) ||
+  'https://placeholder.supabase.co'
+const supabaseAnonKey =
+  (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined) ||
+  'your_anon_key_here'
 
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
@@ -28,7 +28,7 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
 
 // Helper para configurar empresa_id atual (multi-tenant)
 export async function setCurrentEmpresa(empresaId: string) {
-  const { error } = await supabase.rpc('set_config', {
+  const { error } = await (supabase as unknown as { rpc: (fn: string, args: Record<string, unknown>) => Promise<{ error: unknown }> }).rpc('set_config', {
     setting: 'app.current_empresa_id',
     value: empresaId
   })
@@ -40,7 +40,7 @@ export async function setCurrentEmpresa(empresaId: string) {
 
 // Helper para configurar role do usuário
 export async function setCurrentUserRole(role: string) {
-  const { error } = await supabase.rpc('set_config', {
+  const { error } = await (supabase as unknown as { rpc: (fn: string, args: Record<string, unknown>) => Promise<{ error: unknown }> }).rpc('set_config', {
     setting: 'app.current_user_role',
     value: role
   })

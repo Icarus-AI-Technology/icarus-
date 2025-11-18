@@ -1,8 +1,8 @@
 // src/pages/DashboardPage.tsx
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
-import { Card } from '../components/oraclusx-ds/card'
-import { Badge } from '../components/oraclusx-ds/badge'
+import { Card } from '../components/oraclusx-ds/Card'
+import { Badge } from '../components/oraclusx-ds/Badge'
 import { Package, TrendingUp, AlertTriangle, Calendar, DollarSign, Users } from 'lucide-react'
 
 interface DashboardKPIs {

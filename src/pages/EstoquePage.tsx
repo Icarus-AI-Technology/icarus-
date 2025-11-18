@@ -1,8 +1,8 @@
 // src/pages/EstoquePage.tsx
 import { useState, useEffect } from 'react'
 import { useEstoque } from '../hooks/useEstoque'
-import { Card } from '../components/oraclusx-ds/card'
-import { Badge } from '../components/oraclusx-ds/badge'
+import { Card } from '../components/oraclusx-ds/Card'
+import { Badge } from '../components/oraclusx-ds/Badge'
 import {
   Package,
   Plus,

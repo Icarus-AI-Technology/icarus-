@@ -16,6 +16,7 @@
 import { Request, Response } from 'express';
 import crypto from 'crypto';
 import Stripe from 'stripe';
+import he from 'he';
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || '';
 
@@ -72,7 +73,7 @@ export async function stripeWebhookHandler(req: Request, res: Response) {
   } catch (error: unknown) {
     console.error('❌ Erro ao processar webhook Stripe:', error);
     const message = error instanceof Error ? error.message : String(error);
-    res.status(400).send(`Webhook Error: ${message}`);
+    res.status(400).send(`Webhook Error: ${he.encode(message)}`);
   }
 }
 

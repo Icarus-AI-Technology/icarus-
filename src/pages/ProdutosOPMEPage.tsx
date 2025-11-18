@@ -1,8 +1,8 @@
 // src/pages/ProdutosOPMEPage.tsx
 import { useState } from 'react'
 import { useProdutos } from '../hooks/useProdutos'
-import { Card } from '../components/oraclusx-ds/card'
-import { Badge } from '../components/oraclusx-ds/badge'
+import { Card } from '../components/oraclusx-ds/Card'
+import { Badge } from '../components/oraclusx-ds/Badge'
 import {
   Package,
   Plus,

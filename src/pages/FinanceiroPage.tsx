@@ -1,8 +1,8 @@
 // src/pages/FinanceiroPage.tsx
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
-import { Card } from '../components/oraclusx-ds/card'
-import { Badge } from '../components/oraclusx-ds/badge'
+import { Card } from '../components/oraclusx-ds/Card'
+import { Badge } from '../components/oraclusx-ds/Badge'
 import {
   DollarSign,
   TrendingUp,
