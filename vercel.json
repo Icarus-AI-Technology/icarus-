@@ -1,7 +1,7 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "pnpm type-check && pnpm build",
   "outputDirectory": "dist",
-  "installCommand": "npm install --legacy-peer-deps",
+  "installCommand": "pnpm install --frozen-lockfile",
   "framework": "vite",
   "devCommand": "npm run dev",
   "functions": {
