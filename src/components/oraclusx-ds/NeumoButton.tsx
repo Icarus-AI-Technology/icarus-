@@ -1,38 +1,31 @@
 /**
  * OraclusX Design System - NeumoButton Component
  * Botão Neumórfico 3D Premium
- * 
+ *
  * Botão com visual neumórfico, múltiplas variantes, tamanhos e estados.
  */
 
 import React, { forwardRef } from 'react';
-import { LucideIcon, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import type { LucideIcon } from '@/types/lucide';
 
-export interface NeumoButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface NeumoButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** Variante visual do botão */
-  variant?:
-    | 'primary'
-    | 'secondary'
-    | 'success'
-    | 'warning'
-    | 'danger'
-    | 'ghost'
-    | 'neumo';
-  
+  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'ghost' | 'neumo';
+
   /** Tamanho do botão */
   size?: 'sm' | 'md' | 'lg';
-  
+
   /** Ícone à esquerda do texto */
   leftIcon?: LucideIcon;
-  
+
   /** Ícone à direita do texto */
   rightIcon?: LucideIcon;
-  
+
   /** Estado de loading */
   loading?: boolean;
-  
+
   /** Botão ocupa toda a largura disponível */
   fullWidth?: boolean;
 }
@@ -48,8 +41,7 @@ const variantStyles = {
     'bg-gradient-to-br from-yellow-500 to-amber-600 text-white shadow-lg hover:shadow-xl hover:from-yellow-600 hover:to-amber-700 active:from-yellow-700 active:to-amber-800',
   danger:
     'bg-gradient-to-br from-red-500 to-red-600 text-white shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 active:from-red-700 active:to-red-800',
-  ghost:
-    'bg-transparent text-orx-text-primary hover:bg-orx-bg-surface active:bg-orx-bg-light',
+  ghost: 'bg-transparent text-orx-text-primary hover:bg-orx-bg-surface active:bg-orx-bg-light',
   neumo:
     'bg-orx-bg-surface text-orx-text-primary shadow-neumo hover:shadow-neumo-hover active:shadow-neumo-inset',
 };
@@ -107,17 +99,13 @@ export const NeumoButton = forwardRef<HTMLButtonElement, NeumoButtonProps>(
         )}
 
         {/* Ícone Esquerdo */}
-        {!loading && LeftIcon && (
-          <LeftIcon size={size === 'sm' ? 14 : size === 'lg' ? 18 : 16} />
-        )}
+        {!loading && LeftIcon && <LeftIcon size={size === 'sm' ? 14 : size === 'lg' ? 18 : 16} />}
 
         {/* Conteúdo */}
         {children}
 
         {/* Ícone Direito */}
-        {!loading && RightIcon && (
-          <RightIcon size={size === 'sm' ? 14 : size === 'lg' ? 18 : 16} />
-        )}
+        {!loading && RightIcon && <RightIcon size={size === 'sm' ? 14 : size === 'lg' ? 18 : 16} />}
       </button>
     );
   }
@@ -126,4 +114,3 @@ export const NeumoButton = forwardRef<HTMLButtonElement, NeumoButtonProps>(
 NeumoButton.displayName = 'NeumoButton';
 
 export default NeumoButton;
-

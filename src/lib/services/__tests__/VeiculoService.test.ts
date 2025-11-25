@@ -135,7 +135,9 @@ describe('VeiculoService', () => {
         cor: 'Prata',
       };
 
-      (global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce({
+      (
+        global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }
+      ).mockResolvedValueOnce({
         ok: true,
         status: 200,
         json: async () => mockResponse,
@@ -155,7 +157,9 @@ describe('VeiculoService', () => {
 
     it('deve retornar null se placa não for encontrada', async () => {
       // Arrange
-      (global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce({
+      (
+        global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }
+      ).mockResolvedValueOnce({
         ok: false,
         status: 404,
       });
@@ -176,7 +180,9 @@ describe('VeiculoService', () => {
 
     it('deve retornar validação local se API falhar', async () => {
       // Arrange
-      (global.fetch as unknown as { mockRejectedValueOnce: (v: unknown) => void }).mockRejectedValueOnce(new Error('Network error'));
+      (
+        global.fetch as unknown as { mockRejectedValueOnce: (v: unknown) => void }
+      ).mockRejectedValueOnce(new Error('Network error'));
 
       // Act
       const resultado = await veiculoService.consultarPlaca('ABC1D23');
@@ -235,4 +241,3 @@ describe('VeiculoService', () => {
     });
   });
 });
-

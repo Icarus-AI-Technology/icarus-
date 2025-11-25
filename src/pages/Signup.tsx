@@ -3,19 +3,19 @@
  * Registro de novos usuários
  */
 
-import React, { useState } from"react";
-import { useNavigate, Link } from"react-router-dom";
-import { useAuth } from"@/hooks";
-import { Card, CardHeader, CardTitle, CardContent, Button, Input } from"@/components/oraclusx-ds";
-import { Mail, Lock, User, AlertCircle, CheckCircle, Loader2 } from"lucide-react";
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '@/hooks';
+import { Card, CardHeader, CardTitle, CardContent, Button, Input } from '@/components/oraclusx-ds';
+import { Mail, Lock, User, AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
 
 export default function Signup() {
   const navigate = useNavigate();
   const { signUp } = useAuth();
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -26,12 +26,12 @@ export default function Signup() {
 
     // Validações
     if (password !== confirmPassword) {
-      setError("As senhas não coincidem");
+      setError('As senhas não coincidem');
       return;
     }
 
     if (password.length < 6) {
-      setError("A senha deve ter pelo menos 6 caracteres");
+      setError('A senha deve ter pelo menos 6 caracteres');
       return;
     }
 
@@ -40,14 +40,14 @@ export default function Signup() {
     try {
       await signUp(email, password, fullName);
       setSuccess(true);
-      
+
       // Redirecionar após 2 segundos
       setTimeout(() => {
-        navigate("/login");
+        navigate('/login');
       }, 2000);
     } catch (error) {
-   const err = error as Error;
-      setError(err instanceof Error ? err.message :"Erro ao criar conta");
+      const err = error as Error;
+      setError(err instanceof Error ? err.message : 'Erro ao criar conta');
     } finally {
       setLoading(false);
     }
@@ -67,9 +67,7 @@ export default function Signup() {
             <p className="text-secondary dark:text-muted mb-4">
               Verifique seu e-mail para confirmar o cadastro.
             </p>
-            <p className="text-body-sm text-muted">
-              Redirecionando para o login...
-            </p>
+            <p className="text-body-sm text-muted">Redirecionando para o login...</p>
           </CardContent>
         </Card>
       </div>
@@ -99,9 +97,7 @@ export default function Signup() {
           <h1 className="text-heading-lg font-display text-primary dark:text-inverse mb-2">
             Criar Conta
           </h1>
-          <p className="text-secondary dark:text-muted">
-            Comece a usar o Icarus Make hoje
-          </p>
+          <p className="text-secondary dark:text-muted">Comece a usar o Icarus Make hoje</p>
         </div>
 
         {/* Formulário de Cadastro */}
@@ -113,7 +109,11 @@ export default function Signup() {
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Nome Completo */}
               <div>
-                <label htmlFor="fullName" className="block text-body-sm  mb-2" style={{ fontWeight: 500 }}>
+                <label
+                  htmlFor="fullName"
+                  className="block text-body-sm  mb-2"
+                  style={{ fontWeight: 500 }}
+                >
                   Nome Completo
                 </label>
                 <div className="relative">
@@ -133,7 +133,11 @@ export default function Signup() {
 
               {/* Email */}
               <div>
-                <label htmlFor="email" className="block text-body-sm  mb-2" style={{ fontWeight: 500 }}>
+                <label
+                  htmlFor="email"
+                  className="block text-body-sm  mb-2"
+                  style={{ fontWeight: 500 }}
+                >
                   E-mail
                 </label>
                 <div className="relative">
@@ -153,7 +157,11 @@ export default function Signup() {
 
               {/* Senha */}
               <div>
-                <label htmlFor="password" className="block text-body-sm  mb-2" style={{ fontWeight: 500 }}>
+                <label
+                  htmlFor="password"
+                  className="block text-body-sm  mb-2"
+                  style={{ fontWeight: 500 }}
+                >
                   Senha
                 </label>
                 <div className="relative">
@@ -170,14 +178,16 @@ export default function Signup() {
                     minLength={6}
                   />
                 </div>
-                <p className="text-body-xs text-muted mt-1">
-                  Mínimo de 6 caracteres
-                </p>
+                <p className="text-body-xs text-muted mt-1">Mínimo de 6 caracteres</p>
               </div>
 
               {/* Confirmar Senha */}
               <div>
-                <label htmlFor="confirmPassword" className="block text-body-sm  mb-2" style={{ fontWeight: 500 }}>
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-body-sm  mb-2"
+                  style={{ fontWeight: 500 }}
+                >
                   Confirmar Senha
                 </label>
                 <div className="relative">
@@ -214,17 +224,18 @@ export default function Signup() {
                     <Loader2 size={20} className="animate-spin" />
                     Criando conta...
                   </>
-                ) : ("Criar conta"
+                ) : (
+                  'Criar conta'
                 )}
               </Button>
 
               {/* Termos */}
               <p className="text-body-xs text-muted text-center">
-                Ao criar uma conta, você concorda com nossos{""}
+                Ao criar uma conta, você concorda com nossos{''}
                 <Link to="/terms" className="text-primary hover:underline">
                   Termos de Uso
-                </Link>{""}
-                e{""}
+                </Link>
+                {''}e{''}
                 <Link to="/privacy" className="text-primary hover:underline">
                   Política de Privacidade
                 </Link>
@@ -238,9 +249,7 @@ export default function Signup() {
                 <div className="w-full border-t border-gray-300 dark:border-border"></div>
               </div>
               <div className="relative flex justify-center text-body-sm">
-                <span className="px-2 bg-surface dark:bg-card text-muted">
-                  Já tem uma conta?
-                </span>
+                <span className="px-2 bg-surface dark:bg-card text-muted">Já tem uma conta?</span>
               </div>
             </div>
 
@@ -248,7 +257,8 @@ export default function Signup() {
             <div className="text-center">
               <Link
                 to="/login"
-                className="text-primary hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300" style={{ fontWeight: 500 }}
+                className="text-primary hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300"
+                style={{ fontWeight: 500 }}
               >
                 Fazer login
               </Link>
@@ -264,4 +274,3 @@ export default function Signup() {
     </div>
   );
 }
-

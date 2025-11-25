@@ -1,4 +1,105 @@
-import React,{useState} from"react";
-import {Card,CardHeader,CardTitle,CardContent,Badge} from"@/components/oraclusx-ds";
-import { Target, Users, TrendingUp, Award, Settings } from"lucide-react";
-export const LeadsQualificados:React.FC=()=>{const [a,s]=useState("g");const c=[{id:"g",label:"Geral",icon:Target,count:124,trend:"+15"},{id:"d",label:"Det",icon:Users,count:89,trend:"+8"},{id:"a",label:"Ana",icon:TrendingUp,count:56,trend:"+12"},{id:"c",label:"Cfg",icon:Award,count:34,trend:"+5"}];const k=[{title:"Total",value:"303",trend:"+40",icon:Target,color:"blue"},{title:"Taxa",value:"98.7%",trend:"+2%",icon:Users,color:"green"},{title:"IA",value:"98.7%",trend:"on",icon:Settings,color:"indigo"},{title:"Perf",value:"98%",trend:"+1%",icon:TrendingUp,color:"yellow"}];return (<div className="min-h-screen p-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"><div className="max-w-7xl mx-auto"><header className="mb-6 flex items-start justify-between"><div><h1 className="text-heading-lg font-display text-primary dark:text-gray-100 mb-2">Leads Qualificados IA</h1><p className="text-secondary dark:text-muted">IA System</p></div><div className="flex items-center gap-2 px-4 py-2 bg-primary rounded-full"><Settings className="text-inverse animate-spin-slow" size={20}/><div><p className="text-inverse text-body-sm" style={{ fontWeight: 500 }}>IA</p><p className="text-indigo-100 text-body-xs">98.7%</p></div></div></header><div className="mb-6"><div className="grid grid-cols-2 md:grid-cols-4 gap-3">{c.map((x)=>{const I=x.icon;const act=a===x.id;return (<button key={x.id} onClick={()=>s(x.id)} className={`p-4 rounded-xl ${act?"bg-primary text-inverse shadow-lg":"bg-surface dark:bg-card"}`}><div className="flex flex-col items-center gap-2"><div className={`p-2 rounded-lg ${act?"bg-surface/20":"bg-surface"}`}><I size={24}/></div><p className="text-body-xs mb-1">{x.label}</p><span className="text-heading font-display" style={{ fontSize: '0.813rem' }}>{x.count}</span></div></button>);})}</div></div><div className="grid gap-4 md:grid-cols-4 mb-6">{k.map((x,i)=>{const I=x.icon;const cls={blue:"bg-blue-100 text-accent",green:"bg-success/10 text-success",indigo:"bg-indigo-100 text-primary",yellow:"bg-warning/10 text-warning"};return (<Card key={i} padding="md"><div className="flex items-start justify-between"><div><p className="text-body-sm text-secondary">{x.title}</p><p className="text-heading font-display text-primary mt-1">{x.value}</p><Badge variant="default" size="sm" className="mt-2">{x.trend}</Badge></div><div className={`p-3 rounded-lg ${cls[x.color as keyof typeof cls]}`}><I size={24}/></div></div></Card>);})}</div><Card><CardHeader><CardTitle>Leads Qualificados IA</CardTitle></CardHeader><CardContent><div className="text-center py-12"><Target size={64} className="mx-auto text-muted mb-4"/><p className="text-secondary">Módulo IA</p></div></CardContent></Card></div></div>);};export default LeadsQualificados;
+import React, { useState } from 'react';
+import { Card, CardHeader, CardTitle, CardContent, Badge } from '@/components/oraclusx-ds';
+import { Target, Users, TrendingUp, Award, Settings } from 'lucide-react';
+export const LeadsQualificados: React.FC = () => {
+  const [a, s] = useState('g');
+  const c = [
+    { id: 'g', label: 'Geral', icon: Target, count: 124, trend: '+15' },
+    { id: 'd', label: 'Det', icon: Users, count: 89, trend: '+8' },
+    { id: 'a', label: 'Ana', icon: TrendingUp, count: 56, trend: '+12' },
+    { id: 'c', label: 'Cfg', icon: Award, count: 34, trend: '+5' },
+  ];
+  const k = [
+    { title: 'Total', value: '303', trend: '+40', icon: Target, color: 'blue' },
+    { title: 'Taxa', value: '98.7%', trend: '+2%', icon: Users, color: 'green' },
+    { title: 'IA', value: '98.7%', trend: 'on', icon: Settings, color: 'indigo' },
+    { title: 'Perf', value: '98%', trend: '+1%', icon: TrendingUp, color: 'yellow' },
+  ];
+  return (
+    <div className="min-h-screen p-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="max-w-7xl mx-auto">
+        <header className="mb-6 flex items-start justify-between">
+          <div>
+            <h1 className="text-heading-lg font-display text-primary dark:text-gray-100 mb-2">
+              Leads Qualificados IA
+            </h1>
+            <p className="text-secondary dark:text-muted">IA System</p>
+          </div>
+          <div className="flex items-center gap-2 px-4 py-2 bg-primary rounded-full">
+            <Settings className="text-inverse animate-spin-slow" size={20} />
+            <div>
+              <p className="text-inverse text-body-sm" style={{ fontWeight: 500 }}>
+                IA
+              </p>
+              <p className="text-indigo-100 text-body-xs">98.7%</p>
+            </div>
+          </div>
+        </header>
+        <div className="mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {c.map((x) => {
+              const I = x.icon;
+              const act = a === x.id;
+              return (
+                <button
+                  key={x.id}
+                  onClick={() => s(x.id)}
+                  className={`p-4 rounded-xl ${act ? 'bg-primary text-inverse shadow-lg' : 'bg-surface dark:bg-card'}`}
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <div className={`p-2 rounded-lg ${act ? 'bg-surface/20' : 'bg-surface'}`}>
+                      <I size={24} />
+                    </div>
+                    <p className="text-body-xs mb-1">{x.label}</p>
+                    <span className="text-heading font-display" style={{ fontSize: '0.813rem' }}>
+                      {x.count}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div className="grid gap-4 md:grid-cols-4 mb-6">
+          {k.map((x, i) => {
+            const I = x.icon;
+            const cls = {
+              blue: 'bg-blue-100 text-accent',
+              green: 'bg-success/10 text-success',
+              indigo: 'bg-indigo-100 text-primary',
+              yellow: 'bg-warning/10 text-warning',
+            };
+            return (
+              <Card key={i} padding="md">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="text-body-sm text-secondary">{x.title}</p>
+                    <p className="text-heading font-display text-primary mt-1">{x.value}</p>
+                    <Badge variant="default" size="sm" className="mt-2">
+                      {x.trend}
+                    </Badge>
+                  </div>
+                  <div className={`p-3 rounded-lg ${cls[x.color as keyof typeof cls]}`}>
+                    <I size={24} />
+                  </div>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Leads Qualificados IA</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-center py-12">
+              <Target size={64} className="mx-auto text-muted mb-4" />
+              <p className="text-secondary">Módulo IA</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
+export default LeadsQualificados;

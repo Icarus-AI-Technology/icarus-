@@ -81,17 +81,19 @@ export function useCirurgias() {
       setLoading(true);
       const { data, error } = await supabase
         .from('cirurgias')
-        .select(`
+        .select(
+          `
           *,
           medico:medicos(nome, crm, especialidade),
           hospital:hospitais(nome)
-        `)
+        `
+        )
         .order('data_cirurgia', { ascending: true });
 
       if (error) throw error;
       setCirurgias(data || []);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao carregar cirurgias');
     } finally {
       setLoading(false);
@@ -102,37 +104,37 @@ export function useCirurgias() {
     try {
       const { data, error } = await supabase
         .from('cirurgias')
-        .select(`
+        .select(
+          `
           *,
           medico:medicos(nome, crm, especialidade),
           hospital:hospitais(nome)
-        `)
+        `
+        )
         .eq('id', id)
         .single();
 
       if (error) throw error;
       return data;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao buscar cirurgia');
       return null;
     }
   };
 
-  const createCirurgia = async (cirurgia: Omit<Cirurgia, 'id' | 'created_at' | 'updated_at' | 'medico' | 'hospital'>) => {
+  const createCirurgia = async (
+    cirurgia: Omit<Cirurgia, 'id' | 'created_at' | 'updated_at' | 'medico' | 'hospital'>
+  ) => {
     try {
-      const { data, error } = await supabase
-        .from('cirurgias')
-        .insert([cirurgia])
-        .select()
-        .single();
+      const { data, error } = await supabase.from('cirurgias').insert([cirurgia]).select().single();
 
       if (error) throw error;
-      
+
       setCirurgias((prev) => [...prev, data]);
       return data;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao criar cirurgia');
       throw err;
     }
@@ -149,12 +151,10 @@ export function useCirurgias() {
 
       if (error) throw error;
 
-      setCirurgias((prev) =>
-        prev.map((c) => (c.id === id ? data : c))
-      );
+      setCirurgias((prev) => prev.map((c) => (c.id === id ? data : c)));
       return data;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao atualizar cirurgia');
       throw err;
     }
@@ -162,16 +162,13 @@ export function useCirurgias() {
 
   const deleteCirurgia = async (id: string) => {
     try {
-      const { error } = await supabase
-        .from('cirurgias')
-        .delete()
-        .eq('id', id);
+      const { error } = await supabase.from('cirurgias').delete().eq('id', id);
 
       if (error) throw error;
 
       setCirurgias((prev) => prev.filter((c) => c.id !== id));
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao deletar cirurgia');
       throw err;
     }
@@ -208,4 +205,3 @@ export function useCirurgias() {
     countByStatus,
   };
 }
-

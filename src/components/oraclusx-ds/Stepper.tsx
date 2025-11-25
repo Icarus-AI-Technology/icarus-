@@ -1,7 +1,7 @@
 /**
  * OraclusX Design System - Stepper Component
  * Wizard de passos para formulários multi-step
- * 
+ *
  * HARD GATES:
  * ✅ Sem text/font classes (tipografia CSS)
  * ✅ Cores via CSS variables
@@ -10,9 +10,9 @@
  * ✅ TypeScript strict
  */
 
-import React from"react";
-import { Check } from"lucide-react";
-import { cn } from"@/lib/utils";
+import React from 'react';
+import { Check } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export interface Step {
   id: string;
@@ -25,7 +25,7 @@ export interface StepperProps {
   steps: Step[];
   currentStep: number;
   onStepClick?: (step: number) => void;
-  orientation?:"horizontal" |"vertical";
+  orientation?: 'horizontal' | 'vertical';
   allowSkip?: boolean;
   className?: string;
 }
@@ -34,9 +34,9 @@ export const Stepper: React.FC<StepperProps> = ({
   steps,
   currentStep,
   onStepClick,
-  orientation ="horizontal",
+  orientation = 'horizontal',
   allowSkip = false,
-  className
+  className,
 }) => {
   const handleStepClick = (index: number) => {
     // Only allow clicking on completed or current step (unless allowSkip)
@@ -45,25 +45,21 @@ export const Stepper: React.FC<StepperProps> = ({
     }
   };
 
-  const getStepStatus = (index: number):"completed" |"current" |"upcoming" => {
-    if (index < currentStep) return"completed";
-    if (index === currentStep) return"current";
-    return"upcoming";
+  const getStepStatus = (index: number): 'completed' | 'current' | 'upcoming' => {
+    if (index < currentStep) return 'completed';
+    if (index === currentStep) return 'current';
+    return 'upcoming';
   };
 
   return (
     <nav
       aria-label="Progresso"
-      className={cn(
-        orientation ==="horizontal" ?"w-full" :"flex flex-col",
-        className
-      )}
+      className={cn(orientation === 'horizontal' ? 'w-full' : 'flex flex-col', className)}
     >
       <ol
-        className={cn("flex",
-          orientation ==="horizontal"
-            ?"items-center justify-between"
-            :"flex-col space-y-4"
+        className={cn(
+          'flex',
+          orientation === 'horizontal' ? 'items-center justify-between' : 'flex-col space-y-4'
         )}
       >
         {steps.map((step, index) => {
@@ -73,28 +69,31 @@ export const Stepper: React.FC<StepperProps> = ({
           return (
             <li
               key={step.id}
-              className={cn("flex items-center",
-                orientation ==="horizontal" ?"flex-1" :"w-full"
+              className={cn(
+                'flex items-center',
+                orientation === 'horizontal' ? 'flex-1' : 'w-full'
               )}
             >
               <div
-                className={cn("flex items-center gap-3",
-                  orientation ==="horizontal" &&"w-full"
-                )}
+                className={cn('flex items-center gap-3', orientation === 'horizontal' && 'w-full')}
               >
                 {/* Step Circle */}
                 <button
                   onClick={() => handleStepClick(index)}
                   disabled={!isClickable}
-                  aria-current={status ==="current" ?"step" : undefined}
-                  className={cn("relative flex items-center justify-center w-10 h-10 rounded-full transition-all","focus:outline-none focus:ring-3 focus:ring-[var(--primary)] focus:ring-offset-2",
-                    status ==="completed" &&"bg-[var(--primary)] text-inverse shadow-md",
-                    status ==="current" &&"bg-[var(--primary)] text-inverse shadow-lg ring-4 ring-[var(--primary)]/20",
-                    status ==="upcoming" &&"bg-surface-secondary dark:bg-muted text-muted dark:text-muted",
-                    isClickable ?"cursor-pointer" :"cursor-not-allowed"
+                  aria-current={status === 'current' ? 'step' : undefined}
+                  className={cn(
+                    'relative flex items-center justify-center w-10 h-10 rounded-full transition-all',
+                    'focus:outline-none focus:ring-3 focus:ring-[var(--primary)] focus:ring-offset-2',
+                    status === 'completed' && 'bg-[var(--primary)] text-inverse shadow-md',
+                    status === 'current' &&
+                      'bg-[var(--primary)] text-inverse shadow-lg ring-4 ring-[var(--primary)]/20',
+                    status === 'upcoming' &&
+                      'bg-surface-secondary dark:bg-muted text-muted dark:text-muted',
+                    isClickable ? 'cursor-pointer' : 'cursor-not-allowed'
                   )}
                 >
-                  {status ==="completed" ? (
+                  {status === 'completed' ? (
                     <Check size={20} />
                   ) : (
                     <span className="text-[0.813rem]">{index + 1}</span>
@@ -102,17 +101,14 @@ export const Stepper: React.FC<StepperProps> = ({
                 </button>
 
                 {/* Step Label */}
-                <div
-                  className={cn(
-                    orientation ==="vertical" &&"flex-1"
-                  )}
-                >
+                <div className={cn(orientation === 'vertical' && 'flex-1')}>
                   <div className="flex items-center gap-2">
                     <span
-                      className={cn("orx-orx-font-medium",
-                        status ==="current"
-                          ?"text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]"
-                          :"text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]"
+                      className={cn(
+                        'orx-orx-font-medium',
+                        status === 'current'
+                          ? 'text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]'
+                          : 'text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]'
                       )}
                     >
                       {step.label}
@@ -135,12 +131,10 @@ export const Stepper: React.FC<StepperProps> = ({
               {index < steps.length - 1 && (
                 <div
                   className={cn(
-                    orientation ==="horizontal"
-                      ?"flex-1 h-0.5 mx-4"
-                      :"h-12 w-0.5 ml-5 my-2",
-                    status ==="completed"
-                      ?"bg-[var(--primary)]"
-                      :"bg-surface-secondary dark:bg-muted"
+                    orientation === 'horizontal' ? 'flex-1 h-0.5 mx-4' : 'h-12 w-0.5 ml-5 my-2',
+                    status === 'completed'
+                      ? 'bg-[var(--primary)]'
+                      : 'bg-surface-secondary dark:bg-muted'
                   )}
                   aria-hidden="true"
                 />
@@ -152,4 +146,3 @@ export const Stepper: React.FC<StepperProps> = ({
     </nav>
   );
 };
-

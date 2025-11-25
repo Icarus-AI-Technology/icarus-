@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 /**
  * Componente: Gestão Contábil
- * 
+ *
  * Sistema completo de contabilidade para distribuidoras OPME
  * DRE, Balancete, Razão, Lançamentos, Plano de Contas
- * 
+ *
  * FUNCIONALIDADES:
  * - Plano de Contas estruturado (4 níveis)
  * - Lançamentos com partidas dobradas
@@ -19,7 +19,7 @@ import {
   Card,
   Button,
   Badge,
-  Table,
+  TableContainer,
   TableHeader,
   TableRow,
   TableHead,
@@ -90,7 +90,9 @@ export default function GestaoContabil() {
   useDocumentTitle('Gestão Contábil');
   const { addToast } = useToast();
 
-  const [activeTab, setActiveTab] = useState<'dre' | 'balancete' | 'lancamentos' | 'plano' | 'centros'>('dre');
+  const [activeTab, setActiveTab] = useState<
+    'dre' | 'balancete' | 'lancamentos' | 'plano' | 'centros'
+  >('dre');
   const [loading, setLoading] = useState(true);
   const [dreData, setDreData] = useState<DREItem[]>([]);
   const [balancete, setBalancete] = useState<BalanceteItem[]>([]);
@@ -144,10 +146,20 @@ export default function GestaoContabil() {
       setDreData([
         { grupo: 'RECEITA_BRUTA', descricao: 'Receita Bruta', valor: 2500000, percentual: 100 },
         { grupo: 'DEDUCOES', descricao: '(-) Deduções', valor: -425000, percentual: 17 },
-        { grupo: 'RECEITA_LIQUIDA', descricao: '(=) Receita Líquida', valor: 2075000, percentual: 83 },
+        {
+          grupo: 'RECEITA_LIQUIDA',
+          descricao: '(=) Receita Líquida',
+          valor: 2075000,
+          percentual: 83,
+        },
         { grupo: 'CUSTOS', descricao: '(-) Custos', valor: -1250000, percentual: 50 },
         { grupo: 'LUCRO_BRUTO', descricao: '(=) Lucro Bruto', valor: 825000, percentual: 33 },
-        { grupo: 'DESPESAS_OP', descricao: '(-) Despesas Operacionais', valor: -420000, percentual: 16.8 },
+        {
+          grupo: 'DESPESAS_OP',
+          descricao: '(-) Despesas Operacionais',
+          valor: -420000,
+          percentual: 16.8,
+        },
         { grupo: 'LUCRO_OP', descricao: '(=) Lucro Operacional', valor: 405000, percentual: 16.2 },
         { grupo: 'OUTRAS_REC', descricao: '(+) Outras Receitas', valor: 15000, percentual: 0.6 },
         { grupo: 'OUTRAS_DESP', descricao: '(-) Outras Despesas', valor: -20000, percentual: 0.8 },
@@ -158,10 +170,7 @@ export default function GestaoContabil() {
 
   const carregarBalancete = async () => {
     try {
-      const { data, error } = await supabase
-        .from('vw_balancete')
-        .select('*')
-        .order('conta_codigo');
+      const { data, error } = await supabase.from('vw_balancete').select('*').order('conta_codigo');
 
       if (error) throw error;
       setBalancete(data || []);
@@ -270,7 +279,13 @@ export default function GestaoContabil() {
       console.error('Erro ao carregar centros de custo:', error as Error);
       // Mock data
       setCentrosCusto([
-        { id: '1', codigo: 'CC001', nome: 'Administrativo', tipo: 'administrativo', orcamento_mensal: 50000 },
+        {
+          id: '1',
+          codigo: 'CC001',
+          nome: 'Administrativo',
+          tipo: 'administrativo',
+          orcamento_mensal: 50000,
+        },
         { id: '2', codigo: 'CC002', nome: 'Comercial', tipo: 'comercial', orcamento_mensal: 80000 },
         { id: '3', codigo: 'CC003', nome: 'Logística', tipo: 'logistica', orcamento_mensal: 40000 },
         { id: '4', codigo: 'CC004', nome: 'Estoque', tipo: 'operacional', orcamento_mensal: 30000 },
@@ -290,13 +305,24 @@ export default function GestaoContabil() {
 
     // Dados para o gráfico
     const chartData = [
-      { name: 'Receita Líquida', value: dreData.find((d) => d.grupo === 'RECEITA_LIQUIDA')?.valor || 0 },
+      {
+        name: 'Receita Líquida',
+        value: dreData.find((d) => d.grupo === 'RECEITA_LIQUIDA')?.valor || 0,
+      },
       { name: 'Custos', value: Math.abs(dreData.find((d) => d.grupo === 'CUSTOS')?.valor || 0) },
-      { name: 'Desp. Operacionais', value: Math.abs(dreData.find((d) => d.grupo === 'DESPESAS_OP')?.valor || 0) },
+      {
+        name: 'Desp. Operacionais',
+        value: Math.abs(dreData.find((d) => d.grupo === 'DESPESAS_OP')?.valor || 0),
+      },
       { name: 'Lucro Líquido', value: lucroLiquido },
     ];
 
-    const colors = ['var(--orx-primary)', 'var(--orx-error)', 'var(--orx-warning)', 'var(--orx-success)'];
+    const colors = [
+      'var(--orx-primary)',
+      'var(--orx-error)',
+      'var(--orx-warning)',
+      'var(--orx-success)',
+    ];
 
     return (
       <div className="space-y-6">
@@ -365,7 +391,13 @@ export default function GestaoContabil() {
         {/* Gráfico */}
         <Card className="p-6 neuro-raised">
           <h3 className="mb-4 text-[0.813rem] orx-orx-font-semibold">Análise Visual</h3>
-          <OrxBarChart data={chartData} keys={["value"]} indexBy="name" height={300} colors={colors} />
+          <OrxBarChart
+            data={chartData}
+            keys={['value']}
+            indexBy="name"
+            height={300}
+            colors={colors}
+          />
         </Card>
 
         {/* Tabela DRE */}
@@ -379,7 +411,7 @@ export default function GestaoContabil() {
               {new Date(dreDataFim).toLocaleDateString('pt-BR')}
             </p>
           </div>
-          <Table>
+          <TableContainer>
             <TableHeader>
               <TableRow>
                 <TableHead>Descrição</TableHead>
@@ -389,9 +421,12 @@ export default function GestaoContabil() {
             </TableHeader>
             <TableBody>
               {dreData.map((item, idx) => {
-                const isTotal = ['RECEITA_LIQUIDA', 'LUCRO_BRUTO', 'LUCRO_OP', 'LUCRO_LIQUIDO'].includes(
-                  item.grupo
-                );
+                const isTotal = [
+                  'RECEITA_LIQUIDA',
+                  'LUCRO_BRUTO',
+                  'LUCRO_OP',
+                  'LUCRO_LIQUIDO',
+                ].includes(item.grupo);
                 const isNegative = item.valor < 0;
 
                 return (
@@ -414,7 +449,7 @@ export default function GestaoContabil() {
                 );
               })}
             </TableBody>
-          </Table>
+          </TableContainer>
         </Card>
       </div>
     );
@@ -434,7 +469,9 @@ export default function GestaoContabil() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="p-6 neuro-raised">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">Total Ativo</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">
+                Total Ativo
+              </h3>
               <ArrowUpRight className="w-5 h-5 text-success" />
             </div>
             <p className="text-[0.813rem] orx-orx-font-bold">{formatCurrency(totalAtivo)}</p>
@@ -442,7 +479,9 @@ export default function GestaoContabil() {
 
           <Card className="p-6 neuro-raised">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">Total Passivo</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">
+                Total Passivo
+              </h3>
               <ArrowDownRight className="w-5 h-5 text-error" />
             </div>
             <p className="text-[0.813rem] orx-orx-font-bold">{formatCurrency(totalPassivo)}</p>
@@ -450,10 +489,14 @@ export default function GestaoContabil() {
 
           <Card className="p-6 neuro-raised">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">Patrimônio Líquido</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">
+                Patrimônio Líquido
+              </h3>
               <Calculator className="w-5 h-5 text-[var(--primary)]" />
             </div>
-            <p className="text-[0.813rem] orx-orx-font-bold">{formatCurrency(totalAtivo - totalPassivo)}</p>
+            <p className="text-[0.813rem] orx-orx-font-bold">
+              {formatCurrency(totalAtivo - totalPassivo)}
+            </p>
           </Card>
         </div>
 
@@ -462,7 +505,7 @@ export default function GestaoContabil() {
           <div className="p-6 border-b border-[var(--text-secondary)]/20">
             <h3 className="text-[0.813rem] orx-orx-font-semibold">Balancete de Verificação</h3>
           </div>
-          <Table>
+          <TableContainer>
             <TableHeader>
               <TableRow>
                 <TableHead>Código</TableHead>
@@ -481,12 +524,8 @@ export default function GestaoContabil() {
                   <TableCell>
                     <Badge variant="default">{item.conta_tipo}</Badge>
                   </TableCell>
-                  <TableCell className="text-right">
-                    {formatCurrency(item.total_debito)}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {formatCurrency(item.total_credito)}
-                  </TableCell>
+                  <TableCell className="text-right">{formatCurrency(item.total_debito)}</TableCell>
+                  <TableCell className="text-right">{formatCurrency(item.total_credito)}</TableCell>
                   <TableCell
                     className={`text-right orx-orx-font-semibold ${
                       item.tipo_saldo === 'devedor' ? 'text-success' : 'text-error'
@@ -497,7 +536,7 @@ export default function GestaoContabil() {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
+          </TableContainer>
         </Card>
       </div>
     );
@@ -511,7 +550,7 @@ export default function GestaoContabil() {
       </div>
 
       <Card className="neuro-raised p-0">
-        <Table>
+        <TableContainer>
           <TableHeader>
             <TableRow>
               <TableHead>Nº</TableHead>
@@ -544,20 +583,25 @@ export default function GestaoContabil() {
                       lanc.status === 'confirmado'
                         ? 'bg-success/20 text-success'
                         : lanc.status === 'cancelado'
-                        ? 'bg-error/20 text-error'
-                        : 'bg-warning/20 text-warning'
+                          ? 'bg-error/20 text-error'
+                          : 'bg-warning/20 text-warning'
                     }
                   >
                     {lanc.status}
                   </Badge>
                 </TableCell>
                 <TableCell className="text-right">
-                  <Button variant="ghost" size="sm" icon={<Eye />} />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    icon={<Eye />}
+                    aria-label="Visualizar detalhes"
+                  />
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
-        </Table>
+        </TableContainer>
       </Card>
     </div>
   );
@@ -584,7 +628,9 @@ export default function GestaoContabil() {
             </div>
             <div className="pt-4 border-t border-[var(--text-secondary)]/20">
               <p className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">Orçamento Mensal</p>
-              <p className="text-[0.813rem] orx-orx-font-bold">{formatCurrency(centro.orcamento_mensal)}</p>
+              <p className="text-[0.813rem] orx-orx-font-bold">
+                {formatCurrency(centro.orcamento_mensal)}
+              </p>
             </div>
           </Card>
         ))}
@@ -605,7 +651,12 @@ export default function GestaoContabil() {
               DRE, Balancete, Lançamentos e Plano de Contas
             </p>
           </div>
-          <Button variant="secondary" icon={<RefreshCw />} onClick={carregarDados} disabled={loading}>
+          <Button
+            variant="secondary"
+            icon={<RefreshCw />}
+            onClick={carregarDados}
+            disabled={loading}
+          >
             Atualizar
           </Button>
         </div>
@@ -642,4 +693,3 @@ export default function GestaoContabil() {
     </div>
   );
 }
-

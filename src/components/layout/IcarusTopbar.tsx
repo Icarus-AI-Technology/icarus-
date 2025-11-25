@@ -1,20 +1,14 @@
 /**
  * ICARUS v5.0 - Topbar Component
  * Barra superior com busca global, ações rápidas e perfil do usuário
- * Design: Neuromórfico Premium 3D (OraclusX DS)
+ * Design: Standard HeroUI / Cyberpunk
  */
 
-import React from"react";
-import { 
-  HelpCircle, 
-  Menu, 
-  Moon, 
-  Sun,
-  Settings,
-  User
-} from"lucide-react";
-import { SearchContainer } from"../oraclusx-ds/SearchContainer";
-import { NotificationSystem } from"../notifications/NotificationSystem";
+import React from 'react';
+import { Menu, Moon, Sun, Bell, MessageSquare, Search } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Input, Avatar } from '@heroui/react';
+import { Button } from '@/components/oraclusx-ds/Button';
 
 export interface IcarusTopbarProps {
   sidebarCollapsed: boolean;
@@ -32,152 +26,90 @@ export const IcarusTopbar: React.FC<IcarusTopbarProps> = ({
   darkMode,
   onToggleSidebar,
   onToggleDarkMode,
-  onOpenSettings,
-  onOpenHelp,
-  userName ="Roberto Silva",
-  userRole ="Gerente Comercial"
+  userName = 'Roberto Silva',
+  userRole = 'Gerente Comercial',
 }) => {
   return (
-    <header 
-      className="neumorphic-card fixed left-0 right-0 z-40 flex items-center justify-between px-6 py-2" 
-      style={{ 
-        top: '16px', 
-        marginLeft: sidebarCollapsed ? '88px' : '284px', // Dinâmico: 64px (sidebar) + 24px (gap) = 88px | 260px + 24px = 284px
-        marginRight: '16px',
-        height: '64px',
-        transition: 'margin-left 0.2s ease' // Transição suave
-      }}
+    <header
+      className={cn(
+        'fixed left-0 right-0 z-40 flex items-center justify-between px-6 py-2 transition-all duration-300 ease-in-out top-4 h-20 mr-4',
+        sidebarCollapsed ? 'ml-[88px]' : 'ml-[314px]'
+      )}
     >
-      {/* Esquerda: Menu + Busca */}
-      <div className="flex items-center gap-4 flex-1">
-        {/* Botão Menu - SEM BORDA */}
-        <button
-          onClick={onToggleSidebar}
-          className="neumorphic-button p-2.5 rounded-lg"
-          aria-label="Abrir/Fechar Menu"
-          title="Abrir/Fechar Menu"
-          style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem', border: 'none', outline: 'none' }}
-        >
-          <Menu size={20} />
-        </button>
+      {/* Container Principal com Efeito Glass */}
+      <div className="w-full h-full rounded-2xl bg-[#0b0d16]/80 backdrop-blur-xl border border-white/10 shadow-lg flex items-center justify-between px-6">
+        {/* Esquerda: Menu + Busca */}
+        <div className="flex items-center gap-6 flex-1">
+          <Button
+            isIconOnly
+            variant="light"
+            onPress={onToggleSidebar}
+            aria-label="Toggle Sidebar"
+            className="text-slate-400 hover:text-white"
+          >
+            <Menu size={24} />
+          </Button>
 
-        {/* Busca Global */}
-        <div className="flex-1 max-w-md">
-          <SearchContainer
-            placeholder="Buscar médicos, cirurgias, produtos..."
-            showFilters={false}
-          />
+          <div className="flex-1 max-w-xl">
+            <Input
+              placeholder="Buscar médicos, cirurgias, produtos..."
+              startContent={<Search size={18} className="text-slate-500" />}
+              classNames={{
+                inputWrapper: "bg-white/5 border-white/10 hover:border-primary/50 focus-within:!border-primary h-10",
+                input: "text-white placeholder:text-slate-500",
+              }}
+              variant="bordered"
+              radius="lg"
+            />
+          </div>
         </div>
-      </div>
 
-      {/* Direita: Ações + Perfil */}
-      <div className="flex items-center gap-3">
-        {/* Botão Ajuda - SEM BORDA */}
-        <button
-          onClick={onOpenHelp}
-          className="neumorphic-button p-2.5 rounded-full"
-          aria-label="Central de Ajuda"
-          title="Central de Ajuda"
-          style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem', border: 'none', outline: 'none' }}
-        >
-          <HelpCircle size={20} />
-        </button>
-
-        {/* Sistema de Notificações em Tempo Real */}
-        <NotificationSystem />
-
-        {/* Botão Tema Claro/Escuro - SEM BORDA */}
-        <button
-          onClick={onToggleDarkMode}
-          className="neumorphic-button p-2.5 rounded-full"
-          aria-label={darkMode ?"Modo Claro" :"Modo Escuro"}
-          title={darkMode ?"Modo Claro" :"Modo Escuro"}
-          style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem', border: 'none', outline: 'none' }}
-        >
-          {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-        </button>
-
-        {/* Botão Configurações - SEM BORDA */}
-        <button
-          onClick={onOpenSettings}
-          className="neumorphic-button p-2.5 rounded-full"
-          aria-label="Configurações"
-          title="Configurações"
-          style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem', border: 'none', outline: 'none' }}
-        >
-          <Settings size={20} />
-        </button>
-
-        {/* Separador Vertical */}
-        <div 
-          className="w-px h-8 mx-2"
-          style={{
-            background: 'linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.1) 50%, transparent 100%)'
-          }}
-        />
-
-        {/* Área do Usuário */}
-        <div className="flex items-center gap-3">
-          {/* Nome e Cargo */}
-          <div className="text-right hidden md:block">
-            <div style={{ 
-              fontSize: '0.813rem',
-              fontWeight: 600,
-              lineHeight: '18px',
-              color: 'var(--orx-text-primary)',
-              fontFamily: 'var(--orx-font-family)'
-            }}>
-              {userName}
+        {/* Direita: Ações + Perfil */}
+        <div className="flex items-center gap-4">
+          {/* Ações Rápidas (Ícones) */}
+          <div className="flex items-center gap-2 pr-4 border-r border-white/10">
+            <div className="relative">
+              <Button isIconOnly variant="light" radius="full" className="text-slate-400 hover:text-white">
+                <Bell size={20} />
+              </Button>
+              <span className="absolute -top-0.5 -right-0.5 inline-flex items-center justify-center text-[10px] font-bold text-white bg-red-500/80 rounded-full w-5 h-5 shadow-[0_0_8px_rgba(243,18,96,0.5)]">
+                3
+              </span>
             </div>
-            <div style={{ 
-              fontSize: '0.813rem',
-              fontWeight: 400,
-              lineHeight: '16px',
-              color: 'var(--orx-text-secondary)',
-              fontFamily: 'var(--orx-font-family)'
-            }}>
-              {userRole}
-            </div>
+
+            <Button isIconOnly variant="light" radius="full" className="text-slate-400 hover:text-white">
+              <MessageSquare size={20} />
+            </Button>
+
+            <Button isIconOnly variant="light" radius="full" onPress={onToggleDarkMode} className="text-slate-400 hover:text-white">
+              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+            </Button>
           </div>
 
-          {/* Avatar */}
-          <button
-            onClick={onOpenSettings}
-            className="rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
-            style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-              width: '36px',
-              height: '36px',
-              background: 'var(--orx-primary)',
-              border: '2px solid rgba(255, 255, 255, 0.3)',
-              boxShadow: '0 2px 8px rgba(99, 102, 241, 0.3)'
-            }}
-            aria-label="Perfil do Usuário"
-            title="Perfil do Usuário"
-          >
-            <User size={20} color="white" strokeWidth={2} />
-          </button>
+          {/* Perfil do Usuário */}
+          <div className="flex items-center gap-3 pl-2 cursor-pointer hover:opacity-80 transition-opacity">
+            <div className="text-right hidden md:block">
+              <div className="text-sm font-bold text-white leading-tight">
+                {userName}
+              </div>
+              <div className="text-xs text-slate-400 font-medium">
+                {userRole}
+              </div>
+            </div>
+
+            <Avatar
+              src="https://i.pravatar.cc/150?u=admin"
+              isBordered
+              color="success"
+              size="sm"
+            />
+          </div>
         </div>
       </div>
     </header>
   );
 };
 
-IcarusTopbar.displayName ="IcarusTopbar";
+IcarusTopbar.displayName = 'IcarusTopbar';
 
 export default IcarusTopbar;
-

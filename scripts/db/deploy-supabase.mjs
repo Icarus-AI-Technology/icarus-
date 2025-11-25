@@ -23,15 +23,15 @@ if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
 const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
   auth: {
     autoRefreshToken: false,
-    persistSession: false
-  }
+    persistSession: false,
+  },
 });
 
 async function deploy() {
   try {
     console.log('🚀 DEPLOY COMPLETO — ICARUS BD\n');
     console.log('🔌 Conectando ao banco...');
-    
+
     // Testar conexão
     const { data, error } = await supabase.from('_dummy_').select('*').limit(1);
     if (error && error.message.includes('does not exist')) {
@@ -42,15 +42,15 @@ async function deploy() {
     } else {
       console.log('✅ Conectado!\n');
     }
-    
+
     // Listar migrations
     const migrationsDir = join(__dirname, '../../supabase/migrations');
     const files = readdirSync(migrationsDir)
-      .filter(f => f.endsWith('.sql'))
+      .filter((f) => f.endsWith('.sql'))
       .sort();
-    
+
     console.log(`📁 ${files.length} migrations encontradas:\n`);
-    
+
     // Criar tabela de controle de migrations
     const createMigrationsTable = `
       CREATE TABLE IF NOT EXISTS schema_migrations (
@@ -58,38 +58,38 @@ async function deploy() {
         applied_at TIMESTAMPTZ DEFAULT NOW()
       );
     `;
-    
+
     const { error: createError } = await supabase.from('schema_migrations').select('*').limit(1);
-    
+
     if (createError && createError.message.includes('does not exist')) {
       console.log('ℹ️  Tabela schema_migrations será criada pela primeira migration\n');
     }
-    
+
     // Aplicar cada migration
     for (const file of files) {
       const version = file.replace('.sql', '');
-      
+
       console.log(`⚙️  Aplicando: ${file}...`);
-      
+
       const sql = readFileSync(join(migrationsDir, file), 'utf8');
-      
+
       try {
         // Executar via REST API do Supabase
         const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/exec_sql`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'apikey': SERVICE_ROLE_KEY,
-            'Authorization': `Bearer ${SERVICE_ROLE_KEY}`
+            apikey: SERVICE_ROLE_KEY,
+            Authorization: `Bearer ${SERVICE_ROLE_KEY}`,
           },
-          body: JSON.stringify({ sql })
+          body: JSON.stringify({ sql }),
         });
-        
+
         if (!response.ok) {
           const errorText = await response.text();
           throw new Error(errorText || `HTTP ${response.status}`);
         }
-        
+
         console.log(`✅ ${file} aplicada com sucesso!\n`);
       } catch (err) {
         console.error(`❌ Erro ao aplicar ${file}:`);
@@ -97,10 +97,10 @@ async function deploy() {
         console.log('\n⚠️  Continuando...\n');
       }
     }
-    
+
     // Validações finais
     console.log('\n🔍 VALIDAÇÕES FINAIS\n');
-    
+
     // Contar tabelas via query direta
     const { data: tables, error: tablesError } = await supabase
       .from('information_schema.tables')
@@ -108,17 +108,16 @@ async function deploy() {
       .eq('table_schema', 'public')
       .eq('table_type', 'BASE TABLE')
       .neq('table_name', 'schema_migrations');
-    
+
     if (!tablesError) {
       console.log(`✅ Deploy concluído! Verifique no Dashboard.`);
     }
-    
+
     console.log('\n🎉 DEPLOY CONCLUÍDO!\n');
     console.log('📋 Próximos passos:');
     console.log('   1. Verificar no Supabase Dashboard → Table Editor');
     console.log('   2. npm run db:setup-dpo');
     console.log('   3. Configurar RLS policies manualmente se necessário\n');
-    
   } catch (err) {
     console.error('\n❌ ERRO:', err.message);
     console.error('\n💡 SOLUÇÃO ALTERNATIVA:');
@@ -130,4 +129,3 @@ async function deploy() {
 }
 
 deploy();
-

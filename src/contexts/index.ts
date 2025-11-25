@@ -3,5 +3,4 @@
  * Exportação centralizada de todos os contextos
  */
 
-export { ToastProvider, useToast } from"./ToastContext";
-
+export { ToastProvider, useToast } from './ToastContext';

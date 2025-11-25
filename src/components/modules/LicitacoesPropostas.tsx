@@ -1,9 +1,9 @@
 /**
  * Componente: Licitações e Propostas
- * 
+ *
  * Sistema completo de gestão de licitações hospitalares
  * Pregões eletrônicos, cotações privadas, propostas comerciais
- * 
+ *
  * FUNCIONALIDADES:
  * - Cadastro de licitações (públicas/privadas)
  * - Elaboração de propostas comerciais
@@ -15,12 +15,12 @@
  * - Taxa de sucesso
  */
 
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import {
   Card,
   Button,
   Badge,
-  Table,
+  TableContainer,
   TableHeader,
   TableRow,
   TableHead,
@@ -29,7 +29,22 @@ import {
   Tooltip,
   Progress,
 } from '@/components/oraclusx-ds';
-import { FileText, Award, Clock, XCircle, AlertTriangle, Plus, Eye, Send, RefreshCw, FileCheck, Target, ThumbsUp, Timer } from 'lucide-react';
+import {
+  FileText,
+  Award,
+  Clock,
+  XCircle,
+  AlertTriangle,
+  Plus,
+  Eye,
+  Send,
+  RefreshCw,
+  FileCheck,
+  Target,
+  ThumbsUp,
+  Timer,
+  Building2,
+} from 'lucide-react';
 import { useDocumentTitle } from '@/hooks';
 import { useToast } from '@/contexts/ToastContext';
 import { supabase } from '@/lib/supabase';
@@ -84,7 +99,20 @@ const TIPO_LICITACAO = {
   dispensa: { label: 'Dispensa', color: 'text-gray-600' },
 };
 
-const STATUS_CONFIG: Record<string, { bg: string; text: string; icon: typeof FileText | typeof Clock | typeof Send | typeof AlertTriangle | typeof Award | typeof XCircle }> = {
+const STATUS_CONFIG: Record<
+  string,
+  {
+    bg: string;
+    text: string;
+    icon:
+      | typeof FileText
+      | typeof Clock
+      | typeof Send
+      | typeof AlertTriangle
+      | typeof Award
+      | typeof XCircle;
+  }
+> = {
   publicada: { bg: 'bg-blue-500/20', text: 'text-blue-600', icon: FileText },
   em_elaboracao: { bg: 'bg-yellow-500/20', text: 'text-yellow-600', icon: Clock },
   enviada: { bg: 'bg-purple-500/20', text: 'text-purple-600', icon: Send },
@@ -104,26 +132,6 @@ export default function LicitacoesPropostas() {
   const [propostas, setPropostas] = useState<Proposta[]>([]);
   const [taxaSucesso, setTaxaSucesso] = useState<TaxaSucesso | null>(null);
 
-  useEffect(() => {
-    carregarDados();
-  }, [carregarDados]);
-
-  const carregarDados = useCallback(async () => {
-    setLoading(true);
-    try {
-      await Promise.all([
-        carregarLicitacoes(),
-        carregarPropostas(),
-        carregarTaxaSucesso(),
-      ]);
-    } catch (error: unknown) {
-      const err = error as Error;
-      addToast(`Erro ao carregar dados: ${err.message}`, 'error');
-    } finally {
-      setLoading(false);
-    }
-  }, [addToast]);
-
   const carregarLicitacoes = async () => {
     try {
       const { data, error } = await supabase
@@ -134,7 +142,7 @@ export default function LicitacoesPropostas() {
       if (error) throw error;
       setLicitacoes(data || []);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao carregar licitações:', err);
       // Mock data
       setLicitacoes([
@@ -180,7 +188,7 @@ export default function LicitacoesPropostas() {
       if (error) throw error;
       setPropostas(data || []);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao carregar propostas:', err);
       // Mock data
       setPropostas([
@@ -212,7 +220,7 @@ export default function LicitacoesPropostas() {
       if (error) throw error;
       setTaxaSucesso(data[0] || null);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao carregar taxa de sucesso:', err);
       // Mock data
       setTaxaSucesso({
@@ -226,7 +234,26 @@ export default function LicitacoesPropostas() {
     }
   };
 
-  const handleAprovar = async (propostaId: string, nivel: 'comercial' | 'financeiro' | 'diretoria') => {
+  const carregarDados = useCallback(async () => {
+    setLoading(true);
+    try {
+      await Promise.all([carregarLicitacoes(), carregarPropostas(), carregarTaxaSucesso()]);
+    } catch (error: unknown) {
+      const err = error as Error;
+      addToast(`Erro ao carregar dados: ${err.message}`, 'error');
+    } finally {
+      setLoading(false);
+    }
+  }, [addToast]);
+
+  useEffect(() => {
+    carregarDados();
+  }, [carregarDados]);
+
+  const handleAprovar = async (
+    propostaId: string,
+    nivel: 'comercial' | 'financeiro' | 'diretoria'
+  ) => {
     setLoading(true);
     try {
       const campo = `aprovada_${nivel}`;
@@ -239,8 +266,8 @@ export default function LicitacoesPropostas() {
       addToast(`Proposta aprovada pelo ${nivel}!`, 'success');
       await carregarPropostas();
     } catch (error: unknown) {
-        const err = error as Error;
-      addToast(`Erro ao aprovar: ${error.message}`, 'error');
+      const err = error as Error;
+      addToast(`Erro ao aprovar: ${err.message}`, 'error');
     } finally {
       setLoading(false);
     }
@@ -273,7 +300,9 @@ export default function LicitacoesPropostas() {
 
           <Card className="p-6 neuro-raised bg-gradient-to-br from-orange-500 to-orange-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90 text-[0.813rem] orx-orx-font-medium">Propostas Pendentes</h3>
+              <h3 className="opacity-90 text-[0.813rem] orx-orx-font-medium">
+                Propostas Pendentes
+              </h3>
               <Clock className="w-5 h-5 opacity-80" />
             </div>
             <p className="text-[0.813rem] orx-orx-font-bold">{propostasPendentes}</p>
@@ -285,7 +314,9 @@ export default function LicitacoesPropostas() {
               <h3 className="opacity-90 text-[0.813rem] orx-orx-font-medium">Taxa de Sucesso</h3>
               <Target className="w-5 h-5 opacity-80" />
             </div>
-            <p className="text-[0.813rem] orx-orx-font-bold">{taxaSucesso?.taxa_sucesso.toFixed(1)}%</p>
+            <p className="text-[0.813rem] orx-orx-font-bold">
+              {taxaSucesso?.taxa_sucesso.toFixed(1)}%
+            </p>
             <p className="opacity-80 mt-2 text-[0.813rem]">
               {taxaSucesso?.total_vencidas} de {taxaSucesso?.total_participadas} licitações
             </p>
@@ -293,7 +324,9 @@ export default function LicitacoesPropostas() {
 
           <Card className="p-6 neuro-raised bg-gradient-to-br from-purple-500 to-purple-600 text-white">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="opacity-90 text-[0.813rem] orx-orx-font-medium">Valor Vencido (Ano)</h3>
+              <h3 className="opacity-90 text-[0.813rem] orx-orx-font-medium">
+                Valor Vencido (Ano)
+              </h3>
               <Award className="w-5 h-5 opacity-80" />
             </div>
             <p className="text-[0.813rem] orx-orx-font-bold">
@@ -307,8 +340,14 @@ export default function LicitacoesPropostas() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Gráfico de Sucesso */}
           <Card className="p-6 neuro-raised">
-            <h3 className="mb-4 text-[0.813rem] orx-orx-font-semibold">Performance (Últimos 12 meses)</h3>
-            <OrxPieChart data={chartData} height={250} colors={["var(--orx-success)", "var(--orx-error)"]} />
+            <h3 className="mb-4 text-[0.813rem] orx-orx-font-semibold">
+              Performance (Últimos 12 meses)
+            </h3>
+            <OrxPieChart
+              data={chartData}
+              height={250}
+              colors={['var(--orx-success)', 'var(--orx-error)']}
+            />
             <div className="flex justify-center gap-6 mt-4">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-success"></div>
@@ -365,7 +404,7 @@ export default function LicitacoesPropostas() {
       </div>
 
       <Card className="neuro-raised p-0">
-        <Table>
+        <TableContainer>
           <TableHeader>
             <TableRow>
               <TableHead>Edital</TableHead>
@@ -391,7 +430,10 @@ export default function LicitacoesPropostas() {
                     <div>
                       <p className="orx-orx-font-medium">{lic.titulo}</p>
                       {(lic.dias_para_abertura || 0) <= 7 && (
-                        <Badge variant="default" className="bg-warning/20 text-warning mt-1 text-[0.813rem]">
+                        <Badge
+                          variant="default"
+                          className="bg-warning/20 text-warning mt-1 text-[0.813rem]"
+                        >
                           <Timer className="w-3 h-3 mr-1" />
                           {lic.dias_para_abertura} dias
                         </Badge>
@@ -408,7 +450,9 @@ export default function LicitacoesPropostas() {
                       <Building2 className="w-4 h-4 text-[var(--text-secondary)]" />
                       <div>
                         <p className="text-[0.813rem]">{lic.orgao_comprador_nome}</p>
-                        <p className="text-[var(--text-secondary)] text-[0.813rem]">{lic.orgao_comprador_uf}</p>
+                        <p className="text-[var(--text-secondary)] text-[0.813rem]">
+                          {lic.orgao_comprador_uf}
+                        </p>
                       </div>
                     </div>
                   </TableCell>
@@ -425,10 +469,20 @@ export default function LicitacoesPropostas() {
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
                       <Tooltip content="Ver Detalhes">
-                        <Button variant="ghost" size="sm" icon={<Eye />} />
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          icon={<Eye />}
+                          aria-label="Visualizar proposta"
+                        />
                       </Tooltip>
                       <Tooltip content="Elaborar Proposta">
-                        <Button variant="ghost" size="sm" icon={<FileCheck />} />
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          icon={<FileCheck />}
+                          aria-label="Aprovar proposta"
+                        />
                       </Tooltip>
                     </div>
                   </TableCell>
@@ -436,7 +490,7 @@ export default function LicitacoesPropostas() {
               );
             })}
           </TableBody>
-        </Table>
+        </TableContainer>
       </Card>
     </div>
   );
@@ -474,7 +528,9 @@ export default function LicitacoesPropostas() {
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-[0.813rem] orx-orx-font-bold">{formatCurrency(prop.valor_total)}</p>
+                <p className="text-[0.813rem] orx-orx-font-bold">
+                  {formatCurrency(prop.valor_total)}
+                </p>
                 <div className="flex gap-2 mt-2">
                   <Badge variant="default" className="bg-success/20 text-success">
                     MB: {prop.margem_bruta_percentual}%
@@ -555,15 +611,17 @@ export default function LicitacoesPropostas() {
                     <Clock className="w-5 h-5 text-[var(--text-secondary)]" />
                   )}
                 </div>
-                {!prop.aprovada_diretoria && prop.aprovada_comercial && prop.aprovada_financeiro && (
-                  <Button
-                    size="sm"
-                    onClick={() => handleAprovar(prop.id, 'diretoria')}
-                    className="w-full"
-                  >
-                    Aprovar
-                  </Button>
-                )}
+                {!prop.aprovada_diretoria &&
+                  prop.aprovada_comercial &&
+                  prop.aprovada_financeiro && (
+                    <Button
+                      size="sm"
+                      onClick={() => handleAprovar(prop.id, 'diretoria')}
+                      className="w-full"
+                    >
+                      Aprovar
+                    </Button>
+                  )}
               </div>
             </div>
 
@@ -572,17 +630,23 @@ export default function LicitacoesPropostas() {
               <div className="flex items-center justify-between mb-2">
                 <p className="text-[0.813rem] orx-orx-font-medium">Progresso de Aprovação</p>
                 <p className="text-[var(--text-secondary)] text-[0.813rem]">
-                  {[prop.aprovada_comercial, prop.aprovada_financeiro, prop.aprovada_diretoria].filter(
-                    Boolean
-                  ).length}{' '}
+                  {
+                    [
+                      prop.aprovada_comercial,
+                      prop.aprovada_financeiro,
+                      prop.aprovada_diretoria,
+                    ].filter(Boolean).length
+                  }{' '}
                   / 3
                 </p>
               </div>
               <Progress
                 value={
-                  ([prop.aprovada_comercial, prop.aprovada_financeiro, prop.aprovada_diretoria].filter(
-                    Boolean
-                  ).length /
+                  ([
+                    prop.aprovada_comercial,
+                    prop.aprovada_financeiro,
+                    prop.aprovada_diretoria,
+                  ].filter(Boolean).length /
                     3) *
                   100
                 }
@@ -607,7 +671,12 @@ export default function LicitacoesPropostas() {
               Gestão completa de licitações hospitalares e propostas comerciais
             </p>
           </div>
-          <Button variant="secondary" icon={<RefreshCw />} onClick={carregarDados} disabled={loading}>
+          <Button
+            variant="secondary"
+            icon={<RefreshCw />}
+            onClick={carregarDados}
+            disabled={loading}
+          >
             Atualizar
           </Button>
         </div>
@@ -642,4 +711,3 @@ export default function LicitacoesPropostas() {
     </div>
   );
 }
-

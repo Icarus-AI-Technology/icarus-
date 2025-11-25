@@ -10,15 +10,23 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Loader2, MapPin, CheckCircle2 } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/oraclusx-ds/Button';
+import { Input } from '@/components/oraclusx-ds/Input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { useValidacaoCep } from '@/hooks/useValidacao';
 
 // Schema de validação com Zod
 const enderecoSchema = z.object({
-  cep: z.string()
+  cep: z
+    .string()
     .min(8, 'CEP deve conter 8 dígitos')
     .regex(/^\d{5}-?\d{3}$/, 'CEP inválido'),
   logradouro: z.string().min(3, 'Logradouro é obrigatório'),
@@ -75,7 +83,7 @@ export function FormEndereco({
       form.setValue('bairro', endereco.bairro);
       form.setValue('cidade', endereco.cidade);
       form.setValue('uf', endereco.uf);
-      
+
       setCepBuscado(true);
 
       // Remove erros dos campos preenchidos
@@ -97,11 +105,11 @@ export function FormEndereco({
   // Formata CEP automaticamente (XXXXX-XXX)
   const formatarCep = (value: string) => {
     const limpo = value.replace(/\D/g, '');
-    
+
     if (limpo.length <= 5) {
       return limpo;
     }
-    
+
     return `${limpo.slice(0, 5)}-${limpo.slice(5, 8)}`;
   };
 
@@ -266,4 +274,3 @@ export function FormEndereco({
     </Card>
   );
 }
-

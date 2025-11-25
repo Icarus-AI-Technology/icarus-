@@ -4,7 +4,7 @@
  * IA Predição 96.5% precisão
  */
 
-import React, { useState } from"react";
+import React, { useState } from 'react';
 import {
   Card,
   CardHeader,
@@ -14,7 +14,7 @@ import {
   Button,
   Badge,
   Progress,
-} from"@/components/oraclusx-ds";
+} from '@/components/oraclusx-ds';
 import {
   TrendingUp,
   BarChart3,
@@ -26,60 +26,88 @@ import {
   Calendar,
   DollarSign,
   Users,
-} from"lucide-react";
+} from 'lucide-react';
 
 export const BIAnalytics: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState("geral");
+  const [activeCategory, setActiveCategory] = useState('geral');
 
   const categories = [
-    { id:"geral", label:"Visão Geral", icon: BarChart3, count: 12, trend:"dashboards" },
-    { id:"financeiro", label:"Financeiro", icon: DollarSign, count: 8, trend:"relatórios" },
-    { id:"operacional", label:"Operacional", icon: Activity, count: 15, trend:"métricas" },
-    { id:"clientes", label:"Clientes", icon: Users, count: 6, trend:"análises" },
+    { id: 'geral', label: 'Visão Geral', icon: BarChart3, count: 12, trend: 'dashboards' },
+    { id: 'financeiro', label: 'Financeiro', icon: DollarSign, count: 8, trend: 'relatórios' },
+    { id: 'operacional', label: 'Operacional', icon: Activity, count: 15, trend: 'métricas' },
+    { id: 'clientes', label: 'Clientes', icon: Users, count: 6, trend: 'análises' },
   ];
 
   const kpis = [
     {
-      title:"Faturamento Anual",
-      value:"R$ 45.8M",
-      trend:"+28.3%",
+      title: 'Faturamento Anual',
+      value: 'R$ 45.8M',
+      trend: '+28.3%',
       icon: DollarSign,
-      color:"green",
+      color: 'green',
     },
     {
-      title:"Crescimento Mensal",
-      value:"+18.5%",
-      trend:"vs mês anterior",
+      title: 'Crescimento Mensal',
+      value: '+18.5%',
+      trend: 'vs mês anterior',
       icon: TrendingUp,
-      color:"blue",
+      color: 'blue',
     },
     {
-      title:"Margem Operacional",
-      value:"42.7%",
-      trend:"+3.2%",
+      title: 'Margem Operacional',
+      value: '42.7%',
+      trend: '+3.2%',
       icon: PieChart,
-      color:"indigo",
+      color: 'indigo',
     },
     {
-      title:"ROI Médio",
-      value:"287%",
-      trend:"+45%",
+      title: 'ROI Médio',
+      value: '287%',
+      trend: '+45%',
       icon: Activity,
-      color:"yellow",
+      color: 'yellow',
     },
   ];
 
   const dashboards = [
-    { id: 1, titulo:"Performance Financeira", categoria:"Financeiro", metricas: 24, ultimaAtualizacao:"Há 5 min", status:"ativo" },
-    { id: 2, titulo:"Operações Cirúrgicas", categoria:"Operacional", metricas: 18, ultimaAtualizacao:"Há 12 min", status:"ativo" },
-    { id: 3, titulo:"Satisfação de Clientes", categoria:"Clientes", metricas: 12, ultimaAtualizacao:"Há 1 hora", status:"ativo" },
-    { id: 4, titulo:"Estoque e Logística", categoria:"Operacional", metricas: 20, ultimaAtualizacao:"Há 30 min", status:"ativo" },
+    {
+      id: 1,
+      titulo: 'Performance Financeira',
+      categoria: 'Financeiro',
+      metricas: 24,
+      ultimaAtualizacao: 'Há 5 min',
+      status: 'ativo',
+    },
+    {
+      id: 2,
+      titulo: 'Operações Cirúrgicas',
+      categoria: 'Operacional',
+      metricas: 18,
+      ultimaAtualizacao: 'Há 12 min',
+      status: 'ativo',
+    },
+    {
+      id: 3,
+      titulo: 'Satisfação de Clientes',
+      categoria: 'Clientes',
+      metricas: 12,
+      ultimaAtualizacao: 'Há 1 hora',
+      status: 'ativo',
+    },
+    {
+      id: 4,
+      titulo: 'Estoque e Logística',
+      categoria: 'Operacional',
+      metricas: 20,
+      ultimaAtualizacao: 'Há 30 min',
+      status: 'ativo',
+    },
   ];
 
   const predicoes = [
-    { titulo:"Faturamento Próximo Mês", valor:"R$ 4.2M", confianca: 96.5, tendencia:"alta" },
-    { titulo:"Demanda OPME Q4", valor:"+32%", confianca: 94.2, tendencia:"alta" },
-    { titulo:"Redução Custos", valor:"-8.5%", confianca: 91.8, tendencia:"baixa" },
+    { titulo: 'Faturamento Próximo Mês', valor: 'R$ 4.2M', confianca: 96.5, tendencia: 'alta' },
+    { titulo: 'Demanda OPME Q4', valor: '+32%', confianca: 94.2, tendencia: 'alta' },
+    { titulo: 'Redução Custos', valor: '-8.5%', confianca: 91.8, tendencia: 'baixa' },
   ];
 
   return (
@@ -87,13 +115,19 @@ export const BIAnalytics: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <header className="mb-6 flex items-start justify-between">
           <div>
-            <h1 className="text-heading-lg font-display text-[var(--text-primary)] mb-2">BI & Analytics IA</h1>
-            <p className="text-[var(--text-secondary)]">Business Intelligence com predições e insights avançados</p>
+            <h1 className="text-heading-lg font-display text-[var(--text-primary)] mb-2">
+              BI & Analytics IA
+            </h1>
+            <p className="text-[var(--text-secondary)]">
+              Business Intelligence com predições e insights avançados
+            </p>
           </div>
           <div className="flex items-center gap-2 px-4 py-2 bg-[var(--primary)] rounded-full">
             <Settings className="text-[var(--primary-foreground)] animate-spin-slow" size={20} />
             <div className="text-left">
-              <p className="text-[var(--primary-foreground)] text-body-sm orx-orx-font-medium">IA Predição</p>
+              <p className="text-[var(--primary-foreground)] text-body-sm orx-orx-font-medium">
+                IA Predição
+              </p>
               <p className="text-[var(--primary-foreground)]/70 text-body-xs">96.5% precisão</p>
             </div>
           </div>
@@ -113,15 +147,15 @@ export const BIAnalytics: React.FC = () => {
                     relative p-4 rounded-xl transition-all duration-200
                     ${
                       isActive
-                        ?"neuro-raised text-[var(--primary)] scale-105"
-                        :"bg-surface dark:bg-card text-[var(--text-secondary)]"
+                        ? 'neuro-raised text-[var(--primary)] scale-105'
+                        : 'bg-surface dark:bg-card text-[var(--text-secondary)]'
                     }
                   `}
                 >
                   <div className="flex flex-col items-center gap-2">
                     <div
                       className={`p-2 rounded-lg ${
-                        isActive ?"bg-surface/20" :"bg-surface dark:bg-muted"
+                        isActive ? 'bg-surface/20' : 'bg-surface dark:bg-muted'
                       }`}
                     >
                       <Icon size={24} />
@@ -129,10 +163,12 @@ export const BIAnalytics: React.FC = () => {
                     <div className="text-center">
                       <p className="text-body-xs mb-1 orx-orx-font-medium">{category.label}</p>
                       <div className="flex items-center justify-center gap-2">
-                        <span className="text-heading font-display text-[0.813rem]">{category.count}</span>
+                        <span className="text-heading font-display text-[0.813rem]">
+                          {category.count}
+                        </span>
                         <span
                           className={`text-body-xs ${
-                            isActive ?"text-[var(--primary)]/80" :"text-[var(--text-secondary)]"
+                            isActive ? 'text-[var(--primary)]/80' : 'text-[var(--text-secondary)]'
                           }`}
                         >
                           {category.trend}
@@ -150,10 +186,10 @@ export const BIAnalytics: React.FC = () => {
           {kpis.map((kpi, index) => {
             const Icon = kpi.icon;
             const colorClasses = {
-              green:"bg-success/10 text-success",
-              blue:"bg-[var(--accent)]/10 text-[var(--accent-foreground)]",
-              indigo:"bg-[var(--primary)]/10 text-[var(--primary)]",
-              yellow:"bg-warning/10 text-warning",
+              green: 'bg-success/10 text-success',
+              blue: 'bg-[var(--accent)]/10 text-[var(--accent-foreground)]',
+              indigo: 'bg-[var(--primary)]/10 text-[var(--primary)]',
+              yellow: 'bg-warning/10 text-warning',
             } as const;
 
             return (
@@ -168,7 +204,9 @@ export const BIAnalytics: React.FC = () => {
                       {kpi.trend}
                     </Badge>
                   </div>
-                  <div className={`p-3 rounded-lg ${colorClasses[kpi.color as keyof typeof colorClasses]}`}>
+                  <div
+                    className={`p-3 rounded-lg ${colorClasses[kpi.color as keyof typeof colorClasses]}`}
+                  >
                     <Icon size={24} />
                   </div>
                 </div>
@@ -246,9 +284,7 @@ export const BIAnalytics: React.FC = () => {
                         </span>
                         <TrendingUp
                           size={14}
-                          className={
-                            pred.tendencia ==="alta" ?"text-success" :"text-error"
-                          }
+                          className={pred.tendencia === 'alta' ? 'text-success' : 'text-error'}
                         />
                       </div>
                     </div>
@@ -281,17 +317,17 @@ export const BIAnalytics: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="grid gap-3 md:grid-cols-3">
-              {["Financeiro Completo","Operacional Mensal","Análise de Clientes"].map(
+              {['Financeiro Completo', 'Operacional Mensal', 'Análise de Clientes'].map(
                 (rel, i) => (
                   <div
                     key={i}
                     className="p-4 border border-[var(--border)] rounded-lg hover:neuro-raised transition-all cursor-pointer"
                   >
                     <BarChart3 className="text-[var(--text-primary)] mb-2" size={24} />
-                    <h4 className="text-[var(--text-primary)] mb-1 orx-orx-font-medium">
-                      {rel}
-                    </h4>
-                    <p className="text-body-xs text-[var(--text-secondary)]">Gerado automaticamente</p>
+                    <h4 className="text-[var(--text-primary)] mb-1 orx-orx-font-medium">{rel}</h4>
+                    <p className="text-body-xs text-[var(--text-secondary)]">
+                      Gerado automaticamente
+                    </p>
                   </div>
                 )
               )}
@@ -304,4 +340,3 @@ export const BIAnalytics: React.FC = () => {
 };
 
 export default BIAnalytics;
-

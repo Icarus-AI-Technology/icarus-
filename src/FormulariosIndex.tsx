@@ -1,16 +1,28 @@
 /**
  * ÍNDICE DE FORMULÁRIOS - OraclusX DS Neumorphic 3D
- * 
+ *
  * Página de navegação centralizada para todos os formulários do sistema
- * 
+ *
  * @version 1.0.0
  */
 
 import { useNavigate } from 'react-router-dom';
 import {
-  User, Building, UserCheck, Truck, Package, Shield,
-  Users, FileText, Calendar, ShoppingCart, DollarSign,
-  CreditCard, TrendingUp, MapPin, Search
+  User,
+  Building,
+  UserCheck,
+  Truck,
+  Package,
+  Shield,
+  Users,
+  FileText,
+  Calendar,
+  ShoppingCart,
+  DollarSign,
+  CreditCard,
+  TrendingUp,
+  MapPin,
+  Search,
 } from 'lucide-react';
 
 interface FormularioCard {
@@ -35,7 +47,7 @@ export default function FormulariosIndex() {
       icone: <User className="w-8 h-8" />,
       rota: '/cadastros/medicos/novo',
       categoria: 'cadastros',
-      cor: '#5E35B1'
+      cor: '#5E35B1',
     },
     {
       id: 'hospitais',
@@ -44,7 +56,7 @@ export default function FormulariosIndex() {
       icone: <Building className="w-8 h-8" />,
       rota: '/cadastros/hospitais/novo',
       categoria: 'cadastros',
-      cor: '#5E35B1'
+      cor: '#5E35B1',
     },
     {
       id: 'pacientes',
@@ -53,7 +65,7 @@ export default function FormulariosIndex() {
       icone: <UserCheck className="w-8 h-8" />,
       rota: '/cadastros/pacientes/novo',
       categoria: 'cadastros',
-      cor: '#5E35B1'
+      cor: '#5E35B1',
     },
     {
       id: 'fornecedores',
@@ -62,7 +74,7 @@ export default function FormulariosIndex() {
       icone: <Truck className="w-8 h-8" />,
       rota: '/cadastros/fornecedores/novo',
       categoria: 'cadastros',
-      cor: '#5E35B1'
+      cor: '#5E35B1',
     },
     {
       id: 'produtos',
@@ -71,7 +83,7 @@ export default function FormulariosIndex() {
       icone: <Package className="w-8 h-8" />,
       rota: '/cadastros/produtos/novo',
       categoria: 'cadastros',
-      cor: '#5E35B1'
+      cor: '#5E35B1',
     },
     {
       id: 'convenios',
@@ -80,7 +92,7 @@ export default function FormulariosIndex() {
       icone: <Shield className="w-8 h-8" />,
       rota: '/cadastros/convenios/novo',
       categoria: 'cadastros',
-      cor: '#5E35B1'
+      cor: '#5E35B1',
     },
     {
       id: 'equipes',
@@ -89,7 +101,7 @@ export default function FormulariosIndex() {
       icone: <Users className="w-8 h-8" />,
       rota: '/cadastros/equipes/novo',
       categoria: 'cadastros',
-      cor: '#5E35B1'
+      cor: '#5E35B1',
     },
     {
       id: 'transportadoras',
@@ -98,7 +110,7 @@ export default function FormulariosIndex() {
       icone: <Truck className="w-8 h-8" />,
       rota: '/cadastros/transportadoras/novo',
       categoria: 'cadastros',
-      cor: '#5E35B1'
+      cor: '#5E35B1',
     },
 
     // OPERACIONAIS
@@ -109,7 +121,7 @@ export default function FormulariosIndex() {
       icone: <Calendar className="w-8 h-8" />,
       rota: '/operacional/cirurgias/novo',
       categoria: 'operacional',
-      cor: '#3B82F6'
+      cor: '#3B82F6',
     },
     {
       id: 'pedidos',
@@ -118,7 +130,7 @@ export default function FormulariosIndex() {
       icone: <ShoppingCart className="w-8 h-8" />,
       rota: '/operacional/pedidos/novo',
       categoria: 'operacional',
-      cor: '#3B82F6'
+      cor: '#3B82F6',
     },
     {
       id: 'remessas',
@@ -127,7 +139,7 @@ export default function FormulariosIndex() {
       icone: <Package className="w-8 h-8" />,
       rota: '/operacional/remessas/novo',
       categoria: 'operacional',
-      cor: '#3B82F6'
+      cor: '#3B82F6',
     },
     {
       id: 'estoque',
@@ -136,7 +148,7 @@ export default function FormulariosIndex() {
       icone: <TrendingUp className="w-8 h-8" />,
       rota: '/operacional/estoque/novo',
       categoria: 'operacional',
-      cor: '#3B82F6'
+      cor: '#3B82F6',
     },
     {
       id: 'entregas',
@@ -145,7 +157,7 @@ export default function FormulariosIndex() {
       icone: <MapPin className="w-8 h-8" />,
       rota: '/operacional/entregas/novo',
       categoria: 'operacional',
-      cor: '#3B82F6'
+      cor: '#3B82F6',
     },
     {
       id: 'cotacoes',
@@ -154,7 +166,7 @@ export default function FormulariosIndex() {
       icone: <Search className="w-8 h-8" />,
       rota: '/operacional/cotacoes/novo',
       categoria: 'operacional',
-      cor: '#3B82F6'
+      cor: '#3B82F6',
     },
 
     // FINANCEIROS
@@ -165,7 +177,7 @@ export default function FormulariosIndex() {
       icone: <DollarSign className="w-8 h-8" />,
       rota: '/financeiro/contas-receber/novo',
       categoria: 'financeiro',
-      cor: '#10B981'
+      cor: '#10B981',
     },
     {
       id: 'contas-pagar',
@@ -174,7 +186,7 @@ export default function FormulariosIndex() {
       icone: <CreditCard className="w-8 h-8" />,
       rota: '/financeiro/contas-pagar/novo',
       categoria: 'financeiro',
-      cor: '#10B981'
+      cor: '#10B981',
     },
     {
       id: 'notas-fiscais',
@@ -183,14 +195,14 @@ export default function FormulariosIndex() {
       icone: <FileText className="w-8 h-8" />,
       rota: '/financeiro/notas-fiscais/novo',
       categoria: 'financeiro',
-      cor: '#10B981'
-    }
+      cor: '#10B981',
+    },
   ];
 
   const categorias = {
     cadastros: { titulo: 'Cadastros', cor: '#5E35B1' },
     operacional: { titulo: 'Operacional', cor: '#3B82F6' },
-    financeiro: { titulo: 'Financeiro', cor: '#10B981' }
+    financeiro: { titulo: 'Financeiro', cor: '#10B981' },
   };
 
   return (
@@ -208,19 +220,14 @@ export default function FormulariosIndex() {
 
         {/* Por Categoria */}
         {Object.entries(categorias).map(([key, cat]) => {
-          const formsCategoria = formularios.filter(f => f.categoria === key);
+          const formsCategoria = formularios.filter((f) => f.categoria === key);
 
           return (
             <div key={key} className="mb-8">
               {/* Título da Categoria */}
               <div className="flex items-center gap-3 mb-4">
-                <div
-                  className="w-1 h-8 rounded-full"
-                  style={{ backgroundColor: cat.cor }}
-                />
-                <h2 className="orx-text-xl orx-orx-font-semibold text-gray-800">
-                  {cat.titulo}
-                </h2>
+                <div className="w-1 h-8 rounded-full" style={{ backgroundColor: cat.cor }} />
+                <h2 className="orx-text-xl orx-orx-font-semibold text-gray-800">{cat.titulo}</h2>
                 <span className="orx-text-sm text-gray-500">
                   ({formsCategoria.length} formulários)
                 </span>
@@ -228,8 +235,9 @@ export default function FormulariosIndex() {
 
               {/* Grid de Cards */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-                {formsCategoria.map(form => (
-                  <button type="button"
+                {formsCategoria.map((form) => (
+                  <button
+                    type="button"
                     key={form.id}
                     onClick={() => navigate(form.rota)}
                     className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6
@@ -252,14 +260,10 @@ export default function FormulariosIndex() {
                     </div>
 
                     {/* Título */}
-                    <h3 className="orx-orx-font-semibold text-gray-800 mb-2">
-                      {form.titulo}
-                    </h3>
+                    <h3 className="orx-orx-font-semibold text-gray-800 mb-2">{form.titulo}</h3>
 
                     {/* Descrição */}
-                    <p className="orx-text-sm text-gray-500">
-                      {form.descricao}
-                    </p>
+                    <p className="orx-text-sm text-gray-500">{form.descricao}</p>
                   </button>
                 ))}
               </div>
@@ -270,4 +274,3 @@ export default function FormulariosIndex() {
     </div>
   );
 }
-

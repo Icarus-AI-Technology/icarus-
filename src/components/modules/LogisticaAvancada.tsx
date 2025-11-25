@@ -1,5 +1,5 @@
-import { useState, useEffect } from"react";
-import { Card } from"@/components/oraclusx-ds";
+import { useState, useEffect } from 'react';
+import { Card } from '@/components/oraclusx-ds';
 import {
   Truck,
   Package,
@@ -14,10 +14,10 @@ import {
   Download,
   Navigation,
   User,
-} from"lucide-react";
-import { useDocumentTitle, useEntregas } from"@/hooks";
-import type { Entrega } from"@/hooks/useEntregas";
-import { useToast } from"@/contexts/ToastContext";
+} from 'lucide-react';
+import { useDocumentTitle, useEntregas } from '@/hooks';
+import type { Entrega } from '@/hooks/useEntregas';
+import { useToast } from '@/contexts/ToastContext';
 
 interface KPI {
   title: string;
@@ -36,20 +36,14 @@ interface Category {
 }
 
 export default function LogisticaAvancada() {
-  useDocumentTitle("Logística Avançada IA");
-  
+  useDocumentTitle('Logística Avançada IA');
+
   // Navegação
-  const [activeCategory, setActiveCategory] = useState("entregas");
-  const [activeTab, setActiveTab] = useState("todas");
-  
+  const [activeCategory, setActiveCategory] = useState('entregas');
+  const [activeTab, setActiveTab] = useState('todas');
+
   // Backend Integration
-  const {
-    entregas,
-    loading,
-    error,
-    getEstatisticas,
-    getEntregasAtrasadas,
-  } = useEntregas();
+  const { entregas, loading, error, getEstatisticas, getEntregasAtrasadas } = useEntregas();
   const { addToast } = useToast();
 
   const [stats, setStats] = useState({
@@ -61,7 +55,7 @@ export default function LogisticaAvancada() {
     taxaEntrega: 0,
   });
 
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [entregasAtrasadas, setEntregasAtrasadas] = useState<Entrega[]>([]);
 
   useEffect(() => {
@@ -71,49 +65,49 @@ export default function LogisticaAvancada() {
 
   useEffect(() => {
     if (error) {
-      addToast(error,"error");
+      addToast(error, 'error');
     }
   }, [error, addToast]);
 
   // Categorias
   const categories: Category[] = [
-    { 
-      id:"entregas", 
-      label:"Entregas Ativas", 
-      icon: Truck, 
+    {
+      id: 'entregas',
+      label: 'Entregas Ativas',
+      icon: Truck,
       count: stats.emTransito + stats.pendentes,
-      trend:"+5"
-    },
-    { 
-      id:"rotas", 
-      label:"Rotas Otimizadas", 
-      icon: Route, 
-      count: 12,
-      trend:"+2"
-    },
-    { 
-      id:"motoristas", 
-      label:"Motoristas", 
-      icon: User, 
-      count: 18,
-      trend:"+1"
-    },
-    { 
-      id:"pendencias", 
-      label:"Pendências", 
-      icon: AlertCircle, 
-      count: stats.atrasadas,
-      trend:"-2"
+      trend: '+5',
     },
     {
-      id:"rastreamento",
-      label:"Rastreamento",
+      id: 'rotas',
+      label: 'Rotas Otimizadas',
+      icon: Route,
+      count: 12,
+      trend: '+2',
+    },
+    {
+      id: 'motoristas',
+      label: 'Motoristas',
+      icon: User,
+      count: 18,
+      trend: '+1',
+    },
+    {
+      id: 'pendencias',
+      label: 'Pendências',
+      icon: AlertCircle,
+      count: stats.atrasadas,
+      trend: '-2',
+    },
+    {
+      id: 'rastreamento',
+      label: 'Rastreamento',
       icon: Navigation,
       count: stats.total,
     },
     {
-      id:"relatorios",
-      label:"Relatórios",
+      id: 'relatorios',
+      label: 'Relatórios',
       icon: Download,
       count: 0,
     },
@@ -122,81 +116,85 @@ export default function LogisticaAvancada() {
   // KPIs
   const kpis: KPI[] = [
     {
-      title:"Entregas Ativas",
+      title: 'Entregas Ativas',
       value: stats.emTransito + stats.pendentes,
-      trend:"+8 hoje",
+      trend: '+8 hoje',
       icon: Truck,
-      color:"blue",
+      color: 'blue',
     },
     {
-      title:"Taxa de Entrega",
+      title: 'Taxa de Entrega',
       value: `${stats.taxaEntrega.toFixed(1)}%`,
-      trend:"+2.3%",
+      trend: '+2.3%',
       icon: CheckCircle,
-      color:"green",
+      color: 'green',
     },
     {
-      title:"Concluídas",
+      title: 'Concluídas',
       value: stats.entregues,
       trend: `Total: ${stats.total}`,
       icon: Package,
-      color:"indigo",
+      color: 'indigo',
     },
     {
-      title:"Atrasadas",
+      title: 'Atrasadas',
       value: stats.atrasadas,
-      trend: stats.atrasadas > 0 ?"Atenção!" :"Em dia",
+      trend: stats.atrasadas > 0 ? 'Atenção!' : 'Em dia',
       icon: AlertCircle,
-      color:"red",
+      color: 'red',
     },
   ];
 
   // Helpers
   const getStatusColor = (status: Entrega['status']): string => {
     const colors: Record<Entrega['status'], string> = {
-      pendente:"text-secondary bg-surface",
-      coletado:"text-accent bg-blue-50",
-      em_transito:"text-primary bg-indigo-50",
-      saiu_entrega:"text-purple-600 bg-purple-50",
-      entregue:"text-success bg-success/5",
-      devolvido:"text-orange-600 bg-orange-50",
-      cancelado:"text-error bg-destructive/5",
+      pendente: 'text-secondary bg-surface',
+      coletado: 'text-accent bg-blue-50',
+      em_transito: 'text-primary bg-indigo-50',
+      saiu_entrega: 'text-purple-600 bg-purple-50',
+      entregue: 'text-success bg-success/5',
+      devolvido: 'text-orange-600 bg-orange-50',
+      cancelado: 'text-error bg-destructive/5',
     };
-    return colors[status] ||"text-secondary bg-surface";
+    return colors[status] || 'text-secondary bg-surface';
   };
 
   const getStatusLabel = (status: Entrega['status']): string => {
     const labels: Record<Entrega['status'], string> = {
-      pendente:"Pendente",
-      coletado:"Coletado",
-      em_transito:"Em Trânsito",
-      saiu_entrega:"Saiu p/ Entrega",
-      entregue:"Entregue",
-      devolvido:"Devolvido",
-      cancelado:"Cancelado",
+      pendente: 'Pendente',
+      coletado: 'Coletado',
+      em_transito: 'Em Trânsito',
+      saiu_entrega: 'Saiu p/ Entrega',
+      entregue: 'Entregue',
+      devolvido: 'Devolvido',
+      cancelado: 'Cancelado',
     };
     return labels[status] || status;
   };
 
   const formatDate = (date?: string) => {
-    if (!date) return"-";
-    return new Date(date).toLocaleDateString("pt-BR");
+    if (!date) return '-';
+    return new Date(date).toLocaleDateString('pt-BR');
   };
-
 
   // Filtrar entregas
   const filteredEntregas = entregas.filter((entrega) => {
-    const matchSearch = 
+    const matchSearch =
       entrega.codigo_rastreio.toLowerCase().includes(searchQuery.toLowerCase()) ||
       entrega.destino_nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (entrega.transportadora?.toLowerCase().includes(searchQuery.toLowerCase()) || false);
-
-    const matchTab = 
-      activeTab ==="todas" ? true :
-      activeTab ==="ativas" ? ['pendente', 'coletado', 'em_transito', 'saiu_entrega'].includes(entrega.status) :
-      activeTab ==="entregues" ? entrega.status === 'entregue' :
-      activeTab ==="atrasadas" ? entregasAtrasadas.some(e => e.id === entrega.id) :
+      entrega.transportadora?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       false;
+
+    const matchTab =
+      activeTab === 'todas'
+        ? true
+        : activeTab === 'ativas'
+          ? ['pendente', 'coletado', 'em_transito', 'saiu_entrega'].includes(entrega.status)
+          : activeTab === 'entregues'
+            ? entrega.status === 'entregue'
+            : activeTab === 'atrasadas'
+              ? entregasAtrasadas.some((e) => e.id === entrega.id)
+              : false;
 
     return matchSearch && matchTab;
   });
@@ -231,22 +229,22 @@ export default function LogisticaAvancada() {
       {/* Tabs */}
       <div className="flex gap-2 p-2 neuro-inset rounded-2xl w-fit">
         {[
-          { id:"todas", label:"Todas" },
-          { id:"ativas", label:"Ativas" },
-          { id:"entregues", label:"Entregues" },
-          { id:"atrasadas", label:"Atrasadas" },
+          { id: 'todas', label: 'Todas' },
+          { id: 'ativas', label: 'Ativas' },
+          { id: 'entregues', label: 'Entregues' },
+          { id: 'atrasadas', label: 'Atrasadas' },
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`px-6 py-3 rounded-xl orx-orx-font-medium transition-all flex items-center gap-2 ${
               activeTab === tab.id
-                ?"neuro-raised text-[var(--primary)]"
-                :"text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                ? 'neuro-raised text-[var(--primary)]'
+                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
             }`}
           >
             {tab.label}
-            {tab.id ==="atrasadas" && stats.atrasadas > 0 && (
+            {tab.id === 'atrasadas' && stats.atrasadas > 0 && (
               <span className="px-2 py-0.5 rounded-full bg-destructive/10 text-error text-body-xs font-display">
                 {stats.atrasadas}
               </span>
@@ -317,7 +315,7 @@ export default function LogisticaAvancada() {
                       {formatDate(entrega.data_previsao)}
                     </td>
                     <td className="p-4 text-[var(--text-primary)]">
-                      {entrega.transportadora ||"-"}
+                      {entrega.transportadora || '-'}
                     </td>
                     <td className="p-4">
                       <span
@@ -328,13 +326,13 @@ export default function LogisticaAvancada() {
                     </td>
                     <td className="p-4">
                       <div className="flex gap-2">
-                        <button 
+                        <button
                           className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all"
                           title="Ver detalhes"
                         >
                           <Search className="w-4 h-4" />
                         </button>
-                        <button 
+                        <button
                           className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all"
                           title="Rastrear"
                         >
@@ -388,8 +386,8 @@ export default function LogisticaAvancada() {
               onClick={() => setActiveCategory(category.id)}
               className={`flex flex-col items-center justify-center h-24 text-center rounded-xl transition-all duration-200 ${
                 activeCategory === category.id
-                  ?"neuro-raised scale-105"
-                  :"neuro-flat hover:neuro-raised"
+                  ? 'neuro-raised scale-105'
+                  : 'neuro-flat hover:neuro-raised'
               }`}
             >
               <category.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
@@ -400,9 +398,7 @@ export default function LogisticaAvancada() {
                 <span className="text-body-lg font-display text-[var(--text-primary)]">
                   {category.count}
                 </span>
-                {category.trend && (
-                  <TrendingUp className="w-3 h-3 text-success" />
-                )}
+                {category.trend && <TrendingUp className="w-3 h-3 text-success" />}
               </div>
             </button>
           ))}
@@ -414,16 +410,16 @@ export default function LogisticaAvancada() {
             <Card key={index} className="neuro-raised p-6">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-body-sm text-[var(--text-secondary)] mb-1">
-                    {kpi.title}
-                  </p>
+                  <p className="text-body-sm text-[var(--text-secondary)] mb-1">{kpi.title}</p>
                   <h3 className="text-heading font-display text-[var(--text-primary)]">
                     {kpi.value}
                   </h3>
                   {kpi.trend && (
-                    <p className={`text-body-xs mt-2 flex items-center gap-1 ${
-                      kpi.color === 'red' ? 'text-error' : 'text-success'
-                    }`}>
+                    <p
+                      className={`text-body-xs mt-2 flex items-center gap-1 ${
+                        kpi.color === 'red' ? 'text-error' : 'text-success'
+                      }`}
+                    >
                       {kpi.color !== 'red' && <TrendingUp className="w-3 h-3" />}
                       {kpi.color === 'red' && <AlertCircle className="w-3 h-3" />}
                       {kpi.trend}
@@ -439,8 +435,8 @@ export default function LogisticaAvancada() {
         </div>
 
         {/* Content */}
-        {activeCategory ==="entregas" && renderEntregas()}
-        {activeCategory ==="rotas" && (
+        {activeCategory === 'entregas' && renderEntregas()}
+        {activeCategory === 'rotas' && (
           <Card className="neuro-raised p-12 text-center">
             <Route className="w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4" />
             <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 orx-orx-font-medium">
@@ -451,7 +447,7 @@ export default function LogisticaAvancada() {
             </p>
           </Card>
         )}
-        {activeCategory ==="motoristas" && (
+        {activeCategory === 'motoristas' && (
           <Card className="neuro-raised p-12 text-center">
             <User className="w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4" />
             <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 orx-orx-font-medium">
@@ -462,7 +458,7 @@ export default function LogisticaAvancada() {
             </p>
           </Card>
         )}
-        {activeCategory ==="pendencias" && (
+        {activeCategory === 'pendencias' && (
           <Card className="neuro-raised p-6">
             <h3 className="text-body-lg text-[var(--text-primary)] mb-4 flex items-center gap-2 orx-orx-font-medium">
               <AlertCircle className="w-5 h-5 text-error" />
@@ -470,7 +466,7 @@ export default function LogisticaAvancada() {
             </h3>
             <div className="space-y-3">
               {entregasAtrasadas.map((entrega) => (
-                <div 
+                <div
                   key={entrega.id}
                   className="p-4 rounded-xl neuro-inset flex items-center justify-between"
                 >
@@ -490,23 +486,19 @@ export default function LogisticaAvancada() {
               {entregasAtrasadas.length === 0 && (
                 <div className="text-center py-8">
                   <CheckCircle className="w-12 h-12 text-success mx-auto mb-3" />
-                  <p className="text-[var(--text-secondary)]">
-                    Nenhuma entrega atrasada! 🎉
-                  </p>
+                  <p className="text-[var(--text-secondary)]">Nenhuma entrega atrasada! 🎉</p>
                 </div>
               )}
             </div>
           </Card>
         )}
-        {(activeCategory ==="rastreamento" || activeCategory ==="relatorios") && (
+        {(activeCategory === 'rastreamento' || activeCategory === 'relatorios') && (
           <Card className="neuro-raised p-12 text-center">
             <Download className="w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4" />
             <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 orx-orx-font-medium">
-              {categories.find(c => c.id === activeCategory)?.label}
+              {categories.find((c) => c.id === activeCategory)?.label}
             </h3>
-            <p className="text-[var(--text-secondary)]">
-              Módulo em desenvolvimento
-            </p>
+            <p className="text-[var(--text-secondary)]">Módulo em desenvolvimento</p>
           </Card>
         )}
       </div>

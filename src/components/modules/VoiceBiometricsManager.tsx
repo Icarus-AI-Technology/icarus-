@@ -1,4 +1,4 @@
-import React from 'react';
+// React is automatically imported in JSX transform
 import { isFeatureEnabled } from '@/lib/flags';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -13,24 +13,32 @@ export default function VoiceBiometricsManager(): JSX.Element {
         </div>
       )}
       <h1 className="orx-text-xl orx-orx-font-semibold mb-2">Voice Biometrics</h1>
-      <p className="orx-text-sm text-muted-foreground mb-4">Gestão de amostras de voz e verificação biométrica.</p>
+      <p className="orx-text-sm text-muted-foreground mb-4">
+        Gestão de amostras de voz e verificação biométrica.
+      </p>
 
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="orx-text-base">Perfis cadastrados</CardTitle></CardHeader>
+          <CardHeader className="pb-2">
+            <CardTitle className="orx-text-base">Perfis cadastrados</CardTitle>
+          </CardHeader>
           <CardContent>
             <div className="orx-text-2xl orx-orx-font-semibold">324</div>
             <div className="orx-text-xs text-muted-foreground">Total global</div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="orx-text-base">Taxa de match</CardTitle></CardHeader>
+          <CardHeader className="pb-2">
+            <CardTitle className="orx-text-base">Taxa de match</CardTitle>
+          </CardHeader>
           <CardContent>
             <Badge variant="default">98.1%</Badge>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="orx-text-base">Tentativas falhas</CardTitle></CardHeader>
+          <CardHeader className="pb-2">
+            <CardTitle className="orx-text-base">Tentativas falhas</CardTitle>
+          </CardHeader>
           <CardContent>
             <div className="orx-text-2xl orx-orx-font-semibold">3</div>
             <div className="orx-text-xs text-muted-foreground">Últimas 24h</div>

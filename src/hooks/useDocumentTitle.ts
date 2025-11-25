@@ -3,7 +3,7 @@
  * Atualiza o título do documento (tab do navegador) dinamicamente
  */
 
-import { useEffect } from"react";
+import { useEffect } from 'react';
 
 export function useDocumentTitle(title: string): void {
   useEffect(() => {
@@ -18,4 +18,3 @@ export function useDocumentTitle(title: string): void {
 }
 
 export default useDocumentTitle;
-

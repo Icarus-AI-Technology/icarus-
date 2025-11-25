@@ -1,7 +1,7 @@
 /**
  * OraclusX Design System - CardKPI Component
  * Card KPI Neumórfico 3D Premium
- * 
+ *
  * ESPECIFICAÇÃO:
  * - Superfície neuromórfica com profundidade de nível 2
  * - Suporte para ícone, título, valor principal e tendência
@@ -11,43 +11,47 @@
  */
 
 import React from 'react';
-import { TrendingUp, TrendingDown, Minus, LucideIcon } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import type { LucideIcon } from '@/types/lucide';
 
 export interface CardKpiProps {
   /** Rótulo/título do KPI */
   label: string;
-  
+
   /** Valor principal a ser exibido */
   value: string | number;
-  
+
   /** Ícone do KPI (componente Lucide React) */
   icon: LucideIcon;
-  
+
   /** Cor do ícone (ex: 'text-indigo-500', 'text-green-500') */
   iconColor?: string;
-  
+
   /** Tendência do KPI */
   trend?: {
     direction: 'up' | 'down' | 'neutral';
     percentage: number;
   };
-  
+
   /** Tonalidade do card (afeta o fundo e cores de destaque) */
   tone?: 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral';
-  
+
   /** Callback ao clicar no card */
   onClick?: () => void;
-  
+
   /** Classe CSS adicional */
   className?: string;
 }
 
-const toneStyles: Record<NonNullable<CardKpiProps['tone']>, {
-  container: string;
-  iconBox: string;
-  trendColor: { up: string; down: string; neutral: string };
-}> = {
+const toneStyles: Record<
+  NonNullable<CardKpiProps['tone']>,
+  {
+    container: string;
+    iconBox: string;
+    trendColor: { up: string; down: string; neutral: string };
+  }
+> = {
   primary: {
     container: 'bg-orx-bg-surface hover:bg-orx-bg-surface-elevated',
     iconBox: 'bg-gradient-to-br from-indigo-500 to-indigo-600',
@@ -147,9 +151,7 @@ export const CardKpi: React.FC<CardKpiProps> = ({
       aria-label={`${label}: ${value}`}
     >
       {/* Highlight sutil no topo */}
-      <div
-        className="absolute top-0 left-0 right-0 h-1/3 pointer-events-none bg-[var(--highlight-top)] rounded-[inherit]"
-      />
+      <div className="absolute top-0 left-0 right-0 h-1/3 pointer-events-none bg-[var(--highlight-top)] rounded-[inherit]" />
 
       <div className="relative z-10 flex items-start justify-between gap-4">
         {/* Ícone */}
@@ -172,9 +174,7 @@ export const CardKpi: React.FC<CardKpiProps> = ({
           </p>
 
           {/* Valor */}
-          <p className="orx-text-3xl orx-orx-font-bold text-orx-text-primary truncate">
-            {value}
-          </p>
+          <p className="orx-text-3xl orx-orx-font-bold text-orx-text-primary truncate">{value}</p>
 
           {/* Tendência */}
           {trend && (
@@ -203,4 +203,3 @@ export const CardKpi: React.FC<CardKpiProps> = ({
 CardKpi.displayName = 'CardKpi';
 
 export default CardKpi;
-

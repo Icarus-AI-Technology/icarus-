@@ -11,10 +11,8 @@ module.exports = {
       env: {
         NODE_ENV: 'production',
         ADMIN_EMAIL: process.env.ADMIN_EMAIL || 'dax@newortho.com.br',
-        SUPABASE_DB_URL: process.env.SUPABASE_DB_URL || process.env.DATABASE_URL || ''
-      }
-    }
-  ]
+        SUPABASE_DB_URL: process.env.SUPABASE_DB_URL || process.env.DATABASE_URL || '',
+      },
+    },
+  ],
 };
-
-

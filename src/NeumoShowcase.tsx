@@ -1,28 +1,13 @@
 /**
  * Showcase - Componentes Neumórficos 3D Premium
- * 
+ *
  * Página de demonstração de todos os componentes do design system neumórfico.
  */
 
 import React, { useState } from 'react';
-import {
-  TrendingUp,
-  DollarSign,
-  Users,
-  Package,
-  Search,
-  Mail,
-  User,
-  Lock,
-} from 'lucide-react';
-import {
-  CardKpi,
-  MiniCard,
-  NeumoInput,
-  NeumoTextarea,
-  NeumoButton,
-  NeumoSearchBar,
-} from '@/components/oraclusx-ds';
+import { TrendingUp, DollarSign, Users, Package, Search, Mail, User, Lock } from 'lucide-react';
+import { CardKpi, MiniCard, NeumoTextarea, NeumoSearchBar, Input } from '@/components/oraclusx-ds';
+import { Button } from '@/components/oraclusx-ds/Button';
 
 export default function NeumoShowcase() {
   const [searchValue, setSearchValue] = useState('');
@@ -44,9 +29,7 @@ export default function NeumoShowcase() {
 
         {/* CardKpi Section */}
         <section>
-          <h2 className="orx-text-2xl orx-orx-font-bold text-orx-text-primary mb-6">
-            Cards KPI
-          </h2>
+          <h2 className="orx-text-2xl orx-orx-font-bold text-orx-text-primary mb-6">Cards KPI</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <CardKpi
               label="Receita Total"
@@ -81,9 +64,7 @@ export default function NeumoShowcase() {
 
         {/* MiniCard Section */}
         <section>
-          <h2 className="orx-text-2xl orx-orx-font-bold text-orx-text-primary mb-6">
-            Mini Cards
-          </h2>
+          <h2 className="orx-text-2xl orx-orx-font-bold text-orx-text-primary mb-6">Mini Cards</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
             <MiniCard
               title="Pedidos Hoje"
@@ -106,12 +87,7 @@ export default function NeumoShowcase() {
               variant="warning"
               trend={{ direction: 'down', value: '-5%' }}
             />
-            <MiniCard
-              title="Tickets Abertos"
-              value="8"
-              icon={Mail}
-              variant="danger"
-            />
+            <MiniCard title="Tickets Abertos" value="8" icon={Mail} variant="danger" />
             <MiniCard
               title="Margem Lucro"
               value="18.5%"
@@ -144,21 +120,14 @@ export default function NeumoShowcase() {
               <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2">
                 Busca Pequena
               </label>
-              <NeumoSearchBar
-                size="sm"
-                placeholder="Busca rápida..."
-                showFilters={false}
-              />
+              <NeumoSearchBar size="sm" placeholder="Busca rápida..." showFilters={false} />
             </div>
 
             <div>
               <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2">
                 Busca Grande
               </label>
-              <NeumoSearchBar
-                size="lg"
-                placeholder="Busca avançada com múltiplos critérios..."
-              />
+              <NeumoSearchBar size="lg" placeholder="Busca avançada com múltiplos critérios..." />
             </div>
           </div>
         </section>
@@ -169,7 +138,8 @@ export default function NeumoShowcase() {
             Campos de Entrada
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl">
-            <NeumoInput
+            <Input
+              variant="neumo"
               label="Nome Completo"
               placeholder="Digite seu nome"
               leftIcon={User}
@@ -178,7 +148,8 @@ export default function NeumoShowcase() {
               hint="Como você gostaria de ser chamado"
             />
 
-            <NeumoInput
+            <Input
+              variant="neumo"
               label="E-mail"
               type="email"
               placeholder="seu@email.com"
@@ -186,7 +157,8 @@ export default function NeumoShowcase() {
               required
             />
 
-            <NeumoInput
+            <Input
+              variant="neumo"
               label="Senha"
               type="password"
               placeholder="********"
@@ -194,23 +166,26 @@ export default function NeumoShowcase() {
               required
             />
 
-            <NeumoInput
+            <Input
+              variant="neumo"
               label="Com Erro"
               placeholder="Campo inválido"
               leftIcon={Mail}
               error="Este campo é obrigatório"
             />
 
-            <NeumoInput
+            <Input
+              variant="neumo"
               label="Desabilitado"
               placeholder="Campo desabilitado"
               disabled
               value="Não editável"
             />
 
-            <NeumoInput
+            <Input
+              variant="neumo"
               label="Tamanho Pequeno"
-              size="sm"
+              inputSize="sm"
               placeholder="Input menor"
             />
           </div>
@@ -250,9 +225,7 @@ export default function NeumoShowcase() {
 
         {/* Buttons Section */}
         <section>
-          <h2 className="orx-text-2xl orx-orx-font-bold text-orx-text-primary mb-6">
-            Botões
-          </h2>
+          <h2 className="orx-text-2xl orx-orx-font-bold text-orx-text-primary mb-6">Botões</h2>
           <div className="space-y-6">
             {/* Variantes */}
             <div>
@@ -260,13 +233,27 @@ export default function NeumoShowcase() {
                 Variantes
               </h3>
               <div className="flex flex-wrap gap-3">
-                <NeumoButton variant="primary">Primary</NeumoButton>
-                <NeumoButton variant="secondary">Secondary</NeumoButton>
-                <NeumoButton variant="success">Success</NeumoButton>
-                <NeumoButton variant="warning">Warning</NeumoButton>
-                <NeumoButton variant="danger">Danger</NeumoButton>
-                <NeumoButton variant="ghost">Ghost</NeumoButton>
-                <NeumoButton variant="neumo">Neumo</NeumoButton>
+                <Button variant="neumo" color="primary">
+                  Primary
+                </Button>
+                <Button variant="neumo" color="secondary">
+                  Secondary
+                </Button>
+                <Button variant="neumo" color="success">
+                  Success
+                </Button>
+                <Button variant="neumo" color="warning">
+                  Warning
+                </Button>
+                <Button variant="neumo" color="danger">
+                  Danger
+                </Button>
+                <Button variant="neumo" color="ghost">
+                  Ghost
+                </Button>
+                <Button variant="neumo">
+                  Neumo
+                </Button>
               </div>
             </div>
 
@@ -276,9 +263,15 @@ export default function NeumoShowcase() {
                 Tamanhos
               </h3>
               <div className="flex flex-wrap items-center gap-3">
-                <NeumoButton size="sm">Pequeno</NeumoButton>
-                <NeumoButton size="md">Médio</NeumoButton>
-                <NeumoButton size="lg">Grande</NeumoButton>
+                <Button variant="neumo" size="sm">
+                  Pequeno
+                </Button>
+                <Button variant="neumo" size="md">
+                  Médio
+                </Button>
+                <Button variant="neumo" size="lg">
+                  Grande
+                </Button>
               </div>
             </div>
 
@@ -288,13 +281,15 @@ export default function NeumoShowcase() {
                 Com Ícones
               </h3>
               <div className="flex flex-wrap gap-3">
-                <NeumoButton leftIcon={Search}>Buscar</NeumoButton>
-                <NeumoButton rightIcon={TrendingUp} variant="success">
+                <Button variant="neumo" leftIcon={Search}>
+                  Buscar
+                </Button>
+                <Button variant="neumo" rightIcon={TrendingUp} color="success">
                   Crescimento
-                </NeumoButton>
-                <NeumoButton leftIcon={Package} rightIcon={TrendingUp}>
+                </Button>
+                <Button variant="neumo" leftIcon={Package} rightIcon={TrendingUp}>
                   Produtos em Alta
-                </NeumoButton>
+                </Button>
               </div>
             </div>
 
@@ -304,11 +299,15 @@ export default function NeumoShowcase() {
                 Estados
               </h3>
               <div className="flex flex-wrap gap-3">
-                <NeumoButton loading>Carregando</NeumoButton>
-                <NeumoButton disabled>Desabilitado</NeumoButton>
-                <NeumoButton fullWidth variant="primary">
+                <Button variant="neumo" isLoading>
+                  Carregando
+                </Button>
+                <Button variant="neumo" disabled>
+                  Desabilitado
+                </Button>
+                <Button variant="neumo" fullWidth color="primary">
                   Largura Total
-                </NeumoButton>
+                </Button>
               </div>
             </div>
           </div>
@@ -316,17 +315,16 @@ export default function NeumoShowcase() {
 
         {/* Dark Mode Toggle */}
         <section className="text-center pt-8">
-          <NeumoButton
+          <Button
             variant="neumo"
             onClick={() => {
               document.documentElement.classList.toggle('dark');
             }}
           >
             Alternar Modo Claro/Escuro
-          </NeumoButton>
+          </Button>
         </section>
       </div>
     </div>
   );
 }
-

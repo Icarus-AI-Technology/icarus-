@@ -26,16 +26,15 @@ export class DocumentacaoAI {
       metadados: {
         versao: '1.0.0',
         dataGeracao: new Date().toISOString(),
-        autor: 'Documentação AI'
+        autor: 'Documentação AI',
       },
       secoes: [
         { titulo: 'Introdução', conteudo: 'Introdução automática...' },
         { titulo: 'Procedimentos', conteudo: 'Procedimentos detalhados...' },
-        { titulo: 'Conclusão', conteudo: 'Conclusão automática...' }
-      ]
+        { titulo: 'Conclusão', conteudo: 'Conclusão automática...' },
+      ],
     };
   }
 }
 
 export const documentacaoAI = new DocumentacaoAI();
-

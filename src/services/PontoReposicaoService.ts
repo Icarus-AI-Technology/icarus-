@@ -1,9 +1,9 @@
 /**
  * PontoReposicaoService - Serviço de gestão de ponto de reposição
  * Sistema: ICARUS v5.0
- * 
+ *
  * Fórmula: Ponto Reposição = (Demanda Média × Lead Time) + Estoque Segurança
- * 
+ *
  * Funcionalidades:
  * - Calcular ponto de reposição automático
  * - Verificar produtos abaixo do ponto
@@ -12,7 +12,7 @@
  * - Previsão de ruptura
  */
 
-import { supabase } from '@/lib/supabase';
+import { legacySupabase as supabase } from '@/lib/legacySupabase';
 
 // ============================================
 // INTERFACES
@@ -107,12 +107,12 @@ export class PontoReposicaoService {
       // 4. Estoque de segurança (buffer)
       // Fórmula: Estoque Segurança = Demanda Média × Lead Time × Fator Segurança
       // Fator Segurança padrão: 50% (0.5)
-      const estoqueSeguranca = produto.estoque_seguranca || 
-        Math.ceil(demandaMediaDiaria * leadTimeDias * 0.5);
+      const estoqueSeguranca =
+        produto.estoque_seguranca || Math.ceil(demandaMediaDiaria * leadTimeDias * 0.5);
 
       // 5. FÓRMULA FINAL: Ponto Reposição = (Demanda × Lead Time) + Estoque Segurança
       const pontoReposicaoCalculado = Math.ceil(
-        (demandaMediaDiaria * leadTimeDias) + estoqueSeguranca
+        demandaMediaDiaria * leadTimeDias + estoqueSeguranca
       );
 
       return {
@@ -123,10 +123,10 @@ export class PontoReposicaoService {
         estoque_seguranca: estoqueSeguranca,
         ponto_reposicao_calculado: pontoReposicaoCalculado,
         ponto_reposicao_atual: produto.ponto_reposicao || 0,
-        sugestao_ajuste: Math.abs(pontoReposicaoCalculado - (produto.ponto_reposicao || 0)) > 5
+        sugestao_ajuste: Math.abs(pontoReposicaoCalculado - (produto.ponto_reposicao || 0)) > 5,
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao calcular ponto de reposição:', err);
       throw error;
     }
@@ -138,8 +138,7 @@ export class PontoReposicaoService {
   static async verificarPontosReposicao(): Promise<ProdutoAbaixoPonto[]> {
     try {
       // Usar função SQL que já existe no banco
-      const { data: produtos, error } = await supabase
-        .rpc('produtos_abaixo_ponto_reposicao');
+      const { data: produtos, error } = await supabase.rpc('produtos_abaixo_ponto_reposicao');
 
       if (error) throw error;
 
@@ -151,9 +150,8 @@ export class PontoReposicaoService {
 
         // Calcular dias até ruptura
         const consumoMedio = await this.calcularConsumoMedio(prod.produto_id, 30);
-        const diasAteRuptura = consumoMedio > 0 
-          ? Math.floor(prod.quantidade_total / consumoMedio)
-          : 999;
+        const diasAteRuptura =
+          consumoMedio > 0 ? Math.floor(prod.quantidade_total / consumoMedio) : 999;
 
         // Determinar prioridade
         let prioridade: 'critica' | 'alta' | 'media';
@@ -174,7 +172,7 @@ export class PontoReposicaoService {
           diferenca,
           percentual_falta: Math.round(percentualFalta),
           dias_ate_ruptura: diasAteRuptura,
-          prioridade
+          prioridade,
         });
       }
 
@@ -187,7 +185,7 @@ export class PontoReposicaoService {
         return a.dias_ate_ruptura - b.dias_ate_ruptura;
       });
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao verificar pontos de reposição:', err);
       throw error;
     }
@@ -196,16 +194,14 @@ export class PontoReposicaoService {
   /**
    * Sugere compra automática para produtos críticos
    */
-  static async sugerirCompraAutomatica(
-    produtoId?: string
-  ): Promise<SugestaoCompra[]> {
+  static async sugerirCompraAutomatica(produtoId?: string): Promise<SugestaoCompra[]> {
     try {
       const produtosAbaixo = await this.verificarPontosReposicao();
       const sugestoes: SugestaoCompra[] = [];
 
       // Filtrar por produto se especificado
       const produtosFiltrados = produtoId
-        ? produtosAbaixo.filter(p => p.produto_id === produtoId)
+        ? produtosAbaixo.filter((p) => p.produto_id === produtoId)
         : produtosAbaixo;
 
       for (const produto of produtosFiltrados) {
@@ -220,7 +216,7 @@ export class PontoReposicaoService {
         // Fórmula: Ponto Reposição + (Consumo Médio × 30 dias) - Quantidade Atual
         const consumoMedio = await this.calcularConsumoMedio(produto.produto_id, 30);
         const quantidadeSugerida = Math.ceil(
-          produto.ponto_reposicao + (consumoMedio * 30) - produto.quantidade_atual
+          produto.ponto_reposicao + consumoMedio * 30 - produto.quantidade_atual
         );
 
         // Ajustar para quantidade mínima de compra
@@ -258,13 +254,13 @@ export class PontoReposicaoService {
           quantidade_minima: qtdMinima,
           valor_estimado: valorEstimado,
           urgencia,
-          justificativa
+          justificativa,
         });
       }
 
       return sugestoes;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao sugerir compra automática:', err);
       throw error;
     }
@@ -291,7 +287,7 @@ export class PontoReposicaoService {
       const consumoTotal = movimentacoes?.reduce((sum, mov) => sum + mov.quantidade, 0) || 0;
       return consumoTotal / periodoDias;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao calcular consumo médio:', err);
       return 0;
     }
@@ -324,13 +320,13 @@ export class PontoReposicaoService {
           media_diaria: 0,
           desvio_padrao: 0,
           maior_consumo_dia: 0,
-          menor_consumo_dia: 0
+          menor_consumo_dia: 0,
         };
       }
 
       // Agrupar por dia
       const consumoPorDia: Record<string, number> = {};
-      movimentacoes.forEach(mov => {
+      movimentacoes.forEach((mov) => {
         const data = mov.data_movimentacao.split('T')[0];
         consumoPorDia[data] = (consumoPorDia[data] || 0) + mov.quantidade;
       });
@@ -340,9 +336,8 @@ export class PontoReposicaoService {
       const mediaDiaria = consumoTotal / periodoDias;
 
       // Calcular desvio padrão
-      const variancia = valores.reduce((sum, val) => 
-        sum + Math.pow(val - mediaDiaria, 2), 0
-      ) / valores.length;
+      const variancia =
+        valores.reduce((sum, val) => sum + Math.pow(val - mediaDiaria, 2), 0) / valores.length;
       const desvioPadrao = Math.sqrt(variancia);
 
       return {
@@ -352,10 +347,10 @@ export class PontoReposicaoService {
         media_diaria: mediaDiaria,
         desvio_padrao: desvioPadrao,
         maior_consumo_dia: Math.max(...valores, 0),
-        menor_consumo_dia: Math.min(...valores, 0)
+        menor_consumo_dia: Math.min(...valores, 0),
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao gerar histórico de consumo:', err);
       throw error;
     }
@@ -364,10 +359,7 @@ export class PontoReposicaoService {
   /**
    * Atualiza ponto de reposição de um produto
    */
-  static async atualizarPontoReposicao(
-    produtoId: string,
-    novoPonto: number
-  ): Promise<void> {
+  static async atualizarPontoReposicao(produtoId: string, novoPonto: number): Promise<void> {
     try {
       const { error } = await supabase
         .from('produtos_opme')
@@ -378,7 +370,7 @@ export class PontoReposicaoService {
 
       console.log(`✅ Ponto de reposição atualizado: ${novoPonto}`);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao atualizar ponto de reposição:', err);
       throw error;
     }
@@ -406,12 +398,9 @@ export class PontoReposicaoService {
 
       for (const produto of produtos) {
         const calculo = await this.calcularPontoReposicao(produto.id);
-        
+
         if (calculo.sugestao_ajuste) {
-          await this.atualizarPontoReposicao(
-            produto.id,
-            calculo.ponto_reposicao_calculado
-          );
+          await this.atualizarPontoReposicao(produto.id, calculo.ponto_reposicao_calculado);
           atualizados++;
         }
       }
@@ -420,13 +409,12 @@ export class PontoReposicaoService {
 
       return {
         total_produtos: produtos.length,
-        atualizados
+        atualizados,
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao recalcular pontos:', err);
       throw error;
     }
   }
 }
-

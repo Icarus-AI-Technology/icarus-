@@ -8,7 +8,8 @@
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://ttswvavcisdnonytslom.supabase.co';
-const serviceRoleKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0c3d2YXZjaXNkbm9ueXRzbG9tIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MDgzMTUzOSwiZXhwIjoyMDc2NDA3NTM5fQ.5-hOqi1jCpHfqRhlixWxKUc0nkyvchkbwEGmdKuGWzc';
+const serviceRoleKey =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0c3d2YXZjaXNkbm9ueXRzbG9tIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MDgzMTUzOSwiZXhwIjoyMDc2NDA3NTM5fQ.5-hOqi1jCpHfqRhlixWxKUc0nkyvchkbwEGmdKuGWzc';
 
 const supabase = createClient(supabaseUrl, serviceRoleKey);
 
@@ -31,20 +32,36 @@ async function mapSchema() {
         FROM pg_tables 
         WHERE schemaname IN ('public', 'storage')
         ORDER BY schemaname, tablename;
-      `
+      `,
     });
 
     if (error) {
       // Fallback: tentar via from()
       console.log('⚠️  RPC não disponível, tentando método alternativo...\n');
-      
+
       // Listar tabelas conhecidas
       const knownTables = [
-        'cirurgias', 'cirurgia_materiais', 'cirurgia_eventos',
-        'materiais', 'medicos', 'pacientes', 'hospitais', 'convenios',
-        'empresas', 'profiles', 'leads', 'transacoes', 'fornecedores',
-        'pedidos_compra', 'consignacoes', 'contratos', 'licitacoes',
-        'propostas', 'workflows', 'auditorias', 'notificacoes'
+        'cirurgias',
+        'cirurgia_materiais',
+        'cirurgia_eventos',
+        'materiais',
+        'medicos',
+        'pacientes',
+        'hospitais',
+        'convenios',
+        'empresas',
+        'profiles',
+        'leads',
+        'transacoes',
+        'fornecedores',
+        'pedidos_compra',
+        'consignacoes',
+        'contratos',
+        'licitacoes',
+        'propostas',
+        'workflows',
+        'auditorias',
+        'notificacoes',
       ];
 
       console.log('📋 Tabelas Conhecidas (amostra):');
@@ -53,11 +70,8 @@ async function mapSchema() {
       let found = 0;
       for (const table of knownTables) {
         try {
-          const { error: tableError } = await supabase
-            .from(table)
-            .select('*')
-            .limit(0);
-          
+          const { error: tableError } = await supabase.from(table).select('*').limit(0);
+
           if (!tableError) {
             console.log(`   ✅ ${table}`);
             found++;
@@ -72,7 +86,6 @@ async function mapSchema() {
       console.log('');
       console.log('💡 Para mapeamento completo, use Supabase CLI:');
       console.log('   supabase db dump --schema public');
-      
     } else {
       console.log('📋 Tabelas no Schema:');
       console.log('');
@@ -82,11 +95,9 @@ async function mapSchema() {
       console.log('');
       console.log(`Total: ${data.length} tabelas`);
     }
-
   } catch (error) {
     console.error('❌ Erro:', error.message);
   }
 }
 
 mapSchema();
-

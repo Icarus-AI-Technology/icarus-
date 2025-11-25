@@ -51,8 +51,8 @@ export function useMateriais() {
   });
 
   const fetchMateriais = useCallback(async () => {
-    setState(prev => ({ ...prev, loading: true, error: null }));
-    
+    setState((prev) => ({ ...prev, loading: true, error: null }));
+
     try {
       const { data, error } = await supabase
         .from('materiais_opme')
@@ -67,8 +67,8 @@ export function useMateriais() {
         error: null,
       });
     } catch (error) {
-   const err = error as Error;
-      setState(prev => ({
+      const err = error as Error;
+      setState((prev) => ({
         ...prev,
         loading: false,
         error: error instanceof Error ? error.message : 'Erro ao carregar materiais',
@@ -87,86 +87,91 @@ export function useMateriais() {
       if (error) throw error;
       return data;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao buscar material:', err);
       return null;
     }
   }, []);
 
-  const createMaterial = useCallback(async (material: Omit<Material, 'id' | 'created_at' | 'updated_at'>): Promise<Material | null> => {
-    try {
-      const { data, error } = await supabase
-        .from('materiais_opme')
-        .insert([material])
-        .select()
-        .single();
+  const createMaterial = useCallback(
+    async (
+      material: Omit<Material, 'id' | 'created_at' | 'updated_at'>
+    ): Promise<Material | null> => {
+      try {
+        const { data, error } = await supabase
+          .from('materiais_opme')
+          .insert([material])
+          .select()
+          .single();
 
-      if (error) throw error;
+        if (error) throw error;
 
-      // Atualizar lista local
-      setState(prev => ({
-        ...prev,
-        materiais: [...prev.materiais, data],
-      }));
+        // Atualizar lista local
+        setState((prev) => ({
+          ...prev,
+          materiais: [...prev.materiais, data],
+        }));
 
-      return data;
-    } catch (error) {
-   const err = error as Error;
-      setState(prev => ({
-        ...prev,
-        error: error instanceof Error ? error.message : 'Erro ao criar material',
-      }));
-      return null;
-    }
-  }, []);
+        return data;
+      } catch (error) {
+        const err = error as Error;
+        setState((prev) => ({
+          ...prev,
+          error: error instanceof Error ? error.message : 'Erro ao criar material',
+        }));
+        return null;
+      }
+    },
+    []
+  );
 
-  const updateMaterial = useCallback(async (id: string, updates: Partial<Material>): Promise<Material | null> => {
-    try {
-      const { data, error } = await supabase
-        .from('materiais_opme')
-        .update(updates)
-        .eq('id', id)
-        .select()
-        .single();
+  const updateMaterial = useCallback(
+    async (id: string, updates: Partial<Material>): Promise<Material | null> => {
+      try {
+        const { data, error } = await supabase
+          .from('materiais_opme')
+          .update(updates)
+          .eq('id', id)
+          .select()
+          .single();
 
-      if (error) throw error;
+        if (error) throw error;
 
-      // Atualizar lista local
-      setState(prev => ({
-        ...prev,
-        materiais: prev.materiais.map(m => m.id === id ? data : m),
-      }));
+        // Atualizar lista local
+        setState((prev) => ({
+          ...prev,
+          materiais: prev.materiais.map((m) => (m.id === id ? data : m)),
+        }));
 
-      return data;
-    } catch (error) {
-   const err = error as Error;
-      setState(prev => ({
-        ...prev,
-        error: error instanceof Error ? error.message : 'Erro ao atualizar material',
-      }));
-      return null;
-    }
-  }, []);
+        return data;
+      } catch (error) {
+        const err = error as Error;
+        setState((prev) => ({
+          ...prev,
+          error: error instanceof Error ? error.message : 'Erro ao atualizar material',
+        }));
+        return null;
+      }
+    },
+    []
+  );
 
   const deleteMaterial = useCallback(async (id: string): Promise<boolean> => {
     try {
-      const { error } = await supabase
-        .from('materiais_opme')
-        .delete()
-        .eq('id', id);
+      const { error } = await supabase.from('materiais_opme').delete().eq('id', id);
 
       if (error) throw error;
 
       // Atualizar lista local
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
-        materiais: prev.materiais.filter(m => m.id !== id),
+        materiais: prev.materiais.filter((m) => m.id !== id),
       }));
 
       return true;
     } catch (error) {
-   const err = error as Error;
-      setState(prev => ({
+      const err = error as Error;
+      setState((prev) => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao deletar material',
       }));
@@ -185,7 +190,7 @@ export function useMateriais() {
       if (error) throw error;
       return data || [];
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao buscar materiais por tipo:', err);
       return [];
     }
@@ -201,7 +206,7 @@ export function useMateriais() {
       if (error) throw error;
       return data || [];
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao buscar materiais abaixo do mínimo:', err);
       return [];
     }
@@ -222,7 +227,7 @@ export function useMateriais() {
       if (error) throw error;
       return data || [];
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao buscar materiais próximos ao vencimento:', err);
       return [];
     }
@@ -236,17 +241,22 @@ export function useMateriais() {
 
       if (error) throw error;
 
-      const materiaisEstoque = (data as Array<{ quantidade_estoque: number; valor_unitario: number; status: Material['status'] }> | null) ?? [];
+      const materiaisEstoque =
+        (data as Array<{
+          quantidade_estoque: number;
+          valor_unitario: number;
+          status: Material['status'];
+        }> | null) ?? [];
 
       const totalItens = materiaisEstoque.length;
-      const totalAtivos = materiaisEstoque.filter(m => m.status === 'ativo').length;
+      const totalAtivos = materiaisEstoque.filter((m) => m.status === 'ativo').length;
       const valorTotal = materiaisEstoque
-        .filter(m => m.status === 'ativo')
+        .filter((m) => m.status === 'ativo')
         .reduce((sum, m) => sum + (m.quantidade_estoque ?? 0) * (m.valor_unitario ?? 0), 0);
 
       // Materiais abaixo do mínimo
       const abaixoMinimo = await getMateriaisAbaixoMinimo();
-      
+
       // Materiais próximos ao vencimento
       const proximosVencimento = await getMateriaisProximosVencimento();
 
@@ -258,7 +268,7 @@ export function useMateriais() {
         alertasVencimento: proximosVencimento.length,
       } satisfies ResumoEstoque;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao calcular resumo de estoque:', err);
       return {
         totalItens: 0,
@@ -272,20 +282,21 @@ export function useMateriais() {
 
   const countByTipo = useCallback(async () => {
     try {
-      const { data, error } = await supabase
-        .from('materiais_opme')
-        .select('tipo');
+      const { data, error } = await supabase.from('materiais_opme').select('tipo');
 
       if (error) throw error;
 
-      const counts = data.reduce((acc, m) => {
-        acc[m.tipo] = (acc[m.tipo] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>);
+      const counts = data.reduce(
+        (acc, m) => {
+          acc[m.tipo] = (acc[m.tipo] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      );
 
       return counts;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao contar materiais:', err);
       return {};
     }
@@ -297,10 +308,14 @@ export function useMateriais() {
 
     const channel = supabase
       .channel('materiais_channel')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'materiais_opme' }, (payload) => {
-        console.log('Material change received!', payload);
-        fetchMateriais(); // Re-fetch on any change
-      })
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'materiais_opme' },
+        (payload) => {
+          console.log('Material change received!', payload);
+          fetchMateriais(); // Re-fetch on any change
+        }
+      )
       .subscribe();
 
     return () => {
@@ -322,4 +337,3 @@ export function useMateriais() {
     countByTipo,
   };
 }
-

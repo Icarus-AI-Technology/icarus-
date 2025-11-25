@@ -1,21 +1,21 @@
 /**
  * Microsoft Graph API Integration
- * 
+ *
  * OBJETIVO:
  * Integrar ICARUS com Microsoft 365 para distribuidoras OPME
  * que utilizam Teams, Outlook e outras ferramentas Microsoft
- * 
+ *
  * FUNCIONALIDADES:
  * 1. Agendamento de reuniões no Microsoft Teams
  * 2. Sincronização com Outlook Calendar
  * 3. Envio de emails via Outlook
  * 4. Gestão de contatos (hospitais, planos de saúde, indústrias)
  * 5. Compartilhamento de arquivos (OneDrive/SharePoint)
- * 
+ *
  * AUTENTICAÇÃO:
  * - OAuth 2.0 (MSAL - Microsoft Authentication Library)
  * - Permissões: Calendars.ReadWrite, OnlineMeetings.ReadWrite, Mail.Send
- * 
+ *
  * CONTEXTO:
  * - Distribuidoras OPME fazem muitas reuniões com:
  *   * Hospitais (apresentação de produtos, vendas)
@@ -151,12 +151,12 @@ class MicrosoftTeamsService {
         }),
       };
 
-      const novoEvento = await this.graphClient.api('/me/events').post(evento) as { id: string };
-      
+      const novoEvento = (await this.graphClient.api('/me/events').post(evento)) as { id: string };
+
       console.log('[MicrosoftTeams] Reunião criada:', novoEvento);
       return novoEvento;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[MicrosoftTeams] Erro ao criar reunião:', err);
       throw error;
     }
@@ -165,21 +165,39 @@ class MicrosoftTeamsService {
   /**
    * Listar próximas reuniões
    */
-  async listarProximasReunioes(dias: number = 7): Promise<Array<{ id?: string; subject: string; start: { dateTime: string }; end: { dateTime: string }; isOnlineMeeting?: boolean; onlineMeeting?: { joinUrl?: string } }>> {
+  async listarProximasReunioes(dias: number = 7): Promise<
+    Array<{
+      id?: string;
+      subject: string;
+      start: { dateTime: string };
+      end: { dateTime: string };
+      isOnlineMeeting?: boolean;
+      onlineMeeting?: { joinUrl?: string };
+    }>
+  > {
     try {
       const dataInicio = new Date().toISOString();
       const dataFim = new Date(Date.now() + dias * 24 * 60 * 60 * 1000).toISOString();
 
-      const eventos = await this.graphClient
+      const eventos = (await this.graphClient
         .api('/me/calendar/events')
         .filter(`start/dateTime ge '${dataInicio}' and end/dateTime le '${dataFim}'`)
         .select('subject,start,end,isOnlineMeeting,onlineMeeting')
         .orderby('start/dateTime')
-        .get() as { value: Array<{ id?: string; subject: string; start: { dateTime: string }; end: { dateTime: string }; isOnlineMeeting?: boolean; onlineMeeting?: { joinUrl?: string } }> };
+        .get()) as {
+        value: Array<{
+          id?: string;
+          subject: string;
+          start: { dateTime: string };
+          end: { dateTime: string };
+          isOnlineMeeting?: boolean;
+          onlineMeeting?: { joinUrl?: string };
+        }>;
+      };
 
       return eventos.value;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[MicrosoftTeams] Erro ao listar reuniões:', err);
       throw error;
     }
@@ -193,10 +211,10 @@ class MicrosoftTeamsService {
       await this.graphClient.api(`/me/events/${eventoId}/cancel`).post({
         comment: mensagem,
       });
-      
+
       console.log('[MicrosoftTeams] Reunião cancelada:', eventoId);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[MicrosoftTeams] Erro ao cancelar reunião:', err);
       throw error;
     }
@@ -251,7 +269,7 @@ class OutlookEmailService {
       await this.graphClient.api('/me/sendMail').post(mensagem);
       console.log('[OutlookEmail] Email enviado com sucesso');
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[OutlookEmail] Erro ao enviar email:', err);
       throw error;
     }
@@ -333,13 +351,15 @@ class OutlookContatosService {
         ...(contato.cargo && {
           jobTitle: contato.cargo,
         }),
-        categories: [`ICARUS - ${contato.categoria === 'hospital' ? 'Hospital' : contato.categoria === 'plano_saude' ? 'Plano de Saúde' : 'Indústria'}`],
+        categories: [
+          `ICARUS - ${contato.categoria === 'hospital' ? 'Hospital' : contato.categoria === 'plano_saude' ? 'Plano de Saúde' : 'Indústria'}`,
+        ],
       };
 
       await this.graphClient.api('/me/contacts').post(contatoOutlook);
       console.log('[OutlookContatos] Contato sincronizado:', contato.nome);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[OutlookContatos] Erro ao sincronizar contato:', err);
       throw error;
     }
@@ -348,7 +368,9 @@ class OutlookContatosService {
   /**
    * Sincronizar múltiplos contatos
    */
-  async sincronizarContatos(contatos: ContatoOutlook[]): Promise<{ sucesso: number; erro: number }> {
+  async sincronizarContatos(
+    contatos: ContatoOutlook[]
+  ): Promise<{ sucesso: number; erro: number }> {
     let sucesso = 0;
     let erro = 0;
 
@@ -357,7 +379,7 @@ class OutlookContatosService {
         await this.sincronizarContato(contato);
         sucesso++;
       } catch (error) {
-   const err = error as Error;
+        const err = error as Error;
         erro++;
       }
     }
@@ -382,14 +404,14 @@ class OneDriveService {
     pasta: string = 'ICARUS'
   ): Promise<{ id: string }> {
     try {
-      const resultado = await this.graphClient
+      const resultado = (await this.graphClient
         .api(`/me/drive/root:/${pasta}/${nomeArquivo}:/content`)
-        .put(conteudo) as { id: string };
+        .put(conteudo)) as { id: string };
 
       console.log('[OneDrive] Arquivo enviado:', nomeArquivo);
       return resultado;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[OneDrive] Erro ao enviar arquivo:', err);
       throw error;
     }
@@ -400,16 +422,14 @@ class OneDriveService {
    */
   async criarLinkCompartilhamento(itemId: string): Promise<string> {
     try {
-      const link = await this.graphClient
-        .api(`/me/drive/items/${itemId}/createLink`)
-        .post({
-          type: 'view',
-          scope: 'anonymous',
-        }) as { link: { webUrl: string } };
+      const link = (await this.graphClient.api(`/me/drive/items/${itemId}/createLink`).post({
+        type: 'view',
+        scope: 'anonymous',
+      })) as { link: { webUrl: string } };
 
       return link.link.webUrl;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[OneDrive] Erro ao criar link:', err);
       throw error;
     }
@@ -431,7 +451,7 @@ export class Microsoft365Integration {
     try {
       await msalInstance.initialize();
       const response = await msalInstance.loginPopup(loginRequest);
-      
+
       // Inicializar Graph Client
       this.graphClient = Client.init({
         authProvider: async (done) => {
@@ -447,7 +467,7 @@ export class Microsoft365Integration {
 
       console.log('[Microsoft365] Login realizado com sucesso');
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[Microsoft365] Erro no login:', err);
       throw error;
     }
@@ -460,7 +480,7 @@ export class Microsoft365Integration {
     try {
       await msalInstance.initialize();
       const accounts = msalInstance.getAllAccounts();
-      
+
       if (accounts.length === 0) {
         throw new Error('Nenhuma conta Microsoft conectada');
       }
@@ -487,7 +507,7 @@ export class Microsoft365Integration {
 
       return response.accessToken;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       if (error instanceof InteractionRequiredAuthError) {
         // Token expirado, fazer login novamente
         await this.login();
@@ -507,7 +527,7 @@ export class Microsoft365Integration {
       this.graphClient = null;
       console.log('[Microsoft365] Logout realizado');
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[Microsoft365] Erro no logout:', err);
       throw error;
     }

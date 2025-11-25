@@ -3,23 +3,23 @@
  * Campo de busca neuromórfico
  */
 
-import React, { useState } from"react";
-import { Search, X } from"lucide-react";
-import { cn } from"@/lib/utils";
+import React, { useState } from 'react';
+import { Search, X } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export interface SearchFieldProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>,"type"> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   onClear?: () => void;
 }
 
 export const SearchField = React.forwardRef<HTMLInputElement, SearchFieldProps>(
   ({ className, onClear, value, onChange, ...props }, ref) => {
-    const [internalValue, setInternalValue] = useState("");
+    const [internalValue, setInternalValue] = useState('');
     const currentValue = value !== undefined ? value : internalValue;
 
     const handleClear = () => {
       if (value === undefined) {
-        setInternalValue("");
+        setInternalValue('');
       }
       onClear?.();
     };
@@ -41,7 +41,7 @@ export const SearchField = React.forwardRef<HTMLInputElement, SearchFieldProps>(
           type="search"
           value={currentValue}
           onChange={handleChange}
-          className={cn("orx-input","w-full pl-10 pr-10", className)}
+          className={cn('orx-input', 'w-full pl-10 pr-10', className)}
           {...props}
         />
         {currentValue && (
@@ -55,9 +55,9 @@ export const SearchField = React.forwardRef<HTMLInputElement, SearchFieldProps>(
         )}
       </div>
     );
-  },
+  }
 );
 
-SearchField.displayName ="OraclusXSearchField";
+SearchField.displayName = 'OraclusXSearchField';
 
 export default SearchField;

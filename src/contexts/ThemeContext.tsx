@@ -14,7 +14,8 @@ function getInitialTheme(): Theme {
   if (typeof window === 'undefined') return 'light';
   const saved = (localStorage.getItem('theme') as Theme | null) || null;
   if (saved === 'light' || saved === 'dark') return saved;
-  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const prefersDark =
+    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   return prefersDark ? 'dark' : 'light';
 }
 
@@ -47,5 +48,3 @@ export const useTheme = (): ThemeContextType => {
   if (!ctx) throw new Error('useTheme must be used within ThemeProvider');
   return ctx;
 };
-
-

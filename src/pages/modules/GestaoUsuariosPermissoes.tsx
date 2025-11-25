@@ -3,10 +3,21 @@
  * Controle de acesso baseado em papéis (Role-Based Access Control)
  */
 
-import { useState } from"react";
-import { Users, Shield, Lock, Search, Filter, Edit, Trash2, Key, UserPlus, Activity } from"lucide-react";
-import { ModulePage } from "@/components/templates/ModulePage";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react';
+import {
+  Users,
+  Shield,
+  Lock,
+  Search,
+  Filter,
+  Edit,
+  Trash2,
+  Key,
+  UserPlus,
+  Activity,
+} from 'lucide-react';
+import { ModulePage } from '@/components/templates/ModulePage';
+import { Button } from '@/components/oraclusx-ds/Button';
 
 interface User {
   id: string;
@@ -14,7 +25,7 @@ interface User {
   email: string;
   cargo: string;
   role: string;
-  status:"ativo" |"inativo" |"bloqueado";
+  status: 'ativo' | 'inativo' | 'bloqueado';
   ultimoAcesso: string;
   criadoEm: string;
 }
@@ -29,158 +40,158 @@ interface Role {
 }
 
 export default function GestaoUsuariosPermissoes() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedRole, setSelectedRole] = useState<string>("todos");
-  const [activeTab, setActiveTab] = useState<"usuarios" |"roles">("usuarios");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedRole, setSelectedRole] = useState<string>('todos');
+  const [activeTab, setActiveTab] = useState<'usuarios' | 'roles'>('usuarios');
 
   // Mock data - Usuários
   const usuarios: User[] = [
     {
-      id:"1",
-      nome:"Ana Paula Silva",
-      email:"ana.silva@icarus.com",
-      cargo:"Gerente Comercial",
-      role:"Gerente",
-      status:"ativo",
-      ultimoAcesso:"2025-10-20T15:30:00",
-      criadoEm:"2024-01-15",
+      id: '1',
+      nome: 'Ana Paula Silva',
+      email: 'ana.silva@icarus.com',
+      cargo: 'Gerente Comercial',
+      role: 'Gerente',
+      status: 'ativo',
+      ultimoAcesso: '2025-10-20T15:30:00',
+      criadoEm: '2024-01-15',
     },
     {
-      id:"2",
-      nome:"Carlos Eduardo Santos",
-      email:"carlos.santos@icarus.com",
-      cargo:"Analista de Faturamento",
-      role:"Analista",
-      status:"ativo",
-      ultimoAcesso:"2025-10-20T14:20:00",
-      criadoEm:"2024-03-22",
+      id: '2',
+      nome: 'Carlos Eduardo Santos',
+      email: 'carlos.santos@icarus.com',
+      cargo: 'Analista de Faturamento',
+      role: 'Analista',
+      status: 'ativo',
+      ultimoAcesso: '2025-10-20T14:20:00',
+      criadoEm: '2024-03-22',
     },
     {
-      id:"3",
-      nome:"Maria Fernanda Costa",
-      email:"maria.costa@icarus.com",
-      cargo:"Assistente Administrativo",
-      role:"Operador",
-      status:"ativo",
-      ultimoAcesso:"2025-10-20T10:15:00",
-      criadoEm:"2024-06-10",
+      id: '3',
+      nome: 'Maria Fernanda Costa',
+      email: 'maria.costa@icarus.com',
+      cargo: 'Assistente Administrativo',
+      role: 'Operador',
+      status: 'ativo',
+      ultimoAcesso: '2025-10-20T10:15:00',
+      criadoEm: '2024-06-10',
     },
     {
-      id:"4",
-      nome:"João Pedro Oliveira",
-      email:"joao.oliveira@icarus.com",
-      cargo:"Coordenador de Logística",
-      role:"Coordenador",
-      status:"inativo",
-      ultimoAcesso:"2025-10-18T16:45:00",
-      criadoEm:"2024-02-05",
+      id: '4',
+      nome: 'João Pedro Oliveira',
+      email: 'joao.oliveira@icarus.com',
+      cargo: 'Coordenador de Logística',
+      role: 'Coordenador',
+      status: 'inativo',
+      ultimoAcesso: '2025-10-18T16:45:00',
+      criadoEm: '2024-02-05',
     },
   ];
 
   // Mock data - Roles
   const roles: Role[] = [
     {
-      id:"1",
-      nome:"Administrador",
-      descricao:"Acesso total ao sistema",
+      id: '1',
+      nome: 'Administrador',
+      descricao: 'Acesso total ao sistema',
       usuarios: 2,
       permissoes: 127,
-      cor:"var(--orx-error-dark)",
+      cor: 'var(--orx-error-dark)',
     },
     {
-      id:"2",
-      nome:"Gerente",
-      descricao:"Gestão de módulos e equipes",
+      id: '2',
+      nome: 'Gerente',
+      descricao: 'Gestão de módulos e equipes',
       usuarios: 5,
       permissoes: 89,
-      cor:"var(--orx-primary)",
+      cor: 'var(--orx-primary)',
     },
     {
-      id:"3",
-      nome:"Analista",
-      descricao:"Operações e análises",
+      id: '3',
+      nome: 'Analista',
+      descricao: 'Operações e análises',
       usuarios: 12,
       permissoes: 45,
-      cor:"var(--orx-success)",
+      cor: 'var(--orx-success)',
     },
     {
-      id:"4",
-      nome:"Operador",
-      descricao:"Operações básicas",
+      id: '4',
+      nome: 'Operador',
+      descricao: 'Operações básicas',
       usuarios: 28,
       permissoes: 18,
-      cor:"var(--orx-warning)",
+      cor: 'var(--orx-warning)',
     },
     {
-      id:"5",
-      nome:"Visualizador",
-      descricao:"Apenas leitura",
+      id: '5',
+      nome: 'Visualizador',
+      descricao: 'Apenas leitura',
       usuarios: 8,
       permissoes: 5,
-      cor:"var(--orx-gray-500)",
+      cor: 'var(--orx-gray-500)',
     },
   ];
 
   const kpis = [
     {
-      title:"Usuários Ativos",
-      value:"47",
-      trend:"+5",
+      title: 'Usuários Ativos',
+      value: '47',
+      trend: '+5',
       icon: Users,
-      iconBg:"linear-gradient(135deg, var(--orx-primary), var(--orx-primary-hover))",
-      color:"var(--orx-primary)",
+      iconBg: 'linear-gradient(135deg, var(--orx-primary), var(--orx-primary-hover))',
+      color: 'var(--orx-primary)',
     },
     {
-      title:"Roles Configurados",
-      value:"5",
-      trend:"100%",
+      title: 'Roles Configurados',
+      value: '5',
+      trend: '100%',
       icon: Shield,
-      iconBg:"linear-gradient(135deg, var(--orx-success), #059669)",
-      color:"var(--orx-success)",
+      iconBg: 'linear-gradient(135deg, var(--orx-success), #059669)',
+      color: 'var(--orx-success)',
     },
     {
-      title:"Permissões Total",
-      value:"127",
-      trend:"Sistema",
+      title: 'Permissões Total',
+      value: '127',
+      trend: 'Sistema',
       icon: Lock,
-      iconBg:"linear-gradient(135deg, var(--orx-purple-500), #7C3AED)",
-      color:"var(--orx-purple-500)",
+      iconBg: 'linear-gradient(135deg, var(--orx-purple-500), #7C3AED)',
+      color: 'var(--orx-purple-500)',
     },
     {
-      title:"Acessos Hoje",
-      value:"38",
-      trend:"+12%",
+      title: 'Acessos Hoje',
+      value: '38',
+      trend: '+12%',
       icon: Activity,
-      iconBg:"linear-gradient(135deg, var(--orx-warning), #D97706)",
-      color:"var(--orx-warning)",
+      iconBg: 'linear-gradient(135deg, var(--orx-warning), #D97706)',
+      color: 'var(--orx-warning)',
     },
   ];
 
   const getStatusColor = (status: string) => {
     const colors = {
-      ativo:"var(--orx-success)",
-      inativo:"var(--orx-gray-500)",
-      bloqueado:"var(--orx-error)",
+      ativo: 'var(--orx-success)',
+      inativo: 'var(--orx-gray-500)',
+      bloqueado: 'var(--orx-error)',
     };
-    return colors[status as keyof typeof colors] ||"var(--orx-gray-500)";
+    return colors[status as keyof typeof colors] || 'var(--orx-gray-500)';
   };
 
   const getStatusLabel = (status: string) => {
     const labels = {
-      ativo:"Ativo",
-      inativo:"Inativo",
-      bloqueado:"Bloqueado",
+      ativo: 'Ativo',
+      inativo: 'Inativo',
+      bloqueado: 'Bloqueado',
     };
     return labels[status as keyof typeof labels] || status;
   };
 
   const formatDate = (date: string) => {
-    return new Intl.DateTimeFormat("pt-BR", {
-      day:"2-digit",
-      month:"2-digit",
-      year:"numeric",
-      hour:"2-digit",
-      minute:"2-digit",
+    return new Intl.DateTimeFormat('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
     }).format(new Date(date));
   };
 
@@ -209,18 +220,18 @@ export default function GestaoUsuariosPermissoes() {
               key={index}
               className="neumorphic-card p-6 rounded-2xl"
               style={{
-                background:"var(--orx-bg-light)",
-                boxShadow:"0 4px 16px rgba(0, 0, 0, 0.06)",
+                background: 'var(--orx-bg-light)',
+                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06)',
               }}
             >
               <div className="flex items-start gap-4 mb-4">
                 <div
                   className="flex items-center justify-center rounded-2xl"
                   style={{
-                    width:"56px",
-                    height:"56px",
+                    width: '56px',
+                    height: '56px',
                     background: kpi.iconBg,
-                    boxShadow:"0 4px 12px rgba(0, 0, 0, 0.1)",
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
                   }}
                 >
                   <kpi.icon size={24} color="var(--orx-text-white)" strokeWidth={1.5} />
@@ -229,9 +240,9 @@ export default function GestaoUsuariosPermissoes() {
                   <p
                     style={{
                       fontSize: '0.813rem',
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                      marginBottom:"0.25rem",
+                      color: 'var(--orx-text-secondary)',
+                      fontFamily: 'var(--orx-font-family)',
+                      marginBottom: '0.25rem',
                     }}
                   >
                     {kpi.title}
@@ -243,8 +254,8 @@ export default function GestaoUsuariosPermissoes() {
                   style={{
                     fontSize: '0.813rem',
                     fontWeight: 700,
-                    color:"var(--orx-text-primary)",
-                    fontFamily:"var(--orx-font-family)",
+                    color: 'var(--orx-text-primary)',
+                    fontFamily: 'var(--orx-font-family)',
                     lineHeight: 1,
                   }}
                 >
@@ -257,7 +268,7 @@ export default function GestaoUsuariosPermissoes() {
                     fontSize: '0.813rem',
                     fontWeight: 600,
                     color: kpi.color,
-                    fontFamily:"var(--orx-font-family)",
+                    fontFamily: 'var(--orx-font-family)',
                   }}
                 >
                   {kpi.trend}
@@ -271,24 +282,24 @@ export default function GestaoUsuariosPermissoes() {
         <div
           className="neumorphic-card p-2 rounded-2xl inline-flex gap-2"
           style={{
-            background:"var(--orx-bg-light)",
-            boxShadow:"0 4px 16px rgba(0, 0, 0, 0.06)",
+            background: 'var(--orx-bg-light)',
+            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06)',
           }}
         >
           <Button
-            variant={activeTab === "usuarios" ? "neumorphic" : "ghost"}
+            variant={activeTab === 'usuarios' ? 'neumorphic' : 'ghost'}
             size="default"
-            className={`px-6 py-3 rounded-xl flex items-center gap-2 ${activeTab === "usuarios" ? "neumorphic-button-active" : ""}`}
-            onClick={() => setActiveTab("usuarios")}
+            className={`px-6 py-3 rounded-xl flex items-center gap-2 ${activeTab === 'usuarios' ? 'neumorphic-button-active' : ''}`}
+            onClick={() => setActiveTab('usuarios')}
           >
             <Users size={18} strokeWidth={1.5} className="flex-shrink-0" />
             <span>Usuários</span>
           </Button>
           <Button
-            variant={activeTab === "roles" ? "neumorphic" : "ghost"}
+            variant={activeTab === 'roles' ? 'neumorphic' : 'ghost'}
             size="default"
-            className={`px-6 py-3 rounded-xl flex items-center gap-2 ${activeTab === "roles" ? "neumorphic-button-active" : ""}`}
-            onClick={() => setActiveTab("roles")}
+            className={`px-6 py-3 rounded-xl flex items-center gap-2 ${activeTab === 'roles' ? 'neumorphic-button-active' : ''}`}
+            onClick={() => setActiveTab('roles')}
           >
             <Shield size={18} strokeWidth={1.5} className="flex-shrink-0" />
             <span>Papéis (Roles)</span>
@@ -299,8 +310,8 @@ export default function GestaoUsuariosPermissoes() {
         <div
           className="neumorphic-card p-6 rounded-2xl"
           style={{
-            background:"var(--orx-bg-light)",
-            boxShadow:"0 4px 16px rgba(0, 0, 0, 0.06)",
+            background: 'var(--orx-bg-light)',
+            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06)',
           }}
         >
           <div className="flex items-center gap-4">
@@ -313,25 +324,25 @@ export default function GestaoUsuariosPermissoes() {
               <input
                 type="text"
                 placeholder={
-                  activeTab ==="usuarios"
-                    ?"Buscar usuários por nome, email ou cargo..."
-                    :"Buscar papéis por nome ou descrição..."
+                  activeTab === 'usuarios'
+                    ? 'Buscar usuários por nome, email ou cargo...'
+                    : 'Buscar papéis por nome ou descrição...'
                 }
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-12 pr-4 py-3 rounded-xl"
                 style={{
-                  background:"var(--orx-bg-light)",
-                  boxShadow:"inset 2px 2px 4px rgba(0, 0, 0, 0.1)",
-                  border:"1px solid rgba(99, 102, 241, 0.2)",
+                  background: 'var(--orx-bg-light)',
+                  boxShadow: 'inset 2px 2px 4px rgba(0, 0, 0, 0.1)',
+                  border: '1px solid rgba(99, 102, 241, 0.2)',
                   fontSize: '0.813rem',
-                  fontFamily:"var(--orx-font-family)",
-                  color:"var(--orx-text-primary)",
+                  fontFamily: 'var(--orx-font-family)',
+                  color: 'var(--orx-text-primary)',
                 }}
               />
             </div>
 
-            {activeTab ==="usuarios" && (
+            {activeTab === 'usuarios' && (
               <div className="flex items-center gap-2">
                 <Filter size={20} strokeWidth={1.5} className="text-[var(--orx-text-secondary)]" />
                 <select
@@ -339,12 +350,12 @@ export default function GestaoUsuariosPermissoes() {
                   onChange={(e) => setSelectedRole(e.target.value)}
                   className="px-4 py-3 rounded-xl"
                   style={{
-                    background:"var(--orx-bg-light)",
-                    boxShadow:"inset 2px 2px 4px rgba(0, 0, 0, 0.1)",
-                    border:"1px solid rgba(99, 102, 241, 0.2)",
+                    background: 'var(--orx-bg-light)',
+                    boxShadow: 'inset 2px 2px 4px rgba(0, 0, 0, 0.1)',
+                    border: '1px solid rgba(99, 102, 241, 0.2)',
                     fontSize: '0.813rem',
-                    fontFamily:"var(--orx-font-family)",
-                    color:"var(--orx-text-primary)",
+                    fontFamily: 'var(--orx-font-family)',
+                    color: 'var(--orx-text-primary)',
                   }}
                 >
                   <option value="todos">Todos os papéis</option>
@@ -359,86 +370,86 @@ export default function GestaoUsuariosPermissoes() {
         </div>
 
         {/* Content - Usuários */}
-        {activeTab === "usuarios" && (
+        {activeTab === 'usuarios' && (
           <div
             className="neumorphic-card p-6 rounded-2xl"
             style={{
-              background:"var(--orx-bg-light)",
-              boxShadow:"0 4px 16px rgba(0, 0, 0, 0.06)",
+              background: 'var(--orx-bg-light)',
+              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06)',
             }}
           >
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr style={{ borderBottom:"2px solid rgba(99, 102, 241, 0.1)" }}>
+                  <tr style={{ borderBottom: '2px solid rgba(99, 102, 241, 0.1)' }}>
                     <th
                       style={{
-                        padding:"1rem",
-                        textAlign:"left",
+                        padding: '1rem',
+                        textAlign: 'left',
                         fontSize: '0.813rem',
                         fontWeight: 600,
-                        color:"var(--orx-text-secondary)",
-                        fontFamily:"var(--orx-font-family)",
+                        color: 'var(--orx-text-secondary)',
+                        fontFamily: 'var(--orx-font-family)',
                       }}
                     >
                       Usuário
                     </th>
                     <th
                       style={{
-                        padding:"1rem",
-                        textAlign:"left",
+                        padding: '1rem',
+                        textAlign: 'left',
                         fontSize: '0.813rem',
                         fontWeight: 600,
-                        color:"var(--orx-text-secondary)",
-                        fontFamily:"var(--orx-font-family)",
+                        color: 'var(--orx-text-secondary)',
+                        fontFamily: 'var(--orx-font-family)',
                       }}
                     >
                       Cargo
                     </th>
                     <th
                       style={{
-                        padding:"1rem",
-                        textAlign:"left",
+                        padding: '1rem',
+                        textAlign: 'left',
                         fontSize: '0.813rem',
                         fontWeight: 600,
-                        color:"var(--orx-text-secondary)",
-                        fontFamily:"var(--orx-font-family)",
+                        color: 'var(--orx-text-secondary)',
+                        fontFamily: 'var(--orx-font-family)',
                       }}
                     >
                       Papel (Role)
                     </th>
                     <th
                       style={{
-                        padding:"1rem",
-                        textAlign:"center",
+                        padding: '1rem',
+                        textAlign: 'center',
                         fontSize: '0.813rem',
                         fontWeight: 600,
-                        color:"var(--orx-text-secondary)",
-                        fontFamily:"var(--orx-font-family)",
+                        color: 'var(--orx-text-secondary)',
+                        fontFamily: 'var(--orx-font-family)',
                       }}
                     >
                       Status
                     </th>
                     <th
                       style={{
-                        padding:"1rem",
-                        textAlign:"left",
+                        padding: '1rem',
+                        textAlign: 'left',
                         fontSize: '0.813rem',
                         fontWeight: 600,
-                        color:"var(--orx-text-secondary)",
-                        fontFamily:"var(--orx-font-family)",
+                        color: 'var(--orx-text-secondary)',
+                        fontFamily: 'var(--orx-font-family)',
                       }}
                     >
                       Último Acesso
                     </th>
                     <th
                       style={{
-                        padding:"1rem",
-                        textAlign:"center",
+                        padding: '1rem',
+                        textAlign: 'center',
                         fontSize: '0.813rem',
                         fontWeight: 600,
-                        color:"var(--orx-text-secondary)",
-                        fontFamily:"var(--orx-font-family)",
+                        color: 'var(--orx-text-secondary)',
+                        fontFamily: 'var(--orx-font-family)',
                       }}
                     >
                       Ações
@@ -449,17 +460,17 @@ export default function GestaoUsuariosPermissoes() {
                   {usuarios.map((usuario) => (
                     <tr
                       key={usuario.id}
-                      style={{ borderBottom:"1px solid rgba(99, 102, 241, 0.05)" }}
+                      style={{ borderBottom: '1px solid rgba(99, 102, 241, 0.05)' }}
                     >
-                      <td style={{ padding:"1rem" }}>
+                      <td style={{ padding: '1rem' }}>
                         <div>
                           <p
                             style={{
                               fontSize: '0.813rem',
-                              fontFamily:"var(--orx-font-family)",
-                              color:"var(--orx-text-primary)",
+                              fontFamily: 'var(--orx-font-family)',
+                              color: 'var(--orx-text-primary)',
                               fontWeight: 600,
-                              marginBottom:"0.25rem",
+                              marginBottom: '0.25rem',
                             }}
                           >
                             {usuario.nome}
@@ -467,8 +478,8 @@ export default function GestaoUsuariosPermissoes() {
                           <p
                             style={{
                               fontSize: '0.813rem',
-                              fontFamily:"var(--orx-font-family)",
-                              color:"var(--orx-text-secondary)",
+                              fontFamily: 'var(--orx-font-family)',
+                              color: 'var(--orx-text-secondary)',
                             }}
                           >
                             {usuario.email}
@@ -477,42 +488,42 @@ export default function GestaoUsuariosPermissoes() {
                       </td>
                       <td
                         style={{
-                          padding:"1rem",
+                          padding: '1rem',
                           fontSize: '0.813rem',
-                          fontFamily:"var(--orx-font-family)",
-                          color:"var(--orx-text-primary)",
+                          fontFamily: 'var(--orx-font-family)',
+                          color: 'var(--orx-text-primary)',
                         }}
                       >
                         {usuario.cargo}
                       </td>
-                      <td style={{ padding:"1rem" }}>
+                      <td style={{ padding: '1rem' }}>
                         <span
                           style={{
-                            display:"inline-flex",
-                            alignItems:"center",
-                            gap:"0.5rem",
-                            padding:"0.375rem 0.75rem",
-                            borderRadius:"0.5rem",
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            padding: '0.375rem 0.75rem',
+                            borderRadius: '0.5rem',
                             fontSize: '0.813rem',
                             fontWeight: 600,
-                            fontFamily:"var(--orx-font-family)",
-                            background:"var(--orx-primary)15",
-                            color:"var(--orx-primary)",
+                            fontFamily: 'var(--orx-font-family)',
+                            background: 'var(--orx-primary)15',
+                            color: 'var(--orx-primary)',
                           }}
                         >
                           <Shield size={14} />
                           {usuario.role}
                         </span>
                       </td>
-                      <td style={{ padding:"1rem", textAlign:"center" }}>
+                      <td style={{ padding: '1rem', textAlign: 'center' }}>
                         <span
                           style={{
-                            display:"inline-block",
-                            padding:"0.375rem 0.75rem",
-                            borderRadius:"0.5rem",
+                            display: 'inline-block',
+                            padding: '0.375rem 0.75rem',
+                            borderRadius: '0.5rem',
                             fontSize: '0.813rem',
                             fontWeight: 600,
-                            fontFamily:"var(--orx-font-family)",
+                            fontFamily: 'var(--orx-font-family)',
                             background: `${getStatusColor(usuario.status)}15`,
                             color: getStatusColor(usuario.status),
                           }}
@@ -522,21 +533,25 @@ export default function GestaoUsuariosPermissoes() {
                       </td>
                       <td
                         style={{
-                          padding:"1rem",
+                          padding: '1rem',
                           fontSize: '0.813rem',
-                          fontFamily:"var(--orx-font-family)",
-                          color:"var(--orx-text-secondary)",
+                          fontFamily: 'var(--orx-font-family)',
+                          color: 'var(--orx-text-secondary)',
                         }}
                       >
                         {formatDate(usuario.ultimoAcesso)}
                       </td>
-                      <td style={{ padding:"1rem", textAlign:"center" }}>
+                      <td style={{ padding: '1rem', textAlign: 'center' }}>
                         <div className="flex items-center justify-center gap-2">
                           <Button
                             variant="neumorphic"
                             size="sm"
                             className="inline-flex items-center gap-2"
-                            onClick={() => window.dispatchEvent(new CustomEvent('icarus:editar-usuario', { detail: usuario.id }))}
+                            onClick={() =>
+                              window.dispatchEvent(
+                                new CustomEvent('icarus:editar-usuario', { detail: usuario.id })
+                              )
+                            }
                           >
                             <Edit size={16} strokeWidth={1.5} className="flex-shrink-0" />
                             <span>Editar</span>
@@ -545,7 +560,13 @@ export default function GestaoUsuariosPermissoes() {
                             variant="neumorphic"
                             size="sm"
                             className="inline-flex items-center gap-2 text-[var(--orx-success)]"
-                            onClick={() => window.dispatchEvent(new CustomEvent('icarus:gerenciar-permissoes', { detail: usuario.id }))}
+                            onClick={() =>
+                              window.dispatchEvent(
+                                new CustomEvent('icarus:gerenciar-permissoes', {
+                                  detail: usuario.id,
+                                })
+                              )
+                            }
                           >
                             <Key size={16} strokeWidth={1.5} className="flex-shrink-0" />
                             <span>Permissões</span>
@@ -554,7 +575,11 @@ export default function GestaoUsuariosPermissoes() {
                             variant="neumorphic"
                             size="sm"
                             className="inline-flex items-center gap-2 text-[var(--orx-error)]"
-                            onClick={() => window.dispatchEvent(new CustomEvent('icarus:remover-usuario', { detail: usuario.id }))}
+                            onClick={() =>
+                              window.dispatchEvent(
+                                new CustomEvent('icarus:remover-usuario', { detail: usuario.id })
+                              )
+                            }
                           >
                             <Trash2 size={16} strokeWidth={1.5} className="flex-shrink-0" />
                             <span>Remover</span>
@@ -570,15 +595,15 @@ export default function GestaoUsuariosPermissoes() {
         )}
 
         {/* Content - Roles */}
-        {activeTab === "roles" && (
+        {activeTab === 'roles' && (
           <div className="grid grid-cols-2 gap-6">
             {roles.map((role) => (
               <div
                 key={role.id}
                 className="neumorphic-card p-6 rounded-2xl"
                 style={{
-                  background:"var(--orx-bg-light)",
-                  boxShadow:"0 4px 16px rgba(0, 0, 0, 0.06)",
+                  background: 'var(--orx-bg-light)',
+                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06)',
                 }}
               >
                 <div className="flex items-start justify-between mb-4">
@@ -586,8 +611,8 @@ export default function GestaoUsuariosPermissoes() {
                     <div
                       className="flex items-center justify-center rounded-xl"
                       style={{
-                        width:"48px",
-                        height:"48px",
+                        width: '48px',
+                        height: '48px',
                         background: `${role.cor}15`,
                       }}
                     >
@@ -598,9 +623,9 @@ export default function GestaoUsuariosPermissoes() {
                         style={{
                           fontSize: '0.813rem',
                           fontWeight: 600,
-                          color:"var(--orx-text-primary)",
-                          fontFamily:"var(--orx-font-family)",
-                          marginBottom:"0.25rem",
+                          color: 'var(--orx-text-primary)',
+                          fontFamily: 'var(--orx-font-family)',
+                          marginBottom: '0.25rem',
                         }}
                       >
                         {role.nome}
@@ -608,8 +633,8 @@ export default function GestaoUsuariosPermissoes() {
                       <p
                         style={{
                           fontSize: '0.813rem',
-                          color:"var(--orx-text-secondary)",
-                          fontFamily:"var(--orx-font-family)",
+                          color: 'var(--orx-text-secondary)',
+                          fontFamily: 'var(--orx-font-family)',
                         }}
                       >
                         {role.descricao}
@@ -620,7 +645,11 @@ export default function GestaoUsuariosPermissoes() {
                     variant="neumorphic"
                     size="sm"
                     className="inline-flex items-center gap-2"
-                    onClick={() => window.dispatchEvent(new CustomEvent('icarus:editar-role', { detail: role.id }))}
+                    onClick={() =>
+                      window.dispatchEvent(
+                        new CustomEvent('icarus:editar-role', { detail: role.id })
+                      )
+                    }
                   >
                     <Edit size={16} strokeWidth={1.5} className="flex-shrink-0" />
                     <span>Editar</span>
@@ -632,9 +661,9 @@ export default function GestaoUsuariosPermissoes() {
                       <p
                         style={{
                           fontSize: '0.813rem',
-                          color:"var(--orx-text-secondary)",
-                          fontFamily:"var(--orx-font-family)",
-                          marginBottom:"0.25rem",
+                          color: 'var(--orx-text-secondary)',
+                          fontFamily: 'var(--orx-font-family)',
+                          marginBottom: '0.25rem',
                         }}
                       >
                         Usuários
@@ -643,8 +672,8 @@ export default function GestaoUsuariosPermissoes() {
                         style={{
                           fontSize: '0.813rem',
                           fontWeight: 700,
-                          color:"var(--orx-text-primary)",
-                          fontFamily:"var(--orx-font-family)",
+                          color: 'var(--orx-text-primary)',
+                          fontFamily: 'var(--orx-font-family)',
                         }}
                       >
                         {role.usuarios}
@@ -654,9 +683,9 @@ export default function GestaoUsuariosPermissoes() {
                       <p
                         style={{
                           fontSize: '0.813rem',
-                          color:"var(--orx-text-secondary)",
-                          fontFamily:"var(--orx-font-family)",
-                          marginBottom:"0.25rem",
+                          color: 'var(--orx-text-secondary)',
+                          fontFamily: 'var(--orx-font-family)',
+                          marginBottom: '0.25rem',
                         }}
                       >
                         Permissões
@@ -665,8 +694,8 @@ export default function GestaoUsuariosPermissoes() {
                         style={{
                           fontSize: '0.813rem',
                           fontWeight: 700,
-                          color:"var(--orx-text-primary)",
-                          fontFamily:"var(--orx-font-family)",
+                          color: 'var(--orx-text-primary)',
+                          fontFamily: 'var(--orx-font-family)',
                         }}
                       >
                         {role.permissoes}
@@ -682,4 +711,3 @@ export default function GestaoUsuariosPermissoes() {
     </ModulePage>
   );
 }
-

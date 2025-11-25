@@ -4,6 +4,7 @@
  * 100% OraclusX DS + Neumorphism 3D Premium + Lucide React SVG
  */
 
+import { createContext, useContext, useState, type ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -159,10 +160,7 @@ export function StepIndicator() {
                   <Check className="w-5 h-5 text-white" />
                 ) : (
                   <span
-                    className={cn(
-                      'text-[var(--text-primary)]',
-                      !isCurrent && 'opacity-50'
-                    )}
+                    className={cn('text-[var(--text-primary)]', !isCurrent && 'opacity-50')}
                     style={{
                       fontFamily: 'var(--font-body)',
                       fontSize: '0.813rem',
@@ -240,9 +238,7 @@ export function StepContent() {
           </div>
 
           {/* Step Component */}
-          <div className="neuro-raised rounded-2xl p-6">
-            {currentStepData.component}
-          </div>
+          <div className="neuro-raised rounded-2xl p-6">{currentStepData.component}</div>
         </motion.div>
       </AnimatePresence>
     </div>
@@ -319,7 +315,11 @@ interface CompleteMultiStepFormProps {
   className?: string;
 }
 
-export function CompleteMultiStepForm({ steps, onComplete, className }: CompleteMultiStepFormProps) {
+export function CompleteMultiStepForm({
+  steps,
+  onComplete,
+  className,
+}: CompleteMultiStepFormProps) {
   return (
     <MultiStepForm steps={steps} onComplete={onComplete} className={className}>
       <div className="neuro-raised rounded-2xl p-8 bg-[var(--bg-primary)]">
@@ -330,4 +330,3 @@ export function CompleteMultiStepForm({ steps, onComplete, className }: Complete
     </MultiStepForm>
   );
 }
-

@@ -1,7 +1,7 @@
 /**
  * TEMPLATE PADRÃO - MÓDULOS ICARUS v5.0
  * OraclusX Design System - 100% Conforme
- * 
+ *
  * ESTRUTURA OBRIGATÓRIA:
  * 1. Imports organizados
  * 2. Interfaces TypeScript
@@ -20,10 +20,23 @@
  * 10. Export default
  */
 
-import React, { useState, useEffect } from"react";
-import { Card } from"@/components/oraclusx-ds";
-import { TrendingUp, Loader2, Search, Plus, Eye, Edit2, Trash2, Download, CheckCircle, Clock, DollarSign, AlertCircle } from"lucide-react";
-import { useDocumentTitle } from"@/hooks"; // OBRIGATÓRIO
+import React, { useState, useEffect } from 'react';
+import { Card } from '@/components/oraclusx-ds';
+import {
+  TrendingUp,
+  Loader2,
+  Search,
+  Plus,
+  Eye,
+  Edit2,
+  Trash2,
+  Download,
+  CheckCircle,
+  Clock,
+  DollarSign,
+  AlertCircle,
+} from 'lucide-react';
+import { useDocumentTitle } from '@/hooks'; // OBRIGATÓRIO
 // import { useToast } from"@/contexts/ToastContext"; // OBRIGATÓRIO
 // import { useNomeDoHook } from"@/hooks"; // Hook do backend (se aplicável)
 
@@ -54,11 +67,11 @@ interface Category {
 // COMPONENTE PRINCIPAL
 export default function NomeDoModulo() {
   // 1. HOOK DE TÍTULO (OBRIGATÓRIO)
-  useDocumentTitle("Título do Módulo");
+  useDocumentTitle('Título do Módulo');
 
   // 2. NAVEGAÇÃO INTERNA
-  const [activeCategory, setActiveCategory] = useState<string>("dashboard");
-  const [activeTab, setActiveTab] = useState<string>("todos");
+  const [activeCategory, setActiveCategory] = useState<string>('dashboard');
+  const [activeTab, setActiveTab] = useState<string>('todos');
 
   // 3. BACKEND INTEGRATION (se aplicável)
   // const {
@@ -70,50 +83,50 @@ export default function NomeDoModulo() {
   //   updateItem,
   //   deleteItem,
   // } = useNomeDoHook();
-  
-// const { addToast } = useToast();
+
+  // const { addToast } = useToast();
 
   // 4. ESTADOS LOCAIS
   const [loading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
 
   // 5. KPIS (SEMPRE 4 CARDS)
   const kpis: KPI[] = [
     {
-      title:"Total Itens",
-      value:"0", // ou loading ?"..." : items.length
-      trend:"+12%",
+      title: 'Total Itens',
+      value: '0', // ou loading ?"..." : items.length
+      trend: '+12%',
       icon: TrendingUp,
-      color:"blue",
+      color: 'blue',
     },
     {
-      title:"Ativos",
-      value:"0",
-      trend:"+5",
+      title: 'Ativos',
+      value: '0',
+      trend: '+5',
       icon: CheckCircle,
-      color:"green",
+      color: 'green',
     },
     {
-      title:"Pendentes",
-      value:"0",
-      trend:"-2",
+      title: 'Pendentes',
+      value: '0',
+      trend: '-2',
       icon: Clock,
-      color:"yellow",
+      color: 'yellow',
     },
     {
-      title:"Valor Total",
-      value:"R$ 0",
-      trend:"+8%",
+      title: 'Valor Total',
+      value: 'R$ 0',
+      trend: '+8%',
       icon: DollarSign,
-      color:"purple",
+      color: 'purple',
     },
   ];
 
   // 6. CATEGORIAS NAVEGAÇÃO (botões com badges)
   const categories: Category[] = [
-    { id:"dashboard", label:"Dashboard", icon: TrendingUp, count: 0, trend:"+0" },
-    { id:"lista", label:"Lista Completa", icon: Eye, count: 0, trend:"+0" },
-    { id:"relatorios", label:"Relatórios", icon: Download, count: 0 },
+    { id: 'dashboard', label: 'Dashboard', icon: TrendingUp, count: 0, trend: '+0' },
+    { id: 'lista', label: 'Lista Completa', icon: Eye, count: 0, trend: '+0' },
+    { id: 'relatorios', label: 'Relatórios', icon: Download, count: 0 },
   ];
 
   // 7. EFEITOS
@@ -176,9 +189,7 @@ export default function NomeDoModulo() {
         <h3 className="text-body-lg text-[var(--text-primary)] mb-4 orx-orx-font-medium">
           Dashboard Principal
         </h3>
-        <p className="text-[var(--text-secondary)]">
-          Conteúdo do dashboard aqui
-        </p>
+        <p className="text-[var(--text-secondary)]">Conteúdo do dashboard aqui</p>
       </Card>
     </div>
   );
@@ -188,8 +199,10 @@ export default function NomeDoModulo() {
       {/* Header com busca e filtros */}
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <div className="flex gap-3">
-          <button 
-            onClick={() => {/* handleCreate(data); */}}
+          <button
+            onClick={() => {
+              /* handleCreate(data); */
+            }}
             className="neuro-button px-6 py-2 rounded-xl flex items-center gap-2"
           >
             <Plus className="w-4 h-4" />
@@ -309,8 +322,8 @@ export default function NomeDoModulo() {
               onClick={() => setActiveCategory(category.id)}
               className={`flex flex-col items-center justify-center h-24 text-center rounded-xl transition-all duration-200 ${
                 activeCategory === category.id
-                  ?"neuro-raised scale-105"
-                  :"neuro-flat hover:neuro-raised"
+                  ? 'neuro-raised scale-105'
+                  : 'neuro-flat hover:neuro-raised'
               }`}
             >
               <category.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
@@ -321,9 +334,7 @@ export default function NomeDoModulo() {
                 <span className="text-body-lg font-display text-[var(--text-primary)]">
                   {category.count}
                 </span>
-                {category.trend && (
-                  <TrendingUp className="w-3 h-3 text-success" />
-                )}
+                {category.trend && <TrendingUp className="w-3 h-3 text-success" />}
               </div>
             </button>
           ))}
@@ -335,9 +346,7 @@ export default function NomeDoModulo() {
             <Card key={index} className="neuro-raised p-6">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-body-sm text-[var(--text-secondary)] mb-1">
-                    {kpi.title}
-                  </p>
+                  <p className="text-body-sm text-[var(--text-secondary)] mb-1">{kpi.title}</p>
                   <h3 className="text-heading font-display text-[var(--text-primary)]">
                     {kpi.value}
                   </h3>
@@ -358,14 +367,14 @@ export default function NomeDoModulo() {
 
         {/* TABS (OPCIONAL - se aplicável) */}
         <div className="flex gap-2 p-2 neuro-inset rounded-2xl w-fit">
-          {["todos","ativos","inativos"].map((tab) => (
+          {['todos', 'ativos', 'inativos'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`px-6 py-3 rounded-xl orx-orx-font-medium transition-all ${
                 activeTab === tab
-                  ?"neuro-raised text-[var(--primary)]"
-                  :"text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                  ? 'neuro-raised text-[var(--primary)]'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -374,17 +383,15 @@ export default function NomeDoModulo() {
         </div>
 
         {/* CONTEÚDO PRINCIPAL (baseado em activeCategory) */}
-        {activeCategory ==="dashboard" && renderDashboard()}
-        {activeCategory ==="lista" && renderLista()}
-        {activeCategory ==="relatorios" && (
+        {activeCategory === 'dashboard' && renderDashboard()}
+        {activeCategory === 'lista' && renderLista()}
+        {activeCategory === 'relatorios' && (
           <Card className="neuro-raised p-12 text-center">
             <Download className="w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4" />
             <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 orx-orx-font-medium">
               Relatórios
             </h3>
-            <p className="text-[var(--text-secondary)]">
-              Módulo de relatórios em desenvolvimento
-            </p>
+            <p className="text-[var(--text-secondary)]">Módulo de relatórios em desenvolvimento</p>
           </Card>
         )}
       </div>
@@ -408,4 +415,3 @@ export default function NomeDoModulo() {
 // [ ] Ícones Lucide React
 // [ ] TypeScript interfaces
 // [ ] Export default
-

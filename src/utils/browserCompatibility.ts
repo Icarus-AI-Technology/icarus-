@@ -1,6 +1,6 @@
 /**
  * Polyfills e compatibilidade cross-browser - ICARUS v5.0
- * 
+ *
  * Garante funcionamento em:
  * ✅ Chrome/Edge: Full support
  * ✅ Safari: Full support (com polyfills)
@@ -50,8 +50,10 @@ export const BrowserDetection = {
         return String(p) === '[object SafariRemoteNotification]';
       })(
         !(window as unknown as { safari?: { pushNotification?: unknown } }).safari ||
-          (typeof (window as unknown as { safari?: { pushNotification?: unknown } }).safari !== 'undefined' &&
-            (window as unknown as { safari?: { pushNotification?: unknown } }).safari?.pushNotification)
+          (typeof (window as unknown as { safari?: { pushNotification?: unknown } }).safari !==
+            'undefined' &&
+            (window as unknown as { safari?: { pushNotification?: unknown } }).safari
+              ?.pushNotification)
       );
     return isSafari;
   },
@@ -111,7 +113,8 @@ export const initSpeechRecognition = (): (new () => SpeechRecognition) | null =>
   // Tentar APIs nativas primeiro
   const SpeechRecognitionAPI =
     (window as unknown as { SpeechRecognition?: new () => SpeechRecognition }).SpeechRecognition ||
-    (window as unknown as { webkitSpeechRecognition?: new () => SpeechRecognition }).webkitSpeechRecognition ||
+    (window as unknown as { webkitSpeechRecognition?: new () => SpeechRecognition })
+      .webkitSpeechRecognition ||
     null;
 
   if (SpeechRecognitionAPI) {
@@ -119,9 +122,7 @@ export const initSpeechRecognition = (): (new () => SpeechRecognition) | null =>
   }
 
   // Firefox e outros: usar Web Speech API Polyfill
-  console.warn(
-    'Web Speech API não suportada nativamente. Usando modo de fallback (input manual).'
-  );
+  console.warn('Web Speech API não suportada nativamente. Usando modo de fallback (input manual).');
 
   // Retornar null e o componente deve lidar com fallback
   return null;
@@ -154,13 +155,13 @@ export const copyToClipboard = async (text: string): Promise<boolean> => {
       document.body.removeChild(textArea);
       return successful;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       document.body.removeChild(textArea);
       console.error('Fallback: Erro ao copiar texto:', err);
       return false;
     }
   } catch (error) {
-   const err = error as Error;
+    const err = error as Error;
     console.error('Erro ao copiar para clipboard:', err);
     return false;
   }
@@ -178,7 +179,7 @@ export const readFromClipboard = async (): Promise<string | null> => {
     console.warn('Clipboard read não suportado neste navegador');
     return null;
   } catch (error) {
-   const err = error as Error;
+    const err = error as Error;
     console.error('Erro ao ler clipboard:', err);
     return null;
   }
@@ -214,7 +215,8 @@ export const initIntersectionObserver = () => {
     unobserve(): void {}
     disconnect(): void {}
   }
-  (window as unknown as { IntersectionObserver: unknown }).IntersectionObserver = BasicIntersectionObserver as unknown;
+  (window as unknown as { IntersectionObserver: unknown }).IntersectionObserver =
+    BasicIntersectionObserver as unknown;
 };
 
 // ========================================
@@ -232,8 +234,22 @@ export const initResizeObserver = () => {
 
   console.warn('ResizeObserver não suportado. Usando polyfill básico.');
 
-  (window as unknown as { ResizeObserver: new (callback: (entries: Array<{ target: Element; contentRect: DOMRectReadOnly }>, observer: ResizeObserver) => void) => ResizeObserver }).ResizeObserver = class ResizeObserver {
-    constructor(callback: (entries: Array<{ target: Element; contentRect: DOMRectReadOnly }>, observer: ResizeObserver) => void) {
+  (
+    window as unknown as {
+      ResizeObserver: new (
+        callback: (
+          entries: Array<{ target: Element; contentRect: DOMRectReadOnly }>,
+          observer: ResizeObserver
+        ) => void
+      ) => ResizeObserver;
+    }
+  ).ResizeObserver = class ResizeObserver {
+    constructor(
+      callback: (
+        entries: Array<{ target: Element; contentRect: DOMRectReadOnly }>,
+        observer: ResizeObserver
+      ) => void
+    ) {
       this.callback = callback;
       this.elements = [];
     }
@@ -262,7 +278,10 @@ export const initResizeObserver = () => {
       this.elements = [];
     }
 
-    private callback: (entries: Array<{ target: Element; contentRect: DOMRectReadOnly }>, observer: ResizeObserver) => void;
+    private callback: (
+      entries: Array<{ target: Element; contentRect: DOMRectReadOnly }>,
+      observer: ResizeObserver
+    ) => void;
     private elements: Element[];
   };
 };
@@ -277,8 +296,7 @@ export const initCSSVariables = () => {
   }
 
   // Verificar suporte a CSS Variables
-  const supportsCSS =
-    window.CSS && window.CSS.supports && window.CSS.supports('--fake-var', '0');
+  const supportsCSS = window.CSS && window.CSS.supports && window.CSS.supports('--fake-var', '0');
 
   if (supportsCSS) {
     return; // Suportado nativamente
@@ -350,13 +368,21 @@ export const polyfillSmoothScroll = () => {
   // Override scrollTo
   const originalScrollTo = Element.prototype.scrollTo as (x: number, y: number) => void;
 
-  Element.prototype.scrollTo = function scrollToPolyfill(this: Element, options: ScrollToOptions | number, y?: number) {
+  Element.prototype.scrollTo = function scrollToPolyfill(
+    this: Element,
+    options: ScrollToOptions | number,
+    y?: number
+  ) {
     if (typeof options === 'object' && (options as ScrollToOptions).behavior === 'smooth') {
       smoothScroll(this as HTMLElement, (options as ScrollToOptions).top || 0, 300);
     } else if (typeof options === 'number' && typeof y === 'number') {
       originalScrollTo.call(this, options, y);
     } else if (typeof options === 'object') {
-      originalScrollTo.call(this, (options as ScrollToOptions).left || 0, (options as ScrollToOptions).top || 0);
+      originalScrollTo.call(
+        this,
+        (options as ScrollToOptions).left || 0,
+        (options as ScrollToOptions).top || 0
+      );
     }
   } as unknown as typeof Element.prototype.scrollTo;
 };
@@ -418,7 +444,7 @@ export const initCustomElements = () => {
 
 export const initBrowserCompatibility = () => {
   const browserInfo = BrowserDetection.getBrowserInfo();
-  
+
   console.log(`🌐 Navegador detectado: ${browserInfo.name} ${browserInfo.version}`);
 
   // Aplicar polyfills necessários
@@ -460,8 +486,7 @@ export const checkFeatureSupport = () => {
     clipboard: !!(navigator.clipboard && navigator.clipboard.writeText),
     intersectionObserver: 'IntersectionObserver' in window,
     resizeObserver: 'ResizeObserver' in window,
-    cssVariables:
-      window.CSS && window.CSS.supports && window.CSS.supports('--fake-var', '0'),
+    cssVariables: window.CSS && window.CSS.supports && window.CSS.supports('--fake-var', '0'),
     smoothScroll: 'scrollBehavior' in document.documentElement.style,
     fetch: 'fetch' in window,
     promise: 'Promise' in window,
@@ -472,9 +497,7 @@ export const checkFeatureSupport = () => {
     webGL: (() => {
       try {
         const canvas = document.createElement('canvas');
-        return !!(
-          canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
-        );
+        return !!(canvas.getContext('webgl') || canvas.getContext('experimental-webgl'));
       } catch {
         return false;
       }
@@ -495,4 +518,3 @@ export default {
   checkFeatureSupport,
   smoothScroll,
 };
-

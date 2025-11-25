@@ -1,4 +1,4 @@
-declare module"gpt-researcher" {
+declare module 'gpt-researcher' {
   export interface GPTResearcherMessage {
     task: string;
     report_type?: string;
@@ -28,5 +28,3 @@ declare module"gpt-researcher" {
   const client: GPTResearcherClient;
   export default client;
 }
-
-

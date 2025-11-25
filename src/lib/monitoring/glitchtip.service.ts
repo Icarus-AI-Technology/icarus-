@@ -1,13 +1,13 @@
 /**
  * GlitchTip Error Tracking Service
  * Drop-in replacement for Sentry (open-source)
- * 
+ *
  * Features:
  * - Error/exception tracking
  * - Performance monitoring
  * - Release tracking
  * - User feedback
- * 
+ *
  * Economia: $360-1,200/ano vs Sentry
  */
 
@@ -114,13 +114,10 @@ export class GlitchTipService {
 
     // Unhandled promise rejections
     window.addEventListener('unhandledrejection', (event) => {
-      this.captureException(
-        new Error(`Unhandled Promise Rejection: ${event.reason}`),
-        {
-          tags: { type: 'unhandled_rejection' },
-          extra: { reason: event.reason },
-        }
-      );
+      this.captureException(new Error(`Unhandled Promise Rejection: ${event.reason}`), {
+        tags: { type: 'unhandled_rejection' },
+        extra: { reason: event.reason },
+      });
     });
   }
 
@@ -295,7 +292,7 @@ export class GlitchTipService {
         body: JSON.stringify(event),
       });
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[GlitchTip] Failed to send event:', err);
     }
   }
@@ -311,7 +308,9 @@ export class GlitchTipService {
   /**
    * Parse stack trace
    */
-  private parseStackTrace(stack: string): NonNullable<ErrorEvent['exception']>['stacktrace'] | undefined {
+  private parseStackTrace(
+    stack: string
+  ): NonNullable<ErrorEvent['exception']>['stacktrace'] | undefined {
     const lines = stack.split('\n').slice(1); // Skip first line (error message)
     const frames = lines
       .map((line) => {
@@ -329,9 +328,7 @@ export class GlitchTipService {
       })
       .filter((frame): frame is NonNullable<typeof frame> => frame !== null);
 
-    return frames.length > 0
-      ? { frames }
-      : undefined;
+    return frames.length > 0 ? { frames } : undefined;
   }
 
   /**
@@ -353,4 +350,3 @@ export const glitchTipService = new GlitchTipService();
 if (typeof window !== 'undefined') {
   (window as unknown as { GlitchTip?: GlitchTipService }).GlitchTip = glitchTipService;
 }
-

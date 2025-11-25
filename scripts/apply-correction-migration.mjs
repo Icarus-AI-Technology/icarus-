@@ -44,47 +44,52 @@ async function main() {
   log('\n' + '='.repeat(80), 'magenta');
   log('🔧 APLICADOR - Migration de Correção (Tabelas Faltantes)', 'magenta');
   log('='.repeat(80) + '\n', 'magenta');
-  
+
   const client = new pg.Client(DB_CONFIG);
-  
+
   try {
     log('🔌 Conectando...', 'blue');
     await client.connect();
     log('✅ Conectado!\n', 'green');
-    
+
     const beforeCount = await countTables(client);
     log(`📊 Tabelas ANTES: ${beforeCount}\n`, 'blue');
-    
-    const sqlPath = path.join(__dirname, '..', 'supabase', 'migrations', '202510201400_correcao_tabelas_faltantes.sql');
+
+    const sqlPath = path.join(
+      __dirname,
+      '..',
+      'supabase',
+      'migrations',
+      '202510201400_correcao_tabelas_faltantes.sql'
+    );
     const sql = fs.readFileSync(sqlPath, 'utf-8');
-    
+
     log('📄 Aplicando migration de correção...', 'cyan');
-    
+
     await client.query('BEGIN');
     await client.query(sql);
     await client.query('COMMIT');
-    
+
     log('✅ Migration aplicada com sucesso!\n', 'green');
-    
+
     const afterCount = await countTables(client);
-    
+
     log('='.repeat(80), 'magenta');
     log('📊 RESULTADO', 'magenta');
     log('='.repeat(80), 'magenta');
     log(`Tabelas ANTES:  ${beforeCount}`, 'blue');
     log(`Tabelas DEPOIS: ${afterCount}`, 'green');
     log(`Adicionadas:    +${afterCount - beforeCount}`, 'green');
-    
+
     const expected = 103 + 7; // 103 atuais + 7 faltantes
     const completude = Math.round((afterCount / expected) * 100);
     log(`\nCompletude:     ${completude}% (${afterCount}/${expected})`, 'cyan');
-    
+
     if (afterCount >= 110) {
       log('\n🎉 TODAS AS TABELAS FALTANTES ADICIONADAS!', 'green');
     } else {
       log(`\n⚠️  Ainda faltam ${expected - afterCount} tabelas`, 'yellow');
     }
-    
   } catch (error) {
     await client.query('ROLLBACK');
     log(`\n❌ ERRO: ${error.message}`, 'red');
@@ -96,4 +101,3 @@ async function main() {
 }
 
 main().catch(console.error);
-

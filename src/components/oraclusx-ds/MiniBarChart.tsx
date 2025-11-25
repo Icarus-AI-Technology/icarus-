@@ -1,7 +1,7 @@
 /**
  * MiniBarChart - Mini gráfico de barras para Dashboard
  * Usado em: Estoque Crítico, Logística, Performance IA
- * 
+ *
  * Sistema: ICARUS v5.0
  * Design: OraclusX DS
  */
@@ -23,27 +23,27 @@ const COLOR_VARIANTS = {
     0: 'bg-[var(--error)]/60',
     1: 'bg-[var(--error)]/70',
     2: 'bg-[var(--error)]/80',
-    3: 'bg-[var(--error)]'
+    3: 'bg-[var(--error)]',
   },
   success: {
     0: 'bg-success/60',
     1: 'bg-success/70',
     2: 'bg-success/80',
-    3: 'bg-success'
+    3: 'bg-success',
   },
   accent: {
     0: 'bg-[var(--accent)]/60',
     1: 'bg-[var(--accent)]/70',
     2: 'bg-[var(--accent)]/80',
-    3: 'bg-[var(--accent)]'
-  }
+    3: 'bg-[var(--accent)]',
+  },
 } as const;
 
 export const MiniBarChart: FC<MiniBarChartProps> = ({
   data,
   colorScheme,
   label = 'Últimos 8 dias',
-  className = ''
+  className = '',
 }) => {
   // Garantir 8 valores
   const normalizedData = useMemo(
@@ -70,8 +70,8 @@ export const MiniBarChart: FC<MiniBarChartProps> = ({
   return (
     <div className={cn('mt-4', className)}>
       {/* Barras */}
-      <div 
-        className="flex items-end justify-between gap-1 mb-2 mini-bar-chart h-[32px]" 
+      <div
+        className="flex items-end justify-between gap-1 mb-2 mini-bar-chart h-[32px]"
         role="img"
         aria-label={`Gráfico de barras mostrando dados dos ${label}`}
       >
@@ -84,19 +84,18 @@ export const MiniBarChart: FC<MiniBarChartProps> = ({
               getColorClass(value),
               'w-[12px]'
             )}
-            ref={(el) => { barRefs.current[index] = el; }}
+            ref={(el) => {
+              barRefs.current[index] = el;
+            }}
             title={`Dia ${index + 1}: ${value}%`}
             role="graphics-symbol"
             aria-label={`Dia ${index + 1}: ${value}%`}
           />
         ))}
       </div>
-      
+
       {/* Label */}
-      <div className="text-muted-foreground text-center text-[0.813rem]">
-        {label}
-      </div>
+      <div className="text-muted-foreground text-center text-[0.813rem]">{label}</div>
     </div>
   );
 };
-

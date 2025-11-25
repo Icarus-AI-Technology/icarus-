@@ -1,9 +1,9 @@
 /**
  * MaskedInput - Componente de Input com Máscara Automática
  * ICARUS v5.0 - OraclusX Design System
- * 
+ *
  * Uso:
- * <MaskedInput 
+ * <MaskedInput
  *   mask="CPF"
  *   value={cpf}
  *   onChange={setCpf}
@@ -88,9 +88,7 @@ export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
             style={{ fontSize: '0.813rem', fontWeight: 500 }}
           >
             {label}
-            {props.required && (
-              <span className="text-[var(--orx-error)] ml-1">*</span>
-            )}
+            {props.required && <span className="text-[var(--orx-error)] ml-1">*</span>}
           </label>
         )}
 
@@ -137,10 +135,7 @@ export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
         {/* Helper/Error Text */}
         {(helperText || showError) && (
           <p
-            className={cn(
-              'text-[var(--text-secondary)]',
-              showError && 'text-[var(--orx-error)]'
-            )}
+            className={cn('text-[var(--text-secondary)]', showError && 'text-[var(--orx-error)]')}
             style={{ fontSize: '0.813rem' }}
           >
             {showError ? error || 'Valor inválido' : helperText}
@@ -149,10 +144,7 @@ export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
 
         {/* Pattern hint */}
         {!isTouched && !helperText && !error && (
-          <p
-            className="text-[var(--text-muted)]"
-            style={{ fontSize: '0.813rem' }}
-          >
+          <p className="text-[var(--text-muted)]" style={{ fontSize: '0.813rem' }}>
             Formato: {config.pattern}
           </p>
         )}
@@ -162,4 +154,3 @@ export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
 );
 
 MaskedInput.displayName = 'MaskedInput';
-

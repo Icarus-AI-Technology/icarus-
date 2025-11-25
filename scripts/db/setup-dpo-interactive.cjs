@@ -22,7 +22,7 @@ const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 
 const rl = readline.createInterface({
   input: process.stdin,
-  output: process.stdout
+  output: process.stdout,
 });
 
 function question(prompt) {
@@ -34,23 +34,23 @@ function question(prompt) {
 async function setupDPO() {
   console.log('\n🛡️  CONFIGURAÇÃO DO DPO (LGPD Art. 41)\n');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
-  
+
   console.log('📋 INFORMAÇÕES NECESSÁRIAS:\n');
-  
+
   // Coletar dados
   const nome = await question('Nome completo do DPO: ');
   const email = await question('E-mail institucional (ex: dpo@icarusai.com.br): ');
   const telefone = await question('Telefone (ex: (11) 98765-4321): ');
   const cpf = await question('CPF (opcional - Enter para pular): ');
-  
+
   console.log('\nTipo de DPO:');
   console.log('  1) Interno (funcionário da empresa)');
   console.log('  2) Externo (consultoria/terceirizado)');
   const tipoOpt = await question('Escolha (1 ou 2): ');
   const tipo = tipoOpt === '2' ? 'externo' : 'interno';
-  
+
   const cnpj = await question('\nCNPJ da empresa (formato: XX.XXX.XXX/0001-XX): ');
-  
+
   console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
   console.log('📝 DADOS INFORMADOS:\n');
   console.log(`   Nome: ${nome}`);
@@ -59,17 +59,17 @@ async function setupDPO() {
   console.log(`   CPF: ${cpf || '(não informado)'}`);
   console.log(`   Tipo: ${tipo}`);
   console.log(`   CNPJ: ${cnpj}\n`);
-  
+
   const confirma = await question('Confirma os dados? (S/n): ');
-  
+
   if (confirma.toLowerCase() === 'n') {
     console.log('\n❌ Configuração cancelada.\n');
     rl.close();
     return;
   }
-  
+
   console.log('\n⚙️  Salvando no banco de dados...\n');
-  
+
   try {
     // Buscar empresa pelo CNPJ
     const { data: empresas, error: empresaError } = await supabase
@@ -77,19 +77,19 @@ async function setupDPO() {
       .select('id, nome')
       .eq('cnpj', cnpj.replace(/[^\d]/g, ''))
       .limit(1);
-    
+
     if (empresaError) throw empresaError;
-    
+
     if (!empresas || empresas.length === 0) {
       console.log('❌ Empresa não encontrada com CNPJ:', cnpj);
       console.log('\n💡 Crie a empresa primeiro ou verifique o CNPJ.\n');
       rl.close();
       return;
     }
-    
+
     const empresa = empresas[0];
     console.log(`✅ Empresa encontrada: ${empresa.nome}\n`);
-    
+
     // Atualizar dados do DPO
     const { error: updateError } = await supabase
       .from('empresas')
@@ -99,12 +99,12 @@ async function setupDPO() {
         dpo_telefone: telefone,
         dpo_cpf: cpf || null,
         dpo_tipo: tipo,
-        dpo_nomeado_em: new Date().toISOString()
+        dpo_nomeado_em: new Date().toISOString(),
       })
       .eq('id', empresa.id);
-    
+
     if (updateError) throw updateError;
-    
+
     console.log('✅ DPO configurado com sucesso!\n');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
     console.log('📋 PRÓXIMOS PASSOS:\n');
@@ -120,13 +120,11 @@ async function setupDPO() {
     console.log('   → Ver recomendações em GUIA_RAPIDO_DPO.md\n');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
     console.log('🎉 Configuração concluída!\n');
-    
   } catch (err) {
     console.log(`\n❌ Erro ao salvar: ${err.message}\n`);
   }
-  
+
   rl.close();
 }
 
 setupDPO();
-

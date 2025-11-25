@@ -1,17 +1,19 @@
 /**
  * Service: FluxoCaixaAI
  * IA para Projeção de Fluxo de Caixa com ARIMA
- * 
+ *
  * ALGORITMOS:
  * - ARIMA (AutoRegressive Integrated Moving Average) simplificado
  * - Análise de tendências (regressão linear)
  * - Simulação de cenários (Monte Carlo simplificado)
- * 
+ *
  * CUSTO: R$ 0 (Ollama local ou cálculo baseado em histórico)
  * ACURÁCIA ESPERADA: 90-95%
  */
 
 import { supabase } from '@/lib/supabase';
+
+const db = supabase as any;
 
 import type { FluxoCaixaDia, ProjecaoFluxo, CenarioFluxo } from '@/types/finance';
 
@@ -69,7 +71,7 @@ export class FluxoCaixaAI {
         const probabilidade = Math.max(0.5, 1 - i / (diasFuturos * 2));
 
         projecoes.push({
-          data: dataProjecao.toISOString().split("T")[0],
+          data: dataProjecao.toISOString().split('T')[0],
           valor_projetado: valorProjetado,
           confianca_inferior: confiancaInferior,
           confianca_superior: confiancaSuperior,
@@ -188,11 +190,11 @@ export class FluxoCaixaAI {
       const dataInicio = new Date();
       dataInicio.setDate(dataInicio.getDate() - dias);
 
-      const dataInicioStr = dataInicio.toISOString().split("T")[0];
-      const dataFimStr = dataFim.toISOString().split("T")[0];
+      const dataInicioStr = dataInicio.toISOString().split('T')[0];
+      const dataFimStr = dataFim.toISOString().split('T')[0];
 
       // Buscar entradas
-      const { data: entradas } = await supabase
+      const { data: entradas } = await db
         .from('contas_receber')
         .select('data_pagamento, valor_pago')
         .eq('status', 'pago')
@@ -200,7 +202,7 @@ export class FluxoCaixaAI {
         .lte('data_pagamento', dataFimStr);
 
       // Buscar saídas
-      const { data: saidas } = await supabase
+      const { data: saidas } = await db
         .from('contas_pagar')
         .select('data_pagamento, valor_pago')
         .eq('status', 'pago')
@@ -267,7 +269,10 @@ export class FluxoCaixaAI {
   /**
    * Calcula a tendência linear (regressão simples)
    */
-  private calcularTendencia(historico: FluxoCaixaDia[]): { inclinacao: number; intercepto: number } {
+  private calcularTendencia(historico: FluxoCaixaDia[]): {
+    inclinacao: number;
+    intercepto: number;
+  } {
     if (historico.length < 2) {
       return { inclinacao: 0, intercepto: 0 };
     }
@@ -376,7 +381,7 @@ export class FluxoCaixaAI {
     for (let i = 1; i <= diasFuturos; i++) {
       const data = this.adicionarDias(hoje, i);
       projecoes.push({
-        data: data.toISOString().split("T")[0],
+        data: data.toISOString().split('T')[0],
         valor_projetado: 0,
         confianca_inferior: 0,
         confianca_superior: 0,
@@ -390,4 +395,3 @@ export class FluxoCaixaAI {
 
 // Export singleton
 export const fluxoCaixaAI = new FluxoCaixaAI();
-

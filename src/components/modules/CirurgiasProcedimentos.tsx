@@ -1,9 +1,9 @@
 /**
  * Módulo 3: Cirurgias e Procedimentos
  * Sistema completo de gestão cirúrgica com Kanban em tempo real
- * 
+ *
  * CONFORME DOCUMENTAÇÃO OFICIAL
- * 
+ *
  * FUNCIONALIDADES:
  * - Dashboard com KPIs em tempo real
  * - Kanban de cirurgias
@@ -13,8 +13,8 @@
  * - Relatórios
  */
 
-import React, { useCallback, useEffect, useMemo, useState } from"react";
-import { Card } from"@/components/oraclusx-ds";
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Card } from '@/components/oraclusx-ds';
 import {
   Activity,
   AlertCircle,
@@ -36,16 +36,11 @@ import {
   Share2,
   Sparkles,
   Stethoscope,
-} from"lucide-react";
-import {
-  useCirurgias,
-  useDocumentTitle,
-  useHospitais,
-  useMedicos,
-} from"@/hooks";
-import { useToast } from"@/contexts/ToastContext";
-import type { Cirurgia } from"@/hooks/useCirurgias";
-import { supabase } from"@/lib/supabase";
+} from 'lucide-react';
+import { useCirurgias, useDocumentTitle, useHospitais, useMedicos } from '@/hooks';
+import { useToast } from '@/contexts/ToastContext';
+import type { Cirurgia } from '@/hooks/useCirurgias';
+import { supabase } from '@/lib/supabase';
 import {
   cirurgiasAI,
   type AnaliseRisco,
@@ -54,49 +49,48 @@ import {
   type PrevisaoDuracao,
   type PrevisaoGlosa,
   type RecomendacaoKit,
-} from"@/lib/services/CirurgiasAI";
+} from '@/lib/services/CirurgiasAI';
 import {
   cotacaoAutomaticaService,
   type RelatorioCotacaoCirurgia,
-} from"@/lib/services/CotacaoAutomaticaService";
+} from '@/lib/services/CotacaoAutomaticaService';
 import {
   palavrasChaveService,
   type EstatisticasPalavraChave,
-} from"@/lib/services/PalavrasChaveService";
-import { cn } from"@/lib/utils";
-
+} from '@/lib/services/PalavrasChaveService';
+import { cn } from '@/lib/utils';
 
 type SubmoduleId =
-  |"dashboard"
-  |"agendamento"
-  |"autorizacao"
-  |"kit"
-  |"intraoperatorio"
-  |"rastreabilidade"
-  |"posoperatorio"
-  |"faturamento"
-  |"calendario"
-  |"analytics"
-  |"ia"
-  |"integracoes"
-  |"portais";
+  | 'dashboard'
+  | 'agendamento'
+  | 'autorizacao'
+  | 'kit'
+  | 'intraoperatorio'
+  | 'rastreabilidade'
+  | 'posoperatorio'
+  | 'faturamento'
+  | 'calendario'
+  | 'analytics'
+  | 'ia'
+  | 'integracoes'
+  | 'portais';
 
 type KanbanColumn =
-  |"agendada"
-  |"confirmada"
-  |"preparacao"
-  |"andamento"
-  |"recuperacao"
-  |"concluida"
-  |"cancelada";
+  | 'agendada'
+  | 'confirmada'
+  | 'preparacao'
+  | 'andamento'
+  | 'recuperacao'
+  | 'concluida'
+  | 'cancelada';
 
 interface KPI {
   id: string;
   title: string;
   value: string | number;
   trend?: string;
-  tone?:"success" |"warning" |"danger" |"info";
-  icon: React.ComponentType<{ className?: string }>;
+  tone?: 'success' | 'warning' | 'danger' | 'info';
+  icon: React.ComponentType<{ className?: string; size?: number | string }>;
   color: string;
 }
 
@@ -135,7 +129,7 @@ interface CirurgiaProdutoRow {
   status: string | null;
   produto: {
     descricao: string | null;
-  } | null;
+  } | { descricao: string | null }[] | null;
 }
 
 interface CirurgiaConsumoRow {
@@ -148,7 +142,7 @@ interface CirurgiaConsumoRow {
   data_consumo: string;
   produto: {
     descricao: string | null;
-  } | null;
+  } | { descricao: string | null }[] | null;
 }
 
 interface CirurgiaRastreabilidadeRow {
@@ -162,13 +156,13 @@ interface CirurgiaRastreabilidadeRow {
   data_movimentacao: string;
   produto: {
     descricao: string | null;
-  } | null;
+  } | { descricao: string | null }[] | null;
 }
 
 interface OcorrenciaPosOperatorio {
   id: string;
   descricao: string;
-  severidade:"baixa" |"media" |"alta";
+  severidade: 'baixa' | 'media' | 'alta';
   data: string;
   responsavel: string;
 }
@@ -209,81 +203,88 @@ interface PortalOperationalStatus {
 // const kanbanColumns: KanbanColumn[] = ["agendada","confirmada","preparacao","andamento","recuperacao","concluida","cancelada"]; // não utilizado
 
 const statusLabels: Record<KanbanColumn, string> = {
-  agendada:"Solicitada",
-  confirmada:"Confirmada",
-  preparacao:"Preparação",
-  andamento:"Em Andamento",
-  recuperacao:"Recuperação",
-  concluida:"Concluída",
-  cancelada:"Cancelada",
+  agendada: 'Solicitada',
+  confirmada: 'Confirmada',
+  preparacao: 'Preparação',
+  andamento: 'Em Andamento',
+  recuperacao: 'Recuperação',
+  concluida: 'Concluída',
+  cancelada: 'Cancelada',
 };
 
 const statusChips: Record<KanbanColumn, string> = {
-  agendada:"bg-accent/10 text-accent",
-  confirmada:"bg-[color:var(--brand-blue-100)] text-[color:var(--brand-blue-700)]",
-  preparacao:"bg-warning/10 text-warning",
-  andamento:"bg-[color:var(--brand-indigo-100)] text-[color:var(--brand-indigo-700)]",
-  recuperacao:"bg-[color:var(--brand-emerald-100)] text-[color:var(--brand-emerald-700)]",
-  concluida:"bg-success/10 text-success",
-  cancelada:"bg-destructive/10 text-error",
+  agendada: 'bg-accent/10 text-accent',
+  confirmada: 'bg-[color:var(--brand-blue-100)] text-[color:var(--brand-blue-700)]',
+  preparacao: 'bg-warning/10 text-warning',
+  andamento: 'bg-[color:var(--brand-indigo-100)] text-[color:var(--brand-indigo-700)]',
+  recuperacao: 'bg-[color:var(--brand-emerald-100)] text-[color:var(--brand-emerald-700)]',
+  concluida: 'bg-success/10 text-success',
+  cancelada: 'bg-destructive/10 text-error',
 };
 
-const severidadeChips: Record<OcorrenciaPosOperatorio["severidade"], string> = {
-  baixa:"bg-success/10 text-success",
-  media:"bg-warning/10 text-warning",
-  alta:"bg-destructive/10 text-error",
+const severidadeChips: Record<OcorrenciaPosOperatorio['severidade'], string> = {
+  baixa: 'bg-success/10 text-success',
+  media: 'bg-warning/10 text-warning',
+  alta: 'bg-destructive/10 text-error',
 };
 
 function formatCurrencyBRL(value: number | null | undefined): string {
-  return new Intl.NumberFormat("pt-BR", {
-    style:"currency",
-    currency:"BRL",
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
     minimumFractionDigits: 2,
   }).format(value ?? 0);
 }
 
-function formatDate(date?: string | null, fallback ="-" ): string {
+// Helper para extrair descrição do produto (pode vir como objeto ou array do Supabase)
+function getProdutoDescricao(
+  produto: { descricao: string | null } | { descricao: string | null }[] | null | undefined
+): string {
+  if (!produto) return 'Produto';
+  if (Array.isArray(produto)) {
+    return produto[0]?.descricao ?? 'Produto';
+  }
+  return produto.descricao ?? 'Produto';
+}
+
+function formatDate(date?: string | null, fallback = '-'): string {
   if (!date) return fallback;
   const parsed = new Date(date);
   if (Number.isNaN(parsed.getTime())) return fallback;
-  return parsed.toLocaleDateString("pt-BR", { day:"2-digit", month:"short", year:"numeric" });
+  return parsed.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
 function formatTime(time?: string | null): string {
-  if (!time) return"--:--";
+  if (!time) return '--:--';
   return time.slice(0, 5);
 }
 
 function percentage(part: number, total: number): string {
-  if (total === 0) return"0%";
+  if (total === 0) return '0%';
   return `${((part / total) * 100).toFixed(1)}%`;
 }
 
 const initialOcorrencias: OcorrenciaPosOperatorio[] = [];
 
 export default function CirurgiasProcedimentos(): JSX.Element {
-  useDocumentTitle("Gestão de Cirurgias");
+  useDocumentTitle('Gestão de Cirurgias');
 
   const { addToast } = useToast();
-  const {
-    cirurgias,
-    error,
-    createCirurgia,
-    updateCirurgia,
-    deleteCirurgia,
-    countByStatus,
-  } = useCirurgias();
+  const { cirurgias, error, createCirurgia, updateCirurgia, deleteCirurgia, countByStatus } =
+    useCirurgias();
   const { medicos } = useMedicos();
   const { hospitais } = useHospitais();
 
-  const [activeModule, setActiveModule] = useState<SubmoduleId>("dashboard");
+  const [activeModule, setActiveModule] = useState<SubmoduleId>('dashboard');
   const [selectedCirurgiaId, setSelectedCirurgiaId] = useState<string | null>(null);
-  const [searchTerm] = useState("");
+  const [searchTerm] = useState('');
   const [statusMetrics, setStatusMetrics] = useState<Record<string, number>>({});
   const [autorizações, setAutorizacoes] = useState<CirurgiaAutorizacaoRow[]>([]);
   const [kitItens, setKitItens] = useState<CirurgiaProdutoRow[]>([]);
   const [consumoItens, setConsumoItens] = useState<CirurgiaConsumoRow[]>([]);
-  const [rastreabilidadeItens, setRastreabilidadeItens] = useState<CirurgiaRastreabilidadeRow[]>([]);
+  const [rastreabilidadeItens, setRastreabilidadeItens] = useState<CirurgiaRastreabilidadeRow[]>(
+    []
+  );
   const [cirurgiaOcorrencias] = useState<OcorrenciaPosOperatorio[]>(initialOcorrencias);
   const [calendarioSemanal, setCalendarioSemanal] = useState<CalendarioCirurgiaItem[]>([]);
   const [portaisConfig, setPortaisConfig] = useState<PortalConfigRow[]>([]);
@@ -301,7 +302,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
 
   const selectedCirurgia = useMemo(() => {
     return selectedCirurgiaId
-      ? cirurgias.find((cirurgiaItem) => cirurgiaItem.id === selectedCirurgiaId) ?? null
+      ? (cirurgias.find((cirurgiaItem) => cirurgiaItem.id === selectedCirurgiaId) ?? null)
       : null;
   }, [cirurgias, selectedCirurgiaId]);
 
@@ -331,7 +332,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     };
 
     filteredCirurgias.forEach((cirurgiaItem) => {
-      const status = (cirurgiaItem.status as KanbanColumn) ??"agendada";
+      const status = (cirurgiaItem.status as KanbanColumn) ?? 'agendada';
       grouped[status].push(cirurgiaItem);
     });
 
@@ -350,45 +351,50 @@ export default function CirurgiasProcedimentos(): JSX.Element {
 
   useEffect(() => {
     if (!error) return;
-    addToast(error,"error");
+    addToast(error, 'error');
   }, [error, addToast]);
 
-  const carregarAssociacoes = useCallback(async (cirurgiaId: string) => {
-    setLoadingAssociations(true);
-    try {
-      const [aut, produtos, consumo, rastreabilidade] = await Promise.all([
-        supabase
-          .from("cirurgias_autorizacoes")
-          .select("*")
-          .eq("cirurgia_id", cirurgiaId),
-        supabase
-          .from("cirurgias_produtos")
-          .select("id, produto_id, quantidade_planejada, quantidade_consumida, quantidade_devolvida, valor_unitario, valor_total, status, produto:produtos_opme(descricao)"
-          )
-          .eq("cirurgia_id", cirurgiaId),
-        supabase
-          .from("cirurgias_consumo")
-          .select("id, produto_id, lote, serie, data_validade, quantidade, data_consumo, produto:produtos_opme(descricao)"
-          )
-          .eq("cirurgia_id", cirurgiaId),
-        supabase
-          .from("cirurgias_rastreabilidade")
-          .select("id, produto_id, codigo_anvisa, lote, data_validade, origem, destino, data_movimentacao, produto:produtos_opme(descricao)"
-          )
-          .eq("cirurgia_id", cirurgiaId),
-      ]);
+  const carregarAssociacoes = useCallback(
+    async (cirurgiaId: string) => {
+      setLoadingAssociations(true);
+      try {
+        const [aut, produtos, consumo, rastreabilidade] = await Promise.all([
+          supabase.from('cirurgias_autorizacoes').select('*').eq('cirurgia_id', cirurgiaId),
+          supabase
+            .from('cirurgias_produtos')
+            .select(
+              'id, produto_id, quantidade_planejada, quantidade_consumida, quantidade_devolvida, valor_unitario, valor_total, status, produto:produtos_opme(descricao)'
+            )
+            .eq('cirurgia_id', cirurgiaId),
+          supabase
+            .from('cirurgias_consumo')
+            .select(
+              'id, produto_id, lote, serie, data_validade, quantidade, data_consumo, produto:produtos_opme(descricao)'
+            )
+            .eq('cirurgia_id', cirurgiaId),
+          supabase
+            .from('cirurgias_rastreabilidade')
+            .select(
+              'id, produto_id, codigo_anvisa, lote, data_validade, origem, destino, data_movimentacao, produto:produtos_opme(descricao)'
+            )
+            .eq('cirurgia_id', cirurgiaId),
+        ]);
 
-      setAutorizacoes((aut.data as CirurgiaAutorizacaoRow[] | null) ?? []);
-      setKitItens((produtos.data as CirurgiaProdutoRow[] | null) ?? []);
-      setConsumoItens((consumo.data as CirurgiaConsumoRow[] | null) ?? []);
-      setRastreabilidadeItens((rastreabilidade.data as CirurgiaRastreabilidadeRow[] | null) ?? []);
-    } catch (associationError) {
-      console.error("Erro ao carregar dados vinculados", associationError);
-      addToast("Não foi possível carregar os dados vinculados","error");
-    } finally {
-      setLoadingAssociations(false);
-    }
-  }, [addToast]);
+        setAutorizacoes((aut.data as unknown as CirurgiaAutorizacaoRow[] | null) ?? []);
+        setKitItens((produtos.data as unknown as CirurgiaProdutoRow[] | null) ?? []);
+        setConsumoItens((consumo.data as unknown as CirurgiaConsumoRow[] | null) ?? []);
+        setRastreabilidadeItens(
+          (rastreabilidade.data as unknown as CirurgiaRastreabilidadeRow[] | null) ?? []
+        );
+      } catch (associationError) {
+        console.error('Erro ao carregar dados vinculados', associationError);
+        addToast('Não foi possível carregar os dados vinculados', 'error');
+      } finally {
+        setLoadingAssociations(false);
+      }
+    },
+    [addToast]
+  );
 
   useEffect(() => {
     if (!selectedCirurgiaId) return;
@@ -398,10 +404,10 @@ export default function CirurgiasProcedimentos(): JSX.Element {
   useEffect(() => {
     const carregarPortais = async () => {
       const { data } = await supabase
-        .from("portais_opme_config")
-        .select("*")
-        .eq("ativo", true)
-        .order("portal", { ascending: true });
+        .from('portais_opme_config')
+        .select('*')
+        .eq('ativo', true)
+        .order('portal', { ascending: true });
 
       if (!data) {
         setPortaisConfig([]);
@@ -416,9 +422,10 @@ export default function CirurgiasProcedimentos(): JSX.Element {
         uptime: 99.8,
         latencia: 1.4,
         atualizadoEm: item.ultima_requisicao ?? new Date().toISOString(),
-        falhasRecentes: item.requisicoes_erro && item.requisicoes_erro > 0
-          ? [{ data: new Date().toISOString(), motivo:"Erro reportado pelo portal" }]
-          : [],
+        falhasRecentes:
+          item.requisicoes_erro && item.requisicoes_erro > 0
+            ? [{ data: new Date().toISOString(), motivo: 'Erro reportado pelo portal' }]
+            : [],
       }));
 
       setPortaisConfig(typedData);
@@ -436,19 +443,23 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     const semana: CalendarioCirurgiaItem[] = Array.from({ length: 7 }, (_, index) => {
       const data = new Date(inicioSemana);
       data.setDate(inicioSemana.getDate() + index);
-      const dataISO = data.toISOString().split("T")[0];
-      const cirurgiasDoDia = cirurgias.filter((cirurgiaItem) => cirurgiaItem.data_cirurgia === dataISO);
+      const dataISO = data.toISOString().split('T')[0];
+      const cirurgiasDoDia = cirurgias.filter(
+        (cirurgiaItem) => cirurgiaItem.data_cirurgia === dataISO
+      );
 
       return {
         id: dataISO,
-        diaSemana: data.toLocaleDateString("pt-BR", { weekday:"short" }),
+        diaSemana: data.toLocaleDateString('pt-BR', { weekday: 'short' }),
         data: data.toISOString(),
         cirurgias: cirurgiasDoDia.map((cirurgiaItem) => ({
           id: cirurgiaItem.id,
-          titulo: (cirurgiaItem.tipo_procedimento ?? cirurgiaItem.procedimento) ??"Procedimento",
+          titulo: cirurgiaItem.tipo_procedimento ?? cirurgiaItem.procedimento ?? 'Procedimento',
           horario: formatTime(cirurgiaItem.hora_inicio ?? cirurgiaItem.hora_cirurgia),
-          hospital: hospitais.find((hospitalItem) => hospitalItem.id === cirurgiaItem.hospital_id)?.nome ??"Hospital",
-          status: (cirurgiaItem.status as KanbanColumn) ??"agendada",
+          hospital:
+            hospitais.find((hospitalItem) => hospitalItem.id === cirurgiaItem.hospital_id)?.nome ??
+            'Hospital',
+          status: (cirurgiaItem.status as KanbanColumn) ?? 'agendada',
         })),
       };
     });
@@ -464,12 +475,17 @@ export default function CirurgiasProcedimentos(): JSX.Element {
       try {
         const dados = {
           id: selectedCirurgia.id,
-          tipo_cirurgia: (selectedCirurgia.tipo_procedimento ?? selectedCirurgia.procedimento) ??"Procedimento",
-          especialidade: selectedCirurgia.especialidade ?? (selectedCirurgia.tipo_procedimento ?? selectedCirurgia.procedimento) ??"",
-          medico_id: selectedCirurgia.medico_id ??"",
-          hospital_id: selectedCirurgia.hospital_id ??"",
+          tipo_cirurgia:
+            selectedCirurgia.tipo_procedimento ?? selectedCirurgia.procedimento ?? 'Procedimento',
+          especialidade:
+            selectedCirurgia.especialidade ??
+            selectedCirurgia.tipo_procedimento ??
+            selectedCirurgia.procedimento ??
+            '',
+          medico_id: selectedCirurgia.medico_id ?? '',
+          hospital_id: selectedCirurgia.hospital_id ?? '',
           data_cirurgia: selectedCirurgia.data_cirurgia,
-          urgencia: selectedCirurgia.urgencia ??"eletiva",
+          urgencia: selectedCirurgia.urgencia ?? 'eletiva',
           paciente_idade: selectedCirurgia.paciente_idade ?? undefined,
           paciente_comorbidades: selectedCirurgia.comorbidades ?? [],
         };
@@ -492,7 +508,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
           setAiAnomalias(anomalias);
         }
       } catch (iaError) {
-        console.error("Erro ao executar algoritmos de IA", iaError);
+        console.error('Erro ao executar algoritmos de IA', iaError);
       }
     };
 
@@ -514,7 +530,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
           setCotacaoRelatorio(relatorio);
         }
       } catch (cotacaoError) {
-        console.error("Erro ao gerar cotação", cotacaoError);
+        console.error('Erro ao gerar cotação', cotacaoError);
       }
     };
 
@@ -539,7 +555,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
         const stats = await palavrasChaveService.analisarEfetividade(produtoId);
         setEstatisticasKeywords(stats);
       } catch (statsError) {
-        console.error("Erro ao analisar palavras-chave", statsError);
+        console.error('Erro ao analisar palavras-chave', statsError);
       }
     };
 
@@ -547,14 +563,14 @@ export default function CirurgiasProcedimentos(): JSX.Element {
   }, [selectedCirurgia, kitItens]);
 
   const handleCreateCirurgia = useCallback(
-    async (payload: Omit<Cirurgia,"id" |"created_at" |"updated_at" |"medico" |"hospital">) => {
+    async (payload: Omit<Cirurgia, 'id' | 'created_at' | 'updated_at' | 'medico' | 'hospital'>) => {
       try {
         const inserted = await createCirurgia(payload);
-        addToast("Cirurgia agendada com sucesso","success");
+        addToast('Cirurgia agendada com sucesso', 'success');
         setSelectedCirurgiaId(inserted.id);
       } catch (createError) {
-        console.error("Erro ao agendar cirurgia", createError);
-        addToast("Erro ao agendar cirurgia","error");
+        console.error('Erro ao agendar cirurgia', createError);
+        addToast('Erro ao agendar cirurgia', 'error');
       }
     },
     [createCirurgia, addToast]
@@ -564,10 +580,10 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     async (id: string, status: KanbanColumn) => {
       try {
         await updateCirurgia(id, { status });
-        addToast(`Status atualizado para ${statusLabels[status]}`,"success");
+        addToast(`Status atualizado para ${statusLabels[status]}`, 'success');
       } catch (updateError) {
-        console.error("Erro ao atualizar status", updateError);
-        addToast("Erro ao atualizar status","error");
+        console.error('Erro ao atualizar status', updateError);
+        addToast('Erro ao atualizar status', 'error');
       }
     },
     [updateCirurgia, addToast]
@@ -575,18 +591,18 @@ export default function CirurgiasProcedimentos(): JSX.Element {
 
   const handleDeleteCirurgia = useCallback(
     async (id: string) => {
-      const confirmar = window.confirm("Tem certeza que deseja excluir esta cirurgia?");
+      const confirmar = window.confirm('Tem certeza que deseja excluir esta cirurgia?');
       if (!confirmar) return;
 
       try {
         await deleteCirurgia(id);
-        addToast("Cirurgia removida","success");
+        addToast('Cirurgia removida', 'success');
         if (selectedCirurgiaId === id) {
           setSelectedCirurgiaId(null);
         }
       } catch (deleteError) {
-        console.error("Erro ao remover cirurgia", deleteError);
-        addToast("Erro ao remover cirurgia","error");
+        console.error('Erro ao remover cirurgia', deleteError);
+        addToast('Erro ao remover cirurgia', 'error');
       }
     },
     [deleteCirurgia, addToast, selectedCirurgiaId]
@@ -598,10 +614,10 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     try {
       const relatorio = await cotacaoAutomaticaService.cotarPorCirurgia(selectedCirurgia.id);
       setCotacaoRelatorio(relatorio);
-      addToast("Cotação multiportal concluída","success");
+      addToast('Cotação multiportal concluída', 'success');
     } catch (cotacaoError) {
-      console.error("Erro na cotação multiportal", cotacaoError);
-      addToast("Erro ao executar cotação","error");
+      console.error('Erro na cotação multiportal', cotacaoError);
+      addToast('Erro ao executar cotação', 'error');
     } finally {
       setExecutandoCotacao(false);
     }
@@ -613,45 +629,45 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     const concluidas = statusMetrics.concluida ?? 0;
     const canceladas = statusMetrics.cancelada ?? 0;
 
-    const hojeISO = new Date().toISOString().split("T")[0];
+    const hojeISO = new Date().toISOString().split('T')[0];
     const cirurgiasHoje = cirurgias.filter((item) => item.data_cirurgia === hojeISO).length;
 
     return [
       {
-        id:"total",
-        title:"Cirurgias do Mês",
+        id: 'total',
+        title: 'Cirurgias do Mês',
         value: total,
         trend: `${percentage(concluidas, Math.max(total, 1))} concluídas`,
-        tone:"success",
+        tone: 'success',
         icon: Activity,
-        color: "var(--orx-success)",
+        color: 'var(--orx-success)',
       },
       {
-        id:"andamento",
-        title:"Em Andamento",
+        id: 'andamento',
+        title: 'Em Andamento',
         value: andamento,
         trend: `${cirurgiasHoje} hoje`,
-        tone:"info",
+        tone: 'info',
         icon: Clock,
-        color: "var(--primary)",
+        color: 'var(--primary)',
       },
       {
-        id:"taxa",
-        title:"Taxa de Sucesso",
-        value: total === 0 ?"0%" : `${((concluidas / total) * 100).toFixed(1)}%`,
+        id: 'taxa',
+        title: 'Taxa de Sucesso',
+        value: total === 0 ? '0%' : `${((concluidas / total) * 100).toFixed(1)}%`,
         trend: `${canceladas} canceladas`,
-        tone: canceladas > 0 ?"warning" :"success",
+        tone: canceladas > 0 ? 'warning' : 'success',
         icon: CheckCircle2,
-        color: "var(--orx-warning)",
+        color: 'var(--orx-warning)',
       },
       {
-        id:"economia",
-        title:"Economia OPME",
+        id: 'economia',
+        title: 'Economia OPME',
         value: formatCurrencyBRL(cotacaoRelatorio?.economia_total ?? 0),
-        trend:"ROI 784:1",
-        tone:"success",
+        trend: 'ROI 784:1',
+        tone: 'success',
         icon: BarChart3,
-        color: "var(--orx-success)",
+        color: 'var(--orx-success)',
       },
     ];
   }, [cirurgias, cotacaoRelatorio, statusMetrics]);
@@ -659,12 +675,16 @@ export default function CirurgiasProcedimentos(): JSX.Element {
   const renderKanban = () => (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {Object.entries(statusLabels).map(([statusKey, statusLabel]) => {
-        const items = (countByStatus() as Record<string, number>);
+        const items = countByStatus() as Record<string, number>;
         return (
           <Card key={statusKey as string} className="neuro-inset p-4">
             <div className="flex items-center justify-between mb-2">
-              <h4 className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">{statusLabel}</h4>
-              <span className="px-2 py-1 rounded-full text-body-2xs bg-surface">{items[statusKey] ?? 0}</span>
+              <h4 className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">
+                {statusLabel}
+              </h4>
+              <span className="px-2 py-1 rounded-full text-body-2xs bg-surface">
+                {items[statusKey] ?? 0}
+              </span>
             </div>
             <div className="text-body-2xs text-[var(--text-secondary)]">
               Snapshot por status (resumo)
@@ -675,136 +695,146 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     </div>
   );
 
-  const navigationItems: NavigationItem[] = useMemo(() => [
-    {
-      id:"dashboard",
-      label:"Dashboard",
-      description:"Visão 360º com KPIs e alertas críticos",
-      icon: Activity,
-      badge:"Live",
-      count: cirurgias.length,
-    },
-    {
-      id:"agendamento",
-      label:"Agendamento",
-      description:"Workflow completo com validações",
-      icon: Calendar,
-      badge:"Form",
-    },
-    {
-      id:"autorizacao",
-      label:"Autorização",
-      description:"Controle TISS/ANS",
-      icon: ClipboardCheck,
-      badge:"TISS",
-      count: autorizações.length,
-    },
-    {
-      id:"kit",
-      label:"Kit Cirúrgico",
-      description:"Planejamento OPME",
-      icon: Package,
-      badge:"OPME",
-      count: kitItens.length,
-    },
-    {
-      id:"intraoperatorio",
-      label:"Consumo",
-      description:"Registro intraoperatório",
-      icon: Pill,
-      badge:"ANVISA",
-      count: consumoItens.length,
-    },
-    {
-      id:"rastreabilidade",
-      label:"Rastreabilidade",
-      description:"Jornada completa",
-      icon: MapPin,
-      count: rastreabilidadeItens.length,
-    },
-    {
-      id:"posoperatorio",
-      label:"Pós-Operatório",
-      description:"Checklists e ocorrências",
-      icon: ClipboardList,
-      count: cirurgiaOcorrencias.length,
-    },
-    {
-      id:"faturamento",
-      label:"Faturamento",
-      description:"Glosas zero e NF-e",
-      icon: FileText,
-      count: cotacaoRelatorio?.cotacoes.length ?? 0,
-    },
-    {
-      id:"calendario",
-      label:"Calendário",
-      description:"Agenda semanal",
-      icon: Clock,
-      count: calendarioSemanal.reduce((acc, dia) => acc + dia.cirurgias.length, 0),
-    },
-    {
-      id:"analytics",
-      label:"Analytics",
-      description:"Indicadores e BI",
-      icon: BarChart3,
-    },
-    {
-      id:"ia",
-      label:"IA & Insights",
-      description:"6 algoritmos proprietários",
-      icon: Sparkles,
-      badge:"AI",
-      count: aiAnomalias.length,
-    },
-    {
-      id:"integracoes",
-      label:"Integrações",
-      description:"HL7, FHIR, Edge",
-      icon: Share2,
-      count: 4,
-    },
-    {
-      id:"portais",
-      label:"Portais OPME",
-      description:"Cotações automáticas",
-      icon: Rocket,
-      badge:"ROI",
-      count: portaisConfig.length,
-    },
-  ], [
-    cirurgias.length,
-    autorizações.length,
-    kitItens.length,
-    consumoItens.length,
-    rastreabilidadeItens.length,
-    cirurgiaOcorrencias.length,
-    cotacaoRelatorio?.cotacoes.length,
-    calendarioSemanal,
-    aiAnomalias.length,
-    portaisConfig.length,
-  ]);
+  const navigationItems: NavigationItem[] = useMemo(
+    () => [
+      {
+        id: 'dashboard',
+        label: 'Dashboard',
+        description: 'Visão 360º com KPIs e alertas críticos',
+        icon: Activity,
+        badge: 'Live',
+        count: cirurgias.length,
+      },
+      {
+        id: 'agendamento',
+        label: 'Agendamento',
+        description: 'Workflow completo com validações',
+        icon: Calendar,
+        badge: 'Form',
+      },
+      {
+        id: 'autorizacao',
+        label: 'Autorização',
+        description: 'Controle TISS/ANS',
+        icon: ClipboardCheck,
+        badge: 'TISS',
+        count: autorizações.length,
+      },
+      {
+        id: 'kit',
+        label: 'Kit Cirúrgico',
+        description: 'Planejamento OPME',
+        icon: Package,
+        badge: 'OPME',
+        count: kitItens.length,
+      },
+      {
+        id: 'intraoperatorio',
+        label: 'Consumo',
+        description: 'Registro intraoperatório',
+        icon: Pill,
+        badge: 'ANVISA',
+        count: consumoItens.length,
+      },
+      {
+        id: 'rastreabilidade',
+        label: 'Rastreabilidade',
+        description: 'Jornada completa',
+        icon: MapPin,
+        count: rastreabilidadeItens.length,
+      },
+      {
+        id: 'posoperatorio',
+        label: 'Pós-Operatório',
+        description: 'Checklists e ocorrências',
+        icon: ClipboardList,
+        count: cirurgiaOcorrencias.length,
+      },
+      {
+        id: 'faturamento',
+        label: 'Faturamento',
+        description: 'Glosas zero e NF-e',
+        icon: FileText,
+        count: cotacaoRelatorio?.cotacoes.length ?? 0,
+      },
+      {
+        id: 'calendario',
+        label: 'Calendário',
+        description: 'Agenda semanal',
+        icon: Clock,
+        count: calendarioSemanal.reduce((acc, dia) => acc + dia.cirurgias.length, 0),
+      },
+      {
+        id: 'analytics',
+        label: 'Analytics',
+        description: 'Indicadores e BI',
+        icon: BarChart3,
+      },
+      {
+        id: 'ia',
+        label: 'IA & Insights',
+        description: '6 algoritmos proprietários',
+        icon: Sparkles,
+        badge: 'AI',
+        count: aiAnomalias.length,
+      },
+      {
+        id: 'integracoes',
+        label: 'Integrações',
+        description: 'HL7, FHIR, Edge',
+        icon: Share2,
+        count: 4,
+      },
+      {
+        id: 'portais',
+        label: 'Portais OPME',
+        description: 'Cotações automáticas',
+        icon: Rocket,
+        badge: 'ROI',
+        count: portaisConfig.length,
+      },
+    ],
+    [
+      cirurgias.length,
+      autorizações.length,
+      kitItens.length,
+      consumoItens.length,
+      rastreabilidadeItens.length,
+      cirurgiaOcorrencias.length,
+      cotacaoRelatorio?.cotacoes.length,
+      calendarioSemanal,
+      aiAnomalias.length,
+      portaisConfig.length,
+    ]
+  );
 
   const renderKPIs = () => (
-    <div
-      className="flex gap-8 flex-wrap p-4 bg-[var(--orx-bg-light)] rounded-xl"
-    >
+    <div className="flex gap-8 flex-wrap p-4 bg-[var(--orx-bg-light)] rounded-xl">
       {kpis.map((kpi, index) => {
         const Icon = kpi.icon;
         return (
           <div key={index} className="flex items-center gap-3">
             <div
-              className={cn("w-10 h-10 rounded-lg flex items-center justify-center",
-                kpi.color === 'var(--orx-success)' ? 'bg-green-500' :
-                kpi.color === 'var(--orx-error)' ? 'bg-red-500' :
-                kpi.color === 'var(--orx-warning)' ? 'bg-yellow-500' :
-                kpi.color === 'var(--primary)' ? 'bg-indigo-500' : 'bg-surface')}
+              className={cn(
+                'w-10 h-10 rounded-lg flex items-center justify-center',
+                kpi.color === 'var(--orx-success)'
+                  ? 'bg-green-500'
+                  : kpi.color === 'var(--orx-error)'
+                    ? 'bg-red-500'
+                    : kpi.color === 'var(--orx-warning)'
+                      ? 'bg-yellow-500'
+                      : kpi.color === 'var(--primary)'
+                        ? 'bg-indigo-500'
+                        : 'bg-surface'
+              )}
             >
               <Icon size={20} className="text-white" />
             </div>
             <div>
-              <div className="text-[0.813rem] orx-orx-font-bold text-[var(--orx-text-primary)]">{kpi.value}</div>
-              <div className="text-[0.813rem] text-[var(--orx-text-secondary)]">{kpi.label}</div>
+              <div className="text-[0.813rem] orx-orx-font-bold text-[var(--orx-text-primary)]">
+                {kpi.value}
+              </div>
+              <div className="text-[0.813rem] text-[var(--orx-text-secondary)]">{kpi.title}</div>
             </div>
           </div>
         );
@@ -814,45 +844,45 @@ export default function CirurgiasProcedimentos(): JSX.Element {
 
   const AgendamentoSection = () => {
     const [formState, setFormState] = useState({
-      paciente_nome:"",
-      tipo_procedimento:"",
-      especialidade:"",
-      medico_id:"",
-      hospital_id:"",
-      data_cirurgia:"",
-      hora_inicio:"08:00",
-      urgencia:"eletiva" as Cirurgia["urgencia"],
+      paciente_nome: '',
+      tipo_procedimento: '',
+      especialidade: '',
+      medico_id: '',
+      hospital_id: '',
+      data_cirurgia: '',
+      hora_inicio: '08:00',
+      urgencia: 'eletiva' as Cirurgia['urgencia'],
       numero_cirurgia: `CIR-${Date.now().toString().slice(-6)}`,
-      observacoes:"",
-      justificativa_medica:"",
+      observacoes: '',
+      justificativa_medica: '',
     });
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       if (!formState.paciente_nome || !formState.tipo_procedimento || !formState.data_cirurgia) {
-        addToast("Preencha os campos obrigatórios","warning");
+        addToast('Preencha os campos obrigatórios', 'warning');
         return;
       }
 
       await handleCreateCirurgia({
         ...formState,
-        status:"agendada",
+        status: 'agendada',
         procedimento: formState.tipo_procedimento,
         hora_cirurgia: formState.hora_inicio,
       });
 
       setFormState({
-        paciente_nome:"",
-        tipo_procedimento:"",
-        especialidade:"",
-        medico_id:"",
-        hospital_id:"",
-        data_cirurgia:"",
-        hora_inicio:"08:00",
-        urgencia:"eletiva",
+        paciente_nome: '',
+        tipo_procedimento: '',
+        especialidade: '',
+        medico_id: '',
+        hospital_id: '',
+        data_cirurgia: '',
+        hora_inicio: '08:00',
+        urgencia: 'eletiva',
         numero_cirurgia: `CIR-${Date.now().toString().slice(-6)}`,
-        observacoes:"",
-        justificativa_medica:"",
+        observacoes: '',
+        justificativa_medica: '',
       });
     };
 
@@ -860,9 +890,12 @@ export default function CirurgiasProcedimentos(): JSX.Element {
       <Card className="neuro-raised p-6 space-y-6">
         <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
           <div>
-            <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">Agendamento Cirúrgico</h3>
+            <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">
+              Agendamento Cirúrgico
+            </h3>
             <p className="text-body-sm text-[var(--text-secondary)]">
-              Workflow com validações automáticas, previsão de duração via IA e integração com estoque OPME.
+              Workflow com validações automáticas, previsão de duração via IA e integração com
+              estoque OPME.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-2">
@@ -881,7 +914,9 @@ export default function CirurgiasProcedimentos(): JSX.Element {
               <span className="text-body-xs text-[var(--text-secondary)]">Paciente*</span>
               <input
                 value={formState.paciente_nome}
-                onChange={(event) => setFormState((prev) => ({ ...prev, paciente_nome: event.target.value }))}
+                onChange={(event) =>
+                  setFormState((prev) => ({ ...prev, paciente_nome: event.target.value }))
+                }
                 className="w-full neuro-inset rounded-xl px-4 py-3 text-body-sm"
                 placeholder="Nome completo"
                 required
@@ -891,7 +926,9 @@ export default function CirurgiasProcedimentos(): JSX.Element {
               <span className="text-body-xs text-[var(--text-secondary)]">Procedimento*</span>
               <input
                 value={formState.tipo_procedimento}
-                onChange={(event) => setFormState((prev) => ({ ...prev, tipo_procedimento: event.target.value }))}
+                onChange={(event) =>
+                  setFormState((prev) => ({ ...prev, tipo_procedimento: event.target.value }))
+                }
                 className="w-full neuro-inset rounded-xl px-4 py-3 text-body-sm"
                 placeholder="Ex: Artroplastia total de joelho"
                 required
@@ -901,7 +938,9 @@ export default function CirurgiasProcedimentos(): JSX.Element {
               <span className="text-body-xs text-[var(--text-secondary)]">Especialidade</span>
               <input
                 value={formState.especialidade}
-                onChange={(event) => setFormState((prev) => ({ ...prev, especialidade: event.target.value }))}
+                onChange={(event) =>
+                  setFormState((prev) => ({ ...prev, especialidade: event.target.value }))
+                }
                 className="w-full neuro-inset rounded-xl px-4 py-3 text-body-sm"
                 placeholder="Ortopedia, Neurocirurgia..."
               />
@@ -914,7 +953,9 @@ export default function CirurgiasProcedimentos(): JSX.Element {
               <input
                 type="date"
                 value={formState.data_cirurgia}
-                onChange={(event) => setFormState((prev) => ({ ...prev, data_cirurgia: event.target.value }))}
+                onChange={(event) =>
+                  setFormState((prev) => ({ ...prev, data_cirurgia: event.target.value }))
+                }
                 className="w-full neuro-inset rounded-xl px-4 py-3 text-body-sm"
                 required
               />
@@ -924,7 +965,9 @@ export default function CirurgiasProcedimentos(): JSX.Element {
               <input
                 type="time"
                 value={formState.hora_inicio}
-                onChange={(event) => setFormState((prev) => ({ ...prev, hora_inicio: event.target.value }))}
+                onChange={(event) =>
+                  setFormState((prev) => ({ ...prev, hora_inicio: event.target.value }))
+                }
                 className="w-full neuro-inset rounded-xl px-4 py-3 text-body-sm"
               />
             </label>
@@ -932,7 +975,9 @@ export default function CirurgiasProcedimentos(): JSX.Element {
               <span className="text-body-xs text-[var(--text-secondary)]">Médico</span>
               <select
                 value={formState.medico_id}
-                onChange={(event) => setFormState((prev) => ({ ...prev, medico_id: event.target.value }))}
+                onChange={(event) =>
+                  setFormState((prev) => ({ ...prev, medico_id: event.target.value }))
+                }
                 className="w-full neuro-inset rounded-xl px-4 py-3 text-body-sm"
               >
                 <option value="">Selecionar</option>
@@ -947,7 +992,9 @@ export default function CirurgiasProcedimentos(): JSX.Element {
               <span className="text-body-xs text-[var(--text-secondary)]">Hospital</span>
               <select
                 value={formState.hospital_id}
-                onChange={(event) => setFormState((prev) => ({ ...prev, hospital_id: event.target.value }))}
+                onChange={(event) =>
+                  setFormState((prev) => ({ ...prev, hospital_id: event.target.value }))
+                }
                 className="w-full neuro-inset rounded-xl px-4 py-3 text-body-sm"
               >
                 <option value="">Selecionar</option>
@@ -965,7 +1012,12 @@ export default function CirurgiasProcedimentos(): JSX.Element {
               <span className="text-body-xs text-[var(--text-secondary)]">Urgência</span>
               <select
                 value={formState.urgencia}
-                onChange={(event) => setFormState((prev) => ({ ...prev, urgencia: event.target.value as Cirurgia["urgencia"] }))}
+                onChange={(event) =>
+                  setFormState((prev) => ({
+                    ...prev,
+                    urgencia: event.target.value as Cirurgia['urgencia'],
+                  }))
+                }
                 className="w-full neuro-inset rounded-xl px-4 py-3 text-body-sm"
               >
                 <option value="eletiva">Eletiva</option>
@@ -977,14 +1029,16 @@ export default function CirurgiasProcedimentos(): JSX.Element {
               <span className="text-body-xs text-[var(--text-secondary)]">Número</span>
               <input
                 value={formState.numero_cirurgia}
-                onChange={(event) => setFormState((prev) => ({ ...prev, numero_cirurgia: event.target.value }))}
+                onChange={(event) =>
+                  setFormState((prev) => ({ ...prev, numero_cirurgia: event.target.value }))
+                }
                 className="w-full neuro-inset rounded-xl px-4 py-3 text-body-sm"
               />
             </label>
             <label className="space-y-1">
               <span className="text-body-xs text-[var(--text-secondary)]">Previsão IA (min)</span>
               <input
-                value={aiDuracao?.duracaoEstimada ??"-"}
+                value={aiDuracao?.duracaoEstimada ?? '-'}
                 readOnly
                 className="w-full neuro-inset rounded-xl px-4 py-3 text-body-sm"
               />
@@ -993,10 +1047,14 @@ export default function CirurgiasProcedimentos(): JSX.Element {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <label className="space-y-1">
-              <span className="text-body-xs text-[var(--text-secondary)]">Justificativa Técnica</span>
+              <span className="text-body-xs text-[var(--text-secondary)]">
+                Justificativa Técnica
+              </span>
               <textarea
                 value={formState.justificativa_medica}
-                onChange={(event) => setFormState((prev) => ({ ...prev, justificativa_medica: event.target.value }))}
+                onChange={(event) =>
+                  setFormState((prev) => ({ ...prev, justificativa_medica: event.target.value }))
+                }
                 className="w-full neuro-inset rounded-xl px-4 py-3 text-body-sm min-h-[120px]"
                 placeholder="Descrição clínica, CID, exames complementares"
               />
@@ -1005,7 +1063,9 @@ export default function CirurgiasProcedimentos(): JSX.Element {
               <span className="text-body-xs text-[var(--text-secondary)]">Observações gerais</span>
               <textarea
                 value={formState.observacoes}
-                onChange={(event) => setFormState((prev) => ({ ...prev, observacoes: event.target.value }))}
+                onChange={(event) =>
+                  setFormState((prev) => ({ ...prev, observacoes: event.target.value }))
+                }
                 className="w-full neuro-inset rounded-xl px-4 py-3 text-body-sm min-h-[120px]"
                 placeholder="Equipe, materiais especiais, alergias"
               />
@@ -1013,20 +1073,24 @@ export default function CirurgiasProcedimentos(): JSX.Element {
           </div>
 
           <div className="flex flex-col lg:flex-row gap-4">
-            <button type="submit" className="neuro-button px-6 py-3 rounded-xl flex items-center gap-2">
+            <button
+              type="submit"
+              className="neuro-button px-6 py-3 rounded-xl flex items-center gap-2"
+            >
               <CheckCircle className="w-4 h-4" />
               Confirmar Agendamento
             </button>
             <button
               type="button"
-              onClick={() => setActiveModule("kit")}
+              onClick={() => setActiveModule('kit')}
               className="neuro-button-secondary px-6 py-3 rounded-xl flex items-center gap-2"
             >
               <Package className="w-4 h-4" />
               Planejar Kit OPME
             </button>
             <div className="flex-1 px-4 py-3 rounded-xl neuro-inset text-body-xs text-[var(--text-secondary)]">
-              Validação automática CRM/CFM • Autorização ANS pré-preenchida • Reserva de sala e equipe sincronizada
+              Validação automática CRM/CFM • Autorização ANS pré-preenchida • Reserva de sala e
+              equipe sincronizada
             </div>
           </div>
         </form>
@@ -1038,9 +1102,12 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">Autorização de Convênios</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">
+            Autorização de Convênios
+          </h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
-            Controle TISS/ANS com SLA de resposta, alertas de prazos e integração direta com operadoras.
+            Controle TISS/ANS com SLA de resposta, alertas de prazos e integração direta com
+            operadoras.
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3">
@@ -1059,7 +1126,8 @@ export default function CirurgiasProcedimentos(): JSX.Element {
         <Card className="neuro-inset p-4">
           <p className="text-body-xs text-[var(--text-secondary)]">Status Geral</p>
           <p className="text-heading font-display text-[var(--text-primary)]">
-            {autorizações.filter((item) => item.status ==="aprovada").length}/{autorizações.length} aprovadas
+            {autorizações.filter((item) => item.status === 'aprovada').length}/{autorizações.length}{' '}
+            aprovadas
           </p>
         </Card>
         <Card className="neuro-inset p-4">
@@ -1069,13 +1137,17 @@ export default function CirurgiasProcedimentos(): JSX.Element {
         <Card className="neuro-inset p-4">
           <p className="text-body-xs text-[var(--text-secondary)]">Valor solicitado</p>
           <p className="text-heading font-display text-[var(--text-primary)]">
-            {formatCurrencyBRL(autorizações.reduce((acc, item) => acc + (item.valor_solicitado ?? 0), 0))}
+            {formatCurrencyBRL(
+              autorizações.reduce((acc, item) => acc + (item.valor_solicitado ?? 0), 0)
+            )}
           </p>
         </Card>
         <Card className="neuro-inset p-4">
           <p className="text-body-xs text-[var(--text-secondary)]">Valor aprovado</p>
           <p className="text-heading font-display text-[var(--text-primary)]">
-            {formatCurrencyBRL(autorizações.reduce((acc, item) => acc + (item.valor_autorizado ?? 0), 0))}
+            {formatCurrencyBRL(
+              autorizações.reduce((acc, item) => acc + (item.valor_autorizado ?? 0), 0)
+            )}
           </p>
         </Card>
       </section>
@@ -1096,20 +1168,22 @@ export default function CirurgiasProcedimentos(): JSX.Element {
             {autorizações.map((item) => (
               <tr key={item.id} className="border-b border-[var(--border)]">
                 <td className="p-4 text-body-sm text-[var(--text-primary)]">
-                  <p>{item.numero_solicitacao ??"-"}</p>
+                  <p>{item.numero_solicitacao ?? '-'}</p>
                   <p className="text-body-2xs text-[var(--text-secondary)]">
                     Solicitada em {formatDate(item.data_solicitacao)}
                   </p>
                 </td>
-                <td className="p-4 text-body-sm text-[var(--text-primary)]">{item.numero_autorizacao ??"-"}</td>
+                <td className="p-4 text-body-sm text-[var(--text-primary)]">
+                  {item.numero_autorizacao ?? '-'}
+                </td>
                 <td className="p-4">
                   <span
                     className={`px-3 py-1 rounded-full text-body-xs orx-orx-font-medium ${
-                      item.status ==="aprovada"
-                        ?"bg-success/10 text-success"
-                        : item.status ==="negada"
-                        ?"bg-destructive/10 text-error"
-                        :"bg-warning/10 text-warning"
+                      item.status === 'aprovada'
+                        ? 'bg-success/10 text-success'
+                        : item.status === 'negada'
+                          ? 'bg-destructive/10 text-error'
+                          : 'bg-warning/10 text-warning'
                     }`}
                   >
                     {item.status}
@@ -1118,13 +1192,23 @@ export default function CirurgiasProcedimentos(): JSX.Element {
                 <td className="p-4 text-body-sm text-[var(--text-primary)]">
                   {formatCurrencyBRL(item.valor_autorizado ?? item.valor_solicitado ?? 0)}
                 </td>
-                <td className="p-4 text-body-sm text-[var(--text-primary)]">{formatDate(item.data_validade)}</td>
+                <td className="p-4 text-body-sm text-[var(--text-primary)]">
+                  {formatDate(item.data_validade)}
+                </td>
                 <td className="p-4">
                   <div className="flex gap-2">
-                    <button className="p-2 rounded-lg neuro-button-secondary" title="Visualizar" type="button">
+                    <button
+                      className="p-2 rounded-lg neuro-button-secondary"
+                      title="Visualizar"
+                      type="button"
+                    >
                       <Eye className="w-4 h-4" />
                     </button>
-                    <button className="p-2 rounded-lg neuro-button-secondary" title="Compartilhar" type="button">
+                    <button
+                      className="p-2 rounded-lg neuro-button-secondary"
+                      title="Compartilhar"
+                      type="button"
+                    >
                       <Share2 className="w-4 h-4" />
                     </button>
                   </div>
@@ -1133,7 +1217,10 @@ export default function CirurgiasProcedimentos(): JSX.Element {
             ))}
             {autorizações.length === 0 && (
               <tr>
-                <td colSpan={6} className="p-8 text-center text-body-sm text-[var(--text-secondary)]">
+                <td
+                  colSpan={6}
+                  className="p-8 text-center text-body-sm text-[var(--text-secondary)]"
+                >
                   Nenhuma autorização registrada
                 </td>
               </tr>
@@ -1148,13 +1235,18 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">Kit Cirúrgico (OPME)</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">
+            Kit Cirúrgico (OPME)
+          </h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
             Planejamento inteligente com IA, reserva automática de estoque e cotação multiportal.
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3">
-          <button className="neuro-button px-4 py-2 rounded-xl flex items-center gap-2" type="button">
+          <button
+            className="neuro-button px-4 py-2 rounded-xl flex items-center gap-2"
+            type="button"
+          >
             <Package className="w-4 h-4" />
             Reservar Estoque
           </button>
@@ -1163,7 +1255,11 @@ export default function CirurgiasProcedimentos(): JSX.Element {
             onClick={executarCotacaoPortais}
             type="button"
           >
-            {executandoCotacao ? <Loader2 className="w-4 h-4 animate-spin" /> : <Rocket className="w-4 h-4" />}
+            {executandoCotacao ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Rocket className="w-4 h-4" />
+            )}
             Cotar Portais
           </button>
         </div>
@@ -1204,23 +1300,34 @@ export default function CirurgiasProcedimentos(): JSX.Element {
               return (
                 <tr key={item.id} className="border-b border-[var(--border)]">
                   <td className="p-4 text-body-sm text-[var(--text-primary)]">
-                    {item.produto?.descricao ??"Produto"}
+                    {getProdutoDescricao(item.produto)}
                   </td>
-                  <td className="p-4 text-body-sm text-[var(--text-primary)]">{item.quantidade_planejada}</td>
-                  <td className="p-4 text-body-sm text-[var(--text-primary)]">{item.quantidade_consumida ?? 0}</td>
+                  <td className="p-4 text-body-sm text-[var(--text-primary)]">
+                    {item.quantidade_planejada}
+                  </td>
+                  <td className="p-4 text-body-sm text-[var(--text-primary)]">
+                    {item.quantidade_consumida ?? 0}
+                  </td>
                   <td className="p-4 text-body-sm text-[var(--text-primary)]">
                     {formatCurrencyBRL(item.valor_total ?? item.valor_unitario ?? 0)}
                   </td>
-                  <td className="p-4 text-body-sm text-[var(--text-primary)]">{item.status ??"planejado"}</td>
+                  <td className="p-4 text-body-sm text-[var(--text-primary)]">
+                    {item.status ?? 'planejado'}
+                  </td>
                   <td className="p-4 text-body-sm text-[var(--text-secondary)]">
-                    {sugestao ? `${sugestao.quantidade_sugerida} (Prob. ${sugestao.probabilidade_uso}%)` :"-"}
+                    {sugestao
+                      ? `${sugestao.quantidade_sugerida} (Prob. ${sugestao.probabilidade_uso}%)`
+                      : '-'}
                   </td>
                 </tr>
               );
             })}
             {kitItens.length === 0 && (
               <tr>
-                <td colSpan={6} className="p-8 text-center text-body-sm text-[var(--text-secondary)]">
+                <td
+                  colSpan={6}
+                  className="p-8 text-center text-body-sm text-[var(--text-secondary)]"
+                >
                   Nenhum item planejado
                 </td>
               </tr>
@@ -1235,17 +1342,25 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">Consumo Intraoperatório</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">
+            Consumo Intraoperatório
+          </h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
             Registro granular com lote, série e validade para cumprimento da RDC 16/2013.
           </p>
         </div>
         <div className="flex gap-2">
-          <button className="neuro-button px-4 py-2 rounded-xl flex items-center gap-2" type="button">
+          <button
+            className="neuro-button px-4 py-2 rounded-xl flex items-center gap-2"
+            type="button"
+          >
             <Pill className="w-4 h-4" />
             Registrar Consumo
           </button>
-          <button className="neuro-button-secondary px-4 py-2 rounded-xl flex items-center gap-2" type="button">
+          <button
+            className="neuro-button-secondary px-4 py-2 rounded-xl flex items-center gap-2"
+            type="button"
+          >
             <Download className="w-4 h-4" />
             Exportar ANVISA
           </button>
@@ -1267,17 +1382,24 @@ export default function CirurgiasProcedimentos(): JSX.Element {
             {consumoItens.map((item) => (
               <tr key={item.id} className="border-b border-[var(--border)]">
                 <td className="p-4 text-body-sm text-[var(--text-primary)]">
-                  {item.produto?.descricao ??"Produto"}
+                  {getProdutoDescricao(item.produto)}
                 </td>
                 <td className="p-4 text-body-sm text-[var(--text-primary)]">{item.lote}</td>
-                <td className="p-4 text-body-sm text-[var(--text-primary)]">{formatDate(item.data_validade)}</td>
+                <td className="p-4 text-body-sm text-[var(--text-primary)]">
+                  {formatDate(item.data_validade)}
+                </td>
                 <td className="p-4 text-body-sm text-[var(--text-primary)]">{item.quantidade}</td>
-                <td className="p-4 text-body-sm text-[var(--text-primary)]">{formatDate(item.data_consumo)}</td>
+                <td className="p-4 text-body-sm text-[var(--text-primary)]">
+                  {formatDate(item.data_consumo)}
+                </td>
               </tr>
             ))}
             {consumoItens.length === 0 && (
               <tr>
-                <td colSpan={5} className="p-8 text-center text-body-sm text-[var(--text-secondary)]">
+                <td
+                  colSpan={5}
+                  className="p-8 text-center text-body-sm text-[var(--text-secondary)]"
+                >
                   Nenhum consumo registrado
                 </td>
               </tr>
@@ -1292,7 +1414,9 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">Rastreabilidade OPME</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">
+            Rastreabilidade OPME
+          </h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
             Jornada do material registrada ponta a ponta, pronta para auditorias ANVISA e ANS.
           </p>
@@ -1308,13 +1432,15 @@ export default function CirurgiasProcedimentos(): JSX.Element {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               <div>
                 <p className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">
-                  {item.produto?.descricao ??"Produto"}
+                  {getProdutoDescricao(item.produto)}
                 </p>
-                <p className="text-body-2xs text-[var(--text-secondary)]">ANVISA {item.codigo_anvisa ??"-"}</p>
+                <p className="text-body-2xs text-[var(--text-secondary)]">
+                  ANVISA {item.codigo_anvisa ?? '-'}
+                </p>
               </div>
               <div className="flex flex-wrap items-center gap-3 text-body-2xs text-[var(--text-secondary)]">
                 <span>{formatDate(item.data_movimentacao)}</span>
-                <span>{`${item.origem ??"Origem"} → ${item.destino ??"Destino"}`}</span>
+                <span>{`${item.origem ?? 'Origem'} → ${item.destino ?? 'Destino'}`}</span>
                 <span className="px-3 py-1 rounded-full bg-success/10 text-success">
                   Validade {formatDate(item.data_validade)}
                 </span>
@@ -1335,7 +1461,9 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">Pós-Operatório</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">
+            Pós-Operatório
+          </h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
             Checklists de devolução, ocorrências, protocolos clínicos e preparação para faturamento.
           </p>
@@ -1359,7 +1487,9 @@ export default function CirurgiasProcedimentos(): JSX.Element {
         </Card>
         <Card className="neuro-inset p-4">
           <p className="text-body-xs text-[var(--text-secondary)]">Ocorrências registradas</p>
-          <p className="text-heading font-display text-[var(--text-primary)]">{cirurgiaOcorrencias.length}</p>
+          <p className="text-heading font-display text-[var(--text-primary)]">
+            {cirurgiaOcorrencias.length}
+          </p>
         </Card>
       </section>
 
@@ -1368,14 +1498,22 @@ export default function CirurgiasProcedimentos(): JSX.Element {
           <div key={ocorrencia.id} className="p-4 rounded-xl neuro-inset">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               <div>
-                <p className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">{ocorrencia.descricao}</p>
-                <p className="text-body-2xs text-[var(--text-secondary)]">{formatDate(ocorrencia.data)}</p>
+                <p className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">
+                  {ocorrencia.descricao}
+                </p>
+                <p className="text-body-2xs text-[var(--text-secondary)]">
+                  {formatDate(ocorrencia.data)}
+                </p>
               </div>
               <div className="flex items-center gap-3">
-                <span className={`px-3 py-1 rounded-full text-body-xs orx-orx-font-medium ${severidadeChips[ocorrencia.severidade]}`}>
+                <span
+                  className={`px-3 py-1 rounded-full text-body-xs orx-orx-font-medium ${severidadeChips[ocorrencia.severidade]}`}
+                >
                   {ocorrencia.severidade}
                 </span>
-                <span className="text-body-xs text-[var(--text-secondary)]">Responsável {ocorrencia.responsavel}</span>
+                <span className="text-body-xs text-[var(--text-secondary)]">
+                  Responsável {ocorrencia.responsavel}
+                </span>
               </div>
             </div>
           </div>
@@ -1393,17 +1531,26 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">Faturamento de Cirurgias</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">
+            Faturamento de Cirurgias
+          </h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
-            Integração Financeiro Avançado, validações TISS, emissão NF-e e mitigação de glosas com IA.
+            Integração Financeiro Avançado, validações TISS, emissão NF-e e mitigação de glosas com
+            IA.
           </p>
         </div>
         <div className="flex gap-2">
-          <button className="neuro-button px-4 py-2 rounded-xl flex items-center gap-2" type="button">
+          <button
+            className="neuro-button px-4 py-2 rounded-xl flex items-center gap-2"
+            type="button"
+          >
             <FileText className="w-4 h-4" />
             Gerar Guia TISS
           </button>
-          <button className="neuro-button-secondary px-4 py-2 rounded-xl flex items-center gap-2" type="button">
+          <button
+            className="neuro-button-secondary px-4 py-2 rounded-xl flex items-center gap-2"
+            type="button"
+          >
             <Download className="w-4 h-4" />
             Exportar NF-e
           </button>
@@ -1426,12 +1573,14 @@ export default function CirurgiasProcedimentos(): JSX.Element {
         <Card className="neuro-inset p-4">
           <p className="text-body-xs text-[var(--text-secondary)]">Probabilidade de glosa</p>
           <p className="text-heading font-display text-[var(--text-primary)]">
-            {aiGlosa ? `${aiGlosa.probabilidadeGlosa}%` :"2.3%"}
+            {aiGlosa ? `${aiGlosa.probabilidadeGlosa}%` : '2.3%'}
           </p>
         </Card>
         <Card className="neuro-inset p-4">
           <p className="text-body-xs text-[var(--text-secondary)]">Status geral</p>
-          <p className="text-heading font-display text-[var(--text-primary)]">Pronto para faturar</p>
+          <p className="text-heading font-display text-[var(--text-primary)]">
+            Pronto para faturar
+          </p>
         </Card>
       </section>
 
@@ -1452,13 +1601,27 @@ export default function CirurgiasProcedimentos(): JSX.Element {
             <tbody>
               {cotacaoRelatorio.cotacoes.map((cotacao) => (
                 <tr key={cotacao.produto_id} className="border-b border-[var(--border)]">
-                  <td className="p-4 text-body-sm text-[var(--text-primary)]">{cotacao.produto_nome}</td>
-                  <td className="p-4 text-body-sm text-[var(--text-primary)]">{cotacao.quantidade}</td>
-                  <td className="p-4 text-body-sm text-[var(--text-primary)]">{formatCurrencyBRL(cotacao.preco_atual)}</td>
-                  <td className="p-4 text-body-sm text-[var(--text-primary)]">{formatCurrencyBRL(cotacao.melhor_preco)}</td>
-                  <td className="p-4 text-body-sm text-success">{formatCurrencyBRL(cotacao.economia)}</td>
-                  <td className="p-4 text-body-sm text-[var(--text-primary)]">{cotacao.portal_recomendado}</td>
-                  <td className="p-4 text-body-sm text-[var(--text-primary)]">{cotacao.fornecedor_recomendado}</td>
+                  <td className="p-4 text-body-sm text-[var(--text-primary)]">
+                    {cotacao.produto_nome}
+                  </td>
+                  <td className="p-4 text-body-sm text-[var(--text-primary)]">
+                    {cotacao.quantidade}
+                  </td>
+                  <td className="p-4 text-body-sm text-[var(--text-primary)]">
+                    {formatCurrencyBRL(cotacao.preco_atual)}
+                  </td>
+                  <td className="p-4 text-body-sm text-[var(--text-primary)]">
+                    {formatCurrencyBRL(cotacao.melhor_preco)}
+                  </td>
+                  <td className="p-4 text-body-sm text-success">
+                    {formatCurrencyBRL(cotacao.economia)}
+                  </td>
+                  <td className="p-4 text-body-sm text-[var(--text-primary)]">
+                    {cotacao.portal_recomendado}
+                  </td>
+                  <td className="p-4 text-body-sm text-[var(--text-primary)]">
+                    {cotacao.fornecedor_recomendado}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -1472,7 +1635,9 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">Calendário Cirúrgico</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">
+            Calendário Cirúrgico
+          </h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
             Visão semanal por hospital e status, sincronizada com agenda médica.
           </p>
@@ -1501,14 +1666,19 @@ export default function CirurgiasProcedimentos(): JSX.Element {
             </header>
             <div className="space-y-2">
               {dia.cirurgias.map((item) => (
-                <div key={item.id} className="p-3 rounded-lg neuro-flat border border-[var(--border)]">
+                <div
+                  key={item.id}
+                  className="p-3 rounded-lg neuro-flat border border-[var(--border)]"
+                >
                   <div className="flex items-center justify-between text-body-2xs text-[var(--text-secondary)]">
                     <span>{item.horario}</span>
                     <span className={`px-2 py-1 rounded-full ${statusChips[item.status]}`}>
                       {statusLabels[item.status]}
                     </span>
                   </div>
-                  <p className="text-body-sm text-[var(--text-primary)] mt-1 orx-orx-font-medium">{item.titulo}</p>
+                  <p className="text-body-sm text-[var(--text-primary)] mt-1 orx-orx-font-medium">
+                    {item.titulo}
+                  </p>
                   <p className="text-body-2xs text-[var(--text-secondary)]">{item.hospital}</p>
                 </div>
               ))}
@@ -1528,7 +1698,9 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">Analytics & Indicadores</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">
+            Analytics & Indicadores
+          </h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
             14 indicadores de performance, heatmaps, curva de aprendizado e SLA por equipe.
           </p>
@@ -1547,7 +1719,9 @@ export default function CirurgiasProcedimentos(): JSX.Element {
         </Card>
         <Card className="neuro-inset p-4">
           <p className="text-body-xs text-[var(--text-secondary)]">Taxa de glosas</p>
-          <p className="text-heading font-display text-[var(--text-primary)]">{aiGlosa ? `${aiGlosa.probabilidadeGlosa}%` :"2.3%"}</p>
+          <p className="text-heading font-display text-[var(--text-primary)]">
+            {aiGlosa ? `${aiGlosa.probabilidadeGlosa}%` : '2.3%'}
+          </p>
           <p className="text-body-2xs text-success mt-1">Meta &lt; 5%</p>
         </Card>
         <Card className="neuro-inset p-4">
@@ -1560,7 +1734,8 @@ export default function CirurgiasProcedimentos(): JSX.Element {
       </section>
 
       <div className="rounded-2xl neuro-inset p-6 text-body-sm text-[var(--text-secondary)]">
-        Heatmaps por especialidade, curva de aprendizado por equipe cirúrgica, índice de ocupação de salas e distribuição por convênios disponíveis no módulo Analytics completo.
+        Heatmaps por especialidade, curva de aprendizado por equipe cirúrgica, índice de ocupação de
+        salas e distribuição por convênios disponíveis no módulo Analytics completo.
       </div>
     </Card>
   );
@@ -1569,9 +1744,12 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex items-start justify-between">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">IA & Otimização</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">
+            IA & Otimização
+          </h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
-            6 algoritmos proprietários para previsão de duração, recomendação de kit, risco cirúrgico, glosas, agenda e detecção de anomalias.
+            6 algoritmos proprietários para previsão de duração, recomendação de kit, risco
+            cirúrgico, glosas, agenda e detecção de anomalias.
           </p>
         </div>
         <button className="neuro-button px-4 py-2 rounded-xl flex items-center gap-2" type="button">
@@ -1583,45 +1761,71 @@ export default function CirurgiasProcedimentos(): JSX.Element {
       <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="neuro-inset p-4">
           <p className="text-body-xs text-[var(--text-secondary)]">Previsão de duração</p>
-          <p className="text-heading font-display text-[var(--text-primary)]">{aiDuracao ? `${aiDuracao.duracaoEstimada} min` :"-"}</p>
-          <p className="text-body-2xs text-[var(--text-secondary)]">Confiança {aiDuracao?.confianca ?? 0}%</p>
+          <p className="text-heading font-display text-[var(--text-primary)]">
+            {aiDuracao ? `${aiDuracao.duracaoEstimada} min` : '-'}
+          </p>
+          <p className="text-body-2xs text-[var(--text-secondary)]">
+            Confiança {aiDuracao?.confianca ?? 0}%
+          </p>
         </Card>
         <Card className="neuro-inset p-4">
           <p className="text-body-xs text-[var(--text-secondary)]">Risco cirúrgico</p>
-          <p className="text-heading font-display text-[var(--text-primary)]">{aiRisco ? `${aiRisco.scoreRisco}/100` :"-"}</p>
-          <p className="text-body-2xs text-[var(--text-secondary)]">Classificação {aiRisco?.classificacao ??"-"}</p>
+          <p className="text-heading font-display text-[var(--text-primary)]">
+            {aiRisco ? `${aiRisco.scoreRisco}/100` : '-'}
+          </p>
+          <p className="text-body-2xs text-[var(--text-secondary)]">
+            Classificação {aiRisco?.classificacao ?? '-'}
+          </p>
         </Card>
         <Card className="neuro-inset p-4">
           <p className="text-body-xs text-[var(--text-secondary)]">Anomalias detectadas</p>
-          <p className="text-heading font-display text-[var(--text-primary)]">{aiAnomalias.length}</p>
+          <p className="text-heading font-display text-[var(--text-primary)]">
+            {aiAnomalias.length}
+          </p>
           <p className="text-body-2xs text-[var(--text-secondary)]">Monitoramento contínuo</p>
         </Card>
       </section>
 
       <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card className="neuro-inset p-4">
-          <h4 className="text-body-sm text-[var(--text-primary)] mb-2 orx-orx-font-medium">Sugestão de Kit</h4>
+          <h4 className="text-body-sm text-[var(--text-primary)] mb-2 orx-orx-font-medium">
+            Sugestão de Kit
+          </h4>
           <div className="space-y-2">
             {aiKit.map((item) => (
-              <div key={item.produto_id} className="p-3 rounded-lg neuro-flat border border-[var(--border)]">
+              <div
+                key={item.produto_id}
+                className="p-3 rounded-lg neuro-flat border border-[var(--border)]"
+              >
                 <p className="text-body-sm text-[var(--text-primary)]">{item.produto_nome}</p>
-                <p className="text-body-2xs text-[var(--text-secondary)]">Qtd sugerida {item.quantidade_sugerida}</p>
                 <p className="text-body-2xs text-[var(--text-secondary)]">
-                  Probabilidade {item.probabilidade_uso}% • Base {item.cirurgias_similares} cirurgias
+                  Qtd sugerida {item.quantidade_sugerida}
+                </p>
+                <p className="text-body-2xs text-[var(--text-secondary)]">
+                  Probabilidade {item.probabilidade_uso}% • Base {item.cirurgias_similares}{' '}
+                  cirurgias
                 </p>
               </div>
             ))}
-            {aiKit.length === 0 && <p className="text-body-sm text-[var(--text-secondary)]">Nenhuma sugestão disponível</p>}
+            {aiKit.length === 0 && (
+              <p className="text-body-sm text-[var(--text-secondary)]">
+                Nenhuma sugestão disponível
+              </p>
+            )}
           </div>
         </Card>
         {aiGlosa && (
           <Card className="neuro-inset p-4 space-y-2">
-            <h4 className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">Previsão de glosas</h4>
+            <h4 className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">
+              Previsão de glosas
+            </h4>
             <p className="text-body-sm text-[var(--text-primary)]">
               Probabilidade {aiGlosa.probabilidadeGlosa}% ({aiGlosa.risco})
             </p>
             <div>
-              <p className="text-body-2xs text-[var(--text-secondary)] orx-orx-font-medium">Motivos potenciais</p>
+              <p className="text-body-2xs text-[var(--text-secondary)] orx-orx-font-medium">
+                Motivos potenciais
+              </p>
               <ul className="list-disc list-inside text-body-2xs text-[var(--text-secondary)] space-y-1">
                 {aiGlosa.motivosPotenciais.map((motivo) => (
                   <li key={motivo.motivo}>
@@ -1636,11 +1840,16 @@ export default function CirurgiasProcedimentos(): JSX.Element {
 
       {aiAgenda && (
         <Card className="neuro-inset p-4">
-          <h4 className="text-body-sm text-[var(--text-primary)] mb-2 orx-orx-font-medium">Otimização de agenda</h4>
+          <h4 className="text-body-sm text-[var(--text-primary)] mb-2 orx-orx-font-medium">
+            Otimização de agenda
+          </h4>
           <p className="text-body-sm text-[var(--text-primary)]">
-            Horário sugerido {aiAgenda.horarioSugerido} • Sala {aiAgenda.salaCircurgica} • Score {aiAgenda.score}
+            Horário sugerido {aiAgenda.horarioSugerido} • Sala {aiAgenda.salaCircurgica} • Score{' '}
+            {aiAgenda.score}
           </p>
-          <p className="text-body-2xs text-[var(--text-secondary)] mt-1">{aiAgenda.justificativa}</p>
+          <p className="text-body-2xs text-[var(--text-secondary)] mt-1">
+            {aiAgenda.justificativa}
+          </p>
         </Card>
       )}
     </Card>
@@ -1650,7 +1859,9 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">Integrações & Edge</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">
+            Integrações & Edge
+          </h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
             HL7 v2.x, FHIR R4, TISS, Edge Functions para validações e notificações.
           </p>
@@ -1661,9 +1872,16 @@ export default function CirurgiasProcedimentos(): JSX.Element {
       </header>
 
       <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {[{ title:"HL7 v2.x", description:"ADT, ORM, ORU com middleware" }, { title:"FHIR R4", description:"Procedure, Patient, Practitioner" }, { title:"TISS ANS", description:"Envio de guias, lotes, SIB" }, { title:"Edge Functions", description:"Validação de estoque, notificações, auditoria" }].map((item) => (
+        {[
+          { title: 'HL7 v2.x', description: 'ADT, ORM, ORU com middleware' },
+          { title: 'FHIR R4', description: 'Procedure, Patient, Practitioner' },
+          { title: 'TISS ANS', description: 'Envio de guias, lotes, SIB' },
+          { title: 'Edge Functions', description: 'Validação de estoque, notificações, auditoria' },
+        ].map((item) => (
           <Card key={item.title} className="neuro-inset p-4">
-            <p className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">{item.title}</p>
+            <p className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">
+              {item.title}
+            </p>
             <p className="text-body-2xs text-[var(--text-secondary)]">{item.description}</p>
           </Card>
         ))}
@@ -1675,13 +1893,24 @@ export default function CirurgiasProcedimentos(): JSX.Element {
     <Card className="neuro-raised p-6 space-y-6">
       <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">Portais OPME</h3>
+          <h3 className="text-body-lg text-[var(--text-primary)] orx-orx-font-medium">
+            Portais OPME
+          </h3>
           <p className="text-body-sm text-[var(--text-secondary)]">
-            OPMENEXO, Inpart, EMS Ventura e VSSupply integrados com cache inteligente, rate limiting e economia média de 15%.
+            OPMENEXO, Inpart, EMS Ventura e VSSupply integrados com cache inteligente, rate limiting
+            e economia média de 15%.
           </p>
         </div>
-        <button className="neuro-button px-4 py-2 rounded-xl flex items-center gap-2" onClick={executarCotacaoPortais} type="button">
-          {executandoCotacao ? <Loader2 className="w-4 h-4 animate-spin" /> : <Rocket className="w-4 h-4" />}
+        <button
+          className="neuro-button px-4 py-2 rounded-xl flex items-center gap-2"
+          onClick={executarCotacaoPortais}
+          type="button"
+        >
+          {executandoCotacao ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <Rocket className="w-4 h-4" />
+          )}
           Executar cotação
         </button>
       </header>
@@ -1693,15 +1922,20 @@ export default function CirurgiasProcedimentos(): JSX.Element {
             <Card key={portal.id} className="neuro-inset p-4">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">{portal.nome_exibicao}</p>
-                  <p className="text-body-2xs text-[var(--text-secondary)]">{portal.tipo_integracao.toUpperCase()}</p>
+                  <p className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">
+                    {portal.nome_exibicao}
+                  </p>
+                  <p className="text-body-2xs text-[var(--text-secondary)]">
+                    {portal.tipo_integracao.toUpperCase()}
+                  </p>
                 </div>
                 <span className="px-3 py-1 rounded-full text-body-2xs bg-success/10 text-success">
                   {status?.uptime ?? 0}% uptime
                 </span>
               </div>
               <p className="text-body-2xs text-[var(--text-secondary)] mt-2">
-                Última requisição {formatDate(status?.atualizadoEm)} • Latência média {(status?.latencia ?? 0).toFixed(1)}s
+                Última requisição {formatDate(status?.atualizadoEm)} • Latência média{' '}
+                {(status?.latencia ?? 0).toFixed(1)}s
               </p>
             </Card>
           );
@@ -1715,15 +1949,25 @@ export default function CirurgiasProcedimentos(): JSX.Element {
 
       {estatisticasKeywords.length > 0 && (
         <section className="space-y-2">
-          <h4 className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">Palavras-chave destaque</h4>
+          <h4 className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">
+            Palavras-chave destaque
+          </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {estatisticasKeywords.slice(0, 6).map((keyword) => (
               <Card key={keyword.palavra_chave} className="neuro-inset p-4">
-                <p className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">{keyword.palavra_chave}</p>
+                <p className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">
+                  {keyword.palavra_chave}
+                </p>
                 <p className="text-body-2xs text-[var(--text-secondary)]">
                   {keyword.total_buscas} buscas • {keyword.taxa_sucesso.toFixed(1)}% sucesso
                 </p>
-                <p className="text-body-2xs text-[var(--text-secondary)]">{keyword.recomendacao ==="manter" ?"Alta performance" : keyword.recomendacao ==="otimizar" ?"Otimizar" :"Desativar"}</p>
+                <p className="text-body-2xs text-[var(--text-secondary)]">
+                  {keyword.recomendacao === 'manter'
+                    ? 'Alta performance'
+                    : keyword.recomendacao === 'otimizar'
+                      ? 'Otimizar'
+                      : 'Desativar'}
+                </p>
               </Card>
             ))}
           </div>
@@ -1733,53 +1977,53 @@ export default function CirurgiasProcedimentos(): JSX.Element {
   );
 
   const DURATION_LABELS: Record<SubmoduleId, string> = {
-    dashboard:"Visão geral",
-    agendamento:"Agendamento",
-    autorizacao:"Autorização",
-    kit:"Kit OPME",
-    intraoperatorio:"Consumo",
-    rastreabilidade:"Rastreabilidade",
-    posoperatorio:"Pós-operatório",
-    faturamento:"Faturamento",
-    calendario:"Calendário",
-    analytics:"Analytics",
-    ia:"IA & Insights",
-    integracoes:"Integrações",
-    portais:"Portais OPME",
+    dashboard: 'Visão geral',
+    agendamento: 'Agendamento',
+    autorizacao: 'Autorização',
+    kit: 'Kit OPME',
+    intraoperatorio: 'Consumo',
+    rastreabilidade: 'Rastreabilidade',
+    posoperatorio: 'Pós-operatório',
+    faturamento: 'Faturamento',
+    calendario: 'Calendário',
+    analytics: 'Analytics',
+    ia: 'IA & Insights',
+    integracoes: 'Integrações',
+    portais: 'Portais OPME',
   };
 
   const renderActiveModule = () => {
     switch (activeModule) {
-      case"dashboard":
+      case 'dashboard':
         return (
           <div className="space-y-6">
             {renderKPIs()}
             {renderKanban()}
           </div>
         );
-      case"agendamento":
+      case 'agendamento':
         return <AgendamentoSection />;
-      case"autorizacao":
+      case 'autorizacao':
         return <AutorizacaoSection />;
-      case"kit":
+      case 'kit':
         return <KitSection />;
-      case"intraoperatorio":
+      case 'intraoperatorio':
         return <ConsumoSection />;
-      case"rastreabilidade":
+      case 'rastreabilidade':
         return <RastreabilidadeSection />;
-      case"posoperatorio":
+      case 'posoperatorio':
         return <PosOperatorioSection />;
-      case"faturamento":
+      case 'faturamento':
         return <FaturamentoSection />;
-      case"calendario":
+      case 'calendario':
         return <CalendarioSection />;
-      case"analytics":
+      case 'analytics':
         return <AnalyticsSection />;
-      case"ia":
+      case 'ia':
         return <IASection />;
-      case"integracoes":
+      case 'integracoes':
         return <IntegracoesSection />;
-      case"portais":
+      case 'portais':
         return <PortaisSection />;
       default:
         return null;
@@ -1789,37 +2033,41 @@ export default function CirurgiasProcedimentos(): JSX.Element {
   return (
     <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto space-y-6">
-        {typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && (
-          <>
-            <style>{`* { animation: none !important; transition: none !important; }`}</style>
-            <div id="qa-lcp-h1" className="p-4 rounded-xl bg-indigo-500/10">
-              <h1 className="m-0 text-[var(--orx-text-primary)] text-[1.5rem] orx-orx-font-extrabold">
-                Gestão de Cirurgias — Snapshot QA
-              </h1>
-            </div>
-            <div role="toolbar" aria-label="QA Actions" className="flex gap-2 mt-2 flex-nowrap">
-              {['Filtrar','Exportar','Atualizar','Ajuda','Atalhos','Preferências'].map((label) => (
-                <button
-                  key={label}
-                  type="button"
-                  data-qa-button="true"
-                  className="neuro-button px-2 py-1 text-[0.75rem] leading-none whitespace-nowrap"
-                  onClick={(e) => e.preventDefault()}
-                  aria-label={`QA ${label}`}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </>
-        )}
+        {typeof window !== 'undefined' &&
+          new URLSearchParams(window.location.search).get('qa') === '1' && (
+            <>
+              <style>{`* { animation: none !important; transition: none !important; }`}</style>
+              <div id="qa-lcp-h1" className="p-4 rounded-xl bg-indigo-500/10">
+                <h1 className="m-0 text-[var(--orx-text-primary)] text-[1.5rem] orx-orx-font-extrabold">
+                  Gestão de Cirurgias — Snapshot QA
+                </h1>
+              </div>
+              <div role="toolbar" aria-label="QA Actions" className="flex gap-2 mt-2 flex-nowrap">
+                {['Filtrar', 'Exportar', 'Atualizar', 'Ajuda', 'Atalhos', 'Preferências'].map(
+                  (label) => (
+                    <button
+                      key={label}
+                      type="button"
+                      data-qa-button="true"
+                      className="neuro-button px-2 py-1 text-[0.75rem] leading-none whitespace-nowrap"
+                      onClick={(e) => e.preventDefault()}
+                      aria-label={`QA ${label}`}
+                    >
+                      {label}
+                    </button>
+                  )
+                )}
+              </div>
+            </>
+          )}
         <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
           <div>
             <h1 className="text-heading-lg font-display text-[var(--text-primary)] mb-2">
               Gestão de Cirurgias
             </h1>
             <p className="text-body-sm text-[var(--text-secondary)]">
-              Sistema completo com automações, Portais OPME e compliance total. ROI 784:1, economia média de 15% por cirurgia.
+              Sistema completo com automações, Portais OPME e compliance total. ROI 784:1, economia
+              média de 15% por cirurgia.
             </p>
           </div>
           <div className="px-4 py-3 rounded-xl neuro-raised flex items-center gap-3">
@@ -1830,68 +2078,126 @@ export default function CirurgiasProcedimentos(): JSX.Element {
           </div>
         </header>
 
-        {typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && (
-          <>
-            <form aria-label="Filtros QA Cirurgias" className="rounded-2xl p-4 neuro-raised grid [grid-template-columns:1.2fr_0.8fr_0.8fr_0.6fr] gap-3 items-end mt-3">
-              <div>
-                <label htmlFor="qa-busca-cir" className="text-[0.75rem] text-[var(--orx-text-secondary)]">Busca</label>
-                <input id="qa-busca-cir" name="busca" placeholder="Paciente, procedimento" className="w-full px-3 py-2 rounded-xl" />
-              </div>
-              <div>
-                <label htmlFor="qa-cir-inicio" className="text-[0.75rem] text-[var(--orx-text-secondary)]">Início</label>
-                <input id="qa-cir-inicio" name="inicio" type="date" className="w-full px-3 py-2 rounded-xl" />
-              </div>
-              <div>
-                <label htmlFor="qa-cir-fim" className="text-[0.75rem] text-[var(--orx-text-secondary)]">Fim</label>
-                <input id="qa-cir-fim" name="fim" type="date" className="w-full px-3 py-2 rounded-xl" />
-              </div>
-              <div>
-                <label htmlFor="qa-cir-status" className="text-[0.75rem] text-[var(--orx-text-secondary)]">Status</label>
-                <select id="qa-cir-status" name="status" className="w-full px-3 py-2 rounded-xl">
-                  <option value="">Todos</option>
-                  <option value="agendada">Agendada</option>
-                  <option value="confirmada">Confirmada</option>
-                  <option value="cancelada">Cancelada</option>
-                </select>
-              </div>
-              <div className="col-span-full flex gap-2">
-                <button type="submit" className="neuro-button px-3 py-2 rounded-xl" aria-label="Aplicar filtros">Aplicar</button>
-                <button type="button" className="neuro-button px-3 py-2 rounded-xl" aria-label="Limpar filtros">Limpar</button>
-              </div>
-            </form>
+        {typeof window !== 'undefined' &&
+          new URLSearchParams(window.location.search).get('qa') === '1' && (
+            <>
+              <form
+                aria-label="Filtros QA Cirurgias"
+                className="rounded-2xl p-4 neuro-raised grid [grid-template-columns:1.2fr_0.8fr_0.8fr_0.6fr] gap-3 items-end mt-3"
+              >
+                <div>
+                  <label
+                    htmlFor="qa-busca-cir"
+                    className="text-[0.75rem] text-[var(--orx-text-secondary)]"
+                  >
+                    Busca
+                  </label>
+                  <input
+                    id="qa-busca-cir"
+                    name="busca"
+                    placeholder="Paciente, procedimento"
+                    className="w-full px-3 py-2 rounded-xl"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="qa-cir-inicio"
+                    className="text-[0.75rem] text-[var(--orx-text-secondary)]"
+                  >
+                    Início
+                  </label>
+                  <input
+                    id="qa-cir-inicio"
+                    name="inicio"
+                    type="date"
+                    className="w-full px-3 py-2 rounded-xl"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="qa-cir-fim"
+                    className="text-[0.75rem] text-[var(--orx-text-secondary)]"
+                  >
+                    Fim
+                  </label>
+                  <input
+                    id="qa-cir-fim"
+                    name="fim"
+                    type="date"
+                    className="w-full px-3 py-2 rounded-xl"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="qa-cir-status"
+                    className="text-[0.75rem] text-[var(--orx-text-secondary)]"
+                  >
+                    Status
+                  </label>
+                  <select id="qa-cir-status" name="status" className="w-full px-3 py-2 rounded-xl">
+                    <option value="">Todos</option>
+                    <option value="agendada">Agendada</option>
+                    <option value="confirmada">Confirmada</option>
+                    <option value="cancelada">Cancelada</option>
+                  </select>
+                </div>
+                <div className="col-span-full flex gap-2">
+                  <button
+                    type="submit"
+                    className="neuro-button px-3 py-2 rounded-xl"
+                    aria-label="Aplicar filtros"
+                  >
+                    Aplicar
+                  </button>
+                  <button
+                    type="button"
+                    className="neuro-button px-3 py-2 rounded-xl"
+                    aria-label="Limpar filtros"
+                  >
+                    Limpar
+                  </button>
+                </div>
+              </form>
 
-            <div className="neuro-raised p-4 rounded-2xl">
-              <h2 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-3">Cirurgias (QA)</h2>
-              <div className="overflow-x-auto">
-                <table role="table" className="w-full">
-                  <thead>
-                    <tr>
-                      <th className="text-left p-2">#</th>
-                      <th className="text-left p-2">Paciente</th>
-                      <th className="text-left p-2">Procedimento</th>
-                      <th className="text-left p-2">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {[1,2,3,4,5,6,7,8].map((i) => (
-                      <tr key={i}>
-                        <td className="p-2">CIR-{i}</td>
-                        <td className="p-2">Paciente {i}</td>
-                        <td className="p-2">{i % 2 === 0 ? 'Artroscopia' : 'Hérnia'}</td>
-                        <td className="p-2">{i % 3 === 0 ? 'Cancelada' : i % 2 === 0 ? 'Confirmada' : 'Agendada'}</td>
+              <div className="neuro-raised p-4 rounded-2xl">
+                <h2 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-3">
+                  Cirurgias (QA)
+                </h2>
+                <div className="overflow-x-auto">
+                  <table role="table" className="w-full">
+                    <thead>
+                      <tr>
+                        <th className="text-left p-2">#</th>
+                        <th className="text-left p-2">Paciente</th>
+                        <th className="text-left p-2">Procedimento</th>
+                        <th className="text-left p-2">Status</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                        <tr key={i}>
+                          <td className="p-2">CIR-{i}</td>
+                          <td className="p-2">Paciente {i}</td>
+                          <td className="p-2">{i % 2 === 0 ? 'Artroscopia' : 'Hérnia'}</td>
+                          <td className="p-2">
+                            {i % 3 === 0 ? 'Cancelada' : i % 2 === 0 ? 'Confirmada' : 'Agendada'}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="flex gap-2 mt-3">
+                  <button type="button" aria-label="Página Anterior" className="neuro-button">
+                    Anterior
+                  </button>
+                  <button type="button" aria-label="Próxima Página" className="neuro-button">
+                    Próximo
+                  </button>
+                </div>
               </div>
-              <div className="flex gap-2 mt-3">
-                <button type="button" aria-label="Página Anterior" className="neuro-button">Anterior</button>
-                <button type="button" aria-label="Próxima Página" className="neuro-button">Próximo</button>
-              </div>
-            </div>
-          </>
-        )}
-
+            </>
+          )}
 
         {selectedCirurgia && (
           <Card className="neuro-raised p-6">
@@ -1906,7 +2212,8 @@ export default function CirurgiasProcedimentos(): JSX.Element {
                     {selectedCirurgia.tipo_procedimento}
                   </h2>
                   <p className="text-body-xs text-[var(--text-secondary)]">
-                    Paciente {selectedCirurgia.paciente_nome} • {statusLabels[(selectedCirurgia.status as KanbanColumn) ??"agendada"]}
+                    Paciente {selectedCirurgia.paciente_nome} •{' '}
+                    {statusLabels[(selectedCirurgia.status as KanbanColumn) ?? 'agendada']}
                   </p>
                 </div>
               </div>
@@ -1914,7 +2221,7 @@ export default function CirurgiasProcedimentos(): JSX.Element {
                 <button
                   type="button"
                   className="neuro-button-secondary px-4 py-2 rounded-xl flex items-center gap-2"
-                  onClick={() => handleUpdateStatus(selectedCirurgia.id,"confirmada")}
+                  onClick={() => handleUpdateStatus(selectedCirurgia.id, 'confirmada')}
                 >
                   <CheckCircle className="w-4 h-4" />
                   Confirmar
@@ -1945,12 +2252,18 @@ export default function CirurgiasProcedimentos(): JSX.Element {
               type="button"
               onClick={() => setActiveModule(item.id)}
               className={`h-28 rounded-xl transition-all duration-200 flex flex-col items-center justify-center text-center ${
-                activeModule === item.id ?"neuro-raised scale-105" :"neuro-flat hover:neuro-raised"
+                activeModule === item.id
+                  ? 'neuro-raised scale-105'
+                  : 'neuro-flat hover:neuro-raised'
               }`}
             >
               <item.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
-              <span className="text-body-xs text-[var(--text-primary)] orx-orx-font-medium">{item.label}</span>
-              <span className="text-body-2xs text-[var(--text-secondary)] px-4">{item.description}</span>
+              <span className="text-body-xs text-[var(--text-primary)] orx-orx-font-medium">
+                {item.label}
+              </span>
+              <span className="text-body-2xs text-[var(--text-secondary)] px-4">
+                {item.description}
+              </span>
               {item.badge && (
                 <span className="mt-2 px-3 py-0.5 rounded-full text-[10px] bg-accent/10 text-accent">
                   {item.badge}
@@ -1960,7 +2273,11 @@ export default function CirurgiasProcedimentos(): JSX.Element {
           ))}
         </nav>
 
-        <div aria-live="polite" aria-label={`Conteúdo ${DURATION_LABELS[activeModule]}`} className="space-y-6">
+        <div
+          aria-live="polite"
+          aria-label={`Conteúdo ${DURATION_LABELS[activeModule]}`}
+          className="space-y-6"
+        >
           {renderActiveModule()}
         </div>
       </div>

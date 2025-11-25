@@ -1,6 +1,6 @@
 /**
  * 🏥 WORKFLOW: GESTÃO DE CIRURGIAS
- * 
+ *
  * Workflow completo para gerenciamento do ciclo de vida de cirurgias
  * Desde o agendamento até a conclusão, com rastreabilidade total
  */
@@ -12,7 +12,7 @@ export const CIRURGIA_WORKFLOW: WorkflowDefinition = {
   name: 'Gestão de Cirurgias',
   description: 'Workflow completo para gerenciamento de cirurgias desde agendamento até conclusão',
   module: 'cirurgias',
-  
+
   states: [
     {
       id: 'agendada',
@@ -151,7 +151,7 @@ export const CIRURGIA_WORKFLOW: WorkflowDefinition = {
       ],
     },
   ],
-  
+
   notifications: [
     {
       id: 'notif-cirurgia-confirmada',
@@ -198,7 +198,7 @@ export const CIRURGIA_WORKFLOW: WorkflowDefinition = {
       channels: ['email', 'whatsapp', 'push', 'in_app'],
     },
   ],
-  
+
   validations: [
     {
       stateId: 'em_preparacao',
@@ -219,4 +219,3 @@ export const CIRURGIA_WORKFLOW: WorkflowDefinition = {
     },
   ],
 };
-

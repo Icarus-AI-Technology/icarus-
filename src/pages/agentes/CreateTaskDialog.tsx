@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { supabase } from "@/lib/supabase";
+import React, { useState } from 'react';
+import { supabase } from '@/lib/supabase';
+import { legacySupabase } from '@/lib/legacySupabase';
 import {
   Dialog,
   DialogContent,
@@ -7,19 +8,19 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+} from '@/components/ui/dialog';
+import { Button } from '@/components/oraclusx-ds/Button';
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Loader2, PlayCircle } from "lucide-react";
-import { toast } from "sonner";
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { Loader2, PlayCircle } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface OrchestratorResponse {
   task_id: string;
@@ -30,15 +31,12 @@ interface CreateTaskDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export function CreateTaskDialog({
-  open,
-  onOpenChange,
-}: CreateTaskDialogProps) {
+export function CreateTaskDialog({ open, onOpenChange }: CreateTaskDialogProps) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    query_text: "",
-    task_type: "master_planning",
-    priority: "5",
+    query_text: '',
+    task_type: 'master_planning',
+    priority: '5',
   });
 
   async function handleSubmit(e: React.FormEvent) {
@@ -51,50 +49,50 @@ export function CreateTaskDialog({
         data: { user },
       } = await supabase.auth.getUser();
 
-      if (!user) throw new Error("Usuário não autenticado");
+      if (!user) throw new Error('Usuário não autenticado');
 
-      const { data: userOrg, error: userOrgError } = await supabase
-        .from("user_organizations")
-        .select("organization_id")
-        .eq("user_id", user.id)
+      const { data: userOrg, error: userOrgError } = await legacySupabase
+        .from('user_organizations')
+        .select('organization_id')
+        .eq('user_id', user.id)
         .single();
 
       if (userOrgError) throw userOrgError;
-      if (!userOrg) throw new Error("Organização não encontrada");
+      if (!userOrg || typeof userOrg.organization_id !== 'string') {
+        throw new Error('Organização não encontrada');
+      }
 
       // Chamar orchestrator
-      const { data, error } =
-        await supabase.functions.invoke<OrchestratorResponse>(
-          "orchestrator",
-          {
-            body: {
-              query_text: formData.query_text,
-              organization_id: userOrg.organization_id,
-              priority: parseInt(formData.priority, 10),
-              task_type: formData.task_type,
-            },
+      const { data, error } = await supabase.functions.invoke<OrchestratorResponse>(
+        'orchestrator',
+        {
+          body: {
+            query_text: formData.query_text,
+            organization_id: userOrg.organization_id,
+            priority: parseInt(formData.priority, 10),
+            task_type: formData.task_type,
           },
-        );
+        }
+      );
 
       if (error) throw error;
 
-      toast.success("Análise iniciada com sucesso!", {
-        description: `Task ID: ${data?.task_id ?? "desconhecido"}`,
+      toast.success('Análise iniciada com sucesso!', {
+        description: `Task ID: ${data?.task_id ?? 'desconhecido'}`,
       });
 
       // Reset form
       setFormData({
-        query_text: "",
-        task_type: "master_planning",
-        priority: "5",
+        query_text: '',
+        task_type: 'master_planning',
+        priority: '5',
       });
 
       onOpenChange(false);
     } catch (error) {
-      console.error("Error creating task:", error);
-      const description =
-        error instanceof Error ? error.message : "Erro ao criar análise";
-      toast.error("Erro ao criar análise", {
+      console.error('Error creating task:', error);
+      const description = error instanceof Error ? error.message : 'Erro ao criar análise';
+      toast.error('Erro ao criar análise', {
         description,
       });
     } finally {
@@ -109,8 +107,8 @@ export function CreateTaskDialog({
           <DialogHeader>
             <DialogTitle>Nova Análise com Agentes IA</DialogTitle>
             <DialogDescription>
-              Descreva o que você deseja analisar. O orquestrador irá decompor
-              em subtarefas e executar.
+              Descreva o que você deseja analisar. O orquestrador irá decompor em subtarefas e
+              executar.
             </DialogDescription>
           </DialogHeader>
 
@@ -121,9 +119,7 @@ export function CreateTaskDialog({
                 id="query"
                 placeholder="Ex: Analisar consumo de materiais OPME do último trimestre"
                 value={formData.query_text}
-                onChange={(e) =>
-                  setFormData({ ...formData, query_text: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, query_text: e.target.value })}
                 rows={4}
                 required
               />
@@ -137,23 +133,15 @@ export function CreateTaskDialog({
                 <Label htmlFor="type">Tipo de Análise</Label>
                 <Select
                   value={formData.task_type}
-                  onValueChange={(value) =>
-                    setFormData({ ...formData, task_type: value })
-                  }
+                  onValueChange={(value) => setFormData({ ...formData, task_type: value })}
                 >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="master_planning">
-                      Análise Completa (Recomendado)
-                    </SelectItem>
-                    <SelectItem value="data_internal">
-                      Apenas Dados Internos
-                    </SelectItem>
-                    <SelectItem value="compliance">
-                      Apenas Compliance
-                    </SelectItem>
+                    <SelectItem value="master_planning">Análise Completa (Recomendado)</SelectItem>
+                    <SelectItem value="data_internal">Apenas Dados Internos</SelectItem>
+                    <SelectItem value="compliance">Apenas Compliance</SelectItem>
                     <SelectItem value="benchmark">Apenas Benchmark</SelectItem>
                   </SelectContent>
                 </Select>
@@ -163,9 +151,7 @@ export function CreateTaskDialog({
                 <Label htmlFor="priority">Prioridade</Label>
                 <Select
                   value={formData.priority}
-                  onValueChange={(value) =>
-                    setFormData({ ...formData, priority: value })
-                  }
+                  onValueChange={(value) => setFormData({ ...formData, priority: value })}
                 >
                   <SelectTrigger>
                     <SelectValue />
@@ -184,11 +170,7 @@ export function CreateTaskDialog({
           </div>
 
           <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-            >
+            <Button type="button" variant="bordered" onClick={() => onOpenChange(false)}>
               Cancelar
             </Button>
             <Button type="submit" disabled={loading || !formData.query_text}>

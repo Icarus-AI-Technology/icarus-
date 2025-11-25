@@ -1,11 +1,14 @@
 import axios from 'axios';
 
 type EnvBag = { env?: Record<string, unknown> };
-const runtimeImportMeta: EnvBag | undefined = typeof import.meta !== 'undefined' ? (import.meta as unknown as EnvBag) : undefined;
+const runtimeImportMeta: EnvBag | undefined =
+  typeof import.meta !== 'undefined' ? (import.meta as unknown as EnvBag) : undefined;
 
 const ML_API_URL =
   (runtimeImportMeta?.env?.VITE_ML_API_URL as string | undefined) ||
-  (typeof process !== 'undefined' ? (process.env?.VITE_ML_API_URL as string | undefined) : undefined) ||
+  (typeof process !== 'undefined'
+    ? (process.env?.VITE_ML_API_URL as string | undefined)
+    : undefined) ||
   'http://localhost:8000';
 
 function invariant(condition: unknown, message: string): asserts condition {
@@ -18,7 +21,10 @@ function resolveVectorEndpoint(): string | undefined {
   const fromImportMeta = runtimeImportMeta?.env?.VITE_ML_VECTOR_URL as string | undefined;
   if (fromImportMeta) return fromImportMeta;
 
-  const fromProcess = typeof process !== 'undefined' ? (process.env?.ML_VECTOR_API_URL as string | undefined) : undefined;
+  const fromProcess =
+    typeof process !== 'undefined'
+      ? (process.env?.ML_VECTOR_API_URL as string | undefined)
+      : undefined;
   if (fromProcess) return fromProcess;
 
   if (typeof process !== 'undefined' && process.env?.VERCEL_URL) {
@@ -106,7 +112,10 @@ export async function clearPersistedVectors(endpointOverride?: string) {
   return data;
 }
 
-export async function listPersistedVectors(params?: { externalId?: string; module?: string }, endpointOverride?: string) {
+export async function listPersistedVectors(
+  params?: { externalId?: string; module?: string },
+  endpointOverride?: string
+) {
   const endpoint = endpointOverride ?? resolveVectorEndpoint();
   invariant(endpoint, 'VECTOR_ENDPOINT não configurado');
 
@@ -114,6 +123,8 @@ export async function listPersistedVectors(params?: { externalId?: string; modul
   if (params?.externalId) search.set('external_id', params.externalId);
   if (params?.module) search.set('module', params.module);
 
-  const { data } = await axios.get(`${endpoint}${search.toString() ? `?${search.toString()}` : ''}`);
+  const { data } = await axios.get(
+    `${endpoint}${search.toString() ? `?${search.toString()}` : ''}`
+  );
   return data;
 }

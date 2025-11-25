@@ -3,104 +3,83 @@
   "version": "1.0",
   "agents": [
     {
-      "name": "Orquestrador-ICARUS",
+      "name": "Orquestrador-Auditoria-ICARUS",
       "entry": true,
-      "role": "Engenharia de Software + especialista em IA aplicada a ERPs OPME; domínio tributário/contábil/ANVISA/ANS e importação Classe IV; faturamento OPME; liderança técnica.",
+      "role": "Agente orquestrador full-stack responsável por aplicar, acompanhar e reexecutar todas as recomendações do RELATÓRIO COMPLETO DE AUDITORIA - ICARUS v5.0 (frontend, backend, Supabase, segurança, performance, testes e documentação). Atua diretamente sobre o repositório oficial (/users/daxmeneghel/icarus-make/) e coordena limpeza, padronização e validações.",
       "mission": [
-        "Garantir que TODAS as IAs nativas estejam implementadas no servidor (Supabase Edge Functions) em PRODUÇÃO; NUNCA locais.",
-        "Em DESENVOLVIMENTO, utilizar sempre Supabase Edge Functions e Vercel Functions, evitando qualquer dependência de localhost para IA.",
-        "Pesquisar e comparar os 3 melhores ERPs OPME; manter Icarus à frente em tecnologia/funcionalidades.",
-        "Implementar tutores/assistentes IA acionáveis via chatbot para todos os módulos; coordenar subagentes para sugerir funcionalidades com prioridade (crítico/médio/baixo).",
-        "Garantir que o provider de IA médica (OPENAI_MEDICAL_MODEL) e o provider de IA financeira/operacional (ANTHROPIC_FINANCE_MODEL) estejam integrados via Supabase + Vercel usando variáveis de ambiente seguras."
+        "Aplicar as ações críticas do relatório de auditoria: remoção de componentes duplicados, padronização para OraclusX DS, limpeza de RLS duplicadas em Supabase e otimização básica de build.",
+        "Executar rotinas de verificação: build (Vite/React), performance de chunks, status das migrações Supabase, RLS, extensões (pgjwt) e segurança (envs, secrets, policies).",
+        "Gerar relatórios de progresso em formato markdown dentro da pasta docs/ ou backups/auditoria/, com foco em auditoria contínua (semanal).",
+        "Auxiliar o DevOps/CI a manter o pipeline saudável, garantindo que pnpm run build, pnpm run lint, pnpm test e supabase db lint/diff rodem sem falhas."
       ],
       "policies": {
-        "ai_topology": {
-          "dev": {
-            "functions_base_env": "SUPABASE_FUNCTIONS_URL",
-            "medical_ai_path": "/medical-ai",
-            "finance_ai_path": "/finance-ai"
-          },
-          "prod": {
-            "functions_base_env": "SUPABASE_FUNCTIONS_URL",
-            "medical_ai_path": "/medical-ai",
-            "finance_ai_path": "/finance-ai"
-          }
+        "paths": {
+          "root": "/users/daxmeneghel/icarus-make/"
         },
-        "hard_fails_in_prod": [
-          "http://localhost",
-          "127.0.0.1",
-          "ws://localhost",
-          "ollama local em produção"
-        ],
-        "prioritization": ["critico", "medio", "baixo"],
         "fs": {
-          "devRoot": "/users/daxmenghel/icarus-make/",
-          "prodRoot": "/users/daxmenghel/icarus-v5.0/",
           "denyWrite": [
-            "/users/daxmenghel/icarus-v5.0/.git",
-            "/users/daxmenghel/icarus-v5.0/node_modules"
+            "/users/daxmeneghel/icarus-make/.git",
+            "/users/daxmeneghel/icarus-make/node_modules"
           ]
-        }
+        },
+        "safety": [
+          "Não executar rm -rf em pastas críticas de código (exceto remoção explícita e pontual de componentes duplicados conforme relatório).",
+          "Nunca alterar arquivos de migração Supabase já aplicados; criar sempre novas migrações quando necessário.",
+          "Nunca expor secrets em logs; logs de auditoria devem mascarar envs sensíveis."
+        ]
       },
-      "tools": ["bash", "node", "git", "deno"],
+      "tools": [
+        "bash",
+        "git",
+        "node",
+        "supabase"
+      ],
+      "commands": {
+        "scan-frontend-duplicados": "bash -lc 'cd /users/daxmeneghel/icarus-make && mkdir -p backups/auditoria && echo \"[Orquestrador-Auditoria] Escaneando componentes duplicados (components vs oraclusx-ds)...\" | tee backups/auditoria/frontend_duplicados.log && rg \"oraclusx-ds\" src/components -n || true && find src/components -maxdepth 1 -type f -name \"*.tsx\" | sort >> backups/auditoria/frontend_duplicados.log && echo \"[Orquestrador-Auditoria] Relatório inicial em backups/auditoria/frontend_duplicados.log\"'",
+        "apagar-componentes-duplicados-base": "bash -lc 'cd /users/daxmeneghel/icarus-make && mkdir -p backups/auditoria && echo \"[Orquestrador-Auditoria] Iniciando remoção SEGURA de componentes duplicados listados no relatório...\" | tee backups/auditoria/frontend_cleanup.log && mkdir -p backups/auditoria/duplicados_backup && for comp in Accordion Alert Avatar Badge Breadcrumb Button Card CardKpi CadastroLayout ChatbotCloseButton ChatbotFAB ChatbotFABWithPrompt ChatbotWithResearch Checkbox Container DatePicker Dialog Drawer Dropdown FileUpload Form FormBanner FormFieldError IconButtonNeu Input InputContainer LibraryShowcase MiniBarChart MiniCard Modal NavigationBar NeomorphicCard NeomorphicIconBox NeumoButton NeumoInput NeumoSearchBar NeumoTextarea Pagination Progress Radio RadialProgress SearchContainer SearchField Select Skeleton SkeletonPage SkeletonRouteFallback Slider Stepper SubModulesNavigation Switch Table Tabs Textarea Toast Tooltip TopbarIconButton TrendIndicator; do if [ -f \"src/components/$comp.tsx\" ]; then echo \"[Orquestrador-Auditoria] Movendo src/components/$comp.tsx para backups/auditoria/duplicados_backup/\" | tee -a backups/auditoria/frontend_cleanup.log; mv \"src/components/$comp.tsx\" \"backups/auditoria/duplicados_backup/${comp}.tsx\"; fi; if ls src/components | grep -qi \"${comp}.stories\"; then for f in src/components/*${comp}.stories.*; do echo \"[Orquestrador-Auditoria] Movendo $f para backups/auditoria/duplicados_backup/\" | tee -a backups/auditoria/frontend_cleanup.log; mv \"$f\" backups/auditoria/duplicados_backup/; done; fi; done && echo \"[Orquestrador-Auditoria] Remoção de duplicados concluída (cópia de segurança em backups/auditoria/duplicados_backup/)\"'",
+        "padronizar-imports-oraclusx-ds": "bash -lc 'cd /users/daxmeneghel/icarus-make && echo \"[Orquestrador-Auditoria] Padronizando imports para oraclusx-ds...\" && find src -name \"*.tsx\" -o -name \"*.ts\" | while read file; do sed -i \"\" \"s|from \\\"../components/Card\\\"|from \\\"../components/oraclusx-ds/Card\\\"|g\" \"$file\"; sed -i \"\" \"s|from \\\"../components/Badge\\\"|from \\\"../components/oraclusx-ds/Badge\\\"|g\" \"$file\"; sed -i \"\" \"s|from \\\"../components/Button\\\"|from \\\"../components/oraclusx-ds/Button\\\"|g\" \"$file\"; done && echo \"[Orquestrador-Auditoria] Imports principais alinhados com OraclusX DS (Card/Badge/Button).\"'",
+        "check-build-perf": "bash -lc 'cd /users/daxmeneghel/icarus-make && mkdir -p backups/auditoria && echo \"[Orquestrador-Auditoria] Rodando build e capturando warnings de performance...\" | tee backups/auditoria/build_perf.log && pnpm install 2>&1 | tee -a backups/auditoria/build_perf.log && pnpm run build 2>&1 | tee -a backups/auditoria/build_perf.log && echo \"[Orquestrador-Auditoria] Build finalizado. Verificar warnings de chunks > 600KB em backups/auditoria/build_perf.log\"'",
+        "sugerir-dynamic-imports": "bash -lc 'cd /users/daxmeneghel/icarus-make && mkdir -p backups/auditoria && echo \"[Orquestrador-Auditoria] Identificando pontos candidatos a Dynamic Import (charts, Microsoft365, dashboards pesados)...\" | tee backups/auditoria/dynamic_imports_sugestoes.log && rg \"Microsoft365IntegrationPanel\" src -n >> backups/auditoria/dynamic_imports_sugestoes.log || true && rg \"recharts\" src -n >> backups/auditoria/dynamic_imports_sugestoes.log || true && rg \"chart.js\" src -n >> backups/auditoria/dynamic_imports_sugestoes.log || true && echo \"[Orquestrador-Auditoria] Sugestões básicas salvas em backups/auditoria/dynamic_imports_sugestoes.log\"'",
+        "supabase-check-migrations": "bash -lc 'cd /users/daxmeneghel/icarus-make && mkdir -p backups/auditoria && echo \"[Orquestrador-Auditoria] Verificando status das migrações Supabase...\" | tee backups/auditoria/supabase_migrations.log && (supabase status || echo \"[Orquestrador-Auditoria] supabase status retornou alerta\" ) 2>&1 | tee -a backups/auditoria/supabase_migrations.log && (supabase db lint || echo \"[Orquestrador-Auditoria] supabase db lint retornou alerta\" ) 2>&1 | tee -a backups/auditoria/supabase_migrations.log && (supabase db diff --linked --dry-run || echo \"[Orquestrador-Auditoria] supabase db diff --linked --dry-run retornou alerta\" ) 2>&1 | tee -a backups/auditoria/supabase_migrations.log && echo \"[Orquestrador-Auditoria] Checagem Supabase concluída (ver backups/auditoria/supabase_migrations.log)\"'",
+        "supabase-check-rls-profiles": "bash -lc 'cd /users/daxmeneghel/icarus-make && mkdir -p backups/auditoria && echo \"[Orquestrador-Auditoria] Extraindo definição de policies RLS para profiles...\" | tee backups/auditoria/supabase_profiles_policies.sql && supabase db dump --data-only=false --schema-only --schema public | rg \"CREATE POLICY\" -n | rg \"profiles\" >> backups/auditoria/supabase_profiles_policies.sql || echo \"[Orquestrador-Auditoria] Não foi possível extrair policies via CLI; revisar manualmente no Dashboard.\"'",
+        "supabase-sugerir-cleanup-rls": "bash -lc 'cd /users/daxmeneghel/icarus-make && mkdir -p backups/auditoria && cat <<EOF > backups/auditoria/supabase_cleanup_profiles_policies.sql\n-- Script sugerido para limpeza de policies duplicadas em profiles (aplicar via Supabase SQL Editor com cautela)\nDROP POLICY IF EXISTS \"users_see_own_profile\" ON profiles;\nDROP POLICY IF EXISTS \"users_update_own_profile\" ON profiles;\nDROP POLICY IF EXISTS \"Users can view their own profile\" ON profiles;\nDROP POLICY IF EXISTS \"Users can update their own profile\" ON profiles;\nDROP POLICY IF EXISTS \"Usuários podem ver próprio perfil\" ON profiles;\nDROP POLICY IF EXISTS \"Usuários podem atualizar próprio perfil\" ON profiles;\n-- Manter apenas:\n-- profiles_select_own\n-- profiles_update_own\n-- \"Admins podem ver todos os perfis\"\n-- profiles_delete_policy\n-- service_role_all_profiles\nEOF\n && echo \"[Orquestrador-Auditoria] Script de cleanup RLS sugerido em backups/auditoria/supabase_cleanup_profiles_policies.sql\"'",
+        "supabase-check-pgjwt": "bash -lc 'cd /users/daxmeneghel/icarus-make && mkdir -p backups/auditoria && echo \"[Orquestrador-Auditoria] Verificando se extensão pgjwt está instalada...\" | tee backups/auditoria/supabase_pgjwt.log && supabase db remote commit --dry-run | rg \"pgjwt\" -n >> backups/auditoria/supabase_pgjwt.log || echo \"[Orquestrador-Auditoria] Não foi possível detectar pgjwt via CLI; verificar manualmente no Dashboard (Database > Extensions).\" && echo \"[Orquestrador-Auditoria] Resultado salvo em backups/auditoria/supabase_pgjwt.log\"'",
+        "docs-consolidar-indice": "bash -lc 'cd /users/daxmeneghel/icarus-make && mkdir -p docs/archive && echo \"[Orquestrador-Auditoria] Consolidando documentação em docs/ e criando índice...\" && ls *.md > docs/archive/root_md_files.txt 2>/dev/null || true && for f in DOCUMENTACAO_*.md AUDITORIA_*.md ICARUS_V5_SPEC_COMPLETO.md ROADMAP.md GUIA_DEPLOY.md 100_PERCENT_COMPLETO.md; do if [ -f \"$f\" ]; then git mv \"$f\" \"docs/$f\" || mv \"$f\" \"docs/$f\"; fi; done && { echo \"# Índice de Documentação ICARUS v5.0\"; echo; echo \"## Documentos principais\"; ls docs/*.md 2>/dev/null || true; echo; echo \"## Arquivos antigos (root)\"; cat docs/archive/root_md_files.txt 2>/dev/null || true; } > docs/INDEX.md && echo \"[Orquestrador-Auditoria] INDEX.md criado em docs/INDEX.md\"'",
+        "tests-resumo-e2e-unit": "bash -lc 'cd /users/daxmeneghel/icarus-make && mkdir -p backups/auditoria && echo \"[Orquestrador-Auditoria] Rodando lint, testes unitários e E2E (se configurados)...\" | tee backups/auditoria/tests_resumo.log && (pnpm run lint || echo \"[Orquestrador-Auditoria] pnpm run lint falhou\" ) 2>&1 | tee -a backups/auditoria/tests_resumo.log && (pnpm test -- --passWithNoTests || pnpm test || echo \"[Orquestrador-Auditoria] pnpm test falhou/ausente\" ) 2>&1 | tee -a backups/auditoria/tests_resumo.log && (pnpm run test:e2e || pnpm run test:e2e:ci || pnpm run e2e || echo \"[Orquestrador-Auditoria] Nenhum script E2E encontrado ou falhou\" ) 2>&1 | tee -a backups/auditoria/tests_resumo.log && echo \"[Orquestrador-Auditoria] Resumo de testes em backups/auditoria/tests_resumo.log\"'",
+        "relatorio-auditoria-progress": "bash -lc 'cd /users/daxmeneghel/icarus-make && mkdir -p backups/auditoria && { echo \"# Relatório de Progresso - Auditoria ICARUS v5.0\"; echo; echo \"Data: $(date)\"; echo; echo \"## Ações executadas\"; echo \"- scan-frontend-duplicados\"; echo \"- apagar-componentes-duplicados-base\"; echo \"- padronizar-imports-oraclusx-ds\"; echo \"- check-build-perf\"; echo \"- sugerir-dynamic-imports\"; echo \"- supabase-check-migrations\"; echo \"- supabase-check-rls-profiles\"; echo \"- supabase-sugerir-cleanup-rls\"; echo \"- supabase-check-pgjwt\"; echo \"- docs-consolidar-indice\"; echo \"- tests-resumo-e2e-unit\"; echo; echo \"## Próximos passos recomendados\"; echo \"- Aplicar manualmente o script de cleanup RLS em backups/auditoria/supabase_cleanup_profiles_policies.sql (via Supabase SQL Editor).\"; echo \"- Implementar Dynamic Imports conforme sugestões em backups/auditoria/dynamic_imports_sugestoes.log.\"; echo \"- Refinar manualChunks no vite.config.ts para vendor-react, vendor-charts, vendor-supabase, etc.\"; echo \"- Completar implementação das rotas que ainda usam ModulePlaceholder.\"; echo \"- Aumentar cobertura de testes unitários e E2E para fluxos críticos (login, dashboard, estoque, cirurgias, financeiro).\"; } > backups/auditoria/relatorio_auditoria_progress.md && echo \"[Orquestrador-Auditoria] Relatório de progresso criado em backups/auditoria/relatorio_auditoria_progress.md\"'"
+      },
       "playbooks": [
         {
-          "name": "ia-conformidade-total",
-          "desc": "Audita toda a topologia de IA (dev/prod), garantindo que medical-ai e finance-ai estejam acessíveis somente via Supabase Edge Functions configuradas nas envs da Vercel.",
+          "name": "auditoria-full-icarius-v5",
+          "desc": "Executa uma auditoria completa (frontend, backend, Supabase, segurança, testes e docs) alinhada ao RELATÓRIO COMPLETO DE AUDITORIA - ICARUS v5.0, atuando sobre /users/daxmeneghel/icarus-make.",
           "steps": [
-            "@IA-Validator:validar-topologia",
-            "@IA-Validator:auditar-edge-functions",
-            "@Tutor-Conselheiro:sumarizar-executivo"
-          ],
-          "deliverables": ["docs/relatorio_ia_conformidade.md"]
-        },
-        {
-          "name": "benchmark-erp-opme",
-          "desc": "Comparar 3 melhores ERPs OPME (recursos, IA, compliance ANS/ANVISA, TISS, NF-e/SEFAZ).",
-          "steps": [
-            "@Gestao-Empresarial:mapear-kpis-ceo",
-            "@Advogado:check-compliance-erp",
-            "@Contador:check-fiscal-erp",
-            "@Tutor-Conselheiro:sintetizar-recomendacao"
-          ]
-        },
-        {
-          "name": "priorizar-funcionalidades",
-          "desc": "Ler módulos do Icarus, identificar gaps e ranquear (critico/medio/baixo).",
-          "steps": [
-            "@Gestao-Empresarial:auditar-modulos",
-            "@Advogado:auditar-requisitos-legais",
-            "@Contador:auditar-requisitos-fiscais",
-            "@Tutor-Conselheiro:classificar-gaps"
-          ]
-        },
-        {
-          "name": "migrar-make-para-v5",
-          "desc": "Orquestra a migração definitiva de tudo que foi desenvolvido em /users/daxmeneghel/icarus-make/ para /users/daxmeneghel/icarus-v5.0/, garantindo deduplicação, preferência pelas versões mais recentes, testes completos e verificação Supabase via CLI.",
-          "steps": [
-            "@Migracao-Repo:scan-diff",
-            "@Migracao-Repo:backup-prod-root",
-            "@Migracao-Repo:sync-make-para-v5",
-            "@Migracao-Repo:git-status-resumo",
-            "@Migracao-Repo:rodar-testes",
-            "@Migracao-Repo:verificar-supabase",
-            "@Migracao-Repo:relatorio-final",
-            "@Migracao-Repo:remover-make-opcional"
+            "scan-frontend-duplicados",
+            "apagar-componentes-duplicados-base",
+            "padronizar-imports-oraclusx-ds",
+            "check-build-perf",
+            "sugerir-dynamic-imports",
+            "supabase-check-migrations",
+            "supabase-check-rls-profiles",
+            "supabase-sugerir-cleanup-rls",
+            "supabase-check-pgjwt",
+            "docs-consolidar-indice",
+            "tests-resumo-e2e-unit",
+            "relatorio-auditoria-progress"
           ],
           "deliverables": [
-            "backups/migration/icarus-make.diff",
-            "backups/migration/icarus-v5.0-pre-migration.tar.gz",
-            "backups/migration/relatorio-migracao.md"
+            "backups/auditoria/frontend_duplicados.log",
+            "backups/auditoria/frontend_cleanup.log",
+            "backups/auditoria/build_perf.log",
+            "backups/auditoria/dynamic_imports_sugestoes.log",
+            "backups/auditoria/supabase_migrations.log",
+            "backups/auditoria/supabase_profiles_policies.sql",
+            "backups/auditoria/supabase_cleanup_profiles_policies.sql",
+            "backups/auditoria/supabase_pgjwt.log",
+            "backups/auditoria/tests_resumo.log",
+            "backups/auditoria/relatorio_auditoria_progress.md",
+            "docs/INDEX.md"
           ]
         }
-      ],
-      "subagents": [
-        "Contador",
-        "Advogado",
-        "Gestao-Empresarial",
-        "Tutor-Conselheiro",
-        "IA-Validator",
-        "Migracao-Repo"
       ]
     },
     {
@@ -111,7 +90,10 @@
         "Foco em Lucro Real; garantir compliance e atualizações automáticas (SPED, EFD, NF-e).",
         "Construir e manter uma DRE inteligente (dinâmica, analítica e por centro de custo), integrada ao plano de contas e aos módulos financeiros do ICARUS v5.0."
       ],
-      "tools": ["node", "bash"],
+      "tools": [
+        "node",
+        "bash"
+      ],
       "commands": {
         "check-fiscal-erp": "node tools/compliance/fiscal/check-erp-fiscal.js",
         "mapear-obrigacoes": "node tools/compliance/fiscal/list-obrigacoes.js",
@@ -155,7 +137,10 @@
         "Recursos jurídicos atualizados no ERP; tutoriais via chatbot.",
         "Conformidade legal ponta-a-ponta; monitor regulatório automatizado utilizando IA médica/jurídica quando pertinente (OPENAI_MEDICAL_MODEL via medical-ai)."
       ],
-      "tools": ["node", "deno"],
+      "tools": [
+        "node",
+        "deno"
+      ],
       "commands": {
         "check-compliance-erp": "node tools/compliance/legal/check-erp-legal.js",
         "auditar-contratos": "node tools/legal/contracts-audit.js",
@@ -169,7 +154,10 @@
         "Relatórios para decisão (KPIs, ROI, margens).",
         "Analisar 58+ módulos, propor melhorias e tutores IA por módulo, usando IA financeira/operacional para simulações e cenários (finance-ai/ANTHROPIC_FINANCE_MODEL)."
       ],
-      "tools": ["node", "bash"],
+      "tools": [
+        "node",
+        "bash"
+      ],
       "commands": {
         "mapear-kpis-ceo": "node tools/analytics/map-kpis-executivos.js",
         "auditar-modulos": "node tools/audit/auditar-modulos.js",
@@ -184,7 +172,9 @@
         "Priorização de backlog (critico/medio/baixo) com justificativa executiva.",
         "Integrar respostas vindas do provider médico (OPENAI_MEDICAL_MODEL via medical-ai) e do provider financeiro/operacional (ANTHROPIC_FINANCE_MODEL via finance-ai), sempre com checagem de conformidade e contexto do ICARUS."
       ],
-      "tools": ["node"],
+      "tools": [
+        "node"
+      ],
       "commands": {
         "diagnosticar": "node tools/tutor/diagnosticar-sistema.js",
         "sumarizar-executivo": "node tools/tutor/sumario-executivo.js",
@@ -202,7 +192,11 @@
         "Auditar integrações, segredos e endpoints, emitir relatórios e sugerir correções automáticas.",
         "Verificar se as chaves de API e os modelos (OPENAI_API_KEY, OPENAI_MEDICAL_MODEL, ANTHROPIC_API_KEY, ANTHROPIC_FINANCE_MODEL) estão configurados SOMENTE como variáveis de ambiente em Vercel/Supabase (nunca em arquivos versionados)."
       ],
-      "tools": ["node", "bash", "deno"],
+      "tools": [
+        "node",
+        "bash",
+        "deno"
+      ],
       "commands": {
         "validar-topologia": "node tools/ia/ia-validator.js",
         "auditar-edge-functions": "node tools/ia/check-edge-functions.js",
@@ -238,13 +232,19 @@
           "Qualquer comando de remoção definitiva (rm -rf) deve ser tratado como etapa OPCIONAL e executado somente depois da confirmação do usuário."
         ]
       },
-      "tools": ["bash", "git", "node", "deno", "supabase"],
+      "tools": [
+        "bash",
+        "git",
+        "node",
+        "deno",
+        "supabase"
+      ],
       "commands": {
         "scan-diff": "bash -lc 'mkdir -p /users/daxmeneghel/icarus-v5.0/backups/migration && cd /users/daxmeneghel && diff -ru icarus-v5.0 icarus-make > icarus-v5.0/backups/migration/icarus-make.diff || true && echo \"[Migracao-Repo] Diff gerado em backups/migration/icarus-make.diff\"'",
         "backup-prod-root": "bash -lc 'cd /users/daxmeneghel && mkdir -p icarus-v5.0/backups/migration && tar -czf icarus-v5.0/backups/migration/icarus-v5.0-pre-migration.tar.gz icarus-v5.0 --exclude=\"icarus-v5.0/node_modules\" --exclude=\"icarus-v5.0/.git\" && echo \"[Migracao-Repo] Backup de icarus-v5.0 criado em backups/migration/icarus-v5.0-pre-migration.tar.gz\"'",
         "sync-make-para-v5": "bash -lc 'rsync -av --update --exclude \".git\" --exclude \"node_modules\" /users/daxmeneghel/icarus-make/ /users/daxmeneghel/icarus-v5.0/ && echo \"[Migracao-Repo] Sincronização concluída (preferindo arquivos mais recentes de icarus-make).\"'",
         "git-status-resumo": "bash -lc 'cd /users/daxmeneghel/icarus-v5.0 && echo \"[Migracao-Repo] git status após sincronização:\" && git status --short'",
-        "rodar-testes": "bash -lc 'cd /users/daxmeneghel/icarus-v5.0 && echo \"[Migracao-Repo] Instalando dependências (se necessário) e executando lint/test/build...\" && npm install && npm run lint && npm test || echo \"[Migracao-Repo] npm test retornou erro, verifique os logs\" && npm run build'",
+        "rodar-testes": "bash -lc 'cd /users/daxmeneghel/icarus-v5.0 && echo \"[Migracao-Repo] Instalando dependências (se necessário) e executando lint/test/build...\" && pnpm install && pnpm run lint && if pnpm test; then echo \"[Migracao-Repo] pnpm test passou\"; else echo \"[Migracao-Repo] pnpm test falhou, verifique os logs\"; fi && pnpm run build'",
         "verificar-supabase": "bash -lc 'cd /users/daxmeneghel/icarus-v5.0 && echo \"[Migracao-Repo] Verificando Supabase via CLI...\" && supabase status || echo \"[Migracao-Repo] supabase status retornou alerta\" && supabase functions list || echo \"[Migracao-Repo] supabase functions list retornou alerta\"'",
         "relatorio-final": "bash -lc 'cd /users/daxmeneghel/icarus-v5.0 && mkdir -p backups/migration && { echo \"# Relatório de Migração icarus-make → icarus-v5.0\"; echo; echo \"- Data: $(date)\"; echo \"- Origem: /users/daxmeneghel/icarus-make/\"; echo \"- Destino: /users/daxmeneghel/icarus-v5.0/\"; echo \"- Diff: backups/migration/icarus-make.diff\"; echo \"- Backup pré-migração: backups/migration/icarus-v5.0-pre-migration.tar.gz\"; echo; echo \"## Próximos passos sugeridos\"; echo \"- Revisar git status e commitar as alterações relevantes.\"; echo \"- Rodar novamente testes específicos (e2e) se existirem.\"; echo \"- Após validação manual, executar etapa opcional de remoção do diretório icarus-make.\"; } > backups/migration/relatorio-migracao.md && echo \"[Migracao-Repo] Relatório criado em backups/migration/relatorio-migracao.md\"'",
         "remover-make-opcional": "bash -lc 'echo \"[Migracao-Repo] ETAPA OPCIONAL: Remover diretório /users/daxmeneghel/icarus-make/ APENAS APÓS VALIDAÇÃO MANUAL.\" && echo \"Para remover definitivamente, execute conscientemente:\" && echo \"  rm -rf /users/daxmeneghel/icarus-make\"'"
@@ -267,6 +267,130 @@
             "backups/migration/icarus-make.diff",
             "backups/migration/icarus-v5.0-pre-migration.tar.gz",
             "backups/migration/relatorio-migracao.md"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DevOps-ICARUS",
+      "role": "Especialista em CI/CD (GitHub Actions, Vercel e Supabase) para o repositório Icarus v5.0. Diagnostica e corrige problemas de build, envs, segredos e topologia de IA (validate-ia).",
+      "mission": [
+        "Reproduzir localmente o pipeline de CI (Node 20 + pnpm install + lint + test + build) no diretório /users/daxmeneghel/icarus-v5.0/.",
+        "Auditar .github/workflows para garantir que todos os segredos (Supabase, Vercel, etc.) estão referenciados via GitHub Secrets e não hardcoded.",
+        "Simular o build de preview da Vercel localmente usando vercel pull + pnpm run build, salvando logs.",
+        "Rodar o ia-validator e as checagens Supabase CLI para garantir a topologia correta em produção.",
+        "Gerar um relatório consolidado com causas prováveis de falha e próximos passos."
+      ],
+      "tools": [
+        "bash",
+        "git",
+        "node",
+        "supabase"
+      ],
+      "policies": {
+        "paths": {
+          "root": "/users/daxmeneghel/icarus-v5.0/"
+        },
+        "safety": [
+          "Não executar comandos destrutivos (rm -rf, drop database, supabase db reset) automaticamente.",
+          "CI local deve apenas ler/rodar testes/build; qualquer alteração em workflows deve ser feita por commit explícito do usuário."
+        ]
+      },
+      "commands": {
+        "ci-detect-node-version": "bash -lc 'cd /users/daxmeneghel/icarus-v5.0 && echo \"[DevOps-ICARUS] Node local:\" && node -v || echo \"Node não encontrado. Use Node 20.x para ficar alinhado ao CI.\" && if [ -f .nvmrc ]; then echo \"[DevOps-ICARUS] .nvmrc encontrado:\" && cat .nvmrc; fi'",
+        "ci-run-local": "bash -lc 'cd /users/daxmeneghel/icarus-v5.0 && mkdir -p backups/ci && echo \"[DevOps-ICARUS] Rodando pipeline CI local (pnpm install, lint, test, build)...\" | tee backups/ci/ci_local.log && (pnpm install --frozen-lockfile || pnpm install) 2>&1 | tee -a backups/ci/ci_local.log && (pnpm run lint || echo \"[DevOps-ICARUS] pnpm run lint falhou\" ) 2>&1 | tee -a backups/ci/ci_local.log && (pnpm test -- --passWithNoTests || pnpm test || echo \"[DevOps-ICARUS] pnpm test falhou/ausente\" ) 2>&1 | tee -a backups/ci/ci_local.log && (pnpm run build || echo \"[DevOps-ICARUS] pnpm run build falhou\" ) 2>&1 | tee -a backups/ci/ci_local.log'",
+        "ci-check-secrets-e-workflows": "bash -lc 'cd /users/daxmeneghel/icarus-v5.0 && mkdir -p backups/ci && echo \"[DevOps-ICARUS] Auditando workflows (.github/workflows/*.yml) em busca de credenciais hardcoded e uso correto de secrets...\" > backups/ci/ci_secrets_audit.txt && if [ -d .github/workflows ]; then ls .github/workflows >> backups/ci/ci_secrets_audit.txt; grep -R \"SUPABASE\" .github/workflows >> backups/ci/ci_secrets_audit.txt 2>/dev/null || true; grep -R \"VERCEL_\" .github/workflows >> backups/ci/ci_secrets_audit.txt 2>/dev/null || true; grep -R \"http://localhost\" .github/workflows >> backups/ci/ci_secrets_audit.txt 2>/dev/null || true; else echo \"[DevOps-ICARUS] Pasta .github/workflows não encontrada.\" >> backups/ci/ci_secrets_audit.txt; fi; echo \"[DevOps-ICARUS] Auditoria de secrets/workflows salva em backups/ci/ci_secrets_audit.txt\"'",
+        "ci-check-validate-ia": "bash -lc 'cd /users/daxmeneghel/icarus-v5.0 && echo \"[DevOps-ICARUS] Rodando ia-validator em modo CI (sem abortar por falhas, apenas relatório)...\" && CI=true node tools/ia/ia-validator.js || echo \"[DevOps-ICARUS] ia-validator retornou código de erro; ver relatório em .cursor/agents/ia-validator/validation-*.json\"'",
+        "vercel-simulate-preview": "bash -lc 'cd /users/daxmeneghel/icarus-v5.0 && mkdir -p backups/ci && echo \"[DevOps-ICARUS] Simulando ambiente de build da Vercel (preview)...\" | tee backups/ci/vercel_build.log && (npx vercel pull --yes --environment=preview || echo \"[DevOps-ICARUS] vercel pull falhou; verifique VERCEL_TOKEN / PROJECT_ID / ORG_ID.\" ) 2>&1 | tee -a backups/ci/vercel_build.log && (pnpm run build || echo \"[DevOps-ICARUS] pnpm run build falhou na simulação de preview\" ) 2>&1 | tee -a backups/ci/vercel_build.log'",
+        "supabase-check-backend": "bash -lc 'cd /users/daxmeneghel/icarus-v5.0 && echo \"[DevOps-ICARUS] Verificando Supabase via CLI (status, funções, migrations)...\" && (supabase status || echo \"[DevOps-ICARUS] supabase status retornou alerta\" ) && (supabase functions list || echo \"[DevOps-ICARUS] supabase functions list retornou alerta\" ) && (supabase migrations list 2>/dev/null || echo \"[DevOps-ICARUS] supabase migrations list não disponível ou sem migrations configuradas\" )'",
+        "relatorio-ci-vercel": "bash -lc 'cd /users/daxmeneghel/icarus-v5.0 && mkdir -p backups/ci && { echo \"# Relatório CI / Vercel - ICARUS\"; echo; echo \"- Data: $(date)\"; echo; echo \"## Arquivos de log gerados\"; echo \"- CI local: backups/ci/ci_local.log\"; echo \"- Auditoria workflows/secrets: backups/ci/ci_secrets_audit.txt\"; echo \"- Build simulado Vercel preview: backups/ci/vercel_build.log\"; echo; echo \"## Próximos passos sugeridos\"; echo \"1. Abrir os logs acima e localizar o primeiro erro em pnpm run build (normalmente o mesmo que derruba o deploy da Vercel).\"; echo \"2. Corrigir imports case-sensitive, referências a componentes inexistentes ou erros de TS/ESLint apontados no build.\"; echo \"3. Garantir que .github/workflows usa apenas \\\"secrets\\\" para Supabase, Vercel, etc. e não contém URLs de localhost para produção.\"; echo \"4. Rodar novamente o workflow de CI no GitHub após os ajustes.\"; } > backups/ci/relatorio_ci_vercel.md && echo \"[DevOps-ICARUS] Relatório CI/Vercel criado em backups/ci/relatorio_ci_vercel.md\"'"
+      },
+      "playbooks": [
+        {
+          "name": "corrigir-ci-e-vercel",
+          "desc": "Roda o pipeline de CI localmente, audita workflows/secrets, simula build de preview Vercel e checa Supabase/ia-validator.",
+          "steps": [
+            "ci-detect-node-version",
+            "ci-run-local",
+            "ci-check-secrets-e-workflows",
+            "ci-check-validate-ia",
+            "vercel-simulate-preview",
+            "supabase-check-backend",
+            "relatorio-ci-vercel"
+          ],
+          "deliverables": [
+            "backups/ci/vercel_build.log",
+            "backups/ci/ci_local.log",
+            "backups/ci/ci_secrets_audit.txt",
+            "backups/ci/relatorio_ci_vercel.md"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Designer-OraclusX-Neumorphic",
+      "entry": false,
+      "role": "Agente especialista em design OraclusX DS + Neumorfismo 3D premium. Padroniza o visual do ICARUS v5.0 em /users/daxmeneghel/icarus-make/, garantindo consistência entre modos claro/escuro, minicards, KPIs, barras de busca e formulários, sempre alinhado ao Design System oraclusx-ds.",
+      "mission": [
+        "Mapear e padronizar todos os componentes visuais para usar o OraclusX Design System (oraclusx-ds) como fonte única de verdade.",
+        "Aplicar e documentar um padrão de Neumorfismo 3D premium para cards, minicards, KPIs, inputs, botões e barras de busca, em modo claro e escuro.",
+        "Identificar divergências entre componentes legacy (Neumo*, Neomorphic*, CardKpi, MiniCard, Search*) e o padrão oficial, sugerindo refactors seguros.",
+        "Gerar documentação viva do design (tokens, variantes, exemplos) em docs/, para designers e devs manterem consistência."
+      ],
+      "policies": {
+        "paths": {
+          "root": "/users/daxmeneghel/icarus-make/"
+        },
+        "fs": {
+          "denyWrite": [
+            "/users/daxmeneghel/icarus-make/.git",
+            "/users/daxmeneghel/icarus-make/node_modules"
+          ]
+        },
+        "safety": [
+          "Não apagar componentes sem movê-los antes para uma pasta de backup.",
+          "Alterações massivas (sed em muitos arquivos) devem ser focadas em imports/paths, não em lógica JSX complexa.",
+          "Sempre gerar logs e arquivos de mapeamento antes de sugerir grandes refactors visuais."
+        ]
+      },
+      "tools": [
+        "bash",
+        "node",
+        "git"
+      ],
+      "commands": {
+        "scan-oraclusx-ds-usage": "bash -lc 'cd /users/daxmeneghel/icarus-make && mkdir -p backups/design && echo \"[Designer-OraclusX] Mapeando uso do Design System oraclusx-ds...\" | tee backups/design/oraclusx_usage.log && rg \"oraclusx-ds\" src -n || true && ls src/components/oraclusx-ds || echo \"[Designer-OraclusX] Pasta src/components/oraclusx-ds não encontrada. Verificar estrutura.\" >> backups/design/oraclusx_usage.log && echo \"[Designer-OraclusX] Relatório inicial em backups/design/oraclusx_usage.log\"'",
+        "scan-neumo-components": "bash -lc 'cd /users/daxmeneghel/icarus-make && mkdir -p backups/design && echo \"[Designer-OraclusX] Escaneando componentes Neumo/Neomorphic/MiniCard/KPI...\" | tee backups/design/neumo_usages.log && rg \"Neumo\" src -n >> backups/design/neumo_usages.log || true && rg \"Neomorphic\" src -n >> backups/design/neumo_usages.log || true && rg \"MiniCard\" src -n >> backups/design/neumo_usages.log || true && rg \"CardKpi\" src -n >> backups/design/neumo_usages.log || true && rg \"Kpi\" src/components -n >> backups/design/neumo_usages.log || true && rg \"SearchBar\" src -n >> backups/design/neumo_usages.log || true && echo \"[Designer-OraclusX] Mapeamento salvo em backups/design/neumo_usages.log\"'",
+        "scan-theme-tokens": "bash -lc 'cd /users/daxmeneghel/icarus-make && mkdir -p backups/design && echo \"[Designer-OraclusX] Procurando arquivos de tema, tokens e configuração de cores...\" | tee backups/design/theme_tokens.log && (ls src/styles || true) >> backups/design/theme_tokens.log && (ls src/theme || true) >> backups/design/theme_tokens.log && (ls src/config || true) >> backups/design/theme_tokens.log && rg \"theme\" src -g\"*theme*\" -n >> backups/design/theme_tokens.log || true && rg \"dark:\" tailwind.config.* -n >> backups/design/theme_tokens.log || true && echo \"[Designer-OraclusX] Relatório de possíveis fontes de tokens em backups/design/theme_tokens.log\"'",
+        "generate-design-guide": "bash -lc 'cd /users/daxmeneghel/icarus-make && mkdir -p docs && cat <<EOF > docs/ORACLUSX_NEUMO_DESIGN_GUIDE.md\n# Guia de Design OraclusX + Neumorfismo 3D (ICARUS v5.0)\n\n## 1. Princípios Gerais\n- OraclusX DS é a FONTE ÚNICA de componentes visuais.\n- Neumorfismo 3D premium aplicado a cards, minicards, KPIs, inputs e botões.\n- Dois temas oficiais: claro e escuro, sempre com contraste AA/AAA.\n\n## 2. Componentes-Chave\n\n### 2.1 Cards e KPIs\n- Usar <Card />, <CardKpi />, <MiniCard /> do oraclusx-ds.\n- Padding padrão: 16–24px.\n- Bordas suaves, sombra dupla (highlight + shadow) para efeito 3D.\n\n### 2.2 Inputs e Formulários\n- Campos: <Input />, <Textarea />, <Select /> do oraclusx-ds.\n- Borda suave, interior com leve highlight.\n- Estados: normal, foco, erro, desabilitado.\n\n### 2.3 Barra de Busca\n- Segue o padrão dos formulários.\n- Usa o mesmo token de raio, sombra e altura de Input.\n\n## 3. Temas Claro/Escuro\n- Paleta base em tokens (ex: --bg, --bg-elevated, --shadow-soft, --accent).\n- Neumorfismo respeita o contraste em ambos os temas.\n\n## 4. Padrões para Módulos\n- Todos os minicards devem usar as mesmas classes/tokens.\n- Todos os dashboards devem usar os mesmos tipos de CardKpi.\n\n## 5. Migração de Legacy\n- Components legacy: Neumo*, Neomorphic*, MiniCard (old), CardKpi (old).\n- Migrar para equivalentes do oraclusx-ds ou registrar mapeamento.\n\n(Preencher este guia com exemplos concretos à medida que o refactor avança.)\nEOF\n && echo \"[Designer-OraclusX] Guia de design criado/atualizado em docs/ORACLUSX_NEUMO_DESIGN_GUIDE.md\"'",
+        "map-legacy-to-ds": "bash -lc 'cd /users/daxmeneghel/icarus-make && mkdir -p backups/design && cat <<EOF > backups/design/ORACLUSX_MAPPING_TODO.md\n# Mapeamento Legacy -> OraclusX DS\n\n## Componentes Legacy Neumorfismo\n\n- NeumoButton        -> (definir: ex.: Button oraclusx-ds + variantes neu)\n- NeumoInput         -> (definir: Input oraclusx-ds)\n- NeumoSearchBar     -> (definir: Input + Icon + tokens neu)\n- NeumoTextarea      -> (definir: Textarea oraclusx-ds)\n- NeomorphicCard     -> (definir: Card oraclusx-ds com classes neu)\n- NeomorphicIconBox  -> (definir: Card/IconBox oraclusx-ds)\n- MiniCard (legacy)  -> (definir: MiniCard oraclusx-ds)\n- CardKpi (legacy)   -> (definir: CardKpi oraclusx-ds)\n\n## Ação\n- Preencher manualmente as colunas de destino após revisão do DS.\n- Depois, usar este mapa para refactors guiados (com search/replace assistido).\nEOF\n && echo \"[Designer-OraclusX] Arquivo de mapeamento criado em backups/design/ORACLUSX_MAPPING_TODO.md\"'",
+        "suggest-refactors-neumo": "bash -lc 'cd /users/daxmeneghel/icarus-make && mkdir -p backups/design && echo \"[Designer-OraclusX] Gerando sugestões de refactor para componentes Neumo/Neomorphic...\" | tee backups/design/neumo_refactors_sugestoes.log && rg \"NeumoButton\" src -n >> backups/design/neumo_refactors_sugestoes.log || true && rg \"NeumoInput\" src -n >> backups/design/neumo_refactors_sugestoes.log || true && rg \"NeumoSearchBar\" src -n >> backups/design/neumo_refactors_sugestoes.log || true && rg \"NeumoTextarea\" src -n >> backups/design/neumo_refactors_sugestoes.log || true && rg \"NeomorphicCard\" src -n >> backups/design/neumo_refactors_sugestoes.log || true && rg \"NeomorphicIconBox\" src -n >> backups/design/neumo_refactors_sugestoes.log || true && echo \"[Designer-OraclusX] Sugestões em backups/design/neumo_refactors_sugestoes.log (revisar antes de refatorar).\"'",
+        "check-light-dark-modes": "bash -lc 'cd /users/daxmeneghel/icarus-make && mkdir -p backups/design && echo \"[Designer-OraclusX] Checando suporte a temas claro/escuro (class=dark, data-theme, etc.)...\" | tee backups/design/light_dark_check.log && rg \"dark:\" tailwind.config.* -n >> backups/design/light_dark_check.log || true && rg \"className=\\\"dark\" src -n >> backups/design/light_dark_check.log || true && rg \"data-theme\" src -n >> backups/design/light_dark_check.log || true && echo \"[Designer-OraclusX] Verificação básica de temas salva em backups/design/light_dark_check.log\"'",
+        "relatorio-design-progress": "bash -lc 'cd /users/daxmeneghel/icarus-make && mkdir -p backups/design && { echo \"# Relatório de Progresso - Design OraclusX + Neumorfismo\"; echo; echo \"Data: $(date)\"; echo; echo \"## Ações executadas\"; echo \"- scan-oraclusx-ds-usage\"; echo \"- scan-neumo-components\"; echo \"- scan-theme-tokens\"; echo \"- generate-design-guide\"; echo \"- map-legacy-to-ds\"; echo \"- suggest-refactors-neumo\"; echo \"- check-light-dark-modes\"; echo; echo \"## Próximos passos sugeridos\"; echo \"1. Preencher backups/design/ORACLUSX_MAPPING_TODO.md com o mapeamento definitivo Neumo* -> oraclusx-ds.\"; echo \"2. Refatorar arquivos listados em backups/design/neumo_usages.log para usar apenas components do oraclusx-ds.\"; echo \"3. Consolidar tokens de tema (claro/escuro) com base em backups/design/theme_tokens.log e documentar em docs/ORACLUSX_NEUMO_DESIGN_GUIDE.md.\"; echo \"4. Aplicar padrão de minicards e KPIs de forma consistente em todos os módulos (usando o mapping + DS).\"; } > backups/design/relatorio_design_progress.md && echo \"[Designer-OraclusX] Relatório de progresso criado em backups/design/relatorio_design_progress.md\"'"
+      },
+      "playbooks": [
+        {
+          "name": "padronizar-visual-oraclusx-neumo",
+          "desc": "Executa uma rodada completa de padronização visual: mapeia uso de oraclusx-ds, identifica componentes Neumo/Neomorphic/MiniCard/KPI, gera guia de design e mapeamento legacy -> DS, e produz um relatório de progresso.",
+          "steps": [
+            "scan-oraclusx-ds-usage",
+            "scan-neumo-components",
+            "scan-theme-tokens",
+            "generate-design-guide",
+            "map-legacy-to-ds",
+            "suggest-refactors-neumo",
+            "check-light-dark-modes",
+            "relatorio-design-progress"
+          ],
+          "deliverables": [
+            "backups/design/oraclusx_usage.log",
+            "backups/design/neumo_usages.log",
+            "backups/design/theme_tokens.log",
+            "backups/design/ORACLUSX_MAPPING_TODO.md",
+            "backups/design/neumo_refactors_sugestoes.log",
+            "backups/design/light_dark_check.log",
+            "backups/design/relatorio_design_progress.md",
+            "docs/ORACLUSX_NEUMO_DESIGN_GUIDE.md"
           ]
         }
       ]

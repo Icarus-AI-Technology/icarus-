@@ -1,11 +1,11 @@
-import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
-import { CapacitacaoIA } from "@/components/modules/CapacitacaoIA";
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { CapacitacaoIA } from '@/components/modules/CapacitacaoIA';
 
-describe("CapacitacaoIA", () => {
-  it("deve estar definido", () => {
+describe('CapacitacaoIA', () => {
+  it('deve estar definido', () => {
     render(<CapacitacaoIA />);
-    const headings = screen.getAllByRole("heading", { level: 1 });
+    const headings = screen.getAllByRole('heading', { level: 1 });
     expect(headings.length).toBeGreaterThan(0);
   });
 

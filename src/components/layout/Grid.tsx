@@ -151,15 +151,8 @@ function getColSpanClasses(colSpan?: GridItemProps['colSpan']): string {
 
 export function GridItem({ children, className, colSpan, rowSpan }: GridItemProps) {
   return (
-    <div
-      className={cn(
-        getColSpanClasses(colSpan),
-        rowSpan && `row-span-${rowSpan}`,
-        className
-      )}
-    >
+    <div className={cn(getColSpanClasses(colSpan), rowSpan && `row-span-${rowSpan}`, className)}>
       {children}
     </div>
   );
 }
-

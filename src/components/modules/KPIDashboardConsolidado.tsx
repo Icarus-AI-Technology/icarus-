@@ -1,17 +1,12 @@
 /**
  * Componente: KPI Dashboard Consolidado
- * 
+ *
  * Visão 360° em tempo real de todos os KPIs da distribuidora OPME
  * Com alertas inteligentes e comparação com metas
  */
 
-import React, { useEffect, useState } from 'react';
-import {
-  Card,
-  Button,
-  Badge,
-  Progress,
-} from '@/components/oraclusx-ds';
+import { useEffect, useState } from 'react';
+import { Card, Button, Badge, Progress } from '@/components/oraclusx-ds';
 import {
   TrendingUp,
   TrendingDown,
@@ -63,17 +58,35 @@ interface Alerta {
   created_at: string;
 }
 
-const CATEGORIA_ICONS: Record<string, typeof DollarSign | typeof BarChart2 | typeof Package | typeof ShieldCheck> = {
+const CATEGORIA_ICONS: Record<
+  string,
+  typeof DollarSign | typeof BarChart2 | typeof Package | typeof ShieldCheck
+> = {
   vendas: DollarSign,
   financeiro: BarChart2,
   operacoes: Package,
   compliance: ShieldCheck,
 };
 
-const STATUS_COLORS: Record<string, { bg: string; text: string; icon: typeof CheckCircle2 | typeof AlertTriangle | typeof XCircle }> = {
-  excelente: { bg: 'bg-gradient-to-br from-blue-500 to-blue-600', text: 'text-white', icon: CheckCircle2 },
-  ok: { bg: 'bg-gradient-to-br from-emerald-500 to-emerald-600', text: 'text-white', icon: CheckCircle2 },
-  alerta: { bg: 'bg-gradient-to-br from-orange-500 to-orange-600', text: 'text-white', icon: AlertTriangle },
+const STATUS_COLORS: Record<
+  string,
+  { bg: string; text: string; icon: typeof CheckCircle2 | typeof AlertTriangle | typeof XCircle }
+> = {
+  excelente: {
+    bg: 'bg-gradient-to-br from-blue-500 to-blue-600',
+    text: 'text-white',
+    icon: CheckCircle2,
+  },
+  ok: {
+    bg: 'bg-gradient-to-br from-emerald-500 to-emerald-600',
+    text: 'text-white',
+    icon: CheckCircle2,
+  },
+  alerta: {
+    bg: 'bg-gradient-to-br from-orange-500 to-orange-600',
+    text: 'text-white',
+    icon: AlertTriangle,
+  },
   critico: { bg: 'bg-gradient-to-br from-red-500 to-red-600', text: 'text-white', icon: XCircle },
 };
 
@@ -111,7 +124,6 @@ export default function KPIDashboardConsolidado() {
           table: 'kpi_valores_historico',
         },
         () => {
-          console.log('[Realtime] KPI atualizado');
           carregarDados();
         }
       )
@@ -122,8 +134,7 @@ export default function KPIDashboardConsolidado() {
           schema: 'public',
           table: 'kpi_alertas',
         },
-        (payload) => {
-          console.log('[Realtime] Novo alerta criado:', payload);
+        (_payload) => {
           carregarAlertas();
           addToast('Novo alerta de KPI criado!', 'warning');
         }
@@ -263,7 +274,8 @@ export default function KPIDashboardConsolidado() {
     try {
       const { data, error } = await supabase
         .from('kpi_alertas')
-        .select(`
+        .select(
+          `
           id,
           severidade,
           tipo,
@@ -271,7 +283,8 @@ export default function KPIDashboardConsolidado() {
           acao_recomendada,
           created_at,
           kpi_metas (nome)
-        `)
+        `
+        )
         .eq('is_resolvido', false)
         .order('created_at', { ascending: false })
         .limit(5);
@@ -279,15 +292,28 @@ export default function KPIDashboardConsolidado() {
       if (error) throw error;
 
       setAlertas(
-        (data || []).map((a: { id: string; severidade: string; tipo: string; mensagem: string; acao_recomendada: string; created_at: string; kpi_metas?: { nome?: string } }) => ({
-          id: a.id,
-          severidade: a.severidade,
-          tipo: a.tipo,
-          mensagem: a.mensagem,
-          acao_recomendada: a.acao_recomendada,
-          created_at: a.created_at,
-          kpi_nome: a.kpi_metas?.nome || 'N/A',
-        }))
+        (data || []).map(
+          (a: {
+            id: string;
+            severidade: string;
+            tipo: string;
+            mensagem: string;
+            acao_recomendada: string;
+            created_at: string;
+            kpi_metas?: { nome?: string } | { nome?: string }[];
+          }) => {
+            const kpiMeta = Array.isArray(a.kpi_metas) ? a.kpi_metas[0] : a.kpi_metas;
+            return {
+              id: a.id,
+              severidade: a.severidade,
+              tipo: a.tipo,
+              mensagem: a.mensagem,
+              acao_recomendada: a.acao_recomendada,
+              created_at: a.created_at,
+              kpi_nome: kpiMeta?.nome || 'N/A',
+            };
+          }
+        )
       );
     } catch (error) {
       console.error('Erro ao carregar alertas:', error as Error);
@@ -324,7 +350,8 @@ export default function KPIDashboardConsolidado() {
       addToast('KPIs recalculados com sucesso!', 'success');
       carregarDados();
     } catch (error: unknown) {
-      addToast(`Erro ao recalcular: ${error.message}`, 'error');
+      const err = error as Error;
+      addToast(`Erro ao recalcular: ${err.message}`, 'error');
     } finally {
       setLoading(false);
     }
@@ -346,7 +373,8 @@ export default function KPIDashboardConsolidado() {
       addToast('Alerta resolvido!', 'success');
       carregarAlertas();
     } catch (error: unknown) {
-      addToast(`Erro ao resolver alerta: ${error.message}`, 'error');
+      const err = error as Error;
+      addToast(`Erro ao resolver alerta: ${err.message}`, 'error');
     }
   };
 
@@ -369,9 +397,7 @@ export default function KPIDashboardConsolidado() {
     ? kpis.filter((k) => k.categoria === categoriaFiltro)
     : kpis;
 
-  const estatisticasPorCategoria = Array.from(
-    new Set(kpis.map((k) => k.categoria))
-  ).map((cat) => {
+  const estatisticasPorCategoria = Array.from(new Set(kpis.map((k) => k.categoria))).map((cat) => {
     const kpisCategoria = kpis.filter((k) => k.categoria === cat);
     return {
       categoria: cat,
@@ -397,7 +423,8 @@ export default function KPIDashboardConsolidado() {
               </Badge>
             </h1>
             <p className="text-[var(--text-secondary)]">
-              Visão 360° em tempo real - Última atualização: {new Date().toLocaleTimeString('pt-BR')}
+              Visão 360° em tempo real - Última atualização:{' '}
+              {new Date().toLocaleTimeString('pt-BR')}
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -498,9 +525,11 @@ export default function KPIDashboardConsolidado() {
                 className={`p-6 neuro-raised flex flex-col justify-between h-[220px] ${statusConfig.bg} ${statusConfig.text}`}
               >
                 <div>
-                    <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
-                      <h3 className="opacity-90 mb-1 text-[0.813rem] orx-orx-font-medium">{kpi.descricao}</h3>
+                      <h3 className="opacity-90 mb-1 text-[0.813rem] orx-orx-font-medium">
+                        {kpi.descricao}
+                      </h3>
                       <Badge variant="default" className="bg-white/20 text-white text-[0.813rem]">
                         {kpi.categoria}
                       </Badge>
@@ -518,7 +547,9 @@ export default function KPIDashboardConsolidado() {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between opacity-90 text-[0.813rem]">
                     <span>Atingimento</span>
-                    <span className="orx-orx-font-semibold">{kpi.atingimento_percentual.toFixed(1)}%</span>
+                    <span className="orx-orx-font-semibold">
+                      {kpi.atingimento_percentual.toFixed(1)}%
+                    </span>
                   </div>
                   <Progress value={Math.min(kpi.atingimento_percentual, 100)} />
                   <div className="flex items-center gap-2 opacity-80 text-[0.813rem]">
@@ -569,14 +600,20 @@ export default function KPIDashboardConsolidado() {
                         >
                           {alerta.severidade}
                         </Badge>
-                        <span className="text-[0.813rem] orx-orx-font-medium">{alerta.kpi_nome}</span>
+                        <span className="text-[0.813rem] orx-orx-font-medium">
+                          {alerta.kpi_nome}
+                        </span>
                       </div>
                       <p className="mb-2 text-[0.813rem]">{alerta.mensagem}</p>
                       <p className="text-[var(--text-secondary)] text-[0.813rem]">
                         💡 {alerta.acao_recomendada}
                       </p>
                     </div>
-                    <Button size="sm" variant="secondary" onClick={() => handleResolverAlerta(alerta.id)}>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => handleResolverAlerta(alerta.id)}
+                    >
                       Resolver
                     </Button>
                   </div>
@@ -589,4 +626,3 @@ export default function KPIDashboardConsolidado() {
     </div>
   );
 }
-

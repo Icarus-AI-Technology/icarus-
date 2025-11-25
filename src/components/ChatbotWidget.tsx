@@ -6,19 +6,13 @@ import { Button } from './oraclusx-ds/Button';
 import { Input } from './oraclusx-ds/Input';
 
 export function ChatbotWidget() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [isMinimized, setIsMinimized] = useState(false);
   const [inputMessage, setInputMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
-  const {
-    conversaAtiva,
-    mensagens,
-    loading,
-    iniciarConversa,
-    enviarMensagem,
-    finalizarConversa
-  } = useChatbot();
+
+  const { conversaAtiva, mensagens, loading, iniciarConversa, enviarMensagem, finalizarConversa } =
+    useChatbot();
 
   // Auto-scroll para última mensagem
   const scrollToBottom = () => {
@@ -90,15 +84,11 @@ export function ChatbotWidget() {
             <div className="flex items-center space-x-3">
               <div className="h-3 w-3 rounded-full bg-green-400 animate-pulse" />
               <div>
-                <h3 className="font-semibold text-white orx-text-base">
-                  Assistente ICARUS
-                </h3>
-                <p className="orx-text-xs text-white/80">
-                  Online • Responde em segundos
-                </p>
+                <h3 className="font-semibold text-white orx-text-base">Assistente ICARUS</h3>
+                <p className="orx-text-xs text-white/80">Online • Responde em segundos</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => setIsMinimized(!isMinimized)}
@@ -134,7 +124,8 @@ export function ChatbotWidget() {
                       Olá! Como posso ajudar?
                     </h4>
                     <p className="text-gray-600 dark:text-gray-400 orx-text-sm">
-                      Pergunte sobre cirurgias, estoque, produtos ou qualquer dúvida sobre o sistema.
+                      Pergunte sobre cirurgias, estoque, produtos ou qualquer dúvida sobre o
+                      sistema.
                     </p>
                   </div>
                 ) : (
@@ -152,9 +143,7 @@ export function ChatbotWidget() {
                             : 'bg-white dark:bg-[#1a1d29] text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700'
                         }`}
                       >
-                        <p className="orx-text-sm whitespace-pre-wrap">
-                          {mensagem.conteudo}
-                        </p>
+                        <p className="orx-text-sm whitespace-pre-wrap">{mensagem.conteudo}</p>
                         <span
                           className={`orx-text-xs mt-1 block ${
                             mensagem.tipo === 'usuario'
@@ -164,26 +153,35 @@ export function ChatbotWidget() {
                         >
                           {new Date(mensagem.timestamp).toLocaleTimeString('pt-BR', {
                             hour: '2-digit',
-                            minute: '2-digit'
+                            minute: '2-digit',
                           })}
                         </span>
                       </div>
                     </div>
                   ))
                 )}
-                
+
                 {loading && (
                   <div className="flex justify-start">
                     <div className="bg-white dark:bg-[#1a1d29] border border-gray-200 dark:border-gray-700 rounded-2xl px-4 py-2">
                       <div className="flex space-x-2">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                        <div
+                          className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                          style={{ animationDelay: '0ms' }}
+                        />
+                        <div
+                          className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                          style={{ animationDelay: '150ms' }}
+                        />
+                        <div
+                          className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                          style={{ animationDelay: '300ms' }}
+                        />
                       </div>
                     </div>
                   </div>
                 )}
-                
+
                 <div ref={messagesEndRef} />
               </div>
 
@@ -208,7 +206,7 @@ export function ChatbotWidget() {
                     <Send className="h-4 w-4" />
                   </Button>
                 </div>
-                
+
                 <p className="mt-2 orx-text-xs text-gray-500 dark:text-gray-400 text-center">
                   Powered by GPT-4 • ICARUS v5.0
                 </p>
@@ -220,4 +218,3 @@ export function ChatbotWidget() {
     </>
   );
 }
-

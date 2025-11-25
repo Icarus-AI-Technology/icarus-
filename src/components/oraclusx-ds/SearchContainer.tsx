@@ -3,9 +3,9 @@
  * Container de busca avançada com filtros
  */
 
-import React, { useState } from"react";
-import { Search, SlidersHorizontal, X } from"lucide-react";
-import { cn } from"@/lib/utils";
+import React, { useState } from 'react';
+import { Search, SlidersHorizontal, X } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export interface SearchContainerProps {
   placeholder?: string;
@@ -17,14 +17,14 @@ export interface SearchContainerProps {
 }
 
 export const SearchContainer: React.FC<SearchContainerProps> = ({
-  placeholder ="Buscar médicos, cirurgias, produtos...",
+  placeholder = 'Buscar médicos, cirurgias, produtos...',
   onSearch,
   onClear,
   showFilters = true,
   onFilterClick,
   className,
 }) => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
@@ -32,7 +32,7 @@ export const SearchContainer: React.FC<SearchContainerProps> = ({
   };
 
   const handleClear = () => {
-    setQuery("");
+    setQuery('');
     onClear?.();
   };
 
@@ -44,7 +44,7 @@ export const SearchContainer: React.FC<SearchContainerProps> = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className={cn("flex items-center gap-2 w-full max-w-2xl", className)}
+      className={cn('flex items-center gap-2 w-full max-w-2xl', className)}
     >
       <div className="relative flex-1">
         <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[var(--orx-text-secondary,var(--orx-gray-400))]">
@@ -82,7 +82,6 @@ export const SearchContainer: React.FC<SearchContainerProps> = ({
   );
 };
 
-SearchContainer.displayName ="OraclusXSearchContainer";
+SearchContainer.displayName = 'OraclusXSearchContainer';
 
 export default SearchContainer;
-

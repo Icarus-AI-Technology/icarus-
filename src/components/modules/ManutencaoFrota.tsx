@@ -1,50 +1,31 @@
-import { useState, type FC } from "react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  Badge,
-} from "@/components/oraclusx-ds";
-import {
-  Wrench,
-  Truck,
-  Calendar,
-  CheckCircle,
-  Settings,
-  TrendingUp,
-} from "lucide-react";
+import { useState, type FC } from 'react';
+import { Card, CardHeader, CardTitle, CardContent, Badge } from '@/components/oraclusx-ds';
+import { Wrench, Truck, Calendar, CheckCircle, Settings, TrendingUp } from 'lucide-react';
 
 const CATEGORY_OPTIONS = [
-  { id: "geral", label: "Geral", icon: Wrench, count: 124, trend: "+15" },
-  { id: "detalhes", label: "Detalhes", icon: Truck, count: 89, trend: "+8" },
-  { id: "analytics", label: "Analytics", icon: Calendar, count: 56, trend: "+12" },
-  { id: "config", label: "Config", icon: CheckCircle, count: 34, trend: "+5" },
+  { id: 'geral', label: 'Geral', icon: Wrench, count: 124, trend: '+15' },
+  { id: 'detalhes', label: 'Detalhes', icon: Truck, count: 89, trend: '+8' },
+  { id: 'analytics', label: 'Analytics', icon: Calendar, count: 56, trend: '+12' },
+  { id: 'config', label: 'Config', icon: CheckCircle, count: 34, trend: '+5' },
 ] as const;
 
 const KPI_CARDS = [
-  { title: "Total", value: "303", trend: "+40", icon: Wrench, color: "blue" },
-  { title: "Taxa", value: "97.3%", trend: "+2%", icon: Truck, color: "green" },
-  { title: "IA", value: "97.3%", trend: "on", icon: Settings, color: "indigo" },
-  { title: "Perf", value: "98%", trend: "+1%", icon: TrendingUp, color: "yellow" },
+  { title: 'Total', value: '303', trend: '+40', icon: Wrench, color: 'blue' },
+  { title: 'Taxa', value: '97.3%', trend: '+2%', icon: Truck, color: 'green' },
+  { title: 'IA', value: '97.3%', trend: 'on', icon: Settings, color: 'indigo' },
+  { title: 'Perf', value: '98%', trend: '+1%', icon: TrendingUp, color: 'yellow' },
 ] as const;
 
-const KPI_COLOR_CLASSES: Record<
-  (typeof KPI_CARDS)[number]["color"],
-  string
-> = {
-  blue:
-    "bg-blue-100 dark:bg-blue-900/30 text-accent dark:text-accent-light",
-  green:
-    "bg-success/10 dark:bg-green-900/30 text-success dark:text-green-400",
-  indigo:
-    "bg-indigo-100 dark:bg-indigo-900/30 text-primary dark:text-indigo-400",
-  yellow:
-    "bg-warning/10 dark:bg-yellow-900/30 text-warning dark:text-yellow-400",
+const KPI_COLOR_CLASSES: Record<(typeof KPI_CARDS)[number]['color'], string> = {
+  blue: 'bg-blue-100 dark:bg-blue-900/30 text-accent dark:text-accent-light',
+  green: 'bg-success/10 dark:bg-green-900/30 text-success dark:text-green-400',
+  indigo: 'bg-indigo-100 dark:bg-indigo-900/30 text-primary dark:text-indigo-400',
+  yellow: 'bg-warning/10 dark:bg-yellow-900/30 text-warning dark:text-yellow-400',
 };
 
 export const ManutencaoFrota: FC = () => {
-  const [activeCategory, setActiveCategory] = useState<(typeof CATEGORY_OPTIONS)[number]["id"]>("geral");
+  const [activeCategory, setActiveCategory] =
+    useState<(typeof CATEGORY_OPTIONS)[number]['id']>('geral');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6 dark:from-gray-900 dark:to-gray-800">
@@ -79,22 +60,20 @@ export const ManutencaoFrota: FC = () => {
                   onClick={() => setActiveCategory(category.id)}
                   className={`relative rounded-xl p-4 transition-all duration-200 ${
                     isActive
-                      ? "scale-105 bg-primary text-inverse shadow-lg"
-                      : "bg-surface hover:shadow-md dark:bg-card"
+                      ? 'scale-105 bg-primary text-inverse shadow-lg'
+                      : 'bg-surface hover:shadow-md dark:bg-card'
                   }`}
                 >
                   <div className="flex flex-col items-center gap-2">
                     <div
                       className={`rounded-lg p-2 ${
-                        isActive ? "bg-surface/20" : "bg-surface dark:bg-muted"
+                        isActive ? 'bg-surface/20' : 'bg-surface dark:bg-muted'
                       }`}
                     >
                       <Icon size={24} />
                     </div>
                     <div className="text-center">
-                      <p className="orx-orx-font-medium mb-1 text-body-xs">
-                        {category.label}
-                      </p>
+                      <p className="orx-orx-font-medium mb-1 text-body-xs">{category.label}</p>
                       <span className="font-display text-[0.813rem] text-heading">
                         {category.count}
                       </span>
@@ -115,9 +94,7 @@ export const ManutencaoFrota: FC = () => {
               <Card key={index} padding="md">
                 <div className="flex items-start justify-between">
                   <div>
-                    <p className="text-body-sm text-secondary dark:text-muted">
-                      {kpi.title}
-                    </p>
+                    <p className="text-body-sm text-secondary dark:text-muted">{kpi.title}</p>
                     <p className="mt-1 font-display text-heading text-primary dark:text-gray-100">
                       {kpi.value}
                     </p>

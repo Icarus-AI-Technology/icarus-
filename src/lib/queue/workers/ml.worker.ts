@@ -8,7 +8,12 @@ export type MLJobPayload =
   | { type: 'timeseries'; timestamps: string[]; values: number[]; horizon?: number }
   | {
       type: 'vector-store';
-      vectors: Array<{ externalId: string; module: string; embedding: number[]; metadata?: Record<string, unknown> }>;
+      vectors: Array<{
+        externalId: string;
+        module: string;
+        embedding: number[];
+        metadata?: Record<string, unknown>;
+      }>;
     };
 
 export const ML_QUEUE_NAME = 'ml-jobs';

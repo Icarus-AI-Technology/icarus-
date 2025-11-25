@@ -1,8 +1,8 @@
 // src/pages/CirurgiasPage.tsx
-import { useState, useEffect } from 'react'
-import { supabase } from '../lib/supabase'
-import { Card } from '../components/oraclusx-ds/Card'
-import { Badge } from '../components/oraclusx-ds/Badge'
+import { useState, useEffect } from 'react';
+import { legacySupabase as supabase } from '../lib/legacySupabase';
+import { Card } from '../components/oraclusx-ds/Card';
+import { Badge } from '../components/oraclusx-ds/Badge';
 import {
   Calendar,
   Plus,
@@ -15,39 +15,44 @@ import {
   XCircle,
   User,
   Building2,
-} from 'lucide-react'
-import type { Database } from '../lib/database.types.generated'
+} from 'lucide-react';
+import type { Database } from '../lib/database.types.generated';
 
-type Cirurgia = Database['public']['Tables']['cirurgias']['Row']
+type CirurgiaBase = Database['public']['Tables']['cirurgias']['Row'];
+type Cirurgia = CirurgiaBase & {
+  tipo_cirurgia?: string | null;
+  hora_inicio?: string | null;
+  duracao_estimada?: number | null;
+};
 
-export function CirurgiasPage() {
-  const [cirurgias, setCirurgias] = useState<Cirurgia[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [statusFilter, setStatusFilter] = useState<string>('todos')
+export default function CirurgiasPage() {
+  const [cirurgias, setCirurgias] = useState<Cirurgia[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('todos');
 
   useEffect(() => {
-    fetchCirurgias()
-  }, [])
+    fetchCirurgias();
+  }, []);
 
   async function fetchCirurgias() {
     try {
-      setLoading(true)
+      setLoading(true);
       const { data, error } = await supabase
         .from('cirurgias')
         .select('*')
         .is('excluido_em', null)
         .order('data_cirurgia', { ascending: false })
-        .limit(100)
+        .limit(100);
 
-      if (error) throw error
-      setCirurgias(data || [])
+      if (error) throw error;
+      setCirurgias((data || []) as Cirurgia[]);
     } catch (err) {
-      console.error('Erro ao buscar cirurgias:', err)
-      setError('Erro ao carregar cirurgias')
+      console.error('Erro ao buscar cirurgias:', err);
+      setError('Erro ao carregar cirurgias');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -56,12 +61,12 @@ export function CirurgiasPage() {
     const matchSearch =
       cirurgia.medico_id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       cirurgia.hospital_id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      cirurgia.tipo_cirurgia?.toLowerCase().includes(searchTerm.toLowerCase())
+      cirurgia.tipo_cirurgia?.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchStatus = statusFilter === 'todos' || cirurgia.status === statusFilter
+    const matchStatus = statusFilter === 'todos' || cirurgia.status === statusFilter;
 
-    return matchSearch && matchStatus
-  })
+    return matchSearch && matchStatus;
+  });
 
   // Estatísticas
   const stats = {
@@ -70,29 +75,29 @@ export function CirurgiasPage() {
     emAndamento: cirurgias.filter((c) => c.status === 'em_andamento').length,
     concluidas: cirurgias.filter((c) => c.status === 'concluida').length,
     canceladas: cirurgias.filter((c) => c.status === 'cancelada').length,
-  }
+  };
 
   const getStatusBadge = (status: string | null) => {
     switch (status) {
       case 'agendada':
-        return <Badge variant="default">Agendada</Badge>
+        return <Badge variant="default">Agendada</Badge>;
       case 'em_andamento':
-        return <Badge className="bg-blue-600">Em Andamento</Badge>
+        return <Badge className="bg-blue-600">Em Andamento</Badge>;
       case 'concluida':
-        return <Badge className="bg-green-600">Concluída</Badge>
+        return <Badge className="bg-green-600">Concluída</Badge>;
       case 'cancelada':
-        return <Badge variant="destructive">Cancelada</Badge>
+        return <Badge variant="error">Cancelada</Badge>;
       default:
-        return <Badge variant="outline">{status || 'N/A'}</Badge>
+        return <Badge variant="default">{status || 'N/A'}</Badge>;
     }
-  }
+  };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -102,7 +107,7 @@ export function CirurgiasPage() {
           <p className="text-destructive font-semibold">{error}</p>
         </Card>
       </div>
-    )
+    );
   }
 
   return (
@@ -253,9 +258,7 @@ export function CirurgiasPage() {
                         </span>
                       </div>
                       {cirurgia.hora_inicio && (
-                        <p className="text-sm text-muted-foreground ml-6">
-                          {cirurgia.hora_inicio}
-                        </p>
+                        <p className="text-sm text-muted-foreground ml-6">{cirurgia.hora_inicio}</p>
                       )}
                     </td>
                     <td className="p-3">
@@ -264,17 +267,13 @@ export function CirurgiasPage() {
                     <td className="p-3">
                       <div className="flex items-center gap-2">
                         <User className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm">
-                          {cirurgia.medico_id?.substring(0, 8)}...
-                        </span>
+                        <span className="text-sm">{cirurgia.medico_id?.substring(0, 8)}...</span>
                       </div>
                     </td>
                     <td className="p-3">
                       <div className="flex items-center gap-2">
                         <Building2 className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm">
-                          {cirurgia.hospital_id?.substring(0, 8)}...
-                        </span>
+                        <span className="text-sm">{cirurgia.hospital_id?.substring(0, 8)}...</span>
                       </div>
                     </td>
                     <td className="p-3 text-center">
@@ -297,6 +296,5 @@ export function CirurgiasPage() {
         </div>
       </Card>
     </div>
-  )
+  );
 }
-

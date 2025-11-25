@@ -18,7 +18,12 @@ export default function DashboardIA() {
 
   const tabs = [
     { id: 'estoque' as TabType, label: 'Estoque IA', icon: TrendingUp, color: 'text-blue-600' },
-    { id: 'financeiro' as TabType, label: 'Financeiro IA', icon: Activity, color: 'text-green-600' },
+    {
+      id: 'financeiro' as TabType,
+      label: 'Financeiro IA',
+      icon: Activity,
+      color: 'text-green-600',
+    },
     { id: 'cirurgias' as TabType, label: 'Cirurgias IA', icon: Brain, color: 'text-purple-600' },
     { id: 'compliance' as TabType, label: 'Compliance IA', icon: Shield, color: 'text-orange-600' },
     { id: 'chat' as TabType, label: 'Chat IA', icon: MessageSquare, color: 'text-indigo-600' },
@@ -54,14 +59,18 @@ export default function DashboardIA() {
                 <Brain className="w-6 h-6 text-blue-600 dark:text-blue-400" />
               </div>
             </div>
-            <p className="orx-text-xs text-green-600 dark:text-green-400 mt-2">✓ Todos operacionais</p>
+            <p className="orx-text-xs text-green-600 dark:text-green-400 mt-2">
+              ✓ Todos operacionais
+            </p>
           </div>
 
           <div className="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-200 dark:border-slate-700">
             <div className="flex items-center justify-between">
               <div>
                 <p className="orx-text-sm text-slate-600 dark:text-slate-400">Taxa de Acerto</p>
-                <p className="orx-text-2xl orx-orx-font-bold text-slate-900 dark:text-white">94.2%</p>
+                <p className="orx-text-2xl orx-orx-font-bold text-slate-900 dark:text-white">
+                  94.2%
+                </p>
               </div>
               <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
                 <TrendingUp className="w-6 h-6 text-green-600 dark:text-green-400" />
@@ -74,7 +83,9 @@ export default function DashboardIA() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="orx-text-sm text-slate-600 dark:text-slate-400">Previsões Hoje</p>
-                <p className="orx-text-2xl orx-orx-font-bold text-slate-900 dark:text-white">1,247</p>
+                <p className="orx-text-2xl orx-orx-font-bold text-slate-900 dark:text-white">
+                  1,247
+                </p>
               </div>
               <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
                 <Activity className="w-6 h-6 text-purple-600 dark:text-purple-400" />
@@ -87,7 +98,9 @@ export default function DashboardIA() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="orx-text-sm text-slate-600 dark:text-slate-400">Economia Mensal</p>
-                <p className="orx-text-2xl orx-orx-font-bold text-slate-900 dark:text-white">$402</p>
+                <p className="orx-text-2xl orx-orx-font-bold text-slate-900 dark:text-white">
+                  $402
+                </p>
               </div>
               <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
                 <Sparkles className="w-6 h-6 text-orange-600 dark:text-orange-400" />
@@ -110,9 +123,10 @@ export default function DashboardIA() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`
                   flex items-center gap-2 px-4 py-2 rounded-lg orx-orx-font-medium transition-all whitespace-nowrap
-                  ${isActive 
-                    ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg' 
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
+                  ${
+                    isActive
+                      ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg'
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
                   }
                 `}
               >
@@ -151,4 +165,3 @@ export default function DashboardIA() {
     </div>
   );
 }
-

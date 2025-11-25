@@ -1,31 +1,28 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Card, CardBody, CardHeader, Input, Textarea } from '@heroui/react';
+import { Button } from '@/components/oraclusx-ds/Button';
+import { Mail, Phone, MapPin, Send, Loader2, CheckCircle2, XCircle } from 'lucide-react';
 
 const contactSchema = z.object({
-  name: z
+  nome: z.string().min(3, 'Nome deve ter pelo menos 3 caracteres'),
+  email: z.string().email('Email inválido'),
+  telefone: z
     .string()
-    .min(2, "Nome muito curto")
-    .max(100, "Nome muito longo"),
-  email: z
-    .string()
-    .email("E-mail inválido")
-    .max(160, "E-mail muito longo"),
-  subject: z
-    .string()
-    .min(3, "Assunto muito curto")
-    .max(120, "Assunto muito longo"),
-  message: z
-    .string()
-    .min(10, "Mensagem muito curta")
-    .max(4000, "Mensagem muito longa"),
+    .min(10, 'Telefone inválido')
+    .regex(/^[\d\s()+-]+$/, 'Apenas números e símbolos permitidos'),
+  assunto: z.string().min(5, 'Assunto deve ter pelo menos 5 caracteres'),
+  mensagem: z.string().min(20, 'Mensagem deve ter pelo menos 20 caracteres'),
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
 
+type FormStatus = 'idle' | 'sending' | 'success' | 'error';
+
 export default function Contato() {
-  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [status, setStatus] = useState<FormStatus>('idle');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const {
@@ -35,165 +32,265 @@ export default function Contato() {
     reset,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
-    mode: "onBlur",
+    mode: 'onBlur',
   });
 
   async function onSubmit(data: ContactFormData) {
+    setStatus('sending');
+    setErrorMessage(null);
     try {
-      setStatus("sending");
-      setErrorMessage(null);
-
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: data.name,
-          email: data.email,
-          subject: data.subject,
-          message: data.message,
-          source: "web",
-        }),
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
       });
 
       if (!response.ok) {
-        const text = await response.text().catch(() => "");
-        throw new Error(text || `Falha ao enviar: ${response.status}`);
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Erro ao enviar mensagem');
       }
 
-      setStatus("success");
+      setStatus('success');
       reset();
-    } catch (err) {
-      setStatus("error");
-      setErrorMessage(err instanceof Error ? err.message : "Erro desconhecido");
+
+      setTimeout(() => {
+        setStatus('idle');
+      }, 5000);
+    } catch (error) {
+      setStatus('error');
+      setErrorMessage(error instanceof Error ? error.message : 'Erro desconhecido');
+      
+      setTimeout(() => {
+        setStatus('idle');
+        setErrorMessage(null);
+      }, 5000);
     }
   }
 
+  const contactInfo = [
+    {
+      icon: Mail,
+      title: 'E-mail',
+      value: 'contato@icarus.med.br',
+      link: 'mailto:contato@icarus.med.br'
+    },
+    {
+      icon: Phone,
+      title: 'Telefone',
+      value: '+55 (21) 3333-4444',
+      link: 'tel:+552133334444'
+    },
+    {
+      icon: MapPin,
+      title: 'Endereço',
+      value: 'Av. Rio Branco, 156 - Centro, Rio de Janeiro - RJ',
+      link: null
+    }
+  ];
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="orx-text-3xl orx-orx-font-bold mb-8" style={{ color: "var(--orx-text-primary)" }}>
-        Fale Conosco
-      </h1>
-
-      <div className="grid md:grid-cols-2 gap-8">
-        <div className="neumorphic-card">
-          <form onSubmit={handleSubmit(onSubmit)} noValidate>
-            <div className="mb-4">
-              <label className="block mb-2 orx-orx-font-medium" htmlFor="name">
-                Nome
-              </label>
-              <input
-                id="name"
-                type="text"
-                className="neumorphic-input w-full"
-                placeholder="Seu nome completo"
-                {...register("name")}
-                aria-describedby={errors.name ? "name-error" : undefined}
-              />
-              {errors.name && (
-                <p id="name-error" className="mt-1 orx-text-sm text-red-600">
-                  {errors.name.message}
-                </p>
-              )}
-            </div>
-
-            <div className="mb-4">
-              <label className="block mb-2 orx-orx-font-medium" htmlFor="email">
-                E-mail
-              </label>
-              <input
-                id="email"
-                type="email"
-                className="neumorphic-input w-full"
-                placeholder="seu@email.com"
-                {...register("email")}
-                aria-describedby={errors.email ? "email-error" : undefined}
-              />
-              {errors.email && (
-                <p id="email-error" className="mt-1 orx-text-sm text-red-600">
-                  {errors.email.message}
-                </p>
-              )}
-            </div>
-
-            <div className="mb-4">
-              <label className="block mb-2 orx-orx-font-medium" htmlFor="subject">
-                Assunto
-              </label>
-              <input
-                id="subject"
-                type="text"
-                className="neumorphic-input w-full"
-                placeholder="Como podemos ajudar?"
-                {...register("subject")}
-                aria-describedby={errors.subject ? "subject-error" : undefined}
-              />
-              {errors.subject && (
-                <p id="subject-error" className="mt-1 orx-text-sm text-red-600">
-                  {errors.subject.message}
-                </p>
-              )}
-            </div>
-
-            <div className="mb-6">
-              <label className="block mb-2 orx-orx-font-medium" htmlFor="message">
-                Mensagem
-              </label>
-              <textarea
-                id="message"
-                rows={6}
-                className="neumorphic-input w-full"
-                placeholder="Descreva sua solicitação com detalhes"
-                {...register("message")}
-                aria-describedby={errors.message ? "message-error" : undefined}
-              />
-              {errors.message && (
-                <p id="message-error" className="mt-1 orx-text-sm text-red-600">
-                  {errors.message.message}
-                </p>
-              )}
-            </div>
-
-            <div className="flex items-center gap-3">
-              <button
-                type="submit"
-                className="neumorphic-button colored-button"
-                style={{ background: "rgba(99, 102, 241, 0.95)", color: "var(--orx-text-white)" }}
-                disabled={status === "sending"}
-              >
-                {status === "sending" ? "Enviando..." : "Enviar"}
-              </button>
-              {status === "success" && (
-                <span className="text-green-600 orx-text-sm">Mensagem enviada com sucesso!</span>
-              )}
-              {status === "error" && (
-                <span className="text-red-600 orx-text-sm">{errorMessage || "Falha ao enviar"}</span>
-              )}
-            </div>
-          </form>
+    <div className="min-h-screen bg-orx-bg-app py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-white mb-4">
+            Fale Conosco
+          </h1>
+          <p className="text-default-400 text-lg max-w-2xl mx-auto">
+            Tem dúvidas ou sugestões? Entre em contato conosco e nossa equipe responderá o mais breve possível.
+          </p>
         </div>
 
-        <div className="neumorphic-card">
-          <h2 className="orx-text-xl orx-orx-font-semibold mb-3">Canais Oficiais</h2>
-          <div className="space-y-4 orx-text-sm">
-            <div>
-              <p className="orx-orx-font-medium">🛠️ Suporte Técnico</p>
-              <a className="text-blue-600 hover:underline" href="mailto:suporte@icarusai.com.br">
-                suporte@icarusai.com.br
-              </a>
-              <p className="text-gray-500">Resposta em até 24h (dias úteis)</p>
-            </div>
-            <div>
-              <p className="orx-orx-font-medium">🛡️ Proteção de Dados (DPO)</p>
-              <a className="text-blue-600 hover:underline" href="mailto:dpo@icarusai.com.br">
-                dpo@icarusai.com.br
-              </a>
-              <p className="text-gray-500">Resposta em até 15 dias (LGPD)</p>
-            </div>
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Contact Form */}
+          <Card className="bg-orx-bg-surface/60 border border-white/5 backdrop-blur-md shadow-xl">
+            <CardHeader className="border-b border-white/5 p-6">
+              <h2 className="text-xl font-semibold text-white">Envie sua Mensagem</h2>
+            </CardHeader>
+            <CardBody className="p-6">
+              <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
+                {/* Nome */}
+                <Input
+                  {...register('nome')}
+                  label="Nome Completo"
+                  placeholder="Digite seu nome"
+                  variant="bordered"
+                  isInvalid={!!errors.nome}
+                  errorMessage={errors.nome?.message}
+                  classNames={{
+                    input: "text-white",
+                    inputWrapper: "bg-white/5 border-white/10 hover:border-primary/50 focus-within:!border-primary/80 data-[hover=true]:bg-white/10",
+                    label: "text-default-400",
+                    errorMessage: "text-danger"
+                  }}
+                />
+
+                {/* Email */}
+                <Input
+                  {...register('email')}
+                  type="email"
+                  label="E-mail"
+                  placeholder="seu@email.com"
+                  variant="bordered"
+                  isInvalid={!!errors.email}
+                  errorMessage={errors.email?.message}
+                  classNames={{
+                    input: "text-white",
+                    inputWrapper: "bg-white/5 border-white/10 hover:border-primary/50 focus-within:!border-primary/80 data-[hover=true]:bg-white/10",
+                    label: "text-default-400",
+                    errorMessage: "text-danger"
+                  }}
+                />
+
+                {/* Telefone */}
+                <Input
+                  {...register('telefone')}
+                  type="tel"
+                  label="Telefone"
+                  placeholder="(XX) XXXXX-XXXX"
+                  variant="bordered"
+                  isInvalid={!!errors.telefone}
+                  errorMessage={errors.telefone?.message}
+                  classNames={{
+                    input: "text-white",
+                    inputWrapper: "bg-white/5 border-white/10 hover:border-primary/50 focus-within:!border-primary/80 data-[hover=true]:bg-white/10",
+                    label: "text-default-400",
+                    errorMessage: "text-danger"
+                  }}
+                />
+
+                {/* Assunto */}
+                <Input
+                  {...register('assunto')}
+                  label="Assunto"
+                  placeholder="Sobre o que você quer falar?"
+                  variant="bordered"
+                  isInvalid={!!errors.assunto}
+                  errorMessage={errors.assunto?.message}
+                  classNames={{
+                    input: "text-white",
+                    inputWrapper: "bg-white/5 border-white/10 hover:border-primary/50 focus-within:!border-primary/80 data-[hover=true]:bg-white/10",
+                    label: "text-default-400",
+                    errorMessage: "text-danger"
+                  }}
+                />
+
+                {/* Mensagem */}
+                <Textarea
+                  {...register('mensagem')}
+                  label="Mensagem"
+                  placeholder="Digite sua mensagem aqui..."
+                  variant="bordered"
+                  minRows={6}
+                  isInvalid={!!errors.mensagem}
+                  errorMessage={errors.mensagem?.message}
+                  classNames={{
+                    input: "text-white",
+                    inputWrapper: "bg-white/5 border-white/10 hover:border-primary/50 focus-within:!border-primary/80 data-[hover=true]:bg-white/10",
+                    label: "text-default-400",
+                    errorMessage: "text-danger"
+                  }}
+                />
+
+                {/* Submit Button */}
+                <Button
+                  type="submit"
+                  color="primary"
+                  size="lg"
+                  className="w-full font-semibold shadow-[0_0_20px_rgba(45,212,191,0.3)] hover:shadow-[0_0_30px_rgba(45,212,191,0.5)]"
+                  isDisabled={status === 'sending'}
+                  startContent={
+                    status === 'sending' ? (
+                      <Loader2 className="animate-spin" size={20} />
+                    ) : (
+                      <Send size={20} />
+                    )
+                  }
+                >
+                  {status === 'sending' ? 'Enviando...' : 'Enviar Mensagem'}
+                </Button>
+
+                {/* Status Messages */}
+                {status === 'success' && (
+                  <div className="flex items-center gap-3 p-4 rounded-lg bg-success/10 border border-success/20 text-success">
+                    <CheckCircle2 size={20} />
+                    <p className="text-sm font-medium">Mensagem enviada com sucesso! Entraremos em contato em breve.</p>
+                  </div>
+                )}
+
+                {status === 'error' && (
+                  <div className="flex items-center gap-3 p-4 rounded-lg bg-danger/10 border border-danger/20 text-danger">
+                    <XCircle size={20} />
+                    <p className="text-sm font-medium">{errorMessage || 'Erro ao enviar mensagem. Tente novamente.'}</p>
+                  </div>
+                )}
+              </form>
+            </CardBody>
+          </Card>
+
+          {/* Contact Information */}
+          <div className="flex flex-col gap-6">
+            <Card className="bg-orx-bg-surface/60 border border-white/5 backdrop-blur-md shadow-xl">
+              <CardHeader className="border-b border-white/5 p-6">
+                <h2 className="text-xl font-semibold text-white">Canais Oficiais</h2>
+              </CardHeader>
+              <CardBody className="p-6 space-y-6">
+                {contactInfo.map((info, idx) => (
+                  <div key={idx} className="flex items-start gap-4 group">
+                    <div className="p-3 rounded-lg bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors">
+                      <info.icon size={24} />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-sm font-semibold text-default-400 mb-1">{info.title}</h3>
+                      {info.link ? (
+                        <a 
+                          href={info.link}
+                          className="text-white hover:text-primary transition-colors"
+                        >
+                          {info.value}
+                        </a>
+                      ) : (
+                        <p className="text-white">{info.value}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </CardBody>
+            </Card>
+
+            {/* Business Hours */}
+            <Card className="bg-orx-bg-surface/60 border border-white/5 backdrop-blur-md shadow-xl">
+              <CardHeader className="border-b border-white/5 p-6">
+                <h2 className="text-xl font-semibold text-white">Horário de Atendimento</h2>
+              </CardHeader>
+              <CardBody className="p-6 space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-default-400">Segunda a Sexta</span>
+                  <span className="text-white font-semibold">08:00 - 18:00</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-default-400">Sábado</span>
+                  <span className="text-white font-semibold">08:00 - 12:00</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-default-400">Domingo e Feriados</span>
+                  <span className="text-danger font-semibold">Fechado</span>
+                </div>
+              </CardBody>
+            </Card>
+
+            {/* Support Notice */}
+            <Card className="bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20 backdrop-blur-md shadow-xl">
+              <CardBody className="p-6">
+                <h3 className="text-white font-semibold mb-2">Suporte 24/7</h3>
+                <p className="text-default-400 text-sm">
+                  Para emergências técnicas, nossa equipe de suporte está disponível 24 horas por dia, 7 dias por semana através do chat online.
+                </p>
+              </CardBody>
+            </Card>
           </div>
         </div>
       </div>
     </div>
   );
 }
-
-

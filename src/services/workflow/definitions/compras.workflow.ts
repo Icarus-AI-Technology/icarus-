@@ -1,6 +1,6 @@
 /**
  * 🛒 WORKFLOW: COMPRAS & FORNECEDORES
- * 
+ *
  * Workflows para:
  * 1. Gestão de Cotações
  * 2. Pedidos de Compra
@@ -17,7 +17,7 @@ export const COTACAO_WORKFLOW: WorkflowDefinition = {
   name: 'Gestão de Cotações',
   description: 'Workflow para gerenciamento de cotações de fornecedores',
   module: 'compras',
-  
+
   states: [
     {
       id: 'rascunho',
@@ -129,7 +129,7 @@ export const COTACAO_WORKFLOW: WorkflowDefinition = {
       isFinal: true,
     },
   ],
-  
+
   notifications: [
     {
       id: 'notif-cotacao-enviada',
@@ -149,7 +149,7 @@ export const COTACAO_WORKFLOW: WorkflowDefinition = {
       channels: ['email', 'in_app'],
     },
   ],
-  
+
   validations: [
     {
       stateId: 'aguardando_respostas',
@@ -181,7 +181,7 @@ export const PEDIDO_COMPRA_WORKFLOW: WorkflowDefinition = {
   name: 'Pedidos de Compra',
   description: 'Workflow para gerenciamento de pedidos de compra',
   module: 'compras',
-  
+
   states: [
     {
       id: 'rascunho',
@@ -351,7 +351,7 @@ export const PEDIDO_COMPRA_WORKFLOW: WorkflowDefinition = {
       ],
     },
   ],
-  
+
   notifications: [
     {
       id: 'notif-pedido-aguardando-aprovacao',
@@ -397,14 +397,17 @@ export const PEDIDO_COMPRA_WORKFLOW: WorkflowDefinition = {
       channels: ['email', 'in_app'],
     },
   ],
-  
+
   validations: [
     {
       stateId: 'aguardando_aprovacao',
       type: 'required_fields',
       message: 'É necessário preencher todos os itens do pedido',
       validator: async (instance) => {
-        const itens = (instance.metadata?.itens as Array<{ quantidade: number; precoUnitario: number }> | undefined) || [];
+        const itens =
+          (instance.metadata?.itens as
+            | Array<{ quantidade: number; precoUnitario: number }>
+            | undefined) || [];
         return itens.length > 0 && itens.every((i) => i.quantidade > 0 && i.precoUnitario > 0);
       },
     },
@@ -415,7 +418,7 @@ export const PEDIDO_COMPRA_WORKFLOW: WorkflowDefinition = {
       validator: async (instance) => {
         const valorTotal = instance.metadata?.valorTotal || 0;
         const aprovadores = instance.metadata?.aprovadores || [];
-        
+
         if (valorTotal > 50000) {
           return aprovadores.length >= 2;
         }
@@ -424,4 +427,3 @@ export const PEDIDO_COMPRA_WORKFLOW: WorkflowDefinition = {
     },
   ],
 };
-

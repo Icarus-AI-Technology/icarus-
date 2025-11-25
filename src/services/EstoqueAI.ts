@@ -1,7 +1,7 @@
 /**
  * EstoqueAI - Serviço de Inteligência Artificial para Estoque
  * Sistema: ICARUS v5.0
- * 
+ *
  * Algoritmos Implementados:
  * - Previsão de Demanda (ARIMA simplificado)
  * - Análise ABC/XYZ
@@ -10,7 +10,7 @@
  * - Otimização de Estoque
  */
 
-import { supabase } from '@/lib/supabase';
+import { legacySupabase as supabase } from '@/lib/legacySupabase';
 
 // ============================================
 // INTERFACES
@@ -137,26 +137,27 @@ export class EstoqueAI {
           demanda_prevista_90_dias: 0,
           tendencia: 'estavel',
           sazonalidade: false,
-          confianca: 0
+          confianca: 0,
         };
       }
 
       // Agrupar por mês
       const demandaMensal: number[] = [];
       const movPorMes: Record<string, number> = {};
-      
-      movimentacoes.forEach(mov => {
+
+      movimentacoes.forEach((mov) => {
         const mes = mov.data_movimentacao.substring(0, 7); // YYYY-MM
         movPorMes[mes] = (movPorMes[mes] || 0) + mov.quantidade;
       });
 
-      Object.values(movPorMes).forEach(val => demandaMensal.push(val));
+      Object.values(movPorMes).forEach((val) => demandaMensal.push(val));
 
       // Média móvel ponderada (últimos 3 meses com pesos 3, 2, 1)
       const ultimos3 = demandaMensal.slice(-3);
-      const mediaMovelPonderada = ultimos3.length >= 3
-        ? (ultimos3[2] * 3 + ultimos3[1] * 2 + ultimos3[0] * 1) / 6
-        : demandaMensal[demandaMensal.length - 1] || 0;
+      const mediaMovelPonderada =
+        ultimos3.length >= 3
+          ? (ultimos3[2] * 3 + ultimos3[1] * 2 + ultimos3[0] * 1) / 6
+          : demandaMensal[demandaMensal.length - 1] || 0;
 
       // Detectar tendência
       let tendencia: 'crescente' | 'estavel' | 'decrescente' = 'estavel';
@@ -169,7 +170,8 @@ export class EstoqueAI {
 
       // Ajustar previsões baseado na tendência
       let fatorCrescimento = 1.0;
-      if (tendencia === 'crescente') fatorCrescimento = 1.05; // 5% ao mês
+      if (tendencia === 'crescente')
+        fatorCrescimento = 1.05; // 5% ao mês
       else if (tendencia === 'decrescente') fatorCrescimento = 0.95; // -5% ao mês
 
       return {
@@ -177,14 +179,18 @@ export class EstoqueAI {
         produto_nome: produto?.nome || 'Desconhecido',
         demanda_historica: demandaMensal,
         demanda_prevista_30_dias: Math.round(mediaMovelPonderada * fatorCrescimento),
-        demanda_prevista_60_dias: Math.round(mediaMovelPonderada * Math.pow(fatorCrescimento, 2) * 2),
-        demanda_prevista_90_dias: Math.round(mediaMovelPonderada * Math.pow(fatorCrescimento, 3) * 3),
+        demanda_prevista_60_dias: Math.round(
+          mediaMovelPonderada * Math.pow(fatorCrescimento, 2) * 2
+        ),
+        demanda_prevista_90_dias: Math.round(
+          mediaMovelPonderada * Math.pow(fatorCrescimento, 3) * 3
+        ),
         tendencia,
         sazonalidade: this.detectarSazonalidade(demandaMensal),
-        confianca: Math.min(demandaMensal.length * 8, 95) // Confiança baseada em histórico
+        confianca: Math.min(demandaMensal.length * 8, 95), // Confiança baseada em histórico
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao prever demanda:', err);
       throw error;
     }
@@ -198,8 +204,7 @@ export class EstoqueAI {
   static async analisarABCXYZ(): Promise<ClassificacaoABCXYZ[]> {
     try {
       // Buscar SQL function que já calcula ABC/XYZ
-      const { data: produtos, error } = await supabase
-        .rpc('calcular_abc_xyz');
+      const { data: produtos, error } = await supabase.rpc('calcular_abc_xyz');
 
       if (error) throw error;
 
@@ -209,7 +214,7 @@ export class EstoqueAI {
         // Estratégia baseada na classificação
         let estrategia = '';
         const classe = `${prod.classe_abc}${prod.classe_xyz}`;
-        
+
         switch (classe) {
           case 'AX':
             estrategia = 'Controle rigoroso, estoque mínimo, reposição frequente';
@@ -249,13 +254,13 @@ export class EstoqueAI {
           classe_abc: prod.classe_abc,
           classe_xyz: prod.classe_xyz,
           classificacao_final: classe,
-          estrategia_recomendada: estrategia
+          estrategia_recomendada: estrategia,
         });
       }
 
       return resultado;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao analisar ABC/XYZ:', err);
       throw error;
     }
@@ -300,7 +305,7 @@ export class EstoqueAI {
       // Fórmula EOQ
       const eoq = Math.sqrt((2 * demandaAnual * custoPedido) / custoArmazenagem);
       const numeroPedidosAno = demandaAnual / eoq;
-      const custoTotalAnual = (numeroPedidosAno * custoPedido) + ((eoq / 2) * custoArmazenagem);
+      const custoTotalAnual = numeroPedidosAno * custoPedido + (eoq / 2) * custoArmazenagem;
 
       // Ponto de pedido (assumindo lead time de 7 dias)
       const demandaDiaria = demandaAnual / 365;
@@ -315,10 +320,10 @@ export class EstoqueAI {
         eoq: Math.round(eoq),
         numero_pedidos_ano: Math.round(numeroPedidosAno * 10) / 10,
         custo_total_anual: Math.round(custoTotalAnual * 100) / 100,
-        ponto_pedido: pontoPedido
+        ponto_pedido: pontoPedido,
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao calcular EOQ:', err);
       throw error;
     }
@@ -332,8 +337,7 @@ export class EstoqueAI {
       const anomalias: Anomalia[] = [];
 
       // 1. Produtos sem movimento (> 90 dias)
-      const { data: semMovimento } = await supabase
-        .rpc('produtos_sem_movimento', { dias: 90 });
+      const { data: semMovimento } = await supabase.rpc('produtos_sem_movimento', { dias: 90 });
 
       semMovimento?.forEach((prod: ProdutoSemMovimentoRow) => {
         anomalias.push({
@@ -345,7 +349,7 @@ export class EstoqueAI {
           valor_esperado: 1,
           valor_atual: 0,
           desvio_percentual: 100,
-          recomendacao: 'Considerar promoção, devolução ou descontinuação'
+          recomendacao: 'Considerar promoção, devolução ou descontinuação',
         });
       });
 
@@ -353,9 +357,7 @@ export class EstoqueAI {
       // TODO: Implementar query específica
 
       // 3. Excesso de estoque (> 3x ponto de reposição)
-      const { data: produtos } = await supabase
-        .from('produtos_opme')
-        .select(`
+      const { data: produtos } = await supabase.from('produtos_opme').select(`
           id,
           nome,
           ponto_reposicao,
@@ -365,7 +367,7 @@ export class EstoqueAI {
       produtos?.forEach((prod: ProdutoEstoqueRow) => {
         const qtdAtual = prod.estoque?.[0]?.quantidade || 0;
         const pontoReposicao = prod.ponto_reposicao || 0;
-        
+
         if (pontoReposicao > 0 && qtdAtual > pontoReposicao * 3) {
           anomalias.push({
             tipo: 'excesso_estoque',
@@ -376,7 +378,7 @@ export class EstoqueAI {
             valor_esperado: pontoReposicao,
             valor_atual: qtdAtual,
             desvio_percentual: Math.round(((qtdAtual - pontoReposicao) / pontoReposicao) * 100),
-            recomendacao: 'Reduzir pedidos, promover vendas'
+            recomendacao: 'Reduzir pedidos, promover vendas',
           });
         }
       });
@@ -386,7 +388,7 @@ export class EstoqueAI {
         return severidadeOrder[a.severidade] - severidadeOrder[b.severidade];
       });
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao detectar anomalias:', err);
       throw error;
     }
@@ -402,13 +404,15 @@ export class EstoqueAI {
       // Buscar produtos com estoque
       const { data: produtos } = await supabase
         .from('produtos_opme')
-        .select(`
+        .select(
+          `
           id,
           nome,
           custo_medio,
           ponto_reposicao,
           estoque(quantidade, custo_total)
-        `)
+        `
+        )
         .eq('ativo', true);
 
       for (const prod of produtos || []) {
@@ -455,23 +459,23 @@ export class EstoqueAI {
             situacao_atual: {
               quantidade: qtdAtual,
               valor_estoque: valorAtual,
-              giro_estoque: Math.round(giroAtual * 10) / 10
+              giro_estoque: Math.round(giroAtual * 10) / 10,
             },
             situacao_otimizada: {
               quantidade_ideal: qtdIdeal,
               valor_estoque_ideal: valorIdeal,
-              giro_esperado: 1.5
+              giro_esperado: 1.5,
             },
             economia_potencial: economia,
             acao_recomendada: acao,
-            prioridade
+            prioridade,
           });
         }
       }
 
       return otimizacoes.sort((a, b) => b.prioridade - a.prioridade);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao otimizar estoque:', err);
       throw error;
     }
@@ -489,9 +493,8 @@ export class EstoqueAI {
 
     // Calcular coeficiente de variação
     const media = demandaMensal.reduce((a, b) => a + b, 0) / demandaMensal.length;
-    const variancia = demandaMensal.reduce((sum, val) => 
-      sum + Math.pow(val - media, 2), 0
-    ) / demandaMensal.length;
+    const variancia =
+      demandaMensal.reduce((sum, val) => sum + Math.pow(val - media, 2), 0) / demandaMensal.length;
     const desvioPadrao = Math.sqrt(variancia);
     const coeficienteVariacao = (desvioPadrao / media) * 100;
 
@@ -499,4 +502,3 @@ export class EstoqueAI {
     return coeficienteVariacao > 30;
   }
 }
-

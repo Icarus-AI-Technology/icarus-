@@ -5,7 +5,10 @@
 
 import { useState, useEffect } from 'react';
 import { Shield, AlertTriangle, CheckCircle, Clock, FileText } from 'lucide-react';
-import { ComplianceAutomaticoAI, AlertaPreditivo } from '@/services/compliance/ComplianceAutomaticoAI';
+import {
+  ComplianceAutomaticoAI,
+  AlertaPreditivo,
+} from '@/services/compliance/ComplianceAutomaticoAI';
 
 export function AlertasCompliance() {
   const [loading, setLoading] = useState(true);
@@ -22,7 +25,7 @@ export function AlertasCompliance() {
       setAlertas(alertasData);
     } catch (err) {
       console.error('Erro:', err);
-      
+
       // Fallback com dados de exemplo
       setAlertas([
         {
@@ -72,16 +75,18 @@ export function AlertasCompliance() {
   }
 
   const alertasPorSeveridade = {
-    critico: alertas.filter(a => a.severidade === 'critico').length,
-    urgente: alertas.filter(a => a.severidade === 'urgente').length,
-    aviso: alertas.filter(a => a.severidade === 'aviso').length,
+    critico: alertas.filter((a) => a.severidade === 'critico').length,
+    urgente: alertas.filter((a) => a.severidade === 'urgente').length,
+    aviso: alertas.filter((a) => a.severidade === 'aviso').length,
   };
 
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="orx-text-2xl orx-orx-font-bold text-slate-900 dark:text-white">Compliance Automático IA</h2>
+          <h2 className="orx-text-2xl orx-orx-font-bold text-slate-900 dark:text-white">
+            Compliance Automático IA
+          </h2>
           <p className="text-slate-600 dark:text-slate-400">
             Monitoramento 24/7 de requisitos regulatórios • Taxa de acerto: 96.8%
           </p>
@@ -100,7 +105,9 @@ export function AlertasCompliance() {
           <div className="flex items-center justify-between">
             <div>
               <p className="orx-text-sm text-slate-600 dark:text-slate-400">Total de Alertas</p>
-              <p className="orx-text-3xl orx-orx-font-bold text-slate-900 dark:text-white">{alertas.length}</p>
+              <p className="orx-text-3xl orx-orx-font-bold text-slate-900 dark:text-white">
+                {alertas.length}
+              </p>
             </div>
             <Shield className="w-8 h-8 text-orange-600" />
           </div>
@@ -110,7 +117,9 @@ export function AlertasCompliance() {
           <div className="flex items-center justify-between">
             <div>
               <p className="orx-text-sm text-red-600 dark:text-red-400">Críticos</p>
-              <p className="orx-text-3xl orx-orx-font-bold text-red-700 dark:text-red-300">{alertasPorSeveridade.critico}</p>
+              <p className="orx-text-3xl orx-orx-font-bold text-red-700 dark:text-red-300">
+                {alertasPorSeveridade.critico}
+              </p>
             </div>
             <AlertTriangle className="w-8 h-8 text-red-600" />
           </div>
@@ -120,7 +129,9 @@ export function AlertasCompliance() {
           <div className="flex items-center justify-between">
             <div>
               <p className="orx-text-sm text-orange-600 dark:text-orange-400">Urgentes</p>
-              <p className="orx-text-3xl orx-orx-font-bold text-orange-700 dark:text-orange-300">{alertasPorSeveridade.urgente}</p>
+              <p className="orx-text-3xl orx-orx-font-bold text-orange-700 dark:text-orange-300">
+                {alertasPorSeveridade.urgente}
+              </p>
             </div>
             <Clock className="w-8 h-8 text-orange-600" />
           </div>
@@ -130,7 +141,9 @@ export function AlertasCompliance() {
           <div className="flex items-center justify-between">
             <div>
               <p className="orx-text-sm text-yellow-600 dark:text-yellow-400">Avisos</p>
-              <p className="orx-text-3xl orx-orx-font-bold text-yellow-700 dark:text-yellow-300">{alertasPorSeveridade.aviso}</p>
+              <p className="orx-text-3xl orx-orx-font-bold text-yellow-700 dark:text-yellow-300">
+                {alertasPorSeveridade.aviso}
+              </p>
             </div>
             <FileText className="w-8 h-8 text-yellow-600" />
           </div>
@@ -155,11 +168,13 @@ export function AlertasCompliance() {
               key={idx}
               className={`
                 rounded-xl p-5 border-l-4 shadow-sm
-                ${alerta.severidade === 'critico' 
-                  ? 'bg-red-50 dark:bg-red-900/20 border-red-600' 
-                  : alerta.severidade === 'urgente' 
-                  ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-600' 
-                  : 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-600'}
+                ${
+                  alerta.severidade === 'critico'
+                    ? 'bg-red-50 dark:bg-red-900/20 border-red-600'
+                    : alerta.severidade === 'urgente'
+                      ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-600'
+                      : 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-600'
+                }
               `}
             >
               <div className="flex items-start justify-between mb-3">
@@ -169,12 +184,12 @@ export function AlertasCompliance() {
                     {alerta.tipo === 'treinamento' && <CheckCircle className="w-5 h-5" />}
                     {alerta.tipo === 'documento' && <FileText className="w-5 h-5" />}
                     {alerta.tipo === 'calibracao' && <Clock className="w-5 h-5" />}
-                    
+
                     <h3 className="orx-text-lg orx-orx-font-semibold text-slate-900 dark:text-white">
                       {alerta.titulo}
                     </h3>
                   </div>
-                  
+
                   <p className="orx-text-sm text-slate-700 dark:text-slate-300 mb-3">
                     {alerta.descricao}
                   </p>
@@ -193,20 +208,26 @@ export function AlertasCompliance() {
                     {alerta.prazo_acao && (
                       <div className="flex items-center gap-1">
                         <span>📅</span>
-                        <span>Ação até {new Date(alerta.prazo_acao).toLocaleDateString('pt-BR')}</span>
+                        <span>
+                          Ação até {new Date(alerta.prazo_acao).toLocaleDateString('pt-BR')}
+                        </span>
                       </div>
                     )}
                   </div>
                 </div>
 
-                <div className={`
+                <div
+                  className={`
                   px-3 py-1 rounded-full orx-text-xs orx-orx-font-bold uppercase whitespace-nowrap ml-4
-                  ${alerta.severidade === 'critico' 
-                    ? 'bg-red-600 text-white' 
-                    : alerta.severidade === 'urgente' 
-                    ? 'bg-orange-600 text-white' 
-                    : 'bg-yellow-600 text-white'}
-                `}>
+                  ${
+                    alerta.severidade === 'critico'
+                      ? 'bg-red-600 text-white'
+                      : alerta.severidade === 'urgente'
+                        ? 'bg-orange-600 text-white'
+                        : 'bg-yellow-600 text-white'
+                  }
+                `}
+                >
                   {alerta.severidade}
                 </div>
               </div>
@@ -229,7 +250,9 @@ export function AlertasCompliance() {
         <div className="flex items-start gap-3">
           <Shield className="w-6 h-6 text-orange-600 mt-0.5" />
           <div className="flex-1">
-            <p className="orx-orx-font-semibold text-slate-900 dark:text-white mb-2">Sobre o Agente de Compliance IA</p>
+            <p className="orx-orx-font-semibold text-slate-900 dark:text-white mb-2">
+              Sobre o Agente de Compliance IA
+            </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 orx-text-sm">
               <div>
                 <p className="text-slate-600 dark:text-slate-400">Taxa de Acerto</p>
@@ -245,8 +268,8 @@ export function AlertasCompliance() {
               </div>
             </div>
             <p className="orx-text-xs text-slate-600 dark:text-slate-400 mt-3">
-              O agente analisa certificações, treinamentos e documentos automaticamente, 
-              gerando alertas preditivos com 90, 30 e 60 dias de antecedência.
+              O agente analisa certificações, treinamentos e documentos automaticamente, gerando
+              alertas preditivos com 90, 30 e 60 dias de antecedência.
             </p>
           </div>
         </div>
@@ -254,4 +277,3 @@ export function AlertasCompliance() {
     </div>
   );
 }
-

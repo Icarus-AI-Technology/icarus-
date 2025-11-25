@@ -1,9 +1,9 @@
 /**
  * 📋 WORKFLOW KANBAN — VISUALIZAÇÃO KANBAN
- * 
+ *
  * Componente Kanban Board para gerenciar visualmente múltiplas instâncias de workflow
  * Permite drag-and-drop entre estados, filtros, e ações em massa
- * 
+ *
  * Features:
  * - Colunas por estado
  * - Drag and drop entre colunas
@@ -15,16 +15,8 @@
  */
 
 import React, { useState, useMemo } from 'react';
-import { 
-  AlertCircle,
-  Calendar,
-  Clock,
-  Filter,
-  Plus,
-  Search,
-  User,
-} from 'lucide-react';
-import type { WorkflowInstance, WorkflowDefinition, WorkflowState, WorkflowPriority } from '@/types/workflow';
+import { AlertCircle, Calendar, Clock, Filter, Plus, Search, User } from 'lucide-react';
+import type { WorkflowInstance, WorkflowDefinition, WorkflowPriority } from '@/types/workflow';
 
 interface WorkflowKanbanProps {
   instances: WorkflowInstance[];
@@ -58,10 +50,10 @@ export const WorkflowKanban: React.FC<WorkflowKanbanProps> = ({
   });
   const [draggedInstance, setDraggedInstance] = useState<string | null>(null);
   const [showFilterPanel, setShowFilterPanel] = useState(false);
-  
+
   // Filtrar instâncias
   const filteredInstances = useMemo(() => {
-    return instances.filter(instance => {
+    return instances.filter((instance) => {
       // Search
       if (filters.search) {
         const searchLower = filters.search.toLowerCase();
@@ -72,57 +64,61 @@ export const WorkflowKanban: React.FC<WorkflowKanbanProps> = ({
           return false;
         }
       }
-      
+
       // Priority
       if (filters.priority !== 'all' && instance.priority !== filters.priority) {
         return false;
       }
-      
+
       // Assigned to
       if (filters.assignedTo !== 'all' && instance.assignedTo !== filters.assignedTo) {
         return false;
       }
-      
+
       // Overdue
       if (filters.overdue) {
         if (!instance.dueDate || new Date(instance.dueDate) >= new Date()) {
           return false;
         }
       }
-      
+
       return true;
     });
   }, [instances, filters]);
-  
+
   // Agrupar instâncias por estado
   const instancesByState = useMemo(() => {
     const grouped: Record<string, WorkflowInstance[]> = {};
-    
-    workflow.states.forEach(state => {
+
+    workflow.states.forEach((state) => {
       grouped[state.id] = filteredInstances.filter(
-        instance => instance.currentStateId === state.id
+        (instance) => instance.currentStateId === state.id
       );
     });
-    
+
     return grouped;
   }, [filteredInstances, workflow.states]);
-  
+
   // Obter cor da prioridade
   const getPriorityColor = (priority: WorkflowPriority): string => {
     switch (priority) {
-      case 'urgent': return 'var(--orx-error)';
-      case 'high': return 'var(--orx-warning)';
-      case 'medium': return 'var(--orx-info)';
-      case 'low': return 'var(--orx-gray-400)';
+      case 'urgent':
+        return 'var(--orx-error)';
+      case 'high':
+        return 'var(--orx-warning)';
+      case 'medium':
+        return 'var(--orx-info)';
+      case 'low':
+        return 'var(--orx-gray-400)';
     }
   };
-  
+
   // Verificar se está atrasado
   const isOverdue = (dueDate?: Date): boolean => {
     if (!dueDate) return false;
     return new Date(dueDate) < new Date();
   };
-  
+
   // Formatar data
   const formatDate = (date: Date): string => {
     return new Intl.DateTimeFormat('pt-BR', {
@@ -130,58 +126,69 @@ export const WorkflowKanban: React.FC<WorkflowKanbanProps> = ({
       month: '2-digit',
     }).format(new Date(date));
   };
-  
+
   // Handlers de drag and drop
   const handleDragStart = (instanceId: string) => {
     setDraggedInstance(instanceId);
   };
-  
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
   };
-  
+
   const handleDrop = (stateId: string) => {
     if (!draggedInstance) return;
-    
-    const instance = instances.find(i => i.id === draggedInstance);
+
+    const instance = instances.find((i) => i.id === draggedInstance);
     if (!instance) return;
-    
+
     // Só permite drop se for transição válida
-    const currentState = workflow.states.find(s => s.id === instance.currentStateId);
+    const currentState = workflow.states.find((s) => s.id === instance.currentStateId);
     if (!currentState?.allowedTransitions.includes(stateId)) {
       return;
     }
-    
+
     onTransition?.(draggedInstance, stateId);
     setDraggedInstance(null);
   };
-  
+
   const handleDragEnd = () => {
     setDraggedInstance(null);
   };
-  
+
   return (
     <div className="workflow-kanban" style={{ width: '100%', height: '100%' }}>
       {/* Header */}
       <div className="neumorphic-container p-4 mb-4">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '1rem',
+          }}
+        >
           <div>
-            <h2 style={{ 
-              fontSize: '0.813rem', 
-              fontWeight: 'bold',
-              color: 'var(--orx-text-primary)',
-              marginBottom: '0.25rem',
-            }}>
+            <h2
+              style={{
+                fontSize: '0.813rem',
+                fontWeight: 'bold',
+                color: 'var(--orx-text-primary)',
+                marginBottom: '0.25rem',
+              }}
+            >
               {workflow.name}
             </h2>
-            <p style={{ 
-              fontSize: '0.813rem', 
-              color: 'var(--orx-text-secondary)',
-            }}>
+            <p
+              style={{
+                fontSize: '0.813rem',
+                color: 'var(--orx-text-secondary)',
+              }}
+            >
               {filteredInstances.length} de {instances.length} itens
             </p>
           </div>
-          
+
           <div style={{ display: 'flex', gap: '0.5rem' }}>
             {showFilters && (
               <button
@@ -197,30 +204,37 @@ export const WorkflowKanban: React.FC<WorkflowKanbanProps> = ({
               >
                 <Filter style={{ width: '1rem', height: '1rem' }} />
                 Filtros
-                {(filters.search || filters.priority !== 'all' || filters.assignedTo !== 'all' || filters.overdue) && (
-                  <span style={{
-                    width: '1.5rem',
-                    height: '1.5rem',
-                    borderRadius: '50%',
-                    background: 'var(--orx-primary)',
-                    color: 'white',
-                    fontSize: '0.813rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontWeight: '600',
-                  }}>
-                    {[
-                      filters.search,
-                      filters.priority !== 'all',
-                      filters.assignedTo !== 'all',
-                      filters.overdue,
-                    ].filter(Boolean).length}
+                {(filters.search ||
+                  filters.priority !== 'all' ||
+                  filters.assignedTo !== 'all' ||
+                  filters.overdue) && (
+                  <span
+                    style={{
+                      width: '1.5rem',
+                      height: '1.5rem',
+                      borderRadius: '50%',
+                      background: 'var(--orx-primary)',
+                      color: 'white',
+                      fontSize: '0.813rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: '600',
+                    }}
+                  >
+                    {
+                      [
+                        filters.search,
+                        filters.priority !== 'all',
+                        filters.assignedTo !== 'all',
+                        filters.overdue,
+                      ].filter(Boolean).length
+                    }
                   </span>
                 )}
               </button>
             )}
-            
+
             {onCreateNew && (
               <button
                 className="neumorphic-button"
@@ -242,42 +256,50 @@ export const WorkflowKanban: React.FC<WorkflowKanbanProps> = ({
             )}
           </div>
         </div>
-        
+
         {/* Painel de filtros */}
         {showFilterPanel && (
-          <div style={{
-            marginTop: '1rem',
-            padding: '1rem',
-            borderRadius: '0.75rem',
-            background: 'var(--orx-bg-light)',
-            border: '1px solid var(--orx-gray-200)',
-          }}>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: '1rem',
-            }}>
+          <div
+            style={{
+              marginTop: '1rem',
+              padding: '1rem',
+              borderRadius: '0.75rem',
+              background: 'var(--orx-bg-light)',
+              border: '1px solid var(--orx-gray-200)',
+            }}
+          >
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                gap: '1rem',
+              }}
+            >
               {/* Search */}
               <div>
-                <label style={{
-                  fontSize: '0.813rem',
-                  fontWeight: '600',
-                  color: 'var(--orx-text-secondary)',
-                  marginBottom: '0.5rem',
-                  display: 'block',
-                }}>
+                <label
+                  style={{
+                    fontSize: '0.813rem',
+                    fontWeight: '600',
+                    color: 'var(--orx-text-secondary)',
+                    marginBottom: '0.5rem',
+                    display: 'block',
+                  }}
+                >
                   Buscar
                 </label>
                 <div style={{ position: 'relative' }}>
-                  <Search style={{
-                    position: 'absolute',
-                    left: '0.75rem',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    width: '1rem',
-                    height: '1rem',
-                    color: 'var(--orx-text-secondary)',
-                  }} />
+                  <Search
+                    style={{
+                      position: 'absolute',
+                      left: '0.75rem',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      width: '1rem',
+                      height: '1rem',
+                      color: 'var(--orx-text-secondary)',
+                    }}
+                  />
                   <input
                     type="text"
                     value={filters.search}
@@ -295,21 +317,25 @@ export const WorkflowKanban: React.FC<WorkflowKanbanProps> = ({
                   />
                 </div>
               </div>
-              
+
               {/* Priority */}
               <div>
-                <label style={{
-                  fontSize: '0.813rem',
-                  fontWeight: '600',
-                  color: 'var(--orx-text-secondary)',
-                  marginBottom: '0.5rem',
-                  display: 'block',
-                }}>
+                <label
+                  style={{
+                    fontSize: '0.813rem',
+                    fontWeight: '600',
+                    color: 'var(--orx-text-secondary)',
+                    marginBottom: '0.5rem',
+                    display: 'block',
+                  }}
+                >
                   Prioridade
                 </label>
                 <select
                   value={filters.priority}
-                  onChange={(e) => setFilters({ ...filters, priority: e.target.value as WorkflowPriority | 'all' })}
+                  onChange={(e) =>
+                    setFilters({ ...filters, priority: e.target.value as WorkflowPriority | 'all' })
+                  }
                   style={{
                     width: '100%',
                     padding: '0.5rem 0.75rem',
@@ -327,24 +353,28 @@ export const WorkflowKanban: React.FC<WorkflowKanbanProps> = ({
                   <option value="low">Baixa</option>
                 </select>
               </div>
-              
+
               {/* Overdue */}
               <div>
-                <label style={{
-                  fontSize: '0.813rem',
-                  fontWeight: '600',
-                  color: 'var(--orx-text-secondary)',
-                  marginBottom: '0.5rem',
-                  display: 'block',
-                }}>
+                <label
+                  style={{
+                    fontSize: '0.813rem',
+                    fontWeight: '600',
+                    color: 'var(--orx-text-secondary)',
+                    marginBottom: '0.5rem',
+                    display: 'block',
+                  }}
+                >
                   Filtros rápidos
                 </label>
-                <label style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  cursor: 'pointer',
-                }}>
+                <label
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    cursor: 'pointer',
+                  }}
+                >
                   <input
                     type="checkbox"
                     checked={filters.overdue}
@@ -357,11 +387,16 @@ export const WorkflowKanban: React.FC<WorkflowKanbanProps> = ({
                 </label>
               </div>
             </div>
-            
+
             {/* Clear filters */}
-            {(filters.search || filters.priority !== 'all' || filters.assignedTo !== 'all' || filters.overdue) && (
+            {(filters.search ||
+              filters.priority !== 'all' ||
+              filters.assignedTo !== 'all' ||
+              filters.overdue) && (
               <button
-                onClick={() => setFilters({ search: '', priority: 'all', assignedTo: 'all', overdue: false })}
+                onClick={() =>
+                  setFilters({ search: '', priority: 'all', assignedTo: 'all', overdue: false })
+                }
                 style={{
                   marginTop: '1rem',
                   padding: '0.5rem 1rem',
@@ -379,26 +414,28 @@ export const WorkflowKanban: React.FC<WorkflowKanbanProps> = ({
           </div>
         )}
       </div>
-      
+
       {/* Kanban Board */}
-      <div style={{
-        display: 'flex',
-        gap: '1rem',
-        overflowX: 'auto',
-        paddingBottom: '1rem',
-      }}>
-        {workflow.states.map(state => {
+      <div
+        style={{
+          display: 'flex',
+          gap: '1rem',
+          overflowX: 'auto',
+          paddingBottom: '1rem',
+        }}
+      >
+        {workflow.states.map((state) => {
           const stateInstances = instancesByState[state.id] || [];
-          const canDrop = draggedInstance 
+          const canDrop = draggedInstance
             ? (() => {
-                const instance = instances.find(i => i.id === draggedInstance);
-                const currentState = instance 
-                  ? workflow.states.find(s => s.id === instance.currentStateId)
+                const instance = instances.find((i) => i.id === draggedInstance);
+                const currentState = instance
+                  ? workflow.states.find((s) => s.id === instance.currentStateId)
                   : null;
                 return currentState?.allowedTransitions.includes(state.id) || false;
               })()
             : false;
-          
+
           return (
             <div
               key={state.id}
@@ -413,41 +450,50 @@ export const WorkflowKanban: React.FC<WorkflowKanbanProps> = ({
               }}
             >
               {/* Column Header */}
-              <div className="neumorphic-container" style={{
-                padding: '1rem',
-                marginBottom: '1rem',
-                borderTop: `4px solid ${state.color}`,
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <h3 style={{
-                    fontSize: '0.813rem',
-                    fontWeight: '700',
-                    color: state.color,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                  }}>
+              <div
+                className="neumorphic-container"
+                style={{
+                  padding: '1rem',
+                  marginBottom: '1rem',
+                  borderTop: `4px solid ${state.color}`,
+                }}
+              >
+                <div
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                >
+                  <h3
+                    style={{
+                      fontSize: '0.813rem',
+                      fontWeight: '700',
+                      color: state.color,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                    }}
+                  >
                     {state.label}
                   </h3>
-                  <span style={{
-                    width: '1.75rem',
-                    height: '1.75rem',
-                    borderRadius: '50%',
-                    background: state.color,
-                    color: 'white',
-                    fontSize: '0.813rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontWeight: '700',
-                  }}>
+                  <span
+                    style={{
+                      width: '1.75rem',
+                      height: '1.75rem',
+                      borderRadius: '50%',
+                      background: state.color,
+                      color: 'white',
+                      fontSize: '0.813rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: '700',
+                    }}
+                  >
                     {stateInstances.length}
                   </span>
                 </div>
               </div>
-              
+
               {/* Cards */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                {stateInstances.map(instance => (
+                {stateInstances.map((instance) => (
                   <div
                     key={instance.id}
                     draggable
@@ -463,59 +509,73 @@ export const WorkflowKanban: React.FC<WorkflowKanbanProps> = ({
                     }}
                   >
                     {/* Header */}
-                    <div style={{ 
-                      display: 'flex', 
-                      alignItems: 'flex-start', 
-                      justifyContent: 'space-between',
-                      marginBottom: '0.75rem',
-                    }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        justifyContent: 'space-between',
+                        marginBottom: '0.75rem',
+                      }}
+                    >
                       <div style={{ flex: 1 }}>
-                        <p style={{
-                          fontSize: '0.813rem',
-                          color: 'var(--orx-text-secondary)',
-                          marginBottom: '0.25rem',
-                        }}>
+                        <p
+                          style={{
+                            fontSize: '0.813rem',
+                            color: 'var(--orx-text-secondary)',
+                            marginBottom: '0.25rem',
+                          }}
+                        >
                           {instance.entityType}
                         </p>
-                        <p style={{
-                          fontSize: '0.813rem',
-                          fontWeight: '600',
-                          color: 'var(--orx-text-primary)',
-                        }}>
+                        <p
+                          style={{
+                            fontSize: '0.813rem',
+                            fontWeight: '600',
+                            color: 'var(--orx-text-primary)',
+                          }}
+                        >
                           #{instance.entityId}
                         </p>
                       </div>
-                      
-                      <div style={{
-                        width: '0.5rem',
-                        height: '0.5rem',
-                        borderRadius: '50%',
-                        background: getPriorityColor(instance.priority),
-                      }} />
+
+                      <div
+                        style={{
+                          width: '0.5rem',
+                          height: '0.5rem',
+                          borderRadius: '50%',
+                          background: getPriorityColor(instance.priority),
+                        }}
+                      />
                     </div>
-                    
+
                     {/* Info */}
-                    <div style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '0.5rem',
-                      fontSize: '0.813rem',
-                      color: 'var(--orx-text-secondary)',
-                    }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.5rem',
+                        fontSize: '0.813rem',
+                        color: 'var(--orx-text-secondary)',
+                      }}
+                    >
                       {instance.assignedToName && (
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                           <User style={{ width: '0.875rem', height: '0.875rem' }} />
                           {instance.assignedToName}
                         </div>
                       )}
-                      
+
                       {instance.dueDate && (
-                        <div style={{ 
-                          display: 'flex', 
-                          alignItems: 'center', 
-                          gap: '0.5rem',
-                          color: isOverdue(instance.dueDate) ? 'var(--orx-error)' : 'var(--orx-text-secondary)',
-                        }}>
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            color: isOverdue(instance.dueDate)
+                              ? 'var(--orx-error)'
+                              : 'var(--orx-text-secondary)',
+                          }}
+                        >
                           {isOverdue(instance.dueDate) ? (
                             <AlertCircle style={{ width: '0.875rem', height: '0.875rem' }} />
                           ) : (
@@ -524,7 +584,7 @@ export const WorkflowKanban: React.FC<WorkflowKanbanProps> = ({
                           {formatDate(instance.dueDate)}
                         </div>
                       )}
-                      
+
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <Clock style={{ width: '0.875rem', height: '0.875rem' }} />
                         {formatDate(instance.updatedAt)}
@@ -532,14 +592,16 @@ export const WorkflowKanban: React.FC<WorkflowKanbanProps> = ({
                     </div>
                   </div>
                 ))}
-                
+
                 {stateInstances.length === 0 && (
-                  <div style={{
-                    padding: '2rem 1rem',
-                    textAlign: 'center',
-                    color: 'var(--orx-text-secondary)',
-                    fontSize: '0.813rem',
-                  }}>
+                  <div
+                    style={{
+                      padding: '2rem 1rem',
+                      textAlign: 'center',
+                      color: 'var(--orx-text-secondary)',
+                      fontSize: '0.813rem',
+                    }}
+                  >
                     Nenhum item neste estado
                   </div>
                 )}
@@ -553,4 +615,3 @@ export const WorkflowKanban: React.FC<WorkflowKanbanProps> = ({
 };
 
 export default WorkflowKanban;
-

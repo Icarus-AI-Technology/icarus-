@@ -30,21 +30,21 @@ export class AgentOrchestrator {
       'auditar-edge-functions': 'node tools/ia/check-edge-functions.js',
       'corrigir-configs': 'node tools/ia/auto-fix-configs.js',
     },
-    'Contador': {
+    Contador: {
       'check-fiscal-erp': 'node tools/compliance/fiscal/check-erp-fiscal.js',
       'list-obrigacoes': 'node tools/compliance/fiscal/list-obrigacoes.js',
       'simular-lucro-real': 'node tools/finance/simulador-lucro-real.js',
     },
-    'Advogado': {
+    Advogado: {
       'check-compliance-erp': 'node tools/compliance/legal/check-erp-legal.js',
       'monitor-regulatorio': 'node tools/compliance/legal/monitor-regulatorio.js',
     },
-    'Gestao': {
+    Gestao: {
       'mapear-kpis': 'node tools/analytics/map-kpis-executivos.js',
       'auditar-modulos': 'node tools/audit/auditar-modulos.js',
     },
-    'Tutor': {
-      'diagnosticar': 'node tools/tutor/diagnosticar-sistema.js',
+    Tutor: {
+      diagnosticar: 'node tools/tutor/diagnosticar-sistema.js',
       'classificar-gaps': 'node tools/tutor/classificar-gaps.js',
       'parecer-compliance': 'node tools/tutor/parecer-compliance.js',
     },

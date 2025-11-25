@@ -1,10 +1,10 @@
 /**
  * SKELETON LOADERS CUSTOMIZADOS
- * 
+ *
  * Componentes de loading skeleton para diferentes layouts
  */
 
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 
 interface SkeletonProps {
@@ -20,13 +20,7 @@ export function Skeleton({ className, variant = 'pulse' }: SkeletonProps) {
   };
 
   return (
-    <div
-      className={cn(
-        'bg-[var(--orx-bg-muted)] rounded-md',
-        variants[variant],
-        className
-      )}
-    />
+    <div className={cn('bg-[var(--orx-bg-muted)] rounded-md', variants[variant], className)} />
   );
 }
 
@@ -89,7 +83,7 @@ export function TableSkeleton({ rows = 5, columns = 4 }: { rows?: number; column
           <Skeleton key={`header-${i}`} className="h-4 w-full" variant="shimmer" />
         ))}
       </div>
-      
+
       {/* Rows */}
       {Array.from({ length: rows }).map((_, rowIndex) => (
         <div
@@ -98,7 +92,11 @@ export function TableSkeleton({ rows = 5, columns = 4 }: { rows?: number; column
           className="grid gap-4 p-4 border-b border-[var(--orx-border-muted)]"
         >
           {Array.from({ length: columns }).map((_, colIndex) => (
-            <Skeleton key={`cell-${rowIndex}-${colIndex}`} className="h-4 w-full" variant="shimmer" />
+            <Skeleton
+              key={`cell-${rowIndex}-${colIndex}`}
+              className="h-4 w-full"
+              variant="shimmer"
+            />
           ))}
         </div>
       ))}
@@ -133,7 +131,7 @@ export function FormSkeleton({ fields = 6 }: { fields?: number }) {
   return (
     <div className="neuro-flat p-6 rounded-lg space-y-6">
       <Skeleton className="h-6 w-48" variant="shimmer" />
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {Array.from({ length: fields }).map((_, i) => (
           <div key={i} className="space-y-2">
@@ -142,7 +140,7 @@ export function FormSkeleton({ fields = 6 }: { fields?: number }) {
           </div>
         ))}
       </div>
-      
+
       <div className="flex gap-3 justify-end mt-6">
         <Skeleton className="h-10 w-24" variant="shimmer" />
         <Skeleton className="h-10 w-32" variant="shimmer" />
@@ -187,4 +185,3 @@ export function ListSkeleton({ items = 5 }: { items?: number }) {
     </div>
   );
 }
-

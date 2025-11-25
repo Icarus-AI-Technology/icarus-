@@ -1,9 +1,9 @@
 /**
  * 🔔 NOTIFICATION SERVICE — SISTEMA DE NOTIFICAÇÕES
- * 
+ *
  * Serviço centralizado para envio de notificações multi-canal
  * Suporta: Email, WhatsApp, SMS, Push, In-App
- * 
+ *
  * Features:
  * - Multi-canal (Email, WhatsApp, SMS, Push, In-App)
  * - Templates dinâmicos
@@ -13,11 +13,13 @@
  * - Error handling
  */
 
-import { supabase } from '@/lib/supabase';
+import { legacySupabase as supabase } from '@/lib/legacySupabase';
 
 // ============================================
 // TYPES
 // ============================================
+
+export type NotificationChannel = 'EMAIL' | 'WHATSAPP' | 'SMS' | 'PUSH' | 'IN_APP';
 
 export interface NotificationPayload {
   channel: NotificationChannel;
@@ -76,9 +78,20 @@ Acesse o sistema para mais detalhes: {{systemUrl}}
 ---
 ICARUS v5.0 - Gestão elevada pela IA
     `,
-    variables: ['workflowName', 'entityType', 'entityId', 'fromState', 'toState', 'comment', 'executedBy', 'executedAt', 'systemUrl', 'userName'],
+    variables: [
+      'workflowName',
+      'entityType',
+      'entityId',
+      'fromState',
+      'toState',
+      'comment',
+      'executedBy',
+      'executedAt',
+      'systemUrl',
+      'userName',
+    ],
   },
-  
+
   // Cirurgias
   'cirurgia.confirmada': {
     id: 'cirurgia.confirmada',
@@ -100,9 +113,16 @@ Sua cirurgia foi confirmada:
 Dúvidas? Ligue (11) 9999-9999
 
 _ICARUS v5.0_`,
-    variables: ['patientName', 'surgeryDate', 'surgeryTime', 'surgeonName', 'hospitalName', 'instructions'],
+    variables: [
+      'patientName',
+      'surgeryDate',
+      'surgeryTime',
+      'surgeonName',
+      'hospitalName',
+      'instructions',
+    ],
   },
-  
+
   'cirurgia.atraso': {
     id: 'cirurgia.atraso',
     name: 'Alerta de Atraso em Cirurgia',
@@ -125,9 +145,17 @@ Acesse o sistema: {{systemUrl}}
 ---
 ICARUS v5.0 - Sistema de Alertas
     `,
-    variables: ['surgeryId', 'hoursInState', 'currentState', 'patientName', 'scheduledDate', 'requiredAction', 'systemUrl'],
+    variables: [
+      'surgeryId',
+      'hoursInState',
+      'currentState',
+      'patientName',
+      'scheduledDate',
+      'requiredAction',
+      'systemUrl',
+    ],
   },
-  
+
   // Compras
   'cotacao.resposta': {
     id: 'cotacao.resposta',
@@ -136,7 +164,7 @@ ICARUS v5.0 - Sistema de Alertas
     body: `Nova resposta de cotação recebida do fornecedor {{supplierName}} para cotação #{{quotationId}}. Valor: {{amount}}`,
     variables: ['supplierName', 'quotationId', 'amount'],
   },
-  
+
   'pedido.aprovado': {
     id: 'pedido.aprovado',
     name: 'Pedido Aprovado',
@@ -159,9 +187,17 @@ Acesse: {{systemUrl}}
 ---
 ICARUS v5.0
     `,
-    variables: ['buyerName', 'orderId', 'supplierName', 'totalAmount', 'approverName', 'nextStep', 'systemUrl'],
+    variables: [
+      'buyerName',
+      'orderId',
+      'supplierName',
+      'totalAmount',
+      'approverName',
+      'nextStep',
+      'systemUrl',
+    ],
   },
-  
+
   // OPME
   'opme.glosa': {
     id: 'opme.glosa',
@@ -187,9 +223,17 @@ Acesse: {{systemUrl}}
 ---
 ICARUS v5.0
     `,
-    variables: ['guideId', 'patientName', 'healthPlan', 'glosedAmount', 'reason', 'deadline', 'systemUrl'],
+    variables: [
+      'guideId',
+      'patientName',
+      'healthPlan',
+      'glosedAmount',
+      'reason',
+      'deadline',
+      'systemUrl',
+    ],
   },
-  
+
   // Contratos
   'contrato.vencimento': {
     id: 'contrato.vencimento',
@@ -213,9 +257,17 @@ Acesse: {{systemUrl}}
 ---
 ICARUS v5.0
     `,
-    variables: ['contractId', 'contractorName', 'contractValue', 'expirationDate', 'daysToExpire', 'requiredAction', 'systemUrl'],
+    variables: [
+      'contractId',
+      'contractorName',
+      'contractValue',
+      'expirationDate',
+      'daysToExpire',
+      'requiredAction',
+      'systemUrl',
+    ],
   },
-  
+
   // Licitações
   'licitacao.prazo': {
     id: 'licitacao.prazo',
@@ -239,7 +291,15 @@ Acesse: {{systemUrl}}
 ---
 ICARUS v5.0
     `,
-    variables: ['biddingId', 'modality', 'agency', 'deadline', 'timeRemaining', 'urgentAction', 'systemUrl'],
+    variables: [
+      'biddingId',
+      'modality',
+      'agency',
+      'deadline',
+      'timeRemaining',
+      'urgentAction',
+      'systemUrl',
+    ],
   },
 };
 
@@ -250,13 +310,13 @@ ICARUS v5.0
 export class NotificationService {
   private static queue: NotificationPayload[] = [];
   private static processing = false;
-  
+
   /**
    * Envia uma notificação
    */
   static async send(payload: NotificationPayload): Promise<NotificationResult> {
     const enabled = this.isChannelEnabled(payload.channel);
-    
+
     if (!enabled) {
       console.warn(`[NotificationService] Canal ${payload.channel} não está habilitado`);
       return {
@@ -265,7 +325,7 @@ export class NotificationService {
         error: 'Canal não habilitado',
       };
     }
-    
+
     // Se tiver schedule, adicionar à fila
     if (payload.scheduledFor && new Date(payload.scheduledFor) > new Date()) {
       await this.addToQueue(payload);
@@ -275,21 +335,21 @@ export class NotificationService {
         notificationId: `scheduled-${Date.now()}`,
       };
     }
-    
+
     // Aplicar template se fornecido
     let finalMessage = payload.message;
     let finalSubject = payload.subject;
-    
+
     if (payload.templateId) {
       const template = NOTIFICATION_TEMPLATES[payload.templateId];
       if (template) {
         finalMessage = this.applyTemplate(template.body, payload.templateData || {});
-        finalSubject = template.subject 
+        finalSubject = template.subject
           ? this.applyTemplate(template.subject, payload.templateData || {})
           : payload.subject;
       }
     }
-    
+
     try {
       // Enviar baseado no canal
       switch (payload.channel) {
@@ -299,43 +359,43 @@ export class NotificationService {
             message: finalMessage,
             subject: finalSubject || 'Notificação ICARUS v5.0',
           });
-          
+
         case 'WHATSAPP':
           return await this.sendWhatsApp({
             ...payload,
             message: finalMessage,
           });
-          
+
         case 'SMS':
           return await this.sendSMS({
             ...payload,
             message: finalMessage,
           });
-          
+
         case 'PUSH':
           return await this.sendPush({
             ...payload,
             message: finalMessage,
           });
-          
+
         case 'IN_APP':
           return await this.sendInApp({
             ...payload,
             message: finalMessage,
           });
-          
+
         default:
           throw new Error(`Canal não suportado: ${payload.channel}`);
       }
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[NotificationService] Erro ao enviar notificação:', err);
-      
+
       // Tentar novamente para notificações críticas
       if (payload.priority === 'urgent' || payload.priority === 'high') {
         await this.addToRetryQueue(payload);
       }
-      
+
       return {
         success: false,
         channel: payload.channel,
@@ -343,20 +403,20 @@ export class NotificationService {
       };
     }
   }
-  
+
   /**
    * Enviar email
    */
   private static async sendEmail(payload: NotificationPayload): Promise<NotificationResult> {
     const smtpEnabled = import.meta.env.SMTP_HOST;
-    
+
     if (!smtpEnabled) {
       console.log('[NotificationService] [MOCK] Email:', {
         to: payload.to,
         subject: payload.subject,
         message: payload.message,
       });
-      
+
       return {
         success: true,
         channel: 'EMAIL',
@@ -364,11 +424,11 @@ export class NotificationService {
         sentAt: new Date(),
       };
     }
-    
+
     // Em produção: usar nodemailer ou similar
     // const transporter = nodemailer.createTransport({...});
     // await transporter.sendMail({...});
-    
+
     return {
       success: true,
       channel: 'EMAIL',
@@ -376,19 +436,19 @@ export class NotificationService {
       sentAt: new Date(),
     };
   }
-  
+
   /**
    * Enviar WhatsApp
    */
   private static async sendWhatsApp(payload: NotificationPayload): Promise<NotificationResult> {
     const zapiEnabled = import.meta.env.VITE_ZAPI_ENABLED === 'true';
-    
+
     if (!zapiEnabled) {
       console.log('[NotificationService] [MOCK] WhatsApp:', {
         to: payload.to,
         message: payload.message,
       });
-      
+
       return {
         success: true,
         channel: 'WHATSAPP',
@@ -396,14 +456,14 @@ export class NotificationService {
         sentAt: new Date(),
       };
     }
-    
+
     // Em produção: usar Z-API
     // const response = await fetch(`${ZAPI_BASE_URL}/send-text`, {
     //   method: 'POST',
     //   headers: { 'Client-Token': ZAPI_TOKEN },
     //   body: JSON.stringify({ phone: payload.to, message: payload.message }),
     // });
-    
+
     return {
       success: true,
       channel: 'WHATSAPP',
@@ -411,7 +471,7 @@ export class NotificationService {
       sentAt: new Date(),
     };
   }
-  
+
   /**
    * Enviar SMS
    */
@@ -420,7 +480,7 @@ export class NotificationService {
       to: payload.to,
       message: payload.message,
     });
-    
+
     return {
       success: true,
       channel: 'SMS',
@@ -428,7 +488,7 @@ export class NotificationService {
       sentAt: new Date(),
     };
   }
-  
+
   /**
    * Enviar Push Notification
    */
@@ -437,9 +497,9 @@ export class NotificationService {
       to: payload.to,
       message: payload.message,
     });
-    
+
     // Em produção: usar Firebase Cloud Messaging
-    
+
     return {
       success: true,
       channel: 'PUSH',
@@ -447,7 +507,7 @@ export class NotificationService {
       sentAt: new Date(),
     };
   }
-  
+
   /**
    * Enviar notificação In-App
    */
@@ -468,9 +528,9 @@ export class NotificationService {
         })
         .select()
         .single();
-      
+
       if (error) throw error;
-      
+
       return {
         success: true,
         channel: 'IN_APP',
@@ -478,7 +538,7 @@ export class NotificationService {
         sentAt: new Date(),
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[NotificationService] Erro ao salvar notificação in-app:', err);
       return {
         success: false,
@@ -487,34 +547,34 @@ export class NotificationService {
       };
     }
   }
-  
+
   /**
    * Enviar múltiplas notificações em batch
    */
   static async sendBatch(payloads: NotificationPayload[]): Promise<NotificationResult[]> {
-    return Promise.all(payloads.map(p => this.send(p)));
+    return Promise.all(payloads.map((p) => this.send(p)));
   }
-  
+
   /**
    * Aplicar template com variáveis
    */
   private static applyTemplate(template: string, data: Record<string, unknown>): string {
     let result = template;
-    
+
     // Substituir variáveis simples {{variable}}
     Object.entries(data).forEach(([key, value]) => {
       const regex = new RegExp(`{{${key}}}`, 'g');
       result = result.replace(regex, String(value || ''));
     });
-    
+
     // Remover blocos condicionais vazios {{#key}}...{{/key}}
     result = result.replace(/{{#(\w+)}}[\s\S]*?{{\/\1}}/g, (match, key) => {
       return (data as Record<string, unknown>)[key] ? match.replace(/{{#\w+}}|{{\/\w+}}/g, '') : '';
     });
-    
+
     return result.trim();
   }
-  
+
   /**
    * Verificar se canal está habilitado
    */
@@ -533,13 +593,13 @@ export class NotificationService {
         return false;
     }
   }
-  
+
   /**
    * Adicionar à fila de envio agendado
    */
   private static async addToQueue(payload: NotificationPayload): Promise<void> {
     this.queue.push(payload);
-    
+
     // Salvar no Supabase para persistência
     await supabase.from('notification_queue').insert({
       payload: payload as unknown,
@@ -547,14 +607,14 @@ export class NotificationService {
       created_at: new Date().toISOString(),
     });
   }
-  
+
   /**
    * Adicionar à fila de retry
    */
   private static async addToRetryQueue(payload: NotificationPayload): Promise<void> {
     // Tentar novamente em 5 minutos
     const retryAt = new Date(Date.now() + 5 * 60 * 1000);
-    
+
     await supabase.from('notification_retry').insert({
       payload: payload as unknown,
       retry_at: retryAt,
@@ -562,14 +622,14 @@ export class NotificationService {
       created_at: new Date().toISOString(),
     });
   }
-  
+
   /**
    * Processar fila de notificações agendadas
    */
   static async processQueue(): Promise<void> {
     if (this.processing) return;
     this.processing = true;
-    
+
     try {
       // Buscar notificações agendadas prontas para envio
       const { data: scheduled } = await supabase
@@ -577,19 +637,16 @@ export class NotificationService {
         .select('*')
         .lte('scheduled_for', new Date().toISOString())
         .limit(50);
-      
+
       if (scheduled && scheduled.length > 0) {
         for (const item of scheduled) {
           await this.send(item.payload);
-          
+
           // Remover da fila
-          await supabase
-            .from('notification_queue')
-            .delete()
-            .eq('id', item.id);
+          await supabase.from('notification_queue').delete().eq('id', item.id);
         }
       }
-      
+
       // Processar retries
       const { data: retries } = await supabase
         .from('notification_retry')
@@ -597,17 +654,14 @@ export class NotificationService {
         .lte('retry_at', new Date().toISOString())
         .lt('attempts', 3)
         .limit(50);
-      
+
       if (retries && retries.length > 0) {
         for (const item of retries) {
           const result = await this.send(item.payload);
-          
+
           if (result.success) {
             // Remover da fila de retry
-            await supabase
-              .from('notification_retry')
-              .delete()
-              .eq('id', item.id);
+            await supabase.from('notification_retry').delete().eq('id', item.id);
           } else {
             // Incrementar tentativas
             await supabase
@@ -621,20 +675,20 @@ export class NotificationService {
         }
       }
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[NotificationService] Erro ao processar fila:', err);
     } finally {
       this.processing = false;
     }
   }
-  
+
   /**
    * Obter template por ID
    */
   static getTemplate(templateId: string): NotificationTemplate | undefined {
     return NOTIFICATION_TEMPLATES[templateId];
   }
-  
+
   /**
    * Listar todos os templates
    */
@@ -651,4 +705,3 @@ if (typeof window !== 'undefined') {
 }
 
 export default NotificationService;
-

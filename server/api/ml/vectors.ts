@@ -46,7 +46,10 @@ function getSupabaseClient(req: VercelRequest) {
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'authorization, x-client-info, apikey, content-type'
+  );
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
 
   if (req.method === 'OPTIONS') {
@@ -87,14 +90,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const { error } = await client.from('ml_vectors').upsert(rows);
 
       if (error) {
-        return res.status(500).json({ error: 'Falha ao persistir vetores', details: error.message });
+        return res
+          .status(500)
+          .json({ error: 'Falha ao persistir vetores', details: error.message });
       }
 
       return res.status(200).json({ status: 'ok' });
     }
 
     if (req.method === 'DELETE') {
-      const { error } = await client.from('ml_vectors').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      const { error } = await client
+        .from('ml_vectors')
+        .delete()
+        .neq('id', '00000000-0000-0000-0000-000000000000');
 
       if (error) {
         return res.status(500).json({ error: 'Falha ao apagar vetores', details: error.message });

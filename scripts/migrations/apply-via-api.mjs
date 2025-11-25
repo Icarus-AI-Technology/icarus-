@@ -5,10 +5,10 @@
  */
 
 import { readFileSync } from 'fs';
-import { createClient } from '@supabase/supabase-js';
 
 const SUPABASE_URL = 'https://gvbkviozlhxorjoavmky.supabase.co';
-const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd2Ymt2aW96bGh4b3Jqb2F2bWt5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzQxNDc2NSwiZXhwIjoyMDc4OTkwNzY1fQ.9PaCxFGQdRhM00Cf3LSEn6PuBz1hcG1Pds1Kjp4XnL0';
+const SUPABASE_SERVICE_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd2Ymt2aW96bGh4b3Jqb2F2bWt5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzQxNDc2NSwiZXhwIjoyMDc4OTkwNzY1fQ.9PaCxFGQdRhM00Cf3LSEn6PuBz1hcG1Pds1Kjp4XnL0';
 
 console.log('🚀 Aplicando migrações via Supabase API...\n');
 
@@ -35,4 +35,3 @@ console.log('📦 supabase/migrations_blocks/block_01.sql até block_10.sql');
 console.log('');
 
 process.exit(0);
-

@@ -1,9 +1,9 @@
 /**
  * Factory Pattern for Transportadora Services
- * 
+ *
  * FUNÇÃO:
  * Centralizar criação de instâncias de serviços de transportadoras
- * 
+ *
  * USO:
  * ```typescript
  * const service = getTransportadoraService('correios');
@@ -32,7 +32,7 @@ export const TRANSPORTADORAS_DISPONIVEIS: TransportadoraInfo[] = [
     prazoMedio: '3-7 dias',
     custoMedio: 'R$ 25-80',
     rating: 4.2,
-    ativo: true
+    ativo: true,
   },
   {
     id: '2',
@@ -46,7 +46,7 @@ export const TRANSPORTADORAS_DISPONIVEIS: TransportadoraInfo[] = [
     prazoMedio: '2-5 dias',
     custoMedio: 'R$ 20-60',
     rating: 4.5,
-    ativo: true
+    ativo: true,
   },
   {
     id: '3',
@@ -60,7 +60,7 @@ export const TRANSPORTADORAS_DISPONIVEIS: TransportadoraInfo[] = [
     prazoMedio: '1-4 dias',
     custoMedio: 'R$ 35-90',
     rating: 4.6,
-    ativo: true
+    ativo: true,
   },
   // Placeholder para transportadoras futuras
   {
@@ -75,7 +75,7 @@ export const TRANSPORTADORAS_DISPONIVEIS: TransportadoraInfo[] = [
     prazoMedio: '2-6 dias',
     custoMedio: 'R$ 22-70',
     rating: 4.3,
-    ativo: false // Implementação futura
+    ativo: false, // Implementação futura
   },
   {
     id: '5',
@@ -89,67 +89,63 @@ export const TRANSPORTADORAS_DISPONIVEIS: TransportadoraInfo[] = [
     prazoMedio: '1-2 dias',
     custoMedio: 'R$ 80-200',
     rating: 4.7,
-    ativo: false // Implementação futura
-  }
+    ativo: false, // Implementação futura
+  },
 ];
 
 /**
  * Mapa de serviços disponíveis
  */
 const servicesMap: Record<string, () => TransportadoraService> = {
-  'correios': () => new CorreiosService(),
-  'jadlog': () => new JadlogService(),
-  'tnt': () => new TNTService(),
+  correios: () => new CorreiosService(),
+  jadlog: () => new JadlogService(),
+  tnt: () => new TNTService(),
   // Adicionar mais conforme implementação
 };
 
 /**
  * Get instance of transportadora service
- * 
+ *
  * @param codigo - Código da transportadora (ex: 'correios', 'jadlog')
  * @returns Instance of TransportadoraService
  * @throws Error se transportadora não encontrada ou não implementada
  */
 export function getTransportadoraService(codigo: string): TransportadoraService {
   const factory = servicesMap[codigo.toLowerCase()];
-  
+
   if (!factory) {
     throw new Error(
       `Transportadora '${codigo}' não encontrada. ` +
-      `Disponíveis: ${Object.keys(servicesMap).join(', ')}`
+        `Disponíveis: ${Object.keys(servicesMap).join(', ')}`
     );
   }
-  
+
   return factory();
 }
 
 /**
  * Get all active transportadora services
- * 
+ *
  * @returns Array of TransportadoraService instances
  */
 export function getAllActiveServices(): TransportadoraService[] {
-  return TRANSPORTADORAS_DISPONIVEIS
-    .filter(t => t.ativo)
-    .map(t => getTransportadoraService(t.codigo));
+  return TRANSPORTADORAS_DISPONIVEIS.filter((t) => t.ativo).map((t) =>
+    getTransportadoraService(t.codigo)
+  );
 }
 
 /**
  * Get transportadora info by codigo
  */
 export function getTransportadoraInfo(codigo: string): TransportadoraInfo | undefined {
-  return TRANSPORTADORAS_DISPONIVEIS.find(
-    t => t.codigo.toLowerCase() === codigo.toLowerCase()
-  );
+  return TRANSPORTADORAS_DISPONIVEIS.find((t) => t.codigo.toLowerCase() === codigo.toLowerCase());
 }
 
 /**
  * Get transportadoras by type
  */
-export function getTransportadorasByTipo(
-  tipo: 'nacional' | 'internacional'
-): TransportadoraInfo[] {
-  return TRANSPORTADORAS_DISPONIVEIS.filter(t => t.tipo === tipo && t.ativo);
+export function getTransportadorasByTipo(tipo: 'nacional' | 'internacional'): TransportadoraInfo[] {
+  return TRANSPORTADORAS_DISPONIVEIS.filter((t) => t.tipo === tipo && t.ativo);
 }
 
 /**
@@ -158,9 +154,7 @@ export function getTransportadorasByTipo(
 export function getTransportadorasByModalidade(
   modalidade: 'terrestre' | 'aerea' | 'maritima'
 ): TransportadoraInfo[] {
-  return TRANSPORTADORAS_DISPONIVEIS.filter(
-    t => t.modalidades.includes(modalidade) && t.ativo
-  );
+  return TRANSPORTADORAS_DISPONIVEIS.filter((t) => t.modalidades.includes(modalidade) && t.ativo);
 }
 
 // Exports
@@ -169,4 +163,3 @@ export * from './base/APIGateway';
 export { CorreiosService } from './nacionais/CorreiosService';
 export { JadlogService } from './nacionais/JadlogService';
 export { TNTService } from './nacionais/TNTService';
-

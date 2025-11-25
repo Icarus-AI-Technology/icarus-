@@ -44,7 +44,9 @@ function sanitizeModuleFilter(module?: string | null): string | undefined {
   const trimmed = module.trim();
   if (!trimmed) return undefined;
   if (!MODULE_FILTER_REGEX.test(trimmed)) {
-    throw new Error('Filtro "module" inválido. Use apenas letras, números, hífen ou underscore (máx. 64 caracteres).');
+    throw new Error(
+      'Filtro "module" inválido. Use apenas letras, números, hífen ou underscore (máx. 64 caracteres).'
+    );
   }
   return trimmed;
 }
@@ -71,7 +73,11 @@ async function searchFaiss(query: number[], topK: number): Promise<VectorResult[
   return ids.map((id, idx) => ({ id, distance: distances[idx] }));
 }
 
-async function searchPgvector(query: number[], topK: number, module?: string): Promise<VectorResult[]> {
+async function searchPgvector(
+  query: number[],
+  topK: number,
+  module?: string
+): Promise<VectorResult[]> {
   const url = process.env.SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url) throw new Error('SUPABASE_URL não configurada');
@@ -98,7 +104,11 @@ async function searchPgvector(query: number[], topK: number, module?: string): P
     .filter((r) => r.id.length > 0);
 }
 
-async function searchMilvus(query: number[], topK: number, module?: string): Promise<VectorResult[]> {
+async function searchMilvus(
+  query: number[],
+  topK: number,
+  module?: string
+): Promise<VectorResult[]> {
   const endpoint = process.env.MILVUS_ENDPOINT;
   if (!endpoint) throw new Error('MILVUS_ENDPOINT não configurada');
 
@@ -117,7 +127,11 @@ async function searchMilvus(query: number[], topK: number, module?: string): Pro
   return json.results || [];
 }
 
-async function searchWeaviate(query: number[], topK: number, module?: string): Promise<VectorResult[]> {
+async function searchWeaviate(
+  query: number[],
+  topK: number,
+  module?: string
+): Promise<VectorResult[]> {
   const baseUrl = process.env.WEAVIATE_URL;
   if (!baseUrl) throw new Error('WEAVIATE_URL não configurada');
 
@@ -153,7 +167,11 @@ async function searchWeaviate(query: number[], topK: number, module?: string): P
     .filter((r) => r.id.length > 0);
 }
 
-async function searchQdrant(query: number[], topK: number, module?: string): Promise<VectorResult[]> {
+async function searchQdrant(
+  query: number[],
+  topK: number,
+  module?: string
+): Promise<VectorResult[]> {
   const baseUrl = process.env.QDRANT_URL;
   const collection = process.env.QDRANT_COLLECTION || 'ml_vectors';
   if (!baseUrl) throw new Error('QDRANT_URL não configurada');
@@ -180,7 +198,10 @@ async function searchQdrant(query: number[], topK: number, module?: string): Pro
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'authorization, x-client-info, apikey, content-type'
+  );
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
 
   if (req.method === 'OPTIONS') return res.status(200).end();

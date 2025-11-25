@@ -1,9 +1,9 @@
 /**
  * 💰 DASHBOARD FINANCEIRO — PLUGGY INTEGRATION
- * 
+ *
  * Dashboard consolidado de todas as contas bancárias conectadas via Pluggy
  * Funciona em modo MOCK com dados simulados
- * 
+ *
  * Features:
  * - Saldo consolidado (todas as contas)
  * - Lista de contas conectadas
@@ -21,14 +21,15 @@ import {
   TrendingDown,
   Plus,
   RefreshCcw,
-  Download,
   Eye,
   EyeOff,
   DollarSign,
   ArrowUpRight,
   ArrowDownRight,
+  AlertCircle,
 } from 'lucide-react';
 import { PluggyConnectWidget } from '@/components/pluggy/PluggyConnectWidget';
+import { Button } from '@/components/oraclusx-ds/Button';
 
 // Mock data para desenvolvimento
 const MOCK_ACCOUNTS = [
@@ -39,8 +40,8 @@ const MOCK_ACCOUNTS = [
     type: 'BANK',
     subtype: 'CHECKING_ACCOUNT',
     number: '****1234',
-    balance: 15420.50,
-    availableBalance: 15420.50,
+    balance: 15420.5,
+    availableBalance: 15420.5,
   },
   {
     id: 'acc-2',
@@ -49,8 +50,8 @@ const MOCK_ACCOUNTS = [
     type: 'BANK',
     subtype: 'CHECKING_ACCOUNT',
     number: '****5678',
-    balance: 8750.00,
-    availableBalance: 8750.00,
+    balance: 8750.0,
+    availableBalance: 8750.0,
   },
   {
     id: 'acc-3',
@@ -59,8 +60,8 @@ const MOCK_ACCOUNTS = [
     type: 'CREDIT',
     subtype: 'CREDIT_CARD',
     number: '****9012',
-    balance: -2340.80,
-    availableBalance: 7659.20,
+    balance: -2340.8,
+    availableBalance: 7659.2,
   },
 ];
 
@@ -70,7 +71,7 @@ const MOCK_TRANSACTIONS = [
     accountId: 'acc-1',
     date: '2025-10-20',
     description: 'PIX Recebido - Cirurgia OPME',
-    amount: 5420.50,
+    amount: 5420.5,
     type: 'CREDIT',
     category: 'Receitas',
   },
@@ -79,7 +80,7 @@ const MOCK_TRANSACTIONS = [
     accountId: 'acc-1',
     date: '2025-10-19',
     description: 'Fornecedor Medical Ltda',
-    amount: -3200.00,
+    amount: -3200.0,
     type: 'DEBIT',
     category: 'Fornecedores',
   },
@@ -88,7 +89,7 @@ const MOCK_TRANSACTIONS = [
     accountId: 'acc-2',
     date: '2025-10-19',
     description: 'Salários Funcionários',
-    amount: -12500.00,
+    amount: -12500.0,
     type: 'DEBIT',
     category: 'Folha de Pagamento',
   },
@@ -97,7 +98,7 @@ const MOCK_TRANSACTIONS = [
     accountId: 'acc-1',
     date: '2025-10-18',
     description: 'PIX Recebido - Faturamento OPME',
-    amount: 8900.00,
+    amount: 8900.0,
     type: 'CREDIT',
     category: 'Receitas',
   },
@@ -106,7 +107,7 @@ const MOCK_TRANSACTIONS = [
     accountId: 'acc-3',
     date: '2025-10-18',
     description: 'Compra Material Cirúrgico',
-    amount: -1540.80,
+    amount: -1540.8,
     type: 'DEBIT',
     category: 'Compras',
   },
@@ -115,7 +116,7 @@ const MOCK_TRANSACTIONS = [
     accountId: 'acc-2',
     date: '2025-10-17',
     description: 'Aluguel Galpão',
-    amount: -4500.00,
+    amount: -4500.0,
     type: 'DEBIT',
     category: 'Despesas Fixas',
   },
@@ -124,7 +125,7 @@ const MOCK_TRANSACTIONS = [
     accountId: 'acc-1',
     date: '2025-10-17',
     description: 'Plano de Saúde - Pagamento',
-    amount: 15600.00,
+    amount: 15600.0,
     type: 'CREDIT',
     category: 'Receitas',
   },
@@ -133,7 +134,7 @@ const MOCK_TRANSACTIONS = [
     accountId: 'acc-1',
     date: '2025-10-16',
     description: 'Energia Elétrica',
-    amount: -890.50,
+    amount: -890.5,
     type: 'DEBIT',
     category: 'Despesas Fixas',
   },
@@ -144,35 +145,35 @@ export const DashboardFinanceiro: React.FC = () => {
   const [showBalances, setShowBalances] = useState(true);
   const [selectedPeriod, setSelectedPeriod] = useState('7d');
   const [selectedAccount, setSelectedAccount] = useState<string>('all');
-  
+
   const pluggyEnabled = import.meta.env.VITE_PLUGGY_ENABLED === 'true';
-  
+
   // Calcular saldos
   const totalBalance = useMemo(() => {
     return MOCK_ACCOUNTS.reduce((sum, acc) => sum + acc.balance, 0);
   }, []);
-  
+
   const totalAvailable = useMemo(() => {
     return MOCK_ACCOUNTS.reduce((sum, acc) => {
       return sum + (acc.type === 'BANK' ? acc.balance : acc.availableBalance);
     }, 0);
   }, []);
-  
+
   // Filtrar transações
   const filteredTransactions = useMemo(() => {
     let filtered = MOCK_TRANSACTIONS;
-    
+
     // Por conta
     if (selectedAccount !== 'all') {
-      filtered = filtered.filter(t => t.accountId === selectedAccount);
+      filtered = filtered.filter((t) => t.accountId === selectedAccount);
     }
-    
+
     // Por período (simulado)
     // Em produção, usar datas reais
-    
+
     return filtered;
   }, [selectedAccount]);
-  
+
   // Calcular receitas e despesas
   const { totalIncome, totalExpenses } = useMemo(() => {
     return filteredTransactions.reduce(
@@ -187,9 +188,9 @@ export const DashboardFinanceiro: React.FC = () => {
       { totalIncome: 0, totalExpenses: 0 }
     );
   }, [filteredTransactions]);
-  
+
   const netBalance = totalIncome - totalExpenses;
-  
+
   // Formatar moeda
   const formatCurrency = (value: number): string => {
     return new Intl.NumberFormat('pt-BR', {
@@ -197,7 +198,7 @@ export const DashboardFinanceiro: React.FC = () => {
       currency: 'BRL',
     }).format(value);
   };
-  
+
   // Formatar data
   const formatDate = (dateStr: string): string => {
     return new Intl.DateTimeFormat('pt-BR', {
@@ -206,471 +207,307 @@ export const DashboardFinanceiro: React.FC = () => {
       year: 'numeric',
     }).format(new Date(dateStr));
   };
-  
+
   // Handlers
-  const handleConnectSuccess = (itemId: string) => {
-    console.log('Banco conectado:', itemId);
+  const handleConnectSuccess = () => {
     setShowWidget(false);
     // Em produção: recarregar contas
   };
-  
+
   const handleConnectError = (error: Error) => {
     console.error('Erro ao conectar:', error);
   };
-  
+
   return (
-    <div className="dashboard-financeiro" style={{ width: '100%' }}>
+    <div className="w-full dashboard-financeiro">
       {/* Header */}
-      <div className="neumorphic-container p-6 mb-6">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+      <div className="p-6 mb-6 neumorphic-container">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 style={{
-              fontSize: '0.813rem',
-              fontWeight: 'bold',
-              color: 'var(--orx-text-primary)',
-              marginBottom: '0.5rem',
-            }}>
-              Dashboard Financeiro
-            </h1>
-            <p style={{
-              fontSize: '0.813rem',
-              color: 'var(--orx-text-secondary)',
-            }}>
-              {pluggyEnabled 
-                ? 'Contas conectadas via Open Finance Brasil' 
-                : '⚠️ Modo MOCK: Dados simulados para desenvolvimento'
-              }
+            <h1 className="mb-2 text-xl font-bold text-primary">Dashboard Financeiro</h1>
+            <p className="text-sm text-muted">
+              {pluggyEnabled
+                ? 'Contas conectadas via Open Finance Brasil'
+                : '⚠️ Modo MOCK: Dados simulados para desenvolvimento'}
             </p>
           </div>
-          
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
-            <button
-              className="neumorphic-button"
+
+          <div className="flex gap-3">
+            <Button
+              
+              variant="primary"
               onClick={() => setShowWidget(true)}
-              style={{
-                padding: '0.75rem 1.5rem',
-                borderRadius: '0.75rem',
-                background: 'var(--orx-primary)',
-                color: 'white',
-                fontWeight: '600',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-              }}
+              leftIcon={Plus}
             >
-              <Plus style={{ width: '1rem', height: '1rem' }} />
               Conectar Banco
-            </button>
-            
-            <button
-              className="neumorphic-button"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.75rem 1rem',
-                borderRadius: '0.75rem',
-              }}
-            >
-              <RefreshCcw style={{ width: '1rem', height: '1rem' }} />
-            </button>
+            </Button>
+
+            <Button   className="px-3">
+              <RefreshCcw size={16} />
+            </Button>
           </div>
         </div>
       </div>
-      
+
       {/* KPIs */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-        gap: '1.5rem',
-        marginBottom: '2rem',
-      }}>
+      <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 lg:grid-cols-4">
         {/* Saldo Total */}
-        <div className="neumorphic-container p-6">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-            <h3 style={{
-              fontSize: '0.813rem',
-              fontWeight: '600',
-              color: 'var(--orx-text-secondary)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-            }}>
+        <div className="p-6 neumorphic-container">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xs font-semibold tracking-wider uppercase text-muted">
               Saldo Total
             </h3>
             <button
               onClick={() => setShowBalances(!showBalances)}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-                color: 'var(--orx-text-secondary)',
-              }}
+              className="text-muted hover:text-primary transition-colors"
             >
-              {showBalances ? (
-                <Eye style={{ width: '1rem', height: '1rem' }} />
-              ) : (
-                <EyeOff style={{ width: '1rem', height: '1rem' }} />
-              )}
+              {showBalances ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
             </button>
           </div>
-          <p style={{
-            fontSize: '0.813rem',
-            fontWeight: 'bold',
-            color: 'var(--orx-text-primary)',
-          }}>
-            {showBalances ? formatCurrency(totalBalance) : '••••••'}
-          </p>
-          <p style={{
-            fontSize: '0.813rem',
-            color: 'var(--orx-text-secondary)',
-            marginTop: '0.5rem',
-          }}>
+          <div className="flex items-baseline gap-2">
+            <span className="text-2xl font-bold text-primary">
+              {showBalances ? formatCurrency(totalBalance) : 'R$ ••••••'}
+            </span>
+          </div>
+          <p className="mt-2 text-xs text-muted">
             Disponível: {showBalances ? formatCurrency(totalAvailable) : '••••••'}
           </p>
         </div>
-        
+
         {/* Receitas */}
-        <div className="neumorphic-container p-6">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-            <h3 style={{
-              fontSize: '0.813rem',
-              fontWeight: '600',
-              color: 'var(--orx-text-secondary)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-            }}>
-              Receitas
+        <div className="p-6 neumorphic-container">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xs font-semibold tracking-wider uppercase text-muted">
+              Receitas (Mês)
             </h3>
-            <div style={{
-              width: '2.5rem',
-              height: '2.5rem',
-              borderRadius: '50%',
-              background: 'var(--orx-success-light)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <TrendingUp style={{ width: '1.25rem', height: '1.25rem', color: 'var(--orx-success)' }} />
+            <div className="p-1.5 rounded-full bg-success/10 text-success">
+              <ArrowUpRight className="w-4 h-4" />
             </div>
           </div>
-          <p style={{
-            fontSize: '0.813rem',
-            fontWeight: 'bold',
-            color: 'var(--orx-success)',
-          }}>
-            {showBalances ? formatCurrency(totalIncome) : '••••••'}
-          </p>
-          <p style={{
-            fontSize: '0.813rem',
-            color: 'var(--orx-text-secondary)',
-            marginTop: '0.5rem',
-          }}>
-            Últimos {selectedPeriod === '7d' ? '7' : selectedPeriod === '30d' ? '30' : '90'} dias
+          <div className="flex items-baseline gap-2">
+            <span className="text-2xl font-bold text-success">
+              {showBalances ? formatCurrency(totalIncome) : 'R$ ••••••'}
+            </span>
+          </div>
+          <p className="mt-2 text-xs text-success flex items-center gap-1">
+            <TrendingUp className="w-3 h-3" />
+            +12.5% vs mês anterior
           </p>
         </div>
-        
+
         {/* Despesas */}
-        <div className="neumorphic-container p-6">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-            <h3 style={{
-              fontSize: '0.813rem',
-              fontWeight: '600',
-              color: 'var(--orx-text-secondary)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-            }}>
-              Despesas
+        <div className="p-6 neumorphic-container">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xs font-semibold tracking-wider uppercase text-muted">
+              Despesas (Mês)
             </h3>
-            <div style={{
-              width: '2.5rem',
-              height: '2.5rem',
-              borderRadius: '50%',
-              background: 'var(--orx-error-light)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <TrendingDown style={{ width: '1.25rem', height: '1.25rem', color: 'var(--orx-error)' }} />
+            <div className="p-1.5 rounded-full bg-danger/10 text-danger">
+              <ArrowDownRight className="w-4 h-4" />
             </div>
           </div>
-          <p style={{
-            fontSize: '0.813rem',
-            fontWeight: 'bold',
-            color: 'var(--orx-error)',
-          }}>
-            {showBalances ? formatCurrency(totalExpenses) : '••••••'}
-          </p>
-          <p style={{
-            fontSize: '0.813rem',
-            color: 'var(--orx-text-secondary)',
-            marginTop: '0.5rem',
-          }}>
-            Últimos {selectedPeriod === '7d' ? '7' : selectedPeriod === '30d' ? '30' : '90'} dias
-          </p>
-        </div>
-        
-        {/* Saldo Líquido */}
-        <div className="neumorphic-container p-6">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-            <h3 style={{
-              fontSize: '0.813rem',
-              fontWeight: '600',
-              color: 'var(--orx-text-secondary)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-            }}>
-              Saldo Líquido
-            </h3>
-            <div style={{
-              width: '2.5rem',
-              height: '2.5rem',
-              borderRadius: '50%',
-              background: netBalance >= 0 ? 'var(--orx-success-light)' : 'var(--orx-error-light)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <DollarSign style={{ 
-                width: '1.25rem', 
-                height: '1.25rem', 
-                color: netBalance >= 0 ? 'var(--orx-success)' : 'var(--orx-error)',
-              }} />
-            </div>
+          <div className="flex items-baseline gap-2">
+            <span className="text-2xl font-bold text-danger">
+              {showBalances ? formatCurrency(totalExpenses) : 'R$ ••••••'}
+            </span>
           </div>
-          <p style={{
-            fontSize: '0.813rem',
-            fontWeight: 'bold',
-            color: netBalance >= 0 ? 'var(--orx-success)' : 'var(--orx-error)',
-          }}>
-            {showBalances ? formatCurrency(netBalance) : '••••••'}
-          </p>
-          <p style={{
-            fontSize: '0.813rem',
-            color: 'var(--orx-text-secondary)',
-            marginTop: '0.5rem',
-          }}>
-            Receitas - Despesas
+          <p className="mt-2 text-xs text-danger flex items-center gap-1">
+            <TrendingDown className="w-3 h-3" />
+            +5.2% vs mês anterior
           </p>
         </div>
-      </div>
-      
-      {/* Contas Conectadas */}
-      <div className="neumorphic-container p-6 mb-6">
-        <h2 style={{
-          fontSize: '0.813rem',
-          fontWeight: 'bold',
-          color: 'var(--orx-text-primary)',
-          marginBottom: '1.5rem',
-        }}>
-          Contas Conectadas
-        </h2>
-        
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-          gap: '1rem',
-        }}>
-          {MOCK_ACCOUNTS.map(account => (
+
+        {/* Resultado */}
+        <div className="p-6 neumorphic-container">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xs font-semibold tracking-wider uppercase text-muted">
+              Resultado Líquido
+            </h3>
             <div
-              key={account.id}
-              className="neumorphic-container"
-              style={{
-                padding: '1.5rem',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-              }}
+              className={`p-1.5 rounded-full ${netBalance >= 0 ? 'bg-primary/10 text-primary' : 'bg-danger/10 text-danger'}`}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                <div style={{
-                  width: '3rem',
-                  height: '3rem',
-                  borderRadius: '50%',
-                  background: 'var(--orx-bg-light)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '0.813rem',
-                }}>
-                  {account.bankLogo}
-                </div>
-                <div>
-                  <h3 style={{
-                    fontSize: '0.813rem',
-                    fontWeight: '600',
-                    color: 'var(--orx-text-primary)',
-                  }}>
-                    {account.bankName}
-                  </h3>
-                  <p style={{
-                    fontSize: '0.813rem',
-                    color: 'var(--orx-text-secondary)',
-                  }}>
-                    {account.type === 'BANK' ? 'Conta Corrente' : 'Cartão de Crédito'} • {account.number}
-                  </p>
-                </div>
-              </div>
-              
-              <div>
-                <p style={{
-                  fontSize: '0.813rem',
-                  color: 'var(--orx-text-secondary)',
-                  marginBottom: '0.25rem',
-                }}>
-                  {account.type === 'BANK' ? 'Saldo' : 'Fatura Atual'}
-                </p>
-                <p style={{
-                  fontSize: '0.813rem',
-                  fontWeight: 'bold',
-                  color: account.balance >= 0 ? 'var(--orx-text-primary)' : 'var(--orx-error)',
-                }}>
-                  {showBalances ? formatCurrency(account.balance) : '••••••'}
-                </p>
-                {account.type === 'CREDIT' && (
-                  <p style={{
-                    fontSize: '0.813rem',
-                    color: 'var(--orx-text-secondary)',
-                    marginTop: '0.25rem',
-                  }}>
-                    Disponível: {showBalances ? formatCurrency(account.availableBalance) : '••••••'}
-                  </p>
-                )}
-              </div>
+              <DollarSign className="w-4 h-4" />
             </div>
-          ))}
+          </div>
+          <div className="flex items-baseline gap-2">
+            <span
+              className={`text-2xl font-bold ${netBalance >= 0 ? 'text-primary' : 'text-danger'}`}
+            >
+              {showBalances ? formatCurrency(netBalance) : 'R$ ••••••'}
+            </span>
+          </div>
+          <p className="mt-2 text-xs text-muted">
+            Margem: {totalIncome > 0 ? ((netBalance / totalIncome) * 100).toFixed(1) : 0}%
+          </p>
         </div>
       </div>
-      
-      {/* Transações */}
-      <div className="neumorphic-container p-6">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
-          <h2 style={{
-            fontSize: '0.813rem',
-            fontWeight: 'bold',
-            color: 'var(--orx-text-primary)',
-          }}>
-            Transações Recentes
-          </h2>
-          
-          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-            <select
-              value={selectedAccount}
-              onChange={(e) => setSelectedAccount(e.target.value)}
-              style={{
-                padding: '0.5rem 1rem',
-                borderRadius: '0.5rem',
-                border: '1px solid var(--orx-gray-300)',
-                background: 'var(--orx-bg-light)',
-                color: 'var(--orx-text-primary)',
-                fontSize: '0.813rem',
-              }}
-            >
-              <option value="all">Todas as contas</option>
-              {MOCK_ACCOUNTS.map(acc => (
-                <option key={acc.id} value={acc.id}>
-                  {acc.bankName} {acc.number}
-                </option>
+
+      {/* Conteúdo Principal */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        {/* Lista de Contas */}
+        <div className="lg:col-span-1">
+          <div className="h-full p-6 neumorphic-container">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-bold text-primary">Minhas Contas</h3>
+              <button className="text-xs font-medium text-primary hover:underline">
+                Gerenciar
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {MOCK_ACCOUNTS.map((acc) => (
+                <div
+                  key={acc.id}
+                  onClick={() => setSelectedAccount(selectedAccount === acc.id ? 'all' : acc.id)}
+                  className={`p-4 rounded-xl transition-all cursor-pointer border ${
+                    selectedAccount === acc.id
+                      ? 'bg-primary/5 border-primary shadow-neumo-sm-inset'
+                      : 'bg-surface border-transparent hover:bg-surface-hover shadow-neumo-sm'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">{acc.bankLogo}</span>
+                      <div>
+                        <p className="font-semibold text-primary">{acc.bankName}</p>
+                        <p className="text-xs text-muted">
+                          {acc.type === 'CREDIT' ? 'Cartão de Crédito' : 'Conta Corrente'}
+                        </p>
+                      </div>
+                    </div>
+                    {selectedAccount === acc.id && (
+                      <div className="w-2 h-2 rounded-full bg-primary" />
+                    )}
+                  </div>
+
+                  <div className="flex items-end justify-between">
+                    <p className="text-xs text-muted">{acc.number}</p>
+                    <p className={`font-bold ${acc.balance < 0 ? 'text-danger' : 'text-primary'}`}>
+                      {showBalances ? formatCurrency(acc.balance) : '••••••'}
+                    </p>
+                  </div>
+                </div>
               ))}
-            </select>
-            
-            <select
-              value={selectedPeriod}
-              onChange={(e) => setSelectedPeriod(e.target.value)}
-              style={{
-                padding: '0.5rem 1rem',
-                borderRadius: '0.5rem',
-                border: '1px solid var(--orx-gray-300)',
-                background: 'var(--orx-bg-light)',
-                color: 'var(--orx-text-primary)',
-                fontSize: '0.813rem',
-              }}
-            >
-              <option value="7d">Últimos 7 dias</option>
-              <option value="30d">Últimos 30 dias</option>
-              <option value="90d">Últimos 90 dias</option>
-            </select>
-            
-            <button
-              className="neumorphic-button"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.5rem 1rem',
-                borderRadius: '0.5rem',
-              }}
-            >
-              <Download style={{ width: '1rem', height: '1rem' }} />
-            </button>
+            </div>
           </div>
         </div>
-        
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr style={{ borderBottom: '2px solid var(--orx-gray-200)' }}>
-                <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.813rem', fontWeight: '600', color: 'var(--orx-text-secondary)' }}>
-                  Data
-                </th>
-                <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.813rem', fontWeight: '600', color: 'var(--orx-text-secondary)' }}>
-                  Descrição
-                </th>
-                <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.813rem', fontWeight: '600', color: 'var(--orx-text-secondary)' }}>
-                  Categoria
-                </th>
-                <th style={{ padding: '1rem', textAlign: 'right', fontSize: '0.813rem', fontWeight: '600', color: 'var(--orx-text-secondary)' }}>
-                  Valor
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredTransactions.map(txn => (
-                <tr key={txn.id} style={{ borderBottom: '1px solid var(--orx-gray-100)' }}>
-                  <td style={{ padding: '1rem', fontSize: '0.813rem', color: 'var(--orx-text-secondary)' }}>
-                    {formatDate(txn.date)}
-                  </td>
-                  <td style={{ padding: '1rem', fontSize: '0.813rem', color: 'var(--orx-text-primary)', fontWeight: '500' }}>
-                    {txn.description}
-                  </td>
-                  <td style={{ padding: '1rem', fontSize: '0.813rem', color: 'var(--orx-text-secondary)' }}>
-                    {txn.category}
-                  </td>
-                  <td style={{ 
-                    padding: '1rem', 
-                    fontSize: '0.813rem', 
-                    fontWeight: '600',
-                    textAlign: 'right',
-                    color: txn.type === 'CREDIT' ? 'var(--orx-success)' : 'var(--orx-error)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    gap: '0.5rem',
-                  }}>
-                    {txn.type === 'CREDIT' ? (
-                      <ArrowUpRight style={{ width: '1rem', height: '1rem' }} />
-                    ) : (
-                      <ArrowDownRight style={{ width: '1rem', height: '1rem' }} />
-                    )}
-                    {formatCurrency(Math.abs(txn.amount))}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+
+        {/* Transações Recentes */}
+        <div className="lg:col-span-2">
+          <div className="h-full p-6 neumorphic-container">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-bold text-primary">Transações Recentes</h3>
+              <div className="flex gap-2">
+                {['7d', '15d', '30d'].map((period) => (
+                  <button
+                    key={period}
+                    onClick={() => setSelectedPeriod(period)}
+                    className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors ${
+                      selectedPeriod === period
+                        ? 'bg-primary text-white shadow-neumo-sm'
+                        : 'text-muted hover:text-primary hover:bg-surface-hover'
+                    }`}
+                  >
+                    {period}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="overflow-hidden rounded-xl">
+              <table className="w-full">
+                <thead className="bg-surface-hover">
+                  <tr>
+                    <th className="px-4 py-3 text-xs font-semibold text-left uppercase text-muted">
+                      Data
+                    </th>
+                    <th className="px-4 py-3 text-xs font-semibold text-left uppercase text-muted">
+                      Descrição
+                    </th>
+                    <th className="px-4 py-3 text-xs font-semibold text-left uppercase text-muted">
+                      Categoria
+                    </th>
+                    <th className="px-4 py-3 text-xs font-semibold text-right uppercase text-muted">
+                      Valor
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {filteredTransactions.map((txn) => (
+                    <tr key={txn.id} className="transition-colors hover:bg-surface-hover/50">
+                      <td className="px-4 py-3 text-sm text-muted whitespace-nowrap">
+                        {formatDate(txn.date)}
+                      </td>
+                      <td className="px-4 py-3">
+                        <p className="text-sm font-medium text-primary">{txn.description}</p>
+                        <p className="text-xs text-muted">
+                          {MOCK_ACCOUNTS.find((a) => a.id === txn.accountId)?.bankName}
+                        </p>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="inline-flex items-center px-2 py-1 text-xs font-medium rounded-md bg-surface-hover text-muted">
+                          {txn.category}
+                        </span>
+                      </td>
+                      <td
+                        className={`px-4 py-3 text-sm font-bold text-right whitespace-nowrap ${
+                          txn.type === 'CREDIT' ? 'text-success' : 'text-danger'
+                        }`}
+                      >
+                        {txn.type === 'CREDIT' ? '+' : ''} {formatCurrency(txn.amount)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="mt-6 text-center">
+              <Button  variant="ghost" className="text-sm text-primary">
+                Ver Extrato Completo
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
-      
-      {/* Widget */}
-      {showWidget && (
-        <PluggyConnectWidget
-          userId="user-123"
-          onSuccess={handleConnectSuccess}
-          onError={handleConnectError}
-          onClose={() => setShowWidget(false)}
-        />
+
+      {/* Widget Pluggy (Modal) */}
+      {showWidget && pluggyEnabled && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="relative w-full max-w-2xl p-6 bg-surface rounded-2xl shadow-neumo-lg">
+            <button
+              onClick={() => setShowWidget(false)}
+              className="absolute top-4 right-4 text-muted hover:text-primary"
+            >
+              ✕
+            </button>
+            <PluggyConnectWidget
+              userId="user-123"
+              onSuccess={handleConnectSuccess}
+              onError={handleConnectError}
+            />
+          </div>
+        </div>
+      )}
+
+      {showWidget && !pluggyEnabled && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="relative w-full max-w-md p-8 text-center bg-surface rounded-2xl shadow-neumo-lg">
+            <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-warning/10 text-warning">
+              <AlertCircle className="w-8 h-8" />
+            </div>
+            <h3 className="mb-2 text-xl font-bold text-primary">Modo de Desenvolvimento</h3>
+            <p className="mb-6 text-muted">
+              A integração com a Pluggy está desativada no momento. Configure as variáveis de
+              ambiente VITE_PLUGGY_ENABLED=true para ativar.
+            </p>
+            <Button  variant="primary" onClick={() => setShowWidget(false)}>
+              Entendi
+            </Button>
+          </div>
+        </div>
       )}
     </div>
   );
 };
 
 export default DashboardFinanceiro;
-

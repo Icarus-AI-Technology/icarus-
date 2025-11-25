@@ -1,29 +1,29 @@
 // src/components/estoque/EstoqueList.tsx
-import { useEstoque } from '@/hooks/useEstoque'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Package, AlertCircle, TrendingUp, TrendingDown } from 'lucide-react'
+import { useEstoque } from '@/hooks/useEstoque';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/oraclusx-ds/Button';
+import { Badge } from '@/components/ui/badge';
+import { Package, AlertCircle, TrendingUp, TrendingDown } from 'lucide-react';
 
 interface EstoqueListProps {
-  empresaId: string
+  empresaId: string;
 }
 
 export function EstoqueList({ empresaId }: EstoqueListProps) {
-  const { estoques, loading, error, movimentarEstoque } = useEstoque(empresaId)
-  
+  const { estoques, loading, error, movimentarEstoque } = useEstoque(empresaId);
+
   interface EstoqueItem {
-    id: string
+    id: string;
     produto?: {
-      nome?: string
-      ponto_reposicao?: number
-    } | null
-    quantidade_disponivel?: number | null
-    quantidade_reservada?: number | null
+      nome?: string;
+      ponto_reposicao?: number;
+    } | null;
+    quantidade_disponivel?: number | null;
+    quantidade_reservada?: number | null;
     armazem?: {
-      nome?: string
-    } | null
-    status?: 'disponivel' | 'reservado' | 'indisponivel' | string
+      nome?: string;
+    } | null;
+    status?: 'disponivel' | 'reservado' | 'indisponivel' | string | null;
   }
 
   if (loading) {
@@ -31,7 +31,7 @@ export function EstoqueList({ empresaId }: EstoqueListProps) {
       <div className="flex items-center justify-center p-8">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -40,7 +40,7 @@ export function EstoqueList({ empresaId }: EstoqueListProps) {
         <AlertCircle className="h-5 w-5" />
         <p>Erro ao carregar estoque: {error.message}</p>
       </div>
-    )
+    );
   }
 
   const handleMovimentacao = async (
@@ -48,14 +48,14 @@ export function EstoqueList({ empresaId }: EstoqueListProps) {
     tipo: 'entrada' | 'saida',
     quantidade: number
   ) => {
-    const { error } = await movimentarEstoque(estoqueId, quantidade, tipo)
-    
+    const { error } = await movimentarEstoque(estoqueId, quantidade, tipo);
+
     if (error) {
-      alert(`Erro ao movimentar estoque: ${error.message}`)
+      alert(`Erro ao movimentar estoque: ${error.message}`);
     } else {
-      alert(`Movimentação de ${tipo} realizada com sucesso!`)
+      alert(`Movimentação de ${tipo} realizada com sucesso!`);
     }
-  }
+  };
 
   return (
     <div className="space-y-4">
@@ -68,10 +68,10 @@ export function EstoqueList({ empresaId }: EstoqueListProps) {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {estoques?.map((estoque: EstoqueItem) => {
-          const produto = estoque.produto
+        {(estoques as EstoqueItem[] | undefined)?.map((estoque) => {
+          const produto = estoque.produto;
           const isEstoqueBaixo =
-            (estoque.quantidade_disponivel || 0) < (produto?.ponto_reposicao || 10)
+            (estoque.quantidade_disponivel || 0) < (produto?.ponto_reposicao || 10);
 
           return (
             <Card key={estoque.id} className={isEstoqueBaixo ? 'border-destructive' : ''}>
@@ -98,9 +98,7 @@ export function EstoqueList({ empresaId }: EstoqueListProps) {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Armazém:</span>
-                    <span className="truncate ml-2">
-                      {estoque.armazem?.nome || 'Sem armazém'}
-                    </span>
+                    <span className="truncate ml-2">{estoque.armazem?.nome || 'Sem armazém'}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Status:</span>
@@ -109,8 +107,8 @@ export function EstoqueList({ empresaId }: EstoqueListProps) {
                         estoque.status === 'disponivel'
                           ? 'default'
                           : estoque.status === 'reservado'
-                          ? 'secondary'
-                          : 'outline'
+                            ? 'secondary'
+                            : 'outline'
                       }
                     >
                       {estoque.status}
@@ -141,7 +139,7 @@ export function EstoqueList({ empresaId }: EstoqueListProps) {
                 </div>
               </CardContent>
             </Card>
-          )
+          );
         })}
       </div>
 
@@ -154,6 +152,5 @@ export function EstoqueList({ empresaId }: EstoqueListProps) {
         </Card>
       )}
     </div>
-  )
+  );
 }
-

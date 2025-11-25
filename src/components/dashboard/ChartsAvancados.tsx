@@ -5,8 +5,22 @@
  */
 
 import React from 'react';
-// import Recharts legacy charts
-// import { ComposedChart, Line, Bar, Area, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ScatterChart, Scatter, ZAxis, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+  ResponsiveContainer,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
+  ScatterChart,
+  Scatter,
+  ZAxis,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Legend,
+  Tooltip as RechartsTooltip,
+} from 'recharts';
 import { OrxLineChart } from '@/components/charts/OrxLineChart';
 import { cn } from '@/lib/utils';
 
@@ -48,11 +62,7 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
 
   return (
     <div className="neuro-raised rounded-xl p-4 bg-[var(--bg-primary)] border border-[var(--border)]">
-      <p
-        className="text-[var(--text-primary)] mb-2 text-[0.813rem] orx-font-semibold"
-      >
-        {label}
-      </p>
+      <p className="text-[var(--text-primary)] mb-2 text-[0.813rem] orx-font-semibold">{label}</p>
       {payload.map((entry, index) => (
         <div key={index} className="flex items-center gap-2">
           <div
@@ -61,9 +71,7 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
               if (el) el.style.backgroundColor = entry.color;
             }}
           />
-          <span
-            className="text-[var(--text-secondary)] text-[0.813rem]"
-          >
+          <span className="text-[var(--text-secondary)] text-[0.813rem]">
             {entry.name}: {entry.value}
           </span>
         </div>
@@ -89,19 +97,11 @@ function ChartContainer({ children, title, subtitle, className }: ChartContainer
       {(title || subtitle) && (
         <div className="mb-4">
           {title && (
-            <h3
-              className="text-[var(--text-primary)] mb-1 text-[0.813rem] orx-font-bold"
-            >
+            <h3 className="text-[var(--text-primary)] mb-1 text-[0.813rem] orx-font-bold">
               {title}
             </h3>
           )}
-          {subtitle && (
-            <p
-              className="text-[var(--text-secondary)] text-[0.813rem]"
-            >
-              {subtitle}
-            </p>
-          )}
+          {subtitle && <p className="text-[var(--text-secondary)] text-[0.813rem]">{subtitle}</p>}
         </div>
       )}
       {children}
@@ -126,7 +126,14 @@ interface ComposedChartComponentProps extends BaseChartProps {
   };
 }
 
-export function ComposedChartComponent({ data, dataKeys, height = 400, title, subtitle, className }: ComposedChartComponentProps) {
+export function ComposedChartComponent({
+  data,
+  dataKeys,
+  height = 400,
+  title,
+  subtitle,
+  className,
+}: ComposedChartComponentProps) {
   const series = (dataKeys.line || []).map((key) => ({
     id: key,
     data: data.map((d) => {
@@ -165,23 +172,10 @@ export function RadarChartComponent({
       <ResponsiveContainer width="100%" height={height}>
         <RadarChart data={data}>
           <PolarGrid stroke="var(--border)" />
-          <PolarAngleAxis
-            dataKey="name"
-            stroke="var(--text-secondary)"
-            tick={{ fontSize: 13 }}
-          />
-          <PolarRadiusAxis
-            stroke="var(--text-secondary)"
-            tick={{ fontSize: 13 }}
-          />
-          <Radar
-            name={dataKey}
-            dataKey={dataKey}
-            stroke={color}
-            fill={color}
-            fillOpacity={0.6}
-          />
-          <Tooltip content={<CustomTooltip />} />
+          <PolarAngleAxis dataKey="name" stroke="var(--text-secondary)" tick={{ fontSize: 13 }} />
+          <PolarRadiusAxis stroke="var(--text-secondary)" tick={{ fontSize: 13 }} />
+          <Radar name={dataKey} dataKey={dataKey} stroke={color} fill={color} fillOpacity={0.6} />
+          <RechartsTooltip content={<CustomTooltip />} />
         </RadarChart>
       </ResponsiveContainer>
     </ChartContainer>
@@ -232,19 +226,14 @@ export function ScatterChartComponent({
             tick={{ fontSize: 13 }}
           />
           {zKey && <ZAxis type="number" dataKey={zKey} range={[60, 400]} />}
-          <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: '3 3' }} />
+          <RechartsTooltip content={<CustomTooltip />} cursor={{ strokeDasharray: '3 3' }} />
           <Legend
             wrapperStyle={{
               fontFamily: 'var(--font-body)',
               fontSize: '0.813rem',
             }}
           />
-          <Scatter
-            name={`${xKey} vs ${yKey}`}
-            data={data}
-            fill={color}
-            shape={shape}
-          />
+          <Scatter name={`${xKey} vs ${yKey}`} data={data} fill={color} shape={shape} />
         </ScatterChart>
       </ResponsiveContainer>
     </ChartContainer>
@@ -274,15 +263,8 @@ export function MultiRadarChartComponent({
       <ResponsiveContainer width="100%" height={height}>
         <RadarChart data={data}>
           <PolarGrid stroke="var(--border)" />
-          <PolarAngleAxis
-            dataKey="name"
-            stroke="var(--text-secondary)"
-            tick={{ fontSize: 13 }}
-          />
-          <PolarRadiusAxis
-            stroke="var(--text-secondary)"
-            tick={{ fontSize: 13 }}
-          />
+          <PolarAngleAxis dataKey="name" stroke="var(--text-secondary)" tick={{ fontSize: 13 }} />
+          <PolarRadiusAxis stroke="var(--text-secondary)" tick={{ fontSize: 13 }} />
           {dataKeys.map((key, index) => (
             <Radar
               key={key}
@@ -293,7 +275,7 @@ export function MultiRadarChartComponent({
               fillOpacity={0.4}
             />
           ))}
-          <Tooltip content={<CustomTooltip />} />
+          <RechartsTooltip content={<CustomTooltip />} />
           <Legend
             wrapperStyle={{
               fontFamily: 'var(--font-body)',
@@ -305,4 +287,3 @@ export function MultiRadarChartComponent({
     </ChartContainer>
   );
 }
-

@@ -40,31 +40,33 @@ const CSS_PROPERTIES = [
 function analyzeFile(path) {
   const content = readFileSync(path, 'utf8');
   const findings = [];
-  
+
   // ============================================
   // SKIP FILES - Contextos onde classes são legítimas
   // ============================================
-  
+
   // Arquivos CSS (definem as próprias classes)
   if (path.endsWith('.css')) {
     return findings;
   }
-  
+
   // Serviços de e-mail (usam classes inline em templates HTML)
-  if (path.includes('/email/') || 
-      path.includes('/microsoft365/') || 
-      path.includes('SendGridService') ||
-      path.includes('resend.service')) {
+  if (
+    path.includes('/email/') ||
+    path.includes('/microsoft365/') ||
+    path.includes('SendGridService') ||
+    path.includes('resend.service')
+  ) {
     return findings;
   }
-  
+
   for (const rule of rules) {
     let matches = content.match(rule.regex) || [];
-    
+
     // ============================================
     // WHITELIST INTELIGENTE (Opção D - Híbrida)
     // ============================================
-    
+
     if (rule.id === 'typography.text') {
       // Permitir classes de LAYOUT (não são tipografia)
       const layoutClasses = [
@@ -75,7 +77,7 @@ function analyzeFile(path) {
         'text-start',
         'text-end',
       ];
-      
+
       // Permitir classes SEMÂNTICAS do shadcn/ui (cores mapeadas para CSS vars)
       const semanticClasses = [
         'text-foreground',
@@ -87,7 +89,7 @@ function analyzeFile(path) {
         'text-popover-foreground',
         'text-accent-foreground',
       ];
-      
+
       // Permitir classes do OraclusX DS
       const oracluxClasses = [
         'text-body-',
@@ -100,7 +102,7 @@ function analyzeFile(path) {
         'text-display',
         'text-body',
       ];
-      
+
       // Permitir cores do Tailwind (text-gray-*, text-red-*, etc)
       const colorClasses = [
         'text-white',
@@ -128,7 +130,7 @@ function analyzeFile(path) {
         'text-pink-',
         'text-rose-',
       ];
-      
+
       // Permitir classes de opacity e outras utilitárias
       const utilityClasses = [
         'text-opacity-',
@@ -140,36 +142,47 @@ function analyzeFile(path) {
         'text-pretty',
         'text-muted',
       ];
-      
-      const allowedClasses = [...layoutClasses, ...semanticClasses, ...oracluxClasses, ...colorClasses, ...utilityClasses];
-      
+
+      const allowedClasses = [
+        ...layoutClasses,
+        ...semanticClasses,
+        ...oracluxClasses,
+        ...colorClasses,
+        ...utilityClasses,
+      ];
+
       // Filtrar apenas violações REAIS (tamanhos de fonte)
-      matches = matches.filter(match => {
+      matches = matches.filter((match) => {
         const cleanMatch = match.trim();
         // Permitir se está na whitelist
-        if (allowedClasses.some(allowed => cleanMatch.includes(allowed))) {
+        if (allowedClasses.some((allowed) => cleanMatch.includes(allowed))) {
           return false;
         }
         return true;
       });
     }
-    
+
     if (rule.id === 'typography.font') {
       // Permitir classes do OraclusX DS
       const oracluxFonts = ['font-display', 'font-heading', 'font-body'];
       // Permitir classes de font-family do Tailwind
       const fontFamilies = ['font-sans', 'font-serif', 'font-mono'];
       // Permitir classes de variant
-      const fontVariants = ['font-italic', 'font-not-italic', 'font-antialiased', 'font-subpixel-antialiased'];
-      
+      const fontVariants = [
+        'font-italic',
+        'font-not-italic',
+        'font-antialiased',
+        'font-subpixel-antialiased',
+      ];
+
       const allowed = [...oracluxFonts, ...fontFamilies, ...fontVariants, ...CSS_PROPERTIES];
-      matches = matches.filter(m => !allowed.some(a => m.includes(a)));
+      matches = matches.filter((m) => !allowed.some((a) => m.includes(a)));
     }
-    
+
     if (rule.id === 'colors.hex') {
       // Allow CSS variables usage; this regex already targets hex only
     }
-    
+
     if (matches.length) {
       findings.push({ rule: rule.id, desc: rule.desc, count: matches.length });
     }
@@ -180,7 +193,7 @@ function analyzeFile(path) {
 async function run() {
   const files = await globby.globby(GLOB, { gitignore: true });
   const results = [];
-  const totals = Object.fromEntries(rules.map(r => [r.id, 0]));
+  const totals = Object.fromEntries(rules.map((r) => [r.id, 0]));
 
   for (const file of files) {
     const f = analyzeFile(file);
@@ -199,7 +212,10 @@ async function run() {
 
   const docsDir = join(ROOT, 'docs', 'revisor');
   if (!existsSync(docsDir)) mkdirSync(docsDir, { recursive: true });
-  writeFileSync(join(docsDir, 'hard-gates-report.json'), JSON.stringify({ summary, results }, null, 2));
+  writeFileSync(
+    join(docsDir, 'hard-gates-report.json'),
+    JSON.stringify({ summary, results }, null, 2)
+  );
 
   let md = `# Hard Gates Report\n\n`;
   md += `**Files scanned:** ${files.length}  \n`;
@@ -209,17 +225,15 @@ async function run() {
     md += `- ${r.desc}: ${totals[r.id]}\n`;
   }
   md += `\n## Top files (up to 20)\n`;
-  results.slice(0, 20).forEach(r => {
-    const counts = r.findings.map(f => `${f.desc}:${f.count}`).join(', ');
+  results.slice(0, 20).forEach((r) => {
+    const counts = r.findings.map((f) => `${f.desc}:${f.count}`).join(', ');
     md += `- ${r.file} — ${counts}\n`;
   });
   writeFileSync(join(docsDir, 'hard-gates-report.md'), md);
   console.log('Hard Gates report written to docs/revisor/hard-gates-report.{json,md}');
 }
 
-run().catch(err => {
+run().catch((err) => {
   console.error('Hard Gates validator failed:', err);
   process.exit(1);
 });
-
-

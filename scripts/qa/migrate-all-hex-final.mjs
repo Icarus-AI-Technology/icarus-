@@ -14,11 +14,11 @@ const COLOR_MAP = {
   '#FFFFFF': '#ffffff',
   '#fff': '#fff',
   '#FFF': '#fff',
-  
+
   // Preto
   '#000000': '#000000',
   '#000': '#000',
-  
+
   // Gray escala completa
   '#1f2937': 'var(--orx-gray-800)',
   '#1F2937': 'var(--orx-gray-800)',
@@ -30,7 +30,7 @@ const COLOR_MAP = {
   '#F9FAFB': 'var(--orx-gray-50)',
   '#f3f4f6': 'var(--orx-gray-100)',
   '#F3F4F6': 'var(--orx-gray-100)',
-  
+
   // Indigo (Primária)
   '#6366f1': 'var(--orx-primary)',
   '#6366F1': 'var(--orx-primary)',
@@ -52,7 +52,7 @@ const COLOR_MAP = {
   '#3730A3': 'var(--orx-indigo-800)',
   '#312e81': 'var(--orx-indigo-900)',
   '#312E81': 'var(--orx-indigo-900)',
-  
+
   // Success (Green)
   '#10b981': 'var(--orx-success)',
   '#10B981': 'var(--orx-success)',
@@ -62,7 +62,7 @@ const COLOR_MAP = {
   '#15803D': 'var(--orx-success-dark)',
   '#d1fae5': 'var(--orx-success-light)',
   '#D1FAE5': 'var(--orx-success-light)',
-  
+
   // Warning (Orange/Amber)
   '#f59e0b': 'var(--orx-warning)',
   '#F59E0B': 'var(--orx-warning)',
@@ -72,7 +72,7 @@ const COLOR_MAP = {
   '#92400E': 'var(--orx-warning-dark)',
   '#fef3c7': 'var(--orx-warning-light)',
   '#FEF3C7': 'var(--orx-warning-light)',
-  
+
   // Error (Red)
   '#ef4444': 'var(--orx-error)',
   '#EF4444': 'var(--orx-error)',
@@ -82,7 +82,7 @@ const COLOR_MAP = {
   '#DC2626': 'var(--orx-error-dark)',
   '#fecaca': 'var(--orx-error-light)',
   '#FECACA': 'var(--orx-error-light)',
-  
+
   // Info (Blue)
   '#3b82f6': 'var(--orx-info)',
   '#3B82F6': 'var(--orx-info)',
@@ -90,7 +90,7 @@ const COLOR_MAP = {
   '#1E40AF': 'var(--orx-info-dark)',
   '#dbeafe': 'var(--orx-info-light)',
   '#DBEAFE': 'var(--orx-info-light)',
-  
+
   // Teal
   '#f0fdfa': 'var(--orx-teal-50)',
   '#F0FDFA': 'var(--orx-teal-50)',
@@ -112,19 +112,19 @@ const COLOR_MAP = {
   '#115E59': 'var(--orx-teal-800)',
   '#134e4a': 'var(--orx-teal-900)',
   '#134E4A': 'var(--orx-teal-900)',
-  
+
   // Pink
   '#ec4899': 'var(--orx-pink-500)',
   '#EC4899': 'var(--orx-pink-500)',
-  
+
   // Purple
   '#8b5cf6': 'var(--orx-purple-500)',
   '#8B5CF6': 'var(--orx-purple-500)',
-  
+
   // Cyan
   '#06b6d4': 'var(--orx-cyan-500)',
   '#06B6D4': 'var(--orx-cyan-500)',
-  
+
   // Neumorphic backgrounds
   '#e0e5ec': 'var(--orx-bg-light)',
   '#E0E5EC': 'var(--orx-bg-light)',
@@ -143,42 +143,42 @@ function migrarArquivo(path) {
   if (path.includes('oraclusx-ds.css') || path.includes('globals.css')) {
     return { modificado: false, mudancas: 0 };
   }
-  
+
   let content = readFileSync(path, 'utf8');
   let original = content;
   let mudancas = 0;
-  
+
   // Migrar cada cor
   Object.entries(COLOR_MAP).forEach(([hex, cssVar]) => {
     // Contar ocorrências antes
     const antes = (content.match(new RegExp(hex, 'gi')) || []).length;
-    
+
     if (antes > 0) {
       // Substituir todas as ocorrências (case-insensitive)
       content = content.replace(new RegExp(hex, 'gi'), cssVar);
       mudancas += antes;
     }
   });
-  
+
   if (content !== original) {
     writeFileSync(path, content, 'utf8');
     return { modificado: true, mudancas };
   }
-  
+
   return { modificado: false, mudancas: 0 };
 }
 
 async function main() {
   // Processar TODOS os arquivos relevantes
   const files = await glob('src/**/*.{tsx,ts}', {
-    ignore: ['**/*.bak', '**/node_modules/**']
+    ignore: ['**/*.bak', '**/node_modules/**'],
   });
-  
+
   let count = 0;
   let totalMudancas = 0;
-  
+
   console.log(`\n🎨 Migração COMPLETA de Cores: processando ${files.length} arquivos...\n`);
-  
+
   for (const file of files) {
     try {
       const result = migrarArquivo(file);
@@ -191,10 +191,9 @@ async function main() {
       console.error(`❌ ${file}:`, err.message);
     }
   }
-  
+
   console.log(`\n🎉 ${count} arquivos modificados!`);
   console.log(`🎨 Total de ${totalMudancas} cores migradas\n`);
 }
 
 main().catch(console.error);
-

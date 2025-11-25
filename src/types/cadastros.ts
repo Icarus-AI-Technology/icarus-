@@ -48,7 +48,10 @@ export interface Medico {
   updated_by?: string;
 }
 
-export type MedicoFormData = Omit<Medico, 'id' | 'created_at' | 'updated_at' | 'created_by' | 'updated_by'>;
+export type MedicoFormData = Omit<
+  Medico,
+  'id' | 'created_at' | 'updated_at' | 'created_by' | 'updated_by'
+>;
 
 // Hospital
 export interface Hospital {
@@ -107,6 +110,14 @@ export interface Paciente {
   updated_at: string;
 }
 
+export type PacienteFormData = Omit<
+  Paciente,
+  'id' | 'created_at' | 'updated_at' | 'created_by' | 'updated_by'
+> & {
+  consentimento_lgpd?: boolean;
+  consentimento_lgpd_data?: string;
+};
+
 // Convênio
 export interface Convenio {
   id: string;
@@ -133,6 +144,8 @@ export interface Convenio {
   created_at: string;
   updated_at: string;
 }
+
+export type ConvenioFormData = Omit<Convenio, 'id' | 'created_at' | 'updated_at' | 'ativo'>;
 
 // Fornecedor
 export interface Fornecedor {
@@ -252,4 +265,3 @@ export interface DuplicateDetectionParams {
   email?: string;
   excludeId?: string;
 }
-

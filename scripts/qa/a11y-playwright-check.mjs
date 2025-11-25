@@ -24,20 +24,19 @@ function headingViolations() {
     }
     prev = lvl;
   });
-  const hasH1 = headings.some(h => h.tagName.toLowerCase() === 'h1');
+  const hasH1 = headings.some((h) => h.tagName.toLowerCase() === 'h1');
   return { hasH1, count: violations.length, examples: violations.slice(0, 3) };
 }
 
 function labelViolations() {
-  const nodes = Array.from(document.querySelectorAll('input,select,textarea'))
-    .filter(el => {
-      const type = (el.getAttribute('type') || '').toLowerCase();
-      if (type === 'hidden') return false;
-      if (el.getAttribute('aria-hidden') === 'true') return false;
-      return true;
-    });
+  const nodes = Array.from(document.querySelectorAll('input,select,textarea')).filter((el) => {
+    const type = (el.getAttribute('type') || '').toLowerCase();
+    if (type === 'hidden') return false;
+    if (el.getAttribute('aria-hidden') === 'true') return false;
+    return true;
+  });
   const v = [];
-  nodes.forEach(el => {
+  nodes.forEach((el) => {
     const id = el.id;
     const ariaLabel = el.getAttribute('aria-label');
     const ariaLabelledBy = el.getAttribute('aria-labelledby');
@@ -56,8 +55,13 @@ function mainLandmark() {
 
 function imageAltViolations() {
   const images = Array.from(document.querySelectorAll('img'));
-  const v = images.filter(img => !img.hasAttribute('alt') && !['presentation','none'].includes((img.getAttribute('role')||'').toLowerCase()))
-    .map(img => ({ html: img.outerHTML.slice(0, 180) }));
+  const v = images
+    .filter(
+      (img) =>
+        !img.hasAttribute('alt') &&
+        !['presentation', 'none'].includes((img.getAttribute('role') || '').toLowerCase())
+    )
+    .map((img) => ({ html: img.outerHTML.slice(0, 180) }));
   return { count: v.length, examples: v.slice(0, 5) };
 }
 
@@ -78,7 +82,11 @@ async function run() {
         await page.waitForSelector('main, [role="main"], #main-content', { timeout: 2000 });
       } catch (_) {}
       const res = await page.evaluate(() => ({
-        headings: (function(){return (function(){return undefined})();})() // placeholder to keep scope clean
+        headings: (function () {
+          return (function () {
+            return undefined;
+          })();
+        })(), // placeholder to keep scope clean
       }));
       // Run checks individually to keep readable
       const headings = await page.evaluate(headingViolations);
@@ -101,18 +109,21 @@ async function run() {
     baseUrl: BASE_URL,
     durationMs: Date.now() - start,
     routes: results.length,
-    passed: results.every(r => r.passed),
+    passed: results.every((r) => r.passed),
     totals: {
-      headingsJumps: results.reduce((a,r)=>a+(r.checks?.headings?.count||0),0),
-      missingLabels: results.reduce((a,r)=>a+(r.checks?.labels?.count||0),0),
-      missingMain: results.filter(r=>r.checks && !r.checks.landmark.present).length,
-      missingImgAlt: results.reduce((a,r)=>a+(r.checks?.images?.count||0),0)
-    }
+      headingsJumps: results.reduce((a, r) => a + (r.checks?.headings?.count || 0), 0),
+      missingLabels: results.reduce((a, r) => a + (r.checks?.labels?.count || 0), 0),
+      missingMain: results.filter((r) => r.checks && !r.checks.landmark.present).length,
+      missingImgAlt: results.reduce((a, r) => a + (r.checks?.images?.count || 0), 0),
+    },
   };
 
   const docsDir = join(process.cwd(), 'docs');
   if (!existsSync(docsDir)) mkdirSync(docsDir, { recursive: true });
-  writeFileSync(join(docsDir, 'qa-a11y-playwright.json'), JSON.stringify({ summary, results }, null, 2));
+  writeFileSync(
+    join(docsDir, 'qa-a11y-playwright.json'),
+    JSON.stringify({ summary, results }, null, 2)
+  );
 
   let md = `# ♿ A11y Report (Playwright)
 **Base:** ${BASE_URL}  
@@ -130,7 +141,10 @@ async function run() {
 `;
   for (const r of results) {
     md += `\n### ${r.route} (${r.passed ? '✅' : '❌'})\n`;
-    if (r.error) { md += `Error: ${r.error}\n`; continue; }
+    if (r.error) {
+      md += `Error: ${r.error}\n`;
+      continue;
+    }
     md += `- main present: ${r.checks.landmark.present ? 'yes' : 'no'}\n`;
     md += `- heading jumps: ${r.checks.headings.count}\n`;
     md += `- missing labels: ${r.checks.labels.count}\n`;
@@ -141,9 +155,7 @@ async function run() {
   console.log('A11y (Playwright) report written to docs/qa-a11y-playwright.{json,md}');
 }
 
-run().catch(err => {
+run().catch((err) => {
   console.error('A11y run failed:', err);
   process.exit(1);
 });
-
-

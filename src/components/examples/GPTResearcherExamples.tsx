@@ -15,9 +15,7 @@ export function ExemploBasico() {
   return (
     <div className="min-h-screen p-6">
       <h1 className="text-heading-lg font-display mb-4">Exemplo Básico - GPT Researcher</h1>
-      <p className="text-secondary mb-8">
-        O chatbot aparecerá no canto inferior direito da tela.
-      </p>
+      <p className="text-secondary mb-8">O chatbot aparecerá no canto inferior direito da tela.</p>
 
       {/* Chatbot com configuração padrão */}
       <ChatbotWithResearch />
@@ -33,15 +31,17 @@ export function ExemploAvancado() {
 
   const handleMessageSent = (message: string) => {
     console.log('Mensagem enviada:', message);
-    setHistorico(prev => [...prev, message]);
+    setHistorico((prev) => [...prev, message]);
   };
 
   return (
     <div className="min-h-screen p-6">
       <h1 className="text-heading-lg font-display mb-4">Exemplo Avançado - GPT Researcher</h1>
-      
+
       <div className="mb-8">
-        <h2 className="text-heading-sm mb-2" style={{ fontWeight: 500 }}>Histórico de Pesquisas</h2>
+        <h2 className="text-heading-sm mb-2" style={{ fontWeight: 500 }}>
+          Histórico de Pesquisas
+        </h2>
         <div className="bg-surface dark:bg-card rounded-lg p-4">
           {historico.length === 0 ? (
             <p className="text-muted">Nenhuma pesquisa realizada ainda.</p>
@@ -81,59 +81,65 @@ export function ExemploComHook() {
   const [query, setQuery] = useState('');
   const [resultados, setResultados] = useState<PesquisaResultado[]>([]);
 
-  const { 
-    isConnected, 
-    isResearching, 
-    logs, 
-    error, 
-    research 
-  } = useGPTResearcher({
+  const { isConnected, isResearching, logs, error, research } = useGPTResearcher({
     host: 'http://localhost:8000',
     onLog: (data) => {
       if (data.content === 'research_complete') {
         const output = typeof data.output === 'string' ? data.output : '';
         setResultados((prev: PesquisaResultado[]) => [
           ...prev,
-          { content: output || 'Pesquisa concluída', output, metadata: data.metadata }
+          { content: output || 'Pesquisa concluída', output, metadata: data.metadata },
         ]);
       }
-    }
+    },
   });
 
   const handlePesquisar = async () => {
     if (!query.trim()) return;
-    
+
     await research({
       task: query,
       reportType: 'research_report',
-      reportSource: 'web'
+      reportSource: 'web',
     });
   };
 
-  const logsFormatados = useMemo(() => logs.map((log, idx) => (
-    <div key={idx} className="text-body-xs mb-1 font-mono">
-      <span className="text-muted">[{log.content}]</span> {log.output}
-    </div>
-  )), [logs]);
+  const logsFormatados = useMemo(
+    () =>
+      logs.map((log, idx) => (
+        <div key={idx} className="text-body-xs mb-1 font-mono">
+          <span className="text-muted">[{log.content}]</span> {log.output}
+        </div>
+      )),
+    [logs]
+  );
 
-  const resultadosRenderizados = useMemo(() => resultados.map((resultado, idx) => (
-    <div key={idx} className="bg-surface dark:bg-card rounded-lg p-4 shadow">
-      <p className="whitespace-pre-wrap">{resultado.output ?? resultado.content}</p>
-    </div>
-  )), [resultados]);
+  const resultadosRenderizados = useMemo(
+    () =>
+      resultados.map((resultado, idx) => (
+        <div key={idx} className="bg-surface dark:bg-card rounded-lg p-4 shadow">
+          <p className="whitespace-pre-wrap">{resultado.output ?? resultado.content}</p>
+        </div>
+      )),
+    [resultados]
+  );
 
   return (
     <div className="min-h-screen p-6">
       <h1 className="text-heading-lg font-display mb-4">Exemplo com Hook - GPT Researcher</h1>
-      
+
       {/* Status de Conexão */}
       <div className="mb-4">
-        <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${
-          isConnected 
-            ? 'bg-success/10 text-green-800 dark:bg-green-900 dark:text-green-100' 
-            : 'bg-destructive/10 text-red-800 dark:bg-red-900 dark:text-red-100'
-        }`}>
-          <span className={`w-2 h-2 rounded-full ${isConnected ? 'bg-success/50' : 'bg-destructive/50'}`} />
+        <div
+          className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${
+            isConnected
+              ? 'bg-success/10 text-green-800 dark:bg-green-900 dark:text-green-100'
+              : 'bg-destructive/10 text-red-800 dark:bg-red-900 dark:text-red-100'
+          }`}
+        >
+          <span
+            className={`w-2 h-2 rounded-full ${isConnected ? 'bg-success/50' : 'bg-destructive/50'}`}
+          />
           {isConnected ? 'Conectado' : 'Desconectado'}
         </div>
       </div>
@@ -177,7 +183,9 @@ export function ExemploComHook() {
       {/* Logs */}
       {logs.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-heading-sm mb-2" style={{ fontWeight: 500 }}>Logs de Pesquisa</h2>
+          <h2 className="text-heading-sm mb-2" style={{ fontWeight: 500 }}>
+            Logs de Pesquisa
+          </h2>
           <div className="bg-surface dark:bg-card rounded-lg p-4 max-h-64 overflow-y-auto">
             {logsFormatados}
           </div>
@@ -187,10 +195,10 @@ export function ExemploComHook() {
       {/* Resultados */}
       {resultados.length > 0 && (
         <div>
-          <h2 className="text-heading-sm mb-2" style={{ fontWeight: 500 }}>Resultados</h2>
-          <div className="space-y-4">
-            {resultadosRenderizados}
-          </div>
+          <h2 className="text-heading-sm mb-2" style={{ fontWeight: 500 }}>
+            Resultados
+          </h2>
+          <div className="space-y-4">{resultadosRenderizados}</div>
         </div>
       )}
     </div>
@@ -204,10 +212,12 @@ export function ExemploIntegracaoModulo() {
   return (
     <div className="min-h-screen p-6">
       <h1 className="text-heading-lg font-display mb-4">ChatBot Metrics com GPT Researcher</h1>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div className="bg-surface dark:bg-card rounded-lg p-6 shadow">
-          <h3 className="text-body-lg mb-2" style={{ fontWeight: 500 }}>Métricas do ChatBot</h3>
+          <h3 className="text-body-lg mb-2" style={{ fontWeight: 500 }}>
+            Métricas do ChatBot
+          </h3>
           <div className="space-y-2">
             <div className="flex justify-between">
               <span>Conversas hoje:</span>
@@ -225,7 +235,9 @@ export function ExemploIntegracaoModulo() {
         </div>
 
         <div className="bg-surface dark:bg-card rounded-lg p-6 shadow">
-          <h3 className="text-body-lg mb-2" style={{ fontWeight: 500 }}>Pesquisas Populares</h3>
+          <h3 className="text-body-lg mb-2" style={{ fontWeight: 500 }}>
+            Pesquisas Populares
+          </h3>
           <ul className="space-y-1 text-body-sm">
             <li>• Tendências de IA em 2025</li>
             <li>• Como funciona blockchain</li>
@@ -235,10 +247,7 @@ export function ExemploIntegracaoModulo() {
       </div>
 
       {/* Chatbot integrado */}
-      <ChatbotWithResearch
-        position="bottom-right"
-        researcherHost="http://localhost:8000"
-      />
+      <ChatbotWithResearch position="bottom-right" researcherHost="http://localhost:8000" />
     </div>
   );
 }
@@ -247,6 +256,5 @@ export default {
   ExemploBasico,
   ExemploAvancado,
   ExemploComHook,
-  ExemploIntegracaoModulo
+  ExemploIntegracaoModulo,
 };
-

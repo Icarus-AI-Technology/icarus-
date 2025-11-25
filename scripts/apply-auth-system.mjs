@@ -36,25 +36,31 @@ async function main() {
   log('\n' + '='.repeat(80), 'magenta');
   log('🔐 APLICADOR - Sistema de Autenticação Customizado', 'magenta');
   log('='.repeat(80) + '\n', 'magenta');
-  
+
   const client = new pg.Client(DB_CONFIG);
-  
+
   try {
     log('🔌 Conectando...', 'blue');
     await client.connect();
     log('✅ Conectado!\n', 'green');
-    
-    const sqlPath = path.join(__dirname, '..', 'supabase', 'migrations', '202510201350_sistema_autenticacao_customizado.sql');
+
+    const sqlPath = path.join(
+      __dirname,
+      '..',
+      'supabase',
+      'migrations',
+      '202510201350_sistema_autenticacao_customizado.sql'
+    );
     const sql = fs.readFileSync(sqlPath, 'utf-8');
-    
+
     log('📄 Aplicando migration de autenticação...', 'cyan');
-    
+
     await client.query('BEGIN');
     await client.query(sql);
     await client.query('COMMIT');
-    
+
     log('✅ Migration aplicada com sucesso!\n', 'green');
-    
+
     // Verificar se usuário foi criado
     log('🔍 Verificando usuário criado...', 'blue');
     const userCheck = await client.query(`
@@ -73,7 +79,7 @@ async function main() {
       WHERE u.email = 'dax@newortho.com.br'
       GROUP BY u.id, u.email, u.nome_completo, u.cargo, e.nome
     `);
-    
+
     if (userCheck.rows.length > 0) {
       const user = userCheck.rows[0];
       log('\n' + '='.repeat(80), 'green');
@@ -88,7 +94,7 @@ async function main() {
       log(`   Email:  dax@newortho.com.br`, 'yellow');
       log(`   Senha:  admin123`, 'yellow');
     }
-    
+
     // Verificar empresa
     log('\n🔍 Verificando empresa...', 'blue');
     const empresaCheck = await client.query(`
@@ -96,12 +102,12 @@ async function main() {
       FROM public.empresas
       WHERE nome = 'NEW ORTHO'
     `);
-    
+
     if (empresaCheck.rows.length > 0) {
       const empresa = empresaCheck.rows[0];
       log(`✅ Empresa: ${empresa.nome} (${empresa.cnpj})`, 'green');
     }
-    
+
     // Verificar role CEO
     log('\n🔍 Verificando role CEO...', 'blue');
     const roleCheck = await client.query(`
@@ -111,16 +117,15 @@ async function main() {
       WHERE r.codigo = 'CEO'
       GROUP BY r.id, r.nome, r.descricao
     `);
-    
+
     if (roleCheck.rows.length > 0) {
       const role = roleCheck.rows[0];
       log(`✅ Role: ${role.nome} (${role.permissoes} permissões)`, 'green');
     }
-    
+
     log('\n' + '='.repeat(80), 'magenta');
     log('🎉 SISTEMA DE AUTENTICAÇÃO PRONTO!', 'magenta');
     log('='.repeat(80) + '\n', 'magenta');
-    
   } catch (error) {
     await client.query('ROLLBACK');
     log(`\n❌ ERRO: ${error.message}`, 'red');
@@ -132,4 +137,3 @@ async function main() {
 }
 
 main().catch(console.error);
-

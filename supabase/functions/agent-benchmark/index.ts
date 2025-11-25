@@ -44,8 +44,8 @@ serve(async (req) => {
     // 1. Buscar informações da tarefa
     const { data: task, error: taskError } = await supabaseClient
       .from("agent_tasks")
-      .select("*, organization_id, parent_task_id")
-      .eq("task_id", request.task_id)
+      .select("*, empresa_id, metadata")
+      .eq("id", request.task_id)
       .single();
 
     if (taskError) throw taskError;
@@ -55,9 +55,12 @@ serve(async (req) => {
       .from("agent_tasks")
       .update({
         status: "in_progress",
+        metadata: {
+          ...(task.metadata || {}),
         started_at: new Date().toISOString(),
+        },
       })
-      .eq("task_id", request.task_id);
+      .eq("id", request.task_id);
 
     // 3. Log de início
     await supabaseClient.from("agent_logs").insert({
@@ -73,17 +76,22 @@ serve(async (req) => {
 
     // 4. Buscar dados internos (da tarefa irmã de dados internos)
     let internalData: any = null;
-    if (task.parent_task_id) {
-      const { data: siblingTask } = await supabaseClient
+    const parentTaskId = task.metadata?.parent_task_id;
+    if (parentTaskId) {
+      const { data: siblings } = await supabaseClient
         .from("agent_tasks")
-        .select("result_data")
-        .eq("parent_task_id", task.parent_task_id)
-        .eq("task_type", "data_internal")
-        .eq("status", "completed")
-        .single();
+        .select("metadata")
+        .eq("status", "completed");
+
+      // Filtrar tarefas irmãs com mesmo parent e tipo data_internal
+      const siblingTask = (siblings || []).find(
+        (s: any) => 
+          s.metadata?.parent_task_id === parentTaskId &&
+          s.metadata?.task_type === "data_internal"
+      );
 
       if (siblingTask) {
-        internalData = siblingTask.result_data;
+        internalData = siblingTask.metadata?.result_data;
       }
     }
 
@@ -97,35 +105,35 @@ serve(async (req) => {
       case "market_average":
         benchmarkResults = await compareToMarketAverage(
           supabaseClient,
-          task.organization_id,
+          task.empresa_id,
           internalData,
         );
         break;
       case "supplier_comparison":
         benchmarkResults = await compareSuppliers(
           supabaseClient,
-          task.organization_id,
+          task.empresa_id,
           request.parameters?.suppliers,
         );
         break;
       case "historical_trend":
         benchmarkResults = await analyzeHistoricalTrends(
           supabaseClient,
-          task.organization_id,
+          task.empresa_id,
           internalData,
         );
         break;
       case "best_practices":
         benchmarkResults = await compareToBestPractices(
           supabaseClient,
-          task.organization_id,
+          task.empresa_id,
           internalData,
         );
         break;
       default:
         benchmarkResults = await compareToMarketAverage(
           supabaseClient,
-          task.organization_id,
+          task.empresa_id,
           internalData,
         );
     }
@@ -164,10 +172,13 @@ serve(async (req) => {
       .update({
         status: "completed",
         completed_at: new Date().toISOString(),
+        metadata: {
+          ...(task.metadata || {}),
         execution_time_ms: executionTime,
         result_data: benchmarkResults,
+        },
       })
-      .eq("task_id", request.task_id);
+      .eq("id", request.task_id);
 
     // 9. Log de conclusão
     await supabaseClient.from("agent_logs").insert({
@@ -304,9 +315,9 @@ async function compareSuppliers(
 
   // Buscar fornecedores da organização
   let query = client
-    .from("suppliers")
-    .select("*, supplier_integrations(*)")
-    .eq("organization_id", organizationId)
+    .from("fornecedores")
+    .select("*")
+    .eq("empresa_id", organizationId)
     .eq("ativo", true);
 
   if (supplierIds && supplierIds.length > 0) {
@@ -327,11 +338,11 @@ async function compareSuppliers(
   const supplierComparison = [];
 
   for (const supplier of suppliers) {
-    // Buscar dados de compras deste fornecedor
+    // Buscar dados de pedidos de compra deste fornecedor
     const { data: purchases } = await client
-      .from("compras")
-      .select("*, compra_itens(*)")
-      .eq("supplier_id", supplier.id)
+      .from("pedidos_compra")
+      .select("*, itens_pedido_compra(*)")
+      .eq("fornecedor_id", supplier.id)
       .gte(
         "data_pedido",
         new Date(Date.now() - 180 * 24 * 60 * 60 * 1000).toISOString(),
@@ -419,7 +430,7 @@ async function analyzeHistoricalTrends(
     const { data: cirurgias } = await client
       .from("cirurgias")
       .select("*, cirurgia_materiais(*)")
-      .eq("organization_id", organizationId)
+      .eq("empresa_id", organizationId)
       .gte("data_cirurgia", monthStart.toISOString())
       .lte("data_cirurgia", monthEnd.toISOString());
 

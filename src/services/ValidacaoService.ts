@@ -1,6 +1,6 @@
 /**
  * Serviço de Validação - ICARUS v5.0
- * 
+ *
  * Responsável por:
  * - Validação de CPF/CNPJ (Receita Federal)
  * - Validação de CRM (CFM)
@@ -8,7 +8,7 @@
  * - Validação de CEP (ViaCEP)
  * - Validação de ANS (convênios)
  * - Validação de CNES (hospitais)
- * 
+ *
  * @version 5.0.0
  */
 
@@ -30,6 +30,7 @@ export interface ResultadoValidacaoCNPJ {
   nomeFantasia?: string;
   cnpj?: string;
   situacao?: string;
+  telefone?: string;
   endereco?: {
     logradouro?: string;
     numero?: string;
@@ -106,7 +107,6 @@ export interface ResultadoValidacaoCNES {
 // ========================================
 
 export class ValidacaoService {
-  
   // ========================================
   // VALIDAÇÃO DE CPF
   // ========================================
@@ -156,7 +156,7 @@ export class ValidacaoService {
       if (!this.validarDigitosCPF(cpf)) {
         return {
           valido: false,
-          mensagem: 'CPF com dígitos verificadores inválidos'
+          mensagem: 'CPF com dígitos verificadores inválidos',
         };
       }
 
@@ -165,34 +165,41 @@ export class ValidacaoService {
       // Tentar Brasil API primeiro
       try {
         const response = await fetch(`https://brasilapi.com.br/api/cpf/v1/${cpfLimpo}`);
-        
+
         if (response.ok) {
           const data = await response.json();
           return {
             valido: true,
             nome: data.nome,
-            situacao: data.situacao
+            situacao: data.situacao,
           };
         }
       } catch (error) {
-   const err = error as Error;
+        const err = error as Error;
         console.warn('Brasil API indisponível, usando validação local');
       }
 
       // Fallback: validação apenas dos dígitos
       return {
         valido: true,
-        mensagem: 'CPF válido (validação local)'
+        mensagem: 'CPF válido (validação local)',
       };
-
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao consultar CPF:', err);
       return {
         valido: false,
-        mensagem: 'Erro ao consultar CPF na Receita Federal'
+        mensagem: 'Erro ao consultar CPF na Receita Federal',
       };
     }
+  }
+
+  /**
+   * Wrapper simples para validação de CPF (retorna boolean)
+   */
+  async validarCPF(cpf: string): Promise<boolean> {
+    const resultado = await this.consultarCPFReceitaFederal(cpf);
+    return resultado.valido;
   }
 
   // ========================================
@@ -253,7 +260,7 @@ export class ValidacaoService {
       if (!this.validarDigitosCNPJ(cnpj)) {
         return {
           valido: false,
-          mensagem: 'CNPJ com dígitos verificadores inválidos'
+          mensagem: 'CNPJ com dígitos verificadores inválidos',
         };
       }
 
@@ -262,7 +269,7 @@ export class ValidacaoService {
       // Consultar Brasil API
       try {
         const response = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpjLimpo}`);
-        
+
         if (response.ok) {
           const data = await response.json();
           return {
@@ -271,6 +278,7 @@ export class ValidacaoService {
             nomeFantasia: data.nome_fantasia,
             cnpj: data.cnpj,
             situacao: data.descricao_situacao_cadastral,
+            telefone: data.telefone,
             endereco: {
               logradouro: data.logradouro,
               numero: data.numero,
@@ -278,29 +286,76 @@ export class ValidacaoService {
               bairro: data.bairro,
               cidade: data.municipio,
               uf: data.uf,
-              cep: data.cep
-            }
+              cep: data.cep,
+            },
           };
         }
       } catch (error) {
-   const err = error as Error;
+        const err = error as Error;
         console.warn('Brasil API indisponível para CNPJ');
       }
 
       // Fallback: validação apenas dos dígitos
       return {
         valido: true,
-        mensagem: 'CNPJ válido (validação local)'
+        mensagem: 'CNPJ válido (validação local)',
       };
-
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao consultar CNPJ:', err);
       return {
         valido: false,
-        mensagem: 'Erro ao consultar CNPJ na Receita Federal'
+        mensagem: 'Erro ao consultar CNPJ na Receita Federal',
       };
     }
+  }
+
+  /**
+   * Validação simples de CNPJ (apenas dígitos verificadores)
+   */
+  validarCNPJ(cnpj: string): boolean {
+    return this.validarDigitosCNPJ(cnpj);
+  }
+
+  /**
+   * Consultar CNPJ e retornar dados normalizados
+   */
+  async consultarCNPJ(
+    cnpj: string
+  ): Promise<
+    | {
+        razao_social?: string;
+        nome_fantasia?: string;
+        telefone?: string;
+        endereco?: {
+          cep?: string;
+          logradouro?: string;
+          numero?: string;
+          bairro?: string;
+          cidade?: string;
+          uf?: string;
+        };
+      }
+    | null
+  > {
+    const resultado = await this.consultarCNPJReceitaFederal(cnpj);
+    if (!resultado.valido) {
+      return null;
+    }
+
+    return {
+      razao_social: resultado.razaoSocial,
+      nome_fantasia: resultado.nomeFantasia,
+      telefone: resultado.telefone,
+      endereco: {
+        cep: resultado.endereco?.cep,
+        logradouro: resultado.endereco?.logradouro,
+        numero: resultado.endereco?.numero,
+        bairro: resultado.endereco?.bairro,
+        cidade: resultado.endereco?.cidade,
+        uf: resultado.endereco?.uf,
+      },
+    };
   }
 
   // ========================================
@@ -318,7 +373,35 @@ export class ValidacaoService {
     if (crmLimpo.length < 4 || crmLimpo.length > 8) return false;
 
     // Verificar se UF é válida
-    const ufsValidas = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'];
+    const ufsValidas = [
+      'AC',
+      'AL',
+      'AP',
+      'AM',
+      'BA',
+      'CE',
+      'DF',
+      'ES',
+      'GO',
+      'MA',
+      'MT',
+      'MS',
+      'MG',
+      'PA',
+      'PB',
+      'PR',
+      'PE',
+      'PI',
+      'RJ',
+      'RN',
+      'RS',
+      'RO',
+      'RR',
+      'SC',
+      'SP',
+      'SE',
+      'TO',
+    ];
     if (!ufsValidas.includes(uf.toUpperCase())) return false;
 
     return true;
@@ -333,7 +416,7 @@ export class ValidacaoService {
       if (!this.validarFormatoCRM(crm, uf)) {
         return {
           ativo: false,
-          mensagem: 'Formato de CRM inválido'
+          mensagem: 'Formato de CRM inválido',
         };
       }
 
@@ -346,15 +429,14 @@ export class ValidacaoService {
         ativo: true,
         numero: crm,
         uf: uf.toUpperCase(),
-        mensagem: 'CRM válido (validação de formato)'
+        mensagem: 'CRM válido (validação de formato)',
       };
-
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao consultar CRM:', err);
       return {
         ativo: false,
-        mensagem: 'Erro ao consultar CRM no CFM'
+        mensagem: 'Erro ao consultar CRM no CFM',
       };
     }
   }
@@ -373,16 +455,16 @@ export class ValidacaoService {
       if (cepLimpo.length !== 8) {
         return {
           encontrado: false,
-          erro: 'CEP deve ter 8 dígitos'
+          erro: 'CEP deve ter 8 dígitos',
         };
       }
 
       const response = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
-      
+
       if (!response.ok) {
         return {
           encontrado: false,
-          erro: 'Erro ao consultar ViaCEP'
+          erro: 'Erro ao consultar ViaCEP',
         };
       }
 
@@ -391,7 +473,7 @@ export class ValidacaoService {
       if (data.erro) {
         return {
           encontrado: false,
-          erro: 'CEP não encontrado'
+          erro: 'CEP não encontrado',
         };
       }
 
@@ -406,17 +488,24 @@ export class ValidacaoService {
         ibge: data.ibge,
         gia: data.gia,
         ddd: data.ddd,
-        siafi: data.siafi
+        siafi: data.siafi,
       };
-
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao consultar CEP:', err);
       return {
         encontrado: false,
-        erro: 'Erro ao consultar CEP'
+        erro: 'Erro ao consultar CEP',
       };
     }
+  }
+
+  /**
+   * Wrapper simples para validação de CEP (retorna boolean)
+   */
+  async validarCEP(cep: string): Promise<boolean> {
+    const resultado = await this.consultarCEP(cep);
+    return resultado.encontrado;
   }
 
   // ========================================
@@ -436,7 +525,7 @@ export class ValidacaoService {
       if (codigoLimpo.length < 10) {
         return {
           valido: false,
-          mensagem: 'Código ANVISA deve ter pelo menos 10 dígitos'
+          mensagem: 'Código ANVISA deve ter pelo menos 10 dígitos',
         };
       }
 
@@ -444,17 +533,78 @@ export class ValidacaoService {
 
       return {
         valido: true,
-        mensagem: 'Código ANVISA válido (validação de formato)'
+        mensagem: 'Código ANVISA válido (validação de formato)',
       };
-
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao consultar ANVISA:', err);
       return {
         valido: false,
-        mensagem: 'Erro ao consultar código ANVISA'
+        mensagem: 'Erro ao consultar código ANVISA',
       };
     }
+  }
+
+  // ========================================
+  // VALIDAÇÃO DE CNES
+  // ========================================
+
+  private async consultarCNES(cnes: string): Promise<ResultadoValidacaoCNES> {
+    try {
+      const response = await fetch(
+        `https://apidadosms.saude.gov.br/cnes/estabelecimentos/${cnes}`
+      );
+
+      if (!response.ok) {
+        return {
+          encontrado: false,
+          mensagem: 'CNES não encontrado',
+        };
+      }
+
+      const data = await response.json();
+      return {
+        encontrado: true,
+        nome: data?.nome_fantasia ?? data?.razao_social,
+        tipo: data?.tipo_unidade,
+        cnpj: data?.cnpj,
+        cnes: data?.codigo_cnes ?? cnes,
+        endereco: {
+          logradouro: data?.endereco?.logradouro,
+          numero: data?.endereco?.numero,
+          bairro: data?.endereco?.bairro,
+          cidade: data?.endereco?.municipio,
+          uf: data?.endereco?.uf,
+          cep: data?.endereco?.cep,
+        },
+      };
+    } catch (error) {
+      const err = error as Error;
+      console.warn('Falha ao consultar CNES:', err.message ?? err);
+      return {
+        encontrado: false,
+        mensagem: 'Não foi possível validar o CNES',
+      };
+    }
+  }
+
+  async validarCNES(
+    cnes: string
+  ): Promise<{ valido: boolean; mensagem?: string; dados?: ResultadoValidacaoCNES }> {
+    const cnesLimpo = cnes.replace(/\D/g, '');
+    if (cnesLimpo.length !== 7) {
+      return {
+        valido: false,
+        mensagem: 'CNES deve conter 7 dígitos',
+      };
+    }
+
+    const resultado = await this.consultarCNES(cnesLimpo);
+    return {
+      valido: resultado.encontrado,
+      mensagem: resultado.mensagem,
+      dados: resultado,
+    };
   }
 
   // ========================================
@@ -467,13 +617,13 @@ export class ValidacaoService {
   async consultarANS(registro: string): Promise<ResultadoValidacaoANS> {
     try {
       // TODO: Implementar consulta real à ANS quando API estiver disponível
-      
+
       const registroLimpo = registro.replace(/\D/g, '');
 
       if (registroLimpo.length < 6) {
         return {
           encontrado: false,
-          mensagem: 'Registro ANS deve ter pelo menos 6 dígitos'
+          mensagem: 'Registro ANS deve ter pelo menos 6 dígitos',
         };
       }
 
@@ -482,53 +632,14 @@ export class ValidacaoService {
       return {
         encontrado: true,
         registro: registroLimpo,
-        mensagem: 'Registro ANS válido (validação de formato)'
+        mensagem: 'Registro ANS válido (validação de formato)',
       };
-
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao consultar ANS:', err);
       return {
         encontrado: false,
-        mensagem: 'Erro ao consultar registro ANS'
-      };
-    }
-  }
-
-  // ========================================
-  // VALIDAÇÃO DE CNES
-  // ========================================
-
-  /**
-   * Consultar CNES
-   */
-  async consultarCNES(cnes: string): Promise<ResultadoValidacaoCNES> {
-    try {
-      // TODO: Implementar consulta real ao DATASUS quando API estiver disponível
-      
-      const cnesLimpo = cnes.replace(/\D/g, '');
-
-      if (cnesLimpo.length !== 7) {
-        return {
-          encontrado: false,
-          mensagem: 'CNES deve ter 7 dígitos'
-        };
-      }
-
-      console.warn('Consulta ao CNES/DATASUS não implementada. Validando apenas formato.');
-
-      return {
-        encontrado: true,
-        cnes: cnesLimpo,
-        mensagem: 'CNES válido (validação de formato)'
-      };
-
-    } catch (error) {
-   const err = error as Error;
-      console.error('Erro ao consultar CNES:', err);
-      return {
-        encontrado: false,
-        mensagem: 'Erro ao consultar CNES'
+        mensagem: 'Erro ao consultar registro ANS',
       };
     }
   }
@@ -553,7 +664,7 @@ export class ValidacaoService {
     if (!this.validarEmail(email)) {
       return {
         valido: false,
-        mensagem: 'Formato de email inválido'
+        mensagem: 'Formato de email inválido',
       };
     }
 
@@ -561,7 +672,7 @@ export class ValidacaoService {
 
     return {
       valido: true,
-      mensagem: 'Email válido'
+      mensagem: 'Email válido',
     };
   }
 
@@ -574,7 +685,7 @@ export class ValidacaoService {
    */
   validarTelefone(telefone: string): boolean {
     const telefoneLimpo = telefone.replace(/\D/g, '');
-    
+
     // Telefone fixo: 10 dígitos (DDD + 8 dígitos)
     // Celular: 11 dígitos (DDD + 9 dígitos)
     return telefoneLimpo.length === 10 || telefoneLimpo.length === 11;
@@ -601,7 +712,7 @@ export class ValidacaoService {
 
   formatarTelefone(telefone: string): string {
     const telefoneLimpo = telefone.replace(/\D/g, '');
-    
+
     if (telefoneLimpo.length === 10) {
       // Fixo
       return telefoneLimpo.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
@@ -609,7 +720,7 @@ export class ValidacaoService {
       // Celular
       return telefoneLimpo.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
     }
-    
+
     return telefone;
   }
 }

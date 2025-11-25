@@ -1,6 +1,6 @@
 /**
  * Service: Communication Service
- * 
+ *
  * Gerenciamento centralizado de comunicações via:
  * - Twilio (SMS)
  * - WhatsApp Business API
@@ -85,7 +85,9 @@ export class CommunicationService {
   /**
    * Enviar SMS via Twilio
    */
-  static async sendSMS(request: SMSRequest): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  static async sendSMS(
+    request: SMSRequest
+  ): Promise<{ success: boolean; messageId?: string; error?: string }> {
     try {
       // Validações
       if (!request.to || !request.message) {
@@ -101,8 +103,8 @@ export class CommunicationService {
         body: {
           To: phone,
           Body: request.message,
-          From: request.from || process.env.TWILIO_PHONE_NUMBER
-        }
+          From: request.from || process.env.TWILIO_PHONE_NUMBER,
+        },
       };
 
       // Fazer chamada via API Gateway
@@ -111,12 +113,12 @@ export class CommunicationService {
       if (response.success && response.data) {
         return {
           success: true,
-          messageId: response.data.sid
+          messageId: response.data.sid,
         };
       } else {
         return {
           success: false,
-          error: response.error || 'Erro ao enviar SMS'
+          error: response.error || 'Erro ao enviar SMS',
         };
       }
     } catch (error) {
@@ -124,7 +126,7 @@ export class CommunicationService {
       console.error('[Communication Service] Erro ao enviar SMS:', err);
       return {
         success: false,
-        error: err.message || 'Erro desconhecido'
+        error: err.message || 'Erro desconhecido',
       };
     }
   }
@@ -132,7 +134,9 @@ export class CommunicationService {
   /**
    * Enviar mensagem via WhatsApp Business API
    */
-  static async sendWhatsApp(request: WhatsAppRequest): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  static async sendWhatsApp(
+    request: WhatsAppRequest
+  ): Promise<{ success: boolean; messageId?: string; error?: string }> {
     try {
       // Validações
       if (!request.to || (!request.message && !request.template)) {
@@ -186,12 +190,12 @@ export class CommunicationService {
       if (response.success && response.data) {
         return {
           success: true,
-          messageId: response.data.messages?.[0]?.id
+          messageId: response.data.messages?.[0]?.id,
         };
       } else {
         return {
           success: false,
-          error: response.error || 'Erro ao enviar WhatsApp'
+          error: response.error || 'Erro ao enviar WhatsApp',
         };
       }
     } catch (error) {
@@ -199,7 +203,7 @@ export class CommunicationService {
       console.error('[Communication Service] Erro ao enviar WhatsApp:', err);
       return {
         success: false,
-        error: err.message || 'Erro desconhecido'
+        error: err.message || 'Erro desconhecido',
       };
     }
   }
@@ -207,7 +211,9 @@ export class CommunicationService {
   /**
    * Enviar email via SendGrid
    */
-  static async sendEmail(request: EmailRequest): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  static async sendEmail(
+    request: EmailRequest
+  ): Promise<{ success: boolean; messageId?: string; error?: string }> {
     try {
       // Validações
       if (!request.to || !request.subject || (!request.html && !request.text)) {
@@ -220,26 +226,34 @@ export class CommunicationService {
       const payload = {
         personalizations: [
           {
-            to: toArray.map(email => ({ email })),
-            ...(request.cc && { cc: (Array.isArray(request.cc) ? request.cc : [request.cc]).map(email => ({ email })) }),
-            ...(request.bcc && { bcc: (Array.isArray(request.bcc) ? request.bcc : [request.bcc]).map(email => ({ email })) })
-          }
+            to: toArray.map((email) => ({ email })),
+            ...(request.cc && {
+              cc: (Array.isArray(request.cc) ? request.cc : [request.cc]).map((email) => ({
+                email,
+              })),
+            }),
+            ...(request.bcc && {
+              bcc: (Array.isArray(request.bcc) ? request.bcc : [request.bcc]).map((email) => ({
+                email,
+              })),
+            }),
+          },
         ],
         from: {
           email: request.from || process.env.SENDGRID_FROM_EMAIL || 'noreply@icarus.com.br',
-          name: 'ICARUS v5.0'
+          name: 'ICARUS v5.0',
         },
         subject: request.subject,
         content: [
           ...(request.html ? [{ type: 'text/html', value: request.html }] : []),
-          ...(request.text ? [{ type: 'text/plain', value: request.text }] : [])
+          ...(request.text ? [{ type: 'text/plain', value: request.text }] : []),
         ],
-        ...(request.attachments && { attachments: request.attachments })
+        ...(request.attachments && { attachments: request.attachments }),
       };
 
       const apiRequest: APIRequest = {
         endpoint: 'sendgrid_send_email',
-        body: payload
+        body: payload,
       };
 
       const response = await APIGatewayService.request(apiRequest);
@@ -247,12 +261,12 @@ export class CommunicationService {
       if (response.success) {
         return {
           success: true,
-          messageId: response.headers?.['x-message-id']
+          messageId: response.headers?.['x-message-id'],
         };
       } else {
         return {
           success: false,
-          error: response.error || 'Erro ao enviar email'
+          error: response.error || 'Erro ao enviar email',
         };
       }
     } catch (error) {
@@ -260,7 +274,7 @@ export class CommunicationService {
       console.error('[Communication Service] Erro ao enviar email:', err);
       return {
         success: false,
-        error: err.message || 'Erro desconhecido'
+        error: err.message || 'Erro desconhecido',
       };
     }
   }
@@ -268,7 +282,9 @@ export class CommunicationService {
   /**
    * Criar e enviar campanha via Mailchimp
    */
-  static async sendCampaign(request: CampaignRequest): Promise<{ success: boolean; campaignId?: string; error?: string }> {
+  static async sendCampaign(
+    request: CampaignRequest
+  ): Promise<{ success: boolean; campaignId?: string; error?: string }> {
     try {
       // Validações
       if (!request.listId || !request.subject || !request.htmlContent) {
@@ -279,22 +295,23 @@ export class CommunicationService {
       const createPayload = {
         type: 'regular',
         recipients: {
-          list_id: request.listId
+          list_id: request.listId,
         },
         settings: {
           subject_line: request.subject,
           from_name: request.fromName,
           reply_to: request.replyTo,
-          title: `ICARUS - ${request.subject}`
-        }
+          title: `ICARUS - ${request.subject}`,
+        },
       };
 
       const createRequest: APIRequest = {
         endpoint: 'mailchimp_create_campaign',
-        body: createPayload
+        body: createPayload,
       };
 
-      const createResponse = await APIGatewayService.request<MailchimpCampaignResponse>(createRequest);
+      const createResponse =
+        await APIGatewayService.request<MailchimpCampaignResponse>(createRequest);
 
       if (!createResponse.success || !createResponse.data?.id) {
         throw new Error('Falha ao criar campanha');
@@ -308,8 +325,8 @@ export class CommunicationService {
         params: { campaignId },
         body: {
           html: request.htmlContent,
-          ...(request.textContent && { plain_text: request.textContent })
-        }
+          ...(request.textContent && { plain_text: request.textContent }),
+        },
       };
 
       const contentResponse = await APIGatewayService.request(contentRequest);
@@ -325,8 +342,8 @@ export class CommunicationService {
           endpoint: 'mailchimp_schedule_campaign',
           params: { campaignId },
           body: {
-            schedule_time: request.schedule
-          }
+            schedule_time: request.schedule,
+          },
         };
 
         await APIGatewayService.request(scheduleRequest);
@@ -334,7 +351,7 @@ export class CommunicationService {
         // Enviar imediatamente
         const sendRequest: APIRequest = {
           endpoint: 'mailchimp_send_campaign',
-          params: { campaignId }
+          params: { campaignId },
         };
 
         await APIGatewayService.request(sendRequest);
@@ -342,14 +359,14 @@ export class CommunicationService {
 
       return {
         success: true,
-        campaignId
+        campaignId,
       };
     } catch (error) {
       const err = error as Error;
       console.error('[Communication Service] Erro ao enviar campanha:', err);
       return {
         success: false,
-        error: err.message || 'Erro desconhecido'
+        error: err.message || 'Erro desconhecido',
       };
     }
   }
@@ -393,7 +410,7 @@ export class CommunicationService {
         }
         // Fallback para WhatsApp
         const waResult = await this.sendWhatsApp({ to: phone, message });
-        return waResult.success 
+        return waResult.success
           ? { success: true, channel: 'whatsapp' }
           : { success: false, error: 'Falha em ambos canais' };
       } else {
@@ -411,11 +428,10 @@ export class CommunicationService {
       const err = error as Error;
       return {
         success: false,
-        error: err.message || 'Erro desconhecido'
+        error: err.message || 'Erro desconhecido',
       };
     }
   }
 }
 
 export const communicationService = new CommunicationService();
-

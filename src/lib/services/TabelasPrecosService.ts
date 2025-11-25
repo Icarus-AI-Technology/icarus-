@@ -1,16 +1,18 @@
 /**
  * TabelasPrecosService - Serviço de Gerenciamento de Tabelas de Preços OPME
- * 
+ *
  * Gerencia tabelas de preços para produtos OPME:
  * - Tabelas por fabricante, distribuidor, hospital, convênio
  * - Preços escalonados por quantidade
  * - Histórico de alterações de preços
  * - Cálculo automático de melhor preço
- * 
+ *
  * @version 5.0.0
  */
 
 import { supabase } from '@/lib/supabase';
+
+const db = supabase as any;
 
 // ========================================
 // INTERFACES
@@ -22,7 +24,14 @@ export interface TabelaPreco {
   nome: string;
   codigo?: string;
   descricao?: string;
-  tipo: 'fabricante' | 'distribuidor' | 'hospital' | 'convenio' | 'contrato' | 'promocional' | 'licitacao';
+  tipo:
+    | 'fabricante'
+    | 'distribuidor'
+    | 'hospital'
+    | 'convenio'
+    | 'contrato'
+    | 'promocional'
+    | 'licitacao';
   hospital_id?: string;
   convenio_id?: string;
   fornecedor_id?: string;
@@ -71,7 +80,14 @@ export interface HistoricoPreco {
   preco_novo: number;
   variacao_percentual?: number;
   variacao_valor?: number;
-  motivo?: 'reajuste' | 'promocao' | 'negociacao' | 'correcao' | 'alteracao_custo' | 'atualizacao_tabela' | 'outro';
+  motivo?:
+    | 'reajuste'
+    | 'promocao'
+    | 'negociacao'
+    | 'correcao'
+    | 'alteracao_custo'
+    | 'atualizacao_tabela'
+    | 'outro';
   descricao?: string;
   alterado_por?: string;
   data_alteracao: string;
@@ -134,7 +150,7 @@ class TabelasPrecosService {
     pagina?: number;
   }) {
     try {
-      let query = supabase
+      let query = db
         .from('tabelas_precos')
         .select('*', { count: 'exact' })
         .is('excluido_em', null);
@@ -157,7 +173,9 @@ class TabelasPrecosService {
       }
 
       if (filtros?.busca) {
-        query = query.or(`nome.ilike.%${filtros.busca}%,codigo.ilike.%${filtros.busca}%,descricao.ilike.%${filtros.busca}%`);
+        query = query.or(
+          `nome.ilike.%${filtros.busca}%,codigo.ilike.%${filtros.busca}%,descricao.ilike.%${filtros.busca}%`
+        );
       }
 
       // Paginação
@@ -189,7 +207,7 @@ class TabelasPrecosService {
    */
   async buscarTabela(id: string) {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('tabelas_precos')
         .select('*')
         .eq('id', id)
@@ -213,7 +231,7 @@ class TabelasPrecosService {
    */
   async criarTabela(dados: TabelaPrecoFormData) {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('tabelas_precos')
         .insert({
           ...dados,
@@ -243,7 +261,7 @@ class TabelasPrecosService {
    */
   async atualizarTabela(id: string, dados: Partial<TabelaPrecoFormData>) {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('tabelas_precos')
         .update(dados)
         .eq('id', id)
@@ -267,7 +285,7 @@ class TabelasPrecosService {
    */
   async deletarTabela(id: string) {
     try {
-      const { error } = await supabase
+      const { error } = await db
         .from('tabelas_precos')
         .update({ excluido_em: new Date().toISOString() })
         .eq('id', id);
@@ -287,17 +305,22 @@ class TabelasPrecosService {
   /**
    * Listar itens de uma tabela de preços
    */
-  async listarItens(tabelaPrecoId: string, filtros?: {
-    produto_id?: string;
-    ativo?: boolean;
-  }) {
+  async listarItens(
+    tabelaPrecoId: string,
+    filtros?: {
+      produto_id?: string;
+      ativo?: boolean;
+    }
+  ) {
     try {
-      let query = supabase
+      let query = db
         .from('tabelas_precos_itens')
-        .select(`
+        .select(
+          `
           *,
           produto:produtos(id, codigo_sku, descricao, fabricante, categoria)
-        `)
+        `
+        )
         .eq('tabela_preco_id', tabelaPrecoId);
 
       if (filtros?.produto_id) {
@@ -329,7 +352,7 @@ class TabelasPrecosService {
    */
   async adicionarItem(tabelaPrecoId: string, dados: TabelaPrecoItemFormData) {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('tabelas_precos_itens')
         .insert({
           tabela_preco_id: tabelaPrecoId,
@@ -359,7 +382,7 @@ class TabelasPrecosService {
    */
   async atualizarItem(itemId: string, dados: Partial<TabelaPrecoItemFormData>) {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('tabelas_precos_itens')
         .update(dados)
         .eq('id', itemId)
@@ -383,10 +406,7 @@ class TabelasPrecosService {
    */
   async removerItem(itemId: string) {
     try {
-      const { error } = await supabase
-        .from('tabelas_precos_itens')
-        .delete()
-        .eq('id', itemId);
+      const { error } = await db.from('tabelas_precos_itens').delete().eq('id', itemId);
 
       if (error) {
         console.error('[TabelasPrecos] Erro ao remover item:', error);
@@ -411,7 +431,7 @@ class TabelasPrecosService {
     data?: string;
   }) {
     try {
-      const { data, error } = await supabase.rpc('obter_melhor_preco', {
+      const { data, error } = await db.rpc('obter_melhor_preco', {
         p_produto_id: params.produto_id,
         p_empresa_id: (await supabase.auth.getUser()).data.user?.user_metadata?.empresa_id,
         p_hospital_id: params.hospital_id || null,
@@ -437,7 +457,7 @@ class TabelasPrecosService {
    */
   async buscarHistorico(produtoId: string, limite: number = 50) {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('historico_precos')
         .select('*')
         .eq('produto_id', produtoId)
@@ -522,7 +542,9 @@ class TabelasPrecosService {
   async aplicarReajuste(tabelaPrecoId: string, percentual: number, _motivo?: string) {
     try {
       // Buscar todos os itens
-      const { data: itens, error: errorItens } = await this.listarItens(tabelaPrecoId, { ativo: true });
+      const { data: itens, error: errorItens } = await this.listarItens(tabelaPrecoId, {
+        ativo: true,
+      });
       if (errorItens || !itens) {
         return { success: false, error: errorItens };
       }
@@ -570,39 +592,54 @@ class TabelasPrecosService {
         'Margem R$',
         'Qtd. Mínima',
         'Qtd. Máxima',
-        'Observações'
+        'Observações',
       ];
 
       // Linhas CSV
       const linhas = itens.map((item) => {
-        const produto = (item as unknown as { produto?: { codigo_sku?: string; descricao?: string; fabricante?: string; categoria?: string } }).produto;
+        const produto = (
+          item as unknown as {
+            produto?: {
+              codigo_sku?: string;
+              descricao?: string;
+              fabricante?: string;
+              categoria?: string;
+            };
+          }
+        ).produto;
         return [
           produto?.codigo_sku || '',
           produto?.descricao || '',
           produto?.fabricante || '',
           produto?.categoria || '',
-          item.preco_custo !== undefined && item.preco_custo !== null ? item.preco_custo.toFixed(2) : '',
+          item.preco_custo !== undefined && item.preco_custo !== null
+            ? item.preco_custo.toFixed(2)
+            : '',
           item.preco_base.toFixed(2),
           item.desconto_percentual.toFixed(2),
           item.desconto_valor.toFixed(2),
           item.preco_final.toFixed(2),
-          item.margem_percentual !== undefined && item.margem_percentual !== null ? item.margem_percentual.toFixed(2) : '',
-          item.margem_valor !== undefined && item.margem_valor !== null ? item.margem_valor.toFixed(2) : '',
+          item.margem_percentual !== undefined && item.margem_percentual !== null
+            ? item.margem_percentual.toFixed(2)
+            : '',
+          item.margem_valor !== undefined && item.margem_valor !== null
+            ? item.margem_valor.toFixed(2)
+            : '',
           item.quantidade_minima,
           item.quantidade_maxima || '',
-          item.observacoes || ''
+          item.observacoes || '',
         ];
       });
 
       // Gerar CSV
       const csv = [
         headers.join(','),
-        ...linhas.map(linha => linha.map(campo => `"${campo}"`).join(','))
+        ...linhas.map((linha) => linha.map((campo) => `"${campo}"`).join(',')),
       ].join('\n');
 
       return csv;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[TabelasPrecos] Erro ao exportar tabela:', err);
       return '';
     }
@@ -613,4 +650,3 @@ class TabelasPrecosService {
 export const tabelasPrecosService = new TabelasPrecosService();
 
 export default TabelasPrecosService;
-

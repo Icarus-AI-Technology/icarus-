@@ -1,46 +1,18 @@
-import { useState } from"react";
-import { useNavigate } from"react-router-dom";
-import { ArrowLeft, Save, Loader2, UserCheck, MapPin, Shield, Heart, FileText, AlertCircle } from"lucide-react";
-import { toast } from"sonner";
-import { FormFieldError } from"../../components/oraclusx-ds/FormFieldError";
-import { CadastrosService } from"../../services/CadastrosService";
-import { ValidacaoService } from"../../services/ValidacaoService";
-import type { PacienteFormData, ValidationErrors } from"../../types/cadastros";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeft, Save, Loader2, UserCheck, MapPin, Shield, Heart, FileText } from 'lucide-react';
+import { toast } from 'sonner';
+import { FormFieldError } from '@/components/oraclusx-ds/FormFieldError';
+import { Button } from '@/components/oraclusx-ds/Button';
+import { NeuInput, NeuSelect, NeuTextarea } from '@/components/forms';
+import { cadastrosService } from '@/services/CadastrosService';
+import { validacaoService } from '@/services/ValidacaoService';
+import type { Paciente, PacienteFormData, ValidationErrors } from '../../types/cadastros';
 
 /**
  * FORMULÁRIO DE CADASTRO DE PACIENTES
- * 
- * DOCUMENTAÇÃO: MODULOS_CADASTROS_COMPRAS_PARTE2.md → Seção"Pacientes"
- * 
- * ESTRUTURA:
- * 1. Dados Pessoais (Nome, CPF, RG, Data Nascimento, Sexo, Estado Civil)
- * 2. Filiação (Nome da Mãe *, Nome do Pai)
- * 3. Contato (Telefone, Celular, Email)
- * 4. Endereço (CEP com busca automática, Logradouro, etc)
- * 5. Dados do Convênio (Convênio *, Carteirinha *, Validade, Plano, Tipo)
- * 6. Informações de Saúde (Grupo Sanguíneo, Alergias, Medicamentos, Observações)
- * 7. Consentimento LGPD (Obrigatório)
- * 
- * VALIDAÇÕES:
- * - CPF: Opcional, mas se preenchido, validado (Receita Federal)
- * - Nome da Mãe: Obrigatório (lei brasileira)
- * - Carteirinha: Obrigatória
- * - Email: Formato válido
- * - CEP: Busca automática ViaCEP
- * - Consentimento LGPD: Obrigatório (checkbox)
- * 
- * INTEGRAÇÕES:
- * - Receita Federal (CPF se preenchido)
- * - ViaCEP (Endereço)
- * - CadastrosService (CRUD)
- * - ValidacaoService (Validações)
- * 
- * DESIGN:
- * - OraclusX DS 100% (CSS Variables, Neumorphism, Hard Gates)
- * - Dark Mode Ready
- * - Responsivo (1/2/3/4 colunas)
- * - Loading states (CPF, CEP)
- * - Inline validation errors
+ *
+ * DOCUMENTAÇÃO: MODULOS_CADASTROS_COMPRAS_PARTE2.md → Seção "Pacientes"
  */
 
 export default function CadastroPacientes() {
@@ -51,37 +23,38 @@ export default function CadastroPacientes() {
 
   // Form Data
   const [formData, setFormData] = useState<PacienteFormData>({
-    nome_completo:"",
-    cpf:"",
-    rg:"",
-    data_nascimento:"",
-    sexo:"M",
-    estado_civil:"solteiro",
-    nome_mae:"",
-    nome_pai:"",
-    telefone:"",
-    celular:"",
-    email:"",
+    nome_completo: '',
+    cpf: '',
+    rg: '',
+    data_nascimento: '',
+    sexo: 'M',
+    estado_civil: 'solteiro',
+    nome_mae: '',
+    nome_pai: '',
+    telefone: '',
+    celular: '',
+    email: '',
     endereco: {
-      cep:"",
-      logradouro:"",
-      numero:"",
-      complemento:"",
-      bairro:"",
-      cidade:"",
-      uf:"",
+      cep: '',
+      logradouro: '',
+      numero: '',
+      complemento: '',
+      bairro: '',
+      cidade: '',
+      uf: '',
     },
-    convenio_id:"",
-    numero_carteirinha:"",
-    validade_plano:"",
-    plano:"",
-    tipo_atendimento:"completo",
-    grupo_sanguineo:"O+",
-    alergias:"",
-    medicamentos_uso:"",
-    observacoes_saude:"",
-    observacoes:"",
+    convenio_id: '',
+    numero_carteirinha: '',
+    validade_plano: '',
+    plano: '',
+    tipo_atendimento: 'completo',
+    grupo_sanguineo: 'O+',
+    alergias: '',
+    medicamentos_uso: '',
+    observacoes_saude: '',
+    observacoes: '',
     consentimento_lgpd: false,
+    ativo: true,
   });
 
   // Validation Errors
@@ -96,24 +69,24 @@ export default function CadastroPacientes() {
     const { id, value, type } = e.target;
 
     // Checkbox handling
-    if (type ==="checkbox") {
+    if (type === 'checkbox') {
       const checked = (e.target as HTMLInputElement).checked;
-      setFormData((prev) => ({ ...prev, [id]: checked }));
+      setFormData((prev: PacienteFormData) => ({ ...prev, [id]: checked }));
       return;
     }
 
     // Nested address fields
     if (
-      id.startsWith("cep") ||
-      id.startsWith("logradouro") ||
-      id.startsWith("numero") ||
-      id.startsWith("complemento") ||
-      id.startsWith("bairro") ||
-      id.startsWith("cidade") ||
-      id.startsWith("uf")
+      id.startsWith('cep') ||
+      id.startsWith('logradouro') ||
+      id.startsWith('numero') ||
+      id.startsWith('complemento') ||
+      id.startsWith('bairro') ||
+      id.startsWith('cidade') ||
+      id.startsWith('uf')
     ) {
-      const addressKey = id.split("_")[0] as keyof typeof formData.endereco;
-      setFormData((prev) => ({
+      const addressKey = id.split('_')[0] as keyof typeof formData.endereco;
+      setFormData((prev: PacienteFormData) => ({
         ...prev,
         endereco: {
           ...prev.endereco!,
@@ -124,7 +97,7 @@ export default function CadastroPacientes() {
     }
 
     // Regular fields
-    setFormData((prev) => ({ ...prev, [id]: value }));
+    setFormData((prev: PacienteFormData) => ({ ...prev, [id]: value }));
   };
 
   /**
@@ -132,8 +105,8 @@ export default function CadastroPacientes() {
    */
   const handleCpfBlur = async () => {
     // Se CPF não foi preenchido, não precisa validar
-    if (!formData.cpf || formData.cpf.trim() ==="") {
-      setErrors((prev) => {
+    if (!formData.cpf || formData.cpf.trim() === '') {
+      setErrors((prev: ValidationErrors) => {
         const newErrors = { ...prev };
         delete newErrors.cpf;
         return newErrors;
@@ -142,25 +115,35 @@ export default function CadastroPacientes() {
     }
 
     setValidatingCpf(true);
-    setErrors((prev) => {
+    setErrors((prev: ValidationErrors) => {
       const newErrors = { ...prev };
       delete newErrors.cpf;
       return newErrors;
     });
 
     try {
-      const { valid, message } = await ValidacaoService.validarCPF(formData.cpf);
+      const resultado = await validacaoService.consultarCPFReceitaFederal(formData.cpf);
 
-      if (!valid) {
-        setErrors((prev) => ({ ...prev, cpf: message }));
+      if (!resultado.valido) {
+        setErrors((prev: ValidationErrors) => ({
+          ...prev,
+          cpf: resultado.mensagem || 'CPF inválido',
+        }));
       } else {
-        toast.success("CPF validado com sucesso!");
+        toast.success('CPF validado com sucesso!');
+        // Opcional: preencher nome se vier da API
+        if (resultado.nome) {
+          setFormData((prev: PacienteFormData) => ({
+            ...prev,
+            nome_completo: resultado.nome || prev.nome_completo,
+          }));
+        }
       }
     } catch (error: unknown) {
-        const err = error as Error;
-      setErrors((prev) => ({
+      const err = error as Error;
+      setErrors((prev: ValidationErrors) => ({
         ...prev,
-        cpf: error.message ||"Erro ao validar CPF.",
+        cpf: err.message || 'Erro ao validar CPF.',
       }));
     } finally {
       setValidatingCpf(false);
@@ -171,43 +154,44 @@ export default function CadastroPacientes() {
    * BUSCA CEP (VIACEP)
    */
   const handleCepBlur = async () => {
-    if (!formData.endereco?.cep || formData.endereco.cep.trim() ==="") return;
+    if (!formData.endereco?.cep || formData.endereco.cep.trim() === '') return;
 
     setValidatingCep(true);
-    setErrors((prev) => {
+    setErrors((prev: ValidationErrors) => {
       const newErrors = { ...prev };
-      delete newErrors["cep"];
+      delete newErrors['cep'];
       return newErrors;
     });
 
     try {
-      const { valid, message, endereco: enderecoData } = await ValidacaoService.validarCEP(
-        formData.endereco.cep
-      );
+      const resultado = await validacaoService.consultarCEP(formData.endereco.cep);
 
-      if (!valid || !enderecoData) {
-        setErrors((prev) => ({ ...prev, cep: message }));
+      if (!resultado.encontrado) {
+        setErrors((prev: ValidationErrors) => ({
+          ...prev,
+          cep: resultado.erro || 'CEP não encontrado',
+        }));
         return;
       }
 
       // Preenche automaticamente os campos
-      setFormData((prev) => ({
+      setFormData((prev: PacienteFormData) => ({
         ...prev,
         endereco: {
           ...prev.endereco!,
-          logradouro: enderecoData.logradouro ||"",
-          bairro: enderecoData.bairro ||"",
-          cidade: enderecoData.localidade ||"",
-          uf: enderecoData.uf ||"",
+          logradouro: resultado.logradouro || '',
+          bairro: resultado.bairro || '',
+          cidade: resultado.localidade || '',
+          uf: resultado.uf || '',
         },
       }));
 
-      toast.success("CEP encontrado e endereço preenchido!");
+      toast.success('CEP encontrado e endereço preenchido!');
     } catch (error: unknown) {
-        const err = error as Error;
-      setErrors((prev) => ({
+      const err = error as Error;
+      setErrors((prev: ValidationErrors) => ({
         ...prev,
-        cep: error.message ||"Erro ao buscar CEP.",
+        cep: err.message || 'Erro ao buscar CEP.',
       }));
     } finally {
       setValidatingCep(false);
@@ -222,35 +206,37 @@ export default function CadastroPacientes() {
 
     // Campos obrigatórios
     if (!formData.nome_completo.trim()) {
-      newErrors.nome_completo ="Nome completo é obrigatório.";
+      newErrors.nome_completo = 'Nome completo é obrigatório.';
     }
 
     if (!formData.nome_mae.trim()) {
-      newErrors.nome_mae ="Nome da mãe é obrigatório (lei brasileira).";
-    }
-
-    if (!formData.convenio_id.trim()) {
-      newErrors.convenio_id ="Convênio é obrigatório.";
-    }
-
-    if (!formData.numero_carteirinha.trim()) {
-      newErrors.numero_carteirinha ="Número da carteirinha é obrigatório.";
+      newErrors.nome_mae = 'Nome da mãe é obrigatório (lei brasileira).';
     }
 
     if (!formData.data_nascimento.trim()) {
-      newErrors.data_nascimento ="Data de nascimento é obrigatória.";
+      newErrors.data_nascimento = 'Data de nascimento é obrigatória.';
     }
 
-    // LGPD Consent
+    // Campos condicionais (Convênio)
+    if (formData.convenio_id && formData.convenio_id !== '') {
+      if (!formData.numero_carteirinha || formData.numero_carteirinha.trim() === '') {
+        newErrors.numero_carteirinha = 'Número da carteirinha é obrigatório para convênio.';
+      }
+      if (!formData.validade_plano) {
+        newErrors.validade_plano = 'Validade do plano é obrigatória.';
+      }
+    }
+
+    // LGPD
     if (!formData.consentimento_lgpd) {
-      newErrors.consentimento_lgpd ="Consentimento LGPD é obrigatório.";
+      newErrors.consentimento_lgpd = 'É necessário o consentimento do paciente (LGPD).';
     }
 
     // Email format (se preenchido)
-    if (formData.email && formData.email.trim() !=="") {
+    if (formData.email && formData.email.trim() !== '') {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(formData.email)) {
-        newErrors.email ="Formato de email inválido.";
+        newErrors.email = 'Formato de email inválido.';
       }
     }
 
@@ -265,22 +251,23 @@ export default function CadastroPacientes() {
     e.preventDefault();
 
     if (!validateForm()) {
-      toast.error("Preencha todos os campos obrigatórios.");
+      toast.error('Preencha todos os campos obrigatórios.');
       return;
     }
 
     setLoading(true);
 
     try {
-      const cadastrosService = new CadastrosService();
-      const novoPaciente = await cadastrosService.createPaciente(formData);
+      const { data, error } = await cadastrosService.criar<Paciente>('paciente', formData);
 
-      toast.success(`Paciente ${novoPaciente.nome_completo} cadastrado com sucesso!`);
-      navigate("/cadastros");
+      if (error) throw error;
+
+      toast.success(`Paciente ${formData.nome_completo} cadastrado com sucesso!`);
+      navigate('/cadastros');
     } catch (error: unknown) {
-        const err = error as Error;
-      toast.error(error.message ||"Erro ao cadastrar paciente.");
-      console.error("Erro ao cadastrar paciente:", err);
+      const err = error as Error;
+      toast.error(err.message || 'Erro ao cadastrar paciente.');
+      console.error('Erro ao cadastrar paciente:', err);
     } finally {
       setLoading(false);
     }
@@ -291,56 +278,28 @@ export default function CadastroPacientes() {
    */
   const handleCancel = () => {
     if (
-      window.confirm("Tem certeza que deseja cancelar? Todos os dados preenchidos serão perdidos."
-      )
+      window.confirm('Tem certeza que deseja cancelar? Todos os dados preenchidos serão perdidos.')
     ) {
-      navigate("/cadastros");
+      navigate('/cadastros');
     }
   };
 
   return (
-    <div style={{ padding:"2rem 0" }}>
+    <div className="py-8">
       {/* HEADER */}
-      <div
-        style={{
-          display:"flex",
-          alignItems:"center",
-          justifyContent:"space-between",
-          marginBottom:"2rem",
-        }}
-      >
-        <div style={{ display:"flex", alignItems:"center", gap:"1rem" }}>
-          <button
-            onClick={() => navigate("/cadastros")}
-            className="neumorphic-button"
-            style={{
-              padding:"0.75rem",
-              borderRadius:"0.5rem",
-              display:"flex",
-              alignItems:"center",
-              justifyContent:"center",
-            }}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-4">
+          <Button
+            variant="neumo"
+            onClick={() => navigate('/cadastros')}
+            className="p-3"
             aria-label="Voltar"
           >
             <ArrowLeft size={20} />
-          </button>
+          </Button>
           <div>
-            <h1
-              style={{
-                fontSize: '0.813rem',
-                fontWeight:"var(--orx-font-weight-bold)",
-                color:"var(--orx-text-primary)",
-              }}
-            >
-              Cadastro de Pacientes
-            </h1>
-            <p
-              style={{
-                fontSize: '0.813rem',
-                color:"var(--orx-text-secondary)",
-                marginTop:"0.25rem",
-              }}
-            >
+            <h1 className="text-xl font-bold text-primary">Cadastro de Pacientes</h1>
+            <p className="mt-1 text-sm text-muted">
               Preencha os dados do paciente. Campos com (*) são obrigatórios.
             </p>
           </div>
@@ -350,121 +309,52 @@ export default function CadastroPacientes() {
       {/* FORM */}
       <form onSubmit={handleSubmit}>
         {/* 1. DADOS PESSOAIS */}
-        <div
-          className="neumorphic-card"
-          style={{
-            padding:"1.5rem",
-            marginBottom:"1.5rem",
-            borderRadius:"1rem",
-          }}
-        >
-          <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", marginBottom:"1.5rem" }}>
-            <div
-              style={{
-                width:"40px",
-                height:"40px",
-                borderRadius:"0.5rem",
-                background:"var(--orx-primary)",
-                display:"flex",
-                alignItems:"center",
-                justifyContent:"center",
-              }}
-            >
-              <UserCheck size={20} style={{ color:"white" }} />
+        <div className="p-6 mb-6 rounded-2xl neumorphic-container">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center justify-center w-10 h-10 text-white rounded-lg bg-primary">
+              <UserCheck size={20} />
             </div>
-            <h2
-              style={{
-                fontSize: '0.813rem',
-                fontWeight:"var(--orx-font-weight-semibold)",
-                color:"var(--orx-text-primary)",
-              }}
-            >
-              1. Dados Pessoais
-            </h2>
+            <h2 className="text-sm font-semibold text-primary">1. Dados Pessoais</h2>
           </div>
 
-          <div
-            style={{
-              display:"grid",
-              gridTemplateColumns:"repeat(auto-fit, minmax(250px, 1fr))",
-              gap:"1rem",
-            }}
-          >
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
             {/* Nome Completo */}
-            <div style={{ gridColumn:"1 / -1" }}>
+            <div className="col-span-full">
               <label
                 htmlFor="nome_completo"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
+                className="block mb-2 text-sm font-medium text-primary"
               >
                 Nome Completo *
               </label>
-              <input
-                type="text"
+              <NeuInput
                 id="nome_completo"
                 value={formData.nome_completo}
                 onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
                 placeholder="Ex: Maria Silva Santos"
+                error={errors.nome_completo}
               />
               <FormFieldError error={errors.nome_completo} />
             </div>
 
             {/* CPF */}
             <div>
-              <label
-                htmlFor="cpf"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
-              >
+              <label htmlFor="cpf" className="block mb-2 text-sm font-medium text-primary">
                 CPF (Opcional)
               </label>
-              <div style={{ position:"relative" }}>
-                <input
-                  type="text"
+              <div className="relative">
+                <NeuInput
                   id="cpf"
                   value={formData.cpf}
                   onChange={handleChange}
                   onBlur={handleCpfBlur}
-                  className="neumorphic-input"
-                  style={{
-                    width:"100%",
-                    padding:"0.75rem",
-                    borderRadius:"0.5rem",
-                    fontSize: '0.813rem',
-                    color:"var(--orx-text-primary)",
-                  }}
                   placeholder="000.000.000-00"
                   maxLength={14}
+                  error={errors.cpf}
                 />
                 {validatingCpf && (
                   <Loader2
                     size={16}
-                    className="animate-spin"
-                    style={{
-                      position:"absolute",
-                      right:"0.75rem",
-                      top:"50%",
-                      transform:"translateY(-50%)",
-                      color:"var(--orx-primary)",
-                    }}
+                    className="absolute animate-spin right-3 top-1/2 -translate-y-1/2 text-primary"
                   />
                 )}
               </div>
@@ -473,31 +363,13 @@ export default function CadastroPacientes() {
 
             {/* RG */}
             <div>
-              <label
-                htmlFor="rg"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
-              >
+              <label htmlFor="rg" className="block mb-2 text-sm font-medium text-primary">
                 RG
               </label>
-              <input
-                type="text"
+              <NeuInput
                 id="rg"
                 value={formData.rg}
                 onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
                 placeholder="Ex: 12.345.678-9"
               />
             </div>
@@ -506,203 +378,98 @@ export default function CadastroPacientes() {
             <div>
               <label
                 htmlFor="data_nascimento"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
+                className="block mb-2 text-sm font-medium text-primary"
               >
                 Data de Nascimento *
               </label>
-              <input
+              <NeuInput
                 type="date"
                 id="data_nascimento"
                 value={formData.data_nascimento}
                 onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
+                error={errors.data_nascimento}
               />
               <FormFieldError error={errors.data_nascimento} />
             </div>
 
             {/* Sexo */}
             <div>
-              <label
-                htmlFor="sexo"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
-              >
+              <label htmlFor="sexo" className="block mb-2 text-sm font-medium text-primary">
                 Sexo *
               </label>
-              <select
-                id="sexo"
+              <NeuSelect
                 value={formData.sexo}
-                onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
-              >
-                <option value="M">Masculino</option>
-                <option value="F">Feminino</option>
-                <option value="Outro">Outro</option>
-              </select>
+                onValueChange={(val) =>
+                  handleChange({
+                    target: { id: 'sexo', value: val ?? '' },
+                  } as React.ChangeEvent<HTMLInputElement>)
+                }
+                options={[
+                  { value: 'M', label: 'Masculino' },
+                  { value: 'F', label: 'Feminino' },
+                  { value: 'Outro', label: 'Outro' },
+                ]}
+              />
             </div>
 
             {/* Estado Civil */}
             <div>
-              <label
-                htmlFor="estado_civil"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
-              >
+              <label htmlFor="estado_civil" className="block mb-2 text-sm font-medium text-primary">
                 Estado Civil
               </label>
-              <select
-                id="estado_civil"
+              <NeuSelect
                 value={formData.estado_civil}
-                onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
-              >
-                <option value="solteiro">Solteiro(a)</option>
-                <option value="casado">Casado(a)</option>
-                <option value="divorciado">Divorciado(a)</option>
-                <option value="viuvo">Viúvo(a)</option>
-                <option value="uniao_estavel">União Estável</option>
-              </select>
+                onValueChange={(val) =>
+                  handleChange({
+                    target: { id: 'estado_civil', value: val ?? '' },
+                  } as React.ChangeEvent<HTMLInputElement>)
+                }
+                options={[
+                  { value: 'solteiro', label: 'Solteiro(a)' },
+                  { value: 'casado', label: 'Casado(a)' },
+                  { value: 'divorciado', label: 'Divorciado(a)' },
+                  { value: 'viuvo', label: 'Viúvo(a)' },
+                  { value: 'uniao_estavel', label: 'União Estável' },
+                ]}
+              />
             </div>
           </div>
         </div>
 
         {/* 2. FILIAÇÃO */}
-        <div
-          className="neumorphic-card"
-          style={{
-            padding:"1.5rem",
-            marginBottom:"1.5rem",
-            borderRadius:"1rem",
-          }}
-        >
-          <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", marginBottom:"1.5rem" }}>
-            <div
-              style={{
-                width:"40px",
-                height:"40px",
-                borderRadius:"0.5rem",
-                background:"var(--orx-primary)",
-                display:"flex",
-                alignItems:"center",
-                justifyContent:"center",
-              }}
-            >
-              <UserCheck size={20} style={{ color:"white" }} />
+        <div className="p-6 mb-6 rounded-2xl neumorphic-container">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center justify-center w-10 h-10 text-white rounded-lg bg-primary">
+              <UserCheck size={20} />
             </div>
-            <h2
-              style={{
-                fontSize: '0.813rem',
-                fontWeight:"var(--orx-font-weight-semibold)",
-                color:"var(--orx-text-primary)",
-              }}
-            >
-              2. Filiação
-            </h2>
+            <h2 className="text-sm font-semibold text-primary">2. Filiação</h2>
           </div>
 
-          <div
-            style={{
-              display:"grid",
-              gridTemplateColumns:"repeat(auto-fit, minmax(250px, 1fr))",
-              gap:"1rem",
-            }}
-          >
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {/* Nome da Mãe */}
             <div>
-              <label
-                htmlFor="nome_mae"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
-              >
+              <label htmlFor="nome_mae" className="block mb-2 text-sm font-medium text-primary">
                 Nome da Mãe *
               </label>
-              <input
-                type="text"
+              <NeuInput
                 id="nome_mae"
                 value={formData.nome_mae}
                 onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
                 placeholder="Ex: Ana Silva Santos"
+                error={errors.nome_mae}
               />
               <FormFieldError error={errors.nome_mae} />
             </div>
 
             {/* Nome do Pai */}
             <div>
-              <label
-                htmlFor="nome_pai"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
-              >
+              <label htmlFor="nome_pai" className="block mb-2 text-sm font-medium text-primary">
                 Nome do Pai
               </label>
-              <input
-                type="text"
+              <NeuInput
                 id="nome_pai"
                 value={formData.nome_pai}
                 onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
                 placeholder="Ex: João Silva Santos"
               />
             </div>
@@ -710,136 +477,55 @@ export default function CadastroPacientes() {
         </div>
 
         {/* 3. CONTATO */}
-        <div
-          className="neumorphic-card"
-          style={{
-            padding:"1.5rem",
-            marginBottom:"1.5rem",
-            borderRadius:"1rem",
-          }}
-        >
-          <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", marginBottom:"1.5rem" }}>
-            <div
-              style={{
-                width:"40px",
-                height:"40px",
-                borderRadius:"0.5rem",
-                background:"var(--orx-primary)",
-                display:"flex",
-                alignItems:"center",
-                justifyContent:"center",
-              }}
-            >
-              <UserCheck size={20} style={{ color:"white" }} />
+        <div className="p-6 mb-6 rounded-2xl neumorphic-container">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center justify-center w-10 h-10 text-white rounded-lg bg-primary">
+              <UserCheck size={20} />
             </div>
-            <h2
-              style={{
-                fontSize: '0.813rem',
-                fontWeight:"var(--orx-font-weight-semibold)",
-                color:"var(--orx-text-primary)",
-              }}
-            >
-              3. Contato
-            </h2>
+            <h2 className="text-sm font-semibold text-primary">3. Contato</h2>
           </div>
 
-          <div
-            style={{
-              display:"grid",
-              gridTemplateColumns:"repeat(auto-fit, minmax(250px, 1fr))",
-              gap:"1rem",
-            }}
-          >
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {/* Telefone */}
             <div>
-              <label
-                htmlFor="telefone"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
-              >
+              <label htmlFor="telefone" className="block mb-2 text-sm font-medium text-primary">
                 Telefone Fixo
               </label>
-              <input
+              <NeuInput
                 type="tel"
                 id="telefone"
                 value={formData.telefone}
                 onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
                 placeholder="(11) 3456-7890"
               />
             </div>
 
             {/* Celular */}
             <div>
-              <label
-                htmlFor="celular"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
-              >
+              <label htmlFor="celular" className="block mb-2 text-sm font-medium text-primary">
                 Celular (WhatsApp)
               </label>
-              <input
+              <NeuInput
                 type="tel"
                 id="celular"
                 value={formData.celular}
                 onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
                 placeholder="(11) 98765-4321"
               />
             </div>
 
             {/* Email */}
-            <div style={{ gridColumn:"1 / -1" }}>
-              <label
-                htmlFor="email"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
-              >
+            <div className="col-span-full lg:col-span-1">
+              <label htmlFor="email" className="block mb-2 text-sm font-medium text-primary">
                 Email
               </label>
-              <input
+              <NeuInput
                 type="email"
                 id="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
                 placeholder="maria.santos@example.com"
+                error={errors.email}
               />
               <FormFieldError error={errors.email} />
             </div>
@@ -847,89 +533,34 @@ export default function CadastroPacientes() {
         </div>
 
         {/* 4. ENDEREÇO */}
-        <div
-          className="neumorphic-card"
-          style={{
-            padding:"1.5rem",
-            marginBottom:"1.5rem",
-            borderRadius:"1rem",
-          }}
-        >
-          <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", marginBottom:"1.5rem" }}>
-            <div
-              style={{
-                width:"40px",
-                height:"40px",
-                borderRadius:"0.5rem",
-                background:"var(--orx-primary)",
-                display:"flex",
-                alignItems:"center",
-                justifyContent:"center",
-              }}
-            >
-              <MapPin size={20} style={{ color:"white" }} />
+        <div className="p-6 mb-6 rounded-2xl neumorphic-container">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center justify-center w-10 h-10 text-white rounded-lg bg-primary">
+              <MapPin size={20} />
             </div>
-            <h2
-              style={{
-                fontSize: '0.813rem',
-                fontWeight:"var(--orx-font-weight-semibold)",
-                color:"var(--orx-text-primary)",
-              }}
-            >
-              4. Endereço
-            </h2>
+            <h2 className="text-sm font-semibold text-primary">4. Endereço</h2>
           </div>
 
-          <div
-            style={{
-              display:"grid",
-              gridTemplateColumns:"repeat(auto-fit, minmax(250px, 1fr))",
-              gap:"1rem",
-            }}
-          >
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
             {/* CEP */}
             <div>
-              <label
-                htmlFor="cep"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
-              >
+              <label htmlFor="cep" className="block mb-2 text-sm font-medium text-primary">
                 CEP
               </label>
-              <div style={{ position:"relative" }}>
-                <input
-                  type="text"
+              <div className="relative">
+                <NeuInput
                   id="cep"
-                  value={formData.endereco?.cep ||""}
+                  value={formData.endereco?.cep || ''}
                   onChange={handleChange}
                   onBlur={handleCepBlur}
-                  className="neumorphic-input"
-                  style={{
-                    width:"100%",
-                    padding:"0.75rem",
-                    borderRadius:"0.5rem",
-                    fontSize: '0.813rem',
-                    color:"var(--orx-text-primary)",
-                  }}
                   placeholder="00000-000"
                   maxLength={9}
+                  error={errors.cep}
                 />
                 {validatingCep && (
                   <Loader2
                     size={16}
-                    className="animate-spin"
-                    style={{
-                      position:"absolute",
-                      right:"0.75rem",
-                      top:"50%",
-                      transform:"translateY(-50%)",
-                      color:"var(--orx-primary)",
-                    }}
+                    className="absolute animate-spin right-3 top-1/2 -translate-y-1/2 text-primary"
                   />
                 )}
               </div>
@@ -937,296 +568,147 @@ export default function CadastroPacientes() {
             </div>
 
             {/* Logradouro */}
-            <div style={{ gridColumn:"span 2" }}>
-              <label
-                htmlFor="logradouro"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
-              >
+            <div className="col-span-2">
+              <label htmlFor="logradouro" className="block mb-2 text-sm font-medium text-primary">
                 Logradouro
               </label>
-              <input
-                type="text"
+              <NeuInput
                 id="logradouro"
-                value={formData.endereco?.logradouro ||""}
+                value={formData.endereco?.logradouro || ''}
                 onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
                 placeholder="Rua, Avenida, etc."
               />
             </div>
 
             {/* Número */}
             <div>
-              <label
-                htmlFor="numero"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
-              >
+              <label htmlFor="numero" className="block mb-2 text-sm font-medium text-primary">
                 Número
               </label>
-              <input
-                type="text"
+              <NeuInput
                 id="numero"
-                value={formData.endereco?.numero ||""}
+                value={formData.endereco?.numero || ''}
                 onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
                 placeholder="123"
               />
             </div>
 
             {/* Complemento */}
             <div>
-              <label
-                htmlFor="complemento"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
-              >
+              <label htmlFor="complemento" className="block mb-2 text-sm font-medium text-primary">
                 Complemento
               </label>
-              <input
-                type="text"
+              <NeuInput
                 id="complemento"
-                value={formData.endereco?.complemento ||""}
+                value={formData.endereco?.complemento || ''}
                 onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
                 placeholder="Apto, Bloco, etc."
               />
             </div>
 
             {/* Bairro */}
             <div>
-              <label
-                htmlFor="bairro"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
-              >
+              <label htmlFor="bairro" className="block mb-2 text-sm font-medium text-primary">
                 Bairro
               </label>
-              <input
-                type="text"
+              <NeuInput
                 id="bairro"
-                value={formData.endereco?.bairro ||""}
+                value={formData.endereco?.bairro || ''}
                 onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
                 placeholder="Ex: Centro"
               />
             </div>
 
             {/* Cidade */}
             <div>
-              <label
-                htmlFor="cidade"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
-              >
+              <label htmlFor="cidade" className="block mb-2 text-sm font-medium text-primary">
                 Cidade
               </label>
-              <input
-                type="text"
+              <NeuInput
                 id="cidade"
-                value={formData.endereco?.cidade ||""}
+                value={formData.endereco?.cidade || ''}
                 onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
                 placeholder="Ex: São Paulo"
               />
             </div>
 
             {/* UF */}
             <div>
-              <label
-                htmlFor="uf"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
-              >
+              <label htmlFor="uf" className="block mb-2 text-sm font-medium text-primary">
                 UF
               </label>
-              <select
-                id="uf"
-                value={formData.endereco?.uf ||""}
-                onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
-              >
-                <option value="">Selecione</option>
-                <option value="AC">AC</option>
-                <option value="AL">AL</option>
-                <option value="AP">AP</option>
-                <option value="AM">AM</option>
-                <option value="BA">BA</option>
-                <option value="CE">CE</option>
-                <option value="DF">DF</option>
-                <option value="ES">ES</option>
-                <option value="GO">GO</option>
-                <option value="MA">MA</option>
-                <option value="MT">MT</option>
-                <option value="MS">MS</option>
-                <option value="MG">MG</option>
-                <option value="PA">PA</option>
-                <option value="PB">PB</option>
-                <option value="PR">PR</option>
-                <option value="PE">PE</option>
-                <option value="PI">PI</option>
-                <option value="RJ">RJ</option>
-                <option value="RN">RN</option>
-                <option value="RS">RS</option>
-                <option value="RO">RO</option>
-                <option value="RR">RR</option>
-                <option value="SC">SC</option>
-                <option value="SP">SP</option>
-                <option value="SE">SE</option>
-                <option value="TO">TO</option>
-              </select>
+              <NeuSelect
+                value={formData.endereco?.uf || ''}
+                onValueChange={(val) =>
+                  handleChange({
+                    target: { id: 'uf', value: val ?? '' },
+                  } as React.ChangeEvent<HTMLInputElement>)
+                }
+                options={[
+                  { value: 'AC', label: 'AC' },
+                  { value: 'AL', label: 'AL' },
+                  { value: 'AP', label: 'AP' },
+                  { value: 'AM', label: 'AM' },
+                  { value: 'BA', label: 'BA' },
+                  { value: 'CE', label: 'CE' },
+                  { value: 'DF', label: 'DF' },
+                  { value: 'ES', label: 'ES' },
+                  { value: 'GO', label: 'GO' },
+                  { value: 'MA', label: 'MA' },
+                  { value: 'MT', label: 'MT' },
+                  { value: 'MS', label: 'MS' },
+                  { value: 'MG', label: 'MG' },
+                  { value: 'PA', label: 'PA' },
+                  { value: 'PB', label: 'PB' },
+                  { value: 'PR', label: 'PR' },
+                  { value: 'PE', label: 'PE' },
+                  { value: 'PI', label: 'PI' },
+                  { value: 'RJ', label: 'RJ' },
+                  { value: 'RN', label: 'RN' },
+                  { value: 'RS', label: 'RS' },
+                  { value: 'RO', label: 'RO' },
+                  { value: 'RR', label: 'RR' },
+                  { value: 'SC', label: 'SC' },
+                  { value: 'SP', label: 'SP' },
+                  { value: 'SE', label: 'SE' },
+                  { value: 'TO', label: 'TO' },
+                ]}
+              />
             </div>
           </div>
         </div>
 
         {/* 5. DADOS DO CONVÊNIO */}
-        <div
-          className="neumorphic-card"
-          style={{
-            padding:"1.5rem",
-            marginBottom:"1.5rem",
-            borderRadius:"1rem",
-          }}
-        >
-          <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", marginBottom:"1.5rem" }}>
-            <div
-              style={{
-                width:"40px",
-                height:"40px",
-                borderRadius:"0.5rem",
-                background:"var(--orx-primary)",
-                display:"flex",
-                alignItems:"center",
-                justifyContent:"center",
-              }}
-            >
-              <Shield size={20} style={{ color:"white" }} />
+        <div className="p-6 mb-6 rounded-2xl neumorphic-container">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center justify-center w-10 h-10 text-white rounded-lg bg-primary">
+              <Shield size={20} />
             </div>
-            <h2
-              style={{
-                fontSize: '0.813rem',
-                fontWeight:"var(--orx-font-weight-semibold)",
-                color:"var(--orx-text-primary)",
-              }}
-            >
-              5. Dados do Convênio
-            </h2>
+            <h2 className="text-sm font-semibold text-primary">5. Dados do Convênio</h2>
           </div>
 
-          <div
-            style={{
-              display:"grid",
-              gridTemplateColumns:"repeat(auto-fit, minmax(250px, 1fr))",
-              gap:"1rem",
-            }}
-          >
-            {/* Convênio (Mockado - será SELECT de API) */}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {/* Convênio */}
             <div>
-              <label
-                htmlFor="convenio_id"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
-              >
+              <label htmlFor="convenio_id" className="block mb-2 text-sm font-medium text-primary">
                 Convênio *
               </label>
-              <select
-                id="convenio_id"
+              <NeuSelect
                 value={formData.convenio_id}
-                onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
-              >
-                <option value="">Selecione o convênio</option>
-                <option value="1">Unimed</option>
-                <option value="2">Bradesco Saúde</option>
-                <option value="3">SulAmérica</option>
-                <option value="4">Amil</option>
-                <option value="5">NotreDame Intermédica</option>
-                <option value="6">Particular</option>
-              </select>
+                onValueChange={(val) =>
+                  handleChange({
+                    target: { id: 'convenio_id', value: val ?? '' },
+                  } as React.ChangeEvent<HTMLInputElement>)
+                }
+                options={[
+                  { value: '1', label: 'Unimed' },
+                  { value: '2', label: 'Bradesco Saúde' },
+                  { value: '3', label: 'SulAmérica' },
+                  { value: '4', label: 'Amil' },
+                  { value: '5', label: 'NotreDame Intermédica' },
+                  { value: '6', label: 'Particular' },
+                ]}
+              />
               <FormFieldError error={errors.convenio_id} />
             </div>
 
@@ -1234,30 +716,16 @@ export default function CadastroPacientes() {
             <div>
               <label
                 htmlFor="numero_carteirinha"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
+                className="block mb-2 text-sm font-medium text-primary"
               >
                 Número da Carteirinha *
               </label>
-              <input
-                type="text"
+              <NeuInput
                 id="numero_carteirinha"
                 value={formData.numero_carteirinha}
                 onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
                 placeholder="Ex: 123456789012345"
+                error={errors.numero_carteirinha}
               />
               <FormFieldError error={errors.numero_carteirinha} />
             </div>
@@ -1266,59 +734,27 @@ export default function CadastroPacientes() {
             <div>
               <label
                 htmlFor="validade_plano"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
+                className="block mb-2 text-sm font-medium text-primary"
               >
                 Validade do Plano
               </label>
-              <input
+              <NeuInput
                 type="date"
                 id="validade_plano"
                 value={formData.validade_plano}
                 onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
               />
             </div>
 
             {/* Nome do Plano */}
             <div>
-              <label
-                htmlFor="plano"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
-              >
+              <label htmlFor="plano" className="block mb-2 text-sm font-medium text-primary">
                 Nome do Plano
               </label>
-              <input
-                type="text"
+              <NeuInput
                 id="plano"
                 value={formData.plano}
                 onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
                 placeholder="Ex: Premium, Executivo"
               />
             </div>
@@ -1327,434 +763,196 @@ export default function CadastroPacientes() {
             <div>
               <label
                 htmlFor="tipo_atendimento"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
+                className="block mb-2 text-sm font-medium text-primary"
               >
                 Tipo de Atendimento
               </label>
-              <select
-                id="tipo_atendimento"
+              <NeuSelect
                 value={formData.tipo_atendimento}
-                onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
-              >
-                <option value="ambulatorial">Ambulatorial</option>
-                <option value="hospitalar">Hospitalar</option>
-                <option value="completo">Completo</option>
-              </select>
+                onValueChange={(val) =>
+                  handleChange({
+                    target: { id: 'tipo_atendimento', value: val ?? '' },
+                  } as React.ChangeEvent<HTMLInputElement>)
+                }
+                options={[
+                  { value: 'ambulatorial', label: 'Ambulatorial' },
+                  { value: 'hospitalar', label: 'Hospitalar' },
+                  { value: 'completo', label: 'Completo' },
+                ]}
+              />
             </div>
           </div>
         </div>
 
         {/* 6. INFORMAÇÕES DE SAÚDE */}
-        <div
-          className="neumorphic-card"
-          style={{
-            padding:"1.5rem",
-            marginBottom:"1.5rem",
-            borderRadius:"1rem",
-          }}
-        >
-          <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", marginBottom:"1.5rem" }}>
-            <div
-              style={{
-                width:"40px",
-                height:"40px",
-                borderRadius:"0.5rem",
-                background:"var(--orx-primary)",
-                display:"flex",
-                alignItems:"center",
-                justifyContent:"center",
-              }}
-            >
-              <Heart size={20} style={{ color:"white" }} />
+        <div className="p-6 mb-6 rounded-2xl neumorphic-container">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center justify-center w-10 h-10 text-white rounded-lg bg-primary">
+              <Heart size={20} />
             </div>
-            <h2
-              style={{
-                fontSize: '0.813rem',
-                fontWeight:"var(--orx-font-weight-semibold)",
-                color:"var(--orx-text-primary)",
-              }}
-            >
-              6. Informações de Saúde
-            </h2>
+            <h2 className="text-sm font-semibold text-primary">6. Informações de Saúde</h2>
           </div>
 
-          <div
-            style={{
-              display:"grid",
-              gridTemplateColumns:"repeat(auto-fit, minmax(250px, 1fr))",
-              gap:"1rem",
-            }}
-          >
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {/* Grupo Sanguíneo */}
             <div>
               <label
                 htmlFor="grupo_sanguineo"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
+                className="block mb-2 text-sm font-medium text-primary"
               >
                 Grupo Sanguíneo
               </label>
-              <select
-                id="grupo_sanguineo"
+              <NeuSelect
                 value={formData.grupo_sanguineo}
-                onChange={handleChange}
-                className="neumorphic-input"
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
-              >
-                <option value="A+">A+</option>
-                <option value="A-">A-</option>
-                <option value="B+">B+</option>
-                <option value="B-">B-</option>
-                <option value="AB+">AB+</option>
-                <option value="AB-">AB-</option>
-                <option value="O+">O+</option>
-                <option value="O-">O-</option>
-              </select>
+                onValueChange={(val) =>
+                  handleChange({
+                    target: { id: 'grupo_sanguineo', value: val ?? '' },
+                  } as React.ChangeEvent<HTMLInputElement>)
+                }
+                options={[
+                  { value: 'A+', label: 'A+' },
+                  { value: 'A-', label: 'A-' },
+                  { value: 'B+', label: 'B+' },
+                  { value: 'B-', label: 'B-' },
+                  { value: 'AB+', label: 'AB+' },
+                  { value: 'AB-', label: 'AB-' },
+                  { value: 'O+', label: 'O+' },
+                  { value: 'O-', label: 'O-' },
+                ]}
+              />
             </div>
 
             {/* Alergias */}
-            <div style={{ gridColumn:"1 / -1" }}>
-              <label
-                htmlFor="alergias"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
-              >
+            <div className="col-span-full">
+              <label htmlFor="alergias" className="block mb-2 text-sm font-medium text-primary">
                 Alergias
               </label>
-              <textarea
+              <NeuTextarea
                 id="alergias"
                 value={formData.alergias}
                 onChange={handleChange}
-                className="neumorphic-input"
+                placeholder="Liste as alergias do paciente..."
                 rows={3}
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                  resize:"vertical",
-                }}
-                placeholder="Descreva alergias conhecidas (medicamentos, alimentos, etc.)"
+              />
+            </div>
+
+            {/* Observações de Saúde (Comorbidades) */}
+            <div className="col-span-full">
+              <label
+                htmlFor="observacoes_saude"
+                className="block mb-2 text-sm font-medium text-primary"
+              >
+                Comorbidades / Observações de Saúde
+              </label>
+              <NeuTextarea
+                id="observacoes_saude"
+                value={formData.observacoes_saude}
+                onChange={handleChange}
+                placeholder="Diabetes, Hipertensão, histórico médico..."
+                rows={3}
               />
             </div>
 
             {/* Medicamentos em Uso */}
-            <div style={{ gridColumn:"1 / -1" }}>
+            <div className="col-span-full">
               <label
                 htmlFor="medicamentos_uso"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
+                className="block mb-2 text-sm font-medium text-primary"
               >
                 Medicamentos em Uso
               </label>
-              <textarea
+              <NeuTextarea
                 id="medicamentos_uso"
                 value={formData.medicamentos_uso}
                 onChange={handleChange}
-                className="neumorphic-input"
+                placeholder="Liste os medicamentos..."
                 rows={3}
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                  resize:"vertical",
-                }}
-                placeholder="Liste medicamentos de uso contínuo"
-              />
-            </div>
-
-            {/* Observações de Saúde */}
-            <div style={{ gridColumn:"1 / -1" }}>
-              <label
-                htmlFor="observacoes_saude"
-                style={{
-                  display:"block",
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-medium)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.5rem",
-                }}
-              >
-                Observações de Saúde
-              </label>
-              <textarea
-                id="observacoes_saude"
-                value={formData.observacoes_saude}
-                onChange={handleChange}
-                className="neumorphic-input"
-                rows={3}
-                style={{
-                  width:"100%",
-                  padding:"0.75rem",
-                  borderRadius:"0.5rem",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                  resize:"vertical",
-                }}
-                placeholder="Histórico médico relevante, cirurgias prévias, etc."
               />
             </div>
           </div>
         </div>
 
-        {/* 7. OBSERVAÇÕES GERAIS */}
-        <div
-          className="neumorphic-card"
-          style={{
-            padding:"1.5rem",
-            marginBottom:"1.5rem",
-            borderRadius:"1rem",
-          }}
-        >
-          <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", marginBottom:"1.5rem" }}>
-            <div
-              style={{
-                width:"40px",
-                height:"40px",
-                borderRadius:"0.5rem",
-                background:"var(--orx-primary)",
-                display:"flex",
-                alignItems:"center",
-                justifyContent:"center",
-              }}
-            >
-              <FileText size={20} style={{ color:"white" }} />
+        {/* 7. OBSERVAÇÕES */}
+        <div className="p-6 mb-6 rounded-2xl neumorphic-container">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center justify-center w-10 h-10 text-white rounded-lg bg-primary">
+              <FileText size={20} />
             </div>
-            <h2
-              style={{
-                fontSize: '0.813rem',
-                fontWeight:"var(--orx-font-weight-semibold)",
-                color:"var(--orx-text-primary)",
-              }}
-            >
-              7. Observações Gerais
-            </h2>
+            <h2 className="text-sm font-semibold text-primary">7. Observações</h2>
           </div>
 
           <div>
-            <label
-              htmlFor="observacoes"
-              style={{
-                display:"block",
-                fontSize: '0.813rem',
-                fontWeight:"var(--orx-font-weight-medium)",
-                color:"var(--orx-text-primary)",
-                marginBottom:"0.5rem",
-              }}
-            >
-              Observações
+            <label htmlFor="observacoes" className="block mb-2 text-sm font-medium text-primary">
+              Observações Gerais
             </label>
-            <textarea
+            <NeuTextarea
               id="observacoes"
               value={formData.observacoes}
               onChange={handleChange}
-              className="neumorphic-input"
+              placeholder="Outras informações relevantes..."
               rows={4}
-              style={{
-                width:"100%",
-                padding:"0.75rem",
-                borderRadius:"0.5rem",
-                fontSize: '0.813rem',
-                color:"var(--orx-text-primary)",
-                resize:"vertical",
-              }}
-              placeholder="Informações adicionais relevantes sobre o paciente"
             />
           </div>
         </div>
 
-        {/* 8. CONSENTIMENTO LGPD */}
-        <div
-          className="neumorphic-card"
-          style={{
-            padding:"1.5rem",
-            marginBottom:"2rem",
-            borderRadius:"1rem",
-            background:"rgba(245, 158, 11, 0.05)",
-          }}
-        >
-          <div style={{ display:"flex", alignItems:"flex-start", gap:"0.75rem" }}>
-            <div
-              style={{
-                width:"40px",
-                height:"40px",
-                borderRadius:"0.5rem",
-                background:"var(--orx-warning)",
-                display:"flex",
-                alignItems:"center",
-                justifyContent:"center",
-                flexShrink: 0,
-              }}
-            >
-              <AlertCircle size={20} style={{ color:"white" }} />
+        {/* 8. LGPD */}
+        <div className="p-6 mb-8 rounded-2xl neumorphic-container">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center justify-center w-10 h-10 text-white rounded-lg bg-primary">
+              <Shield size={20} />
             </div>
-            <div style={{ flex: 1 }}>
-              <h2
-                style={{
-                  fontSize: '0.813rem',
-                  fontWeight:"var(--orx-font-weight-semibold)",
-                  color:"var(--orx-text-primary)",
-                  marginBottom:"0.75rem",
-                }}
-              >
-                Consentimento LGPD *
-              </h2>
-              <p
-                style={{
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-secondary)",
-                  lineHeight:"1.6",
-                  marginBottom:"1rem",
-                }}
-              >
-                De acordo com a Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018), é necessário o
-                consentimento do paciente para coleta e tratamento de seus dados pessoais e dados sensíveis
-                de saúde.
-              </p>
-
-              <label
-                style={{
-                  display:"flex",
-                  alignItems:"flex-start",
-                  gap:"0.75rem",
-                  cursor:"pointer",
-                  fontSize: '0.813rem',
-                  color:"var(--orx-text-primary)",
-                }}
-              >
-                <input
-                  type="checkbox"
-                  id="consentimento_lgpd"
-                  checked={formData.consentimento_lgpd}
-                  onChange={handleChange}
-                  style={{
-                    width:"20px",
-                    height:"20px",
-                    marginTop:"2px",
-                    flexShrink: 0,
-                    cursor:"pointer",
-                  }}
-                />
-                <span>
-                  Autorizo o uso dos meus dados pessoais e de saúde para fins de atendimento médico,
-                  faturamento, auditoria e demais atividades relacionadas à prestação de serviços de saúde,
-                  conforme descrito na{""}
-                  <a
-                    href="/politica-privacidade"
-                    style={{
-                      color:"var(--orx-primary)",
-                      textDecoration:"underline",
-                    }}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Política de Privacidade
-                  </a>
-                  .
-                </span>
-              </label>
-              <FormFieldError error={errors.consentimento_lgpd} />
-            </div>
+            <h2 className="text-sm font-semibold text-primary">8. Consentimento e LGPD</h2>
           </div>
+
+          <div className="flex items-start gap-3 p-4 border rounded-lg bg-surface border-border">
+            <input
+              type="checkbox"
+              id="consentimento_lgpd"
+              checked={formData.consentimento_lgpd}
+              onChange={handleChange}
+              className="mt-1 w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+            />
+            <label htmlFor="consentimento_lgpd" className="text-sm text-muted">
+              Declaro que obtive o consentimento do paciente para o tratamento de seus dados
+              pessoais, em conformidade com a Lei Geral de Proteção de Dados (LGPD). As informações
+              aqui coletadas serão utilizadas exclusivamente para fins de cadastro e atendimento
+              médico.
+            </label>
+          </div>
+          <FormFieldError error={errors.consentimento_lgpd} />
         </div>
 
-        {/* AÇÕES */}
-        <div
-          style={{
-            display:"flex",
-            justifyContent:"flex-end",
-            gap:"1rem",
-            paddingTop:"1rem",
-          }}
-        >
-          <button
-            type="button"
+        {/* ACTIONS */}
+        <div className="flex items-center justify-end gap-4">
+          <Button
+            variant="neumo"
             onClick={handleCancel}
-            className="neumorphic-button"
-            style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-              padding:"0.75rem 2rem",
-              borderRadius:"0.5rem",
-              fontSize: '0.813rem',
-              fontWeight:"var(--orx-font-weight-medium)",
-              color:"var(--orx-text-primary)",
-            }}
-            disabled={loading}
+            type="button"
+            className="px-6 py-3 text-primary"
           >
             Cancelar
-          </button>
+          </Button>
 
-          <button
+          <Button
+            variant="primary"
             type="submit"
-            className="neumorphic-button"
-            style={{
-              padding:"0.75rem 2rem",
-              borderRadius:"0.5rem",
-              fontSize: '0.813rem',
-              fontWeight:"var(--orx-font-weight-medium)",
-              background:"var(--orx-primary)",
-              color:"white",
-              display:"flex",
-              alignItems:"center",
-              gap:"0.5rem",
-            }}
             disabled={loading}
+            className="flex items-center gap-2 px-8 py-3 text-white bg-primary hover:bg-primary-dark"
           >
             {loading ? (
               <>
-                <Loader2 size={18} className="animate-spin" />
-                Cadastrando...
+                <Loader2 size={20} className="animate-spin" />
+                Salvando...
               </>
             ) : (
               <>
-                <Save size={18} />
-                Cadastrar Paciente
+                <Save size={20} />
+                Salvar Paciente
               </>
             )}
-          </button>
+          </Button>
         </div>
       </form>
     </div>
   );
 }
-

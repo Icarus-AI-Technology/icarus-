@@ -8,13 +8,7 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
-    exclude: [
-      'node_modules/**',
-      'legacy-tests/**',
-      'tests/e2e/**',
-      'backups/**',
-      'dist/**'
-    ],
+    exclude: ['node_modules/**', 'legacy-tests/**', 'tests/e2e/**', 'backups/**', 'dist/**'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
@@ -24,9 +18,9 @@ export default defineConfig({
         '**/*.test.ts',
         '**/*.test.tsx',
         'src/components/examples/**',
-        'src/components/modules/**'
-      ]
-    }
+        'src/components/modules/**',
+      ],
+    },
   },
   resolve: {
     alias: {

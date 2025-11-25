@@ -1,0 +1,108 @@
+:root {
+  /* Base backgrounds */
+  --ic-bg-dark: #020617;
+  --ic-bg-dark-elevated: #0f172a;
+  --ic-bg-light: #f5f7fb;
+  --ic-bg-light-elevated: #ffffff;
+
+  /* Surfaces */
+  --ic-surface-dark: #0f172a;
+  --ic-surface-light: #f8fbff;
+
+  /* Shadows - Dark */
+  --ic-shadow-dark-outer: 22px 22px 44px rgba(1, 6, 18, 0.9),
+    -12px -12px 24px rgba(41, 61, 131, 0.3);
+  --ic-shadow-dark-inner: inset 12px 12px 24px rgba(0, 0, 0, 0.45),
+    inset -8px -8px 20px rgba(58, 86, 190, 0.25);
+
+  /* Shadows - Light */
+  --ic-shadow-light-outer: 18px 18px 36px rgba(15, 23, 42, 0.15),
+    -12px -12px 30px rgba(255, 255, 255, 0.9);
+  --ic-shadow-light-inner: inset 10px 10px 28px rgba(15, 23, 42, 0.08),
+    inset -8px -8px 20px rgba(255, 255, 255, 0.95);
+
+  /* Radii */
+  --ic-radius-md: 18px;
+  --ic-radius-lg: 24px;
+  --ic-radius-pill: 999px;
+
+  /* Transitions */
+  --ic-transition-fast: 0.16s ease-out;
+  --ic-transition-medium: 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Accent palette */
+  --ic-accent-primary: #7c3aed;
+  --ic-accent-success: #22c55e;
+  --ic-accent-info: #0ea5e9;
+  --ic-accent-warning: #fbbf24;
+  --ic-accent-danger: #ef4444;
+}
+
+body.ic-theme-dark {
+  background: radial-gradient(circle at top left, #1f2937 0%, #020617 60%);
+  color: #e2e8f0;
+}
+
+body.ic-theme-light {
+  background: radial-gradient(circle at top left, #ffffff 0%, #e5ecff 60%);
+  color: #020617;
+}
+
+.ic-card-neumo {
+  border-radius: var(--ic-radius-lg);
+  background: linear-gradient(135deg, var(--ic-bg-dark-elevated), var(--ic-bg-dark));
+  box-shadow: var(--ic-shadow-dark-outer);
+  transition: transform var(--ic-transition-medium), box-shadow var(--ic-transition-medium);
+}
+
+body.ic-theme-light .ic-card-neumo {
+  background: linear-gradient(140deg, var(--ic-bg-light-elevated), #e2e8ff);
+  box-shadow: var(--ic-shadow-light-outer);
+}
+
+.ic-card-neumo:hover {
+  transform: translateY(-3px) scale(1.01);
+}
+
+.ic-card-neumo:active {
+  transform: translateY(0px) scale(0.995);
+  box-shadow: var(--ic-shadow-dark-inner);
+}
+
+.ic-icon-badge-neumo {
+  border-radius: var(--ic-radius-md);
+  background: radial-gradient(circle at 20% 20%, rgba(124, 58, 237, 0.45), rgba(8, 12, 24, 0.85));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+body.ic-theme-light .ic-icon-badge-neumo {
+  background: radial-gradient(circle at 20% 20%, rgba(124, 58, 237, 0.4), #ffffff);
+}
+
+.ic-kpi-pill {
+  border-radius: var(--ic-radius-pill);
+  background: radial-gradient(circle at 10% 10%, rgba(124, 58, 237, 0.3), rgba(15, 23, 42, 0.95));
+  padding: 0.25rem 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+body.ic-theme-light .ic-kpi-pill {
+  background: radial-gradient(circle at 10% 10%, rgba(124, 58, 237, 0.35), rgba(255, 255, 255, 0.95));
+}
+
+.ic-search-neumo {
+  border-radius: var(--ic-radius-pill);
+  background: linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.95));
+  box-shadow: 10px 10px 24px rgba(0, 0, 0, 0.65), -8px -8px 20px rgba(90, 118, 255, 0.25);
+}
+
+body.ic-theme-light .ic-search-neumo {
+  background: linear-gradient(145deg, #ffffff, #eef2ff);
+  box-shadow: 12px 12px 32px rgba(148, 163, 184, 0.35), -10px -10px 26px rgba(255, 255, 255, 0.95);
+}
+
+.ic-search-neumo input {
+  color: inherit;
+}
+

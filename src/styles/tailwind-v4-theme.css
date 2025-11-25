@@ -1,0 +1,287 @@
+/**
+ * Tailwind CSS v4 Theme Configuration
+ * Migrated from tailwind.config.js
+ * 
+ * In Tailwind v4, configuration is done in CSS using @theme directive
+ */
+
+/* Import existing design tokens first */
+@import "./design-tokens.css";
+@import "./neumorphic-tokens.css";
+@import "./oraclusx-ds.css";
+
+@theme {
+  /* ========================================
+     FONT FAMILY
+     ======================================== */
+  --font-sans: "Inter", "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: var(--font-sans);
+  --font-body: var(--font-sans);
+
+  /* ========================================
+     BREAKPOINTS (Screens)
+     ======================================== */
+  --breakpoint-3xl: 1920px;
+  --breakpoint-4xl: 2560px;
+
+  /* ========================================
+     SPACING EXTENSIONS
+     ======================================== */
+  --spacing-18: 4.5rem;
+  --spacing-22: 5.5rem;
+  --spacing-30: 7.5rem;
+  --spacing-34: 8.5rem;
+  --spacing-42: 10.5rem;
+
+  /* ========================================
+     BORDER RADIUS
+     ======================================== */
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.65rem;
+  --radius-neu: 2.75rem;
+  --radius-glass: 1.75rem;
+  --radius-card: 1.5rem;
+
+  /* ========================================
+     COLORS - VIOLET PALETTE
+     ======================================== */
+  --color-violet-50: #f5f3ff;
+  --color-violet-100: #ede9fe;
+  --color-violet-200: #ddd6fe;
+  --color-violet-300: #c4b5fd;
+  --color-violet-400: #a78bfa;
+  --color-violet-500: #8b5cf6;
+  --color-violet-600: #7c3aed;
+  --color-violet-700: #6d28d9;
+  --color-violet-800: #5b21b6;
+  --color-violet-900: #4c1d95;
+
+  /* ========================================
+     COLORS - EMERALD PALETTE
+     ======================================== */
+  --color-emerald-50: #ecfdf5;
+  --color-emerald-100: #d1fae5;
+  --color-emerald-200: #a7f3d0;
+  --color-emerald-300: #6ee7b7;
+  --color-emerald-400: #34d399;
+  --color-emerald-500: #10b981;
+  --color-emerald-600: #059669;
+  --color-emerald-700: #047857;
+  --color-emerald-800: #065f46;
+  --color-emerald-900: #064e3b;
+
+  /* ========================================
+     COLORS - ROSE PALETTE
+     ======================================== */
+  --color-rose-50: #fff1f2;
+  --color-rose-100: #ffe4e6;
+  --color-rose-200: #fecdd3;
+  --color-rose-300: #fda4af;
+  --color-rose-400: #fb7185;
+  --color-rose-500: #f43f5e;
+  --color-rose-600: #e11d48;
+  --color-rose-700: #be123c;
+  --color-rose-800: #9f1239;
+  --color-rose-900: #881337;
+
+  /* ========================================
+     ORACLUSX DESIGN TOKENS
+     ======================================== */
+  --color-orx-bg-app: var(--orx-bg-app);
+  --color-orx-bg-light: var(--orx-bg-light);
+  --color-orx-bg-surface: var(--orx-bg-surface);
+  --color-orx-bg-surface-elevated: var(--orx-bg-surface-elevated);
+  --color-orx-text-primary: var(--orx-text-primary);
+  --color-orx-text-secondary: var(--orx-text-secondary);
+  --color-orx-text-muted: var(--orx-text-muted);
+  --color-orx-text-disabled: var(--orx-text-disabled);
+  --color-orx-border-subtle: var(--orx-border-subtle);
+  --color-orx-border-default: var(--orx-border-default);
+  --color-orx-border-strong: var(--orx-border-strong);
+  --color-orx-primary: var(--orx-primary);
+  --color-orx-primary-hover: var(--orx-primary-hover);
+  --color-orx-primary-light: var(--orx-primary-light);
+  --color-orx-success: var(--orx-success);
+  --color-orx-success-light: var(--orx-success-light);
+  --color-orx-warning: var(--orx-warning);
+  --color-orx-warning-light: var(--orx-warning-light);
+  --color-orx-danger: var(--orx-danger);
+  --color-orx-danger-light: var(--orx-danger-light);
+  --color-orx-info: var(--orx-info);
+  --color-orx-info-light: var(--orx-info-light);
+
+  /* ========================================
+     SHADCN UI COLORS (for compatibility)
+     ======================================== */
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  /* ========================================
+     GLASS COLORS
+     ======================================== */
+  --color-glass-light: rgba(255, 255, 255, 0.6);
+  --color-glass-dark: rgba(15, 21, 36, 0.65);
+
+  /* ========================================
+     ICARUS CYBERPUNK THEME COLORS
+     ======================================== */
+  --color-icarus-bg: #0f111a;
+  --color-icarus-card: #181b29;
+  --color-icarus-sidebar: #ffffff;
+  --color-icarus-sidebar-dark: #11131f;
+  --color-icarus-primary: #6366f1;
+  --color-icarus-accent: #22c55e;
+  --color-icarus-text-main: #f3f4f6;
+  --color-icarus-text-muted: #9ca3af;
+
+  /* ========================================
+     GRADIENT COLORS
+     ======================================== */
+  --color-gradient-indigo: #6366F1;
+  --color-gradient-purple: #A855F7;
+  --color-gradient-cyan: #06B6D4;
+  --color-gradient-midnight: #0F172A;
+
+  /* ========================================
+     CHART COLORS
+     ======================================== */
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  /* ========================================
+     SURFACE COLORS
+     ======================================== */
+  --color-surface: #EEF1F8;
+  --color-surface-alt: #F4F6FB;
+  --color-surface-dark: #101320;
+  --color-surface-darker: #0B0D14;
+
+  /* ========================================
+     HIGHLIGHT COLORS
+     ======================================== */
+  --color-highlight-aqua: rgba(56, 189, 248, 0.28);
+  --color-highlight-indigo: rgba(99, 102, 241, 0.35);
+  --color-highlight-emerald: rgba(16, 185, 129, 0.28);
+
+  /* ========================================
+     BOX SHADOWS - NEUMORPHIC
+     ======================================== */
+  --shadow-neumo-none: var(--shadow-neumo-none);
+  --shadow-neumo-sm: var(--shadow-neumo-sm);
+  --shadow-neumo: var(--shadow-neumo);
+  --shadow-neumo-lg: var(--shadow-neumo-lg);
+  --shadow-neumo-hover: var(--shadow-neumo-hover);
+  --shadow-neumo-sm-inset: var(--shadow-neumo-sm-inset);
+  --shadow-neumo-inset: var(--shadow-neumo-inset);
+  --shadow-neumo-lg-inset: var(--shadow-neumo-lg-inset);
+
+  /* Icarus Cyberpunk Shadows */
+  --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.15);
+  --shadow-float: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
+
+  /* Legacy neu shadows */
+  --shadow-neu: 12px 12px 30px rgba(26, 33, 52, 0.35), -12px -12px 28px rgba(255, 255, 255, 0.9);
+  --shadow-neu-soft: 20px 20px 60px rgba(24, 31, 54, 0.3), -20px -20px 60px rgba(255, 255, 255, 0.85);
+  --shadow-neu-card: 18px 22px 45px rgba(28, 35, 56, 0.26), -18px -22px 45px rgba(255, 255, 255, 0.75);
+  --shadow-neu-inset: inset 8px 8px 20px rgba(24, 30, 48, 0.25), inset -8px -8px 20px rgba(255, 255, 255, 0.85);
+  --shadow-neu-dark: 14px 14px 32px rgba(2, 11, 29, 0.65), -10px -10px 28px rgba(26, 31, 48, 0.35);
+  --shadow-glass: 0 35px 80px rgba(13, 23, 45, 0.45);
+  --shadow-focus: 0 0 0 1px rgba(99, 102, 241, 0.35), 0 20px 45px rgba(99, 102, 241, 0.25);
+
+  /* ========================================
+     BACKDROP BLUR
+     ======================================== */
+  --blur-glass: 32px;
+  --blur-frosted: 40px;
+  --blur-intense: 52px;
+  --blur-glow: 45px;
+
+  /* ========================================
+     DROP SHADOW
+     ======================================== */
+  --drop-shadow-neu: 12px 16px 40px rgba(26, 29, 43, 0.35);
+
+  /* ========================================
+     ANIMATIONS
+     ======================================== */
+  --animate-pulse-soft: pulse-soft 6s ease-in-out infinite;
+  --animate-float-slow: float-slow 12s ease-in-out infinite;
+  --animate-shimmer: shimmer 5s linear infinite;
+  --animate-tilt-glow: tilt-glow 8s ease-in-out infinite;
+
+  /* ========================================
+     TRANSITION TIMING
+     ======================================== */
+  --ease-orx-smooth: cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* ========================================
+   KEYFRAMES
+   ======================================== */
+@keyframes pulse-soft {
+  0%, 100% {
+    box-shadow: 0 20px 40px rgba(79, 70, 229, 0.18), 0 0 0 0 rgba(99, 102, 241, 0.35);
+  }
+  50% {
+    box-shadow: 0 28px 65px rgba(79, 70, 229, 0.24), 0 0 0 18px rgba(99, 102, 241, 0.08);
+  }
+}
+
+@keyframes float-slow {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -12px, 0);
+  }
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    background-position: 200% 50%;
+  }
+  50% {
+    background-position: -200% 50%;
+  }
+}
+
+@keyframes tilt-glow {
+  0%, 100% {
+    transform: rotate3d(0.35, 0.35, 0, 8deg);
+  }
+  50% {
+    transform: rotate3d(0.15, -0.45, 0, 10deg);
+  }
+}
+
+/* ========================================
+   GLOBAL RESET
+   ======================================== */
+html,
+body,
+#root {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: var(--orx-bg-light) !important;
+  min-height: 100vh !important;
+}

@@ -1,8 +1,8 @@
 /**
  * FORMULÁRIO DE CIRURGIAS - OraclusX DS Neumorphic 3D
- * 
+ *
  * Agendamento completo de cirurgias
- * 
+ *
  * @version 1.0.0
  */
 
@@ -26,10 +26,20 @@ const schemaCirurgia = z.object({
   data_cirurgia: z.string().min(1, 'Data é obrigatória'),
   hora_cirurgia: z.string().optional(),
   sala: z.string().optional(),
-  status: z.enum(['agendada', 'confirmada', 'preparacao', 'andamento', 'recuperacao', 'concluida', 'cancelada']).optional(),
+  status: z
+    .enum([
+      'agendada',
+      'confirmada',
+      'preparacao',
+      'andamento',
+      'recuperacao',
+      'concluida',
+      'cancelada',
+    ])
+    .optional(),
   prioridade: z.enum(['baixa', 'media', 'alta', 'urgente']).optional(),
   valor_estimado: z.number().optional(),
-  observacoes: z.string().optional()
+  observacoes: z.string().optional(),
 });
 
 type FormCirurgiaData = z.infer<typeof schemaCirurgia>;
@@ -37,15 +47,20 @@ type FormCirurgiaData = z.infer<typeof schemaCirurgia>;
 export default function FormularioCirurgias() {
   const navigate = useNavigate();
 
-  const { register, control, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormCirurgiaData>({
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormCirurgiaData>({
     resolver: zodResolver(schemaCirurgia),
-    defaultValues: { status: 'agendada', prioridade: 'media' }
+    defaultValues: { status: 'agendada', prioridade: 'media' },
   });
 
   const onSubmit = async (data: FormCirurgiaData) => {
     try {
       const result = await insertRecord('cirurgias', data);
-      
+
       if (result.success) {
         toast.success('Cirurgia agendada com sucesso!');
         navigate('/cirurgias');
@@ -65,19 +80,55 @@ export default function FormularioCirurgias() {
       campos: (
         <div className={FORM_GRID}>
           <FormField id="codigo_interno" label="Código Interno">
-            <NeuInput id="codigo_interno" placeholder="Ex: CIR-2025-001" {...register('codigo_interno')} />
+            <NeuInput
+              id="codigo_interno"
+              placeholder="Ex: CIR-2025-001"
+              {...register('codigo_interno')}
+            />
           </FormField>
 
-          <FormField id="procedimento" label="Procedimento" required error={errors.procedimento?.message} className={FORM_COL.twoThirds}>
-            <NeuInput id="procedimento" placeholder="Ex: Artroplastia Total de Joelho" error={!!errors.procedimento} {...register('procedimento')} />
+          <FormField
+            id="procedimento"
+            label="Procedimento"
+            required
+            error={errors.procedimento?.message}
+            className={FORM_COL.twoThirds}
+          >
+            <NeuInput
+              id="procedimento"
+              placeholder="Ex: Artroplastia Total de Joelho"
+              error={!!errors.procedimento}
+              {...register('procedimento')}
+            />
           </FormField>
 
-          <FormField id="paciente_iniciais" label="Iniciais do Paciente" required error={errors.paciente_iniciais?.message} helpText="Proteção LGPD - use apenas iniciais">
-            <NeuInput id="paciente_iniciais" placeholder="Ex: M.S.S." error={!!errors.paciente_iniciais} {...register('paciente_iniciais')} />
+          <FormField
+            id="paciente_iniciais"
+            label="Iniciais do Paciente"
+            required
+            error={errors.paciente_iniciais?.message}
+            helpText="Proteção LGPD - use apenas iniciais"
+          >
+            <NeuInput
+              id="paciente_iniciais"
+              placeholder="Ex: M.S.S."
+              error={!!errors.paciente_iniciais}
+              {...register('paciente_iniciais')}
+            />
           </FormField>
 
-          <FormField id="data_cirurgia" label="Data da Cirurgia" required error={errors.data_cirurgia?.message}>
-            <NeuInput id="data_cirurgia" type="date" error={!!errors.data_cirurgia} {...register('data_cirurgia')} />
+          <FormField
+            id="data_cirurgia"
+            label="Data da Cirurgia"
+            required
+            error={errors.data_cirurgia?.message}
+          >
+            <NeuInput
+              id="data_cirurgia"
+              type="date"
+              error={!!errors.data_cirurgia}
+              {...register('data_cirurgia')}
+            />
           </FormField>
 
           <FormField id="hora_cirurgia" label="Hora">
@@ -89,17 +140,25 @@ export default function FormularioCirurgias() {
           </FormField>
 
           <FormField id="prioridade" label="Prioridade">
-            <Controller name="prioridade" control={control} render={({ field }) => (
-              <NeuSelect value={field.value} onValueChange={field.onChange} options={[
-                { value: 'baixa', label: 'Baixa' },
-                { value: 'media', label: 'Média' },
-                { value: 'alta', label: 'Alta' },
-                { value: 'urgente', label: 'Urgente' }
-              ]} />
-            )} />
+            <Controller
+              name="prioridade"
+              control={control}
+              render={({ field }) => (
+                <NeuSelect
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  options={[
+                    { value: 'baixa', label: 'Baixa' },
+                    { value: 'media', label: 'Média' },
+                    { value: 'alta', label: 'Alta' },
+                    { value: 'urgente', label: 'Urgente' },
+                  ]}
+                />
+              )}
+            />
           </FormField>
         </div>
-      )
+      ),
     },
     {
       id: 'responsaveis',
@@ -107,15 +166,23 @@ export default function FormularioCirurgias() {
       titulo: 'Médico e Hospital',
       campos: (
         <div className={FORM_GRID}>
-          <FormField id="medico_id" label="Médico Responsável" helpText="Selecione o médico cirurgião">
+          <FormField
+            id="medico_id"
+            label="Médico Responsável"
+            helpText="Selecione o médico cirurgião"
+          >
             <NeuInput id="medico_id" placeholder="Buscar médico..." {...register('medico_id')} />
           </FormField>
 
           <FormField id="hospital_id" label="Hospital">
-            <NeuInput id="hospital_id" placeholder="Buscar hospital..." {...register('hospital_id')} />
+            <NeuInput
+              id="hospital_id"
+              placeholder="Buscar hospital..."
+              {...register('hospital_id')}
+            />
           </FormField>
         </div>
-      )
+      ),
     },
     {
       id: 'financeiro',
@@ -124,29 +191,47 @@ export default function FormularioCirurgias() {
       campos: (
         <div className={FORM_GRID}>
           <FormField id="valor_estimado" label="Valor Estimado (R$)">
-            <NeuInput id="valor_estimado" type="number" step="0.01" placeholder="0.00" {...register('valor_estimado', { valueAsNumber: true })} />
+            <NeuInput
+              id="valor_estimado"
+              type="number"
+              step="0.01"
+              placeholder="0.00"
+              {...register('valor_estimado', { valueAsNumber: true })}
+            />
           </FormField>
 
           <FormField id="status" label="Status" className={FORM_COL.twoThirds}>
-            <Controller name="status" control={control} render={({ field }) => (
-              <NeuSelect value={field.value} onValueChange={field.onChange} options={[
-                { value: 'agendada', label: 'Agendada' },
-                { value: 'confirmada', label: 'Confirmada' },
-                { value: 'preparacao', label: 'Em Preparação' },
-                { value: 'andamento', label: 'Em Andamento' },
-                { value: 'recuperacao', label: 'Recuperação' },
-                { value: 'concluida', label: 'Concluída' },
-                { value: 'cancelada', label: 'Cancelada' }
-              ]} />
-            )} />
+            <Controller
+              name="status"
+              control={control}
+              render={({ field }) => (
+                <NeuSelect
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  options={[
+                    { value: 'agendada', label: 'Agendada' },
+                    { value: 'confirmada', label: 'Confirmada' },
+                    { value: 'preparacao', label: 'Em Preparação' },
+                    { value: 'andamento', label: 'Em Andamento' },
+                    { value: 'recuperacao', label: 'Recuperação' },
+                    { value: 'concluida', label: 'Concluída' },
+                    { value: 'cancelada', label: 'Cancelada' },
+                  ]}
+                />
+              )}
+            />
           </FormField>
 
           <FormField id="observacoes" label="Observações" className={FORM_COL.full}>
-            <NeuTextarea id="observacoes" placeholder="Informações adicionais sobre a cirurgia..." {...register('observacoes')} />
+            <NeuTextarea
+              id="observacoes"
+              placeholder="Informações adicionais sobre a cirurgia..."
+              {...register('observacoes')}
+            />
           </FormField>
         </div>
-      )
-    }
+      ),
+    },
   ];
 
   return (
@@ -162,4 +247,3 @@ export default function FormularioCirurgias() {
     />
   );
 }
-

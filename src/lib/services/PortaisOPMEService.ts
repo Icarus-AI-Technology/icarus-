@@ -1,24 +1,26 @@
 /**
  * PortaisOPMEService - Orquestrador de Cotações em Portais OPME
- * 
+ *
  * Integra 4 portais principais:
  * 1. OPMENEXO (API REST oficial)
  * 2. Inpart Saúde (Scraping + API)
  * 3. EMS Ventura (API híbrida)
  * 4. VSSupply (GraphQL oficial)
- * 
+ *
  * Features:
  * - Cotação paralela em múltiplos portais
  * - Cache inteligente (TTL: 1h)
  * - Rate limiting automático
  * - Retry logic com exponential backoff
  * - Ranking de ofertas
- * 
+ *
  * @module PortaisOPMEService
  * @version 1.0.0
  */
 
 import { supabase } from '@/lib/supabase';
+
+const db = supabase as any;
 
 // ============================================
 // TYPES E INTERFACES
@@ -121,7 +123,7 @@ export class PortaisOPMEService {
 
     try {
       // Criar registro de cotação
-      const { data: cotacao, error: cotacaoError } = await supabase
+      const { data: cotacao, error: cotacaoError } = await db
         .from('portais_opme_cotacoes')
         .insert({
           produto_id: params.produtoId,
@@ -169,7 +171,7 @@ export class PortaisOPMEService {
       const tempoExecucao = Date.now() - inicio;
 
       // Atualizar cotação
-      await supabase
+      await db
         .from('portais_opme_cotacoes')
         .update({
           status: 'concluida',
@@ -195,7 +197,7 @@ export class PortaisOPMEService {
         tempoExecucao,
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao cotar em portais:', err);
       throw err;
     }
@@ -242,7 +244,7 @@ export class PortaisOPMEService {
           ofertas = await this.buscarNoPortal(portal, palavraChave, quantidade);
           break; // Sucesso
         } catch (error) {
-   const err = error as Error;
+          const err = error as Error;
           ultimoErro = error as Error;
           tentativas++;
           if (tentativas < portal.retry_max) {
@@ -279,12 +281,12 @@ export class PortaisOPMEService {
         fromCache: false,
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       const erroMsg = err instanceof Error ? err.message : 'Erro desconhecido';
-      
+
       // Salvar histórico de erro
       await this.salvarHistorico(cotacaoId, portal.portal, false, [], Date.now() - inicio, erroMsg);
-      
+
       // Atualizar estatísticas
       await this.atualizarEstatisticasPortal(portal.portal, false);
 
@@ -330,7 +332,7 @@ export class PortaisOPMEService {
   ): Promise<OfertaOPME[]> {
     // Implementação simulada (substituir por API real)
     console.log(`[OPMENEXO] Buscando: ${palavraChave} (${quantidade}x)`);
-    
+
     // Mock data para demonstração
     return [
       {
@@ -357,7 +359,7 @@ export class PortaisOPMEService {
     quantidade: number
   ): Promise<OfertaOPME[]> {
     console.log(`[INPART] Buscando: ${palavraChave} (${quantidade}x)`);
-    
+
     return [
       {
         portal: 'inpart',
@@ -382,7 +384,7 @@ export class PortaisOPMEService {
     quantidade: number
   ): Promise<OfertaOPME[]> {
     console.log(`[EMS_VENTURA] Buscando: ${palavraChave} (${quantidade}x)`);
-    
+
     return [
       {
         portal: 'ems_ventura',
@@ -407,7 +409,7 @@ export class PortaisOPMEService {
     quantidade: number
   ): Promise<OfertaOPME[]> {
     console.log(`[VSSUPPLY] Buscando: ${palavraChave} (${quantidade}x)`);
-    
+
     return [
       {
         portal: 'vssupply',
@@ -456,7 +458,7 @@ export class PortaisOPMEService {
   // ============================================
 
   private async buscarPortaisAtivos(portaisFiltro?: string[]): Promise<ConfigPortal[]> {
-    let query = supabase.from('portais_opme_config').select('*').eq('ativo', true);
+    let query = db.from('portais_opme_config').select('*').eq('ativo', true);
 
     if (portaisFiltro && portaisFiltro.length > 0) {
       query = query.in('portal', portaisFiltro);
@@ -526,7 +528,7 @@ export class PortaisOPMEService {
     const segundaMelhor = ofertas[1] || null;
     const terceiraMelhor = ofertas[2] || null;
 
-    await supabase.from('portais_opme_historico').insert({
+    await db.from('portais_opme_historico').insert({
       cotacao_id: cotacaoId,
       portal,
       sucesso,
@@ -542,7 +544,7 @@ export class PortaisOPMEService {
 
   private async atualizarEstatisticasPortal(portal: string, sucesso: boolean): Promise<void> {
     // Usar função SQL para atualizar estatísticas
-    await supabase.rpc('atualizar_estatisticas_portal', {
+    await db.rpc('atualizar_estatisticas_portal', {
       p_portal: portal,
       p_sucesso: sucesso,
     });
@@ -555,4 +557,3 @@ export class PortaisOPMEService {
 
 // Exportar instância singleton
 export const portaisOPMEService = PortaisOPMEService.getInstance();
-

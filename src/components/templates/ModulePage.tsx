@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
 interface ModulePageProps {
   title: string;
@@ -20,7 +20,10 @@ export function ModulePage({ title, description, icon, actions, children }: Modu
             {icon}
           </div>
           <div>
-            <h1 id="module-page-heading" className="text-heading-lg font-display text-[var(--orx-text-primary)]">
+            <h1
+              id="module-page-heading"
+              className="text-heading-lg font-display text-[var(--orx-text-primary)]"
+            >
               {title}
             </h1>
             <p className="max-w-3xl text-[var(--orx-text-secondary)]">{description}</p>

@@ -6,7 +6,13 @@
 
 import { DollarSign, Users, Activity, TrendingUp } from 'lucide-react';
 import { Container, Grid } from '@/components/layout';
-import { StatCard, LineChartComponent, BarChartComponent, AreaChartComponent, PieChartComponent } from './Charts';
+import {
+  StatCard,
+  LineChartComponent,
+  BarChartComponent,
+  AreaChartComponent,
+  PieChartComponent,
+} from './Charts';
 
 // ============================================
 // MOCK DATA
@@ -49,44 +55,20 @@ export default function DashboardExemplo() {
       <Container maxWidth="2xl">
         {/* Header */}
         <div className="mb-8">
-          <h1
-            className="text-[var(--text-primary)] mb-2 text-[0.813rem] orx-font-bold"
-          >
+          <h1 className="text-[var(--text-primary)] mb-2 text-[0.813rem] orx-font-bold">
             Dashboard Executivo
           </h1>
-          <p
-            className="text-[var(--text-secondary)] text-[0.813rem]"
-          >
+          <p className="text-[var(--text-secondary)] text-[0.813rem]">
             Visão geral das operações em tempo real
           </p>
         </div>
 
         {/* KPIs */}
         <Grid cols={{ base: 1, md: 2, lg: 4 }} gap="md" className="mb-8">
-          <StatCard
-            title="Faturamento Mensal"
-            value="R$ 67.000"
-            trend={12.5}
-            icon={DollarSign}
-          />
-          <StatCard
-            title="Novos Clientes"
-            value="248"
-            trend={8.2}
-            icon={Users}
-          />
-          <StatCard
-            title="Cirurgias Agendadas"
-            value="34"
-            trend={-3.1}
-            icon={Activity}
-          />
-          <StatCard
-            title="Taxa de Conversão"
-            value="68%"
-            trend={5.4}
-            icon={TrendingUp}
-          />
+          <StatCard title="Faturamento Mensal" value="R$ 67.000" trend={12.5} icon={DollarSign} />
+          <StatCard title="Novos Clientes" value="248" trend={8.2} icon={Users} />
+          <StatCard title="Cirurgias Agendadas" value="34" trend={-3.1} icon={Activity} />
+          <StatCard title="Taxa de Conversão" value="68%" trend={5.4} icon={TrendingUp} />
         </Grid>
 
         {/* Charts Row 1 */}
@@ -128,4 +110,3 @@ export default function DashboardExemplo() {
     </div>
   );
 }
-

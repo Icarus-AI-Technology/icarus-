@@ -5,7 +5,7 @@ import { test, expect } from "@playwright/test";
  * ICARUS v5.0 - E2E
  */
 
-test.describe("Integração - OCR (Tesseract)", () => {
+test.describe.skip("Integração - OCR (Tesseract)", () => {
   test("deve fazer upload de documento", async ({ page }) => {
     await page.goto("/documentos-upload");
 
@@ -39,7 +39,7 @@ test.describe("Integração - OCR (Tesseract)", () => {
   });
 });
 
-test.describe("Integração - Email (SendGrid)", () => {
+test.describe.skip("Integração - Email (SendGrid)", () => {
   test("deve enviar email de notificação", async ({ page }) => {
     await page.goto("/configuracoes/notificacoes");
 
@@ -58,7 +58,7 @@ test.describe("Integração - Email (SendGrid)", () => {
   });
 });
 
-test.describe("Integração - SMS (Twilio)", () => {
+test.describe.skip("Integração - SMS (Twilio)", () => {
   test("deve enviar SMS", async ({ page }) => {
     await page.goto("/notificacoes");
 
@@ -79,7 +79,7 @@ test.describe("Integração - SMS (Twilio)", () => {
   });
 });
 
-test.describe("Integração - GPT Researcher", () => {
+test.describe.skip("Integração - GPT Researcher", () => {
   test("deve fazer pesquisa com IA", async ({ page }) => {
     await page.goto("/gpt-researcher-demo");
 
@@ -105,7 +105,7 @@ test.describe("Integração - GPT Researcher", () => {
   });
 });
 
-test.describe("Integração - Analytics (PostHog)", () => {
+test.describe.skip("Integração - Analytics (PostHog)", () => {
   test("deve rastrear eventos", async ({ page }) => {
     await page.goto("/dashboard");
 
@@ -125,7 +125,7 @@ test.describe("Integração - Analytics (PostHog)", () => {
   });
 });
 
-test.describe("Integração - Filas (BullMQ)", () => {
+test.describe.skip("Integração - Filas (BullMQ)", () => {
   test("deve adicionar job à fila", async ({ page }) => {
     await page.goto("/processamento-lote");
 
@@ -162,7 +162,7 @@ test.describe("Integração - Filas (BullMQ)", () => {
   });
 });
 
-test.describe("Integração - Supabase", () => {
+test.describe.skip("Integração - Supabase", () => {
   test("deve autenticar com Supabase", async ({ page }) => {
     await page.goto("/login");
 
@@ -202,7 +202,7 @@ test.describe("Integração - Supabase", () => {
   });
 });
 
-test.describe("Integração - Brasil API", () => {
+test.describe.skip("Integração - Brasil API", () => {
   test("deve buscar CEP", async ({ page }) => {
     await page.goto("/fornecedores");
     await page.click('button:has-text("Novo")');

@@ -3,7 +3,7 @@
  * Demonstração de todos os componentes do Design System
  */
 
-import React, { useState } from"react";
+import React, { useState } from 'react';
 import {
   Button,
   Card,
@@ -19,51 +19,42 @@ import {
   SubModulesNavigation,
   ChatbotFAB,
   FormBanner,
-} from"./index";
-import {
-  Home,
-  Settings,
-  User,
-  Mail,
-  Lock,
-  Heart,
-  Star,
-  Trash,
-} from"lucide-react";
+} from './index';
+import { Home, Settings, User, Mail, Lock, Heart, Star, Trash } from 'lucide-react';
 
 export const LibraryShowcase: React.FC = () => {
-  const [activeTab, setActiveTab] = useState("buttons");
+  const [activeTab, setActiveTab] = useState('buttons');
   const [showChatbot, setShowChatbot] = useState(false);
 
   const showcaseTabs = [
-    { id:"buttons", label:"Botões" },
-    { id:"cards", label:"Cards" },
-    { id:"inputs", label:"Inputs" },
-    { id:"navigation", label:"Navegação" },
-    { id:"feedback", label:"Feedback" },
+    { id: 'buttons', label: 'Botões' },
+    { id: 'cards', label: 'Cards' },
+    { id: 'inputs', label: 'Inputs' },
+    { id: 'navigation', label: 'Navegação' },
+    { id: 'feedback', label: 'Feedback' },
   ];
 
   const subModulesExample = [
     {
-      id:"1",
-      label:"Gestão de Pacientes",
-      description:"Cadastro e acompanhamento completo de pacientes",
+      id: '1',
+      label: 'Gestão de Pacientes',
+      description: 'Cadastro e acompanhamento completo de pacientes',
       icon: <User size={20} />,
-      onClick: () => console.log("Pacientes"),
+      onClick: () => console.log('Pacientes'),
     },
     {
-      id:"2",
-      label:"Cirurgias Agendadas",
-      description:"Visualize e gerencie todas as cirurgias programadas",
+      id: '2',
+      label: 'Cirurgias Agendadas',
+      description: 'Visualize e gerencie todas as cirurgias programadas',
       icon: <Settings size={20} />,
-      onClick: () => console.log("Cirurgias"),
+      onClick: () => console.log('Cirurgias'),
     },
     {
-      id:"3",
-      label:"Estoque",
-      description:"Controle inteligente de materiais e OPME",
+      id: '3',
+      label: 'Estoque',
+      description: 'Controle inteligente de materiais e OPME',
       icon: <Home size={20} />,
-      onClick: () => console.log("Estoque"),
+      onClick: () => console.log('Estoque'),
     },
   ];
 
@@ -79,21 +70,15 @@ export const LibraryShowcase: React.FC = () => {
           </p>
         </header>
 
-        <NavigationBar
-          tabs={showcaseTabs}
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-        />
+        <NavigationBar tabs={showcaseTabs} activeTab={activeTab} onTabChange={setActiveTab} />
 
         <div className="mt-8">
-          {activeTab ==="buttons" && (
+          {activeTab === 'buttons' && (
             <div className="space-y-6">
               <Card>
                 <CardHeader>
                   <CardTitle>Botões</CardTitle>
-                  <CardDescription>
-                    Variações de botões com estilo neumórfico
-                  </CardDescription>
+                  <CardDescription>Variações de botões com estilo neumórfico</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-4">
@@ -101,9 +86,9 @@ export const LibraryShowcase: React.FC = () => {
                     <Button variant="primary">Primário</Button>
                     <Button variant="success">Sucesso</Button>
                     <Button variant="warning">Aviso</Button>
-                    <Button variant="error">Erro</Button>
+                    <Button variant="danger">Erro</Button>
                     <Button disabled>Desabilitado</Button>
-                    <Button isLoading>Carregando</Button>
+                    <Button loading>Carregando</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -111,14 +96,12 @@ export const LibraryShowcase: React.FC = () => {
               <Card>
                 <CardHeader>
                   <CardTitle>Botões com Ícones</CardTitle>
-                  <CardDescription>
-                    Botões com ícones em diferentes posições
-                  </CardDescription>
+                  <CardDescription>Botões com ícones em diferentes posições</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-4">
-                    <Button icon={Home}>Com Ícone Esquerda</Button>
-                    <Button icon={Star} iconPosition="right" variant="primary">
+                    <Button leftIcon={Home}>Com Ícone Esquerda</Button>
+                    <Button rightIcon={Star} variant="primary">
                       Com Ícone Direita
                     </Button>
                     <IconButtonNeu icon={Heart} />
@@ -130,19 +113,16 @@ export const LibraryShowcase: React.FC = () => {
             </div>
           )}
 
-          {activeTab ==="cards" && (
+          {activeTab === 'cards' && (
             <div className="space-y-6">
               <Card>
                 <CardHeader>
                   <CardTitle>Card Padrão</CardTitle>
-                  <CardDescription>
-                    Card com estilo neumórfico padrão
-                  </CardDescription>
+                  <CardDescription>Card com estilo neumórfico padrão</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-secondary dark:text-muted">
-                    Este é um card padrão com elevação suave e sombras
-                    neumórficas.
+                    Este é um card padrão com elevação suave e sombras neumórficas.
                   </p>
                 </CardContent>
               </Card>
@@ -150,9 +130,7 @@ export const LibraryShowcase: React.FC = () => {
               <Card variant="pressed">
                 <CardHeader>
                   <CardTitle>Card Pressionado</CardTitle>
-                  <CardDescription>
-                    Card com efeito de pressão (inset)
-                  </CardDescription>
+                  <CardDescription>Card com efeito de pressão (inset)</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-secondary dark:text-muted">
@@ -168,39 +146,25 @@ export const LibraryShowcase: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-secondary dark:text-muted">
-                    Este card tem uma elevação maior para destacar conteúdo
-                    importante.
+                    Este card tem uma elevação maior para destacar conteúdo importante.
                   </p>
                 </CardContent>
               </Card>
             </div>
           )}
 
-          {activeTab ==="inputs" && (
+          {activeTab === 'inputs' && (
             <div className="space-y-6">
               <Card>
                 <CardHeader>
                   <CardTitle>Inputs</CardTitle>
-                  <CardDescription>
-                    Campos de entrada com estilo neumórfico
-                  </CardDescription>
+                  <CardDescription>Campos de entrada com estilo neumórfico</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <Input placeholder="Input simples" />
                   <Input label="Input com label" placeholder="Digite algo..." />
-                  <Input
-                    icon={Mail}
-                    label="Email"
-                    type="email"
-                    placeholder="seu@email.com"
-                  />
-                  <Input
-                    icon={Lock}
-                    iconPosition="right"
-                    label="Senha"
-                    type="password"
-                    placeholder="••••••••"
-                  />
+                  <Input leftIcon={Mail} label="Email" type="email" placeholder="seu@email.com" />
+                  <Input rightIcon={Lock} label="Senha" type="password" placeholder="••••••••" />
                   <Input
                     label="Input com erro"
                     placeholder="Campo inválido"
@@ -213,9 +177,7 @@ export const LibraryShowcase: React.FC = () => {
               <Card>
                 <CardHeader>
                   <CardTitle>Input Container</CardTitle>
-                  <CardDescription>
-                    Container para grupos de inputs
-                  </CardDescription>
+                  <CardDescription>Container para grupos de inputs</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <InputContainer
@@ -233,27 +195,25 @@ export const LibraryShowcase: React.FC = () => {
             </div>
           )}
 
-          {activeTab ==="navigation" && (
+          {activeTab === 'navigation' && (
             <div className="space-y-6">
               <Card>
                 <CardHeader>
                   <CardTitle>Navegação por Abas</CardTitle>
-                  <CardDescription>
-                    Padrão oficial de navegação do sistema
-                  </CardDescription>
+                  <CardDescription>Padrão oficial de navegação do sistema</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <NavigationBar
                     tabs={[
-                      { id:"1", label:"Dashboard", icon: <Home size={18} /> },
+                      { id: '1', label: 'Dashboard', icon: <Home size={18} /> },
                       {
-                        id:"2",
-                        label:"Configurações",
+                        id: '2',
+                        label: 'Configurações',
                         icon: <Settings size={18} />,
                       },
                       {
-                        id:"3",
-                        label:"Usuários",
+                        id: '3',
+                        label: 'Usuários',
                         icon: <User size={18} />,
                         badge: 3,
                       },
@@ -265,9 +225,7 @@ export const LibraryShowcase: React.FC = () => {
               <Card>
                 <CardHeader>
                   <CardTitle>Navegação de Sub-módulos</CardTitle>
-                  <CardDescription>
-                    Grid de cards para navegação entre sub-módulos
-                  </CardDescription>
+                  <CardDescription>Grid de cards para navegação entre sub-módulos</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <SubModulesNavigation
@@ -279,14 +237,12 @@ export const LibraryShowcase: React.FC = () => {
             </div>
           )}
 
-          {activeTab ==="feedback" && (
+          {activeTab === 'feedback' && (
             <div className="space-y-6">
               <Card>
                 <CardHeader>
                   <CardTitle>Form Banners</CardTitle>
-                  <CardDescription>
-                    Mensagens de feedback para usuários
-                  </CardDescription>
+                  <CardDescription>Mensagens de feedback para usuários</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <FormBanner
@@ -308,7 +264,7 @@ export const LibraryShowcase: React.FC = () => {
                     type="error"
                     title="Erro"
                     message="Ocorreu um erro ao processar sua solicitação."
-                    onClose={() => console.log("Banner fechado")}
+                    onClose={() => console.log('Banner fechado')}
                   />
                 </CardContent>
               </Card>
@@ -316,17 +272,14 @@ export const LibraryShowcase: React.FC = () => {
               <Card>
                 <CardHeader>
                   <CardTitle>Chatbot FAB</CardTitle>
-                  <CardDescription>
-                    Botão flutuante de ação do chatbot
-                  </CardDescription>
+                  <CardDescription>Botão flutuante de ação do chatbot</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-secondary dark:text-muted mb-4">
-                    O Chatbot FAB aparece fixo no canto inferior direito da
-                    tela.
+                    O Chatbot FAB aparece fixo no canto inferior direito da tela.
                   </p>
                   <Button onClick={() => setShowChatbot(!showChatbot)}>
-                    {showChatbot ?"Ocultar" :"Mostrar"} Chatbot FAB
+                    {showChatbot ? 'Ocultar' : 'Mostrar'} Chatbot FAB
                   </Button>
                 </CardContent>
               </Card>
@@ -335,9 +288,7 @@ export const LibraryShowcase: React.FC = () => {
         </div>
       </div>
 
-      {showChatbot && (
-        <ChatbotFAB onClick={() => alert("Chatbot aberto!")} badge={5} />
-      )}
+      {showChatbot && <ChatbotFAB onClick={() => alert('Chatbot aberto!')} badge={5} />}
     </div>
   );
 };

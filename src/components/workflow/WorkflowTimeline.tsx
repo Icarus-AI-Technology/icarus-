@@ -1,9 +1,9 @@
 /**
  * 🔄 WORKFLOW TIMELINE — COMPONENTE VISUAL
- * 
+ *
  * Componente visual para exibir o histórico e progresso de uma instância de workflow
  * Mostra todos os estados, transições executadas e ações disponíveis
- * 
+ *
  * Features:
  * - Timeline vertical com todos os estados
  * - Estado atual destacado
@@ -14,11 +14,11 @@
  */
 
 import React, { useMemo } from 'react';
-import { 
-  CheckCircle, 
-  Circle, 
-  Clock, 
-  User, 
+import {
+  CheckCircle,
+  Circle,
+  Clock,
+  User,
   Calendar,
   MessageSquare,
   ArrowRight,
@@ -42,14 +42,14 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
 }) => {
   // Encontrar estado atual
   const currentState = useMemo(
-    () => workflow.states.find(s => s.id === instance.currentStateId),
+    () => workflow.states.find((s) => s.id === instance.currentStateId),
     [workflow.states, instance.currentStateId]
   );
-  
+
   // Calcular estados já passados
   const passedStates = useMemo(() => {
     const passed = new Set<string>();
-    instance.history.forEach(transition => {
+    instance.history.forEach((transition) => {
       passed.add(transition.fromStateId);
     });
     if (currentState && !currentState.isFinal) {
@@ -57,18 +57,18 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
     }
     return passed;
   }, [instance.history, currentState]);
-  
+
   // Obter ações disponíveis
   const availableActions = currentState?.actions || [];
-  
+
   // Verificar se pode fazer transição
   // const canTransition = (toStateId: string): boolean => currentState?.allowedTransitions.includes(toStateId) || false; // não utilizado
-  
+
   // Obter transição para um estado
   const getTransitionForState = (stateId: string) => {
-    return instance.history.find(t => t.toStateId === stateId);
+    return instance.history.find((t) => t.toStateId === stateId);
   };
-  
+
   // Formatar data
   const formatDate = (date: Date): string => {
     return new Intl.DateTimeFormat('pt-BR', {
@@ -79,24 +79,24 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
       minute: '2-digit',
     }).format(new Date(date));
   };
-  
+
   // Calcular tempo no estado
   const getTimeInState = (stateId: string): string => {
     const transition = getTransitionForState(stateId);
     if (!transition) return '';
-    
+
     const now = Date.now();
     const then = new Date(transition.executedAt).getTime();
     const diff = now - then;
-    
+
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const days = Math.floor(hours / 24);
-    
+
     if (days > 0) return `${days}d`;
     if (hours > 0) return `${hours}h`;
     return `< 1h`;
   };
-  
+
   return (
     <div className="workflow-timeline w-full">
       {/* Header */}
@@ -110,7 +110,7 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
               {instance.entityType} • {instance.entityId}
             </p>
           </div>
-          
+
           <div className="text-right">
             <div className="inline-flex items-center px-4 py-2 rounded-xl bg-[var(--orx-primary)] text-white font-semibold text-[0.813rem] shadow-[var(--orx-shadow-sm)]">
               {currentState?.label || 'Estado Desconhecido'}
@@ -118,13 +118,13 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
           </div>
         </div>
       </div>
-      
+
       {/* Timeline */}
       <div className="neumorphic-container p-6">
         <div className="relative">
           {/* Linha vertical */}
           <div className="absolute left-4 top-4 bottom-4 w-[2px] bg-[linear-gradient(180deg,var(--orx-primary)_0%,var(--orx-gray-300)_100%)]" />
-          
+
           {/* Estados */}
           <div className="relative z-[1]">
             {workflow.states.map((state, index) => {
@@ -134,11 +134,11 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
               const isInitial = state.isInitial;
               const isFinal = state.isFinal;
               // const canGoTo = canTransition(state.id); // não utilizado
-              
+
               const setIconStyles = (el: HTMLDivElement | null) => {
                 if (el) {
                   const bg = isCurrent
-                    ? (state.color || 'var(--orx-primary)')
+                    ? state.color || 'var(--orx-primary)'
                     : isPassed
                       ? 'var(--orx-success)'
                       : 'var(--orx-bg-light)';
@@ -147,7 +147,9 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
                     : isPassed
                       ? '3px solid var(--orx-success)'
                       : '3px solid var(--orx-gray-300)';
-                  const boxShadow = isCurrent ? `0 0 0 4px ${(state.color || 'var(--orx-primary)')}20` : 'none';
+                  const boxShadow = isCurrent
+                    ? `0 0 0 4px ${state.color || 'var(--orx-primary)'}20`
+                    : 'none';
                   el.style.background = bg;
                   el.style.border = border;
                   el.style.boxShadow = boxShadow;
@@ -156,7 +158,9 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
 
               const setTitleColor = (el: HTMLHeadingElement | null) => {
                 if (el) {
-                  el.style.color = isCurrent ? (state.color || 'var(--orx-text-primary)') : 'var(--orx-text-primary)';
+                  el.style.color = isCurrent
+                    ? state.color || 'var(--orx-text-primary)'
+                    : 'var(--orx-text-primary)';
                 }
               };
 
@@ -178,7 +182,7 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
                       <Circle className="w-4 h-4 text-[var(--orx-gray-400)]" />
                     )}
                   </div>
-                  
+
                   {/* Conteúdo do estado */}
                   <div className="flex-1">
                     {/* Header do estado */}
@@ -190,33 +194,33 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
                         >
                           {state.label}
                         </h4>
-                        
+
                         {isInitial && (
                           <span className="text-[0.813rem] px-2 py-0.5 rounded bg-[var(--orx-info-light)] text-[var(--orx-info)] font-semibold">
                             INICIAL
                           </span>
                         )}
-                        
+
                         {isFinal && (
                           <span className="text-[0.813rem] px-2 py-0.5 rounded bg-[var(--orx-success-light)] text-[var(--orx-success)] font-semibold">
                             FINAL
                           </span>
                         )}
-                        
+
                         {isCurrent && getTimeInState(state.id) && (
                           <span className="text-[0.813rem] text-[var(--orx-text-secondary)]">
                             • há {getTimeInState(state.id)}
                           </span>
                         )}
                       </div>
-                      
+
                       {state.description && !compact && (
                         <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">
                           {state.description}
                         </p>
                       )}
                     </div>
-                    
+
                     {/* Informações da transição */}
                     {transition && !compact && (
                       <div className="mt-3 p-3 rounded-lg bg-[var(--orx-bg-light)] border border-[var(--orx-gray-200)]">
@@ -230,7 +234,7 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
                             {formatDate(transition.executedAt)}
                           </div>
                         </div>
-                        
+
                         {transition.comment && (
                           <div className="mt-2 flex items-start gap-1 text-[0.813rem] text-[var(--orx-text-primary)]">
                             <MessageSquare className="w-3.5 h-3.5 mt-0.5 shrink-0" />
@@ -239,16 +243,16 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
                         )}
                       </div>
                     )}
-                    
+
                     {/* Ações disponíveis no estado atual */}
                     {isCurrent && showActions && availableActions.length > 0 && (
                       <div className="mt-4">
                         <p className="text-[0.813rem] font-semibold text-[var(--orx-text-secondary)] mb-2 uppercase tracking-wider">
                           Ações Disponíveis
                         </p>
-                        
+
                         <div className="flex flex-wrap gap-2">
-                          {availableActions.map(action => (
+                          {availableActions.map((action) => (
                             <button
                               key={action.id}
                               className="neumorphic-button"
@@ -269,13 +273,14 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
                         </div>
                       </div>
                     )}
-                    
+
                     {/* Alerta de auto-progressão */}
                     {isCurrent && state.autoProgressAfterDays && (
                       <div className="mt-3 p-3 rounded-lg bg-[var(--orx-warning-light)] border border-[var(--orx-warning)] flex items-center gap-2">
                         <AlertCircle className="w-4 h-4 text-[var(--orx-warning)] shrink-0" />
                         <p className="text-[0.813rem] text-[var(--orx-warning-dark)]">
-                          Alerta se permanecer mais de {state.autoProgressAfterDays} dia(s) neste estado
+                          Alerta se permanecer mais de {state.autoProgressAfterDays} dia(s) neste
+                          estado
                         </p>
                       </div>
                     )}
@@ -286,45 +291,41 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
           </div>
         </div>
       </div>
-      
+
       {/* Footer com informações */}
       <div className="neumorphic-container p-4 mt-4">
         <div className={`grid gap-4 ${compact ? 'grid-cols-1' : 'sm:grid-cols-2 md:grid-cols-3'}`}>
           <div>
-            <p className="text-[0.813rem] text-[var(--orx-text-secondary)] mb-1">
-              Criado por
-            </p>
+            <p className="text-[0.813rem] text-[var(--orx-text-secondary)] mb-1">Criado por</p>
             <p className="text-[0.813rem] font-semibold text-[var(--orx-text-primary)]">
               {instance.createdByName}
             </p>
           </div>
-          
+
           <div>
-            <p className="text-[0.813rem] text-[var(--orx-text-secondary)] mb-1">
-              Data de criação
-            </p>
+            <p className="text-[0.813rem] text-[var(--orx-text-secondary)] mb-1">Data de criação</p>
             <p className="text-[0.813rem] font-semibold text-[var(--orx-text-primary)]">
               {formatDate(instance.createdAt)}
             </p>
           </div>
-          
+
           {instance.assignedTo && (
             <div>
-              <p className="text-[0.813rem] text-[var(--orx-text-secondary)] mb-1">
-                Atribuído a
-              </p>
+              <p className="text-[0.813rem] text-[var(--orx-text-secondary)] mb-1">Atribuído a</p>
               <p className="text-[0.813rem] font-semibold text-[var(--orx-text-primary)]">
                 {instance.assignedToName}
               </p>
             </div>
           )}
-          
+
           {instance.dueDate && (
             <div>
               <p className="text-[0.813rem] text-[var(--orx-text-secondary)] mb-1">
                 Data de vencimento
               </p>
-              <p className={`text-[0.813rem] font-semibold ${new Date(instance.dueDate) < new Date() ? 'text-[var(--orx-error)]' : 'text-[var(--orx-text-primary)]'}`}>
+              <p
+                className={`text-[0.813rem] font-semibold ${new Date(instance.dueDate) < new Date() ? 'text-[var(--orx-error)]' : 'text-[var(--orx-text-primary)]'}`}
+              >
                 {formatDate(instance.dueDate)}
                 {new Date(instance.dueDate) < new Date() && ' (Atrasado)'}
               </p>
@@ -337,4 +338,3 @@ export const WorkflowTimeline: React.FC<WorkflowTimelineProps> = ({
 };
 
 export default WorkflowTimeline;
-

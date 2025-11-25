@@ -1,9 +1,9 @@
 /**
  * 🔄 WORKFLOW SYSTEM — TYPE DEFINITIONS
- * 
+ *
  * Sistema completo de gerenciamento de fluxos de trabalho para ICARUS v5.0
  * Baseado em State Machine Pattern e melhores práticas de workflow management
- * 
+ *
  * @see https://functionpoint.com/blog/7-key-features-your-workflow-management-system-needs-to-have
  */
 
@@ -14,22 +14,22 @@
 /**
  * Status base para todos os workflows
  */
-export type WorkflowStatus = 
-  | 'pending'       // Pendente (aguardando início)
-  | 'in_progress'   // Em andamento
-  | 'completed'     // Concluído
-  | 'cancelled'     // Cancelado
-  | 'on_hold'       // Em espera
-  | 'rejected';     // Rejeitado
+export type WorkflowStatus =
+  | 'pending' // Pendente (aguardando início)
+  | 'in_progress' // Em andamento
+  | 'completed' // Concluído
+  | 'cancelled' // Cancelado
+  | 'on_hold' // Em espera
+  | 'rejected'; // Rejeitado
 
 /**
  * Prioridade do item no workflow
  */
-export type WorkflowPriority = 
-  | 'low'           // Baixa
-  | 'medium'        // Média
-  | 'high'          // Alta
-  | 'urgent';       // Urgente
+export type WorkflowPriority =
+  | 'low' // Baixa
+  | 'medium' // Média
+  | 'high' // Alta
+  | 'urgent'; // Urgente
 
 /**
  * Ação que pode ser executada em um estado do workflow
@@ -139,14 +139,14 @@ export interface WorkflowValidation {
 // MÓDULO: GESTÃO DE CIRURGIAS
 // ============================================
 
-export type CirurgiaWorkflowState = 
-  | 'agendada'           // Cirurgia agendada
-  | 'confirmada'         // Confirmada pelo hospital/médico
-  | 'em_preparacao'      // Em preparação (OPME separados, equipe confirmada)
-  | 'em_andamento'       // Cirurgia em andamento
-  | 'concluida'          // Concluída com sucesso
-  | 'cancelada'          // Cancelada
-  | 'adiada';            // Adiada para nova data
+export type CirurgiaWorkflowState =
+  | 'agendada' // Cirurgia agendada
+  | 'confirmada' // Confirmada pelo hospital/médico
+  | 'em_preparacao' // Em preparação (OPME separados, equipe confirmada)
+  | 'em_andamento' // Cirurgia em andamento
+  | 'concluida' // Concluída com sucesso
+  | 'cancelada' // Cancelada
+  | 'adiada'; // Adiada para nova data
 
 export interface CirurgiaWorkflowMetadata {
   hospitalId: string;
@@ -166,13 +166,13 @@ export interface CirurgiaWorkflowMetadata {
 // MÓDULO: COMPRAS & FORNECEDORES
 // ============================================
 
-export type CotacaoWorkflowState = 
-  | 'rascunho'           // Cotação sendo criada
+export type CotacaoWorkflowState =
+  | 'rascunho' // Cotação sendo criada
   | 'aguardando_respostas' // Enviada para fornecedores
-  | 'em_analise'         // Analisando propostas
-  | 'aprovada'           // Cotação aprovada
-  | 'convertida_pedido'  // Convertida em pedido
-  | 'cancelada';         // Cancelada
+  | 'em_analise' // Analisando propostas
+  | 'aprovada' // Cotação aprovada
+  | 'convertida_pedido' // Convertida em pedido
+  | 'cancelada'; // Cancelada
 
 export interface CotacaoWorkflowMetadata {
   fornecedorIds: string[];
@@ -183,16 +183,16 @@ export interface CotacaoWorkflowMetadata {
   motivoCancelamento?: string;
 }
 
-export type PedidoCompraWorkflowState = 
-  | 'rascunho'           // Pedido sendo criado
+export type PedidoCompraWorkflowState =
+  | 'rascunho' // Pedido sendo criado
   | 'aguardando_aprovacao' // Aguardando aprovação
-  | 'aprovado'           // Aprovado
+  | 'aprovado' // Aprovado
   | 'enviado_fornecedor' // Enviado ao fornecedor
-  | 'em_transito'        // Em trânsito
-  | 'recebido_parcial'   // Recebido parcialmente
-  | 'recebido_total'     // Recebido totalmente
-  | 'cancelado'          // Cancelado
-  | 'rejeitado';         // Rejeitado
+  | 'em_transito' // Em trânsito
+  | 'recebido_parcial' // Recebido parcialmente
+  | 'recebido_total' // Recebido totalmente
+  | 'cancelado' // Cancelado
+  | 'rejeitado'; // Rejeitado
 
 export interface PedidoCompraWorkflowMetadata {
   fornecedorId: string;
@@ -218,17 +218,17 @@ export interface PedidoCompraWorkflowMetadata {
 // MÓDULO: OPME (Rastreabilidade)
 // ============================================
 
-export type OPMEWorkflowState = 
-  | 'em_estoque'         // Em estoque
-  | 'reservado'          // Reservado para cirurgia
-  | 'em_separacao'       // Sendo separado
+export type OPMEWorkflowState =
+  | 'em_estoque' // Em estoque
+  | 'reservado' // Reservado para cirurgia
+  | 'em_separacao' // Sendo separado
   | 'aguardando_esterilizacao' // Aguardando esterilização
-  | 'pronto_uso'         // Pronto para uso
-  | 'em_uso'             // Em uso na cirurgia
-  | 'utilizado'          // Utilizado (rastreado)
-  | 'devolvido'          // Devolvido ao estoque
-  | 'descartado'         // Descartado
-  | 'extraviado';        // Extraviado
+  | 'pronto_uso' // Pronto para uso
+  | 'em_uso' // Em uso na cirurgia
+  | 'utilizado' // Utilizado (rastreado)
+  | 'devolvido' // Devolvido ao estoque
+  | 'descartado' // Descartado
+  | 'extraviado'; // Extraviado
 
 export interface OPMEWorkflowMetadata {
   produtoId: string;
@@ -245,18 +245,18 @@ export interface OPMEWorkflowMetadata {
   motivoExtravio?: string;
 }
 
-export type FaturamentoOPMEWorkflowState = 
-  | 'pendente_digitacao'  // Pendente digitação
-  | 'em_digitacao'        // Em digitação
+export type FaturamentoOPMEWorkflowState =
+  | 'pendente_digitacao' // Pendente digitação
+  | 'em_digitacao' // Em digitação
   | 'aguardando_conferencia' // Aguardando conferência
-  | 'conferido'           // Conferido
-  | 'aguardando_envio'    // Aguardando envio ao convênio
-  | 'enviado'             // Enviado ao convênio
+  | 'conferido' // Conferido
+  | 'aguardando_envio' // Aguardando envio ao convênio
+  | 'enviado' // Enviado ao convênio
   | 'aguardando_autorizacao' // Aguardando autorização
-  | 'autorizado'          // Autorizado
-  | 'glosado'             // Glosado (negado)
-  | 'pago'                // Pago
-  | 'em_recurso';         // Em recurso (contestação de glosa)
+  | 'autorizado' // Autorizado
+  | 'glosado' // Glosado (negado)
+  | 'pago' // Pago
+  | 'em_recurso'; // Em recurso (contestação de glosa)
 
 export interface FaturamentoOPMEWorkflowMetadata {
   cirurgiaId: string;
@@ -282,19 +282,19 @@ export interface FaturamentoOPMEWorkflowMetadata {
 // MÓDULO: CONTRATOS
 // ============================================
 
-export type ContratoWorkflowState = 
-  | 'rascunho'           // Rascunho
+export type ContratoWorkflowState =
+  | 'rascunho' // Rascunho
   | 'em_revisao_juridica' // Em revisão jurídica
-  | 'aguardando_ajustes'  // Aguardando ajustes
+  | 'aguardando_ajustes' // Aguardando ajustes
   | 'aguardando_aprovacao' // Aguardando aprovação
-  | 'aprovado'           // Aprovado
+  | 'aprovado' // Aprovado
   | 'aguardando_assinatura' // Aguardando assinatura
-  | 'assinado'           // Assinado
-  | 'vigente'            // Vigente
-  | 'em_renovacao'       // Em renovação
-  | 'vencido'            // Vencido
-  | 'rescindido'         // Rescindido
-  | 'rejeitado';         // Rejeitado
+  | 'assinado' // Assinado
+  | 'vigente' // Vigente
+  | 'em_renovacao' // Em renovação
+  | 'vencido' // Vencido
+  | 'rescindido' // Rescindido
+  | 'rejeitado'; // Rejeitado
 
 export interface ContratoWorkflowMetadata {
   tipo: 'fornecedor' | 'cliente' | 'hospital' | 'medico' | 'trabalho';
@@ -326,19 +326,19 @@ export interface ContratoWorkflowMetadata {
 // MÓDULO: RECURSOS HUMANOS
 // ============================================
 
-export type RecrutamentoWorkflowState = 
-  | 'vaga_aberta'        // Vaga aberta
+export type RecrutamentoWorkflowState =
+  | 'vaga_aberta' // Vaga aberta
   | 'triagem_curriculos' // Triagem de currículos
   | 'agendamento_entrevista' // Agendamento de entrevista
-  | 'entrevista_rh'      // Entrevista com RH
+  | 'entrevista_rh' // Entrevista com RH
   | 'entrevista_tecnica' // Entrevista técnica
-  | 'em_avaliacao'       // Em avaliação
-  | 'oferta_enviada'     // Oferta enviada
-  | 'oferta_aceita'      // Oferta aceita
-  | 'em_onboarding'      // Em onboarding
-  | 'contratado'         // Contratado
-  | 'rejeitado'          // Rejeitado
-  | 'desistiu';          // Candidato desistiu
+  | 'em_avaliacao' // Em avaliação
+  | 'oferta_enviada' // Oferta enviada
+  | 'oferta_aceita' // Oferta aceita
+  | 'em_onboarding' // Em onboarding
+  | 'contratado' // Contratado
+  | 'rejeitado' // Rejeitado
+  | 'desistiu'; // Candidato desistiu
 
 export interface RecrutamentoWorkflowMetadata {
   vagaId: string;
@@ -357,15 +357,15 @@ export interface RecrutamentoWorkflowMetadata {
 // MÓDULO: MANUTENÇÃO & CALIBRAÇÃO
 // ============================================
 
-export type ManutencaoWorkflowState = 
-  | 'agendada'           // Manutenção agendada
-  | 'aguardando_peca'    // Aguardando peça
-  | 'em_execucao'        // Em execução
-  | 'aguardando_teste'   // Aguardando teste
-  | 'testado_ok'         // Testado OK
-  | 'testado_falha'      // Testado com falha
-  | 'concluida'          // Concluída
-  | 'cancelada';         // Cancelada
+export type ManutencaoWorkflowState =
+  | 'agendada' // Manutenção agendada
+  | 'aguardando_peca' // Aguardando peça
+  | 'em_execucao' // Em execução
+  | 'aguardando_teste' // Aguardando teste
+  | 'testado_ok' // Testado OK
+  | 'testado_falha' // Testado com falha
+  | 'concluida' // Concluída
+  | 'cancelada'; // Cancelada
 
 export interface ManutencaoWorkflowMetadata {
   equipamentoId: string;
@@ -429,4 +429,3 @@ export interface WorkflowInstanceSort {
   field: 'createdAt' | 'updatedAt' | 'priority' | 'dueDate';
   direction: 'asc' | 'desc';
 }
-

@@ -4,13 +4,15 @@
  */
 
 import { type FC } from 'react';
-import { Card, type CardProps } from './Card';
+import { Card, type CardProps } from './oraclusx-ds/Card';
 import { cn } from '@/lib/utils';
 import { type BlurLevel } from '@/lib/styleUtils';
 
 export interface GlassCardProps extends Omit<CardProps, 'className'> {
   /** Nível de blur do glass effect */
   blur?: BlurLevel;
+  /** Alias legado para blur */
+  intensity?: BlurLevel;
   /** Adicionar gradiente de fundo */
   gradient?: boolean;
   /** Cor do gradiente (quando gradient=true) */
@@ -38,33 +40,36 @@ const gradientClasses = {
 
 /**
  * GlassCard - Card com efeito glassmorphism
- * 
+ *
  * @example
  * ```tsx
- * <GlassCard blur="lg" gradient gradientColor="brand">
+ * <Card variant="glass" blur="lg" gradient gradientColor="brand">
  *   <CardHeader>
  *     <CardTitle>Dashboard</CardTitle>
  *   </CardHeader>
  *   <CardContent>
  *     Conteúdo com efeito glass
  *   </CardContent>
- * </GlassCard>
+ * </Card>
  * ```
  */
 export const GlassCard: FC<GlassCardProps> = ({
   blur = 'md',
+  intensity,
   gradient = false,
   gradientColor = 'brand',
   className,
   children,
   ...cardProps
 }) => {
+  const resolvedBlur = intensity ?? blur;
+
   return (
     <Card
       {...cardProps}
       className={cn(
-        'orx-glass',
-        blurClasses[blur],
+        'glass orx-glass',
+        blurClasses[resolvedBlur],
         gradient && gradientClasses[gradientColor],
         gradient && 'text-white',
         className
@@ -78,4 +83,3 @@ export const GlassCard: FC<GlassCardProps> = ({
 GlassCard.displayName = 'OraclusXGlassCard';
 
 export default GlassCard;
-

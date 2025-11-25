@@ -11,14 +11,13 @@
  * Documentação API: https://www.twilio.com/docs/sms
  */
 
-import twilio from "twilio";
-import type { Twilio, MessageInstance } from "twilio/lib/rest/Twilio";
-import { toAppError } from "@/utils/error";
+import twilio from 'twilio';
+import type { MessageInstance } from 'twilio/lib/rest/api/v2010/account/message';
+import { toAppError } from '@/utils/error';
 
-type MessageCreateOptions =
-  Twilio.Api.V2010.AccountContextMessageListInstanceCreateOptions;
-type MessageListOptions =
-  Twilio.Api.V2010.AccountMessageListInstanceListOptions;
+type TwilioClient = ReturnType<typeof twilio>;
+type MessageCreateOptions = Parameters<TwilioClient['messages']['create']>[0];
+type MessageListOptions = Parameters<TwilioClient['messages']['list']>[0];
 
 type TwilioWebhookPayload = {
   MessageSid?: string;
@@ -47,13 +46,7 @@ export interface WhatsAppParams {
 
 export interface MessageStatus {
   sid: string;
-  status:
-    | "queued"
-    | "sending"
-    | "sent"
-    | "delivered"
-    | "undelivered"
-    | "failed";
+  status: 'queued' | 'sending' | 'sent' | 'delivered' | 'undelivered' | 'failed';
   para: string;
   de: string;
   mensagem: string;
@@ -63,22 +56,21 @@ export interface MessageStatus {
 }
 
 export class TwilioService {
-  private client: Twilio;
+  private client: TwilioClient;
   private accountSid: string;
   private authToken: string;
   private phoneNumber: string;
   private whatsappNumber: string;
 
   constructor() {
-    this.accountSid = process.env.TWILIO_ACCOUNT_SID || "";
-    this.authToken = process.env.TWILIO_AUTH_TOKEN || "";
-    this.phoneNumber = process.env.TWILIO_PHONE_NUMBER || "";
-    this.whatsappNumber =
-      process.env.TWILIO_WHATSAPP_NUMBER || this.phoneNumber;
+    this.accountSid = process.env.TWILIO_ACCOUNT_SID || '';
+    this.authToken = process.env.TWILIO_AUTH_TOKEN || '';
+    this.phoneNumber = process.env.TWILIO_PHONE_NUMBER || '';
+    this.whatsappNumber = process.env.TWILIO_WHATSAPP_NUMBER || this.phoneNumber;
 
     if (!this.isConfigured()) {
       console.warn(
-        "⚠️ TwilioService: Credenciais não configuradas. Configure TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN e TWILIO_PHONE_NUMBER no .env",
+        '⚠️ TwilioService: Credenciais não configuradas. Configure TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN e TWILIO_PHONE_NUMBER no .env'
       );
     }
 
@@ -102,7 +94,7 @@ export class TwilioService {
       // Agendamento
       if (params.agendarPara) {
         messageData.sendAt = params.agendarPara;
-        messageData.scheduleType = "fixed";
+        messageData.scheduleType = 'fixed';
       }
 
       // Callback de status
@@ -115,7 +107,7 @@ export class TwilioService {
       return this.formatarMessageStatus(message);
     } catch (error: unknown) {
       const err = toAppError(error);
-      console.error("Erro ao enviar SMS:", err);
+      console.error('Erro ao enviar SMS:', err);
       throw new Error(`Falha ao enviar SMS: ${err.message}`);
     }
   }
@@ -149,7 +141,7 @@ export class TwilioService {
       return this.formatarMessageStatus(message);
     } catch (error: unknown) {
       const err = toAppError(error);
-      console.error("Erro ao enviar WhatsApp:", err);
+      console.error('Erro ao enviar WhatsApp:', err);
       throw new Error(`Falha ao enviar WhatsApp: ${err.message}`);
     }
   }
@@ -159,7 +151,7 @@ export class TwilioService {
    */
   async enviarSMSEmLote(
     destinatarios: string[],
-    mensagem: string,
+    mensagem: string
   ): Promise<{
     sucesso: MessageStatus[];
     falhas: Array<{ telefone: string; erro: string }>;
@@ -201,7 +193,7 @@ export class TwilioService {
       return this.formatarMessageStatus(message);
     } catch (error: unknown) {
       const err = toAppError(error);
-      console.error("Erro ao consultar status:", err);
+      console.error('Erro ao consultar status:', err);
       throw new Error(`Falha ao consultar status: ${err.message}`);
     }
   }
@@ -231,7 +223,7 @@ export class TwilioService {
       return messages.map((msg) => this.formatarMessageStatus(msg));
     } catch (error: unknown) {
       const err = toAppError(error);
-      console.error("Erro ao listar mensagens:", err);
+      console.error('Erro ao listar mensagens:', err);
       throw new Error(`Falha ao listar mensagens: ${err.message}`);
     }
   }
@@ -242,20 +234,20 @@ export class TwilioService {
   async verificarTelefone(telefone: string): Promise<{
     valido: boolean;
     formatado: string;
-    tipo: "mobile" | "landline" | "voip";
+    tipo: 'mobile' | 'landline' | 'voip';
     pais: string;
     operadora?: string;
   }> {
     try {
       const lookup = await this.client.lookups.v1
         .phoneNumbers(telefone)
-        .fetch({ type: ["carrier"] });
+        .fetch({ type: ['carrier'] });
 
-      const carrierType = (lookup.carrier?.type ?? "mobile").toLowerCase();
+      const carrierType = (lookup.carrier?.type ?? 'mobile').toLowerCase();
       const tipo =
-        carrierType === "landline" || carrierType === "voip"
-          ? (carrierType as "landline" | "voip")
-          : "mobile";
+        carrierType === 'landline' || carrierType === 'voip'
+          ? (carrierType as 'landline' | 'voip')
+          : 'mobile';
 
       return {
         valido: true,
@@ -265,12 +257,12 @@ export class TwilioService {
         operadora: lookup.carrier?.name,
       };
     } catch (error: unknown) {
-      console.error("Erro ao verificar telefone:", error);
+      console.error('Erro ao verificar telefone:', error);
       return {
         valido: false,
         formatado: telefone,
-        tipo: "mobile",
-        pais: "BR",
+        tipo: 'mobile',
+        pais: 'BR',
       };
     }
   }
@@ -290,24 +282,18 @@ export class TwilioService {
       status: body.MessageStatus || body.SmsStatus,
       de: body.From,
       para: body.To,
-      erro: body.ErrorCode
-        ? `${body.ErrorCode}: ${body.ErrorMessage}`
-        : undefined,
+      erro: body.ErrorCode ? `${body.ErrorCode}: ${body.ErrorMessage}` : undefined,
     };
   }
 
   /**
    * Valida assinatura do webhook
    */
-  validarWebhookSignature(
-    signature: string,
-    url: string,
-    params: Record<string, string>,
-  ): boolean {
+  validarWebhookSignature(signature: string, url: string, params: Record<string, string>): boolean {
     try {
       return twilio.validateRequest(this.authToken, signature, url, params);
     } catch (error) {
-      console.error("Erro ao validar assinatura:", error);
+      console.error('Erro ao validar assinatura:', error);
       return false;
     }
   }
@@ -316,29 +302,29 @@ export class TwilioService {
 
   private validarTelefone(telefone: string): void {
     if (!telefone) {
-      throw new Error("Número de telefone é obrigatório");
+      throw new Error('Número de telefone é obrigatório');
     }
 
     // Deve começar com +
-    if (!telefone.startsWith("+")) {
-      throw new Error("Telefone deve começar com + seguido do código do país");
+    if (!telefone.startsWith('+')) {
+      throw new Error('Telefone deve começar com + seguido do código do país');
     }
 
     // Deve ter pelo menos 10 dígitos
-    const digitos = telefone.replace(/\D/g, "");
+    const digitos = telefone.replace(/\D/g, '');
     if (digitos.length < 10) {
-      throw new Error("Telefone inválido (mínimo 10 dígitos)");
+      throw new Error('Telefone inválido (mínimo 10 dígitos)');
     }
   }
 
   private validarMensagem(mensagem: string): void {
     if (!mensagem || mensagem.trim().length === 0) {
-      throw new Error("Mensagem não pode estar vazia");
+      throw new Error('Mensagem não pode estar vazia');
     }
 
     // SMS tem limite de 1600 caracteres
     if (mensagem.length > 1600) {
-      throw new Error("Mensagem muito longa (máximo 1600 caracteres)");
+      throw new Error('Mensagem muito longa (máximo 1600 caracteres)');
     }
   }
 
@@ -350,26 +336,22 @@ export class TwilioService {
       de: message.from,
       mensagem: message.body,
       dataEnvio: message.dateCreated,
-      erro: message.errorCode
-        ? `${message.errorCode}: ${message.errorMessage}`
-        : undefined,
+      erro: message.errorCode ? `${message.errorCode}: ${message.errorMessage}` : undefined,
       preco: message.price ? parseFloat(message.price) : undefined,
     };
   }
 
-  private mapStatus(
-    status?: MessageInstance.Status | null,
-  ): MessageStatus["status"] {
+  private mapStatus(status?: MessageInstance.Status | null): MessageStatus['status'] {
     switch (status) {
-      case "queued":
-      case "sending":
-      case "sent":
-      case "delivered":
-      case "undelivered":
-      case "failed":
+      case 'queued':
+      case 'sending':
+      case 'sent':
+      case 'delivered':
+      case 'undelivered':
+      case 'failed':
         return status;
       default:
-        return "queued";
+        return 'queued';
     }
   }
 
@@ -396,7 +378,7 @@ export class TwilioService {
       await this.client.api.accounts(this.accountSid).fetch();
       return true;
     } catch (error) {
-      console.error("Erro ao testar conexão Twilio:", error);
+      console.error('Erro ao testar conexão Twilio:', error);
       return false;
     }
   }

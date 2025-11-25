@@ -1,7 +1,7 @@
 /**
  * useDashboardData - Hook para dados do Dashboard Principal
  * Sistema: ICARUS v5.0
- * 
+ *
  * Fornece KPIs em tempo real com SWR (Stale-While-Revalidate)
  */
 
@@ -44,28 +44,28 @@ const MOCK_DATA: DashboardData = {
       label: 'Sistema Status',
       value: '98%',
       trend: 2.3,
-      unit: '%'
+      unit: '%',
     },
     {
       id: 'medicos-ativos',
       label: 'Médicos Ativos',
       value: 1847,
       trend: 12.5,
-      unit: 'médicos'
+      unit: 'médicos',
     },
     {
       id: 'produtos-opme',
       label: 'Produtos OPME',
       value: '12.4K',
       trend: 5.2,
-      unit: 'produtos'
+      unit: 'produtos',
     },
     {
       id: 'pedidos-urgentes',
       label: 'Pedidos Urgentes',
       value: 89,
       trend: -8.1,
-      unit: 'pedidos'
+      unit: 'pedidos',
     },
     {
       id: 'faturamento-mensal',
@@ -75,8 +75,8 @@ const MOCK_DATA: DashboardData = {
       unit: 'reais',
       metadata: {
         average: 'R$ 127K',
-        subtitle: 'média diária'
-      }
+        subtitle: 'média diária',
+      },
     },
     {
       id: 'distribuicao-geografica',
@@ -85,15 +85,15 @@ const MOCK_DATA: DashboardData = {
       trend: 8.7,
       unit: 'hospitais',
       metadata: {
-        cities: 28
-      }
+        cities: 28,
+      },
     },
     {
       id: 'estoque-critico',
       label: 'Estoque Crítico',
       value: 8,
       trend: -42.3,
-      unit: 'produtos'
+      unit: 'produtos',
     },
     {
       id: 'logistica',
@@ -102,8 +102,8 @@ const MOCK_DATA: DashboardData = {
       trend: 3.8,
       unit: '%',
       metadata: {
-        subtitle: 'entregas no prazo'
-      }
+        subtitle: 'entregas no prazo',
+      },
     },
     {
       id: 'performance-ia',
@@ -112,28 +112,28 @@ const MOCK_DATA: DashboardData = {
       trend: 1.2,
       unit: '%',
       metadata: {
-        subtitle: 'precisão do sistema'
-      }
-    }
+        subtitle: 'precisão do sistema',
+      },
+    },
   ],
   miniGraphs: {
     estoqueCritico: {
       values: [30, 50, 70, 45, 85, 60, 92, 75],
       colorScheme: 'red',
-      label: 'Últimos 8 dias'
+      label: 'Últimos 8 dias',
     },
     logistica: {
       values: [50, 70, 85, 65, 95, 80, 100, 90],
       colorScheme: 'green',
-      label: 'Últimos 8 dias'
+      label: 'Últimos 8 dias',
     },
     performanceIA: {
       values: [45, 60, 75, 55, 85, 70, 90, 80],
       colorScheme: 'blue',
-      label: 'Últimos 8 dias'
-    }
+      label: 'Últimos 8 dias',
+    },
   },
-  lastUpdate: new Date()
+  lastUpdate: new Date(),
 };
 
 export const useDashboardData = (useRealData = false) => {
@@ -144,18 +144,17 @@ export const useDashboardData = (useRealData = false) => {
   const refresh = useCallback(async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       if (useRealData) {
         // Integração Supabase
         const { supabase } = await import('@/lib/supabase');
-        const { data: result, error: supabaseError } = await supabase
-          .rpc('get_dashboard_kpis');
-        
+        const { data: result, error: supabaseError } = await supabase.rpc('get_dashboard_kpis');
+
         if (supabaseError) {
           throw new Error(supabaseError.message);
         }
-        
+
         type DashboardRpcResult = {
           kpis: DashboardData['kpis'];
           miniGraphs: DashboardData['miniGraphs'];
@@ -168,27 +167,27 @@ export const useDashboardData = (useRealData = false) => {
           setData({
             kpis: typedResult.kpis,
             miniGraphs: typedResult.miniGraphs,
-            lastUpdate: new Date(typedResult.lastUpdate)
+            lastUpdate: new Date(typedResult.lastUpdate),
           });
         }
       } else {
         // Mock data para desenvolvimento
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
         setData({
           ...MOCK_DATA,
-          lastUpdate: new Date()
+          lastUpdate: new Date(),
         });
       }
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao carregar KPIs:', err);
       setError(err instanceof Error ? err.message : 'Erro ao carregar dados');
-      
+
       // Fallback para mock data em caso de erro
       setData({
         ...MOCK_DATA,
-        lastUpdate: new Date()
+        lastUpdate: new Date(),
       });
     } finally {
       setIsLoading(false);
@@ -198,7 +197,7 @@ export const useDashboardData = (useRealData = false) => {
   // Auto-refresh a cada 60 segundos
   useEffect(() => {
     refresh(); // Carregar dados inicialmente
-    
+
     const interval = setInterval(refresh, 60000);
     return () => clearInterval(interval);
   }, [useRealData, refresh]);
@@ -207,7 +206,6 @@ export const useDashboardData = (useRealData = false) => {
     data,
     isLoading,
     error,
-    refresh
+    refresh,
   };
 };
-

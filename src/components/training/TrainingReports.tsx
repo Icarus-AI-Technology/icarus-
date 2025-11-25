@@ -9,7 +9,7 @@ import {
   Award,
   BarChart3,
   CheckCircle2,
-  Play
+  Play,
 } from 'lucide-react';
 
 interface TrainingProgress {
@@ -33,19 +33,19 @@ interface TrainingLesson {
 }
 
 export const TrainingReports: React.FC = () => {
-  const { user } = useAuth();
+  const { usuario } = useAuth();
   const [progressByModule, setProgressByModule] = useState<TrainingProgress[]>([]);
   const [recentLessons, setRecentLessons] = useState<TrainingLesson[]>([]);
   const [overallStats, setOverallStats] = useState({
     totalLessons: 0,
     completed: 0,
     avgScore: 0,
-    totalTime: 0
+    totalTime: 0,
   });
   const [loading, setLoading] = useState(true);
 
   const loadTrainingData = useCallback(async () => {
-    if (!user) return;
+    if (!usuario) return;
 
     setLoading(true);
     try {
@@ -53,7 +53,7 @@ export const TrainingReports: React.FC = () => {
       const { data: lessons } = await supabase
         .from('user_training')
         .select('*')
-        .eq('usuario_id', user.id)
+        .eq('usuario_id', usuario.id)
         .order('ultima_tentativa', { ascending: false });
 
       if (lessons) {
@@ -62,7 +62,7 @@ export const TrainingReports: React.FC = () => {
         // Calcular progresso por módulo
         const moduleMap = new Map<string, TrainingProgress>();
 
-        lessons.forEach(lesson => {
+        lessons.forEach((lesson) => {
           if (!moduleMap.has(lesson.modulo)) {
             moduleMap.set(lesson.modulo, {
               modulo: lesson.modulo,
@@ -70,7 +70,7 @@ export const TrainingReports: React.FC = () => {
               concluidas: 0,
               pontuacao_media: 0,
               tempo_total: 0,
-              progresso: 0
+              progresso: 0,
             });
           }
 
@@ -82,49 +82,54 @@ export const TrainingReports: React.FC = () => {
         });
 
         // Calcular médias e progresso
-        const progressArray = Array.from(moduleMap.values()).map(p => ({
+        const progressArray = Array.from(moduleMap.values()).map((p) => ({
           ...p,
           pontuacao_media: p.total_licoes > 0 ? p.pontuacao_media / p.total_licoes : 0,
-          progresso: p.total_licoes > 0 ? (p.concluidas / p.total_licoes) * 100 : 0
+          progresso: p.total_licoes > 0 ? (p.concluidas / p.total_licoes) * 100 : 0,
         }));
 
         setProgressByModule(progressArray);
 
         // Calcular estatísticas gerais
         const totalLessons = lessons.length;
-        const completed = lessons.filter(l => l.concluido).length;
-        const avgScore = lessons.length > 0
-          ? lessons.reduce((sum, l) => sum + (l.pontuacao || 0), 0) / lessons.length
-          : 0;
+        const completed = lessons.filter((l) => l.concluido).length;
+        const avgScore =
+          lessons.length > 0
+            ? lessons.reduce((sum, l) => sum + (l.pontuacao || 0), 0) / lessons.length
+            : 0;
         const totalTime = lessons.reduce((sum, l) => sum + (l.tempo_gasto || 0), 0);
 
         setOverallStats({
           totalLessons,
           completed,
           avgScore,
-          totalTime
+          totalTime,
         });
       }
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao carregar dados de treinamento:', err);
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [usuario]);
 
   useEffect(() => {
-    if (user) {
+    if (usuario) {
       loadTrainingData();
     }
-  }, [user, loadTrainingData]);
+  }, [usuario, loadTrainingData]);
 
   const getLessonIcon = (tipo: string) => {
     switch (tipo) {
-      case 'video': return <Play className="w-4 h-4" />;
-      case 'quiz': return <Target className="w-4 h-4" />;
-      case 'pratico': return <Award className="w-4 h-4" />;
-      default: return <GraduationCap className="w-4 h-4" />;
+      case 'video':
+        return <Play className="w-4 h-4" />;
+      case 'quiz':
+        return <Target className="w-4 h-4" />;
+      case 'pratico':
+        return <Award className="w-4 h-4" />;
+      default:
+        return <GraduationCap className="w-4 h-4" />;
     }
   };
 
@@ -151,9 +156,7 @@ export const TrainingReports: React.FC = () => {
           <GraduationCap className="w-8 h-8 text-blue-600" />
           Relatórios de Treinamento
         </h1>
-        <p className="text-gray-600 mt-2">
-          Acompanhe seu progresso e desenvolvimento
-        </p>
+        <p className="text-gray-600 mt-2">Acompanhe seu progresso e desenvolvimento</p>
       </div>
 
       {/* Overall Stats */}
@@ -177,7 +180,8 @@ export const TrainingReports: React.FC = () => {
           <p className="orx-text-xs opacity-80 mt-1">
             {overallStats.totalLessons > 0
               ? Math.round((overallStats.completed / overallStats.totalLessons) * 100)
-              : 0}% de progresso
+              : 0}
+            % de progresso
           </p>
         </div>
 
@@ -227,15 +231,21 @@ export const TrainingReports: React.FC = () => {
               <div className="grid grid-cols-3 gap-4 orx-text-sm">
                 <div>
                   <p className="text-gray-600">Progresso</p>
-                  <p className="orx-orx-font-semibold text-blue-600">{Math.round(progress.progresso)}%</p>
+                  <p className="orx-orx-font-semibold text-blue-600">
+                    {Math.round(progress.progresso)}%
+                  </p>
                 </div>
                 <div>
                   <p className="text-gray-600">Pontuação Média</p>
-                  <p className="orx-orx-font-semibold text-purple-600">{Math.round(progress.pontuacao_media)}</p>
+                  <p className="orx-orx-font-semibold text-purple-600">
+                    {Math.round(progress.pontuacao_media)}
+                  </p>
                 </div>
                 <div>
                   <p className="text-gray-600">Tempo Gasto</p>
-                  <p className="orx-orx-font-semibold text-orange-600">{formatTime(progress.tempo_total)}</p>
+                  <p className="orx-orx-font-semibold text-orange-600">
+                    {formatTime(progress.tempo_total)}
+                  </p>
                 </div>
               </div>
             </div>
@@ -263,10 +273,16 @@ export const TrainingReports: React.FC = () => {
               className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:shadow-md transition"
             >
               <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                  lesson.concluido ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-600'
-                }`}>
-                  {lesson.concluido ? <CheckCircle2 className="w-5 h-5" /> : getLessonIcon(lesson.tipo)}
+                <div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    lesson.concluido ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-600'
+                  }`}
+                >
+                  {lesson.concluido ? (
+                    <CheckCircle2 className="w-5 h-5" />
+                  ) : (
+                    getLessonIcon(lesson.tipo)
+                  )}
                 </div>
                 <div>
                   <h4 className="orx-orx-font-medium text-gray-900">{lesson.licao}</h4>
@@ -301,3 +317,4 @@ export const TrainingReports: React.FC = () => {
   );
 };
 
+export default TrainingReports;

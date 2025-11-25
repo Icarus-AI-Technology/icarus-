@@ -6,17 +6,9 @@
 import { useState } from 'react';
 
 import { MaskedInput } from '@/components/ui/masked-input';
-import { Card } from '@/components/ui/card';
+import { Card } from '@/components/oraclusx-ds/Card';
 
-type MaskField =
-  | 'cpf'
-  | 'cnpj'
-  | 'telefone'
-  | 'cep'
-  | 'data'
-  | 'moeda'
-  | 'porcentagem'
-  | 'placa';
+type MaskField = 'cpf' | 'cnpj' | 'telefone' | 'cep' | 'data' | 'moeda' | 'porcentagem' | 'placa';
 
 export const MasksExamplePage = () => {
   const [cpf, setCpf] = useState('');
@@ -28,13 +20,10 @@ export const MasksExamplePage = () => {
   const [porcentagem, setPorcentagem] = useState('');
   const [placa, setPlaca] = useState('');
 
-  const [validationStates, setValidationStates] = useState<
-    Partial<Record<MaskField, boolean>>
-  >({});
+  const [validationStates, setValidationStates] = useState<Partial<Record<MaskField, boolean>>>({});
 
   const createValueChangeHandler =
-    (field: MaskField, setter: (value: string) => void) =>
-    (value: string, isValid: boolean) => {
+    (field: MaskField, setter: (value: string) => void) => (value: string, isValid: boolean) => {
       setter(value);
       setValidationStates((prev) => ({ ...prev, [field]: isValid }));
     };
@@ -162,7 +151,10 @@ export const MasksExamplePage = () => {
           >
             Valores Não Formatados
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono" style={{ fontSize: '0.813rem' }}>
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono"
+            style={{ fontSize: '0.813rem' }}
+          >
             <div>
               <strong>CPF:</strong> {cpf}
             </div>
@@ -213,7 +205,7 @@ export const MasksExamplePage = () => {
             <div>
               <strong className="text-[var(--text-primary)]">Uso:</strong>
               <pre className="bg-[var(--background)] p-3 rounded mt-2 overflow-x-auto">
-{`<MaskedInput
+                {`<MaskedInput
   mask="CPF"
   label="CPF"
   value={cpf}
@@ -231,4 +223,3 @@ export const MasksExamplePage = () => {
     </div>
   );
 };
-

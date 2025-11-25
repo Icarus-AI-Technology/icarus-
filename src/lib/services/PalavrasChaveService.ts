@@ -1,18 +1,20 @@
 /**
  * PalavrasChaveService - Gerenciamento de Keywords para Portais OPME
- * 
+ *
  * Funcionalidades:
  * - Gerenciamento de palavras-chave por produto
  * - Sugestão automática com GPT-4
  * - Sinônimos e variações
  * - Auto-otimização baseada em taxa de sucesso
  * - Análise de efetividade
- * 
+ *
  * @module PalavrasChaveService
  * @version 1.0.0
  */
 
 import { supabase } from '@/lib/supabase';
+
+const db = supabase as any;
 
 // ============================================
 // TYPES E INTERFACES
@@ -86,7 +88,7 @@ export class PalavrasChaveService {
     apenasAtivas?: boolean;
     portal?: string;
   }): Promise<PalavraChave[]> {
-    let query = supabase
+    let query = db
       .from('portais_opme_palavras_chave')
       .select('*')
       .eq('produto_id', params.produtoId)
@@ -102,22 +104,24 @@ export class PalavrasChaveService {
 
     const { data, error } = await query;
     if (error) throw error;
-    return data || [];
+    return (data ?? []) as PalavraChave[];
   }
 
-  async criarPalavraChave(palavraChave: Omit<PalavraChave, 'id' | 'created_at' | 'updated_at'>): Promise<PalavraChave> {
-    const { data, error } = await supabase
+  async criarPalavraChave(
+    palavraChave: Omit<PalavraChave, 'id' | 'created_at' | 'updated_at'>
+  ): Promise<PalavraChave> {
+    const { data, error } = await (supabase as any)
       .from('portais_opme_palavras_chave')
       .insert(palavraChave)
       .select()
       .single();
 
     if (error) throw error;
-    return data;
+    return data as PalavraChave;
   }
 
   async atualizarPalavraChave(id: string, updates: Partial<PalavraChave>): Promise<PalavraChave> {
-    const { data, error } = await supabase
+    const { data, error } = await (supabase as any)
       .from('portais_opme_palavras_chave')
       .update(updates)
       .eq('id', id)
@@ -125,14 +129,11 @@ export class PalavrasChaveService {
       .single();
 
     if (error) throw error;
-    return data;
+    return data as PalavraChave;
   }
 
   async deletarPalavraChave(id: string): Promise<void> {
-    const { error } = await supabase
-      .from('portais_opme_palavras_chave')
-      .delete()
-      .eq('id', id);
+    const { error } = await db.from('portais_opme_palavras_chave').delete().eq('id', id);
 
     if (error) throw error;
   }
@@ -165,14 +166,14 @@ export class PalavrasChaveService {
             ativo: true,
           });
         } catch (error) {
-   const err = error as Error;
+          const err = error as Error;
           console.error('Erro ao salvar sugestão:', err);
         }
       }
 
       return sugestoes;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao sugerir palavras-chave com IA:', err);
       throw err;
     }
@@ -278,7 +279,7 @@ Gere de 5 a 10 palavras-chave relevantes.
 
     try {
       // Buscar todas as palavras-chave com pelo menos 10 buscas
-      const { data: palavrasChave, error } = await supabase
+      const { data: palavrasChave, error } = await db
         .from('portais_opme_palavras_chave')
         .select('*')
         .gte('total_buscas', 10)
@@ -305,7 +306,7 @@ Gere de 5 a 10 palavras-chave relevantes.
 
       return resultado;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao otimizar palavras-chave:', err);
       throw err;
     }
@@ -350,7 +351,7 @@ Gere de 5 a 10 palavras-chave relevantes.
     termosAtualizados: number;
   }> {
     // Buscar histórico de cotações deste produto
-    const { data: cotacoes, error } = await supabase
+    const { data: cotacoes, error } = await db
       .from('portais_opme_cotacoes')
       .select('palavra_chave, total_ofertas_encontradas')
       .eq('produto_id', produtoId)
@@ -405,7 +406,7 @@ Gere de 5 a 10 palavras-chave relevantes.
     top_10_melhores: PalavraChave[];
     top_10_piores: PalavraChave[];
   }> {
-    const { data: todasPalavrasChave, error } = await supabase
+    const { data: todasPalavrasChave, error } = await db
       .from('portais_opme_palavras_chave')
       .select('*')
       .gte('total_buscas', 5); // Apenas com histórico significativo
@@ -446,4 +447,3 @@ Gere de 5 a 10 palavras-chave relevantes.
 
 // Exportar instância singleton
 export const palavrasChaveService = PalavrasChaveService.getInstance();
-

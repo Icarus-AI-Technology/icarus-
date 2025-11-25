@@ -34,39 +34,44 @@ async function main() {
   log('\n' + '='.repeat(80), 'magenta');
   log('📊 APLICADOR - Módulo BI Completo (6 tabelas)', 'magenta');
   log('='.repeat(80) + '\n', 'magenta');
-  
+
   const client = new pg.Client(DB_CONFIG);
-  
+
   try {
     await client.connect();
     log('✅ Conectado!\n', 'green');
-    
-    const sqlPath = path.join(__dirname, '..', 'supabase', 'migrations', '202510201410_modulo_bi_completo.sql');
+
+    const sqlPath = path.join(
+      __dirname,
+      '..',
+      'supabase',
+      'migrations',
+      '202510201410_modulo_bi_completo.sql'
+    );
     const sql = fs.readFileSync(sqlPath, 'utf-8');
-    
+
     log('📄 Aplicando módulo BI...', 'cyan');
-    
+
     await client.query('BEGIN');
     await client.query(sql);
     await client.query('COMMIT');
-    
+
     log('✅ Módulo BI aplicado com sucesso!\n', 'green');
-    
+
     // Contar tabelas
     const result = await client.query(`
       SELECT COUNT(*) FROM information_schema.tables 
       WHERE table_schema = 'public' AND table_type = 'BASE TABLE'
     `);
-    
+
     const total = parseInt(result.rows[0].count);
     log(`📊 Total de tabelas: ${total}`, 'cyan');
     log(`📈 Meta: 116 tabelas (100%)`, 'cyan');
     log(`✅ Completude: ${Math.round((total / 116) * 100)}%\n`, 'green');
-    
+
     if (total >= 116) {
       log('🎉 100% DAS TABELAS IMPLEMENTADAS!', 'green');
     }
-    
   } catch (error) {
     await client.query('ROLLBACK');
     log(`\n❌ ERRO: ${error.message}`, 'red');
@@ -77,4 +82,3 @@ async function main() {
 }
 
 main().catch(console.error);
-

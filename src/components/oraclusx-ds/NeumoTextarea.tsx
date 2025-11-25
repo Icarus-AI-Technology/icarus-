@@ -1,38 +1,34 @@
 /**
  * OraclusX Design System - NeumoTextarea Component
  * Textarea Neumórfico 3D Premium
- * 
+ *
  * Campo de texto multilinha com visual neumórfico consistente.
  */
 
 import React, { forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 
-export interface NeumoTextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface NeumoTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   /** Rótulo do campo */
   label?: string;
-  
+
   /** Mensagem de erro */
   error?: string;
-  
+
   /** Mensagem de ajuda/hint */
   hint?: string;
-  
+
   /** Classe CSS adicional para o container */
   containerClassName?: string;
-  
+
   /** Classe CSS adicional para o label */
   labelClassName?: string;
-  
+
   /** Mostrar contador de caracteres */
   showCharCount?: boolean;
 }
 
-export const NeumoTextarea = forwardRef<
-  HTMLTextAreaElement,
-  NeumoTextareaProps
->(
+export const NeumoTextarea = forwardRef<HTMLTextAreaElement, NeumoTextareaProps>(
   (
     {
       label,
@@ -83,11 +79,7 @@ export const NeumoTextarea = forwardRef<
             value={value}
             aria-invalid={hasError}
             aria-describedby={
-              error
-                ? `${textareaId}-error`
-                : hint
-                  ? `${textareaId}-hint`
-                  : undefined
+              error ? `${textareaId}-error` : hint ? `${textareaId}-hint` : undefined
             }
             className={cn(
               // Base
@@ -105,8 +97,7 @@ export const NeumoTextarea = forwardRef<
               // Estados
               'focus:outline-none focus:ring-3 focus:ring-orx-primary/20',
               hasError && 'border-orx-danger focus:ring-orx-danger/20',
-              disabled &&
-                'opacity-50 cursor-not-allowed bg-orx-bg-light',
+              disabled && 'opacity-50 cursor-not-allowed bg-orx-bg-light',
               className
             )}
             {...props}
@@ -122,21 +113,14 @@ export const NeumoTextarea = forwardRef<
 
         {/* Mensagem de Erro */}
         {error && (
-          <p
-            id={`${textareaId}-error`}
-            className="mt-1.5 orx-text-sm text-orx-danger"
-            role="alert"
-          >
+          <p id={`${textareaId}-error`} className="mt-1.5 orx-text-sm text-orx-danger" role="alert">
             {error}
           </p>
         )}
 
         {/* Hint */}
         {hint && !error && (
-          <p
-            id={`${textareaId}-hint`}
-            className="mt-1.5 orx-text-sm text-orx-text-muted"
-          >
+          <p id={`${textareaId}-hint`} className="mt-1.5 orx-text-sm text-orx-text-muted">
             {hint}
           </p>
         )}
@@ -148,4 +132,3 @@ export const NeumoTextarea = forwardRef<
 NeumoTextarea.displayName = 'NeumoTextarea';
 
 export default NeumoTextarea;
-

@@ -1,7 +1,7 @@
 /**
  * API InfoSimples - Agregador de Consultas
  * ICARUS v5.0
- * 
+ *
  * Integração centralizada com todas as APIs da InfoSimples:
  * - CNPJ (Receita Federal)
  * - CPF (Receita Federal)
@@ -11,119 +11,66 @@
  * - ANVISA (Produtos para Saúde)
  * - SEFAZ (26 estados + DF)
  * - Cadastro Positivo (SPC/Serasa)
- * 
+ *
  * Referência: https://api.infosimples.com/
  */
-import { getRuntimeEnvVar } from '@/lib/runtime-env';
-
-const INFOSIMPLES_BASE_URL = 'https://api.infosimples.com/api/v2';
-
-const resolveInfoSimplesToken = (): string | undefined => {
-  return (
-    getRuntimeEnvVar('VITE_INFOSIMPLES_TOKEN') ??
-    getRuntimeEnvVar('INFOSIMPLES_TOKEN')
-  );
-};
-
-export const getInfoSimplesToken = resolveInfoSimplesToken;
-
-const warnMissingToken = () => {
-  if (typeof console !== 'undefined') {
-    console.warn(
-      '[InfoSimplesAPI] Token não configurado. Defina VITE_INFOSIMPLES_TOKEN ou INFOSIMPLES_TOKEN.'
-    );
-  }
-};
+import { supabase } from '@/lib/supabase';
 
 export interface InfoSimplesConfig {
-  token?: string;
-  timeout?: number;
+  // Configuração futura se necessário
+  apiKey?: string;
+  environment?: 'production' | 'sandbox';
 }
 
 export class InfoSimplesAPI {
-  private token: string;
-  private timeout: number;
-  
-  constructor(config?: InfoSimplesConfig) {
-    this.token = config?.token || resolveInfoSimplesToken() || '';
-    this.timeout = config?.timeout || 30000; // 30s
-
-    if (!this.token) {
-      warnMissingToken();
-    }
+  constructor() {
+    // Token gerenciado via Edge Function
   }
 
-  private ensureToken(): string {
-    if (this.token) return this.token;
-    const dynamicToken = resolveInfoSimplesToken();
-    if (dynamicToken) {
-      this.token = dynamicToken;
-      return dynamicToken;
-    }
-    throw new Error('InfoSimples token não configurado. Defina VITE_INFOSIMPLES_TOKEN ou INFOSIMPLES_TOKEN.');
-  }
-  
   /**
    * Faz requisição para a API InfoSimples
+   */
+  /**
+   * Faz requisição para a API InfoSimples via Edge Function
    */
   private async request<T>(
     endpoint: string,
     method: 'GET' | 'POST' = 'GET',
     body?: unknown
   ): Promise<T> {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), this.timeout);
-    
-    try {
-      const response = await fetch(`${INFOSIMPLES_BASE_URL}${endpoint}`, {
-        method,
-        headers: {
-          'Authorization': `Bearer ${this.ensureToken()}`,
-          'Content-Type': 'application/json',
-        },
-        body: body ? JSON.stringify(body) : undefined,
-        signal: controller.signal,
-      });
-      
-      clearTimeout(timeoutId);
-      
-      if (!response.ok) {
-        throw new Error(`InfoSimples API Error: ${response.status}`);
-      }
-      
-      const result = await response.json();
-      
-      if (!result.success) {
-        throw new Error(result.message || 'Erro na consulta');
-      }
-      
-      return result.data as T;
-      
-    } catch (error) {
-   const err = error as Error;
-      clearTimeout(timeoutId);
-      
-      if (error instanceof Error && error.name === 'AbortError') {
-        throw new Error('Timeout na consulta. Tente novamente.');
-      }
-      
-      throw error;
+    const { data, error } = await supabase.functions.invoke('proxy-infosimples', {
+      body: { endpoint, method, body },
+    });
+
+    if (error) {
+      throw new Error(`InfoSimples Proxy Error: ${error.message}`);
     }
+
+    if (!data.success) {
+      // Alguns endpoints retornam success: false no corpo
+      if (data.code && data.message) {
+        throw new Error(`API Error (${data.code}): ${data.message}`);
+      }
+      // Fallback se não tiver estrutura padrão de erro mas falhou
+      // throw new Error('Erro na consulta InfoSimples');
+    }
+
+    return data.data as T;
   }
-  
+
   // ============================================
   // CNPJ - Receita Federal
   // ============================================
-  
+
   async consultarCNPJ(cnpj: string) {
     const cnpjLimpo = cnpj.replace(/[^\d]/g, '');
     return this.request(`/consultas/receita-federal/cnpj/${cnpjLimpo}`);
   }
-  
+
   // ============================================
   // CPF - Receita Federal
   // ============================================
-  
+
   async consultarCPF(cpf: string, dataNascimento: string) {
     const cpfLimpo = cpf.replace(/[^\d]/g, '');
     return this.request(`/consultas/receita-federal/cpf`, 'POST', {
@@ -131,19 +78,19 @@ export class InfoSimplesAPI {
       data_nascimento: dataNascimento,
     });
   }
-  
+
   // ============================================
   // CNH - DETRAN
   // ============================================
-  
+
   async consultarCNH(numeroCNH: string, uf: string) {
     return this.request(`/consultas/detran/${uf.toLowerCase()}/cnh/${numeroCNH}`);
   }
-  
+
   // ============================================
   // Veículos - DETRAN
   // ============================================
-  
+
   async consultarVeiculo(placa: string, renavam?: string) {
     const placaLimpa = placa.replace(/[^\da-zA-Z]/g, '').toUpperCase();
     return this.request(`/consultas/detran/veiculo`, 'POST', {
@@ -151,25 +98,25 @@ export class InfoSimplesAPI {
       renavam: renavam,
     });
   }
-  
+
   // ============================================
   // ANVISA - Produtos para Saúde
   // ============================================
-  
+
   async consultarProdutoANVISA(registro: string) {
     const registroLimpo = registro.replace(/[^\d]/g, '');
     return this.request(`/consultas/anvisa/produtos-saude/${registroLimpo}`);
   }
-  
+
   // ============================================
   // SEFAZ - Nota Fiscal Eletrônica
   // ============================================
-  
+
   async consultarNFe(chave: string, uf: string) {
     const chaveLimpa = chave.replace(/[^\d]/g, '');
     return this.request(`/consultas/sefaz/${uf.toLowerCase()}/nfe/${chaveLimpa}`);
   }
-  
+
   /**
    * Consulta preços agregados de produto via SEFAZ
    */
@@ -180,33 +127,33 @@ export class InfoSimplesAPI {
   ) {
     const ncmLimpo = ncm.replace(/[^\d]/g, '');
     return this.request(`/consultas/sefaz/precos/ncm/${ncmLimpo}`, 'POST', {
-      estados: estados.map(e => e.toLowerCase()),
+      estados: estados.map((e) => e.toLowerCase()),
       periodo_dias: periodoDias,
     });
   }
-  
+
   // ============================================
   // Processos - CNJ
   // ============================================
-  
+
   async consultarProcesso(numeroProcesso: string, tribunal: string) {
     const processoLimpo = numeroProcesso.replace(/[^\d]/g, '');
     return this.request(`/consultas/cnj/${tribunal}/processo/${processoLimpo}`);
   }
-  
+
   // ============================================
   // Cadastro Positivo - Score de Crédito
   // ============================================
-  
+
   async consultarCadastroPositivo(cpf: string) {
     const cpfLimpo = cpf.replace(/[^\d]/g, '');
     return this.request(`/consultas/cadastro-positivo/cpf/${cpfLimpo}`);
   }
-  
+
   // ============================================
   // Validação de Token
   // ============================================
-  
+
   async validarToken(): Promise<boolean> {
     try {
       await this.request('/auth/validate');
@@ -215,11 +162,11 @@ export class InfoSimplesAPI {
       return false;
     }
   }
-  
+
   // ============================================
   // Saldo de Créditos
   // ============================================
-  
+
   async consultarSaldo() {
     return this.request('/auth/balance');
   }
@@ -235,13 +182,13 @@ export const infoSimplesAPI = new InfoSimplesAPI();
  */
 import { useState } from 'react';
 
-export function useInfoSimples(token?: string) {
+export function useInfoSimples() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<unknown>(null);
-  
-  const api = new InfoSimplesAPI({ token });
-  
+
+  const api = new InfoSimplesAPI();
+
   const consultar = async (
     type: 'cnpj' | 'cpf' | 'cnh' | 'veiculo' | 'anvisa' | 'nfe' | 'precos',
     params: Record<string, unknown>
@@ -249,10 +196,10 @@ export function useInfoSimples(token?: string) {
     setLoading(true);
     setError(null);
     setData(null);
-    
+
     try {
       let resultado;
-      
+
       switch (type) {
         case 'cnpj':
           resultado = await api.consultarCNPJ(String(params.cnpj));
@@ -264,7 +211,10 @@ export function useInfoSimples(token?: string) {
           resultado = await api.consultarCNH(String(params.numero), String(params.uf));
           break;
         case 'veiculo':
-          resultado = await api.consultarVeiculo(String(params.placa), (params.renavam as string | undefined));
+          resultado = await api.consultarVeiculo(
+            String(params.placa),
+            params.renavam as string | undefined
+          );
           break;
         case 'anvisa':
           resultado = await api.consultarProdutoANVISA(String(params.registro));
@@ -276,18 +226,17 @@ export function useInfoSimples(token?: string) {
           resultado = await api.consultarPrecosSEFAZ(
             String(params.ncm),
             params.estados as string[] | undefined,
-            (params.periodoDias as number | undefined)
+            params.periodoDias as number | undefined
           );
           break;
         default:
           throw new Error('Tipo de consulta não suportado');
       }
-      
+
       setData(resultado);
       return resultado;
-      
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
       setError(errorMessage);
       throw err;
@@ -295,12 +244,12 @@ export function useInfoSimples(token?: string) {
       setLoading(false);
     }
   };
-  
+
   const limpar = () => {
     setData(null);
     setError(null);
   };
-  
+
   return {
     data,
     loading,
@@ -310,4 +259,3 @@ export function useInfoSimples(token?: string) {
     api,
   };
 }
-

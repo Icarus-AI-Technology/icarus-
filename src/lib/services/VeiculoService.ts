@@ -85,7 +85,7 @@ class VeiculoService {
   /**
    * Consulta placa na FIPE (via Brasil API)
    * Nota: API gratuita, mas pode ter rate limiting
-   * 
+   *
    * @param placa - Placa do veículo (Mercosul ou antiga)
    * @returns Dados do veículo ou null se não encontrado
    */
@@ -154,7 +154,7 @@ class VeiculoService {
   /**
    * Converte placa antiga para Mercosul (estimativa)
    * Nota: Conversão real depende do DETRAN de cada estado
-   * 
+   *
    * Regra estimada (não oficial):
    * - Mantém as 3 primeiras letras
    * - Converte 1º número em letra (0=A, 1=B, ..., 9=J)
@@ -184,9 +184,33 @@ class VeiculoService {
    */
   getUFsValidas(): string[] {
     return [
-      'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
-      'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN',
-      'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO',
+      'AC',
+      'AL',
+      'AP',
+      'AM',
+      'BA',
+      'CE',
+      'DF',
+      'ES',
+      'GO',
+      'MA',
+      'MT',
+      'MS',
+      'MG',
+      'PA',
+      'PB',
+      'PR',
+      'PE',
+      'PI',
+      'RJ',
+      'RN',
+      'RS',
+      'RO',
+      'RR',
+      'SC',
+      'SP',
+      'SE',
+      'TO',
     ];
   }
 }
@@ -196,4 +220,3 @@ export const veiculoService = new VeiculoService();
 
 // Exporta classe para testes
 export default VeiculoService;
-

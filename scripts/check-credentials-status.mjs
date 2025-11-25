@@ -31,42 +31,41 @@ async function checkCredentials() {
   const grupos = {
     comunicacao: [],
     opme: [],
-    apis: []
+    apis: [],
   };
 
-  data.forEach(cred => {
-    const status = (!cred.valor || cred.valor === '') 
-      ? '⏳ Disponível para Configuração'
-      : '✅ Configurada';
-    
+  data.forEach((cred) => {
+    const status =
+      !cred.valor || cred.valor === '' ? '⏳ Disponível para Configuração' : '✅ Configurada';
+
     grupos[cred.categoria].push({
       ...cred,
-      status
+      status,
     });
   });
 
   // Exibir Comunicação
   console.log('📱 COMUNICAÇÃO (8 credenciais)');
   console.log('─'.repeat(70));
-  grupos.comunicacao.forEach(c => {
+  grupos.comunicacao.forEach((c) => {
     console.log(`   ${c.status} ${c.nome.padEnd(35)} [${c.tipo}]`);
   });
 
   console.log('\n🏥 OPME (6 credenciais)');
   console.log('─'.repeat(70));
-  grupos.opme.forEach(c => {
+  grupos.opme.forEach((c) => {
     console.log(`   ${c.status} ${c.nome.padEnd(35)} [${c.tipo}]`);
   });
 
   console.log('\n🔗 APIs (1 credencial)');
   console.log('─'.repeat(70));
-  grupos.apis.forEach(c => {
+  grupos.apis.forEach((c) => {
     console.log(`   ${c.status} ${c.nome.padEnd(35)} [${c.tipo}]`);
   });
 
   // Resumo
   const total = data.length;
-  const configuradas = data.filter(c => c.valor && c.valor !== '').length;
+  const configuradas = data.filter((c) => c.valor && c.valor !== '').length;
   const pendentes = total - configuradas;
 
   console.log('\n' + '═'.repeat(70));
@@ -88,4 +87,3 @@ async function checkCredentials() {
 }
 
 checkCredentials();
-

@@ -1,7 +1,7 @@
 /**
  * Hook: useFluxoCaixa
  * Gestão de Fluxo de Caixa com Projeção de IA (ARIMA)
- * 
+ *
  * FUNCIONALIDADES:
  * - Resumo de fluxo de caixa (realizado)
  * - Projeção de fluxo (IA ARIMA)
@@ -90,27 +90,27 @@ export function useFluxoCaixa() {
 
       // Buscar entradas (contas a receber pagas)
       const { data: entradas, error: entradasError } = await supabase
-        .from("contas_receber")
-        .select("data_pagamento, valor_pago")
-        .eq("status","pago")
-        .gte("data_pagamento", dataInicio)
-        .lte("data_pagamento", dataFim);
+        .from('contas_receber')
+        .select('data_pagamento, valor_pago')
+        .eq('status', 'pago')
+        .gte('data_pagamento', dataInicio)
+        .lte('data_pagamento', dataFim);
 
       if (entradasError) throw entradasError;
 
       // Buscar saídas (contas a pagar pagas)
       const { data: saidas, error: saidasError } = await supabase
-        .from("contas_pagar")
-        .select("data_pagamento, valor_pago")
-        .eq("status","pago")
-        .gte("data_pagamento", dataInicio)
-        .lte("data_pagamento", dataFim);
+        .from('contas_pagar')
+        .select('data_pagamento, valor_pago')
+        .eq('status', 'pago')
+        .gte('data_pagamento', dataInicio)
+        .lte('data_pagamento', dataFim);
 
       if (saidasError) throw saidasError;
 
       // Agrupar por dia
       const fluxoPorDia = new Map<string, FluxoCaixaDia>();
-      
+
       // Processar entradas
       ((entradas ?? []) as ContaReceberPagamentoRow[]).forEach((entrada) => {
         const data = entrada.data_pagamento;
@@ -159,108 +159,108 @@ export function useFluxoCaixa() {
 
       setFluxoDiario(fluxoOrdenado);
     } catch (error) {
-   const err = error as Error;
-      const message = err instanceof Error ? err.message :"Erro ao carregar fluxo de caixa";
+      const err = error as Error;
+      const message = err instanceof Error ? err.message : 'Erro ao carregar fluxo de caixa';
       setError(message);
-      console.error("Erro useFluxoCaixa:", err);
+      console.error('Erro useFluxoCaixa:', err);
     } finally {
       setLoading(false);
     }
   }, []);
 
   // Get resumo
-  const getResumo = useCallback(async (
-    dataInicio: string,
-    dataFim: string
-  ): Promise<FluxoCaixaResumo> => {
-    try {
-      // Buscar entradas
-      const { data: entradas } = await supabase
-        .from("contas_receber")
-        .select("valor_original, valor_pago, status")
-        .gte("data_emissao", dataInicio)
-        .lte("data_emissao", dataFim);
+  const getResumo = useCallback(
+    async (dataInicio: string, dataFim: string): Promise<FluxoCaixaResumo> => {
+      try {
+        // Buscar entradas
+        const { data: entradas } = await supabase
+          .from('contas_receber')
+          .select('valor_original, valor_pago, status')
+          .gte('data_emissao', dataInicio)
+          .lte('data_emissao', dataFim);
 
-      // Buscar saídas
-      const { data: saidas } = await supabase
-        .from("contas_pagar")
-        .select("valor_original, valor_pago, status")
-        .gte("data_emissao", dataInicio)
-        .lte("data_emissao", dataFim);
+        // Buscar saídas
+        const { data: saidas } = await supabase
+          .from('contas_pagar')
+          .select('valor_original, valor_pago, status')
+          .gte('data_emissao', dataInicio)
+          .lte('data_emissao', dataFim);
 
-      const entradasData = (entradas as ContaReceberResumoRow[] | null) ?? [];
-      const saidasData = (saidas as ContaPagarResumoRow[] | null) ?? [];
+        const entradasData = (entradas as ContaReceberResumoRow[] | null) ?? [];
+        const saidasData = (saidas as ContaPagarResumoRow[] | null) ?? [];
 
-      const totalEntradas = entradasData.reduce((sum, e) => sum + (e.valor_original ?? 0), 0);
-      const entradasRealizadas = entradasData
-        .filter((e) => e.status ==="pago")
-        .reduce((sum, e) => sum + (e.valor_pago ?? 0), 0);
-      const entradasPrevistas = totalEntradas - entradasRealizadas;
+        const totalEntradas = entradasData.reduce((sum, e) => sum + (e.valor_original ?? 0), 0);
+        const entradasRealizadas = entradasData
+          .filter((e) => e.status === 'pago')
+          .reduce((sum, e) => sum + (e.valor_pago ?? 0), 0);
+        const entradasPrevistas = totalEntradas - entradasRealizadas;
 
-      const totalSaidas = saidasData.reduce((sum, s) => sum + (s.valor_original ?? 0), 0);
-      const saidasRealizadas = saidasData
-        .filter((s) => s.status ==="pago")
-        .reduce((sum, s) => sum + (s.valor_pago ?? 0), 0);
-      const saidasPrevistas = totalSaidas - saidasRealizadas;
+        const totalSaidas = saidasData.reduce((sum, s) => sum + (s.valor_original ?? 0), 0);
+        const saidasRealizadas = saidasData
+          .filter((s) => s.status === 'pago')
+          .reduce((sum, s) => sum + (s.valor_pago ?? 0), 0);
+        const saidasPrevistas = totalSaidas - saidasRealizadas;
 
-      const saldoInicial = 0; // TODO: Buscar saldo inicial real
-      const saldoFinal = saldoInicial + entradasRealizadas - saidasRealizadas;
-      const saldoMedio = (saldoInicial + saldoFinal) / 2;
+        const saldoInicial = 0; // TODO: Buscar saldo inicial real
+        const saldoFinal = saldoInicial + entradasRealizadas - saidasRealizadas;
+        const saldoMedio = (saldoInicial + saldoFinal) / 2;
 
-      const variacao = entradasRealizadas - saidasRealizadas;
-      const variacaoPercentual = saldoInicial > 0 ? (variacao / saldoInicial) * 100 : 0;
+        const variacao = entradasRealizadas - saidasRealizadas;
+        const variacaoPercentual = saldoInicial > 0 ? (variacao / saldoInicial) * 100 : 0;
 
-      // Calcular tendência (simplificado)
-      const tendencia: FluxoCaixaResumo["tendencia"] =
-        variacao > 0 ?"crescente" : variacao < 0 ?"decrescente" :"estável";
+        // Calcular tendência (simplificado)
+        const tendencia: FluxoCaixaResumo['tendencia'] =
+          variacao > 0 ? 'crescente' : variacao < 0 ? 'decrescente' : 'estável';
 
-      return {
-        periodo_inicio: dataInicio,
-        periodo_fim: dataFim,
-        total_entradas: totalEntradas,
-        entradas_previstas: entradasPrevistas,
-        entradas_realizadas: entradasRealizadas,
-        total_saidas: totalSaidas,
-        saidas_previstas: saidasPrevistas,
-        saidas_realizadas: saidasRealizadas,
-        saldo_inicial: saldoInicial,
-        saldo_final: saldoFinal,
-        saldo_medio: saldoMedio,
-        variacao,
-        variacao_percentual: variacaoPercentual,
-        tendencia,
-      };
-    } catch (error) {
-   const err = error as Error;
-      console.error("Erro getResumo:", err);
-      return {
-        periodo_inicio: dataInicio,
-        periodo_fim: dataFim,
-        total_entradas: 0,
-        entradas_previstas: 0,
-        entradas_realizadas: 0,
-        total_saidas: 0,
-        saidas_previstas: 0,
-        saidas_realizadas: 0,
-        saldo_inicial: 0,
-        saldo_final: 0,
-        saldo_medio: 0,
-        variacao: 0,
-        variacao_percentual: 0,
-        tendencia:"estável",
-      };
-    }
-  }, []);
+        return {
+          periodo_inicio: dataInicio,
+          periodo_fim: dataFim,
+          total_entradas: totalEntradas,
+          entradas_previstas: entradasPrevistas,
+          entradas_realizadas: entradasRealizadas,
+          total_saidas: totalSaidas,
+          saidas_previstas: saidasPrevistas,
+          saidas_realizadas: saidasRealizadas,
+          saldo_inicial: saldoInicial,
+          saldo_final: saldoFinal,
+          saldo_medio: saldoMedio,
+          variacao,
+          variacao_percentual: variacaoPercentual,
+          tendencia,
+        };
+      } catch (error) {
+        const err = error as Error;
+        console.error('Erro getResumo:', err);
+        return {
+          periodo_inicio: dataInicio,
+          periodo_fim: dataFim,
+          total_entradas: 0,
+          entradas_previstas: 0,
+          entradas_realizadas: 0,
+          total_saidas: 0,
+          saidas_previstas: 0,
+          saidas_realizadas: 0,
+          saldo_inicial: 0,
+          saldo_final: 0,
+          saldo_medio: 0,
+          variacao: 0,
+          variacao_percentual: 0,
+          tendencia: 'estável',
+        };
+      }
+    },
+    []
+  );
 
   // Get projeção (com IA)
   const getProjecao = useCallback(async (diasFuturos: number): Promise<ProjecaoFluxo[]> => {
     try {
       // Importar FluxoCaixaAI dinamicamente
-      const { fluxoCaixaAI } = await import("@/lib/services/FluxoCaixaAI");
+      const { fluxoCaixaAI } = await import('@/lib/services/FluxoCaixaAI');
       return await fluxoCaixaAI.projetarFluxo(diasFuturos);
     } catch (error) {
-   const err = error as Error;
-      console.error("Erro getProjecao:", err);
+      const err = error as Error;
+      console.error('Erro getProjecao:', err);
       return [];
     }
   }, []);
@@ -268,24 +268,24 @@ export function useFluxoCaixa() {
   // Get cenários
   const getCenarios = useCallback(async (diasFuturos: number): Promise<CenarioFluxo[]> => {
     try {
-      const { fluxoCaixaAI } = await import("@/lib/services/FluxoCaixaAI");
+      const { fluxoCaixaAI } = await import('@/lib/services/FluxoCaixaAI');
       return await fluxoCaixaAI.simularCenarios(diasFuturos);
     } catch (error) {
-   const err = error as Error;
-      console.error("Erro getCenarios:", err);
+      const err = error as Error;
+      console.error('Erro getCenarios:', err);
       return [];
     }
   }, []);
 
   // Get tendência
-  const getTendencia = useCallback(async (): Promise<"crescente" |"estável" |"decrescente"> => {
+  const getTendencia = useCallback(async (): Promise<'crescente' | 'estável' | 'decrescente'> => {
     try {
-      const { fluxoCaixaAI } = await import("@/lib/services/FluxoCaixaAI");
+      const { fluxoCaixaAI } = await import('@/lib/services/FluxoCaixaAI');
       return await fluxoCaixaAI.analisarTendencia();
     } catch (error) {
-   const err = error as Error;
-      console.error("Erro getTendencia:", err);
-      return"estável";
+      const err = error as Error;
+      console.error('Erro getTendencia:', err);
+      return 'estável';
     }
   }, []);
 
@@ -296,27 +296,29 @@ export function useFluxoCaixa() {
     const primeiroDia = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
     const ultimoDia = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
 
-    const dataInicio = primeiroDia.toISOString().split("T")[0];
-    const dataFim = ultimoDia.toISOString().split("T")[0];
+    const dataInicio = primeiroDia.toISOString().split('T')[0];
+    const dataFim = ultimoDia.toISOString().split('T')[0];
 
     fetchFluxoPeriodo(dataInicio, dataFim);
 
     // Realtime para contas a receber e pagar
     const channel = supabase
-      .channel("fluxo_caixa_changes")
-      .on("postgres_changes",
+      .channel('fluxo_caixa_changes')
+      .on(
+        'postgres_changes',
         {
-          event:"*",
-          schema:"public",
-          table:"contas_receber",
+          event: '*',
+          schema: 'public',
+          table: 'contas_receber',
         },
         () => fetchFluxoPeriodo(dataInicio, dataFim)
       )
-      .on("postgres_changes",
+      .on(
+        'postgres_changes',
         {
-          event:"*",
-          schema:"public",
-          table:"contas_pagar",
+          event: '*',
+          schema: 'public',
+          table: 'contas_pagar',
         },
         () => fetchFluxoPeriodo(dataInicio, dataFim)
       )
@@ -338,4 +340,3 @@ export function useFluxoCaixa() {
     getTendencia,
   };
 }
-

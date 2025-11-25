@@ -47,7 +47,7 @@ class OCRService {
       this.isInitialized = true;
       console.log('✅ OCR Service inicializado');
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('❌ Erro ao inicializar OCR:', err);
       throw error;
     }
@@ -79,7 +79,13 @@ class OCRService {
       const text = result.data.text.trim();
 
       // Extrair palavras com coordenadas (quando disponível)
-      const dataAny = result.data as unknown as { words?: Array<{ text: string; confidence: number; bbox: { x0: number; y0: number; x1: number; y1: number } }> };
+      const dataAny = result.data as unknown as {
+        words?: Array<{
+          text: string;
+          confidence: number;
+          bbox: { x0: number; y0: number; x1: number; y1: number };
+        }>;
+      };
       const words = Array.isArray(dataAny.words)
         ? dataAny.words.map((word) => ({
             text: word.text,
@@ -88,7 +94,9 @@ class OCRService {
           }))
         : undefined;
 
-      console.log(`✅ OCR concluído: ${text.length} caracteres, confiança: ${confidence.toFixed(1)}%`);
+      console.log(
+        `✅ OCR concluído: ${text.length} caracteres, confiança: ${confidence.toFixed(1)}%`
+      );
 
       return {
         text,
@@ -96,7 +104,7 @@ class OCRService {
         words,
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('❌ Erro no OCR:', err);
       throw error;
     }
@@ -189,4 +197,3 @@ export default ocrService;
  *
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  */
-

@@ -10,17 +10,25 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Loader2, Building2, CheckCircle2, AlertCircle } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/oraclusx-ds/Button';
+import { Input } from '@/components/oraclusx-ds/Input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useValidacaoCNPJ } from '@/hooks/useValidacao';
 import { receitaFederalService } from '@/lib/services/ReceitaFederalService';
 
 // Schema de validação com Zod
 const empresaSchema = z.object({
-  cnpj: z.string()
+  cnpj: z
+    .string()
     .min(14, 'CNPJ deve conter 14 dígitos')
     .regex(/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/, 'CNPJ inválido')
     .refine(
@@ -51,9 +59,17 @@ export function FormEmpresa({
   description = 'Preencha o CNPJ para buscar automaticamente os dados da empresa',
 }: FormEmpresaProps) {
   const [cnpjBuscado, setCnpjBuscado] = useState(false);
-  const [statusEmpresa, setStatusEmpresa] = useState<'ativa' | 'inativa' | null>(null);
-  
-  const { data: _dadosCnpj, loading: buscandoCnpj, cached, error, validate: buscarCnpj } = useValidacaoCNPJ();
+  const [statusEmpresa, setStatusEmpresa] = useState<
+    'ativa' | 'inativa' | 'suspensa' | 'inapta' | 'baixada' | 'nula' | null
+  >(null);
+
+  const {
+    data: _dadosCnpj,
+    loading: buscandoCnpj,
+    cached,
+    error,
+    validate: buscarCnpj,
+  } = useValidacaoCNPJ();
 
   const form = useForm<EmpresaFormData>({
     resolver: zodResolver(empresaSchema),
@@ -90,11 +106,11 @@ export function FormEmpresa({
       // Preenche campos automaticamente
       form.setValue('razaoSocial', empresa.razaoSocial);
       form.setValue('nomeFantasia', empresa.nomeFantasia || '');
-      
+
       if (empresa.contato?.telefone1) {
         form.setValue('telefone', empresa.contato.telefone1);
       }
-      
+
       if (empresa.contato?.email) {
         form.setValue('email', empresa.contato.email);
       }
@@ -119,8 +135,9 @@ export function FormEmpresa({
     if (limpo.length <= 2) return limpo;
     if (limpo.length <= 5) return `${limpo.slice(0, 2)}.${limpo.slice(2)}`;
     if (limpo.length <= 8) return `${limpo.slice(0, 2)}.${limpo.slice(2, 5)}.${limpo.slice(5)}`;
-    if (limpo.length <= 12) return `${limpo.slice(0, 2)}.${limpo.slice(2, 5)}.${limpo.slice(5, 8)}/${limpo.slice(8)}`;
-    
+    if (limpo.length <= 12)
+      return `${limpo.slice(0, 2)}.${limpo.slice(2, 5)}.${limpo.slice(5, 8)}/${limpo.slice(8)}`;
+
     return `${limpo.slice(0, 2)}.${limpo.slice(2, 5)}.${limpo.slice(5, 8)}/${limpo.slice(8, 12)}-${limpo.slice(12, 14)}`;
   };
 
@@ -142,7 +159,7 @@ export function FormEmpresa({
               <Alert variant={statusEmpresa === 'ativa' ? 'default' : 'destructive'}>
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>
-                  {statusEmpresa === 'ativa' 
+                  {statusEmpresa === 'ativa'
                     ? '✅ Empresa com situação ATIVA na Receita Federal'
                     : '⚠️ Empresa com situação IRREGULAR na Receita Federal'}
                 </AlertDescription>
@@ -290,4 +307,3 @@ export function FormEmpresa({
     </Card>
   );
 }
-

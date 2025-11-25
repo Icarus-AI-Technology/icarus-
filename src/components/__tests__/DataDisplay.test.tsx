@@ -2,9 +2,10 @@
  * @jest-environment jsdom
  */
 
+import { vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { PageHeader, StatsGrid, CategoryTabs } from '@/components/oraclusx-ds';
-import {  } from 'lucide-react';
+import { Users, TrendingUp } from 'lucide-react';
 
 describe('PageHeader', () => {
   it('renders title correctly', () => {
@@ -13,29 +14,17 @@ describe('PageHeader', () => {
   });
 
   it('renders description when provided', () => {
-    render(
-      <PageHeader
-        title="Test"
-        description="Test Description"
-      />
-    );
+    render(<PageHeader title="Test" description="Test Description" />);
     expect(screen.getByText('Test Description')).toBeInTheDocument();
   });
 
   it('renders icon when provided', () => {
-    const { container } = render(
-      <PageHeader title="Test" icon={Users} />
-    );
+    const { container } = render(<PageHeader title="Test" icon={Users} />);
     expect(container.querySelector('svg')).toBeInTheDocument();
   });
 
   it('renders badge when provided', () => {
-    render(
-      <PageHeader
-        title="Test"
-        badge={{ label: 'Beta', variant: 'warning' }}
-      />
-    );
+    render(<PageHeader title="Test" badge={{ label: 'Beta', variant: 'warning' }} />);
     expect(screen.getByText('Beta')).toBeInTheDocument();
   });
 });
@@ -67,17 +56,13 @@ describe('StatsGrid', () => {
   });
 
   it('applies column count correctly', () => {
-    const { container } = render(
-      <StatsGrid stats={mockStats} columns={4} />
-    );
+    const { container } = render(<StatsGrid stats={mockStats} columns={4} />);
     const grid = container.firstChild as HTMLElement;
     expect(grid.className).toContain('grid-cols');
   });
 
   it('shows loading state', () => {
-    const { container } = render(
-      <StatsGrid stats={mockStats} loading={true} />
-    );
+    const { container } = render(<StatsGrid stats={mockStats} loading={true} />);
     expect(container.querySelector('.orx-animate-pulse')).toBeInTheDocument();
   });
 });
@@ -88,7 +73,7 @@ describe('CategoryTabs', () => {
     { id: 'active', label: 'Active', icon: Users, count: 32 },
   ];
 
-  const mockOnChange = jest.fn();
+  const mockOnChange = vi.fn();
 
   it('renders all categories', () => {
     render(
@@ -126,4 +111,3 @@ describe('CategoryTabs', () => {
     expect(buttons[1].className).toContain('active');
   });
 });
-

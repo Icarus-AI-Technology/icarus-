@@ -1,7 +1,7 @@
 // src/services/integrations/BrasilAPIService.ts
 
-import { fetchWithRetry } from "./http";
-import { toAppError } from "@/utils/error";
+import { fetchWithRetry } from './http';
+import { toAppError } from '@/utils/error';
 
 interface CNPJResponse {
   cnpj: string;
@@ -62,18 +62,22 @@ interface NCMResponse {
 }
 
 export class BrasilAPIService {
-  private readonly baseUrl = "https://brasilapi.com.br/api";
+  private readonly baseUrl = 'https://brasilapi.com.br/api';
 
   async consultaCNPJ(cnpj: string): Promise<CNPJResponse> {
     try {
-      const cnpjLimpo = cnpj.replace(/\D/g, "");
+      const cnpjLimpo = cnpj.replace(/\D/g, '');
 
-      const response = await fetchWithRetry(`${this.baseUrl}/cnpj/v1/${cnpjLimpo}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetchWithRetry(
+        `${this.baseUrl}/cnpj/v1/${cnpjLimpo}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
-      }, { retries: 2, backoffMs: 750 });
+        { retries: 2, backoffMs: 750 }
+      );
 
       if (!response.ok) {
         throw new Error(`BrasilAPI error: ${response.status}`);
@@ -83,21 +87,25 @@ export class BrasilAPIService {
       return data;
     } catch (error: unknown) {
       const err = toAppError(error);
-      console.error("❌ Erro ao consultar CNPJ BrasilAPI:", err);
+      console.error('❌ Erro ao consultar CNPJ BrasilAPI:', err);
       throw err;
     }
   }
 
   async consultaCEP(cep: string): Promise<CEPResponse> {
     try {
-      const cepLimpo = cep.replace(/\D/g, "");
+      const cepLimpo = cep.replace(/\D/g, '');
 
-      const response = await fetchWithRetry(`${this.baseUrl}/cep/v1/${cepLimpo}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetchWithRetry(
+        `${this.baseUrl}/cep/v1/${cepLimpo}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
-      }, { retries: 2, backoffMs: 500 });
+        { retries: 2, backoffMs: 500 }
+      );
 
       if (!response.ok) {
         throw new Error(`BrasilAPI error: ${response.status}`);
@@ -107,19 +115,23 @@ export class BrasilAPIService {
       return data;
     } catch (error: unknown) {
       const err = toAppError(error);
-      console.error("❌ Erro ao consultar CEP BrasilAPI:", err);
+      console.error('❌ Erro ao consultar CEP BrasilAPI:', err);
       throw err;
     }
   }
 
   async listaBancos(): Promise<BankResponse[]> {
     try {
-      const response = await fetchWithRetry(`${this.baseUrl}/banks/v1`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetchWithRetry(
+        `${this.baseUrl}/banks/v1`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
-      }, { retries: 2, backoffMs: 500 });
+        { retries: 2, backoffMs: 500 }
+      );
 
       if (!response.ok) {
         throw new Error(`BrasilAPI error: ${response.status}`);
@@ -129,19 +141,23 @@ export class BrasilAPIService {
       return data;
     } catch (error: unknown) {
       const err = toAppError(error);
-      console.error("❌ Erro ao listar bancos BrasilAPI:", err);
+      console.error('❌ Erro ao listar bancos BrasilAPI:', err);
       throw err;
     }
   }
 
   async consultaBanco(codigo: number): Promise<BankResponse> {
     try {
-      const response = await fetchWithRetry(`${this.baseUrl}/banks/v1/${codigo}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetchWithRetry(
+        `${this.baseUrl}/banks/v1/${codigo}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
-      }, { retries: 2, backoffMs: 500 });
+        { retries: 2, backoffMs: 500 }
+      );
 
       if (!response.ok) {
         throw new Error(`BrasilAPI error: ${response.status}`);
@@ -151,19 +167,23 @@ export class BrasilAPIService {
       return data;
     } catch (error: unknown) {
       const err = toAppError(error);
-      console.error("❌ Erro ao consultar banco BrasilAPI:", err);
+      console.error('❌ Erro ao consultar banco BrasilAPI:', err);
       throw err;
     }
   }
 
   async listaFeriados(ano: number): Promise<HolidayResponse[]> {
     try {
-      const response = await fetchWithRetry(`${this.baseUrl}/feriados/v1/${ano}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetchWithRetry(
+        `${this.baseUrl}/feriados/v1/${ano}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
-      }, { retries: 2, backoffMs: 500 });
+        { retries: 2, backoffMs: 500 }
+      );
 
       if (!response.ok) {
         throw new Error(`BrasilAPI error: ${response.status}`);
@@ -173,19 +193,23 @@ export class BrasilAPIService {
       return data;
     } catch (error: unknown) {
       const err = toAppError(error);
-      console.error("❌ Erro ao listar feriados BrasilAPI:", err);
+      console.error('❌ Erro ao listar feriados BrasilAPI:', err);
       throw err;
     }
   }
 
   async consultaDDD(ddd: number): Promise<DDDResponse> {
     try {
-      const response = await fetchWithRetry(`${this.baseUrl}/ddd/v1/${ddd}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetchWithRetry(
+        `${this.baseUrl}/ddd/v1/${ddd}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
-      }, { retries: 2, backoffMs: 500 });
+        { retries: 2, backoffMs: 500 }
+      );
 
       if (!response.ok) {
         throw new Error(`BrasilAPI error: ${response.status}`);
@@ -195,19 +219,23 @@ export class BrasilAPIService {
       return data;
     } catch (error: unknown) {
       const err = toAppError(error);
-      console.error("❌ Erro ao consultar DDD BrasilAPI:", err);
+      console.error('❌ Erro ao consultar DDD BrasilAPI:', err);
       throw err;
     }
   }
 
   async consultaNCM(codigo: string): Promise<NCMResponse> {
     try {
-      const response = await fetchWithRetry(`${this.baseUrl}/ncm/v1/${codigo}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetchWithRetry(
+        `${this.baseUrl}/ncm/v1/${codigo}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
-      }, { retries: 2, backoffMs: 500 });
+        { retries: 2, backoffMs: 500 }
+      );
 
       if (!response.ok) {
         throw new Error(`BrasilAPI error: ${response.status}`);
@@ -217,7 +245,7 @@ export class BrasilAPIService {
       return data;
     } catch (error: unknown) {
       const err = toAppError(error);
-      console.error("❌ Erro ao consultar NCM BrasilAPI:", err);
+      console.error('❌ Erro ao consultar NCM BrasilAPI:', err);
       throw err;
     }
   }
@@ -225,7 +253,7 @@ export class BrasilAPIService {
   async healthCheck(): Promise<boolean> {
     try {
       const response = await fetch(`${this.baseUrl}/cep/v1/01310100`, {
-        method: "GET",
+        method: 'GET',
       });
       return response.ok;
     } catch {
@@ -235,4 +263,3 @@ export class BrasilAPIService {
 }
 
 export default new BrasilAPIService();
-

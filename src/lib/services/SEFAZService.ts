@@ -1,7 +1,7 @@
 /**
  * Service: SEFAZService
  * Integração com SEFAZ para Emissão de NF-e
- * 
+ *
  * FUNCIONALIDADES:
  * - Emissão de NF-e (modelo 55)
  * - Cancelamento de NF-e
@@ -9,12 +9,19 @@
  * - Consulta de status
  * - Inutilização de numeração
  * - Certificado Digital A1
- * 
+ *
  * PADRÃO: NF-e 4.0
  * AMBIENTE: Produção + Homologação
  */
 
-import { supabase } from"@/lib/supabase";
+import { supabase } from '@/lib/supabase';
+
+const db = supabase as any;
+import type { Database } from '@/lib/database.types.generated';
+
+type ConfigNfeInsert = Database['public']['Tables']['configuracoes_nfe']['Insert'];
+type NotaFiscalInsert = Database['public']['Tables']['notas_fiscais']['Insert'];
+type StatusNFe = 'autorizada' | 'cancelada' | 'denegada' | 'rejeitada';
 
 interface CertificadoDigital {
   pfx_base64: string;
@@ -30,7 +37,7 @@ interface DadosEmitente {
   inscricao_estadual: string;
   inscricao_municipal?: string;
   cnae_fiscal: string;
-  regime_tributario:"1" |"2" |"3"; // 1=Simples, 2=Normal, 3=MEI
+  regime_tributario: '1' | '2' | '3'; // 1=Simples, 2=Normal, 3=MEI
   endereco: {
     logradouro: string;
     numero: string;
@@ -47,7 +54,7 @@ interface DadosEmitente {
 }
 
 interface DadosDestinatario {
-  tipo_pessoa:"F" |"J"; // F=Física, J=Jurídica
+  tipo_pessoa: 'F' | 'J'; // F=Física, J=Jurídica
   cpf_cnpj: string;
   nome: string;
   inscricao_estadual?: string;
@@ -76,31 +83,31 @@ interface ItemNFe {
   valor_total_bruto: number;
   ean?: string;
   ean_tributavel?: string;
-  
+
   // Tributação
   icms: {
-    origem:"0" |"1" |"2"; // 0=Nacional, 1=Estrangeira, 2=Nacional com conteúdo importado
+    origem: '0' | '1' | '2'; // 0=Nacional, 1=Estrangeira, 2=Nacional com conteúdo importado
     situacao_tributaria: string; // CST/CSOSN
     modalidade_base_calculo?: string;
     valor_base_calculo?: number;
     aliquota?: number;
     valor?: number;
   };
-  
+
   ipi?: {
     situacao_tributaria: string;
     valor_base_calculo?: number;
     aliquota?: number;
     valor?: number;
   };
-  
+
   pis: {
     situacao_tributaria: string;
     valor_base_calculo?: number;
     aliquota?: number;
     valor?: number;
   };
-  
+
   cofins: {
     situacao_tributaria: string;
     valor_base_calculo?: number;
@@ -114,16 +121,16 @@ interface DadosNFe {
   numero: number;
   data_emissao: string;
   data_saida?: string;
-  tipo_operacao:"0" |"1"; // 0=Entrada, 1=Saída
-  tipo_emissao:"1" |"2" |"3"; // 1=Normal, 2=Contingência, 3=Offline
-  finalidade:"1" |"2" |"3" |"4"; // 1=Normal, 2=Complementar, 3=Ajuste, 4=Devolução
+  tipo_operacao: '0' | '1'; // 0=Entrada, 1=Saída
+  tipo_emissao: '1' | '2' | '3'; // 1=Normal, 2=Contingência, 3=Offline
+  finalidade: '1' | '2' | '3' | '4'; // 1=Normal, 2=Complementar, 3=Ajuste, 4=Devolução
   natureza_operacao: string;
-  forma_pagamento:"0" |"1"; // 0=À vista, 1=A prazo
-  
+  forma_pagamento: '0' | '1'; // 0=À vista, 1=A prazo
+
   emitente: DadosEmitente;
   destinatario: DadosDestinatario;
   itens: ItemNFe[];
-  
+
   // Totais
   total_produtos: number;
   total_desconto: number;
@@ -131,15 +138,15 @@ interface DadosNFe {
   total_seguro: number;
   total_outras_despesas: number;
   total_nota: number;
-  
+
   // Impostos
   total_icms: number;
   total_ipi: number;
   total_pis: number;
   total_cofins: number;
-  
+
   // Transporte
-  modalidade_frete:"0" |"1" |"2" |"3" |"4" |"9"; // 0=Emitente, 1=Destinatário, 9=Sem frete
+  modalidade_frete: '0' | '1' | '2' | '3' | '4' | '9'; // 0=Emitente, 1=Destinatário, 9=Sem frete
   transportadora?: {
     cnpj?: string;
     cpf?: string;
@@ -149,7 +156,7 @@ interface DadosNFe {
     municipio?: string;
     uf?: string;
   };
-  
+
   // Informações Adicionais
   informacoes_complementares?: string;
   informacoes_fisco?: string;
@@ -167,12 +174,22 @@ interface ResultadoNFe {
 }
 
 export class SEFAZService {
-  private ambiente:"homologacao" |"producao" ="homologacao";
+  private ambiente: 'homologacao' | 'producao' = 'homologacao';
+  private empresaId: string;
   private certificado: CertificadoDigital | null = null;
-  private ufSefaz: string ="SP"; // UF do SEFAZ
+  private ufSefaz: string = 'SP'; // UF do SEFAZ
 
-  constructor(ambiente:"homologacao" |"producao" ="homologacao") {
+  constructor(ambiente: 'homologacao' | 'producao' = 'homologacao', empresaId?: string) {
     this.ambiente = ambiente;
+    this.empresaId = empresaId ?? 'default';
+  }
+
+  setEmpresaId(empresaId: string) {
+    this.empresaId = empresaId;
+  }
+
+  private getEmpresaId() {
+    return this.empresaId;
   }
 
   /**
@@ -185,30 +202,34 @@ export class SEFAZService {
       const hoje = new Date();
 
       if (validade < hoje) {
-        throw new Error("Certificado digital vencido");
+        throw new Error('Certificado digital vencido');
       }
 
       if (!certificado.pfx_base64 || !certificado.senha) {
-        throw new Error("Certificado ou senha inválidos");
+        throw new Error('Certificado ou senha inválidos');
       }
 
       this.certificado = certificado;
 
-      // Salvar no Supabase (criptografado)
-      await supabase.from("configuracoes_nfe").upsert({
-        empresa_id:"default", // TODO: pegar do contexto
+      const configPayload: ConfigNfeInsert = {
+        empresa_id: this.getEmpresaId(),
+        ambiente: this.ambiente,
         certificado_pfx: certificado.pfx_base64,
         certificado_senha: this.criptografarSenha(certificado.senha),
         certificado_validade: certificado.validade,
         certificado_cnpj: certificado.cnpj,
-        ambiente: this.ambiente,
         updated_at: new Date().toISOString(),
+      };
+
+      // Salvar no Supabase (criptografado)
+      await db.from('configuracoes_nfe').upsert(configPayload, {
+        onConflict: 'empresa_id',
       });
 
       return true;
     } catch (error) {
-   const err = error as Error;
-      console.error("Erro configurarCertificado:", err);
+      const err = error as Error;
+      console.error('Erro configurarCertificado:', err);
       return false;
     }
   }
@@ -223,7 +244,7 @@ export class SEFAZService {
       if (!validacao.valido) {
         return {
           sucesso: false,
-          mensagem:"Dados inválidos",
+          mensagem: 'Dados inválidos',
           erros: validacao.erros,
         };
       }
@@ -245,21 +266,31 @@ export class SEFAZService {
         const danfePdf = await this.gerarDANFE(xmlAssinado, resultado.chave_acesso!);
 
         // 7. Salvar no banco
-        await supabase.from("notas_fiscais").insert({
-          empresa_id:"default",
+        const notaPayload: NotaFiscalInsert = {
+          empresa_id: this.getEmpresaId(),
+          tipo: dados.tipo_operacao === '0' ? 'entrada' : 'saida',
           chave_acesso: resultado.chave_acesso,
-          numero: dados.numero,
-          serie: dados.serie,
+          numero: dados.numero.toString(),
+          serie: dados.serie.toString(),
           data_emissao: dados.data_emissao,
           destinatario_cpf_cnpj: dados.destinatario.cpf_cnpj,
           destinatario_nome: dados.destinatario.nome,
           valor_total: dados.total_nota,
-          status:"autorizada",
+          valor_produtos: dados.total_produtos,
+          valor_frete: dados.total_frete,
+          valor_seguro: dados.total_seguro,
+          valor_desconto: dados.total_desconto,
+          valor_outras_despesas: dados.total_outras_despesas,
+          status: 'autorizada',
           protocolo: resultado.numero_protocolo,
           xml_nfe: xmlAssinado,
           danfe_pdf: danfePdf,
           ambiente: this.ambiente,
-        });
+          uf: dados.emitente.endereco.uf,
+          natureza_operacao: dados.natureza_operacao,
+        };
+
+        await db.from('notas_fiscais').insert(notaPayload);
 
         // 8. Enviar email para destinatário
         if (dados.destinatario.email) {
@@ -273,18 +304,18 @@ export class SEFAZService {
           data_autorizacao: resultado.data_autorizacao,
           xml_nfe: xmlAssinado,
           danfe_pdf: danfePdf,
-          mensagem:"NF-e autorizada com sucesso",
+          mensagem: 'NF-e autorizada com sucesso',
         };
       } else {
         return resultado;
       }
     } catch (error) {
-   const err = error as Error;
-      console.error("Erro emitirNFe:", err);
+      const err = error as Error;
+      console.error('Erro emitirNFe:', err);
       return {
         sucesso: false,
-        mensagem: err instanceof Error ? err.message :"Erro ao emitir NF-e",
-        erros: [err instanceof Error ? err.message :"Erro desconhecido"],
+        mensagem: err instanceof Error ? err.message : 'Erro ao emitir NF-e',
+        erros: [err instanceof Error ? err.message : 'Erro desconhecido'],
       };
     }
   }
@@ -292,39 +323,43 @@ export class SEFAZService {
   /**
    * Cancela uma NF-e autorizada
    */
-  async cancelarNFe(chaveAcesso: string, protocolo: string, justificativa: string): Promise<ResultadoNFe> {
+  async cancelarNFe(
+    chaveAcesso: string,
+    protocolo: string,
+    justificativa: string
+  ): Promise<ResultadoNFe> {
     try {
       // 1. Validar justificativa (mínimo 15 caracteres)
       if (justificativa.length < 15) {
         return {
           sucesso: false,
-          mensagem:"Justificativa deve ter no mínimo 15 caracteres",
+          mensagem: 'Justificativa deve ter no mínimo 15 caracteres',
         };
       }
 
       // 2. Buscar NF-e no banco
-      const { data: nfe } = await supabase
-        .from("notas_fiscais")
-        .select("*")
-        .eq("chave_acesso", chaveAcesso)
+      const { data: nfe } = await db
+        .from('notas_fiscais')
+        .select('*')
+        .eq('chave_acesso', chaveAcesso)
         .single();
 
       if (!nfe) {
         return {
           sucesso: false,
-          mensagem:"NF-e não encontrada",
+          mensagem: 'NF-e não encontrada',
         };
       }
 
       // 3. Verificar prazo (até 24h após autorização)
-      const dataAutorizacao = new Date(nfe.data_autorizacao);
+      const dataAutorizacao = nfe.data_autorizacao ? new Date(nfe.data_autorizacao) : new Date();
       const agora = new Date();
       const diferencaHoras = (agora.getTime() - dataAutorizacao.getTime()) / (1000 * 60 * 60);
 
       if (diferencaHoras > 24) {
         return {
           sucesso: false,
-          mensagem:"Prazo de cancelamento expirado (máximo 24h)",
+          mensagem: 'Prazo de cancelamento expirado (máximo 24h)',
         };
       }
 
@@ -335,34 +370,34 @@ export class SEFAZService {
       const xmlAssinado = await this.assinarXML(xmlCancelamento);
 
       // 6. Enviar para SEFAZ
-      const resultado = await this.enviarCancelamentoSEFAZ(xmlAssinado, nfe.uf);
+      const resultado = await this.enviarCancelamentoSEFAZ(xmlAssinado, nfe.uf ?? this.ufSefaz);
 
       if (resultado.sucesso) {
         // 7. Atualizar banco
-        await supabase
-          .from("notas_fiscais")
+        await db
+          .from('notas_fiscais')
           .update({
-            status:"cancelada",
+            status: 'cancelada',
             data_cancelamento: new Date().toISOString(),
             justificativa_cancelamento: justificativa,
             protocolo_cancelamento: resultado.numero_protocolo,
           })
-          .eq("chave_acesso", chaveAcesso);
+          .eq('chave_acesso', chaveAcesso);
 
         return {
           sucesso: true,
-          mensagem:"NF-e cancelada com sucesso",
+          mensagem: 'NF-e cancelada com sucesso',
           numero_protocolo: resultado.numero_protocolo,
         };
       } else {
         return resultado;
       }
     } catch (error) {
-   const err = error as Error;
-      console.error("Erro cancelarNFe:", err);
+      const err = error as Error;
+      console.error('Erro cancelarNFe:', err);
       return {
         sucesso: false,
-        mensagem: err instanceof Error ? err.message :"Erro ao cancelar NF-e",
+        mensagem: err instanceof Error ? err.message : 'Erro ao cancelar NF-e',
       };
     }
   }
@@ -372,37 +407,39 @@ export class SEFAZService {
    */
   async consultarNFe(chaveAcesso: string): Promise<{
     sucesso: boolean;
-    status?:"autorizada" |"cancelada" |"denegada" |"rejeitada";
+    status?: 'autorizada' | 'cancelada' | 'denegada' | 'rejeitada';
     protocolo?: string;
     mensagem?: string;
   }> {
     try {
       // Mock de consulta ao SEFAZ
-      const { data: nfe } = await supabase
-        .from("notas_fiscais")
-        .select("status, protocolo")
-        .eq("chave_acesso", chaveAcesso)
+      const { data: nfe } = await db
+        .from('notas_fiscais')
+        .select('status, protocolo')
+        .eq('chave_acesso', chaveAcesso)
         .single();
 
       if (!nfe) {
         return {
           sucesso: false,
-          mensagem:"NF-e não encontrada",
+          mensagem: 'NF-e não encontrada',
         };
       }
 
+      const status = (nfe.status ?? 'autorizada') as StatusNFe;
+
       return {
         sucesso: true,
-        status: nfe.status,
-        protocolo: nfe.protocolo,
-        mensagem: `NF-e ${nfe.status}`,
+        status,
+        protocolo: nfe.protocolo ?? undefined,
+        mensagem: `NF-e ${status}`,
       };
     } catch (error) {
-   const err = error as Error;
-      console.error("Erro consultarNFe:", err);
+      const err = error as Error;
+      console.error('Erro consultarNFe:', err);
       return {
         sucesso: false,
-        mensagem:"Erro ao consultar NF-e",
+        mensagem: 'Erro ao consultar NF-e',
       };
     }
   }
@@ -414,22 +451,22 @@ export class SEFAZService {
 
     // Validar emitente
     if (!dados.emitente.cnpj || dados.emitente.cnpj.length !== 14) {
-      erros.push("CNPJ do emitente inválido");
+      erros.push('CNPJ do emitente inválido');
     }
 
     // Validar destinatário
     if (!dados.destinatario.cpf_cnpj) {
-      erros.push("CPF/CNPJ do destinatário obrigatório");
+      erros.push('CPF/CNPJ do destinatário obrigatório');
     }
 
     // Validar itens
     if (!dados.itens || dados.itens.length === 0) {
-      erros.push("NF-e deve ter ao menos 1 item");
+      erros.push('NF-e deve ter ao menos 1 item');
     }
 
     // Validar totais
     if (dados.total_nota <= 0) {
-      erros.push("Valor total da nota inválido");
+      erros.push('Valor total da nota inválido');
     }
 
     return {
@@ -441,15 +478,15 @@ export class SEFAZService {
   private gerarChaveAcesso(dados: DadosNFe): string {
     // Formato: UF + AAMM + CNPJ + MOD + SÉRIE + NÚMERO + TPEMIS + CNUMERIC + DV
     const uf = dados.emitente.endereco.uf;
-    const aamm = new Date(dados.data_emissao).toISOString().slice(2, 7).replace("-","");
+    const aamm = new Date(dados.data_emissao).toISOString().slice(2, 7).replace('-', '');
     const cnpj = dados.emitente.cnpj;
-    const mod ="55"; // Modelo 55 (NF-e)
-    const serie = dados.serie.toString().padStart(3,"0");
-    const numero = dados.numero.toString().padStart(9,"0");
+    const mod = '55'; // Modelo 55 (NF-e)
+    const serie = dados.serie.toString().padStart(3, '0');
+    const numero = dados.numero.toString().padStart(9, '0');
     const tpEmis = dados.tipo_emissao;
     const cNumeric = Math.floor(Math.random() * 100000000)
       .toString()
-      .padStart(8,"0");
+      .padStart(8, '0');
 
     const chaveBase = `${uf}${aamm}${cnpj}${mod}${serie}${numero}${tpEmis}${cNumeric}`;
     const dv = this.calcularDigitoVerificador(chaveBase);
@@ -487,7 +524,7 @@ export class SEFAZService {
       <dhEmi>${dados.data_emissao}</dhEmi>
       <tpNF>${dados.tipo_operacao}</tpNF>
       <tpEmis>${dados.tipo_emissao}</tpEmis>
-      <tpAmb>${this.ambiente ==="producao" ?"1" :"2"}</tpAmb>
+      <tpAmb>${this.ambiente === 'producao' ? '1' : '2'}</tpAmb>
       <finNFe>${dados.finalidade}</finNFe>
     </ide>
     <!-- Emitente, Destinatário, Produtos, Totais, etc -->
@@ -495,7 +532,11 @@ export class SEFAZService {
 </NFe>`;
   }
 
-  private montarXMLCancelamento(chaveAcesso: string, protocolo: string, justificativa: string): string {
+  private montarXMLCancelamento(
+    chaveAcesso: string,
+    protocolo: string,
+    justificativa: string
+  ): string {
     return `<?xml version="1.0" encoding="UTF-8"?>
 <envEvento xmlns="http://www.portalfiscal.inf.br/nfe">
   <evento>
@@ -525,7 +566,7 @@ export class SEFAZService {
       chave_acesso: chaveAcesso,
       numero_protocolo: Math.floor(Math.random() * 900000000000000 + 100000000000000).toString(),
       data_autorizacao: new Date().toISOString(),
-      mensagem:"NF-e autorizada",
+      mensagem: 'NF-e autorizada',
     };
   }
 
@@ -534,7 +575,7 @@ export class SEFAZService {
     return {
       sucesso: true,
       numero_protocolo: Math.floor(Math.random() * 900000000000000 + 100000000000000).toString(),
-      mensagem:"Cancelamento autorizado",
+      mensagem: 'Cancelamento autorizado',
     };
   }
 
@@ -550,12 +591,12 @@ export class SEFAZService {
 
   private criptografarSenha(senha: string): string {
     // Mock - em produção usar criptografia adequada
-    return Buffer.from(senha).toString("base64");
+    return Buffer.from(senha).toString('base64');
   }
 }
 
 // Export singleton
 export const sefazService = new SEFAZService(
-  process.env.VITE_SEFAZ_AMBIENTE ==="producao" ?"producao" :"homologacao"
+  process.env.VITE_SEFAZ_AMBIENTE === 'producao' ? 'producao' : 'homologacao',
+  process.env.VITE_EMPRESA_ID ?? 'default'
 );
-

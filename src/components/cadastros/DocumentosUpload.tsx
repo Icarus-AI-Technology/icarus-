@@ -1,19 +1,27 @@
 /**
  * Componente de Upload de Documentos
  * ICARUS v5.0 - OraclusX Design System
- * 
+ *
  * Upload de documentos pessoais e profissionais para médicos
  * Substitui o container de dados bancários
- * 
+ *
  * Tipos de documentos suportados:
  * - Pessoais: RG, CPF, Comprovante Residência, CNH
  * - Profissionais: CRM, Diploma, Certificados, Currículo
  */
 
 import React, { useState, useCallback } from 'react';
-import { Upload, File, X, CheckCircle2, AlertCircle, FileText, Image as ImageIcon } from 'lucide-react';
+import {
+  Upload,
+  File,
+  X,
+  CheckCircle2,
+  AlertCircle,
+  FileText,
+  Image as ImageIcon,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Card } from '@/components/ui/card';
+import { Card } from '@/components/oraclusx-ds/Card';
 
 export interface DocumentoUpload {
   id: string;
@@ -43,7 +51,7 @@ export const TIPOS_DOCUMENTO = {
   cpf: { label: 'CPF', categoria: 'Pessoal' },
   comprovante_residencia: { label: 'Comprovante de Residência', categoria: 'Pessoal' },
   cnh: { label: 'CNH', categoria: 'Pessoal' },
-  
+
   // Profissionais
   crm: { label: 'CRM', categoria: 'Profissional' },
   diploma: { label: 'Diploma', categoria: 'Profissional' },
@@ -65,13 +73,7 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
   onChange,
   maxFiles = 10,
   maxSize = 5, // 5MB
-  acceptedTypes = [
-    'application/pdf',
-    'image/jpeg',
-    'image/jpg',
-    'image/png',
-    'image/webp',
-  ],
+  acceptedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [selectedTipo, setSelectedTipo] = useState<TipoDocumento>('outros');
@@ -85,6 +87,45 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
     e.preventDefault();
     setIsDragging(false);
   }, []);
+
+  const processarArquivos = useCallback(
+    (files: File[]) => {
+      if (documentos.length + files.length > maxFiles) {
+        alert(`Máximo de ${maxFiles} arquivos permitidos`);
+        return;
+      }
+
+      const novosDocumentos: DocumentoUpload[] = files
+        .filter((file) => {
+          // Valida tipo
+          if (!acceptedTypes.includes(file.type)) {
+            alert(`Tipo de arquivo não permitido: ${file.type}`);
+            return false;
+          }
+
+          // Valida tamanho
+          const sizeMB = file.size / (1024 * 1024);
+          if (sizeMB > maxSize) {
+            alert(
+              `Arquivo muito grande: ${file.name} (${sizeMB.toFixed(2)}MB). Máximo: ${maxSize}MB`
+            );
+            return false;
+          }
+
+          return true;
+        })
+        .map((file) => ({
+          id: Math.random().toString(36).substring(7),
+          nome: file.name,
+          tipo: selectedTipo,
+          arquivo: file,
+          status: 'pending' as const,
+        }));
+
+      onChange([...documentos, ...novosDocumentos]);
+    },
+    [acceptedTypes, documentos, maxFiles, maxSize, onChange, selectedTipo]
+  );
 
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
@@ -100,49 +141,15 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
   const handleFileSelect = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if (!e.target.files) return;
-      
+
       const files = Array.from(e.target.files);
       processarArquivos(files);
-      
+
       // Reset input
       e.target.value = '';
     },
     [processarArquivos]
   );
-
-  const processarArquivos = useCallback((files: File[]) => {
-    if (documentos.length + files.length > maxFiles) {
-      alert(`Máximo de ${maxFiles} arquivos permitidos`);
-      return;
-    }
-
-    const novosDocumentos: DocumentoUpload[] = files
-      .filter((file) => {
-        // Valida tipo
-        if (!acceptedTypes.includes(file.type)) {
-          alert(`Tipo de arquivo não permitido: ${file.type}`);
-          return false;
-        }
-
-        // Valida tamanho
-        const sizeMB = file.size / (1024 * 1024);
-        if (sizeMB > maxSize) {
-          alert(`Arquivo muito grande: ${file.name} (${sizeMB.toFixed(2)}MB). Máximo: ${maxSize}MB`);
-          return false;
-        }
-
-        return true;
-      })
-      .map((file) => ({
-        id: Math.random().toString(36).substring(7),
-        nome: file.name,
-        tipo: selectedTipo,
-        arquivo: file,
-        status: 'pending' as const,
-      }));
-
-    onChange([...documentos, ...novosDocumentos]);
-  }, [acceptedTypes, documentos, maxFiles, maxSize, onChange, selectedTipo]);
 
   const removerDocumento = (id: string) => {
     onChange(documentos.filter((doc) => doc.id !== id));
@@ -167,9 +174,7 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
     <div className="space-y-6">
       {/* Seletor de Tipo de Documento */}
       <div>
-        <label
-          className="block text-[var(--text-primary)] mb-2 text-[0.813rem] font-medium"
-        >
+        <label className="block text-[var(--text-primary)] mb-2 text-[0.813rem] font-medium">
           Tipo de Documento
         </label>
         <select
@@ -222,15 +227,13 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
           onChange={handleFileSelect}
           className="hidden"
         />
-        
+
         <label
           htmlFor="file-upload"
           className="flex flex-col items-center justify-center cursor-pointer"
         >
           <Upload className="w-12 h-12 text-[var(--primary)] mb-4" />
-          <p
-            className="text-[var(--text-primary)] mb-2 text-[0.813rem] font-medium"
-          >
+          <p className="text-[var(--text-primary)] mb-2 text-[0.813rem] font-medium">
             Arraste arquivos aqui ou clique para selecionar
           </p>
           <p className="text-[var(--text-secondary)] text-[0.813rem]">
@@ -245,9 +248,7 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
       {/* Lista de Documentos Pessoais */}
       {documentosPessoais.length > 0 && (
         <Card className="p-4">
-          <h3
-            className="text-[var(--text-primary)] mb-3 text-[0.813rem] font-semibold"
-          >
+          <h3 className="text-[var(--text-primary)] mb-3 text-[0.813rem] font-semibold">
             Documentos Pessoais
           </h3>
           <div className="space-y-2">
@@ -260,9 +261,7 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
                 >
                   <Icone className="w-5 h-5 text-[var(--primary)]" />
                   <div className="flex-1 min-w-0">
-                    <p
-                      className="text-[var(--text-primary)] truncate text-[0.813rem] font-medium"
-                    >
+                    <p className="text-[var(--text-primary)] truncate text-[0.813rem] font-medium">
                       {doc.nome}
                     </p>
                     <p className="text-[var(--text-secondary)] text-[0.813rem]">
@@ -291,9 +290,7 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
       {/* Lista de Documentos Profissionais */}
       {documentosProfissionais.length > 0 && (
         <Card className="p-4">
-          <h3
-            className="text-[var(--text-primary)] mb-3 text-[0.813rem] font-semibold"
-          >
+          <h3 className="text-[var(--text-primary)] mb-3 text-[0.813rem] font-semibold">
             Documentos Profissionais
           </h3>
           <div className="space-y-2">
@@ -306,9 +303,7 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
                 >
                   <Icone className="w-5 h-5 text-[var(--primary)]" />
                   <div className="flex-1 min-w-0">
-                    <p
-                      className="text-[var(--text-primary)] truncate text-[0.813rem] font-medium"
-                    >
+                    <p className="text-[var(--text-primary)] truncate text-[0.813rem] font-medium">
                       {doc.nome}
                     </p>
                     <p className="text-[var(--text-secondary)] text-[0.813rem]">
@@ -337,9 +332,7 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
       {/* Lista de Documentos Gerais */}
       {documentosGerais.length > 0 && (
         <Card className="p-4">
-          <h3
-            className="text-[var(--text-primary)] mb-3 text-[0.813rem] font-semibold"
-          >
+          <h3 className="text-[var(--text-primary)] mb-3 text-[0.813rem] font-semibold">
             Outros Documentos
           </h3>
           <div className="space-y-2">
@@ -350,9 +343,7 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
               >
                 <File className="w-5 h-5 text-[var(--primary)]" />
                 <div className="flex-1 min-w-0">
-                  <p
-                    className="text-[var(--text-primary)] truncate text-[0.813rem] font-medium"
-                  >
+                  <p className="text-[var(--text-primary)] truncate text-[0.813rem] font-medium">
                     {doc.nome}
                   </p>
                 </div>
@@ -376,4 +367,3 @@ export const DocumentosUpload: React.FC<DocumentosUploadProps> = ({
     </div>
   );
 };
-

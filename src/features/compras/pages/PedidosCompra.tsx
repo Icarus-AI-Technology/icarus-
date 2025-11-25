@@ -1,10 +1,10 @@
 /**
  * Pedidos de Compra - Módulo Compras e Fornecedores
- * 
+ *
  * Sistema: ICARUS v5.0
  * Versão: 5.0.0
  * Última Atualização: Outubro 2025
- * 
+ *
  * FEATURES:
  * - Criar/Editar Pedidos de Compra
  * - Geração automática a partir de cotações
@@ -12,19 +12,33 @@
  * - Rastreamento de recebimento
  * - Integração com fornecedores
  * - Dashboard com KPIs
- * 
+ *
  * DESIGN SYSTEM: OraclusX DS + Neumorphism Premium 3D
  */
 
 import React, { useState } from 'react';
-import { Search, Plus, Eye, Edit, Trash2, Send, CheckCircle, XCircle, Clock, TrendingUp, AlertTriangle, DollarSign, Package, UserCheck } from 'lucide-react';
+import {
+  Search,
+  Plus,
+  Eye,
+  Edit,
+  Trash2,
+  Send,
+  CheckCircle,
+  XCircle,
+  Clock,
+  TrendingUp,
+  AlertTriangle,
+  DollarSign,
+  Package,
+  UserCheck,
+} from 'lucide-react';
 import type { PedidoCompra } from '@/types/compras';
 
 export const PedidosCompra: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('todos');
   const [filterDepartamento, setFilterDepartamento] = useState<string>('todos');
-  
 
   // Mock Data - KPIs
   const kpis = [
@@ -288,7 +302,8 @@ export const PedidosCompra: React.FC = () => {
       pedido.fornecedor_nome?.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchStatus = filterStatus === 'todos' || pedido.status === filterStatus;
-    const matchDepartamento = filterDepartamento === 'todos' || pedido.departamento === filterDepartamento;
+    const matchDepartamento =
+      filterDepartamento === 'todos' || pedido.departamento === filterDepartamento;
 
     return matchSearch && matchStatus && matchDepartamento;
   });
@@ -319,7 +334,10 @@ export const PedidosCompra: React.FC = () => {
 
   // Status Badge
   const getStatusBadge = (status: string) => {
-    const statusConfig: Record<string, { label: string; bg: string; text: string; icon: React.ReactNode }> = {
+    const statusConfig: Record<
+      string,
+      { label: string; bg: string; text: string; icon: React.ReactNode }
+    > = {
       rascunho: {
         label: 'Rascunho',
         bg: 'var(--orx-bg-light)',
@@ -381,7 +399,9 @@ export const PedidosCompra: React.FC = () => {
     };
 
     return (
-      <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[0.813rem] orx-orx-font-semibold ${bgClass[config.bg]} ${textClass[config.text]}`}>
+      <span
+        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[0.813rem] orx-orx-font-semibold ${bgClass[config.bg]} ${textClass[config.text]}`}
+      >
         {config.icon}
         {config.label}
       </span>
@@ -398,10 +418,10 @@ export const PedidosCompra: React.FC = () => {
             aprovacao.status === 'aprovado'
               ? 'var(--orx-success-dark)'
               : aprovacao.status === 'rejeitado'
-              ? 'var(--orx-error-dark)'
-              : isAtual
-              ? 'var(--orx-warning-dark)'
-              : 'var(--orx-text-muted)';
+                ? 'var(--orx-error-dark)'
+                : isAtual
+                  ? 'var(--orx-warning-dark)'
+                  : 'var(--orx-text-muted)';
 
           return (
             <React.Fragment key={index}>
@@ -411,10 +431,10 @@ export const PedidosCompra: React.FC = () => {
                   statusColor === 'var(--orx-success-dark)'
                     ? 'bg-[var(--orx-success-dark)]'
                     : statusColor === 'var(--orx-error-dark)'
-                    ? 'bg-[var(--orx-error-dark)]'
-                    : statusColor === 'var(--orx-warning-dark)'
-                    ? 'bg-[var(--orx-warning-dark)]'
-                    : 'bg-[var(--orx-text-muted)]'
+                      ? 'bg-[var(--orx-error-dark)]'
+                      : statusColor === 'var(--orx-warning-dark)'
+                        ? 'bg-[var(--orx-warning-dark)]'
+                        : 'bg-[var(--orx-text-muted)]'
                 }`}
               >
                 {aprovacao.status === 'aprovado' ? (
@@ -426,9 +446,13 @@ export const PedidosCompra: React.FC = () => {
                 )}
               </div>
               {index < pedido.aprovacoes.length - 1 && (
-                <div className={`w-6 h-[2px] ${
-                  aprovacao.status === 'aprovado' ? 'bg-[var(--orx-success-dark)]' : 'bg-[var(--orx-text-muted)]'
-                }`} />
+                <div
+                  className={`w-6 h-[2px] ${
+                    aprovacao.status === 'aprovado'
+                      ? 'bg-[var(--orx-success-dark)]'
+                      : 'bg-[var(--orx-text-muted)]'
+                  }`}
+                />
               )}
             </React.Fragment>
           );
@@ -468,20 +492,31 @@ export const PedidosCompra: React.FC = () => {
             'var(--orx-success-dark)': 'bg-[var(--orx-success-dark)]',
             'var(--orx-primary)': 'bg-[var(--orx-primary)]',
           };
-          const trendClass = kpi.trendUp ? 'text-[var(--orx-success-dark)]' : 'text-[var(--orx-error-dark)]';
+          const trendClass = kpi.trendUp
+            ? 'text-[var(--orx-success-dark)]'
+            : 'text-[var(--orx-error-dark)]';
           return (
-            <div key={index} className="p-6 rounded-2xl bg-[var(--orx-bg-light)] shadow-[var(--orx-shadow-light-1),_var(--orx-shadow-light-2)] border border-white/10 transition">
+            <div
+              key={index}
+              className="p-6 rounded-2xl bg-[var(--orx-bg-light)] shadow-[var(--orx-shadow-light-1),_var(--orx-shadow-light-2)] border border-white/10 transition"
+            >
               <div className="flex justify-between items-start mb-4">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-[var(--orx-shadow-light-1)] ${colorMap[kpi.color]}`}>
+                <div
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-[var(--orx-shadow-light-1)] ${colorMap[kpi.color]}`}
+                >
                   <Icon size={24} className="text-white" />
                 </div>
-                <span className={`flex items-center gap-1 text-[0.813rem] orx-orx-font-semibold ${trendClass}`}>
+                <span
+                  className={`flex items-center gap-1 text-[0.813rem] orx-orx-font-semibold ${trendClass}`}
+                >
                   {kpi.trendUp ? <TrendingUp size={16} /> : <AlertTriangle size={16} />}
                   {kpi.trend}
                 </span>
               </div>
               <div>
-                <div className="text-[0.813rem] orx-orx-font-bold text-[var(--orx-text-primary)] mb-1">{kpi.value}</div>
+                <div className="text-[0.813rem] orx-orx-font-bold text-[var(--orx-text-primary)] mb-1">
+                  {kpi.value}
+                </div>
                 <div className="text-[0.813rem] text-[var(--orx-text-secondary)]">{kpi.label}</div>
               </div>
             </div>
@@ -575,7 +610,10 @@ export const PedidosCompra: React.FC = () => {
                 </tr>
               ) : (
                 pedidosFiltrados.map((pedido) => (
-                  <tr key={pedido.id} className="border-b border-black/5 hover:bg-[rgba(99,102,241,0.03)] transition-colors">
+                  <tr
+                    key={pedido.id}
+                    className="border-b border-black/5 hover:bg-[rgba(99,102,241,0.03)] transition-colors"
+                  >
                     <td className="p-4 text-[0.813rem] orx-orx-font-semibold text-[var(--orx-primary)]">
                       {pedido.numero_pedido}
                     </td>
@@ -653,4 +691,3 @@ export const PedidosCompra: React.FC = () => {
 };
 
 export default PedidosCompra;
-

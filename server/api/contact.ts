@@ -6,7 +6,7 @@
  * 100% conformidade com OraclusX Backend Standards
  */
 
-import type { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from 'express';
 
 interface ContactRequest {
   name: string;
@@ -26,8 +26,8 @@ export async function handleContactSubmission(req: Request, res: Response) {
 
     if (!name || !email || !subject || !message) {
       return res.status(400).json({
-        error: "Campos obrigatórios faltando",
-        required: ["name", "email", "subject", "message"],
+        error: 'Campos obrigatórios faltando',
+        required: ['name', 'email', 'subject', 'message'],
       });
     }
 
@@ -35,36 +35,36 @@ export async function handleContactSubmission(req: Request, res: Response) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({
-        error: "Email inválido",
+        error: 'Email inválido',
       });
     }
 
     // Validação de tamanhos
     if (name.length < 2 || name.length > 100) {
       return res.status(400).json({
-        error: "Nome deve ter entre 2 e 100 caracteres",
+        error: 'Nome deve ter entre 2 e 100 caracteres',
       });
     }
 
     if (subject.length < 3 || subject.length > 120) {
       return res.status(400).json({
-        error: "Assunto deve ter entre 3 e 120 caracteres",
+        error: 'Assunto deve ter entre 3 e 120 caracteres',
       });
     }
 
     if (message.length < 10 || message.length > 4000) {
       return res.status(400).json({
-        error: "Mensagem deve ter entre 10 e 4000 caracteres",
+        error: 'Mensagem deve ter entre 10 e 4000 caracteres',
       });
     }
 
     // Log da mensagem (em produção, enviar para Supabase/Email/etc)
-    console.log("📧 Nova mensagem de contato:", {
+    console.log('📧 Nova mensagem de contato:', {
       name,
       email,
       subject,
       message,
-      source: source || "web",
+      source: source || 'web',
       timestamp: new Date().toISOString(),
     });
 
@@ -80,22 +80,22 @@ export async function handleContactSubmission(req: Request, res: Response) {
     // Resposta de sucesso
     return res.status(200).json({
       success: true,
-      message: "Mensagem recebida com sucesso",
+      message: 'Mensagem recebida com sucesso',
       data: {
         id: `contact_${Date.now()}`,
         name,
         email,
         subject,
-        status: "received",
+        status: 'received',
         created_at: new Date().toISOString(),
       },
     });
   } catch (error) {
-    console.error("❌ Erro ao processar contato:", error);
+    console.error('❌ Erro ao processar contato:', error);
 
     return res.status(500).json({
-      error: "Erro interno do servidor",
-      message: error instanceof Error ? error.message : "Erro desconhecido",
+      error: 'Erro interno do servidor',
+      message: error instanceof Error ? error.message : 'Erro desconhecido',
     });
   }
 }
@@ -129,17 +129,13 @@ export function checkRateLimit(ip: string): boolean {
 /**
  * Middleware de rate limiting
  */
-export function rateLimitMiddleware(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
-  const ip = req.ip || req.socket.remoteAddress || "unknown";
+export function rateLimitMiddleware(req: Request, res: Response, next: NextFunction) {
+  const ip = req.ip || req.socket.remoteAddress || 'unknown';
 
   if (!checkRateLimit(ip)) {
     return res.status(429).json({
-      error: "Muitas requisições",
-      message: "Por favor, aguarde um minuto antes de enviar outra mensagem",
+      error: 'Muitas requisições',
+      message: 'Por favor, aguarde um minuto antes de enviar outra mensagem',
       retry_after: 60,
     });
   }

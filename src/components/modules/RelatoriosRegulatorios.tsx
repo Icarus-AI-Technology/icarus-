@@ -1,9 +1,9 @@
 /**
  * Componente: Relatórios Regulatórios
- * 
+ *
  * Sistema completo de relatórios para órgãos reguladores
  * ANVISA (RDC 16/2013), SEFAZ (SPED), ANS (faturamento)
- * 
+ *
  * FUNCIONALIDADES:
  * - Geração sob demanda ou agendada
  * - Exportação PDF, Excel, XML, TXT
@@ -13,6 +13,7 @@
  * - Auditoria completa
  */
 
+import { useState, useEffect, useCallback } from 'react';
 import {
   Card,
   Button,
@@ -105,7 +106,14 @@ const ORGAOS = [
   { value: 'CFM', label: 'CFM', icon: FileText, color: 'text-orange-600' },
 ];
 
-const STATUS_CONFIG: Record<string, { bg: string; text: string; icon: typeof Clock | typeof CheckCircle | typeof Send | typeof AlertCircle }> = {
+const STATUS_CONFIG: Record<
+  string,
+  {
+    bg: string;
+    text: string;
+    icon: typeof Clock | typeof CheckCircle | typeof Send | typeof AlertCircle;
+  }
+> = {
   gerando: { bg: 'bg-blue-500/20', text: 'text-blue-600', icon: Clock },
   gerado: { bg: 'bg-success/20', text: 'text-success', icon: CheckCircle },
   enviado: { bg: 'bg-purple-500/20', text: 'text-purple-600', icon: Send },
@@ -123,7 +131,9 @@ export default function RelatoriosRegulatorios() {
   useDocumentTitle('Relatórios Regulatórios');
   const { addToast } = useToast();
 
-  const [activeTab, setActiveTab] = useState<'relatorios' | 'templates' | 'agendamentos' | 'anvisa'>('relatorios');
+  const [activeTab, setActiveTab] = useState<
+    'relatorios' | 'templates' | 'agendamentos' | 'anvisa'
+  >('relatorios');
   const [loading, setLoading] = useState(true);
   const [relatorios, setRelatorios] = useState<Relatorio[]>([]);
   const [templates, setTemplates] = useState<Template[]>([]);
@@ -145,11 +155,7 @@ export default function RelatoriosRegulatorios() {
   const carregarDados = async () => {
     setLoading(true);
     try {
-      await Promise.all([
-        carregarRelatorios(),
-        carregarTemplates(),
-        carregarAgendamentos(),
-      ]);
+      await Promise.all([carregarRelatorios(), carregarTemplates(), carregarAgendamentos()]);
     } catch (error: unknown) {
       const err = error as Error;
       addToast(`Erro ao carregar dados: ${err.message}`, 'error');
@@ -183,14 +189,16 @@ export default function RelatoriosRegulatorios() {
   const carregarAgendamentos = async () => {
     const { data, error } = await supabase
       .from('relatorios_agendamentos')
-      .select(`
+      .select(
+        `
         *,
         template:template_id (
           nome,
           tipo,
           orgao
         )
-      `)
+      `
+      )
       .order('proxima_execucao');
 
     if (error) throw error;
@@ -246,7 +254,7 @@ export default function RelatoriosRegulatorios() {
       setIsGerarDialogOpen(false);
       await carregarRelatorios();
     } catch (error: unknown) {
-        const err = error as Error;
+      const err = error as Error;
       addToast(`Erro ao gerar relatório: ${error.message}`, 'error');
     } finally {
       setLoading(false);
@@ -278,7 +286,7 @@ export default function RelatoriosRegulatorios() {
       addToast('Relatório enviado com sucesso!', 'success');
       await carregarRelatorios();
     } catch (error: unknown) {
-        const err = error as Error;
+      const err = error as Error;
       addToast(`Erro ao enviar: ${error.message}`, 'error');
     } finally {
       setLoading(false);
@@ -317,7 +325,9 @@ export default function RelatoriosRegulatorios() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Card className="p-4 neuro-raised">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">Total Gerados</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">
+                Total Gerados
+              </h3>
               <FileText className="w-4 h-4 text-[var(--primary)]" />
             </div>
             <p className="text-[0.813rem] orx-orx-font-bold">{relatorios.length}</p>
@@ -325,7 +335,9 @@ export default function RelatoriosRegulatorios() {
 
           <Card className="p-4 neuro-raised">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">Pendentes Envio</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">
+                Pendentes Envio
+              </h3>
               <Send className="w-4 h-4 text-warning" />
             </div>
             <p className="text-[0.813rem] orx-orx-font-bold">
@@ -335,7 +347,9 @@ export default function RelatoriosRegulatorios() {
 
           <Card className="p-4 neuro-raised">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">Enviados</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">
+                Enviados
+              </h3>
               <CheckCircle className="w-4 h-4 text-success" />
             </div>
             <p className="text-[0.813rem] orx-orx-font-bold">
@@ -345,7 +359,9 @@ export default function RelatoriosRegulatorios() {
 
           <Card className="p-4 neuro-raised">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">Com Erro</h3>
+              <h3 className="text-[var(--text-secondary)] text-[0.813rem] orx-orx-font-medium">
+                Com Erro
+              </h3>
               <AlertCircle className="w-4 h-4 text-error" />
             </div>
             <p className="text-[0.813rem] orx-orx-font-bold">
@@ -385,7 +401,10 @@ export default function RelatoriosRegulatorios() {
                         <div>
                           <p className="orx-orx-font-medium">{relatorio.titulo}</p>
                           {relatorio.obrigatoriedade === 'obrigatorio' && (
-                            <Badge variant="default" className="bg-error/20 text-error mt-1 text-[0.813rem]">
+                            <Badge
+                              variant="default"
+                              className="bg-error/20 text-error mt-1 text-[0.813rem]"
+                            >
                               Obrigatório
                             </Badge>
                           )}
@@ -397,7 +416,10 @@ export default function RelatoriosRegulatorios() {
                     </TableCell>
                     <TableCell>{relatorio.periodo_referencia}</TableCell>
                     <TableCell>
-                      <Badge variant="default" className={`${statusConfig.bg} ${statusConfig.text}`}>
+                      <Badge
+                        variant="default"
+                        className={`${statusConfig.bg} ${statusConfig.text}`}
+                      >
                         <StatusIcon className="w-3 h-3 mr-1" />
                         {relatorio.status}
                       </Badge>
@@ -438,7 +460,12 @@ export default function RelatoriosRegulatorios() {
                         )}
 
                         <Tooltip content="Ver Detalhes">
-                          <Button variant="ghost" size="sm" icon={<Eye />} />
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            icon={<Eye />}
+                            aria-label="Visualizar relatório"
+                          />
                         </Tooltip>
                       </div>
                     </TableCell>
@@ -466,13 +493,18 @@ export default function RelatoriosRegulatorios() {
           const FormatoIcon = FORMATO_ICONS[template.formato_padrao];
 
           return (
-            <Card key={template.id} className="p-6 neuro-raised hover:neuro-raised-hover transition-all">
+            <Card
+              key={template.id}
+              className="p-6 neuro-raised hover:neuro-raised-hover transition-all"
+            >
               <div className="flex items-start justify-between mb-4">
                 <OrgaoIcon className={`w-8 h-8 ${orgaoConfig?.color}`} />
                 <Badge variant="default">{template.orgao}</Badge>
               </div>
               <h3 className="mb-2 orx-orx-font-semibold">{template.nome}</h3>
-              <p className="text-[var(--text-secondary)] mb-4 text-[0.813rem]">{template.descricao}</p>
+              <p className="text-[var(--text-secondary)] mb-4 text-[0.813rem]">
+                {template.descricao}
+              </p>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-[var(--text-secondary)] text-[0.813rem]">
                   <FormatoIcon className="w-4 h-4" />
@@ -566,7 +598,7 @@ export default function RelatoriosRegulatorios() {
   const renderAnvisa = () => (
     <div className="space-y-6">
       <Card className="p-6 neuro-raised bg-gradient-to-br from-green-500 to-green-600 text-white">
-          <div className="flex items-center gap-4 mb-4">
+        <div className="flex items-center gap-4 mb-4">
           <Shield className="w-12 h-12" />
           <div>
             <h2 className="text-[0.813rem] orx-orx-font-bold">ANVISA - Rastreabilidade</h2>
@@ -624,7 +656,12 @@ export default function RelatoriosRegulatorios() {
               Compliance ANVISA, SEFAZ, ANS - Geração e Envio Automático
             </p>
           </div>
-          <Button variant="secondary" icon={<RefreshCw />} onClick={carregarDados} disabled={loading}>
+          <Button
+            variant="secondary"
+            icon={<RefreshCw />}
+            onClick={carregarDados}
+            disabled={loading}
+          >
             Atualizar
           </Button>
         </div>
@@ -666,7 +703,7 @@ export default function RelatoriosRegulatorios() {
             </DialogHeader>
             <div className="space-y-4">
               <div>
-              <label className="block mb-2 text-[0.813rem] orx-orx-font-medium">Template</label>
+                <label className="block mb-2 text-[0.813rem] orx-orx-font-medium">Template</label>
                 <Select
                   value={selectedTemplate?.id || ''}
                   onValueChange={(value) => {
@@ -685,7 +722,9 @@ export default function RelatoriosRegulatorios() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block mb-2 text-[0.813rem] orx-orx-font-medium">Data Início</label>
+                  <label className="block mb-2 text-[0.813rem] orx-orx-font-medium">
+                    Data Início
+                  </label>
                   <Input
                     type="date"
                     value={formDataInicio}
@@ -727,4 +766,3 @@ export default function RelatoriosRegulatorios() {
     </div>
   );
 }
-

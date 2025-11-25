@@ -1,11 +1,11 @@
 /**
  * TNT (FedEx Brasil) Service
- * 
+ *
  * SERVIÇOS INTEGRADOS:
  * - Rodoviário: Entrega terrestre
  * - Aéreo Doméstico: Entrega aérea nacional
  * - Express: Entrega expressa
- * 
+ *
  * API: REST
  * Cobertura: Nacional
  * Limite peso: 70kg
@@ -32,12 +32,12 @@ export class TNTService implements TransportadoraService {
 
       // Implementação real da API
       const token = await this.getAuthToken();
-      
+
       const response = await fetch(`${this.baseURL}/rate/v1/rates/quotes`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           accountNumber: { value: '123456789' },
@@ -45,29 +45,29 @@ export class TNTService implements TransportadoraService {
             shipper: {
               address: {
                 postalCode: params.origem.cep.replace(/\D/g, ''),
-                countryCode: 'BR'
-              }
+                countryCode: 'BR',
+              },
             },
             recipient: {
               address: {
                 postalCode: params.destino.cep.replace(/\D/g, ''),
-                countryCode: 'BR'
-              }
+                countryCode: 'BR',
+              },
             },
-            requestedPackageLineItems: params.volumes.map(v => ({
+            requestedPackageLineItems: params.volumes.map((v) => ({
               weight: {
                 value: v.peso,
-                units: 'KG'
+                units: 'KG',
               },
               dimensions: {
                 length: v.comprimento,
                 width: v.largura,
                 height: v.altura,
-                units: 'CM'
-              }
-            }))
-          }
-        })
+                units: 'CM',
+              },
+            })),
+          },
+        }),
       });
 
       if (!response.ok) {
@@ -96,8 +96,10 @@ export class TNTService implements TransportadoraService {
         servico: rate.serviceName,
         codigoServico: rate.serviceType,
         valor: parseFloat(rate.ratedShipmentDetails[0].totalNetCharge),
-        prazo: rate.commit?.dateDetail?.dayOfWeek ? this.calcularPrazo(rate.commit.dateDetail.dayOfWeek) : 5,
-        observacoes: rate.serviceDescription
+        prazo: rate.commit?.dateDetail?.dayOfWeek
+          ? this.calcularPrazo(rate.commit.dateDetail.dayOfWeek)
+          : 5,
+        observacoes: rate.serviceDescription,
       }));
     } catch (error) {
       const err = error as Error;
@@ -114,24 +116,23 @@ export class TNTService implements TransportadoraService {
 
       const token = await this.getAuthToken();
 
-      const response = await fetch(
-        `${this.baseURL}/track/v1/trackingnumbers`,
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            trackingInfo: [{
+      const response = await fetch(`${this.baseURL}/track/v1/trackingnumbers`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          trackingInfo: [
+            {
               trackingNumberInfo: {
-                trackingNumber: codigoRastreio
-              }
-            }],
-            includeDetailedScans: true
-          })
-        }
-      );
+                trackingNumber: codigoRastreio,
+              },
+            },
+          ],
+          includeDetailedScans: true,
+        }),
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
@@ -161,11 +162,11 @@ export class TNTService implements TransportadoraService {
           data: new Date(e.date),
           descricao: e.eventDescription,
           localizacao: `${e.scanLocation.city} - ${e.scanLocation.stateOrProvinceCode}`,
-          tipo: 'movimentacao' as const
+          tipo: 'movimentacao' as const,
         })),
-        previsaoEntrega: trackingData.estimatedDeliveryTimeWindow?.window?.ends 
+        previsaoEntrega: trackingData.estimatedDeliveryTimeWindow?.window?.ends
           ? new Date(trackingData.estimatedDeliveryTimeWindow.window.ends)
-          : null
+          : null,
       };
     } catch (error) {
       const err = error as Error;
@@ -178,7 +179,7 @@ export class TNTService implements TransportadoraService {
     try {
       const response = await fetch(`${this.baseURL}/health`, {
         method: 'GET',
-        signal: AbortSignal.timeout(5000)
+        signal: AbortSignal.timeout(5000),
       });
       return response.ok;
     } catch {
@@ -191,13 +192,13 @@ export class TNTService implements TransportadoraService {
     const response = await fetch('https://apis.fedex.com/oauth/token', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
         grant_type: 'client_credentials',
         client_id: this.apiKey,
-        client_secret: this.secretKey
-      })
+        client_secret: this.secretKey,
+      }),
     });
 
     const data = await response.json();
@@ -206,11 +207,11 @@ export class TNTService implements TransportadoraService {
 
   private mapearStatus(code: string): StatusEntrega {
     const mapeamento: Record<string, StatusEntrega> = {
-      'PU': 'coletado',
-      'IT': 'em_transito',
-      'OD': 'saiu_entrega',
-      'DL': 'entregue',
-      'DE': 'falha'
+      PU: 'coletado',
+      IT: 'em_transito',
+      OD: 'saiu_entrega',
+      DL: 'entregue',
+      DE: 'falha',
     };
     return mapeamento[code] || 'pendente';
   }
@@ -238,7 +239,7 @@ export class TNTService implements TransportadoraService {
         codigoServico: 'road',
         valor: basePrice,
         prazo: 5,
-        observacoes: 'Entrega terrestre econômica'
+        observacoes: 'Entrega terrestre econômica',
       },
       {
         transportadora: 'TNT (FedEx)',
@@ -247,8 +248,8 @@ export class TNTService implements TransportadoraService {
         codigoServico: 'express',
         valor: basePrice * 2,
         prazo: 2,
-        observacoes: 'Entrega expressa'
-      }
+        observacoes: 'Entrega expressa',
+      },
     ];
   }
 
@@ -261,17 +262,16 @@ export class TNTService implements TransportadoraService {
           data: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
           descricao: 'Pacote coletado',
           localizacao: 'São Paulo - SP',
-          tipo: 'coleta'
+          tipo: 'coleta',
         },
         {
           data: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
           descricao: 'Em trânsito',
           localizacao: 'Curitiba - PR',
-          tipo: 'movimentacao'
-        }
+          tipo: 'movimentacao',
+        },
       ],
-      previsaoEntrega: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)
+      previsaoEntrega: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
     };
   }
 }
-

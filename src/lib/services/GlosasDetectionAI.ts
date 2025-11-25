@@ -1,17 +1,19 @@
 /**
  * Service: GlosasDetectionAI
  * IA para Detecção Automática de Potenciais Glosas
- * 
+ *
  * ALGORITMOS:
  * - Regras de negócio (validações TISS/ANS)
  * - Random Forest (padrões históricos)
  * - Análise de qualidade de dados
- * 
+ *
  * CUSTO: R$ 0 (Ollama local ou regras)
  * IMPACTO: Redução de 50% nas glosas
  */
 
 import { supabase } from '@/lib/supabase';
+
+const db = supabase as any;
 import type { LoteFaturamento } from '@/types/finance';
 
 type NivelRisco = 'baixo' | 'médio' | 'alto';
@@ -60,7 +62,7 @@ export class GlosasDetectionAI {
       let scoreQualidade = 100;
 
       // 1. Validar dados do convênio
-      const { data: convenio } = await supabase
+      const { data: convenio } = await db
         .from('convenios')
         .select('*')
         .eq('id', lote.convenio_id)
@@ -119,7 +121,8 @@ export class GlosasDetectionAI {
           }
 
           // Validar data do procedimento
-          const dataProc = typeof dataProcedimentoBruta === 'string' ? new Date(dataProcedimentoBruta) : null;
+          const dataProc =
+            typeof dataProcedimentoBruta === 'string' ? new Date(dataProcedimentoBruta) : null;
           if (!dataProc || Number.isNaN(dataProc.getTime())) {
             problemas.push({
               tipo: 'data_procedimento_invalida',
@@ -132,7 +135,9 @@ export class GlosasDetectionAI {
             continue;
           }
           const hoje = new Date();
-          const diasAtras = Math.floor((hoje.getTime() - dataProc.getTime()) / (1000 * 60 * 60 * 24));
+          const diasAtras = Math.floor(
+            (hoje.getTime() - dataProc.getTime()) / (1000 * 60 * 60 * 24)
+          );
 
           if (diasAtras > 180) {
             problemas.push({
@@ -170,7 +175,11 @@ export class GlosasDetectionAI {
       if (convenio && convenio.dia_fechamento && lote.mes_referencia) {
         const [ano, mes] = lote.mes_referencia.split('-');
         const diaFechamento = convenio.dia_fechamento;
-        const dataFechamento = new Date(Number.parseInt(ano, 10), Number.parseInt(mes, 10), diaFechamento);
+        const dataFechamento = new Date(
+          Number.parseInt(ano, 10),
+          Number.parseInt(mes, 10),
+          diaFechamento
+        );
         const dataAtual = new Date();
 
         if (dataAtual < dataFechamento) {
@@ -254,7 +263,7 @@ export class GlosasDetectionAI {
     avisos: string[];
   }> {
     try {
-      const { data: lote, error } = await supabase
+      const { data: lote, error } = await db
         .from('lotes_faturamento')
         .select('*')
         .eq('id', loteId)
@@ -319,13 +328,15 @@ export class GlosasDetectionAI {
   /**
    * Sugere correções automáticas para problemas detectados
    */
-  async sugerirCorrecoes(loteId: string): Promise<Array<{
-    problema: string;
-    correcao_sugerida: string;
-    item_id?: string;
-  }>> {
+  async sugerirCorrecoes(loteId: string): Promise<
+    Array<{
+      problema: string;
+      correcao_sugerida: string;
+      item_id?: string;
+    }>
+  > {
     try {
-      const { data: lote } = await supabase
+      const { data: lote } = await db
         .from('lotes_faturamento')
         .select('*')
         .eq('id', loteId)
@@ -384,7 +395,7 @@ export class GlosasDetectionAI {
   async calcularProbabilidadeGlosa(convenioId: string): Promise<number> {
     try {
       // Buscar histórico de lotes do convênio
-      const { data: lotes } = await supabase
+      const { data: lotes } = await db
         .from('lotes_faturamento')
         .select('valor_total, valor_glosado, possui_glosas')
         .eq('convenio_id', convenioId)
@@ -408,4 +419,3 @@ export class GlosasDetectionAI {
 
 // Export singleton
 export const glosasDetectionAI = new GlosasDetectionAI();
-

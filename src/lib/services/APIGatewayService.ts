@@ -1,6 +1,6 @@
 /**
  * Service: API Gateway
- * 
+ *
  * Gerenciamento centralizado de chamadas a APIs externas
  * com rate limiting, circuit breaker, cache e monitoramento
  */
@@ -109,7 +109,9 @@ export class APIGatewayService {
       // 3. Verificar circuit breaker
       const circuitState = await this.getCircuitBreakerState(endpoint.id);
       if (circuitState === 'open') {
-        throw new Error('Circuito aberto devido a falhas recentes. Aguarde antes de tentar novamente.');
+        throw new Error(
+          'Circuito aberto devido a falhas recentes. Aguarde antes de tentar novamente.'
+        );
       }
 
       // 4. Tentar obter do cache (se habilitado)
@@ -299,7 +301,7 @@ export class APIGatewayService {
 
       return data;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[APIGateway] Erro ao buscar endpoint:', err);
       return null;
     }
@@ -321,7 +323,7 @@ export class APIGatewayService {
 
       return data === true;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[APIGateway] Erro ao verificar rate limit:', err);
       return false;
     }
@@ -356,7 +358,7 @@ export class APIGatewayService {
 
       return data.state;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[APIGateway] Erro ao obter circuit breaker:', err);
       return 'closed';
     }
@@ -372,7 +374,7 @@ export class APIGatewayService {
         p_success: success,
       });
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[APIGateway] Erro ao atualizar circuit breaker:', err);
     }
   }
@@ -440,7 +442,7 @@ export class APIGatewayService {
         p_ttl: ttl,
       });
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[APIGateway] Erro ao salvar no cache:', err);
     }
   }
@@ -498,7 +500,7 @@ export class APIGatewayService {
 
       if (error) throw error;
 
-  return (data as Record<string, unknown>[]) || [];
+      return (data as Record<string, unknown>[]) || [];
     } catch (error) {
       const err = error as Error;
       console.error('[APIGateway] Erro ao obter métricas:', err);
@@ -634,7 +636,8 @@ export class APIGatewayService {
 
     switch (authType) {
       case 'api_key': {
-        const headerName = typeof authConfig.header_name === 'string' ? authConfig.header_name : undefined;
+        const headerName =
+          typeof authConfig.header_name === 'string' ? authConfig.header_name : undefined;
         const apiKey = typeof authConfig.api_key === 'string' ? authConfig.api_key : undefined;
         if (!apiKey) {
           return null;
@@ -776,4 +779,3 @@ export class InfosimplesGatewayService {
     });
   }
 }
-

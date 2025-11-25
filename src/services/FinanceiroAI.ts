@@ -1,7 +1,7 @@
 /**
  * FinanceiroAI - Serviço de Inteligência Artificial para Finanças
  * Sistema: ICARUS v5.0
- * 
+ *
  * Algoritmos Implementados:
  * - Score de Inadimplência (Logistic Regression simplificado)
  * - Previsão de Fluxo de Caixa (ARIMA simplificado)
@@ -10,7 +10,7 @@
  * - Detecção de Anomalias Financeiras
  */
 
-import { supabase } from '@/lib/supabase';
+import { legacySupabase as supabase } from '@/lib/legacySupabase';
 
 // ============================================
 // INTERFACES
@@ -143,22 +143,25 @@ export class FinanceiroAI {
         return false;
       });
 
-      const historicoScore = titulosPagos.length > 0 
-        ? ((titulosPagos.length - titulosAtrasados.length) / titulosPagos.length) * 100 
-        : 50;
+      const historicoScore =
+        titulosPagos.length > 0
+          ? ((titulosPagos.length - titulosAtrasados.length) / titulosPagos.length) * 100
+          : 50;
 
       const valorMedio = titulos.reduce((sum, t) => sum + t.valor, 0) / titulos.length;
 
       const diasAtrasoTotal = titulosAtrasados.reduce((sum, t) => {
-        const dataRef = t.status === 'pago' && t.data_pagamento 
-          ? new Date(t.data_pagamento) 
-          : hoje;
-        const diasAtraso = Math.max(0, 
-          Math.ceil((dataRef.getTime() - new Date(t.data_vencimento).getTime()) / (1000 * 60 * 60 * 24))
+        const dataRef = t.status === 'pago' && t.data_pagamento ? new Date(t.data_pagamento) : hoje;
+        const diasAtraso = Math.max(
+          0,
+          Math.ceil(
+            (dataRef.getTime() - new Date(t.data_vencimento).getTime()) / (1000 * 60 * 60 * 24)
+          )
         );
         return sum + diasAtraso;
       }, 0);
-      const diasAtrasoMedio = titulosAtrasados.length > 0 ? diasAtrasoTotal / titulosAtrasados.length : 0;
+      const diasAtrasoMedio =
+        titulosAtrasados.length > 0 ? diasAtrasoTotal / titulosAtrasados.length : 0;
 
       const titulosAbertos = titulos.filter((t) => t.status === 'aberto').length;
 
@@ -260,10 +263,12 @@ export class FinanceiroAI {
         saidasPorDia.set(dia, (saidasPorDia.get(dia) || 0) + s.valor);
       });
 
-      const mediaEntradas = Array.from(entradasPorDia.values()).reduce((a, b) => a + b, 0) / 
-                            Math.max(entradasPorDia.size, 1);
-      const mediaSaidas = Array.from(saidasPorDia.values()).reduce((a, b) => a + b, 0) / 
-                         Math.max(saidasPorDia.size, 1);
+      const mediaEntradas =
+        Array.from(entradasPorDia.values()).reduce((a, b) => a + b, 0) /
+        Math.max(entradasPorDia.size, 1);
+      const mediaSaidas =
+        Array.from(saidasPorDia.values()).reduce((a, b) => a + b, 0) /
+        Math.max(saidasPorDia.size, 1);
 
       // Buscar saldo atual
       const { data: saldoAtual } = await supabase
@@ -276,7 +281,7 @@ export class FinanceiroAI {
 
       // Gerar previsões
       const previsoes: PrevisaoFluxoCaixa[] = [];
-      
+
       for (let i = 1; i <= dias; i++) {
         const data = new Date();
         data.setDate(data.getDate() + i);
@@ -288,8 +293,8 @@ export class FinanceiroAI {
 
         const entradasPrev = mediaEntradas * variacaoEntradas;
         const saidasPrev = mediaSaidas * variacaoSaidas;
-        
-        saldoAcumulado += (entradasPrev - saidasPrev);
+
+        saldoAcumulado += entradasPrev - saidasPrev;
 
         previsoes.push({
           data: dataStr,
@@ -452,15 +457,16 @@ export class FinanceiroAI {
       const dataInicio = new Date();
       dataInicio.setMonth(dataInicio.getMonth() - 3);
 
-      const { data: receitas } = await supabase
-        .rpc('receitas_por_dia', { 
-          data_inicio: dataInicio.toISOString().split('T')[0] 
-        });
+      const { data: receitas } = await supabase.rpc('receitas_por_dia', {
+        data_inicio: dataInicio.toISOString().split('T')[0],
+      });
 
       if (receitas && receitas.length > 0) {
         const valores = receitas.map((r: ReceitaDiariaRow) => r.valor);
         const media = valores.reduce((a: number, b: number) => a + b, 0) / valores.length;
-        const variancia = valores.reduce((sum: number, v: number) => sum + Math.pow(v - media, 2), 0) / valores.length;
+        const variancia =
+          valores.reduce((sum: number, v: number) => sum + Math.pow(v - media, 2), 0) /
+          valores.length;
         const desvioPadrao = Math.sqrt(variancia);
 
         receitas.forEach((r: ReceitaDiariaRow) => {
@@ -486,7 +492,7 @@ export class FinanceiroAI {
         .eq('status', 'atrasado');
 
       const totalInadimplente = inadimplentes?.reduce((sum, i) => sum + i.valor, 0) || 0;
-      
+
       if (totalInadimplente > 50000) {
         anomalias.push({
           tipo: 'inadimplencia_alta',
@@ -507,4 +513,3 @@ export class FinanceiroAI {
     }
   }
 }
-

@@ -1,10 +1,12 @@
-import React from 'react';
+// React is automatically imported in JSX transform
 
 export default function TooltipAnalyticsDashboard(): JSX.Element {
   return (
     <div className="p-6">
       <h1 className="orx-text-xl orx-orx-font-semibold mb-2">TooltipAnalyticsDashboard</h1>
-      <p className="orx-text-sm text-muted-foreground mb-4">Stub do módulo TooltipAnalyticsDashboard. Conteúdo será implementado conforme o manual.</p>
+      <p className="orx-text-sm text-muted-foreground mb-4">
+        Stub do módulo TooltipAnalyticsDashboard. Conteúdo será implementado conforme o manual.
+      </p>
       <div className="grid gap-3">
         <section>
           <h2 className="orx-orx-font-medium">Objetivo</h2>

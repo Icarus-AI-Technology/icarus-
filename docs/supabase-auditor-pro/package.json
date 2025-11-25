@@ -1,0 +1,43 @@
+{
+  "name": "supabase-auditor-pro",
+  "version": "1.0.0",
+  "description": "Sistema completo de auditoria automatizada para projetos Supabase com integração MCP",
+  "main": "agents/db-auditor.ts",
+  "type": "module",
+  "scripts": {
+    "audit": "tsx agents/db-auditor.ts",
+    "audit:edge": "tsx agents/edge-functions-auditor.ts",
+    "audit:safe": "tsx agents/db-auditor.ts --mode=safe",
+    "audit:fix": "tsx agents/db-auditor.ts --mode=fix",
+    "setup": "node scripts/setup-sql.js",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": [
+    "supabase",
+    "audit",
+    "security",
+    "database",
+    "postgresql",
+    "rls",
+    "performance"
+  ],
+  "author": "Supabase Auditor Team",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "commander": "^11.1.0",
+    "chalk": "^5.3.0",
+    "ora": "^7.0.1",
+    "cli-table3": "^0.6.3",
+    "date-fns": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
+

@@ -1,8 +1,8 @@
 // src/pages/FinanceiroPage.tsx
-import { useState, useEffect } from 'react'
-import { supabase } from '../lib/supabase'
-import { Card } from '../components/oraclusx-ds/Card'
-import { Badge } from '../components/oraclusx-ds/Badge'
+import { useState, useEffect } from 'react';
+import { legacySupabase as supabase } from '../lib/legacySupabase';
+import { Card } from '../components/oraclusx-ds/Card';
+import { Badge } from '../components/oraclusx-ds/Badge';
 import {
   DollarSign,
   TrendingUp,
@@ -10,44 +10,46 @@ import {
   Calendar,
   FileText,
   Download,
-  Search,
   Filter,
   AlertCircle,
   Clock,
-} from 'lucide-react'
-import type { Database } from '../lib/database.types.generated'
+} from 'lucide-react';
+import { Button } from '../components/oraclusx-ds/Button';
+import { NeumoInput } from '../components/oraclusx-ds/NeumoInput';
+import { CardKpiNeumo } from '../components/oraclusx-ds/CardKpiNeumo';
+import type { Database } from '../lib/database.types.generated';
 
-type Transacao = Database['public']['Tables']['transacoes']['Row']
+type Transacao = Database['public']['Tables']['transacoes']['Row'];
 
-export function FinanceiroPage() {
-  const [transacoes, setTransacoes] = useState<Transacao[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [tipoFilter, setTipoFilter] = useState<string>('todos')
-  const [statusFilter, setStatusFilter] = useState<string>('todos')
+export default function FinanceiroPage() {
+  const [transacoes, setTransacoes] = useState<Transacao[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [tipoFilter, setTipoFilter] = useState<string>('todos');
+  const [statusFilter, setStatusFilter] = useState<string>('todos');
 
   useEffect(() => {
-    fetchTransacoes()
-  }, [])
+    fetchTransacoes();
+  }, []);
 
   async function fetchTransacoes() {
     try {
-      setLoading(true)
+      setLoading(true);
       const { data, error } = await supabase
         .from('transacoes')
         .select('*')
         .is('excluido_em', null)
         .order('data_transacao', { ascending: false })
-        .limit(100)
+        .limit(100);
 
-      if (error) throw error
-      setTransacoes(data || [])
+      if (error) throw error;
+      setTransacoes((data || []) as Transacao[]);
     } catch (err) {
-      console.error('Erro ao buscar transações:', err)
-      setError('Erro ao carregar transações')
+      console.error('Erro ao buscar transações:', err);
+      setError('Erro ao carregar transações');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -55,60 +57,60 @@ export function FinanceiroPage() {
   const transacoesFiltradas = transacoes.filter((transacao) => {
     const matchSearch =
       transacao.descricao?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      transacao.categoria?.toLowerCase().includes(searchTerm.toLowerCase())
+      transacao.categoria?.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchTipo = tipoFilter === 'todos' || transacao.tipo === tipoFilter
-    const matchStatus = statusFilter === 'todos' || transacao.status === statusFilter
+    const matchTipo = tipoFilter === 'todos' || transacao.tipo === tipoFilter;
+    const matchStatus = statusFilter === 'todos' || transacao.status === statusFilter;
 
-    return matchSearch && matchTipo && matchStatus
-  })
+    return matchSearch && matchTipo && matchStatus;
+  });
 
   // Calcular estatísticas
   const stats = {
     receitaTotal: transacoes
-      .filter((t) => t.tipo === 'receita' && t.status === 'pago')
-      .reduce((sum, t) => sum + (parseFloat(t.valor as string) || 0), 0),
+      .filter((t) => t.tipo === 'receita' && t.status === 'paga')
+      .reduce((sum, t) => sum + (Number(t.valor) || 0), 0),
     despesaTotal: transacoes
-      .filter((t) => t.tipo === 'despesa' && t.status === 'pago')
-      .reduce((sum, t) => sum + (parseFloat(t.valor as string) || 0), 0),
+      .filter((t) => t.tipo === 'despesa' && t.status === 'paga')
+      .reduce((sum, t) => sum + (Number(t.valor) || 0), 0),
     aPagar: transacoes
       .filter((t) => t.tipo === 'despesa' && t.status === 'pendente')
-      .reduce((sum, t) => sum + (parseFloat(t.valor as string) || 0), 0),
+      .reduce((sum, t) => sum + (Number(t.valor) || 0), 0),
     aReceber: transacoes
       .filter((t) => t.tipo === 'receita' && t.status === 'pendente')
-      .reduce((sum, t) => sum + (parseFloat(t.valor as string) || 0), 0),
-  }
+      .reduce((sum, t) => sum + (Number(t.valor) || 0), 0),
+  };
 
-  const saldoLiquido = stats.receitaTotal - stats.despesaTotal
+  const saldoLiquido = stats.receitaTotal - stats.despesaTotal;
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL',
-    }).format(value)
-  }
+    }).format(value);
+  };
 
   const getStatusBadge = (status: string | null) => {
     switch (status) {
-      case 'pago':
-        return <Badge className="bg-green-600">Pago</Badge>
+      case 'paga':
+        return <Badge variant="success">Pago</Badge>;
       case 'pendente':
-        return <Badge className="bg-orange-600">Pendente</Badge>
-      case 'cancelado':
-        return <Badge variant="destructive">Cancelado</Badge>
+        return <Badge variant="warning">Pendente</Badge>;
+      case 'cancelada':
+        return <Badge variant="error">Cancelado</Badge>;
       case 'vencido':
-        return <Badge className="bg-red-600">Vencido</Badge>
+        return <Badge variant="error">Vencido</Badge>;
       default:
-        return <Badge variant="outline">{status || 'N/A'}</Badge>
+        return <Badge variant="default">{status || 'N/A'}</Badge>;
     }
-  }
+  };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -118,7 +120,7 @@ export function FinanceiroPage() {
           <p className="text-destructive font-semibold">{error}</p>
         </Card>
       </div>
-    )
+    );
   }
 
   return (
@@ -132,93 +134,64 @@ export function FinanceiroPage() {
           </p>
         </div>
         <div className="flex gap-2">
-          <button className="flex items-center gap-2 px-4 py-2 border border-border rounded-lg hover:bg-accent transition-colors">
-            <FileText className="h-4 w-4" />
+          <Button variant="neumo" leftIcon={FileText}>
             Relatórios
-          </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
-            <DollarSign className="h-4 w-4" />
+          </Button>
+          <Button variant="primary" leftIcon={DollarSign}>
             Nova Transação
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
         {/* Receita Total */}
-        <Card className="p-4 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950 dark:to-green-900 border-green-200 dark:border-green-800">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-green-700 dark:text-green-300">
-                Receita Total
-              </p>
-              <h3 className="text-2xl font-bold mt-1 text-green-900 dark:text-green-100">
-                {formatCurrency(stats.receitaTotal)}
-              </h3>
-            </div>
-            <TrendingUp className="h-8 w-8 text-green-600" />
-          </div>
-        </Card>
+        <CardKpiNeumo
+          icon={TrendingUp}
+          label="Receita Total"
+          value={formatCurrency(stats.receitaTotal)}
+          trendPositive={true}
+          iconColor="text-green-600"
+          iconBg="bg-green-100 dark:bg-green-500/20"
+        />
 
         {/* Despesa Total */}
-        <Card className="p-4 bg-gradient-to-br from-red-50 to-red-100 dark:from-red-950 dark:to-red-900 border-red-200 dark:border-red-800">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-red-700 dark:text-red-300">Despesa Total</p>
-              <h3 className="text-2xl font-bold mt-1 text-red-900 dark:text-red-100">
-                {formatCurrency(stats.despesaTotal)}
-              </h3>
-            </div>
-            <TrendingDown className="h-8 w-8 text-red-600" />
-          </div>
-        </Card>
+        <CardKpiNeumo
+          icon={TrendingDown}
+          label="Despesa Total"
+          value={formatCurrency(stats.despesaTotal)}
+          trendPositive={false}
+          iconColor="text-red-600"
+          iconBg="bg-red-100 dark:bg-red-500/20"
+        />
 
         {/* Saldo Líquido */}
-        <Card className="p-4 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 border-blue-200 dark:border-blue-800">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-blue-700 dark:text-blue-300">
-                Saldo Líquido
-              </p>
-              <h3
-                className={`text-2xl font-bold mt-1 ${
-                  saldoLiquido >= 0
-                    ? 'text-green-900 dark:text-green-100'
-                    : 'text-red-900 dark:text-red-100'
-                }`}
-              >
-                {formatCurrency(saldoLiquido)}
-              </h3>
-            </div>
-            <DollarSign className="h-8 w-8 text-blue-600" />
-          </div>
-        </Card>
+        <CardKpiNeumo
+          icon={DollarSign}
+          label="Saldo Líquido"
+          value={formatCurrency(saldoLiquido)}
+          trendPositive={saldoLiquido >= 0}
+          iconColor="text-blue-600"
+          iconBg="bg-blue-100 dark:bg-blue-500/20"
+        />
 
         {/* A Pagar */}
-        <Card className="p-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground">A Pagar</p>
-              <h3 className="text-2xl font-bold mt-1 text-orange-600">
-                {formatCurrency(stats.aPagar)}
-              </h3>
-            </div>
-            <AlertCircle className="h-8 w-8 text-orange-600" />
-          </div>
-        </Card>
+        <CardKpiNeumo
+          icon={AlertCircle}
+          label="A Pagar"
+          value={formatCurrency(stats.aPagar)}
+          iconColor="text-orange-600"
+          iconBg="bg-orange-100 dark:bg-orange-500/20"
+        />
 
         {/* A Receber */}
-        <Card className="p-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground">A Receber</p>
-              <h3 className="text-2xl font-bold mt-1 text-blue-600">
-                {formatCurrency(stats.aReceber)}
-              </h3>
-            </div>
-            <Clock className="h-8 w-8 text-blue-600" />
-          </div>
-        </Card>
+        <CardKpiNeumo
+          icon={Clock}
+          label="A Receber"
+          value={formatCurrency(stats.aReceber)}
+          iconColor="text-blue-600"
+          iconBg="bg-blue-100 dark:bg-blue-500/20"
+        />
       </div>
 
       {/* Filters and Search */}
@@ -226,13 +199,10 @@ export function FinanceiroPage() {
         <div className="flex flex-col md:flex-row gap-4">
           {/* Search */}
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <input
-              type="text"
+            <NeumoInput
               placeholder="Buscar por descrição ou categoria..."
-              className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
             />
           </div>
 
@@ -243,6 +213,7 @@ export function FinanceiroPage() {
               className="px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               value={tipoFilter}
               onChange={(e) => setTipoFilter(e.target.value)}
+              aria-label="Filtrar por tipo de transação"
             >
               <option value="todos">Todos Tipos</option>
               <option value="receita">Receitas</option>
@@ -255,6 +226,7 @@ export function FinanceiroPage() {
             className="px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
+            aria-label="Filtrar por status da transação"
           >
             <option value="todos">Todos Status</option>
             <option value="pago">Pago</option>
@@ -264,10 +236,9 @@ export function FinanceiroPage() {
           </select>
 
           {/* Export Button */}
-          <button className="flex items-center gap-2 px-4 py-2 border border-border rounded-lg hover:bg-accent transition-colors">
-            <Download className="h-4 w-4" />
+          <Button variant="neumo" leftIcon={Download}>
             Exportar
-          </button>
+          </Button>
         </div>
       </Card>
 
@@ -305,8 +276,8 @@ export function FinanceiroPage() {
                       <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4 text-muted-foreground" />
                         <span className="text-sm">
-                          {transacao.data_transacao
-                            ? new Date(transacao.data_transacao).toLocaleDateString('pt-BR')
+                          {transacao.data
+                            ? new Date(transacao.data).toLocaleDateString('pt-BR')
                             : 'N/A'}
                         </span>
                       </div>
@@ -318,14 +289,7 @@ export function FinanceiroPage() {
                       {transacao.categoria || 'Sem categoria'}
                     </td>
                     <td className="p-3 text-center">
-                      <Badge
-                        variant={transacao.tipo === 'receita' ? 'default' : 'secondary'}
-                        className={
-                          transacao.tipo === 'receita'
-                            ? 'bg-green-600'
-                            : 'bg-red-600 text-white'
-                        }
-                      >
+                      <Badge variant={transacao.tipo === 'receita' ? 'success' : 'error'}>
                         {transacao.tipo === 'receita' ? '↑ Receita' : '↓ Despesa'}
                       </Badge>
                     </td>
@@ -336,7 +300,7 @@ export function FinanceiroPage() {
                         }`}
                       >
                         {transacao.tipo === 'receita' ? '+' : '-'}{' '}
-                        {formatCurrency(parseFloat(transacao.valor as string) || 0)}
+                        {formatCurrency(Number(transacao.valor) || 0)}
                       </span>
                     </td>
                     <td className="p-3 text-center">{getStatusBadge(transacao.status)}</td>
@@ -356,6 +320,5 @@ export function FinanceiroPage() {
         </div>
       </Card>
     </div>
-  )
+  );
 }
-

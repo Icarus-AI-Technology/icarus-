@@ -10,15 +10,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { useCacheStats } from '@/hooks/useValidacao';
 
-interface CacheStat {
-  tipo: string;
-  fonte: string;
-  total_consultas: number;
-  hit_rate: number;
-  consultas_por_dia: number;
-  mais_consultado: string;
-}
-
 export function DashboardCache() {
   const { stats, loading, fetchStats } = useCacheStats();
   const [periodo, setPeriodo] = useState(7); // 7 dias padrão
@@ -37,7 +28,7 @@ export function DashboardCache() {
 
     const total = stats.reduce((acc, stat) => acc + stat.total_consultas, 0);
     const hitRateMedia = stats.reduce((acc, stat) => acc + stat.hit_rate, 0) / stats.length;
-    
+
     // Economia estimada (R$ 0,05 por consulta evitada)
     const consultasEvitadas = total * (hitRateMedia / 100);
     const economia = consultasEvitadas * 0.05;
@@ -107,9 +98,7 @@ export function DashboardCache() {
           </CardHeader>
           <CardContent>
             <div className="text-[0.813rem] font-bold">{formatNumber(totalConsultas)}</div>
-            <p className="text-muted-foreground text-[0.813rem]">
-              Últimos {periodo} dias
-            </p>
+            <p className="text-muted-foreground text-[0.813rem]">Últimos {periodo} dias</p>
           </CardContent>
         </Card>
 
@@ -122,7 +111,11 @@ export function DashboardCache() {
           <CardContent>
             <div className="text-[0.813rem] font-bold">{hitRateGeral}%</div>
             <p className="text-muted-foreground text-[0.813rem]">
-              {hitRateGeral >= 70 ? '🎉 Excelente!' : hitRateGeral >= 50 ? '✅ Bom' : '⚠️ Pode melhorar'}
+              {hitRateGeral >= 70
+                ? '🎉 Excelente!'
+                : hitRateGeral >= 50
+                  ? '✅ Bom'
+                  : '⚠️ Pode melhorar'}
             </p>
           </CardContent>
         </Card>
@@ -134,12 +127,8 @@ export function DashboardCache() {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-[0.813rem] font-bold">
-              R$ {economiaEstimada.toFixed(2)}
-            </div>
-            <p className="text-muted-foreground text-[0.813rem]">
-              Últimos {periodo} dias
-            </p>
+            <div className="text-[0.813rem] font-bold">R$ {economiaEstimada.toFixed(2)}</div>
+            <p className="text-muted-foreground text-[0.813rem]">Últimos {periodo} dias</p>
           </CardContent>
         </Card>
 
@@ -151,9 +140,7 @@ export function DashboardCache() {
           </CardHeader>
           <CardContent>
             <div className="text-[0.813rem] font-bold">~50ms</div>
-            <p className="text-muted-foreground text-[0.813rem]">
-              10-20x mais rápido que API
-            </p>
+            <p className="text-muted-foreground text-[0.813rem]">10-20x mais rápido que API</p>
           </CardContent>
         </Card>
       </div>
@@ -212,9 +199,7 @@ export function DashboardCache() {
                     {/* Hit Rate */}
                     <div className="text-right">
                       <div className="text-muted-foreground text-[0.813rem]">Hit Rate</div>
-                      <div className="text-green-600 font-bold">
-                        {stat.hit_rate.toFixed(1)}%
-                      </div>
+                      <div className="text-green-600 font-bold">{stat.hit_rate.toFixed(1)}%</div>
                     </div>
 
                     {/* Consultas por Dia */}
@@ -238,12 +223,14 @@ export function DashboardCache() {
         <CardContent className="space-y-2 text-[0.813rem]">
           {hitRateGeral < 50 && (
             <p>
-              ⚠️ <strong>Hit rate abaixo de 50%:</strong> Considere aumentar o TTL do cache (atualmente 7-30 dias)
+              ⚠️ <strong>Hit rate abaixo de 50%:</strong> Considere aumentar o TTL do cache
+              (atualmente 7-30 dias)
             </p>
           )}
           {totalConsultas > 10000 && (
             <p>
-              🎉 <strong>Alto volume de consultas:</strong> Cache está economizando significativamente em custos de API
+              🎉 <strong>Alto volume de consultas:</strong> Cache está economizando
+              significativamente em custos de API
             </p>
           )}
           <p>
@@ -251,11 +238,11 @@ export function DashboardCache() {
             <code className="bg-secondary px-1 py-0.5 rounded">cleanup_validacoes_cache()</code>
           </p>
           <p>
-            📊 <strong>Análise:</strong> Consultas com hit rate alto indicam dados estáveis (CEP, CNPJ)
+            📊 <strong>Análise:</strong> Consultas com hit rate alto indicam dados estáveis (CEP,
+            CNPJ)
           </p>
         </CardContent>
       </Card>
     </div>
   );
 }
-

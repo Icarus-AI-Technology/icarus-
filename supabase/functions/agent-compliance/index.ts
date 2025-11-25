@@ -44,8 +44,8 @@ serve(async (req) => {
     // 1. Buscar informações da tarefa
     const { data: task, error: taskError } = await supabaseClient
       .from("agent_tasks")
-      .select("*, organization_id")
-      .eq("task_id", request.task_id)
+      .select("*, empresa_id")
+      .eq("id", request.task_id)
       .single();
 
     if (taskError) throw taskError;
@@ -55,9 +55,12 @@ serve(async (req) => {
       .from("agent_tasks")
       .update({
         status: "in_progress",
+        metadata: {
+          ...(task.metadata || {}),
         started_at: new Date().toISOString(),
+        },
       })
-      .eq("task_id", request.task_id);
+      .eq("id", request.task_id);
 
     // 3. Log de início
     await supabaseClient.from("agent_logs").insert({
@@ -103,25 +106,25 @@ serve(async (req) => {
         case "anvisa_registration":
           validationResult = await validateAnvisaRegistrations(
             supabaseClient,
-            task.organization_id,
+            task.empresa_id,
           );
           break;
         case "udi_validation":
           validationResult = await validateUDI(
             supabaseClient,
-            task.organization_id,
+            task.empresa_id,
           );
           break;
         case "rdc_925":
           validationResult = await validateRDC925Compliance(
             supabaseClient,
-            task.organization_id,
+            task.empresa_id,
           );
           break;
         case "rastreabilidade":
           validationResult = await validateRastreabilidade(
             supabaseClient,
-            task.organization_id,
+            task.empresa_id,
           );
           break;
         default:
@@ -195,10 +198,13 @@ serve(async (req) => {
       .update({
         status: "completed",
         completed_at: new Date().toISOString(),
+        metadata: {
+          ...(task.metadata || {}),
         execution_time_ms: executionTime,
         result_data: results,
+        },
       })
-      .eq("task_id", request.task_id);
+      .eq("id", request.task_id);
 
     // 9. Log de conclusão
     await supabaseClient.from("agent_logs").insert({
@@ -253,10 +259,10 @@ async function validateAnvisaRegistrations(
 
   // Buscar produtos da organização
   const { data: products, error } = await client
-    .from("products")
-    .select("id, name, anvisa_registration")
-    .eq("organization_id", organizationId)
-    .not("anvisa_registration", "is", null);
+    .from("produtos")
+    .select("id, descricao, registro_anvisa")
+    .eq("empresa_id", organizationId)
+    .not("registro_anvisa", "is", null);
 
   if (error) {
     return {
@@ -289,7 +295,7 @@ async function validateAnvisaRegistrations(
       .select("validation_status, cache_expires_at")
       .eq("entity_type", "product")
       .eq("entity_id", product.id)
-      .eq("registration_number", product.anvisa_registration)
+      .eq("registration_number", product.registro_anvisa)
       .gte("cache_expires_at", new Date().toISOString())
       .single();
 
@@ -308,7 +314,7 @@ async function validateAnvisaRegistrations(
         entity_type: "product",
         entity_id: product.id,
         validation_type: "registration_number",
-        registration_number: product.anvisa_registration,
+        registration_number: product.registro_anvisa,
         validation_status: "pending",
         cache_expires_at: new Date(
           Date.now() + 7 * 24 * 60 * 60 * 1000,
@@ -362,9 +368,9 @@ async function validateUDI(client: any, organizationId: string): Promise<any> {
 
   // Buscar produtos com UDI
   const { data: products } = await client
-    .from("products")
-    .select("id, name, udi")
-    .eq("organization_id", organizationId)
+    .from("produtos")
+    .select("id, descricao, udi")
+    .eq("empresa_id", organizationId)
     .not("udi", "is", null);
 
   if (!products || products.length === 0) {
@@ -415,7 +421,7 @@ async function validateRDC925Compliance(
   const { data: cirurgias } = await client
     .from("cirurgias")
     .select("id, cirurgia_materiais(*)")
-    .eq("organization_id", organizationId)
+    .eq("empresa_id", organizationId)
     .gte(
       "data_cirurgia",
       new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
@@ -483,7 +489,8 @@ async function validateRastreabilidade(
   const { data: iotDevices } = await client
     .from("iot_devices")
     .select("device_id, status")
-    .eq("organization_id", organizationId);
+    .eq("organization_id", organizationId)
+    .limit(100);
 
   const activeDevices =
     iotDevices?.filter((d: any) => d.status === "active").length || 0;
@@ -505,7 +512,8 @@ async function validateRastreabilidade(
     .gte(
       "confirmed_at",
       new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-    );
+    )
+    .limit(100);
 
   const blockchainCount = blockchainTxs?.length || 0;
 

@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ModulePage } from '@/components/templates/ModulePage';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/oraclusx-ds/Input';
 
-export default function NotasCompraReformatted(): JSX.Element {
+export default function NotasCompraReformatted() {
   const [arquivo, setArquivo] = useState<File | null>(null);
 
   return (
     <ModulePage
       title="Notas de Compra (Reformatado)"
       description="Upload e reconciliação de notas fiscais reformadas"
-      icon={<span role="img" aria-label="Nota">📑</span>}
+      icon={
+        <span role="img" aria-label="Nota">
+          📑
+        </span>
+      }
     >
       <Card>
         <CardHeader>
@@ -18,7 +22,7 @@ export default function NotasCompraReformatted(): JSX.Element {
         </CardHeader>
         <CardContent>
           <Input
-              type="file"
+            type="file"
             accept="application/pdf,image/*"
             onChange={(event) => {
               const file = event.target.files?.[0] ?? null;

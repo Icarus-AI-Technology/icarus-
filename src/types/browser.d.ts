@@ -45,7 +45,15 @@ interface SpeechRecognitionAlternative {
 }
 
 interface SpeechRecognitionErrorEvent extends Event {
-  error: 'no-speech' | 'aborted' | 'audio-capture' | 'network' | 'not-allowed' | 'service-not-allowed' | 'bad-grammar' | 'language-not-supported';
+  error:
+    | 'no-speech'
+    | 'aborted'
+    | 'audio-capture'
+    | 'network'
+    | 'not-allowed'
+    | 'service-not-allowed'
+    | 'bad-grammar'
+    | 'language-not-supported';
   message: string;
 }
 
@@ -60,7 +68,10 @@ interface Window {
     callback: (entries: Array<{ isIntersecting: boolean }>, observer: IntersectionObserver) => void
   ) => IntersectionObserver;
   ResizeObserver?: new (
-    callback: (entries: Array<{ target: Element; contentRect: DOMRectReadOnly }>, observer: ResizeObserver) => void
+    callback: (
+      entries: Array<{ target: Element; contentRect: DOMRectReadOnly }>,
+      observer: ResizeObserver
+    ) => void
   ) => ResizeObserver;
 }
 
@@ -87,4 +98,3 @@ interface CSSStyleDeclaration {
 declare const process: {
   env?: Record<string, string | undefined>;
 };
-

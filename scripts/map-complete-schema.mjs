@@ -2,7 +2,7 @@
 
 /**
  * 🔍 MAPEADOR COMPLETO DE SCHEMA - ICARUS v5.0
- * 
+ *
  * Gera relatório detalhado do schema atual:
  * - Tabelas (colunas, tipos, constraints)
  * - Enums
@@ -10,7 +10,7 @@
  * - Views
  * - Triggers
  * - Indexes
- * 
+ *
  * Uso: DB_PASSWORD=xeO6xuDbpX749uyT node scripts/map-complete-schema.mjs
  */
 
@@ -40,11 +40,12 @@ async function getTablesList(client) {
     WHERE table_schema = 'public' AND table_type = 'BASE TABLE'
     ORDER BY table_name
   `);
-  return result.rows.map(r => r.table_name);
+  return result.rows.map((r) => r.table_name);
 }
 
 async function getTableColumns(client, tableName) {
-  const result = await client.query(`
+  const result = await client.query(
+    `
     SELECT 
       column_name,
       data_type,
@@ -54,7 +55,9 @@ async function getTableColumns(client, tableName) {
     FROM information_schema.columns
     WHERE table_schema = 'public' AND table_name = $1
     ORDER BY ordinal_position
-  `, [tableName]);
+  `,
+    [tableName]
+  );
   return result.rows;
 }
 
@@ -128,12 +131,12 @@ async function getIndexes(client) {
 
 async function main() {
   const client = new pg.Client(DB_CONFIG);
-  
+
   try {
     console.log('🔌 Conectando ao PostgreSQL...');
     await client.connect();
     console.log('✅ Conectado!\n');
-    
+
     // Coleta dados
     const tables = await getTablesList(client);
     const enums = await getEnums(client);
@@ -141,7 +144,7 @@ async function main() {
     const views = await getViews(client);
     const triggers = await getTriggers(client);
     const indexes = await getIndexes(client);
-    
+
     // Monta relatório
     let report = `# 📊 Schema Completo - ICARUS v5.0\n\n`;
     report += `**Data:** ${new Date().toISOString().split('T')[0]}\n`;
@@ -152,7 +155,7 @@ async function main() {
     report += `**Triggers:** ${triggers.length}\n`;
     report += `**Indexes:** ${indexes.length}\n\n`;
     report += `---\n\n`;
-    
+
     // TABELAS
     report += `## 📋 TABELAS (${tables.length})\n\n`;
     for (const tableName of tables) {
@@ -161,7 +164,7 @@ async function main() {
       report += `| Coluna | Tipo | Nulo | Default |\n`;
       report += `|--------|------|------|--------|\n`;
       for (const col of columns) {
-        const type = col.character_maximum_length 
+        const type = col.character_maximum_length
           ? `${col.data_type}(${col.character_maximum_length})`
           : col.data_type;
         const nullable = col.is_nullable === 'YES' ? 'Sim' : 'Não';
@@ -170,29 +173,31 @@ async function main() {
       }
       report += `\n`;
     }
-    
+
     // ENUMS
     report += `## 🏷️  ENUMS (${enums.length})\n\n`;
     for (const enumType of enums) {
       report += `### ${enumType.enum_name}\n`;
-      const values = Array.isArray(enumType.enum_values) ? enumType.enum_values.join(', ') : enumType.enum_values;
+      const values = Array.isArray(enumType.enum_values)
+        ? enumType.enum_values.join(', ')
+        : enumType.enum_values;
       report += `\`\`\`\n${values}\n\`\`\`\n\n`;
     }
-    
+
     // FUNCTIONS
     report += `## ⚙️  FUNCTIONS (${functions.length})\n\n`;
     for (const fn of functions) {
       report += `- **${fn.function_name}**(${fn.arguments || ''}) → ${fn.return_type}\n`;
     }
     report += `\n`;
-    
+
     // VIEWS
     report += `## 👁️  VIEWS (${views.length})\n\n`;
     for (const view of views) {
       report += `- ${view.view_name}\n`;
     }
     report += `\n`;
-    
+
     // TRIGGERS
     report += `## 🔔 TRIGGERS (${triggers.length})\n\n`;
     const triggersByTable = {};
@@ -209,7 +214,7 @@ async function main() {
       }
       report += `\n`;
     }
-    
+
     // INDEXES
     report += `## 🔍 INDEXES (${indexes.length})\n\n`;
     const indexesByTable = {};
@@ -226,11 +231,11 @@ async function main() {
       }
       report += `\n`;
     }
-    
+
     // Salva relatório
     const outputPath = path.join(__dirname, '..', 'docs', 'infra', 'schema-completo.md');
     fs.writeFileSync(outputPath, report);
-    
+
     console.log(`✅ Relatório salvo em: ${outputPath}`);
     console.log(`\n📊 Resumo:`);
     console.log(`   - Tabelas: ${tables.length}`);
@@ -239,7 +244,6 @@ async function main() {
     console.log(`   - Views: ${views.length}`);
     console.log(`   - Triggers: ${triggers.length}`);
     console.log(`   - Indexes: ${indexes.length}`);
-    
   } catch (error) {
     console.error(`❌ Erro: ${error.message}`);
     process.exit(1);
@@ -249,4 +253,3 @@ async function main() {
 }
 
 main().catch(console.error);
-

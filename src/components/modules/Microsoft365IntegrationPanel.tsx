@@ -1,9 +1,9 @@
 /**
  * Componente React: Microsoft 365 Integration Panel
- * 
+ *
  * Interface para gerenciar integrações Microsoft 365
  * no contexto de distribuidoras OPME
- * 
+ *
  * ENTIDADES:
  * - Hospitais (clientes, apresentações de produtos)
  * - Planos de Saúde (credenciamento, negociação de tabelas)
@@ -12,7 +12,21 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Card } from '@/components/oraclusx-ds';
-import { Calendar, Video, Mail, Users, FolderOpen, Plus, Send, Download, AlertCircle, Clock, Building2, Heart, Factory } from 'lucide-react';
+import {
+  Calendar,
+  Video,
+  Mail,
+  Users,
+  FolderOpen,
+  Plus,
+  Send,
+  Download,
+  AlertCircle,
+  Clock,
+  Building2,
+  Heart,
+  Factory,
+} from 'lucide-react';
 import { useDocumentTitle } from '@/hooks';
 import { useToast } from '@/contexts/ToastContext';
 import { Microsoft365Integration, type TeamsReuniao } from '@/lib/microsoft365/Microsoft365Service';
@@ -29,8 +43,10 @@ type TeamsEventoResumo = {
 export default function Microsoft365IntegrationPanel() {
   useDocumentTitle('Integração Microsoft 365');
   const { addToast } = useToast();
-  
-  const [activeTab, setActiveTab] = useState<'teams' | 'outlook' | 'contatos' | 'onedrive'>('teams');
+
+  const [activeTab, setActiveTab] = useState<'teams' | 'outlook' | 'contatos' | 'onedrive'>(
+    'teams'
+  );
   const [conectado, setConectado] = useState(false);
   const [loading, setLoading] = useState(false);
   const [proximasReunioes, setProximasReunioes] = useState<TeamsEventoResumo[]>([]);
@@ -45,7 +61,21 @@ export default function Microsoft365IntegrationPanel() {
     tipo_reuniao: '',
   });
   const [showFormularioReuniao, setShowFormularioReuniao] = useState(false);
-  
+
+  const carregarProximasReunioes = useCallback(async () => {
+    if (!conectado) return;
+
+    setLoading(true);
+    try {
+      const reunioes = await Microsoft365Integration.teams.listarProximasReunioes(7);
+      setProximasReunioes(reunioes);
+    } catch {
+      addToast('Erro ao carregar reuniões', 'error');
+    } finally {
+      setLoading(false);
+    }
+  }, [conectado, addToast]);
+
   // Verificar se está conectado
   const verificarConexao = useCallback(async () => {
     try {
@@ -60,9 +90,7 @@ export default function Microsoft365IntegrationPanel() {
   useEffect(() => {
     verificarConexao();
   }, [verificarConexao]);
-  
-  
-  
+
   const handleLogin = async () => {
     setLoading(true);
     try {
@@ -76,27 +104,13 @@ export default function Microsoft365IntegrationPanel() {
       setLoading(false);
     }
   };
-  
-  const carregarProximasReunioes = useCallback(async () => {
-    if (!conectado) return;
-    
-    setLoading(true);
-    try {
-      const reunioes = await Microsoft365Integration.teams.listarProximasReunioes(7);
-      setProximasReunioes(reunioes);
-    } catch {
-      addToast('Erro ao carregar reuniões', 'error');
-    } finally {
-      setLoading(false);
-    }
-  }, [conectado, addToast]);
-  
+
   const handleCriarReuniao = async () => {
     if (!novaReuniao.assunto || !novaReuniao.data_inicio || !novaReuniao.data_fim) {
       addToast('Preencha todos os campos obrigatórios', 'warning');
       return;
     }
-    
+
     setLoading(true);
     try {
       const reuniaoCompleta: TeamsReuniao = {
@@ -104,9 +118,10 @@ export default function Microsoft365IntegrationPanel() {
         descricao: novaReuniao.descricao,
         data_inicio: novaReuniao.data_inicio,
         data_fim: novaReuniao.data_fim,
-        participantes: novaReuniao.participantes.length > 0 
-          ? novaReuniao.participantes 
-          : [{ email: 'exemplo@email.com', nome: 'Participante', tipo: 'required' }],
+        participantes:
+          novaReuniao.participantes.length > 0
+            ? novaReuniao.participantes
+            : [{ email: 'exemplo@email.com', nome: 'Participante', tipo: 'required' }],
         lembrete_minutos: 15,
         ...(novaReuniao.entidade_tipo && {
           entidade_tipo: novaReuniao.entidade_tipo,
@@ -114,7 +129,7 @@ export default function Microsoft365IntegrationPanel() {
           tipo_reuniao: novaReuniao.tipo_reuniao,
         }),
       };
-      
+
       await Microsoft365Integration.teams.criarReuniao(reuniaoCompleta);
       addToast('Reunião criada com sucesso!', 'success');
       setShowFormularioReuniao(false);
@@ -136,7 +151,7 @@ export default function Microsoft365IntegrationPanel() {
       setLoading(false);
     }
   };
-  
+
   const criarReuniaoExemplo = async () => {
     const reuniao: TeamsReuniao = {
       assunto: 'Apresentação de Produtos OPME - Hospital XYZ',
@@ -161,7 +176,7 @@ export default function Microsoft365IntegrationPanel() {
       entidade_nome: 'Hospital XYZ',
       tipo_reuniao: 'apresentacao_produto',
     };
-    
+
     setLoading(true);
     try {
       await Microsoft365Integration.teams.criarReuniao(reuniao);
@@ -173,25 +188,26 @@ export default function Microsoft365IntegrationPanel() {
       setLoading(false);
     }
   };
-  
+
   const _adicionarParticipante = () => {
     setNovaReuniao({
       ...novaReuniao,
-      participantes: [
-        ...novaReuniao.participantes,
-        { email: '', nome: '', tipo: 'required' },
-      ],
+      participantes: [...novaReuniao.participantes, { email: '', nome: '', tipo: 'required' }],
     });
   };
-  
+
   const _removerParticipante = (index: number) => {
     setNovaReuniao({
       ...novaReuniao,
       participantes: novaReuniao.participantes.filter((_, i) => i !== index),
     });
   };
-  
-  const _atualizarParticipante = (index: number, campo: 'email' | 'nome' | 'tipo', valor: string) => {
+
+  const _atualizarParticipante = (
+    index: number,
+    campo: 'email' | 'nome' | 'tipo',
+    valor: string
+  ) => {
     const novosParticipantes = [...novaReuniao.participantes];
     novosParticipantes[index] = {
       ...novosParticipantes[index],
@@ -199,7 +215,7 @@ export default function Microsoft365IntegrationPanel() {
     };
     setNovaReuniao({ ...novaReuniao, participantes: novosParticipantes });
   };
-  
+
   // Renderizar tela de login
   if (!conectado) {
     return (
@@ -212,7 +228,8 @@ export default function Microsoft365IntegrationPanel() {
           </div>
           <h1 className="mb-2 text-[0.813rem] orx-orx-font-bold">Integração Microsoft 365</h1>
           <p className="text-[var(--text-secondary)] mb-6">
-            Conecte sua conta Microsoft 365 para acessar Teams, Outlook e OneDrive diretamente do ICARUS.
+            Conecte sua conta Microsoft 365 para acessar Teams, Outlook e OneDrive diretamente do
+            ICARUS.
           </p>
           <button
             onClick={handleLogin}
@@ -225,7 +242,7 @@ export default function Microsoft365IntegrationPanel() {
       </div>
     );
   }
-  
+
   // Renderizar interface principal
   return (
     <div className="min-h-screen p-6 bg-[var(--bg-light)] dark:bg-[var(--bg-dark)]">
@@ -304,7 +321,7 @@ export default function Microsoft365IntegrationPanel() {
               {showFormularioReuniao && (
                 <div className="mb-6 p-6 neuro-inset rounded-xl space-y-4">
                   <h3 className="mb-4 text-[0.813rem] orx-orx-font-semibold">Criar Nova Reunião</h3>
-                  
+
                   <input
                     type="text"
                     placeholder="Assunto da reunião"
@@ -323,20 +340,28 @@ export default function Microsoft365IntegrationPanel() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block mb-2 text-[0.813rem] orx-orx-font-medium">Data/Hora Início</label>
+                      <label className="block mb-2 text-[0.813rem] orx-orx-font-medium">
+                        Data/Hora Início
+                      </label>
                       <input
                         type="datetime-local"
                         value={novaReuniao.data_inicio}
-                        onChange={(e) => setNovaReuniao({ ...novaReuniao, data_inicio: e.target.value })}
+                        onChange={(e) =>
+                          setNovaReuniao({ ...novaReuniao, data_inicio: e.target.value })
+                        }
                         className="w-full px-4 py-2 rounded-lg neuro-flat bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-[var(--orx-primary)]"
                       />
                     </div>
                     <div>
-                      <label className="block mb-2 text-[0.813rem] orx-orx-font-medium">Data/Hora Fim</label>
+                      <label className="block mb-2 text-[0.813rem] orx-orx-font-medium">
+                        Data/Hora Fim
+                      </label>
                       <input
                         type="datetime-local"
                         value={novaReuniao.data_fim}
-                        onChange={(e) => setNovaReuniao({ ...novaReuniao, data_fim: e.target.value })}
+                        onChange={(e) =>
+                          setNovaReuniao({ ...novaReuniao, data_fim: e.target.value })
+                        }
                         className="w-full px-4 py-2 rounded-lg neuro-flat bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-[var(--orx-primary)]"
                       />
                     </div>
@@ -344,11 +369,19 @@ export default function Microsoft365IntegrationPanel() {
 
                   {/* Tipo de Entidade */}
                   <div>
-                    <label className="block mb-3 text-[0.813rem] orx-orx-font-medium">Tipo de Entidade</label>
+                    <label className="block mb-3 text-[0.813rem] orx-orx-font-medium">
+                      Tipo de Entidade
+                    </label>
                     <div className="grid grid-cols-3 gap-3">
                       <button
                         type="button"
-                        onClick={() => setNovaReuniao({ ...novaReuniao, entidade_tipo: 'hospital', tipo_reuniao: '' })}
+                        onClick={() =>
+                          setNovaReuniao({
+                            ...novaReuniao,
+                            entidade_tipo: 'hospital',
+                            tipo_reuniao: '',
+                          })
+                        }
                         className={`p-4 rounded-lg transition-all flex flex-col items-center gap-2 ${
                           novaReuniao.entidade_tipo === 'hospital'
                             ? 'neuro-raised bg-[var(--orx-primary)]/10 border-2 border-[var(--orx-primary)]'
@@ -360,7 +393,13 @@ export default function Microsoft365IntegrationPanel() {
                       </button>
                       <button
                         type="button"
-                        onClick={() => setNovaReuniao({ ...novaReuniao, entidade_tipo: 'plano_saude', tipo_reuniao: '' })}
+                        onClick={() =>
+                          setNovaReuniao({
+                            ...novaReuniao,
+                            entidade_tipo: 'plano_saude',
+                            tipo_reuniao: '',
+                          })
+                        }
                         className={`p-4 rounded-lg transition-all flex flex-col items-center gap-2 ${
                           novaReuniao.entidade_tipo === 'plano_saude'
                             ? 'neuro-raised bg-emerald-500/10 border-2 border-emerald-500'
@@ -372,7 +411,13 @@ export default function Microsoft365IntegrationPanel() {
                       </button>
                       <button
                         type="button"
-                        onClick={() => setNovaReuniao({ ...novaReuniao, entidade_tipo: 'industria', tipo_reuniao: '' })}
+                        onClick={() =>
+                          setNovaReuniao({
+                            ...novaReuniao,
+                            entidade_tipo: 'industria',
+                            tipo_reuniao: '',
+                          })
+                        }
                         className={`p-4 rounded-lg transition-all flex flex-col items-center gap-2 ${
                           novaReuniao.entidade_tipo === 'industria'
                             ? 'neuro-raised bg-orange-500/10 border-2 border-orange-500'
@@ -393,11 +438,13 @@ export default function Microsoft365IntegrationPanel() {
                         novaReuniao.entidade_tipo === 'hospital'
                           ? 'do Hospital (ex: Hospital São Lucas)'
                           : novaReuniao.entidade_tipo === 'plano_saude'
-                          ? 'do Plano de Saúde (ex: Unimed São Paulo)'
-                          : 'da Indústria (ex: Medtronic Brasil)'
+                            ? 'do Plano de Saúde (ex: Unimed São Paulo)'
+                            : 'da Indústria (ex: Medtronic Brasil)'
                       }`}
                       value={novaReuniao.entidade_nome}
-                      onChange={(e) => setNovaReuniao({ ...novaReuniao, entidade_nome: e.target.value })}
+                      onChange={(e) =>
+                        setNovaReuniao({ ...novaReuniao, entidade_nome: e.target.value })
+                      }
                       className="w-full px-4 py-2 rounded-lg neuro-flat bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-[var(--orx-primary)]"
                     />
                   )}
@@ -405,10 +452,14 @@ export default function Microsoft365IntegrationPanel() {
                   {/* Finalidade da Reunião */}
                   {novaReuniao.entidade_tipo && (
                     <div>
-                      <label className="block mb-2 text-[0.813rem] orx-orx-font-medium">Finalidade da Reunião</label>
+                      <label className="block mb-2 text-[0.813rem] orx-orx-font-medium">
+                        Finalidade da Reunião
+                      </label>
                       <select
                         value={novaReuniao.tipo_reuniao}
-                        onChange={(e) => setNovaReuniao({ ...novaReuniao, tipo_reuniao: e.target.value })}
+                        onChange={(e) =>
+                          setNovaReuniao({ ...novaReuniao, tipo_reuniao: e.target.value })
+                        }
                         className="w-full px-4 py-3 rounded-lg neuro-inset bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-[var(--orx-primary)]"
                       >
                         <option value="">Selecione a finalidade</option>

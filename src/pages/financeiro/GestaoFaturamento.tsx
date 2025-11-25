@@ -3,10 +3,15 @@
  * Gestão de faturamento hospitalar e convênios
  */
 
-import { useState } from 'react';
-import { ArrowLeft, FileText, DollarSign, TrendingUp, AlertCircle } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { ArrowLeft, FileText, DollarSign, TrendingUp, AlertCircle, Filter } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { NeumoButton, NeumoSearchBar } from '@/components/oraclusx-ds';
+import {
+  ModulePageNeumo,
+  type ModuleKpiItem,
+  type ModuleTabItem,
+} from '@/components/oraclusx-ds/ModulePageNeumo';
+import { Button } from '@/components/oraclusx-ds/Button';
 import { useDocumentTitle } from '@/hooks';
 
 interface Fatura {
@@ -27,107 +32,175 @@ const MOCK_FATURAS: Fatura[] = [
     convenio: 'Amil',
     valor: 15000,
     status: 'aprovada',
-    data_emissao: '2024-11-01'
-  }
+    data_emissao: '2024-11-01',
+  },
 ];
 
 export default function GestaoFaturamento() {
   useDocumentTitle('Faturamento');
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeTab, setActiveTab] = useState<'todas' | Fatura['status']>('todas');
   const [faturas] = useState<Fatura[]>(MOCK_FATURAS);
 
-  const filteredFaturas = faturas.filter(fat =>
-    fat.numero.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    fat.convenio.toLowerCase().includes(searchTerm.toLowerCase())
+  const kpis = useMemo<ModuleKpiItem[]>(
+    () => [
+      {
+        id: 'total',
+        icon: FileText,
+        label: 'Total Faturas',
+        value: faturas.length,
+        subtitle: 'Últimos 30 dias',
+        trend: '+12%',
+        trendPositive: true,
+      },
+      {
+        id: 'aprovadas',
+        icon: TrendingUp,
+        label: 'Aprovadas',
+        value: faturas.filter((f) => f.status === 'aprovada' || f.status === 'paga').length,
+        subtitle: 'Aprovadas / pagas',
+        trend: '+5%',
+        trendPositive: true,
+      },
+      {
+        id: 'pendentes',
+        icon: AlertCircle,
+        label: 'Pendentes',
+        value: faturas.filter((f) => f.status === 'pendente' || f.status === 'em_analise').length,
+        subtitle: 'Aguardando análise',
+        trend: '-3%',
+        trendPositive: true,
+      },
+      {
+        id: 'faturamento',
+        icon: DollarSign,
+        label: 'Faturamento Total',
+        value: 'R$ 2,3M',
+        subtitle: 'Período atual',
+        trend: '+8.4%',
+        trendPositive: true,
+      },
+    ],
+    [faturas]
   );
+
+  const tabs = useMemo<ModuleTabItem[]>(
+    () => [
+      { id: 'todas', label: 'Todas', count: faturas.length },
+      {
+        id: 'pendente',
+        label: 'Pendentes',
+        count: faturas.filter((f) => f.status === 'pendente').length,
+      },
+      {
+        id: 'em_analise',
+        label: 'Em Análise',
+        count: faturas.filter((f) => f.status === 'em_analise').length,
+      },
+      {
+        id: 'aprovada',
+        label: 'Aprovadas',
+        count: faturas.filter((f) => f.status === 'aprovada').length,
+      },
+      {
+        id: 'rejeitada',
+        label: 'Rejeitadas',
+        count: faturas.filter((f) => f.status === 'rejeitada').length,
+      },
+      { id: 'paga', label: 'Pagas', count: faturas.filter((f) => f.status === 'paga').length },
+    ],
+    [faturas]
+  );
+
+  const filteredFaturas = useMemo(() => {
+    const term = searchTerm.toLowerCase();
+    return faturas
+      .filter((f) => (activeTab === 'todas' ? true : f.status === activeTab))
+      .filter(
+        (f) => f.numero.toLowerCase().includes(term) || f.convenio.toLowerCase().includes(term)
+      );
+  }, [activeTab, faturas, searchTerm]);
 
   return (
-    <div className="min-h-screen p-6 bg-orx-bg-app">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-6">
-          <NeumoButton variant="secondary" leftIcon={ArrowLeft} onClick={() => navigate('/financeiro')} className="mb-4">
-            Voltar
-          </NeumoButton>
-          
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-3 rounded-xl bg-orx-bg-surface shadow-neumo-sm">
-                <FileText className="w-6 h-6 text-orx-primary" />
-              </div>
-              <div>
-                <h1 className="orx-text-3xl orx-orx-font-bold text-orx-text-primary">Faturamento</h1>
-                <p className="text-orx-text-secondary mt-1">Gestão de faturamento hospitalar</p>
-              </div>
-            </div>
-            <NeumoButton variant="primary" leftIcon={FileText}>Nova Fatura</NeumoButton>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          {[
-            { label: 'Total Faturas', value: '156', icon: FileText, color: 'bg-orx-primary/10 text-orx-primary' },
-            { label: 'Aprovadas', value: '98', icon: TrendingUp, color: 'bg-orx-success/10 text-orx-success' },
-            { label: 'Pendentes', value: '45', icon: AlertCircle, color: 'bg-orx-warning/10 text-orx-warning' },
-            { label: 'Faturamento Total', value: 'R$ 2.3M', icon: DollarSign, color: 'bg-orx-info/10 text-orx-info' }
-          ].map((stat, idx) => (
-            <div key={idx} className="bg-orx-bg-surface rounded-xl p-4 shadow-neumo">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="orx-text-xs text-orx-text-muted mb-1">{stat.label}</p>
-                  <p className="orx-text-2xl orx-orx-font-bold text-orx-text-primary">{stat.value}</p>
-                </div>
-                <div className={`p-3 rounded-lg ${stat.color}`}><stat.icon className="w-5 h-5" /></div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="bg-orx-bg-surface rounded-xl p-4 shadow-neumo mb-6">
-          <NeumoSearchBar value={searchTerm} onChange={setSearchTerm} placeholder="Buscar fatura ou convênio..." />
-        </div>
-
-        <div className="space-y-4">
-          {filteredFaturas.map((fatura) => (
-            <div key={fatura.id} className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary">{fatura.numero}</h3>
-                    <span className={`px-3 py-1 orx-text-xs orx-orx-font-medium rounded-lg ${
-                      fatura.status === 'paga' ? 'bg-orx-success/10 text-orx-success' :
-                      fatura.status === 'aprovada' ? 'bg-orx-info/10 text-orx-info' :
-                      fatura.status === 'em_analise' ? 'bg-orx-warning/10 text-orx-warning' :
-                      fatura.status === 'rejeitada' ? 'bg-orx-danger/10 text-orx-danger' :
-                      'bg-orx-text-muted/10 text-orx-text-muted'
-                    }`}>
-                      {fatura.status.replace('_', ' ').toUpperCase()}
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-3 gap-4">
-                    <div>
-                      <p className="orx-text-xs text-orx-text-muted mb-1">Convênio</p>
-                      <p className="orx-text-sm orx-orx-font-medium text-orx-text-primary">{fatura.convenio}</p>
-                    </div>
-                    <div>
-                      <p className="orx-text-xs text-orx-text-muted mb-1">Valor</p>
-                      <p className="orx-text-sm orx-orx-font-semibold text-orx-success">R$ {fatura.valor.toLocaleString('pt-BR')}</p>
-                    </div>
-                    <div>
-                      <p className="orx-text-xs text-orx-text-muted mb-1">Emissão</p>
-                      <p className="orx-text-sm orx-orx-font-medium text-orx-text-primary">
-                        {new Date(fatura.data_emissao).toLocaleDateString('pt-BR')}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <NeumoButton variant="secondary" size="sm">Detalhes</NeumoButton>
-              </div>
-            </div>
-          ))}
-        </div>
+    <ModulePageNeumo
+      title="Faturamento"
+      subtitle="Gestão hospitalar de faturamento e convênios"
+      kpis={kpis}
+      tabs={tabs}
+      activeTabId={activeTab}
+      onTabChange={(id) => setActiveTab(id as typeof activeTab)}
+      searchPlaceholder="Buscar fatura ou convênio..."
+      onSearchChange={setSearchTerm}
+      onFilterClick={() => alert('Filtros financeiros em desenvolvimento')}
+      primaryActionLabel="Nova Fatura"
+      onPrimaryAction={() => navigate('/financeiro/faturamento/nova')}
+    >
+      <div className="flex items-center justify-between mb-4">
+        <Button
+          variant="secondary"
+          icon={<ArrowLeft className="w-4 h-4" />}
+          onClick={() => navigate('/financeiro')}
+        >
+          Voltar ao Financeiro
+        </Button>
+        <button className="ic-card-neumo px-4 py-2 rounded-full flex items-center gap-2 text-sm font-semibold">
+          <Filter className="w-4 h-4" />
+          Exportar Relatório
+        </button>
       </div>
-    </div>
+
+      <div className="space-y-4">
+        {filteredFaturas.map((fatura) => (
+          <div key={fatura.id} className="ic-card-neumo rounded-[28px] p-6">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+              <div className="flex-1 space-y-3">
+                <div className="flex flex-wrap items-center gap-3">
+                  <h3 className="text-lg font-semibold text-white">{fatura.numero}</h3>
+                  <span
+                    className={`
+                      ic-kpi-pill px-3 py-1 text-xs font-semibold
+                      ${fatura.status === 'paga' ? 'text-emerald-300' : ''}
+                      ${fatura.status === 'aprovada' ? 'text-sky-300' : ''}
+                      ${fatura.status === 'em_analise' ? 'text-amber-300' : ''}
+                      ${fatura.status === 'rejeitada' ? 'text-rose-300' : ''}
+                      ${fatura.status === 'pendente' ? 'text-white/80' : ''}
+                    `}
+                  >
+                    {fatura.status.replace('_', ' ').toUpperCase()}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <p className="text-xs text-white/60">Convênio</p>
+                    <p className="text-sm font-medium text-white">{fatura.convenio}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-white/60">Valor</p>
+                    <p className="text-sm font-semibold text-emerald-300">
+                      R$ {fatura.valor.toLocaleString('pt-BR')}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-white/60">Emissão</p>
+                    <p className="text-sm font-medium text-white">
+                      {new Date(fatura.data_emissao).toLocaleDateString('pt-BR')}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <Button variant="secondary" size="sm">
+                  Detalhes
+                </Button>
+                <Button size="sm">Exportar XML</Button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </ModulePageNeumo>
   );
 }
-

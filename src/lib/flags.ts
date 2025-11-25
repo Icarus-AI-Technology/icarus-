@@ -17,5 +17,3 @@ export function isFeatureEnabled(envKey: string): boolean {
   if (!raw) return false;
   return /^(1|true|on|enabled)$/i.test(String(raw).trim());
 }
-
-

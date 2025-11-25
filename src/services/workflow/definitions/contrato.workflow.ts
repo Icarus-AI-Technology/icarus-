@@ -1,6 +1,6 @@
 /**
  * 📄 WORKFLOW: CONTRATOS
- * 
+ *
  * Workflow para gerenciamento completo de contratos
  * Desde a criação até a assinatura e vigência
  */
@@ -12,7 +12,7 @@ export const CONTRATO_WORKFLOW: WorkflowDefinition = {
   name: 'Gestão de Contratos',
   description: 'Workflow para gerenciamento de contratos com fornecedores, clientes e parceiros',
   module: 'contratos',
-  
+
   states: [
     {
       id: 'rascunho',
@@ -249,7 +249,7 @@ export const CONTRATO_WORKFLOW: WorkflowDefinition = {
       isFinal: true,
     },
   ],
-  
+
   notifications: [
     {
       id: 'notif-contrato-revisao-juridica',
@@ -257,7 +257,8 @@ export const CONTRATO_WORKFLOW: WorkflowDefinition = {
       stateId: 'em_revisao_juridica',
       recipients: ['assignee'],
       recipientRoles: ['juridico', 'advogado'],
-      template: 'Novo contrato para revisão jurídica: {tipo} com {parte_nome}. Valor: R$ {valor_total}',
+      template:
+        'Novo contrato para revisão jurídica: {tipo} com {parte_nome}. Valor: R$ {valor_total}',
       channels: ['email', 'whatsapp', 'in_app'],
     },
     {
@@ -315,7 +316,7 @@ export const CONTRATO_WORKFLOW: WorkflowDefinition = {
       channels: ['email', 'whatsapp', 'push', 'in_app'],
     },
   ],
-  
+
   validations: [
     {
       stateId: 'em_revisao_juridica',
@@ -333,7 +334,7 @@ export const CONTRATO_WORKFLOW: WorkflowDefinition = {
       validator: async (instance) => {
         const valorTotal = instance.metadata?.valorTotal || 0;
         const aprovadores = instance.metadata?.aprovadores || [];
-        
+
         if (valorTotal > 100000) {
           return (aprovadores as Array<{ cargo?: string }>).some((a) => a.cargo === 'presidente');
         }
@@ -345,10 +346,10 @@ export const CONTRATO_WORKFLOW: WorkflowDefinition = {
       type: 'required_fields',
       message: 'Todas as partes devem assinar o contrato',
       validator: async (instance) => {
-        const assinaturas = (instance.metadata?.assinaturas as Array<{ assinadoEm?: string }> | undefined) || [];
+        const assinaturas =
+          (instance.metadata?.assinaturas as Array<{ assinadoEm?: string }> | undefined) || [];
         return assinaturas.every((a) => !!a.assinadoEm);
       },
     },
   ],
 };
-

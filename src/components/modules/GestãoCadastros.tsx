@@ -1,9 +1,9 @@
 /**
  * Módulo 2: Gestão de Cadastros IA
  * Sistema inteligente de cadastros com IA Auto-Correção 99.2% precisão
- * 
+ *
  * CONFORME DOCUMENTAÇÃO OFICIAL (linhas 1688-2496)
- * 
+ *
  * SUB-MÓDULOS (8):
  * - 2.2.1: Médicos
  * - 2.2.2: Hospitais
@@ -13,7 +13,7 @@
  * - 2.2.6: Produtos OPME
  * - 2.2.7: Equipes Médicas
  * - 2.2.8: Transportadoras
- * 
+ *
  * INTEGRAÇÕES:
  * - Receita Federal (validar CPF/CNPJ)
  * - ViaCEP (buscar endereço)
@@ -23,8 +23,8 @@
  * - Google Places API (autocomplete endereço)
  */
 
-import { useState, useEffect } from"react";
-import { Card } from"@/components/oraclusx-ds";
+import React, { useState, useEffect } from 'react';
+import { Card } from '@/components/oraclusx-ds';
 import {
   Stethoscope,
   Building2,
@@ -39,9 +39,17 @@ import {
   CheckCircle,
   UserPlus,
   Truck,
-} from"lucide-react";
-import { useDocumentTitle, useMedicos, useHospitais } from"@/hooks";
-import { useToast } from"@/contexts/ToastContext";
+  Filter,
+  Upload,
+  Download,
+  Phone,
+  Mail,
+  Eye,
+  Edit2,
+  Trash2,
+} from 'lucide-react';
+import { useDocumentTitle, useMedicos, useHospitais } from '@/hooks';
+import { useToast } from '@/contexts/ToastContext';
 
 interface KPI {
   title: string;
@@ -59,123 +67,135 @@ interface Category {
   trend?: string;
 }
 
+type SelectedItem = {
+  id: string;
+  nome?: string;
+  [key: string]: unknown;
+} | null;
+
 export default function GestãoCadastros() {
-  useDocumentTitle("Gestão de Cadastros IA");
+  useDocumentTitle('Gestão de Cadastros IA');
 
   // Navegação
-  const [activeCategory, setActiveCategory] = useState("medicos");
-  const [activeTab, setActiveTab] = useState("todos");
+  const [activeCategory, setActiveCategory] = useState('medicos');
+  const [activeTab, setActiveTab] = useState('todos');
 
   // Backend Integration
   const { medicos, loading: loadingMedicos, error: errorMedicos, deleteMedico } = useMedicos();
-  const { hospitais, loading: loadingHospitais, error: errorHospitais, deleteHospital } = useHospitais();
+  const {
+    hospitais,
+    loading: loadingHospitais,
+    error: errorHospitais,
+    deleteHospital,
+  } = useHospitais();
   const { addToast } = useToast();
 
   // Estados locais
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedItem, setSelectedItem] = useState<SelectedItem>(null);
 
   // Categorias (8 sub-módulos conforme documentação)
   const categories: Category[] = [
     {
-      id:"medicos",
-      label:"Médicos Cirurgiões",
+      id: 'medicos',
+      label: 'Médicos Cirurgiões',
       icon: Stethoscope,
       count: medicos.length,
-      trend:"+15",
+      trend: '+15',
     },
     {
-      id:"hospitais",
-      label:"Hospitais & Clínicas",
+      id: 'hospitais',
+      label: 'Hospitais & Clínicas',
       icon: Building2,
       count: hospitais.length,
-      trend:"+8",
+      trend: '+8',
     },
     {
-      id:"pacientes",
-      label:"Pacientes",
+      id: 'pacientes',
+      label: 'Pacientes',
       icon: UserPlus,
       count: 1547,
-      trend:"+42",
+      trend: '+42',
     },
     {
-      id:"fornecedores",
-      label:"Fornecedores",
+      id: 'fornecedores',
+      label: 'Fornecedores',
       icon: Truck,
       count: 32,
-      trend:"+12",
+      trend: '+12',
     },
     {
-      id:"convenios",
-      label:"Convênios",
+      id: 'convenios',
+      label: 'Convênios',
       icon: Shield,
       count: 18,
-      trend:"+3",
+      trend: '+3',
     },
     {
-      id:"produtos",
-      label:"Produtos OPME",
+      id: 'produtos',
+      label: 'Produtos OPME',
       icon: Heart,
       count: 876,
-      trend:"+24",
+      trend: '+24',
     },
     {
-      id:"equipes",
-      label:"Equipes Médicas",
+      id: 'equipes',
+      label: 'Equipes Médicas',
       icon: Users,
       count: 38,
-      trend:"+6",
+      trend: '+6',
     },
     {
-      id:"transportadoras",
-      label:"Transportadoras",
+      id: 'transportadoras',
+      label: 'Transportadoras',
       icon: Package,
       count: 8,
-      trend:"+1",
+      trend: '+1',
     },
   ];
 
   // KPIs (4 cards - altura 140px, var(--orx-primary))
   const kpis: KPI[] = [
     {
-      title:"Total Médicos",
+      title: 'Total Médicos',
       value: medicos.length,
-      trend:"+15.3% este mês",
+      trend: '+15.3% este mês',
       icon: Stethoscope,
-      color:"blue",
+      color: 'blue',
     },
     {
-      title:"Hospitais Ativos",
-      value: hospitais.filter((h) => h.status ==="ativo").length,
-      trend:"+8.1%",
+      title: 'Hospitais Ativos',
+      value: hospitais.filter((h) => h.status === 'ativo').length,
+      trend: '+8.1%',
       icon: Building2,
-      color:"green",
+      color: 'green',
     },
     {
-      title:"Cadastros Validados",
-      value:"99.2%",
-      trend:"IA Auto-Correção",
+      title: 'Cadastros Validados',
+      value: '99.2%',
+      trend: 'IA Auto-Correção',
       icon: CheckCircle,
-      color:"indigo",
+      color: 'indigo',
     },
     {
-      title:"Cirurgias/Mês",
-      value:"247",
-      trend:"+22.4%",
+      title: 'Cirurgias/Mês',
+      value: '247',
+      trend: '+22.4%',
       icon: TrendingUp,
-      color:"purple",
+      color: 'purple',
     },
   ];
 
   // Efeitos
   useEffect(() => {
     if (errorMedicos) {
-      addToast(errorMedicos,"error");
+      addToast(errorMedicos, 'error');
     }
   }, [errorMedicos, addToast]);
 
   useEffect(() => {
     if (errorHospitais) {
-      addToast(errorHospitais,"error");
+      addToast(errorHospitais, 'error');
     }
   }, [errorHospitais, addToast]);
 
@@ -193,34 +213,34 @@ export default function GestãoCadastros() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Tem certeza que deseja excluir este cadastro?")) return;
+    if (!confirm('Tem certeza que deseja excluir este cadastro?')) return;
 
     try {
-      if (activeCategory ==="medicos") {
+      if (activeCategory === 'medicos') {
         await deleteMedico(id);
-        addToast("Médico excluído com sucesso!","success");
-      } else if (activeCategory ==="hospitais") {
+        addToast('Médico excluído com sucesso!', 'success');
+      } else if (activeCategory === 'hospitais') {
         await deleteHospital(id);
-        addToast("Hospital excluído com sucesso!","success");
+        addToast('Hospital excluído com sucesso!', 'success');
       }
     } catch {
-      addToast("Erro ao excluir cadastro","error");
+      addToast('Erro ao excluir cadastro', 'error');
     }
   };
 
   // Helpers
   const formatPhone = (phone?: string) => {
-    if (!phone) return"N/A";
+    if (!phone) return 'N/A';
     return phone;
   };
 
   const getStatusColor = (status: string): string => {
     const colors: Record<string, string> = {
-      ativo:"text-success bg-success/5",
-      inativo:"text-secondary bg-surface",
-      pendente:"text-warning bg-warning/5",
+      ativo: 'text-success bg-success/5',
+      inativo: 'text-secondary bg-surface',
+      pendente: 'text-warning bg-warning/5',
     };
-    return colors[status] ||"text-secondary bg-surface";
+    return colors[status] || 'text-secondary bg-surface';
   };
 
   // Filtrar dados
@@ -228,13 +248,17 @@ export default function GestãoCadastros() {
     const matchSearch =
       medico.nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
       medico.crm.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (medico.especialidade?.toLowerCase().includes(searchQuery.toLowerCase()) || false);
+      medico.especialidade?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      false;
 
     const matchTab =
-      activeTab ==="todos" ? true :
-      activeTab ==="ativos" ? medico.status ==="ativo" :
-      activeTab ==="inativos" ? medico.status ==="inativo" :
-      false;
+      activeTab === 'todos'
+        ? true
+        : activeTab === 'ativos'
+          ? medico.status === 'ativo'
+          : activeTab === 'inativos'
+            ? medico.status === 'inativo'
+            : false;
 
     return matchSearch && matchTab;
   });
@@ -245,10 +269,13 @@ export default function GestãoCadastros() {
       hospital.cidade.toLowerCase().includes(searchQuery.toLowerCase());
 
     const matchTab =
-      activeTab ==="todos" ? true :
-      activeTab ==="ativos" ? hospital.status ==="ativo" :
-      activeTab ==="inativos" ? hospital.status ==="inativo" :
-      false;
+      activeTab === 'todos'
+        ? true
+        : activeTab === 'ativos'
+          ? hospital.status === 'ativo'
+          : activeTab === 'inativos'
+            ? hospital.status === 'inativo'
+            : false;
 
     return matchSearch && matchTab;
   });
@@ -259,7 +286,10 @@ export default function GestãoCadastros() {
       {/* Header com busca e filtros */}
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <div className="flex gap-3">
-          <button onClick={handleCreate} className="neuro-button px-6 py-2 rounded-xl flex items-center gap-2">
+          <button
+            onClick={handleCreate}
+            className="neuro-button px-6 py-2 rounded-xl flex items-center gap-2"
+          >
             <Plus className="w-4 h-4" />
             Novo Médico
           </button>
@@ -289,17 +319,17 @@ export default function GestãoCadastros() {
       {/* Tabs */}
       <div className="flex gap-2 p-2 neuro-inset rounded-2xl w-fit">
         {[
-          { id:"todos", label:"Todos" },
-          { id:"ativos", label:"Ativos" },
-          { id:"inativos", label:"Inativos" },
+          { id: 'todos', label: 'Todos' },
+          { id: 'ativos', label: 'Ativos' },
+          { id: 'inativos', label: 'Inativos' },
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`px-6 py-3 rounded-xl orx-orx-font-medium transition-all ${
               activeTab === tab.id
-                ?"neuro-raised text-[var(--primary)]"
-                :"text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                ? 'neuro-raised text-[var(--primary)]'
+                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
             }`}
           >
             {tab.label}
@@ -321,13 +351,27 @@ export default function GestãoCadastros() {
             <table className="w-full">
               <thead className="border-b border-[var(--border)]">
                 <tr>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Nome</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">CRM</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Especialidade</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Hospital</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Contato</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Status</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Ações</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    Nome
+                  </th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    CRM
+                  </th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    Especialidade
+                  </th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    Hospital
+                  </th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    Contato
+                  </th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    Status
+                  </th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    Ações
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -341,16 +385,20 @@ export default function GestãoCadastros() {
                         <div className="w-10 h-10 rounded-full neuro-inset flex items-center justify-center text-[var(--primary)] font-display">
                           {medico.nome[0]}
                         </div>
-                        <span className="text-[var(--text-primary)] orx-orx-font-medium">{medico.nome}</span>
+                        <span className="text-[var(--text-primary)] orx-orx-font-medium">
+                          {medico.nome}
+                        </span>
                       </div>
                     </td>
                     <td className="p-4 text-[var(--text-primary)]">{medico.crm}</td>
                     <td className="p-4">
                       <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs bg-accent/10 text-accent orx-orx-font-medium">
-                        {medico.especialidade ||"N/A"}
+                        {medico.especialidade || 'N/A'}
                       </span>
                     </td>
-                    <td className="p-4 text-[var(--text-primary)]">{medico.hospital_principal ||"N/A"}</td>
+                    <td className="p-4 text-[var(--text-primary)]">
+                      {medico.hospital_principal || 'N/A'}
+                    </td>
                     <td className="p-4">
                       <div className="flex flex-col gap-1 text-body-xs text-[var(--text-secondary)]">
                         <div className="flex items-center gap-1">
@@ -359,12 +407,14 @@ export default function GestãoCadastros() {
                         </div>
                         <div className="flex items-center gap-1">
                           <Mail className="w-3 h-3" />
-                          {medico.email ||"N/A"}
+                          {medico.email || 'N/A'}
                         </div>
                       </div>
                     </td>
                     <td className="p-4">
-                      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs orx-orx-font-medium ${getStatusColor(medico.status)}`}>
+                      <span
+                        className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs orx-orx-font-medium ${getStatusColor(medico.status)}`}
+                      >
                         {medico.status}
                       </span>
                     </td>
@@ -415,7 +465,10 @@ export default function GestãoCadastros() {
       {/* Header com busca e filtros */}
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <div className="flex gap-3">
-          <button onClick={handleCreate} className="neuro-button px-6 py-2 rounded-xl flex items-center gap-2">
+          <button
+            onClick={handleCreate}
+            className="neuro-button px-6 py-2 rounded-xl flex items-center gap-2"
+          >
             <Plus className="w-4 h-4" />
             Novo Hospital
           </button>
@@ -439,17 +492,17 @@ export default function GestãoCadastros() {
       {/* Tabs */}
       <div className="flex gap-2 p-2 neuro-inset rounded-2xl w-fit">
         {[
-          { id:"todos", label:"Todos" },
-          { id:"ativos", label:"Ativos" },
-          { id:"inativos", label:"Inativos" },
+          { id: 'todos', label: 'Todos' },
+          { id: 'ativos', label: 'Ativos' },
+          { id: 'inativos', label: 'Inativos' },
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`px-6 py-3 rounded-xl orx-orx-font-medium transition-all ${
               activeTab === tab.id
-                ?"neuro-raised text-[var(--primary)]"
-                :"text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                ? 'neuro-raised text-[var(--primary)]'
+                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
             }`}
           >
             {tab.label}
@@ -471,13 +524,27 @@ export default function GestãoCadastros() {
             <table className="w-full">
               <thead className="border-b border-[var(--border)]">
                 <tr>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Nome</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">CNPJ</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Cidade/UF</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Tipo</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Contato</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Status</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Ações</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    Nome
+                  </th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    CNPJ
+                  </th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    Cidade/UF
+                  </th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    Tipo
+                  </th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    Contato
+                  </th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    Status
+                  </th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    Ações
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -489,7 +556,9 @@ export default function GestãoCadastros() {
                     <td className="p-4">
                       <div className="flex items-center gap-3">
                         <Building2 className="w-5 h-5 text-[var(--primary)]" />
-                        <span className="text-[var(--text-primary)] orx-orx-font-medium">{hospital.nome}</span>
+                        <span className="text-[var(--text-primary)] orx-orx-font-medium">
+                          {hospital.nome}
+                        </span>
                       </div>
                     </td>
                     <td className="p-4 text-[var(--text-primary)]">{hospital.cnpj}</td>
@@ -514,7 +583,9 @@ export default function GestãoCadastros() {
                       </div>
                     </td>
                     <td className="p-4">
-                      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs orx-orx-font-medium ${getStatusColor(hospital.status)}`}>
+                      <span
+                        className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs orx-orx-font-medium ${getStatusColor(hospital.status)}`}
+                      >
                         {hospital.status}
                       </span>
                     </td>
@@ -566,14 +637,19 @@ export default function GestãoCadastros() {
         {/* Header */}
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-heading-lg font-display text-[var(--text-primary)] mb-2">Gestão de Cadastros IA</h1>
+            <h1 className="text-heading-lg font-display text-[var(--text-primary)] mb-2">
+              Gestão de Cadastros IA
+            </h1>
             <p className="text-[var(--text-secondary)]">
-              Sistema inteligente de cadastros com validação em tempo real e dados mestres centralizados
+              Sistema inteligente de cadastros com validação em tempo real e dados mestres
+              centralizados
             </p>
           </div>
           <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-success/50 animate-pulse" />
-            <span className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">IA: 99.2% precisão</span>
+            <span className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">
+              IA: 99.2% precisão
+            </span>
           </div>
         </div>
 
@@ -584,17 +660,23 @@ export default function GestãoCadastros() {
               key={category.id}
               onClick={() => {
                 setActiveCategory(category.id);
-                setSearchQuery("");
-                setActiveTab("todos");
+                setSearchQuery('');
+                setActiveTab('todos');
               }}
               className={`flex flex-col items-center justify-center h-24 text-center rounded-xl transition-all duration-200 ${
-                activeCategory === category.id ?"neuro-raised scale-105" :"neuro-flat hover:neuro-raised"
+                activeCategory === category.id
+                  ? 'neuro-raised scale-105'
+                  : 'neuro-flat hover:neuro-raised'
               }`}
             >
               <category.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
-              <span className="text-body-xs text-[var(--text-primary)] orx-orx-font-medium">{category.label}</span>
+              <span className="text-body-xs text-[var(--text-primary)] orx-orx-font-medium">
+                {category.label}
+              </span>
               <div className="flex items-center gap-1 mt-1">
-                <span className="text-body-lg font-display text-[var(--text-primary)]">{category.count}</span>
+                <span className="text-body-lg font-display text-[var(--text-primary)]">
+                  {category.count}
+                </span>
                 {category.trend && <TrendingUp className="w-3 h-3 text-success" />}
               </div>
             </button>
@@ -608,7 +690,9 @@ export default function GestãoCadastros() {
               <div className="flex items-start justify-between h-full">
                 <div>
                   <p className="text-body-sm text-[var(--text-secondary)] mb-1">{kpi.title}</p>
-                  <h3 className="text-heading font-display text-[var(--text-primary)]">{kpi.value}</h3>
+                  <h3 className="text-heading font-display text-[var(--text-primary)]">
+                    {kpi.value}
+                  </h3>
                   {kpi.trend && (
                     <p className="text-body-xs text-success mt-2 flex items-center gap-1">
                       <TrendingUp className="w-3 h-3" />
@@ -625,24 +709,24 @@ export default function GestãoCadastros() {
         </div>
 
         {/* Content */}
-        {activeCategory ==="medicos" && renderMedicos()}
-        {activeCategory ==="hospitais" && renderHospitais()}
-        {!["medicos","hospitais"].includes(activeCategory) && (
+        {activeCategory === 'medicos' && renderMedicos()}
+        {activeCategory === 'hospitais' && renderHospitais()}
+        {!['medicos', 'hospitais'].includes(activeCategory) && (
           <Card className="neuro-raised p-12 text-center">
             {React.createElement(categories.find((c) => c.id === activeCategory)?.icon || Package, {
-              className:"w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4",
+              className: 'w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4',
             })}
             <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 orx-orx-font-medium">
               {categories.find((c) => c.id === activeCategory)?.label}
             </h3>
             <p className="text-[var(--text-secondary)]">Módulo em desenvolvimento</p>
             <p className="text-body-sm text-[var(--text-secondary)] mt-2">
-              Integrações planejadas: {activeCategory ==="pacientes" &&"Sistema de Prontuários"} 
-              {activeCategory ==="fornecedores" &&"ANVISA, Receita Federal"}
-              {activeCategory ==="convenios" &&"ANS, Tabela TUSS"}
-              {activeCategory ==="produtos" &&"ANVISA, Catálogo OPME"}
-              {activeCategory ==="equipes" &&"CRM, CFM"}
-              {activeCategory ==="transportadoras" &&"Correios, Jadlog, TNT"}
+              Integrações planejadas: {activeCategory === 'pacientes' && 'Sistema de Prontuários'}
+              {activeCategory === 'fornecedores' && 'ANVISA, Receita Federal'}
+              {activeCategory === 'convenios' && 'ANS, Tabela TUSS'}
+              {activeCategory === 'produtos' && 'ANVISA, Catálogo OPME'}
+              {activeCategory === 'equipes' && 'CRM, CFM'}
+              {activeCategory === 'transportadoras' && 'Correios, Jadlog, TNT'}
             </p>
           </Card>
         )}

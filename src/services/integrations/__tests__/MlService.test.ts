@@ -27,7 +27,10 @@ describe('MlService', () => {
     const result = await MlService.analyzeFinance('fluxo de caixa');
 
     expect(result.sentiment).toBe('positive');
-    expect(JSON.parse(mock.history.post[0].data)).toEqual({ text: 'fluxo de caixa', task: 'sentiment' });
+    expect(JSON.parse(mock.history.post[0].data)).toEqual({
+      text: 'fluxo de caixa',
+      task: 'sentiment',
+    });
   });
 
   it('calls optimizer endpoint', async () => {
@@ -78,8 +81,15 @@ describe('MlService', () => {
     mock.onPost(endpoint).reply(200, { status: 'ok' });
 
     const result = await MlService.persistVectors(
-      [{ externalId: 'doc-1', module: 'cirurgias', embedding: [0.1, 0.2], metadata: { idioma: 'pt-BR' } }],
-      endpoint,
+      [
+        {
+          externalId: 'doc-1',
+          module: 'cirurgias',
+          embedding: [0.1, 0.2],
+          metadata: { idioma: 'pt-BR' },
+        },
+      ],
+      endpoint
     );
 
     expect(result.status).toBe('ok');

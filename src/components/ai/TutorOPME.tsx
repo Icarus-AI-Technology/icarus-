@@ -11,10 +11,10 @@
  */
 
 import { useState, useRef, useEffect } from 'react';
-import { 
-  MessageSquare, 
-  Upload, 
-  FileText, 
+import {
+  MessageSquare,
+  Upload,
+  FileText,
   Sparkles,
   Image as ImageIcon,
   Send,
@@ -23,7 +23,7 @@ import {
   BookOpen,
   Scale,
   Package,
-  FileCheck
+  FileCheck,
 } from 'lucide-react';
 import ocrService from '@/lib/ocr-service';
 import { supabase } from '@/lib/supabase';
@@ -64,7 +64,7 @@ export function TutorOPME() {
   // ============================================
   // BUSCA NA BASE DE CONHECIMENTO
   // ============================================
-  
+
   interface KnowledgeDoc {
     categoria: string;
     conteudo_texto: string;
@@ -72,17 +72,16 @@ export function TutorOPME() {
 
   const searchKnowledge = async (query: string): Promise<KnowledgeDoc[]> => {
     try {
-      const { data, error } = await supabase
-        .rpc('buscar_conhecimento', {
-          query_text: query,
-          limit_results: 5,
-          min_rank: 0.1
-        });
+      const { data, error } = await supabase.rpc('buscar_conhecimento', {
+        query_text: query,
+        limit_results: 5,
+        min_rank: 0.1,
+      });
 
       if (error) throw error;
       return (data as KnowledgeDoc[]) || [];
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao buscar conhecimento:', err);
       return [];
     }
@@ -91,15 +90,15 @@ export function TutorOPME() {
   // ============================================
   // GERAÇÃO DE RESPOSTA COM OLLAMA + RAG
   // ============================================
-  
+
   const generateResponse = async (userQuery: string): Promise<string> => {
     try {
       // 1. Buscar contexto relevante na base de conhecimento
       const context = await searchKnowledge(userQuery);
-      
+
       // 2. Montar prompt com contexto (RAG)
       const contextText = context
-        .map(doc => `[${doc.categoria}] ${doc.conteudo_texto}`)
+        .map((doc) => `[${doc.categoria}] ${doc.conteudo_texto}`)
         .join('\n\n');
 
       const prompt = `Você é um especialista em OPME (Órteses, Próteses e Materiais Especiais) e trabalha auxiliando profissionais de saúde.
@@ -132,8 +131,8 @@ RESPOSTA:`;
           options: {
             temperature: 0.7,
             top_p: 0.9,
-          }
-        })
+          },
+        }),
       });
 
       if (!response.ok) {
@@ -142,9 +141,8 @@ RESPOSTA:`;
 
       const data = await response.json();
       return data.response;
-
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao gerar resposta:', err);
       return `Desculpe, não consegui processar sua pergunta no momento. 
 
@@ -160,11 +158,11 @@ RESPOSTA:`;
   // ============================================
   // PROCESSAR OCR (DOCUMENTOS/FOTOS)
   // ============================================
-  
+
   const processOCR = async (file: File): Promise<OCRResult> => {
     try {
       setIsLoading(true);
-      
+
       // Extrair texto
       const result = await ocrService.extractText(file);
 
@@ -180,10 +178,10 @@ RESPOSTA:`;
       return {
         text: result.text,
         confidence: result.confidence,
-        fields
+        fields,
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro no OCR:', err);
       throw error;
     } finally {
@@ -194,7 +192,7 @@ RESPOSTA:`;
   // ============================================
   // HANDLERS
   // ============================================
-  
+
   const handleSendMessage = async () => {
     if (!input.trim() && !selectedFile) return;
 
@@ -203,10 +201,10 @@ RESPOSTA:`;
       role: 'user',
       content: input || (selectedFile ? `[Arquivo: ${selectedFile.name}]` : ''),
       timestamp: new Date(),
-      type: selectedFile ? 'image' : 'text'
+      type: selectedFile ? 'image' : 'text',
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
 
@@ -216,9 +214,9 @@ RESPOSTA:`;
       // Se tem arquivo, processar OCR primeiro
       if (selectedFile) {
         const ocrResult = await processOCR(selectedFile);
-        
+
         response = `**📄 Documento processado com ${ocrResult.confidence.toFixed(1)}% de confiança**\n\n`;
-        
+
         if (ocrResult.fields && Object.keys(ocrResult.fields).length > 0) {
           response += '**Campos extraídos:**\n';
           Object.entries(ocrResult.fields).forEach(([key, value]) => {
@@ -228,10 +226,11 @@ RESPOSTA:`;
         }
 
         response += `**Texto completo:**\n${ocrResult.text.substring(0, 500)}${ocrResult.text.length > 500 ? '...' : ''}`;
-        
+
         // Perguntar ao usuário o que ele quer fazer com o documento
-        response += '\n\n**O que você gostaria de fazer com este documento?**\n- Gerar justificativa médica\n- Verificar conformidade\n- Conferir dados para faturamento\n- Outro (me diga!)';
-        
+        response +=
+          '\n\n**O que você gostaria de fazer com este documento?**\n- Gerar justificativa médica\n- Verificar conformidade\n- Conferir dados para faturamento\n- Outro (me diga!)';
+
         setSelectedFile(null);
       } else {
         // Resposta com IA (RAG + Ollama)
@@ -242,20 +241,22 @@ RESPOSTA:`;
         id: (Date.now() + 1).toString(),
         role: 'assistant',
         content: response,
-        timestamp: new Date()
+        timestamp: new Date(),
       };
 
-      setMessages(prev => [...prev, assistantMessage]);
-
+      setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro:', err);
-      setMessages(prev => [...prev, {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: '❌ Desculpe, ocorreu um erro ao processar sua solicitação. Tente novamente.',
-        timestamp: new Date()
-      }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: (Date.now() + 1).toString(),
+          role: 'assistant',
+          content: '❌ Desculpe, ocorreu um erro ao processar sua solicitação. Tente novamente.',
+          timestamp: new Date(),
+        },
+      ]);
     } finally {
       setIsLoading(false);
     }
@@ -271,28 +272,28 @@ RESPOSTA:`;
   // ============================================
   // ATALHOS RÁPIDOS
   // ============================================
-  
+
   const shortcuts = [
     {
       icon: FileText,
       label: 'Gerar Justificativa',
-      prompt: 'Preciso de ajuda para criar uma justificativa médica para OPME. Como estruturar?'
+      prompt: 'Preciso de ajuda para criar uma justificativa médica para OPME. Como estruturar?',
     },
     {
       icon: Scale,
       label: 'Evitar Glosas',
-      prompt: 'Quais são os principais motivos de glosa em OPME e como prevenir?'
+      prompt: 'Quais são os principais motivos de glosa em OPME e como prevenir?',
     },
     {
       icon: Package,
       label: 'Catálogo de Materiais',
-      prompt: 'Me explique sobre os tipos de materiais de síntese óssea disponíveis.'
+      prompt: 'Me explique sobre os tipos de materiais de síntese óssea disponíveis.',
     },
     {
       icon: FileCheck,
       label: 'Checklist Pré-Op',
-      prompt: 'Qual o checklist pré-cirúrgico completo para OPME?'
-    }
+      prompt: 'Qual o checklist pré-cirúrgico completo para OPME?',
+    },
   ];
 
   // ============================================
@@ -376,9 +377,7 @@ RESPOSTA:`;
             <h4 className="orx-orx-font-bold orx-text-lg mb-2 text-gray-900 dark:text-white">
               Olá! Sou seu Tutor IA especializado em OPME
             </h4>
-            <p className="orx-text-sm text-gray-600 dark:text-gray-400 mb-6">
-              Posso ajudar com:
-            </p>
+            <p className="orx-text-sm text-gray-600 dark:text-gray-400 mb-6">Posso ajudar com:</p>
             <div className="grid grid-cols-2 gap-2 mb-6">
               {shortcuts.map((shortcut) => (
                 <button
@@ -413,9 +412,9 @@ RESPOSTA:`;
             >
               <div className="orx-text-sm whitespace-pre-wrap">{message.content}</div>
               <div className="orx-text-xs opacity-70 mt-1">
-                {message.timestamp.toLocaleTimeString('pt-BR', { 
-                  hour: '2-digit', 
-                  minute: '2-digit' 
+                {message.timestamp.toLocaleTimeString('pt-BR', {
+                  hour: '2-digit',
+                  minute: '2-digit',
                 })}
               </div>
             </div>
@@ -458,7 +457,7 @@ RESPOSTA:`;
             accept="image/*,.pdf"
             className="hidden"
           />
-          
+
           <button
             onClick={() => fileInputRef.current?.click()}
             className="p-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
@@ -489,4 +488,3 @@ RESPOSTA:`;
     </div>
   );
 }
-

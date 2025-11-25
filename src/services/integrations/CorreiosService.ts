@@ -1,12 +1,12 @@
 /**
  * Correios Service - Rastreamento e Cotação de Frete
- * 
+ *
  * Funcionalidades:
  * - Rastreamento de encomendas
  * - Cálculo de frete
  * - Consulta de CEP
  * - Criação de etiquetas
- * 
+ *
  * Documentação API: https://www.correios.com.br/para-sua-empresa/correios-api
  */
 
@@ -78,8 +78,8 @@ export class CorreiosService {
       timeout: 10000,
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
+        Accept: 'application/json',
+      },
     });
 
     // Interceptor para adicionar auth
@@ -92,8 +92,8 @@ export class CorreiosService {
 
     // Interceptor para retry em caso de erro
     this.api.interceptors.response.use(
-      response => response,
-      async error => {
+      (response) => response,
+      async (error) => {
         const config = error.config;
         if (!config || !config.retry) {
           config.retry = 0;
@@ -101,7 +101,7 @@ export class CorreiosService {
 
         if (config.retry < 3) {
           config.retry += 1;
-          await new Promise(resolve => setTimeout(resolve, 1000 * config.retry));
+          await new Promise((resolve) => setTimeout(resolve, 1000 * config.retry));
           return this.api(config);
         }
 
@@ -116,7 +116,7 @@ export class CorreiosService {
   async rastrear(codigoRastreio: string): Promise<RastreioResponse> {
     try {
       const response = await this.api.get(`/sro/v1/objetos/${codigoRastreio}`);
-      
+
       return {
         codigo: response.data.codigo,
         eventos: response.data.eventos.map((evento: CorreiosEvento) => ({
@@ -124,8 +124,8 @@ export class CorreiosService {
           hora: evento.dtHrCriado.split('T')[1],
           local: `${evento.unidade.nome} - ${evento.unidade.endereco.cidade}/${evento.unidade.endereco.uf}`,
           status: evento.tipo,
-          descricao: evento.descricao
-        }))
+          descricao: evento.descricao,
+        })),
       };
     } catch (error: unknown) {
       const err = toAppError(error);
@@ -144,7 +144,7 @@ export class CorreiosService {
 
       // Serviços: 04014=SEDEX, 04510=PAC, 04782=SEDEX 10, 04790=SEDEX Hoje
       const servicos = ['04014', '04510', '04782', '04790'];
-      
+
       const requests = servicos.map(async (codServico) => {
         try {
           const response = await this.api.post('/preco/v1/nacional', {
@@ -158,11 +158,11 @@ export class CorreiosService {
             altura: params.altura || 2,
             largura: params.largura || 11,
             diametro: params.diametro || 5,
-            servicosAdicionais: this.montarServicosAdicionais(params)
+            servicosAdicionais: this.montarServicosAdicionais(params),
           });
 
           const data = response.data;
-          
+
           return {
             servico: this.getNomeServico(codServico),
             valor: parseFloat(data.pcFinal),
@@ -170,7 +170,7 @@ export class CorreiosService {
             valorSemAdicionais: parseFloat(data.pcBase),
             valorMaoPropria: parseFloat(data.pcMaoPropria || '0'),
             valorAvisoRecebimento: parseFloat(data.pcAvisoRecebimento || '0'),
-            valorValorDeclarado: parseFloat(data.pcValorDeclarado || '0')
+            valorValorDeclarado: parseFloat(data.pcValorDeclarado || '0'),
           };
         } catch (error: unknown) {
           return {
@@ -181,13 +181,13 @@ export class CorreiosService {
             valorMaoPropria: 0,
             valorAvisoRecebimento: 0,
             valorValorDeclarado: 0,
-            erro: toAppError(error).message
+            erro: toAppError(error).message,
           };
         }
       });
 
       const resultados = await Promise.all(requests);
-      return resultados.filter(r => !r.erro);
+      return resultados.filter((r) => !r.erro);
     } catch (error: unknown) {
       const err = toAppError(error);
       console.error('Erro ao calcular frete Correios:', err);
@@ -209,14 +209,14 @@ export class CorreiosService {
     try {
       const cepLimpo = cep.replace(/\D/g, '');
       const response = await this.api.get(`/cep/v1/${cepLimpo}`);
-      
+
       return {
         cep: response.data.cep,
         logradouro: response.data.logradouro,
         complemento: response.data.complemento,
         bairro: response.data.bairro,
         cidade: response.data.localidade,
-        uf: response.data.uf
+        uf: response.data.uf,
       };
     } catch (error: unknown) {
       const err = toAppError(error);
@@ -261,12 +261,12 @@ export class CorreiosService {
         destinatario: params.destinatario,
         servico: params.servico,
         peso: params.peso,
-        formato: 1 // caixa/pacote
+        formato: 1, // caixa/pacote
       });
 
       return {
         etiqueta: response.data.numero_etiqueta,
-        dataPostagem: response.data.data_postagem
+        dataPostagem: response.data.data_postagem,
       };
     } catch (error: unknown) {
       const err = toAppError(error);
@@ -293,11 +293,11 @@ export class CorreiosService {
 
   private montarServicosAdicionais(params: FreteParams): string {
     const servicos: string[] = [];
-    
+
     if (params.valorDeclarado && params.valorDeclarado > 0) {
       servicos.push('019'); // Valor declarado
     }
-    
+
     if (params.avisoRecebimento) {
       servicos.push('001'); // Aviso de recebimento
     }
@@ -311,7 +311,7 @@ export class CorreiosService {
       '04510': 'PAC',
       '04782': 'SEDEX 10',
       '04790': 'SEDEX Hoje',
-      '04804': 'SEDEX 12'
+      '04804': 'SEDEX 12',
     };
     return nomes[codigo] || 'Desconhecido';
   }
@@ -325,4 +325,3 @@ export class CorreiosService {
 }
 
 export default CorreiosService;
-

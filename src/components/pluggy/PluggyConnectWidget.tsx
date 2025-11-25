@@ -1,9 +1,9 @@
 /**
  * 🔌 PLUGGY CONNECT WIDGET — COMPONENTE REACT
- * 
+ *
  * Componente para conectar contas bancárias via Pluggy Connect Widget
  * Funciona em modo MOCK até ter credenciais reais
- * 
+ *
  * Features:
  * - Modal responsivo com Pluggy Connect Widget
  * - Modo MOCK com simulação de bancos
@@ -51,19 +51,41 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
   const [selectedBank, setSelectedBank] = useState<number | null>(null);
   const [step, setStep] = useState<'select' | 'credentials' | 'connecting'>('select');
   const [credentials, setCredentials] = useState({ username: '', password: '' });
-  
+
   const pluggyEnabled = import.meta.env.VITE_PLUGGY_ENABLED === 'true';
-  
+
+  const handlePluggySuccess = useCallback(
+    (itemData: { item: { id: string } }) => {
+      setSuccess(true);
+      onSuccess?.(itemData.item.id);
+
+      // Fechar após 2 segundos
+      setTimeout(() => {
+        onClose?.();
+      }, 2000);
+    },
+    [onClose, onSuccess]
+  );
+
+  const handlePluggyError = useCallback(
+    (error: unknown) => {
+      const errorMessage = (error as { message?: string })?.message || 'Erro ao conectar banco';
+      setError(errorMessage);
+      onError?.(new Error(errorMessage));
+    },
+    [onError]
+  );
+
   const initializeWidget = useCallback(async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       if (pluggyEnabled) {
         // Modo REAL: Gerar connect token
-        const token = await PluggyService.getConnectToken(userId);
+        const token = await PluggyService.createConnectToken(userId);
         setConnectToken(token.accessToken);
-        
+
         // Inicializar Pluggy Connect Widget
         // @ts-expect-error Pluggy Connect SDK é injetado via script externo no runtime
         if (window.PluggyConnect) {
@@ -80,7 +102,7 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
         }
       } else {
         // Modo MOCK: Simular carregamento
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
     } catch (error) {
       const err = error as Error;
@@ -95,50 +117,33 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
   useEffect(() => {
     initializeWidget();
   }, [initializeWidget]);
-  
-  
-  const handlePluggySuccess = useCallback((itemData: { item: { id: string } }) => {
-    setSuccess(true);
-    onSuccess?.(itemData.item.id);
-    
-    // Fechar após 2 segundos
-    setTimeout(() => {
-      onClose?.();
-    }, 2000);
-  }, [onClose, onSuccess]);
-  
-  const handlePluggyError = useCallback((error: unknown) => {
-    const errorMessage = (error as { message?: string })?.message || 'Erro ao conectar banco';
-    setError(errorMessage);
-    onError?.(new Error(errorMessage));
-  }, [onError]);
-  
+
   // MOCK: Selecionar banco
   const handleSelectBank = (bankId: number) => {
     setSelectedBank(bankId);
     setStep('credentials');
   };
-  
+
   // MOCK: Conectar banco
   const handleMockConnect = async () => {
     if (!credentials.username || !credentials.password) {
       setError('Preencha usuário e senha');
       return;
     }
-    
+
     setStep('connecting');
     setError(null);
-    
+
     try {
       // Simular conexão
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       // Simular sucesso aleatório (80% de chance)
       if (Math.random() > 0.2) {
         const mockItemId = `mock-item-${Date.now()}`;
         setSuccess(true);
         onSuccess?.(mockItemId);
-        
+
         setTimeout(() => {
           onClose?.();
         }, 2000);
@@ -146,13 +151,13 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
         throw new Error('Credenciais inválidas (mock)');
       }
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao conectar');
       setStep('credentials');
       onError?.(err instanceof Error ? err : new Error('Erro ao conectar'));
     }
   };
-  
+
   // MOCK: Voltar para seleção
   const handleBack = () => {
     setStep('select');
@@ -160,7 +165,7 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
     setCredentials({ username: '', password: '' });
     setError(null);
   };
-  
+
   return (
     <div
       className="fixed inset-0 bg-[rgba(0,0,0,0.5)] backdrop-blur-sm flex items-center justify-center z-[9999] p-4"
@@ -170,9 +175,7 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
         }
       }}
     >
-      <div
-        className="neumorphic-container w-full max-w-[500px] max-h-[90vh] overflow-y-auto p-8 relative"
-      >
+      <div className="neumorphic-container w-full max-w-[500px] max-h-[90vh] overflow-y-auto p-8 relative">
         {/* Close button */}
         <button
           onClick={onClose}
@@ -180,7 +183,7 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
         >
           <X className="w-4 h-4" />
         </button>
-        
+
         {/* Header */}
         <div className="mb-8 text-center">
           <div className="w-16 h-16 rounded-full bg-[linear-gradient(135deg,var(--orx-primary),var(--orx-secondary))] flex items-center justify-center mx-auto mb-4">
@@ -190,33 +193,28 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
             Conectar Banco
           </h2>
           <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">
-            {pluggyEnabled 
+            {pluggyEnabled
               ? 'Conecte sua conta bancária de forma segura via Open Finance Brasil'
-              : '⚠️ Modo MOCK: Simule a conexão para desenvolvimento'
-            }
+              : '⚠️ Modo MOCK: Simule a conexão para desenvolvimento'}
           </p>
         </div>
-        
+
         {/* Loading */}
         {loading && (
           <div className="text-center py-8">
             <Loader2 className="w-12 h-12 text-[var(--orx-primary)] animate-spin mx-auto mb-4" />
-            <p className="text-[var(--orx-text-secondary)]">
-              Inicializando widget...
-            </p>
+            <p className="text-[var(--orx-text-secondary)]">Inicializando widget...</p>
           </div>
         )}
-        
+
         {/* Error */}
         {error && !loading && !success && (
           <div className="p-4 rounded-xl bg-[var(--orx-error-light)] border border-[var(--orx-error)] flex items-center gap-3 mb-4">
             <AlertCircle className="w-5 h-5 text-[var(--orx-error)] shrink-0" />
-            <p className="text-[0.813rem] text-[var(--orx-error-dark)]">
-              {error}
-            </p>
+            <p className="text-[0.813rem] text-[var(--orx-error-dark)]">{error}</p>
           </div>
         )}
-        
+
         {/* Success */}
         {success && (
           <div className="text-center py-8">
@@ -231,16 +229,16 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
             </p>
           </div>
         )}
-        
+
         {/* MOCK: Bank Selection */}
         {!pluggyEnabled && !loading && !success && step === 'select' && (
           <div>
             <h3 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-4">
               Selecione seu banco
             </h3>
-            
+
             <div className="grid grid-cols-2 gap-3">
-              {MOCK_BANKS.map(bank => (
+              {MOCK_BANKS.map((bank) => (
                 <button
                   key={bank.id}
                   onClick={() => handleSelectBank(bank.id)}
@@ -255,7 +253,7 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
             </div>
           </div>
         )}
-        
+
         {/* MOCK: Credentials */}
         {!pluggyEnabled && !loading && !success && step === 'credentials' && (
           <div>
@@ -265,11 +263,11 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
             >
               ← Voltar
             </button>
-            
+
             <h3 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-4">
-              Conectar {MOCK_BANKS.find(b => b.id === selectedBank)?.name}
+              Conectar {MOCK_BANKS.find((b) => b.id === selectedBank)?.name}
             </h3>
-            
+
             <div className="mb-4">
               <label className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-secondary)] mb-2 block">
                 Usuário / CPF / Agência
@@ -282,7 +280,7 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
                 className="w-full p-3 rounded-lg border border-[var(--orx-gray-300)] bg-[var(--orx-bg-light)] text-[var(--orx-text-primary)] text-[0.813rem]"
               />
             </div>
-            
+
             <div className="mb-6">
               <label className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-secondary)] mb-2 block">
                 Senha
@@ -295,30 +293,28 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
                 className="w-full p-3 rounded-lg border border-[var(--orx-gray-300)] bg-[var(--orx-bg-light)] text-[var(--orx-text-primary)] text-[0.813rem]"
               />
             </div>
-            
+
             <button
               onClick={handleMockConnect}
               className="neumorphic-button inline-flex items-center gap-2 w-full p-3 rounded-xl bg-[var(--orx-primary)] text-white orx-orx-font-semibold text-[0.813rem] cursor-pointer"
             >
               Conectar
             </button>
-            
+
             <p className="mt-4 text-[0.813rem] text-[var(--orx-text-secondary)] text-center">
               🔒 Suas credenciais são criptografadas e protegidas
             </p>
           </div>
         )}
-        
+
         {/* MOCK: Connecting */}
         {!pluggyEnabled && !loading && !success && step === 'connecting' && (
           <div className="text-center py-8">
             <Loader2 className="w-12 h-12 text-[var(--orx-primary)] animate-spin mx-auto mb-4" />
-            <p className="text-[var(--orx-text-secondary)]">
-              Conectando ao banco...
-            </p>
+            <p className="text-[var(--orx-text-secondary)]">Conectando ao banco...</p>
           </div>
         )}
-        
+
         {/* Real mode placeholder */}
         {pluggyEnabled && !loading && !success && !error && (
           <div id="pluggy-connect-container" className="min-h-[400px]" />
@@ -329,4 +325,3 @@ export const PluggyConnectWidget: React.FC<PluggyConnectWidgetProps> = ({
 };
 
 export default PluggyConnectWidget;
-

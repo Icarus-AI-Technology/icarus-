@@ -256,4 +256,3 @@ Gere código production-ready que siga as melhores práticas da indústria.`;
 
 // Export singleton instance
 export const claudeService = new ClaudeService();
-

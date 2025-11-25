@@ -1,14 +1,14 @@
 /**
  * 🔌 PLUGGY SERVICE — TEMPLATE COM MOCK DATA
- * 
+ *
  * Service completo para integração Pluggy (Open Finance Brasil)
- * 
+ *
  * ⚠️ MODO TEMPLATE:
  * - Todos os métodos retornam MOCK DATA até a integração real ser ativada
  * - Para ativar: Configure PLUGGY_CLIENT_ID e PLUGGY_CLIENT_SECRET no .env
  * - Instale: npm install pluggy-sdk
  * - Descomente a importação do PluggyClient
- * 
+ *
  * @see https://docs.pluggy.ai/
  * @see docs/PLUGGY_SETUP_GUIDE.md
  */
@@ -17,7 +17,16 @@
 type PluggyConnectToken = { accessToken: string; expiresAt: Date };
 type PluggyItem = {
   id: string;
-  connector: { id: number; name: string; imageUrl?: string; primaryColor?: string; type?: string; country?: string; hasMFA?: boolean; supportsPaymentInitiation?: boolean };
+  connector: {
+    id: number;
+    name: string;
+    imageUrl?: string;
+    primaryColor?: string;
+    type?: string;
+    country?: string;
+    hasMFA?: boolean;
+    supportsPaymentInitiation?: boolean;
+  };
   status: string;
   error: string | null;
   executionStatus: string;
@@ -35,7 +44,15 @@ type PluggyAccount = {
   balance: number;
   currencyCode?: string;
   bankData?: { transferNumber?: string; closingBalance?: number };
-  creditData?: { level?: string; brand?: string; balanceCloseDate?: string; balanceDueDate?: string; availableCreditLimit?: number; creditLimit?: number; minimumPayment?: number };
+  creditData?: {
+    level?: string;
+    brand?: string;
+    balanceCloseDate?: string;
+    balanceDueDate?: string;
+    availableCreditLimit?: number;
+    creditLimit?: number;
+    minimumPayment?: number;
+  };
   owner?: string;
   taxNumber?: string;
 };
@@ -52,7 +69,12 @@ type PluggyTransaction = {
   category?: string;
   merchant?: { name?: string; businessName?: string; cnpj?: string };
 };
-type TransactionListResponse = { results: PluggyTransaction[]; page: number; total: number; totalPages: number };
+type TransactionListResponse = {
+  results: PluggyTransaction[];
+  page: number;
+  total: number;
+  totalPages: number;
+};
 type PluggyPayment = {
   id: string;
   itemId: string;
@@ -105,10 +127,14 @@ type PluggyWebhook = { event: string; data: Record<string, unknown> };
 
 const runtimeEnv: Record<string, string | undefined> =
   // Vite runtime
-  typeof import.meta !== 'undefined' && typeof (import.meta as unknown as { env?: Record<string, string | undefined> }).env !== 'undefined'
-    ? ((import.meta as unknown as { env: Record<string, string | undefined> }).env)
+  typeof import.meta !== 'undefined' &&
+  typeof (import.meta as unknown as { env?: Record<string, string | undefined> }).env !==
+    'undefined'
+    ? (import.meta as unknown as { env: Record<string, string | undefined> }).env
     : // Node/PM2
-      (typeof process !== 'undefined' ? (process.env as Record<string, string | undefined>) : {});
+      typeof process !== 'undefined'
+      ? (process.env as Record<string, string | undefined>)
+      : {};
 
 const getRuntimeEnv = (key: string): string | undefined => runtimeEnv?.[key];
 
@@ -168,11 +194,11 @@ const MOCK_ACCOUNTS: PluggyAccount[] = [
     number: '****1234',
     name: 'Conta Corrente',
     marketingName: 'NuConta',
-    balance: 45680.50,
+    balance: 45680.5,
     currencyCode: 'BRL',
     bankData: {
       transferNumber: '260-001-12345678-9',
-      closingBalance: 45680.50,
+      closingBalance: 45680.5,
     },
     owner: 'ICARUS DISTRIBUIDORA LTDA',
     taxNumber: '12.345.678/0001-90',
@@ -185,15 +211,15 @@ const MOCK_ACCOUNTS: PluggyAccount[] = [
     number: '****5678',
     name: 'Cartão de Crédito',
     marketingName: 'Nubank Ultravioleta',
-    balance: -2340.80,
+    balance: -2340.8,
     currencyCode: 'BRL',
     creditData: {
       level: 'BLACK',
       brand: 'MASTERCARD',
       balanceCloseDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
       balanceDueDate: new Date(Date.now() + 12 * 24 * 60 * 60 * 1000).toISOString(),
-      availableCreditLimit: 47659.20,
-      creditLimit: 50000.00,
+      availableCreditLimit: 47659.2,
+      creditLimit: 50000.0,
       minimumPayment: 234.08,
     },
   },
@@ -222,8 +248,8 @@ const MOCK_TRANSACTIONS: PluggyTransaction[] = [
     accountId: 'acc-001',
     date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
     description: 'PIX Recebido - Pagamento Cliente',
-    amount: 8540.00,
-    balance: 45680.50,
+    amount: 8540.0,
+    balance: 45680.5,
     currencyCode: 'BRL',
     type: 'CREDIT',
     status: 'POSTED',
@@ -239,8 +265,8 @@ const MOCK_TRANSACTIONS: PluggyTransaction[] = [
     accountId: 'acc-001',
     date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
     description: 'Pagamento Fornecedor OPME',
-    amount: -12340.50,
-    balance: 37140.50,
+    amount: -12340.5,
+    balance: 37140.5,
     currencyCode: 'BRL',
     type: 'DEBIT',
     status: 'POSTED',
@@ -256,7 +282,7 @@ const MOCK_TRANSACTIONS: PluggyTransaction[] = [
     accountId: 'acc-003',
     date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
     description: 'Folha de Pagamento',
-    amount: -45680.00,
+    amount: -45680.0,
     balance: 128340.25,
     currencyCode: 'BRL',
     type: 'DEBIT',
@@ -273,14 +299,14 @@ export class PluggyService {
   // ============================================
   // AUTENTICAÇÃO & CONEXÃO
   // ============================================
-  
+
   /**
    * Criar Connect Token para o widget
    * Este token permite que o frontend abra o widget de conexão bancária
    */
   static async createConnectToken(userId: string): Promise<PluggyConnectToken> {
     console.log(`📝 Creating Connect Token for user: ${userId}`);
-    
+
     if (!PLUGGY_ENABLED) {
       // MOCK: Retornar token fake
       return {
@@ -288,13 +314,13 @@ export class PluggyService {
         expiresAt: new Date(Date.now() + 3600000), // 1 hora
       };
     }
-    
+
     // 🔧 INTEGRAÇÃO REAL (descomente quando ativado)
     // try {
     //   const connectToken = await pluggy.createConnectToken({
     //     clientUserId: userId,
     //   });
-    //   
+    //
     //   return {
     //     accessToken: connectToken.accessToken,
     //     expiresAt: new Date(Date.now() + 3600000),
@@ -304,53 +330,53 @@ export class PluggyService {
     //   console.error('Error creating Connect Token:', err);
     //   throw new Error(`Erro ao criar Connect Token: ${err.message}`);
     // }
-    
+
     throw new Error('Pluggy não está habilitado. Configure VITE_PLUGGY_ENABLED=true');
   }
-  
+
   /**
    * Listar todos os items (conexões bancárias) de um usuário
    */
   static async listItems(userId: string): Promise<PluggyItem[]> {
     console.log(`📋 Listing items for user: ${userId}`);
-    
+
     if (!PLUGGY_ENABLED) {
       // MOCK: Retornar dados fake
       return MOCK_ITEMS;
     }
-    
+
     // 🔧 INTEGRAÇÃO REAL
     // try {
     //   const items = await pluggy.fetchItems({
     //     clientUserId: userId,
     //   });
-    //   
+    //
     //   return items.results;
     // } catch (error) {
     // const err = error as Error;
     //   throw new Error(`Erro ao listar items: ${err.message}`);
     // }
-    
+
     throw new Error('Pluggy não está habilitado');
   }
-  
+
   /**
    * Atualizar um item (re-sincronizar dados)
    */
   static async updateItem(itemId: string): Promise<PluggyItem> {
     console.log(`🔄 Updating item: ${itemId}`);
-    
+
     if (!PLUGGY_ENABLED) {
       // MOCK: Retornar item atualizado
-      const item = MOCK_ITEMS.find(i => i.id === itemId);
+      const item = MOCK_ITEMS.find((i) => i.id === itemId);
       if (!item) throw new Error('Item não encontrado');
-      
+
       return {
         ...item,
         lastUpdatedAt: new Date().toISOString(),
       };
     }
-    
+
     // 🔧 INTEGRAÇÃO REAL
     // try {
     //   const item = await pluggy.updateItem(itemId);
@@ -359,21 +385,21 @@ export class PluggyService {
     // const err = error as Error;
     //   throw new Error(`Erro ao atualizar item: ${err.message}`);
     // }
-    
+
     throw new Error('Pluggy não está habilitado');
   }
-  
+
   /**
    * Deletar um item (desconectar banco)
    */
   static async deleteItem(itemId: string): Promise<{ success: boolean }> {
     console.log(`🗑️ Deleting item: ${itemId}`);
-    
+
     if (!PLUGGY_ENABLED) {
       // MOCK: Simular exclusão
       return { success: true };
     }
-    
+
     // 🔧 INTEGRAÇÃO REAL
     // try {
     //   await pluggy.deleteItem(itemId);
@@ -382,25 +408,25 @@ export class PluggyService {
     // const err = error as Error;
     //   throw new Error(`Erro ao deletar item: ${err.message}`);
     // }
-    
+
     throw new Error('Pluggy não está habilitado');
   }
-  
+
   // ============================================
   // CONTAS BANCÁRIAS
   // ============================================
-  
+
   /**
    * Buscar todas as contas de um item
    */
   static async fetchAccounts(itemId: string): Promise<PluggyAccount[]> {
     console.log(`💳 Fetching accounts for item: ${itemId}`);
-    
+
     if (!PLUGGY_ENABLED) {
       // MOCK: Filtrar contas por item
-      return MOCK_ACCOUNTS.filter(acc => acc.itemId === itemId);
+      return MOCK_ACCOUNTS.filter((acc) => acc.itemId === itemId);
     }
-    
+
     // 🔧 INTEGRAÇÃO REAL
     // try {
     //   const accounts = await pluggy.fetchAccounts(itemId);
@@ -409,44 +435,44 @@ export class PluggyService {
     // const err = error as Error;
     //   throw new Error(`Erro ao buscar contas: ${err.message}`);
     // }
-    
+
     throw new Error('Pluggy não está habilitado');
   }
-  
+
   /**
    * Buscar todas as contas de todos os items de um usuário
    */
   static async fetchAllAccounts(userId: string): Promise<PluggyAccount[]> {
     console.log(`💳 Fetching all accounts for user: ${userId}`);
-    
+
     if (!PLUGGY_ENABLED) {
       // MOCK: Retornar todas as contas
       return MOCK_ACCOUNTS;
     }
-    
+
     // 🔧 INTEGRAÇÃO REAL
     // try {
     //   const items = await this.listItems(userId);
     //   const allAccounts: PluggyAccount[] = [];
-    //   
+    //
     //   for (const item of items) {
     //     const accounts = await this.fetchAccounts(item.id);
     //     allAccounts.push(...accounts);
     //   }
-    //   
+    //
     //   return allAccounts;
     // } catch (error) {
     // const err = error as Error;
     //   throw new Error(`Erro ao buscar todas as contas: ${err.message}`);
     // }
-    
+
     throw new Error('Pluggy não está habilitado');
   }
-  
+
   // ============================================
   // TRANSAÇÕES
   // ============================================
-  
+
   /**
    * Buscar transações de uma conta
    */
@@ -460,11 +486,11 @@ export class PluggyService {
     }
   ): Promise<TransactionListResponse> {
     console.log(`📊 Fetching transactions for account: ${accountId}`, params);
-    
+
     if (!PLUGGY_ENABLED) {
       // MOCK: Filtrar transações por conta
-      const transactions = MOCK_TRANSACTIONS.filter(tx => tx.accountId === accountId);
-      
+      const transactions = MOCK_TRANSACTIONS.filter((tx) => tx.accountId === accountId);
+
       return {
         results: transactions,
         page: params?.page || 1,
@@ -472,7 +498,7 @@ export class PluggyService {
         totalPages: 1,
       };
     }
-    
+
     // 🔧 INTEGRAÇÃO REAL
     // try {
     //   const transactions = await pluggy.fetchTransactions(accountId, {
@@ -481,26 +507,26 @@ export class PluggyService {
     //     page: params?.page || 1,
     //     pageSize: params?.pageSize || 100,
     //   });
-    //   
+    //
     //   return transactions;
     // } catch (error) {
     // const err = error as Error;
     //   throw new Error(`Erro ao buscar transações: ${err.message}`);
     // }
-    
+
     throw new Error('Pluggy não está habilitado');
   }
-  
+
   // ============================================
   // PAGAMENTOS PIX
   // ============================================
-  
+
   /**
    * Criar pagamento PIX
    */
   static async createPayment(dados: CreatePaymentRequest): Promise<PluggyPayment> {
     console.log(`💸 Creating PIX payment:`, dados);
-    
+
     if (!PLUGGY_ENABLED) {
       // MOCK: Retornar pagamento criado
       const mockPayment: PluggyPayment = {
@@ -514,10 +540,10 @@ export class PluggyService {
         scheduledDate: dados.scheduledDate,
         createdAt: new Date().toISOString(),
       };
-      
+
       return mockPayment;
     }
-    
+
     // 🔧 INTEGRAÇÃO REAL
     // try {
     //   const payment = await pluggy.createPayment(dados);
@@ -526,16 +552,16 @@ export class PluggyService {
     // const err = error as Error;
     //   throw new Error(`Erro ao criar pagamento: ${err.message}`);
     // }
-    
+
     throw new Error('Pluggy não está habilitado');
   }
-  
+
   /**
    * Verificar status de pagamento
    */
   static async getPayment(paymentId: string): Promise<PluggyPayment> {
     console.log(`🔍 Getting payment status: ${paymentId}`);
-    
+
     if (!PLUGGY_ENABLED) {
       // MOCK: Retornar pagamento aprovado
       const mockPayment: PluggyPayment = {
@@ -546,16 +572,16 @@ export class PluggyService {
           pixKey: '12345678901',
           name: 'Fornecedor Exemplo',
         },
-        amount: 1000.00,
+        amount: 1000.0,
         description: 'Pagamento teste',
         status: 'APPROVED',
         createdAt: new Date(Date.now() - 60000).toISOString(),
         approvedAt: new Date().toISOString(),
       };
-      
+
       return mockPayment;
     }
-    
+
     // 🔧 INTEGRAÇÃO REAL
     // try {
     //   const payment = await pluggy.fetchPayment(paymentId);
@@ -564,20 +590,20 @@ export class PluggyService {
     // const err = error as Error;
     //   throw new Error(`Erro ao buscar pagamento: ${err.message}`);
     // }
-    
+
     throw new Error('Pluggy não está habilitado');
   }
-  
+
   // ============================================
   // INVESTIMENTOS
   // ============================================
-  
+
   /**
    * Buscar investimentos de um item
    */
   static async fetchInvestments(itemId: string): Promise<PluggyInvestment[]> {
     console.log(`📈 Fetching investments for item: ${itemId}`);
-    
+
     if (!PLUGGY_ENABLED) {
       // MOCK: Retornar investimentos fake
       return [
@@ -585,13 +611,13 @@ export class PluggyService {
           id: 'inv-001',
           itemId,
           type: 'FIXED_INCOME',
-          balance: 50000.00,
+          balance: 50000.0,
           name: 'CDB Itaú 110% CDI',
           code: 'CDB-ITU-001',
           issuer: 'Itaú Unibanco',
           rate: 110,
-          amount: 45000.00,
-          amountProfit: 5000.00,
+          amount: 45000.0,
+          amountProfit: 5000.0,
           dueDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
           purchaseDate: new Date(Date.now() - 180 * 24 * 60 * 60 * 1000).toISOString(),
           currencyCode: 'BRL',
@@ -599,7 +625,7 @@ export class PluggyService {
         },
       ];
     }
-    
+
     // 🔧 INTEGRAÇÃO REAL
     // try {
     //   const investments = await pluggy.fetchInvestments(itemId);
@@ -608,70 +634,70 @@ export class PluggyService {
     // const err = error as Error;
     //   throw new Error(`Erro ao buscar investimentos: ${err.message}`);
     // }
-    
+
     throw new Error('Pluggy não está habilitado');
   }
-  
+
   // ============================================
   // WEBHOOKS
   // ============================================
-  
+
   /**
    * Processar webhook da Pluggy
    */
   static async handleWebhook(event: PluggyWebhook): Promise<{ success: boolean }> {
     console.log('🔔 Webhook recebido:', event);
-    
+
     // Lógica de processamento de webhooks
     // (funciona mesmo em modo MOCK para testes locais)
-    
+
     switch (event.event) {
       case 'item/created':
         console.log('✅ Item criado:', event.data);
         break;
-        
+
       case 'item/updated':
         console.log('🔄 Item atualizado:', event.data);
         break;
-        
+
       case 'item/deleted':
         console.log('🗑️ Item deletado:', event.data);
         break;
-        
+
       case 'item/error':
         console.log('❌ Erro no item:', event.data);
         break;
-        
+
       case 'payment/approved':
         console.log('✅ Pagamento aprovado:', event.data);
         break;
-        
+
       case 'payment/rejected':
         console.log('❌ Pagamento rejeitado:', event.data);
         break;
-        
+
       default:
         console.log(`⚠️ Evento não tratado: ${event.event}`);
     }
-    
+
     return { success: true };
   }
-  
+
   // ============================================
   // ANÁLISES & INSIGHTS
   // ============================================
-  
+
   /**
    * Obter saldo total consolidado de todas as contas
    */
   static async getTotalBalance(userId: string): Promise<number> {
     const accounts = await this.fetchAllAccounts(userId);
-    
+
     return accounts
-      .filter(acc => acc.type === 'BANK') // Apenas contas bancárias
+      .filter((acc) => acc.type === 'BANK') // Apenas contas bancárias
       .reduce((sum, acc) => sum + acc.balance, 0);
   }
-  
+
   /**
    * Obter resumo de categorias de despesas
    */
@@ -681,10 +707,12 @@ export class PluggyService {
     to: Date
   ): Promise<Array<{ category: string; total: number; count: number }>> {
     const { results } = await this.fetchTransactions(accountId, { from, to });
-    
+
     const expenses = results.filter((tx) => tx.type === 'DEBIT');
-    
-    const categories = expenses.reduce<Record<string, { category: string; total: number; count: number }>>((acc, tx) => {
+
+    const categories = expenses.reduce<
+      Record<string, { category: string; total: number; count: number }>
+    >((acc, tx) => {
       const category = tx.category || 'Outros';
       if (!acc[category]) {
         acc[category] = { category, total: 0, count: 0 };
@@ -693,10 +721,9 @@ export class PluggyService {
       acc[category].count += 1;
       return acc;
     }, {});
-    
+
     return Object.values(categories).sort((a, b) => b.total - a.total);
   }
 }
 
 export default PluggyService;
-

@@ -1,13 +1,13 @@
 /**
  * Jadlog Service
- * 
+ *
  * SERVIÇOS INTEGRADOS:
  * - .Package: Entregas rápidas (1-3 dias)
  * - .Com: E-commerce (2-5 dias)
  * - .Doc: Documentos urgentes (1-2 dias)
  * - .Cargo: Cargas grandes
  * - .International: Internacional
- * 
+ *
  * API: REST
  * Cobertura: Principais capitais e regiões
  * Limite peso: 150kg
@@ -37,24 +37,24 @@ export class JadlogService implements TransportadoraService {
       const response = await fetch(`${this.baseURL}/freight/calculate`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${this.token}`,
-          'Content-Type': 'application/json'
+          Authorization: `Bearer ${this.token}`,
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           origin: {
-            zipcode: params.origem.cep.replace(/\D/g, '')
+            zipcode: params.origem.cep.replace(/\D/g, ''),
           },
           destination: {
-            zipcode: params.destino.cep.replace(/\D/g, '')
+            zipcode: params.destino.cep.replace(/\D/g, ''),
           },
-          packages: params.volumes.map(v => ({
+          packages: params.volumes.map((v) => ({
             weight: v.peso,
             height: v.altura,
             width: v.largura,
             length: v.comprimento,
-            value: v.valor
-          }))
-        })
+            value: v.valor,
+          })),
+        }),
       });
 
       if (!response.ok) {
@@ -63,21 +63,23 @@ export class JadlogService implements TransportadoraService {
 
       const data = await response.json();
 
-      return data.services.map((service: {
-        name: string;
-        code: string;
-        price: number;
-        deliveryTime: number;
-        description?: string;
-      }) => ({
-        transportadora: 'Jadlog',
-        transportadoraId: 'jadlog',
-        servico: service.name,
-        codigoServico: service.code,
-        valor: service.price,
-        prazo: service.deliveryTime,
-        observacoes: service.description
-      }));
+      return data.services.map(
+        (service: {
+          name: string;
+          code: string;
+          price: number;
+          deliveryTime: number;
+          description?: string;
+        }) => ({
+          transportadora: 'Jadlog',
+          transportadoraId: 'jadlog',
+          servico: service.name,
+          codigoServico: service.code,
+          valor: service.price,
+          prazo: service.deliveryTime,
+          observacoes: service.description,
+        })
+      );
     } catch (error) {
       const err = error as Error;
       console.error('Erro ao cotar Jadlog:', err.message ?? err);
@@ -92,14 +94,11 @@ export class JadlogService implements TransportadoraService {
         return this.getMockRastreamento(codigoRastreio);
       }
 
-      const response = await fetch(
-        `${this.baseURL}/tracking/${codigoRastreio}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${this.token}`
-          }
-        }
-      );
+      const response = await fetch(`${this.baseURL}/tracking/${codigoRastreio}`, {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
@@ -110,17 +109,15 @@ export class JadlogService implements TransportadoraService {
       return {
         codigoRastreio,
         status: this.mapearStatus(data.status),
-        eventos: data.tracking.map((e: {
-          date: string;
-          description: string;
-          location: string;
-        }) => ({
-          data: new Date(e.date),
-          descricao: e.description,
-          localizacao: e.location,
-          tipo: 'movimentacao' as const
-        })),
-        previsaoEntrega: data.estimatedDelivery ? new Date(data.estimatedDelivery) : null
+        eventos: data.tracking.map(
+          (e: { date: string; description: string; location: string }) => ({
+            data: new Date(e.date),
+            descricao: e.description,
+            localizacao: e.location,
+            tipo: 'movimentacao' as const,
+          })
+        ),
+        previsaoEntrega: data.estimatedDelivery ? new Date(data.estimatedDelivery) : null,
       };
     } catch (error) {
       const err = error as Error;
@@ -138,8 +135,8 @@ export class JadlogService implements TransportadoraService {
       const response = await fetch(`${this.baseURL}/pickup/schedule`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${this.token}`,
-          'Content-Type': 'application/json'
+          Authorization: `Bearer ${this.token}`,
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           cnpj: this.cnpj,
@@ -150,18 +147,18 @@ export class JadlogService implements TransportadoraService {
             neighborhood: params.enderecoColeta.bairro,
             city: params.enderecoColeta.cidade,
             state: params.enderecoColeta.uf,
-            zipcode: params.enderecoColeta.cep.replace(/\D/g, '')
+            zipcode: params.enderecoColeta.cep.replace(/\D/g, ''),
           },
           date: params.dataColeta,
           time: params.horaColeta,
-          packages: params.volumes.map(v => ({
+          packages: params.volumes.map((v) => ({
             weight: v.peso,
             height: v.altura,
             width: v.largura,
-            length: v.comprimento
+            length: v.comprimento,
           })),
-          notes: params.observacoes
-        })
+          notes: params.observacoes,
+        }),
       });
 
       if (!response.ok) {
@@ -175,7 +172,7 @@ export class JadlogService implements TransportadoraService {
         protocolo: data.protocol,
         codigoRastreio: data.trackingCode,
         dataColeta: new Date(`${params.dataColeta}T${params.horaColeta}`),
-        observacoes: data.notes
+        observacoes: data.notes,
       };
     } catch (error) {
       const err = error as Error;
@@ -188,7 +185,7 @@ export class JadlogService implements TransportadoraService {
     try {
       const response = await fetch(`${this.baseURL}/health`, {
         method: 'GET',
-        signal: AbortSignal.timeout(5000)
+        signal: AbortSignal.timeout(5000),
       });
       return response.ok;
     } catch {
@@ -198,13 +195,13 @@ export class JadlogService implements TransportadoraService {
 
   private mapearStatus(status: string): StatusEntrega {
     const mapeamento: Record<string, StatusEntrega> = {
-      'pending': 'pendente',
-      'collected': 'coletado',
-      'in_transit': 'em_transito',
-      'out_for_delivery': 'saiu_entrega',
-      'delivered': 'entregue',
-      'failed': 'falha',
-      'returned': 'devolvido'
+      pending: 'pendente',
+      collected: 'coletado',
+      in_transit: 'em_transito',
+      out_for_delivery: 'saiu_entrega',
+      delivered: 'entregue',
+      failed: 'falha',
+      returned: 'devolvido',
     };
     return mapeamento[status] || 'pendente';
   }
@@ -222,7 +219,7 @@ export class JadlogService implements TransportadoraService {
         codigoServico: 'package',
         valor: basePrice * 1.5,
         prazo: 2,
-        observacoes: 'Entrega rápida'
+        observacoes: 'Entrega rápida',
       },
       {
         transportadora: 'Jadlog',
@@ -231,8 +228,8 @@ export class JadlogService implements TransportadoraService {
         codigoServico: 'com',
         valor: basePrice,
         prazo: 4,
-        observacoes: 'E-commerce econômico'
-      }
+        observacoes: 'E-commerce econômico',
+      },
     ];
   }
 
@@ -245,17 +242,16 @@ export class JadlogService implements TransportadoraService {
           data: new Date(Date.now() - 24 * 60 * 60 * 1000),
           descricao: 'Coletado',
           localizacao: 'Hub São Paulo',
-          tipo: 'coleta'
+          tipo: 'coleta',
         },
         {
           data: new Date(),
           descricao: 'Em trânsito',
           localizacao: 'Hub Campinas',
-          tipo: 'movimentacao'
-        }
+          tipo: 'movimentacao',
+        },
       ],
-      previsaoEntrega: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
+      previsaoEntrega: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
     };
   }
 }
-

@@ -1,0 +1,250 @@
+{
+  "projectId": "xyzabc123def456",
+  "timestamp": "2025-11-23T14:30:00.000Z",
+  "functions": [
+    {
+      "name": "handle-payment",
+      "issues": [
+        {
+          "functionName": "handle-payment",
+          "severity": "CRÍTICO",
+          "category": "Segurança",
+          "issue": "Credenciais hard-coded detectadas",
+          "description": "Encontradas 2 possíveis credenciais hard-coded no código",
+          "recommendation": "Mova todas as credenciais para variáveis de ambiente usando Deno.env.get()",
+          "code": "\"sk_test_123456789\"\n\"api_key\": \"prod_abc123xyz\""
+        },
+        {
+          "functionName": "handle-payment",
+          "severity": "ALTO",
+          "category": "Segurança",
+          "issue": "CORS configurado para aceitar qualquer origem",
+          "description": "Access-Control-Allow-Origin está configurado como \"*\"",
+          "recommendation": "Restrinja CORS apenas para origens confiáveis ou use lista branca",
+          "code": "Access-Control-Allow-Origin: *"
+        },
+        {
+          "functionName": "handle-payment",
+          "severity": "ALTO",
+          "category": "Segurança",
+          "issue": "Falta validação de entrada",
+          "description": "JSON body é parseado mas não há validação de schema aparente",
+          "recommendation": "Use biblioteca de validação como Zod ou Yup para validar entrada",
+          "code": "const data = await req.json() // sem validação"
+        },
+        {
+          "functionName": "handle-payment",
+          "severity": "MÉDIO",
+          "category": "Performance",
+          "issue": "Fetch sem timeout configurado",
+          "description": "Requisições HTTP sem timeout podem travar a função indefinidamente",
+          "recommendation": "Use AbortController com timeout para todas as chamadas fetch"
+        },
+        {
+          "functionName": "handle-payment",
+          "severity": "BAIXO",
+          "category": "Performance",
+          "issue": "Múltiplos console.log() (8)",
+          "description": "Muitos console.log podem gerar logs excessivos e custo",
+          "recommendation": "Remova logs de debug ou use conditional logging baseado em env"
+        },
+        {
+          "functionName": "handle-payment",
+          "severity": "ALTO",
+          "category": "Conformidade",
+          "issue": "Função aparenta não ter autenticação",
+          "description": "Não foi detectado uso de JWT ou autenticação Supabase",
+          "recommendation": "Implemente verificação de JWT usando createClient do Supabase"
+        },
+        {
+          "functionName": "handle-payment",
+          "severity": "ALTO",
+          "category": "Conformidade",
+          "issue": "Falta tratamento de erro adequado",
+          "description": "Função faz requisições HTTP mas não tem try/catch",
+          "recommendation": "Envolva operações assíncronas em try/catch"
+        },
+        {
+          "functionName": "handle-payment",
+          "severity": "MÉDIO",
+          "category": "Conformidade",
+          "issue": "Possível exposição de stack trace",
+          "description": "Stack traces podem revelar estrutura interna da aplicação",
+          "recommendation": "Em produção, retorne apenas mensagens genéricas de erro"
+        },
+        {
+          "functionName": "handle-payment",
+          "severity": "MÉDIO",
+          "category": "Conformidade",
+          "issue": "Sem rate limiting aparente",
+          "description": "Função pode ser abusada sem rate limiting",
+          "recommendation": "Implemente rate limiting usando Upstash Redis ou similar"
+        },
+        {
+          "functionName": "handle-payment",
+          "severity": "ALTO",
+          "category": "Dependências",
+          "issue": "Imports sem versão fixada",
+          "description": "3 imports sem versão específica - pode quebrar sem aviso",
+          "recommendation": "Sempre especifique versão exata nas URLs de import"
+        }
+      ],
+      "stats": {
+        "errorRate": 2.34,
+        "avgColdStart": 1245,
+        "totalCalls": 45892
+      }
+    },
+    {
+      "name": "send-email",
+      "issues": [
+        {
+          "functionName": "send-email",
+          "severity": "CRÍTICO",
+          "category": "Segurança",
+          "issue": "Credenciais hard-coded detectadas",
+          "description": "Encontradas 1 possíveis credenciais hard-coded no código",
+          "recommendation": "Mova todas as credenciais para variáveis de ambiente usando Deno.env.get()",
+          "code": "\"api_key\": \"SG.abc123xyz...\""
+        },
+        {
+          "functionName": "send-email",
+          "severity": "ALTO",
+          "category": "Segurança",
+          "issue": "Falta validação de entrada",
+          "description": "JSON body é parseado mas não há validação de schema aparente",
+          "recommendation": "Use biblioteca de validação como Zod ou Yup para validar entrada"
+        },
+        {
+          "functionName": "send-email",
+          "severity": "MÉDIO",
+          "category": "Performance",
+          "issue": "Fetch sem timeout configurado",
+          "description": "Requisições HTTP sem timeout podem travar a função indefinidamente",
+          "recommendation": "Use AbortController com timeout para todas as chamadas fetch"
+        },
+        {
+          "functionName": "send-email",
+          "severity": "BAIXO",
+          "category": "Performance",
+          "issue": "Import de biblioteca pesada: lodash",
+          "description": "lodash aumenta bundle size e cold start time",
+          "recommendation": "Use apenas funções específicas ou alternativas nativas"
+        },
+        {
+          "functionName": "send-email",
+          "severity": "MÉDIO",
+          "category": "Conformidade",
+          "issue": "Sem rate limiting aparente",
+          "description": "Função pode ser abusada sem rate limiting",
+          "recommendation": "Implemente rate limiting usando Upstash Redis ou similar"
+        },
+        {
+          "functionName": "send-email",
+          "severity": "MÉDIO",
+          "category": "Conformidade",
+          "issue": "Possível exposição de stack trace",
+          "description": "Stack traces podem revelar estrutura interna da aplicação",
+          "recommendation": "Em produção, retorne apenas mensagens genéricas de erro"
+        },
+        {
+          "functionName": "send-email",
+          "severity": "ALTO",
+          "category": "Dependências",
+          "issue": "Imports sem versão fixada",
+          "description": "2 imports sem versão específica - pode quebrar sem aviso",
+          "recommendation": "Sempre especifique versão exata nas URLs de import"
+        }
+      ],
+      "stats": {
+        "errorRate": 0.87,
+        "avgColdStart": 890,
+        "totalCalls": 23456
+      }
+    },
+    {
+      "name": "process-webhook",
+      "issues": [
+        {
+          "functionName": "process-webhook",
+          "severity": "CRÍTICO",
+          "category": "Segurança",
+          "issue": "Uso de Deno.writeFile detectado",
+          "description": "Função usa Deno.writeFile - risco de RCE (Remote Code Execution)",
+          "recommendation": "Evite operações de filesystem. Se necessário, valide rigorosamente todos os caminhos.",
+          "code": "Deno.writeFile"
+        },
+        {
+          "functionName": "process-webhook",
+          "severity": "ALTO",
+          "category": "Segurança",
+          "issue": "Falta validação de entrada",
+          "description": "JSON body é parseado mas não há validação de schema aparente",
+          "recommendation": "Use biblioteca de validação como Zod ou Yup para validar entrada"
+        },
+        {
+          "functionName": "process-webhook",
+          "severity": "ALTO",
+          "category": "Segurança",
+          "issue": "CORS configurado para aceitar qualquer origem",
+          "description": "Access-Control-Allow-Origin está configurado como \"*\"",
+          "recommendation": "Restrinja CORS apenas para origens confiáveis ou use lista branca"
+        },
+        {
+          "functionName": "process-webhook",
+          "severity": "CRÍTICO",
+          "category": "Performance",
+          "issue": "Cold start muito alto (2134ms)",
+          "description": "Função leva mais de 2 segundos para iniciar a frio",
+          "recommendation": "Otimize imports, reduza dependências pesadas, considere edge runtime mais leve"
+        },
+        {
+          "functionName": "process-webhook",
+          "severity": "MÉDIO",
+          "category": "Performance",
+          "issue": "Múltiplos loops detectados",
+          "description": "Função contém vários loops que podem degradar performance",
+          "recommendation": "Considere processar dados em batches ou usar processamento assíncrono"
+        },
+        {
+          "functionName": "process-webhook",
+          "severity": "ALTO",
+          "category": "Conformidade",
+          "issue": "Taxa de erro muito alta (5.23%)",
+          "description": "Taxa de erro acima de 5% indica problemas recorrentes",
+          "recommendation": "Investigue logs de erro e adicione tratamento apropriado"
+        },
+        {
+          "functionName": "process-webhook",
+          "severity": "MÉDIO",
+          "category": "Conformidade",
+          "issue": "Sem rate limiting aparente",
+          "description": "Função pode ser abusada sem rate limiting",
+          "recommendation": "Implemente rate limiting usando Upstash Redis ou similar"
+        },
+        {
+          "functionName": "process-webhook",
+          "severity": "BAIXO",
+          "category": "Dependências",
+          "issue": "Muitas dependências de deno.land/x (4)",
+          "description": "Muitas dependências terceiras aumentam risco e tamanho do bundle",
+          "recommendation": "Avalie se todas são realmente necessárias e considere alternativas nativas"
+        }
+      ],
+      "stats": {
+        "errorRate": 5.23,
+        "avgColdStart": 2134,
+        "totalCalls": 8934
+      }
+    }
+  ],
+  "summary": {
+    "totalFunctions": 3,
+    "totalIssues": 25,
+    "critical": 4,
+    "high": 9,
+    "medium": 8,
+    "low": 4
+  }
+}
+

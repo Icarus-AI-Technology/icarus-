@@ -1,6 +1,6 @@
 /**
  * Gerenciador de Credenciais - API Gateway
- * 
+ *
  * Interface para gerenciar todas as credenciais das integrações:
  * - 4 Serviços de Comunicação
  * - 5 Fabricantes OPME
@@ -9,7 +9,16 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import { Eye, EyeOff, Save, TestTube, CheckCircle, XCircle, AlertTriangle, Lock } from 'lucide-react';
+import {
+  Eye,
+  EyeOff,
+  Save,
+  TestTube,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  Lock,
+} from 'lucide-react';
 
 interface Credencial {
   id: string;
@@ -34,7 +43,7 @@ const CREDENCIAIS_TEMPLATE: Credencial[] = [
     descricao: 'Account SID da conta Twilio (inicia com AC)',
     obrigatorio: true,
     categoria: 'comunicacao',
-    testavel: true
+    testavel: true,
   },
   {
     id: 'twilio_auth_token',
@@ -44,7 +53,7 @@ const CREDENCIAIS_TEMPLATE: Credencial[] = [
     descricao: 'Auth Token da conta Twilio',
     obrigatorio: true,
     categoria: 'comunicacao',
-    testavel: true
+    testavel: true,
   },
   {
     id: 'twilio_phone_number',
@@ -54,7 +63,7 @@ const CREDENCIAIS_TEMPLATE: Credencial[] = [
     descricao: 'Número de telefone Twilio (formato: +5511999999999)',
     obrigatorio: true,
     categoria: 'comunicacao',
-    testavel: false
+    testavel: false,
   },
   {
     id: 'whatsapp_access_token',
@@ -64,7 +73,7 @@ const CREDENCIAIS_TEMPLATE: Credencial[] = [
     descricao: 'Access Token do WhatsApp Business API',
     obrigatorio: true,
     categoria: 'comunicacao',
-    testavel: true
+    testavel: true,
   },
   {
     id: 'sendgrid_api_key',
@@ -74,7 +83,7 @@ const CREDENCIAIS_TEMPLATE: Credencial[] = [
     descricao: 'API Key do SendGrid (inicia com SG.)',
     obrigatorio: true,
     categoria: 'comunicacao',
-    testavel: true
+    testavel: true,
   },
   {
     id: 'sendgrid_from_email',
@@ -84,7 +93,7 @@ const CREDENCIAIS_TEMPLATE: Credencial[] = [
     descricao: 'Email remetente verificado no SendGrid',
     obrigatorio: true,
     categoria: 'comunicacao',
-    testavel: false
+    testavel: false,
   },
   {
     id: 'mailchimp_api_key',
@@ -94,7 +103,7 @@ const CREDENCIAIS_TEMPLATE: Credencial[] = [
     descricao: 'API Key do Mailchimp (formato: key-dc)',
     obrigatorio: true,
     categoria: 'comunicacao',
-    testavel: true
+    testavel: true,
   },
   {
     id: 'mailchimp_dc',
@@ -104,7 +113,7 @@ const CREDENCIAIS_TEMPLATE: Credencial[] = [
     descricao: 'Data Center do Mailchimp (ex: us1, us2)',
     obrigatorio: true,
     categoria: 'comunicacao',
-    testavel: false
+    testavel: false,
   },
 
   // === FABRICANTES OPME ===
@@ -116,7 +125,7 @@ const CREDENCIAIS_TEMPLATE: Credencial[] = [
     descricao: 'API Key do Abbott Track&Trace',
     obrigatorio: true,
     categoria: 'opme',
-    testavel: true
+    testavel: true,
   },
   {
     id: 'medtronic_client_id',
@@ -126,7 +135,7 @@ const CREDENCIAIS_TEMPLATE: Credencial[] = [
     descricao: 'Client ID do Medtronic VISION',
     obrigatorio: true,
     categoria: 'opme',
-    testavel: true
+    testavel: true,
   },
   {
     id: 'medtronic_client_secret',
@@ -136,7 +145,7 @@ const CREDENCIAIS_TEMPLATE: Credencial[] = [
     descricao: 'Client Secret do Medtronic VISION',
     obrigatorio: true,
     categoria: 'opme',
-    testavel: true
+    testavel: true,
   },
   {
     id: 'jj_tracelink_token',
@@ -146,7 +155,7 @@ const CREDENCIAIS_TEMPLATE: Credencial[] = [
     descricao: 'Token de acesso ao J&J TraceLink',
     obrigatorio: true,
     categoria: 'opme',
-    testavel: true
+    testavel: true,
   },
   {
     id: 'stryker_api_key',
@@ -156,7 +165,7 @@ const CREDENCIAIS_TEMPLATE: Credencial[] = [
     descricao: 'API Key do Stryker Connect',
     obrigatorio: true,
     categoria: 'opme',
-    testavel: true
+    testavel: true,
   },
   {
     id: 'boston_scientific_token',
@@ -166,7 +175,7 @@ const CREDENCIAIS_TEMPLATE: Credencial[] = [
     descricao: 'Token do Boston Scientific iTrace',
     obrigatorio: true,
     categoria: 'opme',
-    testavel: true
+    testavel: true,
   },
 
   // === OUTRAS APIS ===
@@ -178,8 +187,8 @@ const CREDENCIAIS_TEMPLATE: Credencial[] = [
     descricao: 'Token InfoSimples para APIs agregadas',
     obrigatorio: false,
     categoria: 'apis',
-    testavel: true
-  }
+    testavel: true,
+  },
 ];
 
 export default function GerenciadorCredenciais() {
@@ -208,19 +217,20 @@ export default function GerenciadorCredenciais() {
       if (error) throw error;
 
       // Mapear credenciais existentes com template
-      const credenciaisMap = new Map(configData?.map(c => [c.nome, c.valor]) || []);
+      const credenciaisMap = new Map(configData?.map((c) => [c.nome, c.valor]) || []);
 
-      const credenciaisCompletas = CREDENCIAIS_TEMPLATE.map(cred => ({
+      const credenciaisCompletas = CREDENCIAIS_TEMPLATE.map((cred) => ({
         ...cred,
         valor: credenciaisMap.get(cred.nome) || '',
-        status: credenciaisMap.has(cred.nome) && credenciaisMap.get(cred.nome) 
-          ? 'configurado' 
-          : 'pendente'
+        status:
+          credenciaisMap.has(cred.nome) && credenciaisMap.get(cred.nome)
+            ? 'configurado'
+            : 'pendente',
       })) as Credencial[];
 
       setCredenciais(credenciaisCompletas);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao carregar credenciais:', err);
     } finally {
       setLoading(false);
@@ -232,33 +242,32 @@ export default function GerenciadorCredenciais() {
       setSaving(true);
 
       // Upsert na tabela api_credentials
-      const { error } = await supabase
-        .from('api_credentials')
-        .upsert({
+      const { error } = await supabase.from('api_credentials').upsert(
+        {
           nome: credencial.nome,
           servico: credencial.servico,
           valor: credencial.valor,
           categoria: credencial.categoria,
           tipo: credencial.tipo,
-          atualizado_em: new Date().toISOString()
-        }, {
-          onConflict: 'nome'
-        });
+          atualizado_em: new Date().toISOString(),
+        },
+        {
+          onConflict: 'nome',
+        }
+      );
 
       if (error) throw error;
 
       // Atualizar status local
-      setCredenciais(prev => 
-        prev.map(c => 
-          c.id === credencial.id 
-            ? { ...c, status: c.valor ? 'configurado' : 'pendente' }
-            : c
+      setCredenciais((prev) =>
+        prev.map((c) =>
+          c.id === credencial.id ? { ...c, status: c.valor ? 'configurado' : 'pendente' } : c
         )
       );
 
       alert('✅ Credencial salva com sucesso!');
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao salvar credencial:', err);
       alert('❌ Erro ao salvar credencial');
     } finally {
@@ -275,29 +284,25 @@ export default function GerenciadorCredenciais() {
         body: {
           servico: credencial.servico,
           nome: credencial.nome,
-          valor: credencial.valor
-        }
+          valor: credencial.valor,
+        },
       });
 
       if (error) throw error;
 
       if (data?.success) {
-        setCredenciais(prev => 
-          prev.map(c => 
-            c.id === credencial.id ? { ...c, status: 'configurado' } : c
-          )
+        setCredenciais((prev) =>
+          prev.map((c) => (c.id === credencial.id ? { ...c, status: 'configurado' } : c))
         );
         alert('✅ Credencial válida!');
       } else {
-        setCredenciais(prev => 
-          prev.map(c => 
-            c.id === credencial.id ? { ...c, status: 'invalido' } : c
-          )
+        setCredenciais((prev) =>
+          prev.map((c) => (c.id === credencial.id ? { ...c, status: 'invalido' } : c))
         );
         alert('❌ Credencial inválida');
       }
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao testar credencial:', err);
       alert('⚠️ Erro ao testar credencial');
     } finally {
@@ -306,16 +311,14 @@ export default function GerenciadorCredenciais() {
   };
 
   const atualizarValor = (id: string, valor: string) => {
-    setCredenciais(prev => 
-      prev.map(c => c.id === id ? { ...c, valor } : c)
-    );
+    setCredenciais((prev) => prev.map((c) => (c.id === id ? { ...c, valor } : c)));
   };
 
   const toggleShowPassword = (id: string) => {
-    setShowPassword(prev => ({ ...prev, [id]: !prev[id] }));
+    setShowPassword((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  const credenciaisFiltradas = credenciais.filter(c => {
+  const credenciaisFiltradas = credenciais.filter((c) => {
     const matchCategoria = categoria === 'todas' || c.categoria === categoria;
     const matchStatus = filtroStatus === 'todas' || c.status === filtroStatus;
     return matchCategoria && matchStatus;
@@ -323,9 +326,9 @@ export default function GerenciadorCredenciais() {
 
   const estatisticas = {
     total: credenciais.length,
-    configuradas: credenciais.filter(c => c.status === 'configurado').length,
-    pendentes: credenciais.filter(c => c.status === 'pendente').length,
-    invalidas: credenciais.filter(c => c.status === 'invalido').length
+    configuradas: credenciais.filter((c) => c.status === 'configurado').length,
+    pendentes: credenciais.filter((c) => c.status === 'pendente').length,
+    invalidas: credenciais.filter((c) => c.status === 'invalido').length,
   };
 
   if (loading) {
@@ -358,23 +361,31 @@ export default function GerenciadorCredenciais() {
         {/* Estatísticas */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
           <div className="neumorphic-inset p-4 rounded-lg">
-            <div className="orx-text-sm" style={{ color: 'var(--orx-text-secondary)' }}>Total</div>
+            <div className="orx-text-sm" style={{ color: 'var(--orx-text-secondary)' }}>
+              Total
+            </div>
             <div className="orx-text-2xl orx-orx-font-bold">{estatisticas.total}</div>
           </div>
           <div className="neumorphic-inset p-4 rounded-lg">
-            <div className="orx-text-sm" style={{ color: 'var(--orx-success)' }}>Configuradas</div>
+            <div className="orx-text-sm" style={{ color: 'var(--orx-success)' }}>
+              Configuradas
+            </div>
             <div className="orx-text-2xl orx-orx-font-bold" style={{ color: 'var(--orx-success)' }}>
               {estatisticas.configuradas}
             </div>
           </div>
           <div className="neumorphic-inset p-4 rounded-lg">
-            <div className="orx-text-sm" style={{ color: 'var(--orx-warning)' }}>Pendentes</div>
+            <div className="orx-text-sm" style={{ color: 'var(--orx-warning)' }}>
+              Pendentes
+            </div>
             <div className="orx-text-2xl orx-orx-font-bold" style={{ color: 'var(--orx-warning)' }}>
               {estatisticas.pendentes}
             </div>
           </div>
           <div className="neumorphic-inset p-4 rounded-lg">
-            <div className="orx-text-sm" style={{ color: 'var(--orx-danger)' }}>Inválidas</div>
+            <div className="orx-text-sm" style={{ color: 'var(--orx-danger)' }}>
+              Inválidas
+            </div>
             <div className="orx-text-2xl orx-orx-font-bold" style={{ color: 'var(--orx-danger)' }}>
               {estatisticas.invalidas}
             </div>
@@ -431,10 +442,13 @@ export default function GerenciadorCredenciais() {
                     <XCircle className="w-5 h-5" style={{ color: 'var(--orx-danger)' }} />
                   )}
                   {cred.obrigatorio && (
-                    <span className="orx-text-xs px-2 py-1 rounded" style={{ 
-                      background: 'var(--orx-danger)',
-                      color: 'white'
-                    }}>
+                    <span
+                      className="orx-text-xs px-2 py-1 rounded"
+                      style={{
+                        background: 'var(--orx-danger)',
+                        color: 'white',
+                      }}
+                    >
                       Obrigatório
                     </span>
                   )}
@@ -478,7 +492,7 @@ export default function GerenciadorCredenciais() {
                 className="neumorphic-button px-6 py-3 rounded-lg flex items-center gap-2"
                 style={{
                   opacity: saving || !cred.valor ? 0.5 : 1,
-                  cursor: saving || !cred.valor ? 'not-allowed' : 'pointer'
+                  cursor: saving || !cred.valor ? 'not-allowed' : 'pointer',
                 }}
               >
                 <Save className="w-5 h-5" />
@@ -492,7 +506,7 @@ export default function GerenciadorCredenciais() {
                   className="neumorphic-button px-6 py-3 rounded-lg flex items-center gap-2"
                   style={{
                     opacity: testing === cred.id || !cred.valor ? 0.5 : 1,
-                    cursor: testing === cred.id || !cred.valor ? 'not-allowed' : 'pointer'
+                    cursor: testing === cred.id || !cred.valor ? 'not-allowed' : 'pointer',
                   }}
                 >
                   <TestTube className="w-5 h-5" />
@@ -514,4 +528,3 @@ export default function GerenciadorCredenciais() {
     </div>
   );
 }
-

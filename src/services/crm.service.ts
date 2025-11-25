@@ -1,10 +1,10 @@
 /**
  * API CFM - Consulta CRM de Médicos
  * ICARUS v5.0
- * 
+ *
  * Consulta dados de médicos via CRM (Conselho Regional de Medicina)
  * Preenchimento automático de nome completo e informações profissionais
- * 
+ *
  * IMPORTANTE: Esta é uma integração com a API do Supabase Edge Function
  * que consulta o CFM (conforme implementado em supabase/functions/valida_crm_cfm)
  */
@@ -33,62 +33,58 @@ export async function consultarCRM(crm: string, uf: string): Promise<CRMData> {
   // Remove formatação
   const crmLimpo = crm.replace(/[^\d]/g, '');
   const ufUpper = uf.toUpperCase();
-  
+
   if (crmLimpo.length < 4 || crmLimpo.length > 7) {
     throw new Error('CRM inválido');
   }
-  
+
   if (ufUpper.length !== 2) {
     throw new Error('UF inválida');
   }
-  
+
   try {
     // Consulta via Supabase Edge Function
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const response = await fetch(
-      `${supabaseUrl}/functions/v1/valida_crm_cfm`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-        },
-        body: JSON.stringify({
-          crm: crmLimpo,
-          uf: ufUpper,
-        }),
-      }
-    );
-    
+    const response = await fetch(`${supabaseUrl}/functions/v1/valida_crm_cfm`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+      },
+      body: JSON.stringify({
+        crm: crmLimpo,
+        uf: ufUpper,
+      }),
+    });
+
     if (!response.ok) {
       throw new Error(`Erro na consulta: ${response.status}`);
     }
-    
+
     const result: CFMResponse = await response.json();
-    
+
     if (!result.success || !result.data) {
       throw new Error(result.error || 'CRM não encontrado ou inválido');
     }
-    
+
     return result.data;
-    
   } catch (error) {
-   const err = error as Error;
+    const err = error as Error;
     console.error('Erro ao consultar CRM:', err);
-    
+
     // Fallback: API pública do CFM (se disponível)
     try {
       // API alternativa (exemplo - ajustar conforme API real)
       const response = await fetch(
         `https://portal.cfm.org.br/api/v1/medicos?crm=${crmLimpo}&uf=${ufUpper}`
       );
-      
+
       if (!response.ok) {
         throw new Error('CRM não encontrado');
       }
-      
+
       const data = await response.json();
-      
+
       return {
         crm: crmLimpo,
         uf: ufUpper,
@@ -98,7 +94,6 @@ export async function consultarCRM(crm: string, uf: string): Promise<CRMData> {
         especialidades: data.especialidades || [],
         dataCadastro: data.dataCadastro,
       };
-      
     } catch (fallbackError) {
       console.error('Erro no fallback:', fallbackError);
       throw new Error('Não foi possível consultar o CRM. Verifique os dados informados.');
@@ -148,18 +143,18 @@ export function useCRM() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<CRMData | null>(null);
-  
+
   const buscar = async (crm: string, uf: string) => {
     setLoading(true);
     setError(null);
     setData(null);
-    
+
     try {
       const resultado = await consultarCRM(crm, uf);
       setData(resultado);
       return resultado;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
       setError(errorMessage);
       throw err;
@@ -167,12 +162,12 @@ export function useCRM() {
       setLoading(false);
     }
   };
-  
+
   const limpar = () => {
     setData(null);
     setError(null);
   };
-  
+
   return {
     data,
     loading,
@@ -181,4 +176,3 @@ export function useCRM() {
     limpar,
   };
 }
-

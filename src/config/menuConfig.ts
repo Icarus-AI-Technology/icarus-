@@ -215,7 +215,7 @@ export function useMenuFiltrado() {
   }
 
   // CEO e SYSTEM_ALL têm acesso a tudo
-  const temAcessoTotal = permissoes.some(p => p.codigo === 'SYSTEM_ALL');
+  const temAcessoTotal = permissoes.some((p) => p.codigo === 'SYSTEM_ALL');
 
   const filtrarItem = (item: MenuItem): boolean => {
     // Se tem acesso total, mostrar tudo
@@ -234,18 +234,16 @@ export function useMenuFiltrado() {
   };
 
   const filtrarRecursivo = (items: MenuItem[]): MenuItem[] => {
-    return items
-      .filter(filtrarItem)
-      .map(item => {
-        if (item.submenu) {
-          const submenuFiltrado = filtrarRecursivo(item.submenu);
-          return {
-            ...item,
-            submenu: submenuFiltrado.length > 0 ? submenuFiltrado : undefined,
-          };
-        }
-        return item;
-      });
+    return items.filter(filtrarItem).map((item) => {
+      if (item.submenu) {
+        const submenuFiltrado = filtrarRecursivo(item.submenu);
+        return {
+          ...item,
+          submenu: submenuFiltrado.length > 0 ? submenuFiltrado : undefined,
+        };
+      }
+      return item;
+    });
   };
 
   return filtrarRecursivo(menuItems);
@@ -257,7 +255,7 @@ export function useMenuFiltrado() {
 export function useKPIsFiltrados() {
   const { temAcessoRecurso, permissoes } = useAuth();
 
-  const temAcessoTotal = permissoes.some(p => p.codigo === 'SYSTEM_ALL');
+  const temAcessoTotal = permissoes.some((p) => p.codigo === 'SYSTEM_ALL');
 
   const todosKPIs = [
     {
@@ -308,6 +306,5 @@ export function useKPIsFiltrados() {
     return todosKPIs;
   }
 
-  return todosKPIs.filter(kpi => temAcessoRecurso(kpi.recurso, kpi.acao));
+  return todosKPIs.filter((kpi) => temAcessoRecurso(kpi.recurso, kpi.acao));
 }
-

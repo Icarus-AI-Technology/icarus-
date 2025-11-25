@@ -45,8 +45,8 @@ serve(async (req) => {
     // 1. Buscar informações da tarefa
     const { data: task, error: taskError } = await supabaseClient
       .from("agent_tasks")
-      .select("*, organization_id, parent_task_id, query_text")
-      .eq("task_id", request.task_id)
+      .select("*, empresa_id, query, metadata")
+      .eq("id", request.task_id)
       .single();
 
     if (taskError) throw taskError;
@@ -56,9 +56,12 @@ serve(async (req) => {
       .from("agent_tasks")
       .update({
         status: "in_progress",
-        started_at: new Date().toISOString(),
+        metadata: {
+          ...(task.metadata || {}),
+          started_at: new Date().toISOString(),
+        },
       })
-      .eq("task_id", request.task_id);
+      .eq("id", request.task_id);
 
     // 3. Log de início
     await supabaseClient.from("agent_logs").insert({
@@ -74,15 +77,18 @@ serve(async (req) => {
 
     // 4. Buscar tarefas irmãs (mesma tarefa pai) para coletar dados
     let siblingTasks: any[] = [];
-    if (task.parent_task_id) {
+    const parentTaskId = task.metadata?.parent_task_id;
+    if (parentTaskId) {
       const { data: siblings } = await supabaseClient
         .from("agent_tasks")
-        .select("*, agent_sources(*)")
-        .eq("parent_task_id", task.parent_task_id)
+        .select("*, agent_sources(*), metadata")
         .eq("status", "completed")
-        .neq("task_id", request.task_id);
+        .neq("id", request.task_id);
 
-      siblingTasks = siblings || [];
+      // Filtrar apenas as tarefas com o mesmo parent_task_id
+      siblingTasks = (siblings || []).filter(
+        (s: any) => s.metadata?.parent_task_id === parentTaskId
+      );
     }
 
     console.log(
@@ -98,12 +104,15 @@ serve(async (req) => {
     };
 
     for (const siblingTask of siblingTasks) {
-      if (siblingTask.task_type === "data_internal") {
-        collectedData.internal_data = siblingTask.result_data;
-      } else if (siblingTask.task_type === "benchmark") {
-        collectedData.benchmark_data = siblingTask.result_data;
-      } else if (siblingTask.task_type === "compliance") {
-        collectedData.compliance_data = siblingTask.result_data;
+      const taskType = siblingTask.metadata?.task_type;
+      const resultData = siblingTask.metadata?.result_data;
+      
+      if (taskType === "data_internal") {
+        collectedData.internal_data = resultData;
+      } else if (taskType === "benchmark") {
+        collectedData.benchmark_data = resultData;
+      } else if (taskType === "compliance") {
+        collectedData.compliance_data = resultData;
       }
 
       // Coletar fontes
@@ -122,7 +131,7 @@ serve(async (req) => {
     if (reportType === "consumo_opme") {
       const result = await generateConsumoOPMEReport(
         collectedData,
-        task.query_text,
+        task.query,
         format,
       );
       reportContent = result.content;
@@ -130,7 +139,7 @@ serve(async (req) => {
     } else if (reportType === "compliance_summary") {
       const result = await generateComplianceReport(
         collectedData,
-        task.query_text,
+        task.query,
         format,
       );
       reportContent = result.content;
@@ -138,7 +147,7 @@ serve(async (req) => {
     } else if (reportType === "previsao_demanda") {
       const result = await generatePrevisaoDemandaReport(
         collectedData,
-        task.query_text,
+        task.query,
         format,
       );
       reportContent = result.content;
@@ -147,7 +156,7 @@ serve(async (req) => {
       // Relatório personalizado genérico
       const result = await generateCustomReport(
         collectedData,
-        task.query_text,
+        task.query,
         format,
       );
       reportContent = result.content;
@@ -161,35 +170,22 @@ serve(async (req) => {
       .from("agent_reports")
       .insert({
         task_id: request.task_id,
-        organization_id: task.organization_id,
-        report_type: reportType,
-        title: generateReportTitle(reportType, task.query_text),
+        report_id: `report_${Date.now()}`,
         summary: generateReportSummary(collectedData, reportType),
-        content: reportContent,
-        content_format: format,
-        data_snapshot: collectedData,
-        visualizations: visualizations,
-        status: "draft",
-        created_by: user.id,
-        metadata: {
-          generated_by: "agent-synthesis",
-          query_text: task.query_text,
-          sources_count: collectedData.sources.length,
-          generation_time_ms: executionTime,
-        },
+        report_url: null,
       })
       .select()
       .single();
 
     if (reportError) throw reportError;
 
-    console.log(`[Agent-Synthesis] Report created: ${report.report_id}`);
+    console.log(`[Agent-Synthesis] Report created: ${report.id}`);
 
     // 8. Registrar fontes no relatório
     for (const source of collectedData.sources) {
       await supabaseClient.from("agent_sources").insert({
         task_id: request.task_id,
-        report_id: report.report_id,
+        report_id: report.id,
         source_type: source.source_type,
         source_name: source.source_name,
         record_count: source.record_count,
@@ -204,15 +200,18 @@ serve(async (req) => {
       .update({
         status: "completed",
         completed_at: new Date().toISOString(),
-        execution_time_ms: executionTime,
-        result_data: {
-          report_id: report.report_id,
-          report_type: reportType,
-          content_length: reportContent.length,
-          visualizations_count: visualizations.length,
+        metadata: {
+          ...(task.metadata || {}),
+          execution_time_ms: executionTime,
+          result_data: {
+            report_id: report.id,
+            report_type: reportType,
+            content_length: reportContent.length,
+            visualizations_count: visualizations.length,
+          },
         },
       })
-      .eq("task_id", request.task_id);
+      .eq("id", request.task_id);
 
     // 10. Log de conclusão
     await supabaseClient.from("agent_logs").insert({
@@ -234,12 +233,12 @@ serve(async (req) => {
       JSON.stringify({
         success: true,
         task_id: request.task_id,
-        report_id: report.report_id,
+        report_id: report.id,
         execution_time_ms: executionTime,
         report: {
-          title: report.title,
-          type: report.report_type,
-          status: report.status,
+          title: generateReportTitle(reportType, task.query),
+          type: reportType,
+          status: "draft",
           content_length: reportContent.length,
           visualizations_count: visualizations.length,
         },

@@ -75,57 +75,57 @@ export class ViabilidadeAI {
   }> {
     // Cálculos reais de importação
     const valorFob = params.produto.valorFob;
-    
+
     // Frete (estimativa: 10% do FOB)
-    const frete = valorFob * 0.10;
-    
+    const frete = valorFob * 0.1;
+
     // Seguro (1% do FOB)
     const seguro = valorFob * 0.01;
-    
+
     // Base de cálculo CIF
     const cif = valorFob + frete + seguro;
-    
+
     // Tributos
     const ii = cif * 0.14; // 14% II médio para OPME
     const baseIpi = cif + ii;
-    const ipi = baseIpi * 0.00; // OPME geralmente isento
+    const ipi = baseIpi * 0.0; // OPME geralmente isento
     const basePisCofins = cif + ii + ipi;
     const pis = basePisCofins * 0.0165; // 1.65%
     const cofins = basePisCofins * 0.076; // 7.6%
     const baseIcms = cif + ii + ipi + pis + cofins;
     const icms = baseIcms * 0.18; // 18% média
-    
+
     const tributos = {
       ii,
       ipi,
       pis,
       cofins,
       icms,
-      total: ii + ipi + pis + cofins + icms
+      total: ii + ipi + pis + cofins + icms,
     };
-    
+
     // Despesas
     const despesas = {
       despacho: 1500,
       armazenagem: 800,
       capatazia: 600,
       outros: 1100,
-      total: 4000
+      total: 4000,
     };
-    
+
     const custoTotal = {
       valorFob,
       frete,
       seguro,
       tributos,
       despesas,
-      total: cif + tributos.total + despesas.total
+      total: cif + tributos.total + despesas.total,
     };
-    
+
     // Score de viabilidade (0-100)
-    const margem = (custoTotal.total / valorFob) - 1;
-    const scoreViabilidade = Math.max(0, Math.min(100, 100 - (margem * 100)));
-    
+    const margem = custoTotal.total / valorFob - 1;
+    const scoreViabilidade = Math.max(0, Math.min(100, 100 - margem * 100));
+
     return {
       viavel: scoreViabilidade >= 60,
       scoreViabilidade: Math.round(scoreViabilidade),
@@ -135,29 +135,29 @@ export class ViabilidadeAI {
         transito: 30,
         desembaraco: 10,
         entrega: 5,
-        total: 52
+        total: 52,
       },
       riscos: [
         {
           tipo: 'Cambial',
           descricao: 'Variação cambial pode impactar custo final',
-          probabilidade: 0.60,
+          probabilidade: 0.6,
           impacto: 'medio',
-          mitigacao: 'Realizar hedge cambial ou travamento de taxa'
+          mitigacao: 'Realizar hedge cambial ou travamento de taxa',
         },
         {
           tipo: 'Regulatório',
           descricao: 'Exigências ANVISA podem atrasar desembaraço',
-          probabilidade: 0.30,
+          probabilidade: 0.3,
           impacto: 'alto',
-          mitigacao: 'Garantir documentação completa antes do embarque'
-        }
+          mitigacao: 'Garantir documentação completa antes do embarque',
+        },
       ],
       recomendacoes: [
         'Negociar frete com transportadora para reduzir custos',
         'Verificar possibilidade de isenção fiscal estadual',
         'Considerar consolidação de carga com outras importações',
-        'Utilizar despachante especializado em OPME'
+        'Utilizar despachante especializado em OPME',
       ],
       alternativas: [
         {
@@ -167,36 +167,37 @@ export class ViabilidadeAI {
           vantagens: [
             'Trading assume riscos cambiais',
             'Processo mais simples',
-            'Crédito facilitado'
-          ]
-        }
-      ]
+            'Crédito facilitado',
+          ],
+        },
+      ],
     };
   }
 
-  static async compareImportOptions(produtos: Array<{
-    produto: {
-      nome: string;
-      descricao: string;
-      codigoHs: string;
-      valorFob: number;
-      peso: number;
-      fabricante: string;
-      paisOrigem: string;
-    };
-    fornecedor: { nome: string; pais: string; incoterm: string };
-    destino: { porto: string; cidade: string; estado: string };
-  }>): Promise<{
+  static async compareImportOptions(
+    produtos: Array<{
+      produto: {
+        nome: string;
+        descricao: string;
+        codigoHs: string;
+        valorFob: number;
+        peso: number;
+        fabricante: string;
+        paisOrigem: string;
+      };
+      fornecedor: { nome: string; pais: string; incoterm: string };
+      destino: { porto: string; cidade: string; estado: string };
+    }>
+  ): Promise<{
     maisViavel: unknown;
     comparativo: unknown[];
   }> {
     // Mock implementation
     return {
       maisViavel: produtos[0],
-      comparativo: []
+      comparativo: [],
     };
   }
 }
 
 export const viabilidadeAI = new ViabilidadeAI();
-

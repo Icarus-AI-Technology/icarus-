@@ -1,8 +1,0 @@
-# Meilisearch configuration generated for ICARUS v5
-
-[embedders]
-[embedders."products-openai"]
-source = "openAi"
-model = "text-embedding-3-small"
-# Replace with a valid OpenAI API key or ensure the environment variable is exported
-apiKey = "${OPENAI_API_KEY}"

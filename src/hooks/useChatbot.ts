@@ -52,6 +52,12 @@ export interface ChatbotFAQ {
   created_at: string;
 }
 
+interface RespostaIA {
+  mensagem: string;
+  origem: 'edge' | 'faq';
+  modelo?: string;
+}
+
 export function useChatbot() {
   const { user } = useAuth();
   const [conversaAtiva, setConversaAtiva] = useState<ChatbotConversa | null>(null);
@@ -76,7 +82,7 @@ export function useChatbot() {
           usuario_id: user.id,
           status: 'ativa',
           total_mensagens: 0,
-          metadata: {}
+          metadata: {},
         })
         .select()
         .single();
@@ -95,108 +101,6 @@ export function useChatbot() {
       setLoading(false);
     }
   }, [user]);
-
-  // Enviar mensagem
-  const enviarMensagem = useCallback(async (conteudo: string) => {
-    if (!conversaAtiva) {
-      setError('Nenhuma conversa ativa');
-      return null;
-    }
-
-    try {
-      setLoading(true);
-      setError(null);
-
-      // Inserir mensagem do usuário
-      const { data: _mensagemUsuario, error: errorUsuario } = await supabase
-        .from('chatbot_mensagens')
-        .insert({
-          conversa_id: conversaAtiva.id,
-          tipo: 'usuario',
-          conteudo,
-          metadata: {}
-        })
-        .select()
-        .single();
-
-      if (errorUsuario) throw errorUsuario;
-
-      // Atualizar total de mensagens
-      await supabase
-        .from('chatbot_conversas')
-        .update({ 
-          total_mensagens: conversaAtiva.total_mensagens + 1,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', conversaAtiva.id);
-
-      // Buscar resposta da IA (placeholder - integrar com GPT-4)
-      const respostaIA = await buscarRespostaIA(conteudo);
-
-      // Inserir resposta do assistente
-      const { data: mensagemAssistente, error: errorAssistente } = await supabase
-        .from('chatbot_mensagens')
-        .insert({
-          conversa_id: conversaAtiva.id,
-          tipo: 'assistente',
-          conteudo: respostaIA,
-          metadata: {
-            model: 'gpt-4',
-            confidence: 0.95
-          }
-        })
-        .select()
-        .single();
-
-      if (errorAssistente) throw errorAssistente;
-
-      // Atualizar total de mensagens novamente
-      await supabase
-        .from('chatbot_conversas')
-        .update({ 
-          total_mensagens: conversaAtiva.total_mensagens + 2,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', conversaAtiva.id);
-
-      // Recarregar mensagens
-      await carregarMensagens(conversaAtiva.id);
-
-      return mensagemAssistente;
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erro ao enviar mensagem';
-      setError(message);
-      console.error('Erro enviarMensagem:', err);
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  }, [conversaAtiva, carregarMensagens]);
-
-  // Buscar resposta da IA (placeholder)
-  const buscarRespostaIA = async (pergunta: string): Promise<string> => {
-    // TODO: Integrar com GPT-4 API
-    // Por ora, buscar resposta nas FAQs
-    const { data: faqs } = await supabase
-      .from('chatbot_faqs')
-      .select('*')
-      .eq('ativo', true)
-      .limit(5);
-
-    if (faqs && faqs.length > 0) {
-      // Busca simples por palavras-chave
-      const perguntaLower = pergunta.toLowerCase();
-      const faqEncontrada = faqs.find(faq => 
-        faq.palavras_chave.some((palavra: string) => perguntaLower.includes(palavra.toLowerCase()))
-      );
-
-      if (faqEncontrada) {
-        return faqEncontrada.resposta;
-      }
-    }
-
-    return 'Desculpe, não encontrei uma resposta para sua pergunta. Um atendente humano entrará em contato em breve.';
-  };
 
   // Carregar mensagens de uma conversa
   const carregarMensagens = useCallback(async (conversaId: string) => {
@@ -222,35 +126,178 @@ export function useChatbot() {
     }
   }, []);
 
-  // Finalizar conversa
-  const finalizarConversa = useCallback(async (satisfacao?: number) => {
-    if (!conversaAtiva) return;
+  // Enviar mensagem
+  const enviarMensagem = useCallback(
+    async (conteudo: string) => {
+      if (!conversaAtiva) {
+        setError('Nenhuma conversa ativa');
+        return null;
+      }
 
-    try {
-      await supabase
-        .from('chatbot_conversas')
-        .update({
-          status: 'finalizada',
-          data_fim: new Date().toISOString(),
-          satisfacao_usuario: satisfacao || null,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', conversaAtiva.id);
+      try {
+        setLoading(true);
+        setError(null);
 
-      setConversaAtiva(null);
-      setMensagens([]);
-    } catch (err) {
-      console.error('Erro finalizarConversa:', err);
+        // Inserir mensagem do usuário
+        const { data: _mensagemUsuario, error: errorUsuario } = await supabase
+          .from('chatbot_mensagens')
+          .insert({
+            conversa_id: conversaAtiva.id,
+            tipo: 'usuario',
+            conteudo,
+            metadata: {},
+          })
+          .select()
+          .single();
+
+        if (errorUsuario) throw errorUsuario;
+
+        // Atualizar total de mensagens
+        await supabase
+          .from('chatbot_conversas')
+          .update({
+            total_mensagens: conversaAtiva.total_mensagens + 1,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', conversaAtiva.id);
+
+        // Buscar resposta da IA (edge function + fallback)
+        const respostaIA = await gerarRespostaIA(conteudo);
+
+        // Inserir resposta do assistente
+        const { data: mensagemAssistente, error: errorAssistente } = await supabase
+          .from('chatbot_mensagens')
+          .insert({
+            conversa_id: conversaAtiva.id,
+            tipo: 'assistente',
+            conteudo: respostaIA.mensagem,
+            metadata: {
+              source: respostaIA.origem,
+              model: respostaIA.modelo ?? (respostaIA.origem === 'edge' ? 'ai-tutor-financeiro' : 'faq'),
+              confidence: respostaIA.origem === 'edge' ? 0.95 : 0.6,
+            },
+          })
+          .select()
+          .single();
+
+        if (errorAssistente) throw errorAssistente;
+
+        // Atualizar total de mensagens novamente
+        await supabase
+          .from('chatbot_conversas')
+          .update({
+            total_mensagens: conversaAtiva.total_mensagens + 2,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', conversaAtiva.id);
+
+        // Recarregar mensagens
+        await carregarMensagens(conversaAtiva.id);
+
+        return mensagemAssistente;
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Erro ao enviar mensagem';
+        setError(message);
+        console.error('Erro enviarMensagem:', err);
+        return null;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [conversaAtiva, carregarMensagens, gerarRespostaIA]
+  );
+
+  const buscarRespostaFaq = useCallback(async (pergunta: string): Promise<string | null> => {
+    const { data: faqs } = await supabase
+      .from('chatbot_faqs')
+      .select('*')
+      .eq('ativo', true)
+      .limit(5);
+
+    if (faqs && faqs.length > 0) {
+      // Busca simples por palavras-chave
+      const perguntaLower = pergunta.toLowerCase();
+      const faqEncontrada = faqs.find((faq) =>
+        faq.palavras_chave.some((palavra: string) => perguntaLower.includes(palavra.toLowerCase()))
+      );
+
+      if (faqEncontrada) {
+        return faqEncontrada.resposta;
+      }
     }
-  }, [conversaAtiva]);
+
+    return null;
+  }, []);
+
+  // Buscar resposta da IA (edge function + fallback)
+  const gerarRespostaIA = useCallback(async (pergunta: string): Promise<RespostaIA> => {
+    try {
+      const { data, error: edgeError } = await supabase.functions.invoke<{
+        info?: string;
+        prompt?: string;
+        context?: Record<string, unknown>;
+      }>('ai-tutor-financeiro', {
+        body: {
+          prompt: pergunta,
+          context: {
+            conversaId: conversaAtiva?.id ?? null,
+            usuario: user?.email ?? user?.id ?? 'desconhecido',
+            origem: 'chatbot-web',
+          },
+        },
+      });
+
+      if (edgeError) throw edgeError;
+
+      const resposta = data?.info ?? data?.prompt;
+      if (resposta && typeof resposta === 'string') {
+        return {
+          mensagem: resposta,
+          origem: 'edge',
+          modelo: (data?.context?.model as string | undefined) ?? 'anthropic-placeholder',
+        };
+      }
+    } catch (err) {
+      console.warn('Edge Function ai-tutor-financeiro indisponível, usando fallback.', err);
+    }
+
+    const fallbackResposta = await buscarRespostaFaq(pergunta);
+    if (fallbackResposta) {
+      return { mensagem: fallbackResposta, origem: 'faq' };
+    }
+
+    return { mensagem: 'Desculpe, não encontrei uma resposta para sua pergunta. Um atendente humano entrará em contato em breve.', origem: 'fallback' as const };
+  }, [buscarRespostaFaq, conversaAtiva?.id, user?.email, user?.id]);
+
+  // Finalizar conversa
+  const finalizarConversa = useCallback(
+    async (satisfacao?: number) => {
+      if (!conversaAtiva) return;
+
+      try {
+        await supabase
+          .from('chatbot_conversas')
+          .update({
+            status: 'finalizada',
+            data_fim: new Date().toISOString(),
+            satisfacao_usuario: satisfacao || null,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', conversaAtiva.id);
+
+        setConversaAtiva(null);
+        setMensagens([]);
+      } catch (err) {
+        console.error('Erro finalizarConversa:', err);
+      }
+    },
+    [conversaAtiva]
+  );
 
   // Buscar FAQs
   const buscarFAQs = useCallback(async (categoria?: string) => {
     try {
-      let query = supabase
-        .from('chatbot_faqs')
-        .select('*')
-        .eq('ativo', true);
+      let query = supabase.from('chatbot_faqs').select('*').eq('ativo', true);
 
       if (categoria) {
         query = query.eq('categoria', categoria);
@@ -281,10 +328,10 @@ export function useChatbot() {
           event: 'INSERT',
           schema: 'public',
           table: 'chatbot_mensagens',
-          filter: `conversa_id=eq.${conversaAtiva.id}`
+          filter: `conversa_id=eq.${conversaAtiva.id}`,
         },
         (payload) => {
-          setMensagens(prev => [...prev, payload.new as ChatbotMensagem]);
+          setMensagens((prev) => [...prev, payload.new as ChatbotMensagem]);
         }
       )
       .subscribe();
@@ -303,7 +350,6 @@ export function useChatbot() {
     enviarMensagem,
     carregarMensagens,
     finalizarConversa,
-    buscarFAQs
+    buscarFAQs,
   };
 }
-

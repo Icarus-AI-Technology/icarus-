@@ -156,11 +156,7 @@ const dividerSpacingClasses = {
   },
 };
 
-export function Divider({
-  className,
-  orientation = 'horizontal',
-  spacing = 'md',
-}: DividerProps) {
+export function Divider({ className, orientation = 'horizontal', spacing = 'md' }: DividerProps) {
   return (
     <div
       className={cn(
@@ -172,4 +168,3 @@ export function Divider({
     />
   );
 }
-

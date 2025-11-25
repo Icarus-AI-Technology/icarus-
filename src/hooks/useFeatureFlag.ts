@@ -21,7 +21,7 @@ const featureFlagCache = new Map<string, FeatureFlagCache>();
 
 /**
  * Hook para verificar feature flags
- * 
+ *
  * @example
  * const showNewDashboard = useFeatureFlag('new_dashboard_ui');
  * if (showNewDashboard) {
@@ -29,10 +29,7 @@ const featureFlagCache = new Map<string, FeatureFlagCache>();
  * }
  * return <OldDashboard />;
  */
-export function useFeatureFlag(
-  flagKey: string,
-  options: UseFeatureFlagOptions = {}
-): boolean {
+export function useFeatureFlag(flagKey: string, options: UseFeatureFlagOptions = {}): boolean {
   const {
     defaultValue = false,
     enableCache = true,
@@ -72,7 +69,7 @@ export function useFeatureFlag(
           }
         }
       } catch (error) {
-   const err = error as Error;
+        const err = error as Error;
         console.error(`[useFeatureFlag] Error checking flag "${flagKey}":`, err);
         if (mounted) {
           setIsEnabled(defaultValue);
@@ -97,11 +94,7 @@ export function useFeatureFlagWithLoading(
   flagKey: string,
   options: UseFeatureFlagOptions = {}
 ): { isEnabled: boolean; isLoading: boolean } {
-  const {
-    defaultValue = false,
-    enableCache = true,
-    cacheDuration = 5 * 60 * 1000,
-  } = options;
+  const { defaultValue = false, enableCache = true, cacheDuration = 5 * 60 * 1000 } = options;
 
   const [isEnabled, setIsEnabled] = useState<boolean>(defaultValue);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -136,7 +129,7 @@ export function useFeatureFlagWithLoading(
           }
         }
       } catch (error) {
-   const err = error as Error;
+        const err = error as Error;
         console.error(`[useFeatureFlagWithLoading] Error:`, err);
         if (mounted) {
           setIsEnabled(defaultValue);
@@ -157,15 +150,12 @@ export function useFeatureFlagWithLoading(
 
 /**
  * Hook para obter variant de feature flag (A/B testing)
- * 
+ *
  * @example
  * const variant = useFeatureFlagVariant('dashboard_layout', 'classic');
  * // variant = 'classic' | 'modern' | 'compact'
  */
-export function useFeatureFlagVariant(
-  flagKey: string,
-  defaultVariant: string = 'control'
-): string {
+export function useFeatureFlagVariant(flagKey: string, defaultVariant: string = 'control'): string {
   const [variant, setVariant] = useState<string>(defaultVariant);
 
   useEffect(() => {
@@ -179,7 +169,7 @@ export function useFeatureFlagVariant(
           setVariant(flagVariant || defaultVariant);
         }
       } catch (error) {
-   const err = error as Error;
+        const err = error as Error;
         console.error(`[useFeatureFlagVariant] Error:`, err);
         if (mounted) {
           setVariant(defaultVariant);
@@ -203,4 +193,3 @@ export function useFeatureFlagVariant(
 export function clearFeatureFlagCache(): void {
   featureFlagCache.clear();
 }
-

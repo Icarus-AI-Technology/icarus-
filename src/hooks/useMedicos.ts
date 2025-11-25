@@ -46,7 +46,7 @@ export function useMedicos() {
       if (error) throw error;
       setMedicos(data || []);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao carregar médicos');
     } finally {
       setLoading(false);
@@ -56,16 +56,12 @@ export function useMedicos() {
   // Buscar médico por ID
   const getMedicoById = async (id: string): Promise<Medico | null> => {
     try {
-      const { data, error } = await supabase
-        .from('medicos')
-        .select('*')
-        .eq('id', id)
-        .single();
+      const { data, error } = await supabase.from('medicos').select('*').eq('id', id).single();
 
       if (error) throw error;
       return data;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao buscar médico');
       return null;
     }
@@ -74,19 +70,15 @@ export function useMedicos() {
   // Criar novo médico
   const createMedico = async (medico: Omit<Medico, 'id' | 'created_at' | 'updated_at'>) => {
     try {
-      const { data, error } = await supabase
-        .from('medicos')
-        .insert([medico])
-        .select()
-        .single();
+      const { data, error } = await supabase.from('medicos').insert([medico]).select().single();
 
       if (error) throw error;
-      
+
       // Atualizar lista local
       setMedicos((prev) => [...prev, data]);
       return data;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao criar médico');
       throw err;
     }
@@ -105,12 +97,10 @@ export function useMedicos() {
       if (error) throw error;
 
       // Atualizar lista local
-      setMedicos((prev) =>
-        prev.map((m) => (m.id === id ? data : m))
-      );
+      setMedicos((prev) => prev.map((m) => (m.id === id ? data : m)));
       return data;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao atualizar médico');
       throw err;
     }
@@ -119,17 +109,14 @@ export function useMedicos() {
   // Deletar médico
   const deleteMedico = async (id: string) => {
     try {
-      const { error } = await supabase
-        .from('medicos')
-        .delete()
-        .eq('id', id);
+      const { error } = await supabase.from('medicos').delete().eq('id', id);
 
       if (error) throw error;
 
       // Atualizar lista local
       setMedicos((prev) => prev.filter((m) => m.id !== id));
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao deletar médico');
       throw err;
     }
@@ -147,7 +134,7 @@ export function useMedicos() {
       if (error) throw error;
       return data || [];
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao buscar médicos');
       return [];
     }
@@ -165,7 +152,7 @@ export function useMedicos() {
       if (error) throw error;
       return data || [];
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       setError(err instanceof Error ? err.message : 'Erro ao buscar médicos');
       return [];
     }
@@ -200,4 +187,3 @@ export function useMedicos() {
     countByEspecialidade,
   };
 }
-

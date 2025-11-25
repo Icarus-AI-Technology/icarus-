@@ -1,7 +1,7 @@
 /**
  * CirurgiasAI - Serviço de Inteligência Artificial para Cirurgias
  * Sistema: ICARUS v5.0
- * 
+ *
  * Algoritmos Implementados:
  * - Previsão de Demanda Cirúrgica (Prophet simplificado)
  * - Otimização de Agendamento
@@ -10,7 +10,7 @@
  * - Predição de Tempo Cirúrgico
  */
 
-import { supabase } from '@/lib/supabase';
+import { legacySupabase as supabase } from '@/lib/legacySupabase';
 
 // ============================================
 // INTERFACES
@@ -149,9 +149,8 @@ export class CirurgiasAI {
           return d >= dataInicio && d < inicio30;
         }).length;
 
-        const crescimento = primeiros30d > 0 
-          ? ((demanda30d - primeiros30d) / primeiros30d) * 100 
-          : 0;
+        const crescimento =
+          primeiros30d > 0 ? ((demanda30d - primeiros30d) / primeiros30d) * 100 : 0;
 
         // Previsão simples baseada em média móvel
         const demandaSemanal = demanda30d / 4.3; // ~4.3 semanas em 30 dias
@@ -159,8 +158,8 @@ export class CirurgiasAI {
         const demanda30dFutura = Math.round(demanda30d * (1 + crescimento / 100));
 
         // Detectar sazonalidade (variação semanal)
-        const sazonalidade = Math.abs(crescimento) > 15 ? 'alta' : 
-                            Math.abs(crescimento) > 5 ? 'media' : 'baixa';
+        const sazonalidade =
+          Math.abs(crescimento) > 15 ? 'alta' : Math.abs(crescimento) > 5 ? 'media' : 'baixa';
 
         resultados.push({
           especialidade: esp,
@@ -195,10 +194,10 @@ export class CirurgiasAI {
 
       // Algoritmo simples de otimização
       // Em produção: usar OR-Tools, algoritmo genético, etc.
-      
+
       // 1. Encontrar melhor horário (manhã = menos urgências)
       const horarioOtimo = '08:00';
-      
+
       // 2. Sala baseada em disponibilidade (mock)
       const salaOtima = 'Sala 1';
 
@@ -235,12 +234,14 @@ export class CirurgiasAI {
     try {
       const { data: cirurgia } = await supabase
         .from('cirurgias')
-        .select(`
+        .select(
+          `
           *,
           kits_cirurgicos(
             itens:itens_kit(count)
           )
-        `)
+        `
+        )
         .eq('id', cirurgiaId)
         .single();
 
@@ -248,18 +249,20 @@ export class CirurgiasAI {
 
       // Calcular complexidade baseada em múltiplos fatores
       const materiaisCount = cirurgia.kits_cirurgicos?.[0]?.itens?.[0]?.count || 0;
-      
+
       // Score de complexidade (0-100)
       let score = 30; // Base
-      
+
       // Materiais especializados aumentam complexidade
       if (materiaisCount > 15) score += 30;
       else if (materiaisCount > 10) score += 20;
       else if (materiaisCount > 5) score += 10;
 
       // Tipo de cirurgia
-      if (cirurgia.tipo_cirurgia.includes('Cardíaca') || 
-          cirurgia.tipo_cirurgia.includes('Neurológica')) {
+      if (
+        cirurgia.tipo_cirurgia.includes('Cardíaca') ||
+        cirurgia.tipo_cirurgia.includes('Neurológica')
+      ) {
         score += 25;
       } else if (cirurgia.tipo_cirurgia.includes('Ortopédica')) {
         score += 15;
@@ -276,7 +279,7 @@ export class CirurgiasAI {
       else nivel = 'baixa';
 
       const recomendacoes: string[] = [];
-      
+
       if (nivel === 'critica' || nivel === 'alta') {
         recomendacoes.push('Equipe cirúrgica experiente obrigatória');
         recomendacoes.push('Reservar 30% tempo adicional para imprevistos');
@@ -293,10 +296,16 @@ export class CirurgiasAI {
         nivel_complexidade: nivel,
         score,
         fatores: {
-          duracao_estimada: nivel === 'critica' ? 240 : nivel === 'alta' ? 180 : nivel === 'media' ? 120 : 60,
+          duracao_estimada:
+            nivel === 'critica' ? 240 : nivel === 'alta' ? 180 : nivel === 'media' ? 120 : 60,
           materiais_especializados: materiaisCount,
           equipe_minima: nivel === 'critica' ? 8 : nivel === 'alta' ? 6 : nivel === 'media' ? 4 : 3,
-          risco_clinico: nivel === 'critica' || nivel === 'alta' ? 'alto' : nivel === 'media' ? 'moderado' : 'baixo',
+          risco_clinico:
+            nivel === 'critica' || nivel === 'alta'
+              ? 'alto'
+              : nivel === 'media'
+                ? 'moderado'
+                : 'baixo',
         },
         recomendacoes,
       };
@@ -325,7 +334,8 @@ export class CirurgiasAI {
 
       const { data: cirurgiasPassadas } = await supabase
         .from('cirurgias')
-        .select(`
+        .select(
+          `
           id,
           kits_cirurgicos(
             itens:itens_kit(
@@ -334,13 +344,17 @@ export class CirurgiasAI {
               produtos:produtos_opme(nome, preco_venda)
             )
           )
-        `)
+        `
+        )
         .eq('tipo_cirurgia', cirurgia.tipo_cirurgia)
         .eq('status', 'concluida')
         .gte('data_cirurgia', dataInicio.toISOString());
 
       // Contar frequência de uso de cada produto
-      const frequenciaProdutos = new Map<string, { nome: string; count: number; qtdMedia: number; preco: number }>();
+      const frequenciaProdutos = new Map<
+        string,
+        { nome: string; count: number; qtdMedia: number; preco: number }
+      >();
 
       cirurgiasPassadas?.forEach((c: CirurgiaPassadaRecord) => {
         c.kits_cirurgicos?.forEach((kit: KitCirurgicoRecord) => {
@@ -348,11 +362,11 @@ export class CirurgiasAI {
             const prodId = item.produto_id;
             const prodNome = item.produtos?.nome || 'Desconhecido';
             const preco = item.produtos?.preco_venda || 0;
-            
+
             if (!frequenciaProdutos.has(prodId)) {
               frequenciaProdutos.set(prodId, { nome: prodNome, count: 0, qtdMedia: 0, preco });
             }
-            
+
             const current = frequenciaProdutos.get(prodId)!;
             current.count += 1;
             current.qtdMedia += item.quantidade;
@@ -361,14 +375,14 @@ export class CirurgiasAI {
       });
 
       const totalCirurgias = cirurgiasPassadas?.length || 1;
-      
+
       const materiaisRecomendados = Array.from(frequenciaProdutos.entries())
         .map(([prodId, { nome, count, qtdMedia }]) => ({
           produto_id: prodId,
           produto_nome: nome,
           quantidade_sugerida: Math.ceil(qtdMedia / count),
           probabilidade_uso: Math.round((count / totalCirurgias) * 100),
-          essencial: (count / totalCirurgias) > 0.7, // Usado em > 70% dos casos
+          essencial: count / totalCirurgias > 0.7, // Usado em > 70% dos casos
         }))
         .sort((a, b) => b.probabilidade_uso - a.probabilidade_uso)
         .slice(0, 15); // Top 15 materiais
@@ -426,9 +440,10 @@ export class CirurgiasAI {
       // Calcular estatísticas
       const duracoes = historico.map((c) => c.duracao_minutos).filter((d) => d > 0);
       const tempoMedio = duracoes.reduce((sum, d) => sum + d, 0) / duracoes.length;
-      
+
       // Desvio padrão
-      const variancia = duracoes.reduce((sum, d) => sum + Math.pow(d - tempoMedio, 2), 0) / duracoes.length;
+      const variancia =
+        duracoes.reduce((sum, d) => sum + Math.pow(d - tempoMedio, 2), 0) / duracoes.length;
       const desvioPadrao = Math.sqrt(variancia);
 
       return {
@@ -449,4 +464,3 @@ export class CirurgiasAI {
     }
   }
 }
-

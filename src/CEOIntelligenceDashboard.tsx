@@ -2,16 +2,26 @@
  * CEO Intelligence Dashboard
  * Sistema: ICARUS v5.0
  * PADRONIZADO: Container, PageHeader, StatsGrid, CategoryTabs, AnimatedCard
- * 
+ *
  * Dashboard executivo com feed operacional agregado de todos os agentes de IA.
  * Exibe alertas estratégicos, recomendações priorizadas e métricas consolidadas.
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { AlertTriangle, Activity, RefreshCw, Download, Target } from 'lucide-react';
+import {
+  AlertTriangle,
+  Activity,
+  RefreshCw,
+  Download,
+  Target,
+  Building2,
+  ShoppingCart,
+  Truck,
+  Brain,
+} from 'lucide-react';
 import { useToast } from '@/contexts/ToastContext';
 import { useDocumentTitle } from '@/hooks';
-import { supabase } from '@/lib/supabase';
+import { legacySupabase as supabase } from '@/lib/legacySupabase';
 import { CEOIntelligenceBridge } from '@/services/ceo/CEOIntelligenceBridge';
 import {
   Container,
@@ -21,9 +31,8 @@ import {
   AnimatedCard,
   Button,
   Badge,
-  type StatItem,
-  type CategoryItem,
 } from '@/components/oraclusx-ds';
+import type { StatItem, CategoryItem } from '@/types/dashboard-local';
 
 interface DashboardMetrics {
   saude_clinica: number;
@@ -116,29 +125,30 @@ export default function CEOIntelligenceDashboard() {
           .single(),
       ]);
 
-      setEvents(feedData.data || []);
-      setAlerts(alertsData.data || []);
-      setRecommendations(recsData.data || []);
-      setMetrics(metricsData.data?.kpis_gerais || {
-        saude_clinica: 0,
-        saude_operacional: 0,
-        saude_compras: 0,
-        saude_logistica: 0,
-        alertas_criticos: alertsData.data?.filter(a => a.severidade === 'critical').length || 0,
-        alertas_altos: alertsData.data?.filter(a => a.severidade === 'high').length || 0,
-        recomendacoes_pendentes: recsData.data?.length || 0
-      });
+      setEvents((feedData.data as OperationalEvent[]) || []);
+      setAlerts((alertsData.data as StrategicAlert[]) || []);
+      setRecommendations((recsData.data as Recommendation[]) || []);
+      setMetrics(
+        metricsData.data?.kpis_gerais || {
+          saude_clinica: 0,
+          saude_operacional: 0,
+          saude_compras: 0,
+          saude_logistica: 0,
+          alertas_criticos: alertsData.data?.filter((a) => a.severidade === 'critical').length || 0,
+          alertas_altos: alertsData.data?.filter((a) => a.severidade === 'high').length || 0,
+          recomendacoes_pendentes: recsData.data?.length || 0,
+        }
+      );
 
       addToast({
         type: 'success',
         message: 'Dashboard atualizado com sucesso',
-        aiSource: 'CEO Intelligence'
       });
     } catch (error) {
       console.error('Erro ao carregar dashboard:', error);
       addToast({
         type: 'error',
-        message: 'Erro ao carregar dados do dashboard'
+        message: 'Erro ao carregar dados do dashboard',
       });
     } finally {
       setLoading(false);
@@ -153,13 +163,12 @@ export default function CEOIntelligenceDashboard() {
       addToast({
         type: 'success',
         message: 'Métricas atualizadas com sucesso',
-        aiSource: 'CEO Intelligence'
       });
     } catch (error) {
       console.error('Erro ao atualizar métricas:', error);
       addToast({
         type: 'error',
-        message: 'Erro ao atualizar métricas'
+        message: 'Erro ao atualizar métricas',
       });
     } finally {
       setRefreshing(false);
@@ -180,13 +189,13 @@ export default function CEOIntelligenceDashboard() {
 
       addToast({
         type: 'success',
-        message: 'Relatório exportado com sucesso'
+        message: 'Relatório exportado com sucesso',
       });
     } catch (error) {
       console.error('Erro ao exportar relatório:', error);
       addToast({
         type: 'error',
-        message: 'Erro ao exportar relatório'
+        message: 'Erro ao exportar relatório',
       });
     }
   };
@@ -201,42 +210,42 @@ export default function CEOIntelligenceDashboard() {
       value: `${metrics?.saude_clinica || 0}%`,
       trend: '+5%',
       trendUp: true,
-      icon: Activity
+      icon: Activity,
     },
     {
       title: 'Saúde Operacional',
       value: `${metrics?.saude_operacional || 0}%`,
       trend: '+3%',
       trendUp: true,
-      icon: Building2
+      icon: Building2,
     },
     {
       title: 'Saúde Compras',
       value: `${metrics?.saude_compras || 0}%`,
       trend: '+7%',
       trendUp: true,
-      icon: ShoppingCart
+      icon: ShoppingCart,
     },
     {
       title: 'Saúde Logística',
       value: `${metrics?.saude_logistica || 0}%`,
       trend: '+2%',
       trendUp: true,
-      icon: Truck
+      icon: Truck,
     },
     {
       title: 'Alertas Críticos',
-      value: metrics?.alertas_criticos || 0,
+      value: String(metrics?.alertas_criticos ?? 0),
       trend: '-1',
       trendUp: true,
-      icon: AlertTriangle
+      icon: AlertTriangle,
     },
     {
       title: 'Recomendações',
-      value: metrics?.recomendacoes_pendentes || 0,
+      value: String(metrics?.recomendacoes_pendentes ?? 0),
       trend: '+4',
       trendUp: true,
-      icon: Target
+      icon: Target,
     },
   ];
 
@@ -260,7 +269,7 @@ export default function CEOIntelligenceDashboard() {
   };
 
   return (
-    <Container maxWidth="7xl" padding="lg" className="min-h-screen orx-animate-fade-in">
+    <Container maxWidth="5xl" padding="lg" className="min-h-screen orx-animate-fade-in">
       <PageHeader
         title="CEO Intelligence Dashboard"
         description="Dashboard executivo com inteligência agregada de todos os agentes"
@@ -285,11 +294,7 @@ export default function CEOIntelligenceDashboard() {
             >
               Atualizar
             </Button>
-            <Button
-              variant="ghost"
-              icon={<Download size={18} />}
-              onClick={handleExportReport}
-            >
+            <Button variant="ghost" icon={<Download size={18} />} onClick={handleExportReport}>
               Exportar
             </Button>
           </div>
@@ -308,16 +313,12 @@ export default function CEOIntelligenceDashboard() {
         <CategoryTabs
           categories={categories}
           activeCategory={activeTab}
-          onCategoryChange={setActiveTab}
+          onChange={(categoryId) => setActiveTab(categoryId as DashboardTab)}
         />
 
         {/* Feed Operacional */}
         {activeTab === 'feed' && (
-          <AnimatedCard
-            animation="slideUp"
-            hoverEffect="lift"
-            className="orx-glass-lg p-6"
-          >
+          <AnimatedCard animation="slideUp" hoverLift className="orx-glass-lg p-6">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-3 rounded-xl neuro-inset bg-gradient-to-br from-[var(--orx-primary)]/10 to-[var(--orx-primary)]/5">
                 <Activity size={24} className="text-[var(--orx-primary)]" />
@@ -355,9 +356,7 @@ export default function CEOIntelligenceDashboard() {
                   <h4 className="orx-orx-font-semibold text-[var(--orx-text-primary)] mb-1">
                     {event.titulo}
                   </h4>
-                  <p className="orx-text-sm text-[var(--orx-text-secondary)]">
-                    {event.descricao}
-                  </p>
+                  <p className="orx-text-sm text-[var(--orx-text-secondary)]">{event.descricao}</p>
                 </div>
               ))}
             </div>
@@ -366,11 +365,7 @@ export default function CEOIntelligenceDashboard() {
 
         {/* Alertas Estratégicos */}
         {activeTab === 'alertas' && (
-          <AnimatedCard
-            animation="slideUp"
-            hoverEffect="lift"
-            className="orx-glass-lg p-6"
-          >
+          <AnimatedCard animation="slideUp" hoverLift className="orx-glass-lg p-6">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-3 rounded-xl neuro-inset bg-gradient-to-br from-[var(--orx-warning)]/10 to-[var(--orx-warning)]/5">
                 <AlertTriangle size={24} className="text-[var(--orx-warning)]" />
@@ -403,9 +398,7 @@ export default function CEOIntelligenceDashboard() {
                   <h4 className="orx-orx-font-semibold text-[var(--orx-text-primary)] mb-1">
                     {alert.titulo}
                   </h4>
-                  <p className="orx-text-sm text-[var(--orx-text-secondary)]">
-                    {alert.descricao}
-                  </p>
+                  <p className="orx-text-sm text-[var(--orx-text-secondary)]">{alert.descricao}</p>
                 </div>
               ))}
             </div>
@@ -414,11 +407,7 @@ export default function CEOIntelligenceDashboard() {
 
         {/* Recomendações */}
         {activeTab === 'recomendacoes' && (
-          <AnimatedCard
-            animation="slideUp"
-            hoverEffect="lift"
-            className="orx-glass-lg p-6"
-          >
+          <AnimatedCard animation="slideUp" hoverLift className="orx-glass-lg p-6">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-3 rounded-xl neuro-inset bg-gradient-to-br from-[var(--orx-success)]/10 to-[var(--orx-success)]/5">
                 <Target size={24} className="text-[var(--orx-success)]" />

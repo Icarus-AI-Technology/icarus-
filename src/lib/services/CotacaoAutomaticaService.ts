@@ -1,13 +1,13 @@
 /**
  * CotacaoAutomaticaService - Cotação Automática por Cirurgia
- * 
+ *
  * Funcionalidades:
  * - Cotação automática de todos os produtos do kit cirúrgico
  * - Cálculo de economia total
  * - Ranking de fornecedores
  * - Relatório consolidado
  * - Integração com PortaisOPMEService
- * 
+ *
  * @module CotacaoAutomaticaService
  * @version 1.0.0
  */
@@ -41,24 +41,24 @@ export interface RelatorioCotacaoCirurgia {
   paciente_nome?: string;
   tipo_cirurgia?: string;
   data_cirurgia?: string;
-  
+
   total_produtos: number;
   total_cotacoes: number;
   tempo_execucao: number; // ms
-  
+
   valor_total_atual: number;
   valor_total_cotado: number;
   economia_total: number;
   percentual_economia: number;
-  
+
   cotacoes: CotacaoProduto[];
-  
+
   recomendacoes: {
     portal: string;
     total_produtos: number;
     economia_estimada: number;
   }[];
-  
+
   observacoes?: string[];
 }
 
@@ -81,6 +81,32 @@ export interface EstatisticasCotacoes {
   portal_mais_economico: string;
   produto_maior_economia: string;
 }
+
+type CirurgiaProdutoRegistro = {
+  quantidade_planejada: number;
+  valor_unitario?: number | null;
+  produto?: {
+    id: string;
+    descricao: string;
+    codigo_anvisa?: string | null;
+    preco_custo?: number | null;
+  } | null;
+};
+
+type CirurgiaComProdutos = {
+  numero_cirurgia?: string | null;
+  paciente_nome?: string | null;
+  tipo_cirurgia?: string | null;
+  data_agendamento?: string | null;
+  cirurgias_produtos?: CirurgiaProdutoRegistro[] | null;
+};
+
+type CotacaoRegistro = {
+  cirurgia_id?: string | null;
+  portal_melhor_preco?: string | null;
+  economia_estimada?: number | null;
+  percentual_economia?: number | null;
+};
 
 // ============================================
 // SERVIÇO PRINCIPAL
@@ -109,7 +135,8 @@ export class CotacaoAutomaticaService {
       // Buscar dados da cirurgia
       const { data: cirurgia, error: cirurgiaError } = await supabase
         .from('cirurgias')
-        .select(`
+        .select(
+          `
           *,
           cirurgias_produtos (
             id,
@@ -123,14 +150,16 @@ export class CotacaoAutomaticaService {
               preco_custo
             )
           )
-        `)
+        `
+        )
         .eq('id', cirurgiaId)
         .single();
 
       if (cirurgiaError) throw cirurgiaError;
-      if (!cirurgia) throw new Error('Cirurgia não encontrada');
+      const cirurgiaData = (cirurgia as CirurgiaComProdutos | null) ?? null;
+      if (!cirurgiaData) throw new Error('Cirurgia não encontrada');
 
-      const produtos = cirurgia.cirurgias_produtos || [];
+      const produtos = cirurgiaData.cirurgias_produtos ?? [];
       if (produtos.length === 0) {
         throw new Error('Cirurgia sem produtos no kit');
       }
@@ -151,9 +180,8 @@ export class CotacaoAutomaticaService {
         });
 
         // Se não tiver palavras-chave, usar descrição do produto
-        const palavraChaveUsada = palavrasChave.length > 0
-          ? palavrasChave[0].palavra_chave
-          : produto.descricao;
+        const palavraChaveUsada =
+          palavrasChave.length > 0 ? palavrasChave[0].palavra_chave : produto.descricao;
 
         // Realizar cotação
         const resultadoCotacao = await portaisOPMEService.cotarMultiplosPortais({
@@ -166,7 +194,8 @@ export class CotacaoAutomaticaService {
         const precoAtual = produto.preco_custo || item.valor_unitario || 0;
         const melhorPreco = resultadoCotacao.melhorOferta?.preco_unitario || precoAtual;
         const economia = Math.max(0, (precoAtual - melhorPreco) * item.quantidade_planejada);
-        const percentualEconomia = precoAtual > 0 ? (economia / (precoAtual * item.quantidade_planejada)) * 100 : 0;
+        const percentualEconomia =
+          precoAtual > 0 ? (economia / (precoAtual * item.quantidade_planejada)) * 100 : 0;
 
         valorTotalAtual += precoAtual * item.quantidade_planejada;
         valorTotalCotado += melhorPreco * item.quantidade_planejada;
@@ -196,7 +225,9 @@ export class CotacaoAutomaticaService {
       // Gerar observações
       const observacoes: string[] = [];
       if (economiaTotal > 0) {
-        observacoes.push(`Economia identificada: ${this.formatarMoeda(economiaTotal)} (${percentualEconomia.toFixed(1)}%)`);
+        observacoes.push(
+          `Economia identificada: ${this.formatarMoeda(economiaTotal)} (${percentualEconomia.toFixed(1)}%)`
+        );
       }
       if (recomendacoes.length > 0) {
         observacoes.push(`Portal mais econômico: ${recomendacoes[0].portal}`);
@@ -206,26 +237,26 @@ export class CotacaoAutomaticaService {
 
       return {
         cirurgia_id: cirurgiaId,
-        cirurgia_numero: cirurgia.numero_cirurgia,
-        paciente_nome: cirurgia.paciente_nome,
-        tipo_cirurgia: cirurgia.tipo_cirurgia,
-        data_cirurgia: cirurgia.data_agendamento,
-        
+        cirurgia_numero: cirurgiaData.numero_cirurgia ?? undefined,
+        paciente_nome: cirurgiaData.paciente_nome ?? undefined,
+        tipo_cirurgia: cirurgiaData.tipo_cirurgia ?? undefined,
+        data_cirurgia: cirurgiaData.data_agendamento ?? undefined,
+
         total_produtos: produtos.length,
         total_cotacoes: cotacoes.length,
         tempo_execucao: tempoExecucao,
-        
+
         valor_total_atual: valorTotalAtual,
         valor_total_cotado: valorTotalCotado,
         economia_total: economiaTotal,
         percentual_economia: percentualEconomia,
-        
+
         cotacoes,
         recomendacoes,
         observacoes,
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao cotar cirurgia:', err);
       throw err;
     }
@@ -255,7 +286,7 @@ export class CotacaoAutomaticaService {
         economiaTotal += relatorio.economia_total;
         tempoTotal += relatorio.tempo_execucao;
       } catch (error) {
-   const err = error as Error;
+        const err = error as Error;
         console.error(`Erro ao cotar cirurgia ${id}:`, err);
       }
     }
@@ -284,7 +315,7 @@ export class CotacaoAutomaticaService {
     for (const cotacao of relatorio.cotacoes) {
       for (const oferta of cotacao.top3_ofertas) {
         const chave = `${oferta.portal}:${oferta.fornecedor}`;
-        
+
         if (fornecedoresMap.has(chave)) {
           const ranking = fornecedoresMap.get(chave)!;
           ranking.total_produtos++;
@@ -306,7 +337,7 @@ export class CotacaoAutomaticaService {
 
     const ranking = Array.from(fornecedoresMap.values());
     ranking.sort((a, b) => b.economia_total - a.economia_total);
-    
+
     return ranking;
   }
 
@@ -339,20 +370,27 @@ export class CotacaoAutomaticaService {
 
     if (error) throw error;
 
-    const totalCirurgias = new Set(cotacoes?.map(c => c.cirurgia_id).filter(Boolean)).size;
-    const totalProdutos = cotacoes?.length || 0;
-    const economiaTotal = cotacoes?.reduce((sum, c) => sum + (c.economia_estimada || 0), 0) || 0;
+    const cotacoesList = (cotacoes ?? []) as CotacaoRegistro[];
+
+    const totalCirurgias = new Set(
+      cotacoesList.map((c) => c.cirurgia_id).filter((id): id is string => Boolean(id))
+    ).size;
+    const totalProdutos = cotacoesList.length;
+    const economiaTotal =
+      cotacoesList.reduce((sum, c) => sum + (c.economia_estimada || 0), 0) || 0;
     const economiaMedia = totalCirurgias > 0 ? economiaTotal / totalCirurgias : 0;
 
     // Calcular percentual médio
-    const cotacoesComEconomia = cotacoes?.filter(c => c.percentual_economia > 0) || [];
-    const percentualMedio = cotacoesComEconomia.length > 0
-      ? cotacoesComEconomia.reduce((sum, c) => sum + (c.percentual_economia || 0), 0) / cotacoesComEconomia.length
-      : 0;
+    const cotacoesComEconomia = cotacoesList.filter((c) => (c.percentual_economia || 0) > 0);
+    const percentualMedio =
+      cotacoesComEconomia.length > 0
+        ? cotacoesComEconomia.reduce((sum, c) => sum + (c.percentual_economia || 0), 0) /
+          cotacoesComEconomia.length
+        : 0;
 
     // Portal mais econômico
     const portaisEconomia = new Map<string, number>();
-    for (const cotacao of cotacoes || []) {
+    for (const cotacao of cotacoesList) {
       if (cotacao.portal_melhor_preco && cotacao.economia_estimada) {
         const atual = portaisEconomia.get(cotacao.portal_melhor_preco) || 0;
         portaisEconomia.set(cotacao.portal_melhor_preco, atual + cotacao.economia_estimada);
@@ -407,7 +445,7 @@ export class CotacaoAutomaticaService {
     }));
 
     ranking.sort((a, b) => b.economia_estimada - a.economia_estimada);
-    
+
     return ranking;
   }
 
@@ -424,29 +462,35 @@ export class CotacaoAutomaticaService {
 
   async exportarRelatorioCSV(relatorio: RelatorioCotacaoCirurgia): Promise<string> {
     const linhas: string[] = [];
-    
+
     // Cabeçalho
-    linhas.push('Produto,Código,Quantidade,Preço Atual,Melhor Preço,Economia,% Economia,Portal,Fornecedor');
-    
+    linhas.push(
+      'Produto,Código,Quantidade,Preço Atual,Melhor Preço,Economia,% Economia,Portal,Fornecedor'
+    );
+
     // Dados
     for (const cotacao of relatorio.cotacoes) {
-      linhas.push([
-        cotacao.produto_nome,
-        cotacao.produto_codigo || '',
-        cotacao.quantidade,
-        cotacao.preco_atual.toFixed(2),
-        cotacao.melhor_preco.toFixed(2),
-        cotacao.economia.toFixed(2),
-        cotacao.percentual_economia.toFixed(1) + '%',
-        cotacao.portal_recomendado,
-        cotacao.fornecedor_recomendado,
-      ].join(','));
+      linhas.push(
+        [
+          cotacao.produto_nome,
+          cotacao.produto_codigo || '',
+          cotacao.quantidade,
+          cotacao.preco_atual.toFixed(2),
+          cotacao.melhor_preco.toFixed(2),
+          cotacao.economia.toFixed(2),
+          cotacao.percentual_economia.toFixed(1) + '%',
+          cotacao.portal_recomendado,
+          cotacao.fornecedor_recomendado,
+        ].join(',')
+      );
     }
-    
+
     // Totais
     linhas.push('');
-    linhas.push(`TOTAL,,${relatorio.total_produtos},${relatorio.valor_total_atual.toFixed(2)},${relatorio.valor_total_cotado.toFixed(2)},${relatorio.economia_total.toFixed(2)},${relatorio.percentual_economia.toFixed(1)}%,,`);
-    
+    linhas.push(
+      `TOTAL,,${relatorio.total_produtos},${relatorio.valor_total_atual.toFixed(2)},${relatorio.valor_total_cotado.toFixed(2)},${relatorio.economia_total.toFixed(2)},${relatorio.percentual_economia.toFixed(1)}%,,`
+    );
+
     return linhas.join('\n');
   }
 
@@ -457,4 +501,3 @@ export class CotacaoAutomaticaService {
 
 // Exportar instância singleton
 export const cotacaoAutomaticaService = CotacaoAutomaticaService.getInstance();
-

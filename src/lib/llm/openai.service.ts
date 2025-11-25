@@ -174,7 +174,8 @@ ${context}
 
 Forneça apenas as sugestões em formato de lista numerada, sem introduções ou conclusões.`;
 
-    const systemPrompt = 'Você é um especialista em gestão hospitalar e OPME. Forneça sugestões práticas e diretas.';
+    const systemPrompt =
+      'Você é um especialista em gestão hospitalar e OPME. Forneça sugestões práticas e diretas.';
 
     const { content } = await this.generate(prompt, systemPrompt, {
       temperature: 0.8,
@@ -219,4 +220,3 @@ Forneça apenas as sugestões em formato de lista numerada, sem introduções ou
 
 // Export singleton instance
 export const openaiService = new OpenAIService();
-

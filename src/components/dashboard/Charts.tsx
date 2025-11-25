@@ -47,19 +47,11 @@ function ChartContainer({ children, title, subtitle, className }: ChartContainer
       {(title || subtitle) && (
         <div className="mb-4">
           {title && (
-            <h3
-              className="text-[var(--text-primary)] mb-1 text-[0.813rem] orx-font-bold"
-            >
+            <h3 className="text-[var(--text-primary)] mb-1 text-[0.813rem] orx-font-bold">
               {title}
             </h3>
           )}
-          {subtitle && (
-            <p
-              className="text-[var(--text-secondary)] text-[0.813rem]"
-            >
-              {subtitle}
-            </p>
-          )}
+          {subtitle && <p className="text-[var(--text-secondary)] text-[0.813rem]">{subtitle}</p>}
         </div>
       )}
       {children}
@@ -177,7 +169,13 @@ interface PieChartComponentProps extends BaseChartProps {
   colors?: string[];
 }
 
-const DEFAULT_COLORS = ['var(--orx-primary)', 'var(--orx-success)', 'var(--orx-warning)', 'var(--orx-error)', 'var(--orx-info)'];
+const DEFAULT_COLORS = [
+  'var(--orx-primary)',
+  'var(--orx-success)',
+  'var(--orx-warning)',
+  'var(--orx-error)',
+  'var(--orx-info)',
+];
 
 export function PieChartComponent({
   data,
@@ -215,30 +213,23 @@ export function StatCard({ title, value, trend, icon: Icon, className }: StatCar
     <div className={cn('neuro-raised rounded-xl p-6 h-[140px]', className)}>
       <div className="flex items-start justify-between h-full">
         <div>
-          <p
-            className="text-[var(--text-secondary)] mb-1 text-[0.813rem]"
-          >
-            {title}
-          </p>
-          <h3
-            className="text-[var(--text-primary)] text-[0.813rem] orx-font-bold"
-          >
-            {value}
-          </h3>
+          <p className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">{title}</p>
+          <h3 className="text-[var(--text-primary)] text-[0.813rem] orx-font-bold">{value}</h3>
           {trend !== undefined && (
-            <p
-              className={cn('mt-2 flex items-center gap-1 text-[0.813rem]', trendColor)}
-            >
+            <p className={cn('mt-2 flex items-center gap-1 text-[0.813rem]', trendColor)}>
               <TrendIcon className="w-3 h-3" />
               {Math.abs(trend)}%
             </p>
           )}
         </div>
         <div className="p-3 rounded-xl neuro-inset">
-          {Icon ? <Icon className="w-6 h-6 text-[var(--primary)]" /> : <Activity className="w-6 h-6 text-[var(--primary)]" />}
+          {Icon ? (
+            <Icon className="w-6 h-6 text-[var(--primary)]" />
+          ) : (
+            <Activity className="w-6 h-6 text-[var(--primary)]" />
+          )}
         </div>
       </div>
     </div>
   );
 }
-

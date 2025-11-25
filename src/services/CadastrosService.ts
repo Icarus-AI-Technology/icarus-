@@ -1,13 +1,13 @@
 /**
  * Serviço de Gestão de Cadastros - ICARUS v5.0
- * 
+ *
  * Responsável por:
  * - CRUD de todas as entidades cadastrais
  * - Validações de negócio
  * - Regras de duplicação
  * - Sincronização FHIR
  * - Audit log
- * 
+ *
  * @version 5.0.0
  */
 
@@ -17,14 +17,14 @@ import { supabase } from '@/lib/supabase';
 // TIPOS E INTERFACES
 // ========================================
 
-export type TipoEntidade = 
-  | 'medico' 
-  | 'hospital' 
-  | 'paciente' 
-  | 'convenio' 
-  | 'fornecedor' 
-  | 'produto_opme' 
-  | 'equipe_medica' 
+export type TipoEntidade =
+  | 'medico'
+  | 'hospital'
+  | 'paciente'
+  | 'convenio'
+  | 'fornecedor'
+  | 'produto_opme'
+  | 'equipe_medica'
   | 'transportadora';
 
 export interface CadastroBase {
@@ -215,7 +215,12 @@ export interface EquipeMedica extends CadastroBase {
 
 export interface MembroEquipe {
   medico_id: string;
-  funcao: 'cirurgiao_principal' | 'cirurgiao_auxiliar' | 'anestesista' | 'instrumentador' | 'auxiliar_enfermagem';
+  funcao:
+    | 'cirurgiao_principal'
+    | 'cirurgiao_auxiliar'
+    | 'anestesista'
+    | 'instrumentador'
+    | 'auxiliar_enfermagem';
 }
 
 export interface Transportadora extends CadastroBase {
@@ -278,17 +283,39 @@ export interface Certificacoes {
 // SERVIÇO PRINCIPAL
 // ========================================
 
+type CadastrosTableName =
+  | 'medicos'
+  | 'hospitais'
+  | 'pacientes'
+  | 'convenios'
+  | 'fornecedores'
+  | 'produtos_opme'
+  | 'equipes_medicas'
+  | 'transportadoras';
+
+type AuditPayload = {
+  antes?: Record<string, unknown> | null;
+  depois?: Record<string, unknown> | null;
+  descricao?: string | null;
+  empresa_id?: string | null;
+  usuario_id?: string | null;
+};
+
 export class CadastrosService {
-  private tabelaMap: Record<TipoEntidade, string> = {
-    'medico': 'medicos',
-    'hospital': 'hospitais',
-    'paciente': 'pacientes',
-    'convenio': 'convenios',
-    'fornecedor': 'fornecedores',
-    'produto_opme': 'produtos_opme',
-    'equipe_medica': 'equipes_medicas',
-    'transportadora': 'transportadoras'
+  private tabelaMap: Record<TipoEntidade, CadastrosTableName> = {
+    medico: 'medicos',
+    hospital: 'hospitais',
+    paciente: 'pacientes',
+    convenio: 'convenios',
+    fornecedor: 'fornecedores',
+    produto_opme: 'produtos_opme',
+    equipe_medica: 'equipes_medicas',
+    transportadora: 'transportadoras',
   };
+
+  private getTableName(tipo: TipoEntidade): CadastrosTableName {
+    return this.tabelaMap[tipo];
+  }
 
   /**
    * Buscar todos os registros de um tipo
@@ -303,7 +330,7 @@ export class CadastrosService {
     }
   ): Promise<{ data: T[]; count: number; error?: Error }> {
     try {
-      const tabela = this.tabelaMap[tipo];
+      const tabela = this.getTableName(tipo);
       let query = supabase.from(tabela).select('*', { count: 'exact' });
 
       // Aplicar filtros
@@ -317,8 +344,8 @@ export class CadastrosService {
 
       // Aplicar ordenação
       if (options?.ordenacao) {
-        query = query.order(options.ordenacao.campo, { 
-          ascending: options.ordenacao.direcao === 'asc' 
+        query = query.order(options.ordenacao.campo, {
+          ascending: options.ordenacao.direcao === 'asc',
         });
       }
 
@@ -354,12 +381,8 @@ export class CadastrosService {
     id: string
   ): Promise<{ data: T | null; error?: Error }> {
     try {
-      const tabela = this.tabelaMap[tipo];
-      const { data, error } = await supabase
-        .from(tabela)
-        .select('*')
-        .eq('id', id)
-        .single();
+      const tabela = this.getTableName(tipo);
+      const { data, error } = await supabase.from(tabela).select('*').eq('id', id).single();
 
       if (error) {
         const err = error as Error;
@@ -383,21 +406,17 @@ export class CadastrosService {
     dados: Omit<T, 'id' | 'created_at' | 'updated_at'>
   ): Promise<{ data: T | null; error?: Error }> {
     try {
-      const tabela = this.tabelaMap[tipo];
-      
+      const tabela = this.getTableName(tipo);
+
       // Adicionar metadados
       const dadosCompletos = {
         ...dados,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-        ativo: true
+        ativo: true,
       };
 
-      const { data, error } = await supabase
-        .from(tabela)
-        .insert(dadosCompletos)
-        .select()
-        .single();
+      const { data, error } = await supabase.from(tabela).insert(dadosCompletos).select().single();
 
       if (error) {
         const err = error as Error;
@@ -406,7 +425,9 @@ export class CadastrosService {
       }
 
       // Registrar no audit log
-      await this.registrarAuditLog(tipo, 'criar', data.id, dados);
+      await this.registrarAuditLog(tabela, 'INSERT', data.id, {
+        depois: data as Record<string, unknown>,
+      });
 
       return { data: data as T };
     } catch (error) {
@@ -433,7 +454,7 @@ export class CadastrosService {
       // Adicionar metadados de atualização
       const dadosCompletos = {
         ...dados,
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       };
 
       const { data, error } = await supabase
@@ -450,9 +471,9 @@ export class CadastrosService {
       }
 
       // Registrar no audit log
-      await this.registrarAuditLog(tipo, 'atualizar', id, { 
-        antes: dadosAntigos, 
-        depois: data 
+      await this.registrarAuditLog(tabela, 'UPDATE', id, {
+        antes: (dadosAntigos as Record<string, unknown> | null) ?? null,
+        depois: data as Record<string, unknown>,
       });
 
       return { data: data as T };
@@ -466,10 +487,7 @@ export class CadastrosService {
   /**
    * Deletar (soft delete) um registro
    */
-  async deletar(
-    tipo: TipoEntidade,
-    id: string
-  ): Promise<{ success: boolean; error?: Error }> {
+  async deletar(tipo: TipoEntidade, id: string): Promise<{ success: boolean; error?: Error }> {
     try {
       const tabela = this.tabelaMap[tipo];
 
@@ -479,9 +497,9 @@ export class CadastrosService {
       // Soft delete (marcar como inativo)
       const { error } = await supabase
         .from(tabela)
-        .update({ 
-          ativo: false, 
-          updated_at: new Date().toISOString() 
+        .update({
+          ativo: false,
+          updated_at: new Date().toISOString(),
         })
         .eq('id', id);
 
@@ -492,7 +510,9 @@ export class CadastrosService {
       }
 
       // Registrar no audit log
-      await this.registrarAuditLog(tipo, 'deletar', id, dadosAntigos as Record<string, unknown> | null);
+      await this.registrarAuditLog(tabela, 'DELETE', id, {
+        antes: (dadosAntigos as Record<string, unknown> | null) ?? null,
+      });
 
       return { success: true };
     } catch (error) {
@@ -511,13 +531,13 @@ export class CadastrosService {
     campos: string[] = ['nome', 'nome_completo', 'razao_social', 'descricao']
   ): Promise<{ data: T[]; error?: Error }> {
     try {
-      const tabela = this.tabelaMap[tipo];
-      
+      const tabela = this.getTableName(tipo);
+
       // Construir query com OR para múltiplos campos
       let query = supabase.from(tabela).select('*');
 
       // Adicionar condições OR para cada campo
-      const condicoes = campos.map(campo => `${campo}.ilike.%${termo}%`).join(',');
+      const condicoes = campos.map((campo) => `${campo}.ilike.%${termo}%`).join(',');
       query = query.or(condicoes);
 
       const { data, error } = await query.limit(50);
@@ -540,17 +560,21 @@ export class CadastrosService {
    * Registrar no audit log
    */
   private async registrarAuditLog(
-    entidade: string,
-    acao: 'criar' | 'atualizar' | 'deletar',
-    entidade_id: string,
-    dados: Record<string, unknown> | null
+    tabela: CadastrosTableName,
+    acao: 'INSERT' | 'UPDATE' | 'DELETE',
+    registroId: string,
+    dados?: AuditPayload | null
   ): Promise<void> {
     try {
       await supabase.from('audit_log').insert({
-        entidade,
+        tabela,
+        registro_id: registroId,
         acao,
-        entidade_id,
-        dados,
+        dados_antes: dados?.antes ?? null,
+        dados_depois: dados?.depois ?? null,
+        descricao: dados?.descricao ?? null,
+        empresa_id: dados?.empresa_id ?? null,
+        usuario_id: dados?.usuario_id ?? null,
       });
     } catch (error) {
       const err = error as Error;
@@ -575,7 +599,7 @@ export class CadastrosService {
       fornecedor.avaliacao_qualidade || 0,
       fornecedor.avaliacao_pontualidade || 0,
       fornecedor.avaliacao_atendimento || 0,
-      fornecedor.avaliacao_preco || 0
+      fornecedor.avaliacao_preco || 0,
     ];
 
     const soma = avaliacoes.reduce((acc, val) => acc + val, 0);

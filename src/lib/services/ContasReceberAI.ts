@@ -1,17 +1,19 @@
 /**
  * Service: ContasReceberAI
  * IA para Predição de Inadimplência e Score de Crédito
- * 
+ *
  * ALGORITMOS:
  * - Random Forest (Score de Inadimplência)
  * - Análise de Padrões Históricos
  * - Recomendações de Cobrança
- * 
+ *
  * CUSTO: R$ 0 (Ollama local ou cálculo baseado em regras)
  * ACURÁCIA ESPERADA: > 85%
  */
 
 import { supabase } from '@/lib/supabase';
+
+const db = supabase as any;
 // import type { ContaReceber } from '@/types/finance'; // não utilizado
 
 type NivelRisco = 'baixo' | 'médio' | 'alto';
@@ -39,12 +41,12 @@ export interface InadimplenciaFeatures {
   taxa_inadimplencia_historica: number;
   prazo_medio_pagamento: number;
   ticket_medio: number;
-  
+
   // Dados atuais
   valor_conta: number;
   dias_ate_vencimento: number;
   tipo_receita: string;
-  
+
   // Contexto
   mes_ano: string;
   dia_semana: number;
@@ -81,8 +83,8 @@ export class ContasReceberAI {
   async calcularScore(contaId: string): Promise<ScoreResult> {
     try {
       // Buscar dados da conta
-          const { data: conta, error } = await supabase
-            .from('contas_receber')
+      const { data: conta, error } = await db
+        .from('contas_receber')
         .select('*')
         .eq('id', contaId)
         .single();
@@ -125,8 +127,8 @@ export class ContasReceberAI {
    */
   async preverAtraso(contaId: string): Promise<PrevisaoAtraso> {
     try {
-          const { data: conta } = await supabase
-            .from('contas_receber')
+      const { data: conta } = await db
+        .from('contas_receber')
         .select('*')
         .eq('id', contaId)
         .single();
@@ -173,8 +175,8 @@ export class ContasReceberAI {
    */
   async recomendarAcaoCobranca(contaId: string): Promise<AcaoCobranca> {
     try {
-          const { data: conta } = await supabase
-            .from('contas_receber')
+      const { data: conta } = await db
+        .from('contas_receber')
         .select('*')
         .eq('id', contaId)
         .single();
@@ -183,7 +185,9 @@ export class ContasReceberAI {
 
       const hoje = new Date();
       const vencimento = new Date(conta.data_vencimento);
-      const diasAtraso = Math.floor((hoje.getTime() - vencimento.getTime()) / (1000 * 60 * 60 * 24));
+      const diasAtraso = Math.floor(
+        (hoje.getTime() - vencimento.getTime()) / (1000 * 60 * 60 * 24)
+      );
 
       const scoreResult = await this.calcularScore(contaId);
 
@@ -251,10 +255,13 @@ export class ContasReceberAI {
   /**
    * Extrai features do histórico do cliente
    */
-  private async extrairFeatures(clienteId: string, contaAtual: ContaReceberRow): Promise<InadimplenciaFeatures> {
+  private async extrairFeatures(
+    clienteId: string,
+    contaAtual: ContaReceberRow
+  ): Promise<InadimplenciaFeatures> {
     // Buscar histórico de contas do cliente
-        const { data: historico } = await supabase
-          .from('contas_receber')
+    const { data: historico } = await db
+      .from('contas_receber')
       .select('*')
       .eq('cliente_id', clienteId)
       .neq('id', contaAtual.id);
@@ -268,31 +275,36 @@ export class ContasReceberAI {
 
     // Dias de atraso médio
     const contasComAtraso = contasHistorico.filter((c) => (c.dias_atraso ?? 0) > 0);
-    const diasAtrasoMedio = contasComAtraso.length > 0
-      ? contasComAtraso.reduce((sum, c) => sum + (c.dias_atraso ?? 0), 0) / contasComAtraso.length
-      : 0;
+    const diasAtrasoMedio =
+      contasComAtraso.length > 0
+        ? contasComAtraso.reduce((sum, c) => sum + (c.dias_atraso ?? 0), 0) / contasComAtraso.length
+        : 0;
 
     // Taxa de inadimplência
     const contasInadimplentes = contasHistorico.filter((c) => c.status === 'vencido');
-    const taxaInadimplencia = quantidadeTransacoes > 0
-      ? contasInadimplentes.length / quantidadeTransacoes
-      : 0;
+    const taxaInadimplencia =
+      quantidadeTransacoes > 0 ? contasInadimplentes.length / quantidadeTransacoes : 0;
 
     // Prazo médio de pagamento
     const contasPagas = contasHistorico.filter((c) => c.status === 'pago' && c.data_pagamento);
-    const prazoMedio = contasPagas.length > 0
-      ? contasPagas.reduce((sum, c) => {
-          if (!c.data_pagamento || !c.data_emissao) return sum;
-          const emissao = new Date(c.data_emissao);
-          const pagamento = new Date(c.data_pagamento);
-          return sum + Math.floor((pagamento.getTime() - emissao.getTime()) / (1000 * 60 * 60 * 24));
-        }, 0) / contasPagas.length
-      : 0;
+    const prazoMedio =
+      contasPagas.length > 0
+        ? contasPagas.reduce((sum, c) => {
+            if (!c.data_pagamento || !c.data_emissao) return sum;
+            const emissao = new Date(c.data_emissao);
+            const pagamento = new Date(c.data_pagamento);
+            return (
+              sum + Math.floor((pagamento.getTime() - emissao.getTime()) / (1000 * 60 * 60 * 24))
+            );
+          }, 0) / contasPagas.length
+        : 0;
 
     // Dados da conta atual
     const hoje = new Date();
     const diasAteVencimento = contaAtual.data_vencimento
-      ? Math.floor((new Date(contaAtual.data_vencimento).getTime() - hoje.getTime()) / (1000 * 60 * 60 * 24))
+      ? Math.floor(
+          (new Date(contaAtual.data_vencimento).getTime() - hoje.getTime()) / (1000 * 60 * 60 * 24)
+        )
       : 0;
 
     return {
@@ -336,7 +348,8 @@ export class ContasReceberAI {
     else if (features.valor_conta > features.ticket_medio * 1.5) score += 5;
 
     // Peso 5: Dias até vencimento (0-5 pontos)
-    if (features.dias_ate_vencimento < 0) score += 5; // Já vencido
+    if (features.dias_ate_vencimento < 0)
+      score += 5; // Já vencido
     else if (features.dias_ate_vencimento < 3) score += 3;
 
     // Garantir que score fique entre 0-100
@@ -355,7 +368,9 @@ export class ContasReceberAI {
   /**
    * Identifica os principais fatores de risco
    */
-  private identificarFatoresRisco(features: InadimplenciaFeatures): Array<{ fator: string; impacto: number }> {
+  private identificarFatoresRisco(
+    features: InadimplenciaFeatures
+  ): Array<{ fator: string; impacto: number }> {
     const fatores: Array<{ fator: string; impacto: number }> = [];
 
     if (features.taxa_inadimplencia_historica > 0.3) {
@@ -381,7 +396,7 @@ export class ContasReceberAI {
 
     if (features.valor_conta > features.ticket_medio * 2) {
       fatores.push({
-        fator:"Valor da conta muito acima do ticket médio",
+        fator: 'Valor da conta muito acima do ticket médio',
         impacto: 60,
       });
     }
@@ -438,4 +453,3 @@ export class ContasReceberAI {
 
 // Export singleton
 export const contasReceberAI = new ContasReceberAI();
-

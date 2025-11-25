@@ -1,12 +1,12 @@
 /**
  * Serviço de Detecção de Duplicatas com IA - ICARUS v5.0
- * 
+ *
  * Algoritmos implementados:
  * - Levenshtein Distance (similaridade de strings)
  * - Soundex (similaridade fonética)
  * - Token Set Similarity (conjuntos de palavras)
  * - Fuzzy Matching
- * 
+ *
  * Critérios de duplicação:
  * - Nome: Similaridade > 85%
  * - CPF/CNPJ: Exato (100%)
@@ -14,18 +14,18 @@
  * - Telefone: Normalizado e exato
  * - CRM: Exato (médicos)
  * - Código ANVISA: Exato (produtos)
- * 
+ *
  * Score de duplicação:
  * - 100%: Duplicata exata (identificador único igual)
  * - 90-99%: Muito provável (nome muito similar + dados coincidentes)
  * - 80-89%: Provável (nome similar)
  * - 70-79%: Possível (nome com alguma similaridade)
  * - < 70%: Improvável (não exibe)
- * 
+ *
  * @version 5.0.0
  */
 
-import { supabase } from '@/lib/supabase';
+import { legacySupabase as supabase } from '@/lib/legacySupabase';
 import { TipoEntidade } from './CadastrosService';
 
 // ========================================
@@ -66,38 +66,50 @@ export interface DuplicateDetectionParams {
 // SERVIÇO DE DETECÇÃO DE DUPLICATAS
 // ========================================
 
+type CadastrosTableName =
+  | 'medicos'
+  | 'hospitais'
+  | 'pacientes'
+  | 'convenios'
+  | 'fornecedores'
+  | 'produtos_opme'
+  | 'equipes_medicas'
+  | 'transportadoras';
+
 export class DuplicateDetectionService {
   private threshold = 70; // Score mínimo para considerar duplicata
 
-  private tabelaMap: Record<TipoEntidade, string> = {
-    'medico': 'medicos',
-    'hospital': 'hospitais',
-    'paciente': 'pacientes',
-    'convenio': 'convenios',
-    'fornecedor': 'fornecedores',
-    'produto_opme': 'produtos_opme',
-    'equipe_medica': 'equipes_medicas',
-    'transportadora': 'transportadoras'
+  private tabelaMap: Record<TipoEntidade, CadastrosTableName> = {
+    medico: 'medicos',
+    hospital: 'hospitais',
+    paciente: 'pacientes',
+    convenio: 'convenios',
+    fornecedor: 'fornecedores',
+    produto_opme: 'produtos_opme',
+    equipe_medica: 'equipes_medicas',
+    transportadora: 'transportadoras',
   };
+
+  private getTableName(tipo: TipoEntidade): CadastrosTableName {
+    return this.tabelaMap[tipo];
+  }
 
   /**
    * Detectar possíveis duplicatas
    */
-  async detectPossibleDuplicates(
-    params: DuplicateDetectionParams
-  ): Promise<DuplicateMatch[]> {
-    const { tipo, nome, cpf, cnpj, crm, uf_crm, codigo_anvisa, email, telefone, excludeId } = params;
+  async detectPossibleDuplicates(params: DuplicateDetectionParams): Promise<DuplicateMatch[]> {
+    const { tipo, nome, cpf, cnpj, crm, uf_crm, codigo_anvisa, email, telefone, excludeId } =
+      params;
 
-    const tabela = this.tabelaMap[tipo];
-    let query = supabase.from(tabela).select('*');
+    const tabela = this.getTableName(tipo);
 
-    // Excluir ID atual (modo edição)
-    if (excludeId) {
-      query = query.neq('id', excludeId);
-    }
-
-    // Buscar apenas ativos
-    query = query.eq('ativo', true);
+    const baseQuery = () => {
+      let builder = supabase.from(tabela).select('*').eq('ativo', true);
+      if (excludeId) {
+        builder = builder.neq('id', excludeId);
+      }
+      return builder;
+    };
 
     // ========================================
     // 1. BUSCAR DUPLICATAS EXATAS (100%)
@@ -105,78 +117,76 @@ export class DuplicateDetectionService {
 
     // CPF exato
     if (cpf) {
-      const { data: exactMatch } = await query.eq('cpf', cpf);
+      const { data: exactMatch } = await baseQuery().eq('cpf', cpf);
       if (exactMatch && exactMatch.length > 0) {
-        return exactMatch.map(item => ({
+        return exactMatch.map((item) => ({
           id: item.id,
           nome: this.getNomeFromRecord(item, tipo),
           score: 100,
           motivo: 'CPF idêntico',
           dados: item,
-          detalhes: { cpf: true }
+          detalhes: { cpf: true },
         }));
       }
     }
 
     // CNPJ exato
     if (cnpj) {
-      const { data: exactMatch } = await query.eq('cnpj', cnpj);
+      const { data: exactMatch } = await baseQuery().eq('cnpj', cnpj);
       if (exactMatch && exactMatch.length > 0) {
-        return exactMatch.map(item => ({
+        return exactMatch.map((item) => ({
           id: item.id,
           nome: this.getNomeFromRecord(item, tipo),
           score: 100,
           motivo: 'CNPJ idêntico',
           dados: item,
-          detalhes: { cnpj: true }
+          detalhes: { cnpj: true },
         }));
       }
     }
 
     // CRM exato
     if (crm && uf_crm) {
-      const { data: exactMatch } = await query
-        .eq('crm', crm)
-        .eq('uf_crm', uf_crm);
-      
+      const { data: exactMatch } = await baseQuery().eq('crm', crm).eq('uf_crm', uf_crm);
+
       if (exactMatch && exactMatch.length > 0) {
-        return exactMatch.map(item => ({
+        return exactMatch.map((item) => ({
           id: item.id,
           nome: this.getNomeFromRecord(item, tipo),
           score: 100,
           motivo: `CRM ${crm}/${uf_crm} idêntico`,
           dados: item,
-          detalhes: { crm: true }
+          detalhes: { crm: true },
         }));
       }
     }
 
     // Código ANVISA exato
     if (codigo_anvisa) {
-      const { data: exactMatch } = await query.eq('codigo_anvisa', codigo_anvisa);
+      const { data: exactMatch } = await baseQuery().eq('codigo_anvisa', codigo_anvisa);
       if (exactMatch && exactMatch.length > 0) {
-        return exactMatch.map(item => ({
+        return exactMatch.map((item) => ({
           id: item.id,
           nome: this.getNomeFromRecord(item, tipo),
           score: 100,
           motivo: 'Código ANVISA idêntico',
           dados: item,
-          detalhes: { codigo_anvisa: true }
+          detalhes: { codigo_anvisa: true },
         }));
       }
     }
 
     // Email exato
     if (email) {
-      const { data: exactMatch } = await query.eq('email', email);
+      const { data: exactMatch } = await baseQuery().eq('email', email);
       if (exactMatch && exactMatch.length > 0) {
-        return exactMatch.map(item => ({
+        return exactMatch.map((item) => ({
           id: item.id,
           nome: this.getNomeFromRecord(item, tipo),
           score: 100,
           motivo: 'Email idêntico',
           dados: item,
-          detalhes: { email: true }
+          detalhes: { email: true },
         }));
       }
     }
@@ -186,11 +196,11 @@ export class DuplicateDetectionService {
     // ========================================
 
     if (nome && nome.length >= 3) {
-      const { data: allRecords } = await supabase
-        .from(tabela)
-        .select('*')
-        .eq('ativo', true)
-        .neq('id', excludeId || '');
+      const recordsQuery = supabase.from(tabela).select('*').eq('ativo', true);
+
+      const { data: allRecords } = excludeId
+        ? await recordsQuery.neq('id', excludeId)
+        : await recordsQuery;
 
       if (!allRecords || allRecords.length === 0) {
         return [];
@@ -200,7 +210,7 @@ export class DuplicateDetectionService {
 
       for (const record of allRecords) {
         const recordNome = this.getNomeFromRecord(record, tipo);
-        
+
         if (!recordNome) continue;
 
         // Calcular similaridade
@@ -210,7 +220,7 @@ export class DuplicateDetectionService {
         if (score >= this.threshold) {
           // Verificar coincidências adicionais
           const detalhes: DuplicateMatch['detalhes'] = {
-            nome_similar: true
+            nome_similar: true,
           };
 
           let motivoFinal = `Nome ${score >= 90 ? 'muito similar' : 'similar'} (${score}%)`;
@@ -236,7 +246,7 @@ export class DuplicateDetectionService {
             score: scoreAjustado,
             motivo: motivoFinal,
             dados: record,
-            detalhes
+            detalhes,
           });
         }
       }
@@ -266,7 +276,7 @@ export class DuplicateDetectionService {
     const soundex = this.soundexMatch(s1, s2) ? 1 : 0;
 
     // Média ponderada
-    const similarity = (levenshtein * 0.6) + (tokenSet * 0.3) + (soundex * 0.1);
+    const similarity = levenshtein * 0.6 + tokenSet * 0.3 + soundex * 0.1;
 
     return similarity;
   }
@@ -289,7 +299,7 @@ export class DuplicateDetectionService {
   private levenshteinSimilarity(str1: string, str2: string): number {
     const distance = this.levenshteinDistance(str1, str2);
     const maxLength = Math.max(str1.length, str2.length);
-    return maxLength === 0 ? 1 : 1 - (distance / maxLength);
+    return maxLength === 0 ? 1 : 1 - distance / maxLength;
   }
 
   private levenshteinDistance(str1: string, str2: string): number {
@@ -313,8 +323,8 @@ export class DuplicateDetectionService {
         } else {
           matrix[i][j] = Math.min(
             matrix[i - 1][j - 1] + 1, // Substituição
-            matrix[i][j - 1] + 1,     // Inserção
-            matrix[i - 1][j] + 1      // Deleção
+            matrix[i][j - 1] + 1, // Inserção
+            matrix[i - 1][j] + 1 // Deleção
           );
         }
       }
@@ -328,10 +338,10 @@ export class DuplicateDetectionService {
    * Compara conjuntos de palavras (útil para nomes compostos)
    */
   private tokenSetSimilarity(str1: string, str2: string): number {
-    const tokens1 = new Set(str1.split(/\s+/).filter(t => t.length > 0));
-    const tokens2 = new Set(str2.split(/\s+/).filter(t => t.length > 0));
+    const tokens1 = new Set(str1.split(/\s+/).filter((t) => t.length > 0));
+    const tokens2 = new Set(str2.split(/\s+/).filter((t) => t.length > 0));
 
-    const intersection = new Set([...tokens1].filter(t => tokens2.has(t)));
+    const intersection = new Set([...tokens1].filter((t) => tokens2.has(t)));
     const union = new Set([...tokens1, ...tokens2]);
 
     return union.size === 0 ? 0 : intersection.size / union.size;
@@ -346,12 +356,24 @@ export class DuplicateDetectionService {
     let code = s[0];
 
     const soundexMap: Record<string, string> = {
-      'B': '1', 'F': '1', 'P': '1', 'V': '1',
-      'C': '2', 'G': '2', 'J': '2', 'K': '2', 'Q': '2', 'S': '2', 'X': '2', 'Z': '2',
-      'D': '3', 'T': '3',
-      'L': '4',
-      'M': '5', 'N': '5',
-      'R': '6'
+      B: '1',
+      F: '1',
+      P: '1',
+      V: '1',
+      C: '2',
+      G: '2',
+      J: '2',
+      K: '2',
+      Q: '2',
+      S: '2',
+      X: '2',
+      Z: '2',
+      D: '3',
+      T: '3',
+      L: '4',
+      M: '5',
+      N: '5',
+      R: '6',
     };
 
     for (let i = 1; i < s.length && code.length < 4; i++) {
@@ -368,7 +390,7 @@ export class DuplicateDetectionService {
     // Comparar primeiro token de cada string
     const token1 = str1.split(/\s+/)[0];
     const token2 = str2.split(/\s+/)[0];
-    
+
     if (token1.length < 3 || token2.length < 3) {
       return false; // Nomes muito curtos não são confiáveis para soundex
     }
@@ -384,19 +406,23 @@ export class DuplicateDetectionService {
       case 'medico':
       case 'paciente':
         return (record as { nome_completo?: string }).nome_completo || '';
-      
+
       case 'hospital':
       case 'convenio':
       case 'fornecedor':
       case 'transportadora':
-        return (record as { razao_social?: string; nome?: string }).razao_social || (record as { nome?: string }).nome || '';
-      
+        return (
+          (record as { razao_social?: string; nome?: string }).razao_social ||
+          (record as { nome?: string }).nome ||
+          ''
+        );
+
       case 'produto_opme':
         return (record as { descricao?: string }).descricao || '';
-      
+
       case 'equipe_medica':
         return (record as { nome?: string }).nome || '';
-      
+
       default:
         return (
           (record as { nome?: string }).nome ||
@@ -412,12 +438,15 @@ export class DuplicateDetectionService {
    * Verificar se é duplicata de alta confiança
    */
   isDuplicataAltaConfianca(match: DuplicateMatch): boolean {
-    return match.score >= 90 || !!(
-      match.detalhes?.cpf ||
-      match.detalhes?.cnpj ||
-      match.detalhes?.crm ||
-      match.detalhes?.codigo_anvisa ||
-      match.detalhes?.email
+    return (
+      match.score >= 90 ||
+      !!(
+        match.detalhes?.cpf ||
+        match.detalhes?.cnpj ||
+        match.detalhes?.crm ||
+        match.detalhes?.codigo_anvisa ||
+        match.detalhes?.email
+      )
     );
   }
 
@@ -429,8 +458,8 @@ export class DuplicateDetectionService {
       return '';
     }
 
-    const altaConfianca = matches.filter(m => this.isDuplicataAltaConfianca(m));
-    
+    const altaConfianca = matches.filter((m) => this.isDuplicataAltaConfianca(m));
+
     if (altaConfianca.length > 0) {
       return `⚠️ ATENÇÃO: Encontrado(s) ${altaConfianca.length} registro(s) muito similar(es). Verifique se não é duplicação!`;
     }
@@ -447,25 +476,24 @@ export class DuplicateDetectionService {
     mensagem: string;
   }> {
     const matches = await this.detectPossibleDuplicates(params);
-    
-    const altaConfianca = matches.filter(m => this.isDuplicataAltaConfianca(m));
+
+    const altaConfianca = matches.filter((m) => this.isDuplicataAltaConfianca(m));
 
     if (altaConfianca.length > 0) {
       return {
         podeProsseguir: false,
         matches,
-        mensagem: this.generateAlertMessage(matches)
+        mensagem: this.generateAlertMessage(matches),
       };
     }
 
     return {
       podeProsseguir: true,
       matches,
-      mensagem: matches.length > 0 ? this.generateAlertMessage(matches) : ''
+      mensagem: matches.length > 0 ? this.generateAlertMessage(matches) : '',
     };
   }
 }
 
 // Exportar instância singleton
 export const duplicateDetectionService = new DuplicateDetectionService();
-

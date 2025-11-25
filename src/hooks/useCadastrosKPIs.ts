@@ -1,12 +1,12 @@
 /**
  * Hook para KPIs de Cadastros - ICARUS v5.0
- * 
+ *
  * Responsável por:
  * - Buscar e processar KPIs do dashboard
  * - Calcular estatísticas agregadas
  * - Gerenciar loading states
  * - Cache de dados
- * 
+ *
  * @version 5.0.0
  */
 
@@ -27,7 +27,7 @@ export interface CadastrosKPIs {
   produtosOPME: number;
   cadastrosPendentes: number;
   cadastrosAtualizados30dias: number;
-  
+
   // Dados para gráficos
   evolucaoCadastros: EvolucaoCadastro[];
   topMedicos: TopMedico[];
@@ -89,7 +89,7 @@ export const useCadastrosKPIs = () => {
     evolucaoCadastros: [],
     topMedicos: [],
     topHospitais: [],
-    produtosPorCategoria: []
+    produtosPorCategoria: [],
   });
 
   const [alertas, setAlertas] = useState<AlertaCadastro[]>([]);
@@ -103,20 +103,13 @@ export const useCadastrosKPIs = () => {
       setError(null);
 
       // Buscar dados em paralelo
-      const [
-        medicos,
-        hospitais,
-        pacientes,
-        convenios,
-        fornecedores,
-        produtos
-      ] = await Promise.all([
+      const [medicos, hospitais, pacientes, convenios, fornecedores, produtos] = await Promise.all([
         cadastrosService.listar('medico', { filtros: { ativo: true } }),
         cadastrosService.listar('hospital', { filtros: { ativo: true } }),
         cadastrosService.listar('paciente', { filtros: { ativo: true } }),
         cadastrosService.listar('convenio', { filtros: { ativo: true } }),
         cadastrosService.listar('fornecedor', { filtros: { ativo: true } }),
-        cadastrosService.listar('produto_opme', { filtros: { ativo: true } })
+        cadastrosService.listar('produto_opme', { filtros: { ativo: true } }),
       ]);
 
       // Calcular KPIs básicos
@@ -129,12 +122,12 @@ export const useCadastrosKPIs = () => {
         produtosOPME: produtos.count,
         cadastrosPendentes: 0, // TODO: Implementar lógica de pendentes
         cadastrosAtualizados30dias: 0, // TODO: Implementar cálculo
-        
+
         // Mock de dados para gráficos (TODO: Implementar queries reais)
         evolucaoCadastros: generateMockEvolucao(),
         topMedicos: generateMockTopMedicos(),
         topHospitais: generateMockTopHospitais(),
-        produtosPorCategoria: generateMockProdutosCategorias()
+        produtosPorCategoria: generateMockProdutosCategorias(),
       });
 
       // Gerar alertas
@@ -142,14 +135,13 @@ export const useCadastrosKPIs = () => {
         medicos: medicos.count,
         hospitais: hospitais.count,
         pacientes: pacientes.count,
-        produtos: produtos.count
+        produtos: produtos.count,
       });
       setAlertas(alertasGerados);
 
       // Buscar duplicatas recentes (últimas 10)
       // TODO: Implementar query real de duplicatas detectadas
       setDuplicatas([]);
-
     } catch (error) {
       console.error('Erro ao carregar KPIs:', error as Error);
       setError('Erro ao carregar dados do dashboard');
@@ -172,7 +164,7 @@ export const useCadastrosKPIs = () => {
     duplicatas,
     loading,
     error,
-    refresh
+    refresh,
   };
 };
 
@@ -182,8 +174,18 @@ export const useCadastrosKPIs = () => {
 
 function generateMockEvolucao(): EvolucaoCadastro[] {
   const meses = [
-    'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
-    'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
+    'Jan',
+    'Fev',
+    'Mar',
+    'Abr',
+    'Mai',
+    'Jun',
+    'Jul',
+    'Ago',
+    'Set',
+    'Out',
+    'Nov',
+    'Dez',
   ];
 
   return meses.map((mes) => ({
@@ -192,7 +194,7 @@ function generateMockEvolucao(): EvolucaoCadastro[] {
     hospitais: Math.floor(Math.random() * 5) + 2,
     pacientes: Math.floor(Math.random() * 50) + 30,
     fornecedores: Math.floor(Math.random() * 10) + 5,
-    produtos: Math.floor(Math.random() * 30) + 15
+    produtos: Math.floor(Math.random() * 30) + 15,
   }));
 }
 
@@ -207,7 +209,7 @@ function generateMockTopMedicos(): TopMedico[] {
     'Dr. Roberto Lima',
     'Dra. Fernanda Rocha',
     'Dr. Ricardo Mendes',
-    'Dra. Patricia Gomes'
+    'Dra. Patricia Gomes',
   ];
 
   const especialidades = [
@@ -215,14 +217,14 @@ function generateMockTopMedicos(): TopMedico[] {
     'Cardiologia',
     'Neurologia',
     'Cirurgia Geral',
-    'Traumatologia'
+    'Traumatologia',
   ];
 
   return nomes.map((nome, idx) => ({
     id: `medico-${idx}`,
     nome,
     especialidade: especialidades[idx % especialidades.length],
-    cirurgias: Math.floor(Math.random() * 50) + 20
+    cirurgias: Math.floor(Math.random() * 50) + 20,
   }));
 }
 
@@ -237,14 +239,14 @@ function generateMockTopHospitais(): TopHospital[] {
     'Hospital Universitário',
     'Hospital das Clínicas',
     'Hospital Geral',
-    'Hospital Metropolitano'
+    'Hospital Metropolitano',
   ];
 
   return hospitais.map((nome, idx) => ({
     id: `hospital-${idx}`,
     nome,
     faturamento: Math.floor(Math.random() * 500000) + 100000,
-    cirurgias: Math.floor(Math.random() * 100) + 30
+    cirurgias: Math.floor(Math.random() * 100) + 30,
   }));
 }
 
@@ -255,13 +257,13 @@ function generateMockProdutosCategorias(): ProdutoCategoria[] {
     { categoria: 'Neurologia', cor: 'var(--orx-purple-500)' },
     { categoria: 'Oftalmologia', cor: 'var(--orx-teal-500)' },
     { categoria: 'Cirurgia Geral', cor: 'var(--orx-warning)' },
-    { categoria: 'Outros', cor: 'var(--orx-gray-500)' }
+    { categoria: 'Outros', cor: 'var(--orx-gray-500)' },
   ];
 
   return categorias.map(({ categoria }) => ({
     categoria,
     quantidade: Math.floor(Math.random() * 100) + 20,
-    valor: Math.floor(Math.random() * 200000) + 50000
+    valor: Math.floor(Math.random() * 200000) + 50000,
   }));
 }
 
@@ -280,7 +282,7 @@ async function generateAlertas(stats: {
       tipo: 'warning',
       titulo: 'Poucos médicos cadastrados',
       descricao: `Apenas ${stats.medicos} médico(s) cadastrado(s). Recomenda-se cadastrar mais médicos para melhor operação.`,
-      timestamp: new Date()
+      timestamp: new Date(),
     });
   }
 
@@ -290,7 +292,7 @@ async function generateAlertas(stats: {
     tipo: 'warning',
     titulo: 'Produtos com estoque baixo',
     descricao: '15 produtos OPME estão abaixo do estoque mínimo.',
-    timestamp: new Date()
+    timestamp: new Date(),
   });
 
   // Alerta: Cadastros incompletos (TODO: implementar query real)
@@ -299,7 +301,7 @@ async function generateAlertas(stats: {
     tipo: 'info',
     titulo: 'Cadastros incompletos',
     descricao: '8 cadastros estão com dados incompletos. Clique para revisar.',
-    timestamp: new Date()
+    timestamp: new Date(),
   });
 
   return alertas;
@@ -316,15 +318,15 @@ export const useAlertasCadastros = () => {
   const loadAlertas = useCallback(async () => {
     try {
       setLoading(true);
-      
+
       // TODO: Implementar query real de alertas
       const mockAlertas = await generateAlertas({
         medicos: 0,
         hospitais: 0,
         pacientes: 0,
-        produtos: 0
+        produtos: 0,
       });
-      
+
       setAlertas(mockAlertas);
     } catch (error) {
       console.error('Erro ao carregar alertas:', error as Error);
@@ -338,14 +340,14 @@ export const useAlertasCadastros = () => {
   }, [loadAlertas]);
 
   const dismissAlerta = (id: string) => {
-    setAlertas(prev => prev.filter(a => a.id !== id));
+    setAlertas((prev) => prev.filter((a) => a.id !== id));
   };
 
   return {
     alertas,
     loading,
     dismissAlerta,
-    refresh: loadAlertas
+    refresh: loadAlertas,
   };
 };
 
@@ -360,7 +362,7 @@ export const useDuplicatasDetectadas = () => {
   const loadDuplicatas = useCallback(async () => {
     try {
       setLoading(true);
-      
+
       // TODO: Implementar query real de duplicatas armazenadas
       // Por ora, retorna array vazio
       setDuplicatas([]);
@@ -376,14 +378,13 @@ export const useDuplicatasDetectadas = () => {
   }, [loadDuplicatas]);
 
   const ignoreDuplicata = (id: string) => {
-    setDuplicatas(prev => prev.filter(d => d.id !== id));
+    setDuplicatas((prev) => prev.filter((d) => d.id !== id));
   };
 
   return {
     duplicatas,
     loading,
     ignoreDuplicata,
-    refresh: loadDuplicatas
+    refresh: loadDuplicatas,
   };
 };
-

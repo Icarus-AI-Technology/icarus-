@@ -1,22 +1,23 @@
 /**
  * Componente: Gestão de Usuários e Permissões (RBAC)
- * 
+ *
  * Sistema completo de controle de acesso baseado em funções
  * Conformidade: LGPD Art. 37, ANVISA RDC 16/2013, ISO 27001
  */
 
+import { useState, useEffect, useCallback } from 'react';
 import {
   Card,
   Button,
   Input,
   Select,
   Badge,
-  Dialog,
+  DialogRoot,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-  Table,
+  TableContainer,
   TableHeader,
   TableRow,
   TableHead,
@@ -64,6 +65,7 @@ interface Role {
   tipo_role: string;
   nivel_hierarquia: number;
   is_active: boolean;
+  is_system?: boolean;
 }
 
 interface Permission {
@@ -102,28 +104,30 @@ export default function GestaoUsuariosPermissoes() {
   useDocumentTitle('Gestão de Usuários e Permissões');
   const { addToast } = useToast();
 
-  const [activeTab, setActiveTab] = useState<'usuarios' | 'roles' | 'permissoes' | 'auditoria'>('usuarios');
+  const [activeTab, setActiveTab] = useState<'usuarios' | 'roles' | 'permissoes' | 'auditoria'>(
+    'usuarios'
+  );
   const [loading, setLoading] = useState(true);
-  
+
   // Estados - Usuários
   const [usuarios, setUsuarios] = useState<User[]>([]);
   const [usuarioSelecionado, setUsuarioSelecionado] = useState<User | null>(null);
   const [rolesUsuario, setRolesUsuario] = useState<UserRole[]>([]);
   const [searchUsuario, setSearchUsuario] = useState('');
-  
+
   // Estados - Roles
   const [roles, setRoles] = useState<Role[]>([]);
   const [roleSelecionada, setRoleSelecionada] = useState<Role | null>(null);
   const [permissoesRole, setPermissoesRole] = useState<Permission[]>([]);
-  
+
   // Estados - Permissões
   const [permissoes, setPermissoes] = useState<Permission[]>([]);
-  const [filterModulo, setFilterModulo] = useState<string>('todos');
-  
+  const [filterModulo, setFilterModulo] = useState<string | null>('todos');
+
   // Estados - Auditoria
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
-  const [filterAuditModulo, setFilterAuditModulo] = useState<string>('todos');
-  
+  const [filterAuditModulo, setFilterAuditModulo] = useState<string | null>('todos');
+
   // Dialogs
   const [_, setShowNovoUsuarioDialog] = useState(false);
   const [showAtribuirRoleDialog, setShowAtribuirRoleDialog] = useState(false);
@@ -149,8 +153,8 @@ export default function GestaoUsuariosPermissoes() {
         await carregarAuditoria();
       }
     } catch (error: unknown) {
-        const err = error as Error;
-      addToast(`Erro ao carregar dados: ${error.message}`, 'error');
+      const err = error as Error;
+      addToast(`Erro ao carregar dados: ${err.message}`, 'error');
     } finally {
       setLoading(false);
     }
@@ -236,13 +240,11 @@ export default function GestaoUsuariosPermissoes() {
 
   const handleAtribuirRole = async (userId: string, roleId: string) => {
     try {
-      const { error } = await supabase
-        .from('user_roles')
-        .insert({
-          user_id: userId,
-          role_id: roleId,
-          assigned_by: (await supabase.auth.getUser()).data.user?.id,
-        });
+      const { error } = await supabase.from('user_roles').insert({
+        user_id: userId,
+        role_id: roleId,
+        assigned_by: (await supabase.auth.getUser()).data.user?.id,
+      });
 
       if (error) throw error;
 
@@ -261,8 +263,8 @@ export default function GestaoUsuariosPermissoes() {
         carregarRolesUsuario(usuarioSelecionado.id);
       }
     } catch (error: unknown) {
-        const err = error as Error;
-      addToast(`Erro ao atribuir role: ${error.message}`, 'error');
+      const err = error as Error;
+      addToast(`Erro ao atribuir role: ${err.message}`, 'error');
     }
   };
 
@@ -282,22 +284,23 @@ export default function GestaoUsuariosPermissoes() {
         carregarRolesUsuario(usuarioSelecionado.id);
       }
     } catch (error: unknown) {
-        const err = error as Error;
-      addToast(`Erro ao revogar role: ${error.message}`, 'error');
+      const err = error as Error;
+      addToast(`Erro ao revogar role: ${err.message}`, 'error');
     }
   };
 
-  const usuariosFiltrados = usuarios.filter((u) =>
-    u.email.toLowerCase().includes(searchUsuario.toLowerCase()) ||
-    u.user_metadata?.nome?.toLowerCase().includes(searchUsuario.toLowerCase())
+  const usuariosFiltrados = usuarios.filter(
+    (u) =>
+      u.email.toLowerCase().includes(searchUsuario.toLowerCase()) ||
+      u.user_metadata?.nome?.toLowerCase().includes(searchUsuario.toLowerCase())
   );
 
-  const permissoesFiltradas = permissoes.filter((p) =>
-    filterModulo === 'todos' || p.modulo === filterModulo
+  const permissoesFiltradas = permissoes.filter(
+    (p) => filterModulo === 'todos' || p.modulo === filterModulo
   );
 
-  const auditLogsFiltrados = auditLogs.filter((log) =>
-    filterAuditModulo === 'todos' || log.modulo === filterAuditModulo
+  const auditLogsFiltrados = auditLogs.filter(
+    (log) => filterAuditModulo === 'todos' || log.modulo === filterAuditModulo
   );
 
   const modulos = Array.from(new Set(permissoes.map((p) => p.modulo)));
@@ -308,23 +311,16 @@ export default function GestaoUsuariosPermissoes() {
       {/* Header com busca e ações */}
       <div className="flex items-center justify-between gap-4">
         <Input
-          icon={<Search className="w-4 h-4" />}
+          leftIcon={Search}
           placeholder="Buscar usuários por email ou nome..."
           value={searchUsuario}
           onChange={(e) => setSearchUsuario(e.target.value)}
           className="flex-1"
         />
-        <Button
-          icon={<UserPlus />}
-          onClick={() => setShowNovoUsuarioDialog(true)}
-        >
+        <Button icon={<UserPlus />} onClick={() => setShowNovoUsuarioDialog(true)}>
           Novo Usuário
         </Button>
-        <Button
-          variant="secondary"
-          icon={<RefreshCw />}
-          onClick={carregarUsuarios}
-        >
+        <Button variant="secondary" icon={<RefreshCw />} onClick={carregarUsuarios}>
           Atualizar
         </Button>
       </div>
@@ -367,17 +363,26 @@ export default function GestaoUsuariosPermissoes() {
             <div className="space-y-6">
               <div className="flex items-start justify-between">
                 <div>
-                  <h3 className="mb-1 text-[0.813rem] orx-orx-font-semibold">{usuarioSelecionado.email}</h3>
+                  <h3 className="mb-1 text-[0.813rem] orx-orx-font-semibold">
+                    {usuarioSelecionado.email}
+                  </h3>
                   {usuarioSelecionado.user_metadata?.nome && (
-                    <p className="text-[var(--text-secondary)]">{usuarioSelecionado.user_metadata.nome}</p>
+                    <p className="text-[var(--text-secondary)]">
+                      {usuarioSelecionado.user_metadata.nome}
+                    </p>
                   )}
                 </div>
                 <div className="flex gap-2">
                   <Tooltip content="Editar Usuário">
-                    <Button variant="ghost" size="sm" icon={<Edit />} />
+                    <Button variant="ghost" size="sm" icon={<Edit />} aria-label="Editar usuário" />
                   </Tooltip>
                   <Tooltip content="Bloquear Usuário">
-                    <Button variant="ghost" size="sm" icon={<Lock />} />
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      icon={<Lock />}
+                      aria-label="Alterar permissões"
+                    />
                   </Tooltip>
                 </div>
               </div>
@@ -436,11 +441,17 @@ export default function GestaoUsuariosPermissoes() {
               {/* Informações adicionais */}
               <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[var(--text-secondary)]/20">
                 <div className="neuro-inset p-3 rounded-lg">
-                  <div className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">Cadastrado em</div>
-                  <div className="orx-orx-font-medium">{formatDate(usuarioSelecionado.created_at)}</div>
+                  <div className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">
+                    Cadastrado em
+                  </div>
+                  <div className="orx-orx-font-medium">
+                    {formatDate(usuarioSelecionado.created_at)}
+                  </div>
                 </div>
                 <div className="neuro-inset p-3 rounded-lg">
-                  <div className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">Último acesso</div>
+                  <div className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">
+                    Último acesso
+                  </div>
                   <div className="orx-orx-font-medium">
                     {usuarioSelecionado.last_sign_in_at
                       ? formatDateTime(usuarioSelecionado.last_sign_in_at)
@@ -459,7 +470,7 @@ export default function GestaoUsuariosPermissoes() {
       </div>
 
       {/* Dialog: Atribuir Role */}
-      <Dialog open={showAtribuirRoleDialog} onOpenChange={setShowAtribuirRoleDialog}>
+      <DialogRoot open={showAtribuirRoleDialog} onOpenChange={setShowAtribuirRoleDialog}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Atribuir Função ao Usuário</DialogTitle>
@@ -468,26 +479,30 @@ export default function GestaoUsuariosPermissoes() {
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3 py-4">
-            {roles.filter((r) => r.is_active).map((role) => (
-              <button
-                key={role.id}
-                onClick={() => {
-                  if (usuarioSelecionado) {
-                    handleAtribuirRole(usuarioSelecionado.id, role.id);
-                  }
-                }}
-                className="w-full p-3 neuro-flat hover:neuro-raised rounded-lg transition-all text-left"
-              >
-                <div className="orx-orx-font-medium">{role.nome}</div>
-                <div className="text-[var(--text-secondary)] text-[0.813rem]">{role.descricao}</div>
-                <Badge variant="default" className="mt-2">
-                  {role.tipo_role}
-                </Badge>
-              </button>
-            ))}
+            {roles
+              .filter((r) => r.is_active)
+              .map((role) => (
+                <button
+                  key={role.id}
+                  onClick={() => {
+                    if (usuarioSelecionado) {
+                      handleAtribuirRole(usuarioSelecionado.id, role.id);
+                    }
+                  }}
+                  className="w-full p-3 neuro-flat hover:neuro-raised rounded-lg transition-all text-left"
+                >
+                  <div className="orx-orx-font-medium">{role.nome}</div>
+                  <div className="text-[var(--text-secondary)] text-[0.813rem]">
+                    {role.descricao}
+                  </div>
+                  <Badge variant="default" className="mt-2">
+                    {role.tipo_role}
+                  </Badge>
+                </button>
+              ))}
           </div>
         </DialogContent>
-      </Dialog>
+      </DialogRoot>
     </div>
   );
 
@@ -542,17 +557,20 @@ export default function GestaoUsuariosPermissoes() {
                   <p className="text-[var(--text-secondary)]">{roleSelecionada.descricao}</p>
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="ghost" size="sm" icon={<Edit />} />
+                  <Button variant="ghost" size="sm" icon={<Edit />} aria-label="Editar permissão" />
                   {!roleSelecionada.is_system && (
-                    <Button variant="ghost" size="sm" icon={<Trash2 className="text-error" />} />
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      icon={<Trash2 className="text-error" />}
+                      aria-label="Excluir permissão"
+                    />
                   )}
                 </div>
               </div>
 
               <div>
-                <h4 className="mb-3 orx-orx-font-semibold">
-                  Permissões ({permissoesRole.length})
-                </h4>
+                <h4 className="mb-3 orx-orx-font-semibold">Permissões ({permissoesRole.length})</h4>
                 {permissoesRole.length === 0 ? (
                   <div className="text-center py-6 neuro-flat rounded-lg text-[var(--text-secondary)]">
                     <Key className="w-8 h-8 mx-auto mb-2 opacity-50" />
@@ -578,10 +596,10 @@ export default function GestaoUsuariosPermissoes() {
                               perm.nivel_criticidade === 'critico'
                                 ? 'bg-error/20 text-error'
                                 : perm.nivel_criticidade === 'alto'
-                                ? 'bg-orange-500/20 text-orange-500'
-                                : perm.nivel_criticidade === 'medio'
-                                ? 'bg-yellow-500/20 text-yellow-500'
-                                : 'bg-success/20 text-success'
+                                  ? 'bg-orange-500/20 text-orange-500'
+                                  : perm.nivel_criticidade === 'medio'
+                                    ? 'bg-yellow-500/20 text-yellow-500'
+                                    : 'bg-success/20 text-success'
                             }`}
                           >
                             {perm.nivel_criticidade}
@@ -625,7 +643,7 @@ export default function GestaoUsuariosPermissoes() {
       </div>
 
       <Card className="neuro-raised p-0">
-        <Table>
+        <TableContainer>
           <TableHeader>
             <TableRow>
               <TableHead>Código</TableHead>
@@ -652,10 +670,10 @@ export default function GestaoUsuariosPermissoes() {
                       perm.nivel_criticidade === 'critico'
                         ? 'bg-error/20 text-error'
                         : perm.nivel_criticidade === 'alto'
-                        ? 'bg-orange-500/20 text-orange-500'
-                        : perm.nivel_criticidade === 'medio'
-                        ? 'bg-yellow-500/20 text-yellow-500'
-                        : 'bg-success/20 text-success'
+                          ? 'bg-orange-500/20 text-orange-500'
+                          : perm.nivel_criticidade === 'medio'
+                            ? 'bg-yellow-500/20 text-yellow-500'
+                            : 'bg-success/20 text-success'
                     }`}
                   >
                     {perm.nivel_criticidade}
@@ -671,7 +689,7 @@ export default function GestaoUsuariosPermissoes() {
               </TableRow>
             ))}
           </TableBody>
-        </Table>
+        </TableContainer>
       </Card>
     </div>
   );
@@ -695,7 +713,7 @@ export default function GestaoUsuariosPermissoes() {
       </div>
 
       <Card className="neuro-raised p-0">
-        <Table>
+        <TableContainer>
           <TableHeader>
             <TableRow>
               <TableHead>Data/Hora</TableHead>
@@ -710,9 +728,7 @@ export default function GestaoUsuariosPermissoes() {
           <TableBody>
             {auditLogsFiltrados.map((log) => (
               <TableRow key={log.id}>
-                <TableCell className="text-[0.813rem]">
-                  {formatDateTime(log.created_at)}
-                </TableCell>
+                <TableCell className="text-[0.813rem]">{formatDateTime(log.created_at)}</TableCell>
                 <TableCell>{log.user_email}</TableCell>
                 <TableCell className="font-mono text-[0.813rem]">{log.acao}</TableCell>
                 <TableCell>
@@ -735,8 +751,8 @@ export default function GestaoUsuariosPermissoes() {
                       log.nivel_sensibilidade === 'restrito'
                         ? 'bg-error/20 text-error'
                         : log.nivel_sensibilidade === 'confidencial'
-                        ? 'bg-orange-500/20 text-orange-500'
-                        : 'bg-[var(--primary)]/20 text-[var(--primary)]'
+                          ? 'bg-orange-500/20 text-orange-500'
+                          : 'bg-[var(--primary)]/20 text-[var(--primary)]'
                     }`}
                   >
                     {log.nivel_sensibilidade}
@@ -745,7 +761,7 @@ export default function GestaoUsuariosPermissoes() {
               </TableRow>
             ))}
           </TableBody>
-        </Table>
+        </TableContainer>
       </Card>
     </div>
   );
@@ -803,4 +819,3 @@ export default function GestaoUsuariosPermissoes() {
     </div>
   );
 }
-

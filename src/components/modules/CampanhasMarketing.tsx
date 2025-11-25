@@ -1,4 +1,4 @@
-import React from 'react';
+// React is automatically imported in JSX transform
 import { isFeatureEnabled } from '@/lib/flags';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -13,25 +13,33 @@ export function CampanhasMarketing(): JSX.Element {
         </div>
       )}
       <h1 className="orx-text-xl orx-orx-font-semibold mb-2">Campanhas de Marketing</h1>
-      <p className="orx-text-sm text-muted-foreground mb-4">Gestão de campanhas, tracking e segmentação.</p>
+      <p className="orx-text-sm text-muted-foreground mb-4">
+        Gestão de campanhas, tracking e segmentação.
+      </p>
 
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="orx-text-base">Campanhas ativas</CardTitle></CardHeader>
+          <CardHeader className="pb-2">
+            <CardTitle className="orx-text-base">Campanhas ativas</CardTitle>
+          </CardHeader>
           <CardContent>
             <div className="orx-text-2xl orx-orx-font-semibold">7</div>
             <div className="orx-text-xs text-muted-foreground">Últimos 30 dias</div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="orx-text-base">CTR médio</CardTitle></CardHeader>
+          <CardHeader className="pb-2">
+            <CardTitle className="orx-text-base">CTR médio</CardTitle>
+          </CardHeader>
           <CardContent>
             <div className="orx-text-2xl orx-orx-font-semibold">3.8%</div>
             <div className="orx-text-xs text-muted-foreground">Todos canais</div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="orx-text-base">Status</CardTitle></CardHeader>
+          <CardHeader className="pb-2">
+            <CardTitle className="orx-text-base">Status</CardTitle>
+          </CardHeader>
           <CardContent>
             <Badge variant="default">Estável</Badge>
           </CardContent>

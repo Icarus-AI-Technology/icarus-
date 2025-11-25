@@ -3,7 +3,7 @@
  * Gerencia login, logout, sessão e permissões
  */
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react';
 import { supabase } from '@/lib/supabase';
 
 // Tipos
@@ -42,8 +42,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [permissoes, setPermissoes] = useState<Permissao[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Carregar sessão salva no localStorage
+  // Configuração de Bypass para Desenvolvimento
+  const DEV_BYPASS_LOGIN = import.meta.env.DEV && false; // Mude para false para reativar login real
+
+  const MOCK_DEV_USER: Usuario = useMemo(
+    () => ({
+      id: 'dev-bypass-id',
+      email: 'dev@icarus.local',
+      nome_completo: 'Developer Bypass (Admin)',
+      cargo: 'admin',
+      empresa_id: 'dev-company',
+      empresa_nome: 'Dev Company Inc.',
+    }),
+    []
+  );
+
+  const MOCK_DEV_PERMISSIONS: Permissao[] = useMemo(
+    () => [{ codigo: 'SYSTEM_ALL', nome: 'Full Access', recurso: '*', acao: '*' }],
+    []
+  );
+
+  // Carregar sessão salva no localStorage ou Bypass
   useEffect(() => {
+    if (DEV_BYPASS_LOGIN) {
+      console.warn('⚠️ LOGIN BYPASS ATIVADO: Usando usuário mock de desenvolvimento');
+      setUsuario(MOCK_DEV_USER);
+      setPermissoes(MOCK_DEV_PERMISSIONS);
+      setLoading(false);
+      return;
+    }
+
     const sessaoSalva = localStorage.getItem('icarus_session');
     if (sessaoSalva) {
       try {
@@ -57,7 +85,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     }
     setLoading(false);
-  }, []);
+  }, [DEV_BYPASS_LOGIN, MOCK_DEV_USER, MOCK_DEV_PERMISSIONS]);
 
   // Login
   const login = async (email: string, senha: string) => {
@@ -94,25 +122,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           email,
           password: senha,
         });
+
         if (authErr) {
-          return { sucesso: false, mensagem: authErr.message || 'Credenciais inválidas' };
+          throw authErr;
         }
 
         const supaUser = auth.user;
+        if (!supaUser) throw new Error('Usuário não retornado pelo login');
+
         // perfil opcional
         const { data: profile } = await supabase
           .from('profiles')
-          .select('id, full_name, empresa_id, role, company_name')
+          .select('id, full_name, role')
           .eq('id', supaUser.id)
           .maybeSingle();
 
         usuarioCompleto = {
           id: supaUser.id,
           email: supaUser.email || email,
-          nome_completo: (profile?.full_name as string | undefined) || (supaUser.user_metadata?.full_name as string | undefined) || '',
+          nome_completo:
+            (profile?.full_name as string | undefined) ||
+            (supaUser.user_metadata?.full_name as string | undefined) ||
+            '',
           cargo: (profile?.role as string | undefined) || 'user',
-          empresa_id: (profile?.empresa_id as string | undefined) || '',
-          empresa_nome: (profile?.company_name as string | undefined) || undefined,
+          empresa_id: '',
+          empresa_nome: undefined,
         };
 
         const { data: perms } = await supabase.rpc('obter_permissoes_usuario', {
@@ -126,7 +160,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       localStorage.setItem(
         'icarus_session',
-        JSON.stringify({ usuario: usuarioCompleto, permissoes: permsData, timestamp: new Date().toISOString() })
+        JSON.stringify({
+          usuario: usuarioCompleto,
+          permissoes: permsData,
+          timestamp: new Date().toISOString(),
+        })
       );
 
       return { sucesso: true, mensagem: 'Login realizado com sucesso!' };
@@ -149,21 +187,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Verificar se tem permissão específica
   const temPermissao = (codigo: string): boolean => {
     if (!usuario) return false;
-    
+
     // CEO e SYSTEM_ALL tem acesso a tudo
-    if (permissoes.some(p => p.codigo === 'SYSTEM_ALL')) return true;
-    
-    return permissoes.some(p => p.codigo === codigo);
+    if (permissoes.some((p) => p.codigo === 'SYSTEM_ALL')) return true;
+
+    return permissoes.some((p) => p.codigo === codigo);
   };
 
   // Verificar acesso a recurso específico
   const temAcessoRecurso = (recurso: string, acao?: string): boolean => {
     if (!usuario) return false;
-    
+
     // CEO e SYSTEM_ALL tem acesso a tudo
-    if (permissoes.some(p => p.codigo === 'SYSTEM_ALL')) return true;
-    
-    return permissoes.some(p => {
+    if (permissoes.some((p) => p.codigo === 'SYSTEM_ALL')) return true;
+
+    return permissoes.some((p) => {
       const recursoMatch = p.recurso === recurso;
       const acaoMatch = !acao || p.acao === acao || p.acao === 'all' || p.acao === 'manage';
       return recursoMatch && acaoMatch;
@@ -195,4 +233,3 @@ export function useAuth() {
   }
   return context;
 }
-

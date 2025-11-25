@@ -4,7 +4,7 @@
  * Dados reais do Supabase com Realtime Sync
  */
 
-import React, { useState, useEffect } from"react";
+import React, { useState, useEffect } from 'react';
 import {
   Card,
   CardHeader,
@@ -13,7 +13,7 @@ import {
   NavigationBar,
   Button,
   Badge,
-} from"@/components/oraclusx-ds";
+} from '@/components/oraclusx-ds';
 import {
   ShoppingCart,
   Users,
@@ -24,22 +24,15 @@ import {
   Plus,
   Search,
   AlertCircle,
-} from"lucide-react";
-import { usePedidos } from"@/hooks";
+} from 'lucide-react';
+import { usePedidos } from '@/hooks';
 
 export const ComprasFornecedores: React.FC = () => {
-  const [activeTab, setActiveTab] = useState("dashboard");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Hook do backend com Realtime
-  const {
-    pedidos,
-    loading,
-    error,
-    getResumoPedidos,
-    aprovarPedido,
-    cancelarPedido,
-  } = usePedidos();
+  const { pedidos, loading, error, getResumoPedidos, aprovarPedido, cancelarPedido } = usePedidos();
 
   const [resumo, setResumo] = useState({
     totalPedidos: 0,
@@ -61,81 +54,89 @@ export const ComprasFornecedores: React.FC = () => {
   }, [pedidos, loading, getResumoPedidos]);
 
   const tabs = [
-    { id:"dashboard", label:"Dashboard", icon: <TrendingUp size={18} /> },
-    { id:"pedidos", label:"Pedidos", icon: <ShoppingCart size={18} />, badge: pedidos.length },
-    { id:"aprovacoes", label:"Aprovações", icon: <CheckCircle size={18} />, badge: resumo.aguardandoAprovacao },
-    { id:"fornecedores", label:"Fornecedores", icon: <Users size={18} /> },
+    { id: 'dashboard', label: 'Dashboard', icon: <TrendingUp size={18} /> },
+    { id: 'pedidos', label: 'Pedidos', icon: <ShoppingCart size={18} />, badge: pedidos.length },
+    {
+      id: 'aprovacoes',
+      label: 'Aprovações',
+      icon: <CheckCircle size={18} />,
+      badge: resumo.aguardandoAprovacao,
+    },
+    { id: 'fornecedores', label: 'Fornecedores', icon: <Users size={18} /> },
   ];
 
   const purchaseStats = [
     {
-      title:"Total de Pedidos",
-      value: loading ?"..." : resumo.totalPedidos.toString(),
-      trend:"+12.5%",
+      title: 'Total de Pedidos',
+      value: loading ? '...' : resumo.totalPedidos.toString(),
+      trend: '+12.5%',
       icon: ShoppingCart,
-      color:"blue",
+      color: 'blue',
     },
     {
-      title:"Valor Total",
-      value: loading ?"..." : `R$ ${(resumo.valorTotal / 1000).toFixed(0)}k`,
-      trend:"+18.3%",
+      title: 'Valor Total',
+      value: loading ? '...' : `R$ ${(resumo.valorTotal / 1000).toFixed(0)}k`,
+      trend: '+18.3%',
       icon: TrendingUp,
-      color:"green",
+      color: 'green',
     },
     {
-      title:"Aguardando Aprovação",
-      value: loading ?"..." : resumo.aguardandoAprovacao.toString(),
-      trend:"Pendentes",
+      title: 'Aguardando Aprovação',
+      value: loading ? '...' : resumo.aguardandoAprovacao.toString(),
+      trend: 'Pendentes',
       icon: Clock,
-      color:"yellow",
+      color: 'yellow',
     },
     {
-      title:"Em Andamento",
-      value: loading ?"..." : resumo.emAndamento.toString(),
-      trend:"Processando",
+      title: 'Em Andamento',
+      value: loading ? '...' : resumo.emAndamento.toString(),
+      trend: 'Processando',
       icon: AlertCircle,
-      color:"purple",
+      color: 'purple',
     },
   ];
 
-  const getStatusColor = (status: string):"warning" |"success" |"primary" |"error" |"default" => {
-    const colors: Record<string,"warning" |"success" |"primary" |"error" |"default"> = {
-      rascunho:"default",
-      enviado:"warning",
-      aprovado:"success",
-      em_transito:"primary",
-      entregue:"success",
-      cancelado:"error",
+  const getStatusColor = (
+    status: string
+  ): 'warning' | 'success' | 'primary' | 'error' | 'default' => {
+    const colors: Record<string, 'warning' | 'success' | 'primary' | 'error' | 'default'> = {
+      rascunho: 'default',
+      enviado: 'warning',
+      aprovado: 'success',
+      em_transito: 'primary',
+      entregue: 'success',
+      cancelado: 'error',
     };
-    return colors[status] ||"default";
+    return colors[status] || 'default';
   };
 
   const getStatusLabel = (status: string): string => {
     const labels: Record<string, string> = {
-      rascunho:"Rascunho",
-      enviado:"Enviado",
-      aprovado:"Aprovado",
-      em_transito:"Em Trânsito",
-      entregue:"Entregue",
-      cancelado:"Cancelado",
+      rascunho: 'Rascunho',
+      enviado: 'Enviado',
+      aprovado: 'Aprovado',
+      em_transito: 'Em Trânsito',
+      entregue: 'Entregue',
+      cancelado: 'Cancelado',
     };
     return labels[status] || status;
   };
 
   // Filtrar pedidos
-  const filteredPedidos = pedidos.filter(p =>
-    p.numero_pedido.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    p.fornecedor_id.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredPedidos = pedidos.filter(
+    (p) =>
+      p.numero_pedido.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.fornecedor_id.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // Pedidos aguardando aprovação
-  const pedidosParaAprovar = pedidos.filter(p => p.status === 'enviado');
+  const pedidosParaAprovar = pedidos.filter((p) => p.status === 'enviado');
 
   const statTokenMap: Record<string, string> = {
-    blue:"bg-[var(--accent)]/10 text-[var(--accent-foreground)]",
-    green:"bg-success/10 text-success",
-    yellow:"bg-warning/10 text-warning",
-    purple:"bg-[var(--accent)]/10 text-[var(--accent-foreground)]",
+    blue: 'bg-[var(--accent)]/10 text-[var(--accent-foreground)]',
+    green: 'bg-success/10 text-success',
+    yellow: 'bg-warning/10 text-warning',
+    purple: 'bg-[var(--accent)]/10 text-[var(--accent-foreground)]',
   };
 
   return (
@@ -161,7 +162,7 @@ export const ComprasFornecedores: React.FC = () => {
 
         <div className="mt-6">
           {/* Dashboard */}
-          {activeTab ==="dashboard" && (
+          {activeTab === 'dashboard' && (
             <div className="space-y-6">
               {/* Stats */}
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -172,15 +173,16 @@ export const ComprasFornecedores: React.FC = () => {
                       <CardContent className="pt-6">
                         <div className="flex items-start justify-between">
                           <div>
-                            <p className="text-body-sm text-[var(--text-secondary)] mb-1" style={{ fontWeight: 500 }}>
+                            <p
+                              className="text-body-sm text-[var(--text-secondary)] mb-1"
+                              style={{ fontWeight: 500 }}
+                            >
                               {stat.title}
                             </p>
                             <h3 className="text-heading-lg font-display text-[var(--text-primary)]">
                               {stat.value}
                             </h3>
-                            <p className="text-body-xs text-success mt-2">
-                              {stat.trend}
-                            </p>
+                            <p className="text-body-xs text-success mt-2">{stat.trend}</p>
                           </div>
                           <div className={`p-3 rounded-full ${statTokenMap[stat.color]}`}>
                             <Icon size={20} />
@@ -235,7 +237,10 @@ export const ComprasFornecedores: React.FC = () => {
                           </div>
                           <div className="flex items-center gap-4">
                             <span className="text-body-lg font-display text-success">
-                              R$ {pedido.valor_total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                              R${' '}
+                              {pedido.valor_total.toLocaleString('pt-BR', {
+                                minimumFractionDigits: 2,
+                              })}
                             </span>
                             <Badge variant={getStatusColor(pedido.status)}>
                               {getStatusLabel(pedido.status)}
@@ -251,13 +256,16 @@ export const ComprasFornecedores: React.FC = () => {
           )}
 
           {/* Pedidos Tab */}
-          {activeTab ==="pedidos" && (
+          {activeTab === 'pedidos' && (
             <Card>
               <CardHeader className="flex-row items-center justify-between">
                 <CardTitle>Todos os Pedidos ({pedidos.length})</CardTitle>
                 <div className="flex items-center gap-3">
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" size={18} />
+                    <Search
+                      className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
+                      size={18}
+                    />
                     <input
                       type="text"
                       placeholder="Buscar pedido..."
@@ -297,7 +305,9 @@ export const ComprasFornecedores: React.FC = () => {
                             key={pedido.id}
                             className="border-b border-[var(--border)] hover:bg-surface dark:hover:bg-card transition-colors"
                           >
-                            <td className="py-3 px-4 font-mono text-body-xs">#{pedido.numero_pedido}</td>
+                            <td className="py-3 px-4 font-mono text-body-xs">
+                              #{pedido.numero_pedido}
+                            </td>
                             <td className="py-3 px-4">
                               {new Date(pedido.data_pedido).toLocaleDateString('pt-BR')}
                             </td>
@@ -305,12 +315,18 @@ export const ComprasFornecedores: React.FC = () => {
                               {pedido.fornecedor_id.substring(0, 8)}...
                             </td>
                             <td className="py-3 px-4">
-                              {pedido.data_entrega_prevista 
+                              {pedido.data_entrega_prevista
                                 ? new Date(pedido.data_entrega_prevista).toLocaleDateString('pt-BR')
-                                :"N/A"}
+                                : 'N/A'}
                             </td>
-                            <td className="py-3 px-4 text-right text-success" style={{ fontWeight: 500 }}>
-                              R$ {pedido.valor_total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                            <td
+                              className="py-3 px-4 text-right text-success"
+                              style={{ fontWeight: 500 }}
+                            >
+                              R${' '}
+                              {pedido.valor_total.toLocaleString('pt-BR', {
+                                minimumFractionDigits: 2,
+                              })}
                             </td>
                             <td className="py-3 px-4">
                               <Badge variant={getStatusColor(pedido.status)}>
@@ -319,10 +335,12 @@ export const ComprasFornecedores: React.FC = () => {
                             </td>
                             <td className="py-3 px-4">
                               <div className="flex items-center justify-center gap-2">
-                                <Button variant="default" size="sm">Ver</Button>
+                                <Button variant="default" size="sm">
+                                  Ver
+                                </Button>
                                 {pedido.status === 'enviado' && (
-                                  <Button 
-                                    variant="primary" 
+                                  <Button
+                                    variant="primary"
                                     size="sm"
                                     onClick={() => aprovarPedido(pedido.id, 'Admin')}
                                   >
@@ -342,7 +360,7 @@ export const ComprasFornecedores: React.FC = () => {
           )}
 
           {/* Aprovações Tab */}
-          {activeTab ==="aprovacoes" && (
+          {activeTab === 'aprovacoes' && (
             <Card>
               <CardHeader>
                 <CardTitle>Pedidos Aguardando Aprovação ({pedidosParaAprovar.length})</CardTitle>
@@ -351,7 +369,9 @@ export const ComprasFornecedores: React.FC = () => {
                 {pedidosParaAprovar.length === 0 ? (
                   <div className="text-center py-12">
                     <CheckCircle size={48} className="mx-auto mb-4 text-success opacity-30" />
-                    <p className="text-[var(--text-secondary)]">Nenhum pedido aguardando aprovação!</p>
+                    <p className="text-[var(--text-secondary)]">
+                      Nenhum pedido aguardando aprovação!
+                    </p>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -365,20 +385,23 @@ export const ComprasFornecedores: React.FC = () => {
                             Pedido #{pedido.numero_pedido}
                           </h4>
                           <p className="text-body-sm text-[var(--text-secondary)]">
-                            Valor: R$ {pedido.valor_total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} •
-                            Data: {new Date(pedido.data_pedido).toLocaleDateString('pt-BR')}
+                            Valor: R${' '}
+                            {pedido.valor_total.toLocaleString('pt-BR', {
+                              minimumFractionDigits: 2,
+                            })}{' '}
+                            • Data: {new Date(pedido.data_pedido).toLocaleDateString('pt-BR')}
                           </p>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Button 
-                            variant="default" 
+                          <Button
+                            variant="default"
                             size="sm"
                             onClick={() => cancelarPedido(pedido.id)}
                           >
                             Rejeitar
                           </Button>
-                          <Button 
-                            variant="primary" 
+                          <Button
+                            variant="primary"
                             size="sm"
                             onClick={() => aprovarPedido(pedido.id, 'Admin')}
                           >
@@ -394,11 +417,14 @@ export const ComprasFornecedores: React.FC = () => {
           )}
 
           {/* Fornecedores Tab */}
-          {activeTab ==="fornecedores" && (
+          {activeTab === 'fornecedores' && (
             <Card>
               <CardContent className="py-12 text-center">
                 <Users size={48} className="mx-auto mb-4 text-muted" />
-                <h3 className="text-body-lg text-[var(--text-primary)] mb-2" style={{ fontWeight: 500 }}>
+                <h3
+                  className="text-body-lg text-[var(--text-primary)] mb-2"
+                  style={{ fontWeight: 500 }}
+                >
                   Gestão de Fornecedores
                 </h3>
                 <p className="text-[var(--text-secondary)] mb-4">

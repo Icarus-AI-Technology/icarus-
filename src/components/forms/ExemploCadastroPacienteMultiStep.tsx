@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { CompleteMultiStepForm } from '../MultiStepForm';
-import { Input } from '@/components/ui/input';
+import { CompleteMultiStepForm } from './MultiStepForm';
+import { Input } from '@/components/oraclusx-ds/Input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useValidacaoCep } from '@/hooks/useValidacao';
 import { useValidacaoCPF } from '@/hooks/useValidacao';
@@ -19,9 +25,10 @@ function Step1DadosPessoais() {
   });
   const { data, loading: _loading, error, validate } = useValidacaoCPF();
 
-  const handleChange = (field: keyof typeof form) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setForm((prev) => ({ ...prev, [field]: event.target.value }));
-  };
+  const handleChange =
+    (field: keyof typeof form) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setForm((prev) => ({ ...prev, [field]: event.target.value }));
+    };
 
   return (
     <div className="space-y-4">
@@ -45,8 +52,16 @@ function Step1DadosPessoais() {
             onChange={(e) => setCpf(e.target.value)}
             onBlur={() => validate(cpf)}
           />
-          {error && <p className="text-destructive mt-1" style={{ fontSize: '0.813rem' }}>{error}</p>}
-          {data && <p className="text-success mt-1" style={{ fontSize: '0.813rem' }}>✓ CPF válido</p>}
+          {error && (
+            <p className="text-destructive mt-1" style={{ fontSize: '0.813rem' }}>
+              {error}
+            </p>
+          )}
+          {data && (
+            <p className="text-success mt-1" style={{ fontSize: '0.813rem' }}>
+              ✓ CPF válido
+            </p>
+          )}
         </div>
       </div>
 
@@ -63,7 +78,10 @@ function Step1DadosPessoais() {
         </div>
         <div>
           <Label htmlFor="sexo">Sexo *</Label>
-          <Select value={form.sexo} onValueChange={(value) => setForm((prev) => ({ ...prev, sexo: value }))}>
+          <Select
+            value={form.sexo}
+            onValueChange={(value) => setForm((prev) => ({ ...prev, sexo: value }))}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Selecione..." />
             </SelectTrigger>
@@ -76,7 +94,10 @@ function Step1DadosPessoais() {
         </div>
         <div>
           <Label htmlFor="estadoCivil">Estado Civil</Label>
-          <Select value={form.estadoCivil} onValueChange={(value) => setForm((prev) => ({ ...prev, estadoCivil: value }))}>
+          <Select
+            value={form.estadoCivil}
+            onValueChange={(value) => setForm((prev) => ({ ...prev, estadoCivil: value }))}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Selecione..." />
             </SelectTrigger>
@@ -116,6 +137,13 @@ function Step1DadosPessoais() {
   );
 }
 
+type CepApiResponse = {
+  logradouro?: string | null;
+  bairro?: string | null;
+  localidade?: string | null;
+  uf?: string | null;
+};
+
 function Step2Endereco() {
   const [cep, setCep] = useState('');
   const [endereco, setEndereco] = useState({
@@ -130,19 +158,21 @@ function Step2Endereco() {
 
   useEffect(() => {
     if (cepData) {
+      const dados = cepData as CepApiResponse;
       setEndereco((prev) => ({
         ...prev,
-        logradouro: cepData.logradouro ?? prev.logradouro,
-        bairro: cepData.bairro ?? prev.bairro,
-        cidade: cepData.localidade ?? prev.cidade,
-        uf: cepData.uf ?? prev.uf,
+        logradouro: dados.logradouro ?? prev.logradouro,
+        bairro: dados.bairro ?? prev.bairro,
+        cidade: dados.localidade ?? prev.cidade,
+        uf: dados.uf ?? prev.uf,
       }));
     }
   }, [cepData]);
 
-  const handleChange = (field: keyof typeof endereco) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEndereco((prev) => ({ ...prev, [field]: event.target.value }));
-  };
+  const handleChange =
+    (field: keyof typeof endereco) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setEndereco((prev) => ({ ...prev, [field]: event.target.value }));
+    };
 
   return (
     <div className="space-y-4">
@@ -156,8 +186,16 @@ function Step2Endereco() {
             onChange={(e) => setCep(e.target.value)}
             onBlur={() => validate(cep)}
           />
-          {loading && <p className="mt-1" style={{ fontSize: '0.813rem' }}>Buscando...</p>}
-          {error && <p className="text-destructive mt-1" style={{ fontSize: '0.813rem' }}>{error}</p>}
+          {loading && (
+            <p className="mt-1" style={{ fontSize: '0.813rem' }}>
+              Buscando...
+            </p>
+          )}
+          {error && (
+            <p className="text-destructive mt-1" style={{ fontSize: '0.813rem' }}>
+              {error}
+            </p>
+          )}
         </div>
         <div className="md:col-span-2">
           <Label htmlFor="logradouro">Logradouro *</Label>
@@ -200,21 +238,11 @@ function Step2Endereco() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <Label htmlFor="bairro">Bairro *</Label>
-          <Input
-            id="bairro"
-            value={endereco.bairro}
-            onChange={handleChange('bairro')}
-            required
-          />
+          <Input id="bairro" value={endereco.bairro} onChange={handleChange('bairro')} required />
         </div>
         <div>
           <Label htmlFor="cidade">Cidade *</Label>
-          <Input
-            id="cidade"
-            value={endereco.cidade}
-            onChange={handleChange('cidade')}
-            required
-          />
+          <Input id="cidade" value={endereco.cidade} onChange={handleChange('cidade')} required />
         </div>
       </div>
     </div>
@@ -231,16 +259,21 @@ function Step3InfoMedicas() {
     medicamentos: '',
   });
 
-  const handleChange = (field: keyof typeof info) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setInfo((prev) => ({ ...prev, [field]: event.target.value }));
-  };
+  const handleChange =
+    (field: keyof typeof info) =>
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setInfo((prev) => ({ ...prev, [field]: event.target.value }));
+    };
 
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <Label htmlFor="tipoSanguineo">Tipo Sanguíneo</Label>
-          <Select value={info.tipoSanguineo} onValueChange={(value) => setInfo((prev) => ({ ...prev, tipoSanguineo: value }))}>
+          <Select
+            value={info.tipoSanguineo}
+            onValueChange={(value) => setInfo((prev) => ({ ...prev, tipoSanguineo: value }))}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Selecione..." />
             </SelectTrigger>
@@ -281,7 +314,10 @@ function Step3InfoMedicas() {
         </div>
         <div>
           <Label htmlFor="convenio">Convênio</Label>
-          <Select value={info.convenio} onValueChange={(value) => setInfo((prev) => ({ ...prev, convenio: value }))}>
+          <Select
+            value={info.convenio}
+            onValueChange={(value) => setInfo((prev) => ({ ...prev, convenio: value }))}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Selecione..." />
             </SelectTrigger>
@@ -355,7 +391,8 @@ function Step4Observacoes() {
             fontSize: '0.813rem',
           }}
         >
-          Revise todas as informações antes de concluir. Após a conclusão, o paciente será cadastrado no sistema e receberá um e-mail de confirmação.
+          Revise todas as informações antes de concluir. Após a conclusão, o paciente será
+          cadastrado no sistema e receberá um e-mail de confirmação.
         </p>
       </div>
     </div>
@@ -394,9 +431,7 @@ export default function ExemploCadastroPacienteMultiStep() {
     },
   ];
 
-  const handleComplete = () => {
-    console.log('Cadastro concluído!');
-  };
+  const handleComplete = () => {};
 
   return (
     <div className="min-h-screen p-6 bg-[var(--bg-primary)]">

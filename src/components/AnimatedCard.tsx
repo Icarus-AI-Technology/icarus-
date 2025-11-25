@@ -4,13 +4,15 @@
  */
 
 import { type FC } from 'react';
-import { Card, type CardProps } from './Card';
+import { Card, type CardProps } from './oraclusx-ds/Card';
 import { cn } from '@/lib/utils';
 import { type AnimationType, enterAnimationStyle } from '@/lib/styleUtils';
 
+type LegacyAnimation = AnimationType | 'fadeIn' | 'slideUp' | 'scaleIn' | 'bounceIn';
+
 export interface AnimatedCardProps extends Omit<CardProps, 'className'> {
   /** Tipo de animação de entrada */
-  animation?: AnimationType;
+  animation?: LegacyAnimation;
   /** Delay da animação em ms */
   delay?: number;
   /** Duração da animação em ms */
@@ -28,9 +30,20 @@ const animationClasses: Record<AnimationType, string> = {
   bounce: 'orx-animate-bounce-in',
 };
 
+const animationAliases: Record<LegacyAnimation, AnimationType> = {
+  fade: 'fade',
+  slide: 'slide',
+  scale: 'scale',
+  bounce: 'bounce',
+  fadeIn: 'fade',
+  slideUp: 'slide',
+  scaleIn: 'scale',
+  bounceIn: 'bounce',
+};
+
 /**
  * AnimatedCard - Card com animações de entrada
- * 
+ *
  * @example
  * ```tsx
  * <AnimatedCard animation="slide" delay={100} hoverLift>
@@ -52,14 +65,12 @@ export const AnimatedCard: FC<AnimatedCardProps> = ({
   children,
   ...cardProps
 }) => {
+  const resolvedAnimation = animationAliases[animation] ?? 'fade';
+
   return (
     <Card
       {...cardProps}
-      className={cn(
-        animationClasses[animation],
-        hoverLift && 'orx-hover-lift',
-        className
-      )}
+      className={cn(animationClasses[resolvedAnimation], hoverLift && 'orx-hover-lift', className)}
       style={{
         ...cardProps.style,
         ...enterAnimationStyle(delay, duration),
@@ -73,4 +84,3 @@ export const AnimatedCard: FC<AnimatedCardProps> = ({
 AnimatedCard.displayName = 'OraclusXAnimatedCard';
 
 export default AnimatedCard;
-

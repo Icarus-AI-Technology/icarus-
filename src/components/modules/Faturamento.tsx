@@ -1,5 +1,5 @@
-import { useState, useEffect } from"react";
-import { Card, Progress } from"@/components/oraclusx-ds";
+import { useState, useEffect } from 'react';
+import { Card, Progress } from '@/components/oraclusx-ds';
 import {
   FileText,
   Download,
@@ -16,25 +16,17 @@ import {
   Plus,
   Loader2,
   Send,
-} from"lucide-react";
-import { useDocumentTitle, useFaturas } from"@/hooks";
-import type { Fatura } from"@/hooks/useFaturas";
-import { useToast } from"@/contexts/ToastContext";
+} from 'lucide-react';
+import { useDocumentTitle, useFaturas } from '@/hooks';
+import type { Fatura } from '@/hooks/useFaturas';
+import { useToast } from '@/contexts/ToastContext';
 
 export default function Faturamento() {
-  useDocumentTitle("Faturamento e NF-e");
-  const [activeTab, setActiveTab] = useState<"dashboard" |"nfe" |"dda" |"pluggy"
-  >("dashboard");
-  
+  useDocumentTitle('Faturamento e NF-e');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'nfe' | 'dda' | 'pluggy'>('dashboard');
+
   // Backend Integration
-  const {
-    faturas,
-    loading,
-    error,
-    getResumoFaturas,
-    emitirFatura,
-    cancelarFatura,
-  } = useFaturas();
+  const { faturas, loading, error, getResumoFaturas, emitirFatura, cancelarFatura } = useFaturas();
   const { addToast } = useToast();
 
   const [resumo, setResumo] = useState({
@@ -48,27 +40,27 @@ export default function Faturamento() {
   });
 
   useEffect(() => {
-    if (activeTab ==="dashboard") {
+    if (activeTab === 'dashboard') {
       getResumoFaturas().then(setResumo);
     }
   }, [activeTab, getResumoFaturas, faturas]);
 
   useEffect(() => {
     if (error) {
-      addToast(error,"error");
+      addToast(error, 'error');
     }
   }, [error, addToast]);
 
   const getStatusColor = (status: Fatura['status']): string => {
     const colors: Record<Fatura['status'], string> = {
-      rascunho:"text-secondary bg-surface",
-      pendente:"text-warning bg-warning/5",
-      emitida:"text-accent bg-blue-50",
-      autorizada:"text-success bg-success/5",
-      cancelada:"text-error bg-destructive/5",
-      paga:"text-emerald-600 bg-emerald-50",
+      rascunho: 'text-secondary bg-surface',
+      pendente: 'text-warning bg-warning/5',
+      emitida: 'text-accent bg-blue-50',
+      autorizada: 'text-success bg-success/5',
+      cancelada: 'text-error bg-destructive/5',
+      paga: 'text-emerald-600 bg-emerald-50',
     };
-    return colors[status] ||"text-secondary bg-surface";
+    return colors[status] || 'text-secondary bg-surface';
   };
 
   const getStatusIcon = (status: Fatura['status']) => {
@@ -86,29 +78,29 @@ export default function Faturamento() {
   const handleEmitirFatura = async (id: string) => {
     const success = await emitirFatura(id);
     if (success) {
-      addToast("Fatura emitida com sucesso!","success");
+      addToast('Fatura emitida com sucesso!', 'success');
     }
   };
 
   const handleCancelarFatura = async (id: string) => {
-    const motivo = prompt("Digite o motivo do cancelamento:");
+    const motivo = prompt('Digite o motivo do cancelamento:');
     if (!motivo) return;
-    
+
     const success = await cancelarFatura(id, motivo);
     if (success) {
-      addToast("Fatura cancelada com sucesso!","success");
+      addToast('Fatura cancelada com sucesso!', 'success');
     }
   };
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("pt-BR", {
-      style:"currency",
-      currency:"BRL",
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
     }).format(value);
   };
 
   const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString("pt-BR");
+    return new Date(date).toLocaleDateString('pt-BR');
   };
 
   const renderDashboard = () => (
@@ -126,9 +118,7 @@ export default function Faturamento() {
           <Card className="neuro-raised p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-body-sm text-[var(--text-secondary)] mb-1">
-                  Total Faturado
-                </p>
+                <p className="text-body-sm text-[var(--text-secondary)] mb-1">Total Faturado</p>
                 <h3 className="text-heading font-display text-[var(--text-primary)]">
                   {formatCurrency(resumo.valorTotal)}
                 </h3>
@@ -146,9 +136,7 @@ export default function Faturamento() {
           <Card className="neuro-raised p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-body-sm text-[var(--text-secondary)] mb-1">
-                  NF-e Emitidas
-                </p>
+                <p className="text-body-sm text-[var(--text-secondary)] mb-1">NF-e Emitidas</p>
                 <h3 className="text-heading font-display text-[var(--text-primary)]">
                   {resumo.emitidas}
                 </h3>
@@ -165,9 +153,7 @@ export default function Faturamento() {
           <Card className="neuro-raised p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-body-sm text-[var(--text-secondary)] mb-1">
-                  Pendentes
-                </p>
+                <p className="text-body-sm text-[var(--text-secondary)] mb-1">Pendentes</p>
                 <h3 className="text-heading font-display text-[var(--text-primary)]">
                   {resumo.pendentes}
                 </h3>
@@ -185,9 +171,7 @@ export default function Faturamento() {
           <Card className="neuro-raised p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-body-sm text-[var(--text-secondary)] mb-1">
-                  Taxa de Pagamento
-                </p>
+                <p className="text-body-sm text-[var(--text-secondary)] mb-1">Taxa de Pagamento</p>
                 <h3 className="text-heading font-display text-[var(--text-primary)]">
                   {resumo.taxaPagamento.toFixed(0)}%
                 </h3>
@@ -214,11 +198,20 @@ export default function Faturamento() {
               <div className="flex justify-between text-body-sm mb-1">
                 <span className="text-[var(--text-secondary)]">Autorizadas</span>
                 <span className="text-[var(--text-primary)] orx-orx-font-medium">
-                  {resumo.emitidas} ({resumo.totalFaturas > 0 ? ((resumo.emitidas / resumo.totalFaturas) * 100).toFixed(0) : 0}%)
+                  {resumo.emitidas} (
+                  {resumo.totalFaturas > 0
+                    ? ((resumo.emitidas / resumo.totalFaturas) * 100).toFixed(0)
+                    : 0}
+                  %)
                 </span>
               </div>
               <div className="h-2">
-                <Progress value={Math.min(resumo.totalFaturas > 0 ? (resumo.emitidas / resumo.totalFaturas) * 100 : 0, 100)} />
+                <Progress
+                  value={Math.min(
+                    resumo.totalFaturas > 0 ? (resumo.emitidas / resumo.totalFaturas) * 100 : 0,
+                    100
+                  )}
+                />
               </div>
             </div>
 
@@ -226,11 +219,20 @@ export default function Faturamento() {
               <div className="flex justify-between text-body-sm mb-1">
                 <span className="text-[var(--text-secondary)]">Pendentes</span>
                 <span className="text-[var(--text-primary)] orx-orx-font-medium">
-                  {resumo.pendentes} ({resumo.totalFaturas > 0 ? ((resumo.pendentes / resumo.totalFaturas) * 100).toFixed(0) : 0}%)
+                  {resumo.pendentes} (
+                  {resumo.totalFaturas > 0
+                    ? ((resumo.pendentes / resumo.totalFaturas) * 100).toFixed(0)
+                    : 0}
+                  %)
                 </span>
               </div>
               <div className="h-2">
-                <Progress value={Math.min(resumo.totalFaturas > 0 ? (resumo.pendentes / resumo.totalFaturas) * 100 : 0, 100)} />
+                <Progress
+                  value={Math.min(
+                    resumo.totalFaturas > 0 ? (resumo.pendentes / resumo.totalFaturas) * 100 : 0,
+                    100
+                  )}
+                />
               </div>
             </div>
 
@@ -351,20 +353,20 @@ export default function Faturamento() {
                     </td>
                     <td className="p-4">
                       <div className="flex gap-2">
-                        <button 
+                        <button
                           className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all"
                           title="Visualizar"
                         >
                           <Eye className="w-4 h-4" />
                         </button>
-                        <button 
+                        <button
                           className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all"
                           title="Download XML"
                         >
                           <Download className="w-4 h-4" />
                         </button>
                         {fatura.status === 'pendente' && (
-                          <button 
+                          <button
                             onClick={() => handleEmitirFatura(fatura.id)}
                             className="p-2 rounded-lg neuro-button hover:neuro-pressed transition-all"
                             title="Emitir NF-e"
@@ -373,7 +375,7 @@ export default function Faturamento() {
                           </button>
                         )}
                         {['emitida', 'autorizada'].includes(fatura.status) && (
-                          <button 
+                          <button
                             onClick={() => handleCancelarFatura(fatura.id)}
                             className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all text-error"
                             title="Cancelar NF-e"
@@ -406,9 +408,7 @@ export default function Faturamento() {
       <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 orx-orx-font-medium">
         DDA - Débito Direto Autorizado
       </h3>
-      <p className="text-[var(--text-secondary)]">
-        Módulo em desenvolvimento
-      </p>
+      <p className="text-[var(--text-secondary)]">Módulo em desenvolvimento</p>
     </Card>
   );
 
@@ -418,9 +418,7 @@ export default function Faturamento() {
       <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 orx-orx-font-medium">
         Integração Pluggy
       </h3>
-      <p className="text-[var(--text-secondary)]">
-        Open Banking em desenvolvimento
-      </p>
+      <p className="text-[var(--text-secondary)]">Open Banking em desenvolvimento</p>
     </Card>
   );
 
@@ -448,18 +446,18 @@ export default function Faturamento() {
         {/* Tabs */}
         <div className="flex gap-2 p-2 neuro-inset rounded-2xl w-fit">
           {[
-            { id:"dashboard", label:"Dashboard", icon: TrendingUp },
-            { id:"nfe", label:"NF-e", icon: FileText },
-            { id:"dda", label:"DDA", icon: Calendar },
-            { id:"pluggy", label:"Open Banking", icon: DollarSign },
+            { id: 'dashboard', label: 'Dashboard', icon: TrendingUp },
+            { id: 'nfe', label: 'NF-e', icon: FileText },
+            { id: 'dda', label: 'DDA', icon: Calendar },
+            { id: 'pluggy', label: 'Open Banking', icon: DollarSign },
           ].map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
               className={`px-6 py-3 rounded-xl orx-orx-font-medium transition-all flex items-center gap-2 ${
                 activeTab === tab.id
-                  ?"neuro-raised text-[var(--primary)]"
-                  :"text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                  ? 'neuro-raised text-[var(--primary)]'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
               <tab.icon className="w-4 h-4" />
@@ -469,10 +467,10 @@ export default function Faturamento() {
         </div>
 
         {/* Content */}
-        {activeTab ==="dashboard" && renderDashboard()}
-        {activeTab ==="nfe" && renderNFe()}
-        {activeTab ==="dda" && renderDDA()}
-        {activeTab ==="pluggy" && renderPluggy()}
+        {activeTab === 'dashboard' && renderDashboard()}
+        {activeTab === 'nfe' && renderNFe()}
+        {activeTab === 'dda' && renderDDA()}
+        {activeTab === 'pluggy' && renderPluggy()}
       </div>
     </div>
   );

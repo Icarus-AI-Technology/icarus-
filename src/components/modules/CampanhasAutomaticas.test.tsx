@@ -1,11 +1,11 @@
-import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
-import { CampanhasAutomaticas } from "@/components/modules/CampanhasAutomaticas";
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { CampanhasAutomaticas } from '@/components/modules/CampanhasAutomaticas';
 
-describe("CampanhasAutomaticas", () => {
-  it("deve estar definido", () => {
+describe('CampanhasAutomaticas', () => {
+  it('deve estar definido', () => {
     render(<CampanhasAutomaticas />);
-    const headings = screen.getAllByRole("heading", { level: 1 });
+    const headings = screen.getAllByRole('heading', { level: 1 });
     expect(headings.length).toBeGreaterThan(0);
   });
 

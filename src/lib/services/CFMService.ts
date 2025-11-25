@@ -23,11 +23,35 @@ export interface CRMFormatado {
 
 class CFMService {
   private ufsValidas = [
-    'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
-    'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN',
-    'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
+    'AC',
+    'AL',
+    'AP',
+    'AM',
+    'BA',
+    'CE',
+    'DF',
+    'ES',
+    'GO',
+    'MA',
+    'MT',
+    'MS',
+    'MG',
+    'PA',
+    'PB',
+    'PR',
+    'PE',
+    'PI',
+    'RJ',
+    'RN',
+    'RS',
+    'RO',
+    'RR',
+    'SC',
+    'SP',
+    'SE',
+    'TO',
   ];
-  
+
   /**
    * Consulta CRM com estratégia inteligente:
    * 1. Validação local (formato)
@@ -41,17 +65,17 @@ class CFMService {
       if (!validacaoLocal.formatoValido) {
         throw new Error(validacaoLocal.mensagem);
       }
-      
+
       const crmLimpo = crm.replace(/\D/g, '');
       const ufUpper = uf.toUpperCase();
-      
+
       // 2. Tentar scraping (se disponível)
       const scrapingDisponivel = await cfmScraperService.isScrapingAvailable();
-      
+
       if (scrapingDisponivel) {
         try {
           const dadosScraping = await cfmScraperService.consultarCRM(crmLimpo, ufUpper);
-          
+
           if (dadosScraping) {
             return this.formatarDadosCRM(dadosScraping, 'scraping');
           }
@@ -59,13 +83,13 @@ class CFMService {
           console.warn('Scraping falhou, usando validação local:', scraperError);
         }
       }
-      
+
       // 3. Fallback: Validação local (mock)
       console.warn(
         '⚠️ CFM: Usando validação local (scraping indisponível).\n' +
-        'Para consulta real, implementar scraping ou usar Infosimples.'
+          'Para consulta real, implementar scraping ou usar Infosimples.'
       );
-      
+
       return {
         crm: this.formatarCRM(crmLimpo, ufUpper),
         uf: ufUpper,
@@ -75,56 +99,58 @@ class CFMService {
         especialidades: [],
         valido: true,
         fonte: 'local',
-        dataConsulta: new Date().toISOString()
+        dataConsulta: new Date().toISOString(),
       };
-      
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao consultar CRM:', err);
       throw err;
     }
   }
-  
+
   /**
    * Valida formato do CRM localmente
    */
-  validarCRMLocal(crm: string, uf: string): {
+  validarCRMLocal(
+    crm: string,
+    uf: string
+  ): {
     formatoValido: boolean;
     mensagem: string;
   } {
     const crmLimpo = crm.replace(/\D/g, '');
     const ufUpper = uf.toUpperCase();
-    
+
     // Valida comprimento
     if (crmLimpo.length < 5 || crmLimpo.length > 6) {
       return {
         formatoValido: false,
-        mensagem: 'CRM deve conter 5 ou 6 dígitos'
+        mensagem: 'CRM deve conter 5 ou 6 dígitos',
       };
     }
-    
+
     // Valida UF
     if (!this.ufsValidas.includes(ufUpper)) {
       return {
         formatoValido: false,
-        mensagem: 'UF inválida'
+        mensagem: 'UF inválida',
       };
     }
-    
+
     // Valida se é numérico
     if (!/^\d+$/.test(crmLimpo)) {
       return {
         formatoValido: false,
-        mensagem: 'CRM deve conter apenas números'
+        mensagem: 'CRM deve conter apenas números',
       };
     }
-    
+
     return {
       formatoValido: true,
-      mensagem: 'Formato válido'
+      mensagem: 'Formato válido',
     };
   }
-  
+
   /**
    * Formata CRM no padrão CRM/UF XXXXXX
    */
@@ -133,21 +159,21 @@ class CFMService {
     const ufUpper = uf.toUpperCase();
     return `CRM/${ufUpper} ${crmLimpo}`;
   }
-  
+
   /**
    * Lista de UFs válidas
    */
   getUFsValidas(): string[] {
     return [...this.ufsValidas];
   }
-  
+
   /**
    * Verifica se UF é válida
    */
   isUFValida(uf: string): boolean {
     return this.ufsValidas.includes(uf.toUpperCase());
   }
-  
+
   /**
    * Formata dados do scraping para padrão do sistema
    */
@@ -164,21 +190,19 @@ class CFMService {
       especialidades: dados.especialidades,
       valido: dados.situacao === 'ATIVO',
       fonte,
-      dataConsulta: new Date().toISOString()
+      dataConsulta: new Date().toISOString(),
     };
   }
-  
+
   /**
    * Mapeia situação do CFM para padrão do sistema
    */
-  private mapearSituacao(
-    situacao: CFMScraperResponse['situacao']
-  ): CRMFormatado['situacao'] {
+  private mapearSituacao(situacao: CFMScraperResponse['situacao']): CRMFormatado['situacao'] {
     const map: Record<CFMScraperResponse['situacao'], CRMFormatado['situacao']> = {
-      'ATIVO': 'ativo',
-      'INATIVO': 'inativo',
-      'CANCELADO': 'cancelado',
-      'SUSPENSO': 'suspenso'
+      ATIVO: 'ativo',
+      INATIVO: 'inativo',
+      CANCELADO: 'cancelado',
+      SUSPENSO: 'suspenso',
     };
     return map[situacao] || 'inativo';
   }

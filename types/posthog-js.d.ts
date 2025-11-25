@@ -10,5 +10,3 @@ declare module 'posthog-js' {
   };
   export default posthog;
 }
-
-

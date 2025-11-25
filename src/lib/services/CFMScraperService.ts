@@ -31,7 +31,7 @@ export interface CFMScraperResponse {
 
 /**
  * IMPORTANTE: Este serviço faz scraping do portal público do CFM
- * 
+ *
  * Questões Legais:
  * - ✅ Portal é PÚBLICO (acessível sem login)
  * - ✅ Dados são de INTERESSE PÚBLICO (registro profissional)
@@ -42,7 +42,8 @@ export interface CFMScraperResponse {
 class CFMScraperService {
   private baseUrl = 'https://portal.cfm.org.br/';
   private searchUrl = 'https://portal.cfm.org.br/busca-medicos/';
-  private userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+  private userAgent =
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
   private rateLimit = 2000; // 2s entre requisições
   private lastRequest = 0;
   private browser: Browser | null = null;
@@ -144,11 +145,12 @@ class CFMScraperService {
       // Extrai especialidades
       const especialidades = await page.$$eval(
         '.especialidade, .especialidades li, .lista-especialidades li',
-        (elements) => elements.map((el) => ({
-          codigo: '',
-          nome: el.textContent?.trim() || '',
-          rqe: el.getAttribute('data-rqe') || undefined,
-        }))
+        (elements) =>
+          elements.map((el) => ({
+            codigo: '',
+            nome: el.textContent?.trim() || '',
+            rqe: el.getAttribute('data-rqe') || undefined,
+          }))
       );
 
       console.log(`[CFM Scraper] ✅ CRM ${crmLimpo}/${ufUpper} encontrado: ${nome}`);
@@ -163,15 +165,16 @@ class CFMScraperService {
         dataInscricao: dataInscricao || undefined,
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[CFM Scraper] Erro ao consultar CRM:', err);
-      
+
       // Se erro for timeout ou navegação, retornar null
-      if (err instanceof Error && (
-        err.message.includes('timeout') ||
-        err.message.includes('Navigation') ||
-        err.message.includes('net::ERR')
-      )) {
+      if (
+        err instanceof Error &&
+        (err.message.includes('timeout') ||
+          err.message.includes('Navigation') ||
+          err.message.includes('net::ERR'))
+      ) {
         console.warn('[CFM Scraper] Portal CFM pode estar indisponível');
         return null;
       }
@@ -194,7 +197,7 @@ class CFMScraperService {
       const page = await browser.newPage();
 
       await page.setUserAgent(this.userAgent);
-      
+
       const response = await page.goto(this.baseUrl, {
         waitUntil: 'domcontentloaded',
         timeout: 10000,
@@ -204,7 +207,7 @@ class CFMScraperService {
 
       return response?.ok() || false;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.warn('[CFM Scraper] Portal CFM indisponível:', err);
       return false;
     }

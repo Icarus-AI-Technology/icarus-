@@ -3,8 +3,8 @@
  * Relatórios financeiros completos e personalizáveis
  */
 
-import { Card } from"@/components/oraclusx-ds";
-import { useState } from "react";
+import { Card } from '@/components/oraclusx-ds';
+import { useState } from 'react';
 import {
   FileText,
   TrendingUp,
@@ -14,27 +14,27 @@ import {
   BarChart3,
   PieChart,
   LineChart,
-} from"lucide-react";
-import { useDocumentTitle } from"@/hooks";
+} from 'lucide-react';
+import { useDocumentTitle } from '@/hooks';
 
 export default function RelatoriosFinanceiros() {
-  useDocumentTitle("Relatórios Financeiros");
-  const [activeCategory, setActiveCategory] = useState("dashboard");
+  useDocumentTitle('Relatórios Financeiros');
+  const [activeCategory, setActiveCategory] = useState('dashboard');
 
   const categories = [
-    { id:"dashboard", label:"Dashboard", icon: BarChart3, count: 0, trend:"+0" },
-    { id:"dre", label:"DRE", icon: FileText, count: 0, trend:"+0" },
-    { id:"fluxo", label:"Fluxo Caixa", icon: TrendingUp, count: 0, trend:"+0" },
-    { id:"balanco", label:"Balanço", icon: PieChart, count: 0, trend:"+0" },
-    { id:"analises", label:"Análises", icon: LineChart, count: 0, trend:"+0" },
-    { id:"export", label:"Exportar", icon: Download, count: 0, trend:"+0" },
+    { id: 'dashboard', label: 'Dashboard', icon: BarChart3, count: 0, trend: '+0' },
+    { id: 'dre', label: 'DRE', icon: FileText, count: 0, trend: '+0' },
+    { id: 'fluxo', label: 'Fluxo Caixa', icon: TrendingUp, count: 0, trend: '+0' },
+    { id: 'balanco', label: 'Balanço', icon: PieChart, count: 0, trend: '+0' },
+    { id: 'analises', label: 'Análises', icon: LineChart, count: 0, trend: '+0' },
+    { id: 'export', label: 'Exportar', icon: Download, count: 0, trend: '+0' },
   ];
 
   const kpis = [
-    { title:"Receita Total", value:"R$ 0", trend:"+0%", icon: DollarSign, color:"green" },
-    { title:"Lucro Líquido", value:"R$ 0", trend:"+0%", icon: TrendingUp, color:"blue" },
-    { title:"Margem (%)", value:"0%", trend:"+0%", icon: PieChart, color:"indigo" },
-    { title:"EBITDA", value:"R$ 0", trend:"+0%", icon: BarChart3, color:"purple" },
+    { title: 'Receita Total', value: 'R$ 0', trend: '+0%', icon: DollarSign, color: 'green' },
+    { title: 'Lucro Líquido', value: 'R$ 0', trend: '+0%', icon: TrendingUp, color: 'blue' },
+    { title: 'Margem (%)', value: '0%', trend: '+0%', icon: PieChart, color: 'indigo' },
+    { title: 'EBITDA', value: 'R$ 0', trend: '+0%', icon: BarChart3, color: 'purple' },
   ];
 
   return (
@@ -42,14 +42,18 @@ export default function RelatoriosFinanceiros() {
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-heading-lg font-display text-[var(--text-primary)] mb-2">Relatórios Financeiros</h1>
+            <h1 className="text-heading-lg font-display text-[var(--text-primary)] mb-2">
+              Relatórios Financeiros
+            </h1>
             <p className="text-[var(--text-secondary)]">
               Relatórios completos: DRE, Fluxo de Caixa, Balanço e Análises
             </p>
           </div>
           <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
             <Calendar className="w-4 h-4 text-[var(--primary)]" />
-            <span className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">Out/2025</span>
+            <span className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">
+              Out/2025
+            </span>
           </div>
         </div>
 
@@ -59,13 +63,19 @@ export default function RelatoriosFinanceiros() {
               key={category.id}
               onClick={() => setActiveCategory(category.id)}
               className={`flex flex-col items-center justify-center h-24 text-center rounded-xl transition-all duration-200 ${
-                activeCategory === category.id ?"neuro-raised scale-105" :"neuro-flat hover:neuro-raised"
+                activeCategory === category.id
+                  ? 'neuro-raised scale-105'
+                  : 'neuro-flat hover:neuro-raised'
               }`}
             >
               <category.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
-              <span className="text-body-xs text-[var(--text-primary)] orx-orx-font-medium">{category.label}</span>
+              <span className="text-body-xs text-[var(--text-primary)] orx-orx-font-medium">
+                {category.label}
+              </span>
               <div className="flex items-center gap-1 mt-1">
-                <span className="text-body-lg font-display text-[var(--text-primary)]">{category.count}</span>
+                <span className="text-body-lg font-display text-[var(--text-primary)]">
+                  {category.count}
+                </span>
               </div>
             </button>
           ))}
@@ -77,7 +87,9 @@ export default function RelatoriosFinanceiros() {
               <div className="flex items-start justify-between h-full">
                 <div>
                   <p className="text-body-sm text-[var(--text-secondary)] mb-1">{kpi.title}</p>
-                  <h3 className="text-heading font-display text-[var(--text-primary)]">{kpi.value}</h3>
+                  <h3 className="text-heading font-display text-[var(--text-primary)]">
+                    {kpi.value}
+                  </h3>
                   <p className="text-body-xs text-success mt-2 flex items-center gap-1">
                     <TrendingUp className="w-3 h-3" />
                     {kpi.trend}
@@ -93,11 +105,12 @@ export default function RelatoriosFinanceiros() {
 
         <Card className="neuro-raised p-12 text-center">
           <FileText className="w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4" />
-          <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 orx-orx-font-medium">Relatórios Financeiros</h3>
+          <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 orx-orx-font-medium">
+            Relatórios Financeiros
+          </h3>
           <p className="text-[var(--text-secondary)]">Módulo em desenvolvimento</p>
         </Card>
       </div>
     </div>
   );
 }
-

@@ -11,4 +11,3 @@ export type { GridProps, GridItemProps } from './Grid';
 
 export { Stack, VStack, HStack, Spacer, Divider } from './Stack';
 export type { StackProps, DividerProps } from './Stack';
-

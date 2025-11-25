@@ -24,7 +24,7 @@ export interface DispositivoFormatado {
 
 class ANVISAService {
   private anvisaUrl = 'https://consultas.anvisa.gov.br';
-  
+
   /**
    * Valida formato de Registro ANVISA
    * Formato padrão: 80XXX.XXX.XXX
@@ -32,7 +32,7 @@ class ANVISAService {
    */
   validarFormatoRegistro(registro: string): boolean {
     const limpo = registro.replace(/[^0-9]/g, '');
-    
+
     // Registro completo: 11 dígitos começando com 80
     return /^80\d{9}$/.test(limpo);
   }
@@ -43,7 +43,7 @@ class ANVISAService {
    */
   validarFormatoProcesso(processo: string): boolean {
     const limpo = processo.replace(/\s/g, '');
-    
+
     return /^\d{7}-\d{2}\.\d{4}-\d{1}\/\d{5}-\d{2}$/.test(limpo);
   }
 
@@ -80,7 +80,7 @@ class ANVISAService {
 
   /**
    * Consulta registro ANVISA
-   * 
+   *
    * NOTA: Implementação simplificada
    * Em produção, usar:
    * 1. API oficial ANVISA (se disponível)
@@ -100,14 +100,14 @@ class ANVISAService {
 
       // ⚠️ IMPLEMENTAÇÃO MOCK
       // TODO: Integrar com API real da ANVISA ou scraping
-      
+
       console.warn(
         '⚠️ ANVISA Service está usando validação MOCK.\n' +
-        'Para produção, implementar:\n' +
-        '1. API oficial ANVISA\n' +
-        '2. Scraping portal ANVISA\n' +
-        '3. Base de dados local\n' +
-        '4. API Infosimples (R$ 0,15/req)'
+          'Para produção, implementar:\n' +
+          '1. API oficial ANVISA\n' +
+          '2. Scraping portal ANVISA\n' +
+          '3. Base de dados local\n' +
+          '4. API Infosimples (R$ 0,15/req)'
       );
 
       // Retorna validação básica
@@ -120,7 +120,7 @@ class ANVISAService {
         classeRisco: 'III',
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[ANVISA Service] Erro ao consultar registro:', err);
       throw err;
     }
@@ -161,4 +161,3 @@ export const anvisaService = new ANVISAService();
 
 // Exporta classe para testes
 export default ANVISAService;
-

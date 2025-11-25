@@ -3,16 +3,16 @@
  * Barra de progresso neuromórfica
  */
 
-import React from"react";
-import { cn } from"@/lib/utils";
+import React from 'react';
+import { cn } from '@/lib/utils';
 
 export interface ProgressProps {
   value: number;
   max?: number;
   label?: string;
   showPercentage?: boolean;
-  size?:"sm" |"md" |"lg";
-  variant?:"default" |"primary" |"success" |"warning" |"error";
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'default' | 'primary' | 'success' | 'warning' | 'error';
   className?: string;
 }
 
@@ -21,8 +21,8 @@ export const Progress: React.FC<ProgressProps> = ({
   max = 100,
   label,
   showPercentage = false,
-  size ="md",
-  variant ="primary",
+  size = 'md',
+  variant = 'primary',
   className,
 }) => {
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
@@ -35,21 +35,21 @@ export const Progress: React.FC<ProgressProps> = ({
   }, [percentage]);
 
   const sizeClasses = {
-    sm:"h-1",
-    md:"h-2",
-    lg:"h-3",
+    sm: 'h-1',
+    md: 'h-2',
+    lg: 'h-3',
   };
 
   const variantClasses = {
-    default:"bg-gray-400",
-    primary:"bg-primary",
-    success:"bg-success/50",
-    warning:"bg-warning/50",
-    error:"bg-destructive/50",
+    default: 'bg-gray-400',
+    primary: 'bg-primary',
+    success: 'bg-success/50',
+    warning: 'bg-warning/50',
+    error: 'bg-destructive/50',
   };
 
   return (
-    <div className={cn("w-full", className)}>
+    <div className={cn('w-full', className)}>
       {(label || showPercentage) && (
         <div className="flex items-center justify-between mb-2">
           {label && (
@@ -64,11 +64,9 @@ export const Progress: React.FC<ProgressProps> = ({
           )}
         </div>
       )}
-      <div className={cn("w-full orx-card-pressed overflow-hidden", sizeClasses[size])}>
+      <div className={cn('w-full orx-card-pressed overflow-hidden', sizeClasses[size])}>
         <div
-          className={cn("h-full rounded-full transition-all duration-300",
-            variantClasses[variant],
-          )}
+          className={cn('h-full rounded-full transition-all duration-300', variantClasses[variant])}
           ref={fillRef}
         />
       </div>
@@ -76,7 +74,6 @@ export const Progress: React.FC<ProgressProps> = ({
   );
 };
 
-Progress.displayName ="OraclusXProgress";
+Progress.displayName = 'OraclusXProgress';
 
 export default Progress;
-

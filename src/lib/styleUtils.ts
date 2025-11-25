@@ -1,20 +1,23 @@
-type NeuVariant = "raised" | "inset" | "flat";
+type NeuVariant = 'raised' | 'inset' | 'flat';
 
-export type BlurLevel = "sm" | "md" | "lg" | "xl";
+export type BlurLevel = 'sm' | 'md' | 'lg' | 'xl';
 
-export type AnimationType = "fade" | "slide" | "scale" | "bounce";
+export type AnimationType = 'fade' | 'slide' | 'scale' | 'bounce';
 
 const neuVariantMap: Record<NeuVariant, string> = {
-  raised: "neuro-raised",
-  inset: "neuro-inset",
-  flat: "neuro-flat",
+  raised: 'neuro-raised',
+  inset: 'neuro-inset',
+  flat: 'neuro-flat',
 };
 
-export function neuStyle(variant: NeuVariant = "flat"): string {
+export function neuStyle(variant: NeuVariant = 'flat'): string {
   return neuVariantMap[variant] ?? neuVariantMap.flat;
 }
 
-export function enterAnimationStyle(delay = 0, duration = 300): {
+export function enterAnimationStyle(
+  delay = 0,
+  duration = 300
+): {
   animationDelay: string;
   animationDuration: string;
 } {
@@ -27,4 +30,3 @@ export function enterAnimationStyle(delay = 0, duration = 300): {
 export function staggerDelay(index: number, baseDelay = 50): number {
   return index * baseDelay;
 }
-

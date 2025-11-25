@@ -2,7 +2,7 @@
 
 /**
  * ICARUS v5.0 - Migração Automática Supabase
- * 
+ *
  * Aplica todas as migrações SQL no Supabase de forma ordenada e segura
  */
 
@@ -17,14 +17,15 @@ const __dirname = dirname(__filename);
 
 // Credenciais Supabase
 const SUPABASE_URL = 'https://gvbkviozlhxorjoavmky.supabase.co';
-const SUPABASE_SERVICE_ROLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd2Ymt2aW96bGh4b3Jqb2F2bWt5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzQxNDc2NSwiZXhwIjoyMDc4OTkwNzY1fQ.9PaCxFGQdRhM00Cf3LSEn6PuBz1hcG1Pds1Kjp4XnL0';
+const SUPABASE_SERVICE_ROLE_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd2Ymt2aW96bGh4b3Jqb2F2bWt5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzQxNDc2NSwiZXhwIjoyMDc4OTkwNzY1fQ.9PaCxFGQdRhM00Cf3LSEn6PuBz1hcG1Pds1Kjp4XnL0';
 
 // Cliente Supabase (usando service_role para permissões administrativas)
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
   auth: {
     autoRefreshToken: false,
-    persistSession: false
-  }
+    persistSession: false,
+  },
 });
 
 // Diretórios
@@ -50,17 +51,17 @@ const stats = {
   successful: 0,
   failed: 0,
   skipped: 0,
-  errors: []
+  errors: [],
 };
 
 // Função de logging
 function log(level, message) {
   const timestamp = new Date().toISOString();
   const logMessage = `[${timestamp}] [${level}] ${message}\n`;
-  
+
   // Console
   console.log(logMessage.trim());
-  
+
   // Arquivo
   try {
     writeFileSync(LOG_FILE, logMessage, { flag: 'a' });
@@ -72,28 +73,28 @@ function log(level, message) {
 // Função para aplicar migração via RPC
 async function applyMigration(filePath) {
   const fileName = basename(filePath, '.sql');
-  
+
   log('INFO', '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   log('INFO', `Aplicando: ${fileName}`);
-  
+
   try {
     // Ler conteúdo do arquivo SQL
     const sqlContent = readFileSync(filePath, 'utf8');
-    
+
     // Aplicar via RPC (exec_sql é uma função personalizada que precisamos criar)
     // Como não temos essa função, vamos tentar executar diretamente via .rpc()
-    
+
     // Dividir em statements individuais (separados por ;)
     const statements = sqlContent
       .split(';')
-      .map(s => s.trim())
-      .filter(s => s.length > 0 && !s.startsWith('--'));
-    
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0 && !s.startsWith('--'));
+
     log('INFO', `Executando ${statements.length} statement(s)...`);
-    
+
     let successCount = 0;
     let errorCount = 0;
-    
+
     for (const statement of statements) {
       try {
         // Usar .rpc() ou construir query manualmente
@@ -101,13 +102,13 @@ async function applyMigration(filePath) {
         const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/exec_sql`, {
           method: 'POST',
           headers: {
-            'apikey': SUPABASE_SERVICE_ROLE_KEY,
-            'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
-            'Content-Type': 'application/json'
+            apikey: SUPABASE_SERVICE_ROLE_KEY,
+            Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+            'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ query: statement })
+          body: JSON.stringify({ query: statement }),
         });
-        
+
         if (response.ok) {
           successCount++;
         } else {
@@ -120,7 +121,7 @@ async function applyMigration(filePath) {
         errorCount++;
       }
     }
-    
+
     if (errorCount === 0) {
       log('INFO', `✅ Migração aplicada com sucesso (${successCount} statements)`);
       return { success: true, statements: successCount };
@@ -128,7 +129,6 @@ async function applyMigration(filePath) {
       log('WARN', `⚠️  Migração parcial (${successCount} ok, ${errorCount} falhas)`);
       return { success: true, statements: successCount, warnings: errorCount };
     }
-    
   } catch (err) {
     log('ERROR', `❌ Falha na migração: ${err.message}`);
     stats.errors.push({ file: fileName, error: err.message });
@@ -144,42 +144,42 @@ async function main() {
   console.log('║                                                                        ║');
   console.log('╚════════════════════════════════════════════════════════════════════════╝');
   console.log('');
-  
+
   log('INFO', '📋 Listando migrações disponíveis...');
-  
+
   // Listar e ordenar migrações
   const files = readdirSync(MIGRATIONS_DIR)
-    .filter(f => f.endsWith('.sql'))
+    .filter((f) => f.endsWith('.sql'))
     .sort();
-  
+
   stats.total = files.length;
   log('INFO', `Total de migrações encontradas: ${stats.total}`);
   console.log('');
-  
+
   // Aplicar cada migração
   for (const file of files) {
     const filePath = join(MIGRATIONS_DIR, file);
     const fileName = basename(file, '.sql');
-    
+
     // Skip de backups
     if (fileName.includes('backup') || fileName.includes('old')) {
       log('WARN', `⏭️  Pulando (backup/old): ${fileName}`);
       stats.skipped++;
       continue;
     }
-    
+
     const result = await applyMigration(filePath);
-    
+
     if (result.success) {
       stats.successful++;
     } else {
       stats.failed++;
     }
-    
+
     // Delay para não sobrecarregar a API
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
   }
-  
+
   console.log('');
   log('INFO', '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   log('INFO', '📊 RESUMO DA MIGRAÇÃO');
@@ -190,7 +190,7 @@ async function main() {
   log('INFO', `Puladas:     ${stats.skipped}`);
   log('INFO', '');
   log('INFO', `📝 Log completo: ${LOG_FILE}`);
-  
+
   // Gerar relatório markdown
   const report = `# Relatório de Migração Supabase - ICARUS v5.0
 
@@ -214,13 +214,13 @@ async function main() {
 
 ## 📋 Migrações Aplicadas
 
-${files.map(f => `- \`${f}\``).join('\n')}
+${files.map((f) => `- \`${f}\``).join('\n')}
 
 ---
 
 ## ❌ Erros Encontrados
 
-${stats.errors.length === 0 ? '✅ Nenhum erro crítico!' : stats.errors.map(e => `### ${e.file}\n\n\`\`\`\n${e.error}\n\`\`\``).join('\n\n')}
+${stats.errors.length === 0 ? '✅ Nenhum erro crítico!' : stats.errors.map((e) => `### ${e.file}\n\n\`\`\`\n${e.error}\n\`\`\``).join('\n\n')}
 
 ---
 
@@ -250,10 +250,10 @@ Ver arquivo: \`${LOG_FILE}\`
 
 **Migração concluída em**: ${new Date().toLocaleString('pt-BR')}
 `;
-  
+
   writeFileSync(REPORT_FILE, report);
   log('INFO', `📄 Relatório gerado: ${REPORT_FILE}`);
-  
+
   console.log('');
   console.log('╔════════════════════════════════════════════════════════════════════════╗');
   console.log('║                                                                        ║');
@@ -262,14 +262,13 @@ Ver arquivo: \`${LOG_FILE}\`
   console.log(`║     Sucesso: ${stats.successful}/${stats.total} migrações             ║`);
   console.log('║                                                                        ║');
   console.log('╚════════════════════════════════════════════════════════════════════════╝');
-  
+
   // Retornar código de saída
   process.exit(stats.failed > 0 ? 1 : 0);
 }
 
 // Executar
-main().catch(err => {
+main().catch((err) => {
   console.error('❌ Erro fatal:', err);
   process.exit(1);
 });
-

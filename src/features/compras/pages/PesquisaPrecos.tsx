@@ -1,7 +1,7 @@
 /**
  * Componente de Pesquisa de Preços - Compras Internacionais
  * ICARUS v5.0
- * 
+ *
  * Consulta preços de produtos via:
  * - SEFAZ (todos os estados)
  * - Fabricantes (via CNPJ)
@@ -9,10 +9,19 @@
  * - Histórico de compras
  */
 
-import { Card } from '@/components/ui/card';
+import { useState } from 'react';
+import { Card } from '@/components/oraclusx-ds/Card';
 import { useSEFAZ } from '@/services/sefaz.service';
 import { useANVISA } from '@/services/anvisa.service';
-import { Search, Package, TrendingDown, TrendingUp, DollarSign, Calendar, CheckCircle2 } from 'lucide-react';
+import {
+  Search,
+  Package,
+  TrendingDown,
+  TrendingUp,
+  DollarSign,
+  Calendar,
+  CheckCircle2,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const PesquisaPrecos = () => {
@@ -20,9 +29,14 @@ const PesquisaPrecos = () => {
   const [ncm, setNCM] = useState('');
   const [descricaoProduto, setDescricaoProduto] = useState('');
   const [estadosSelecionados, setEstadosSelecionados] = useState<string[]>([
-    'SP', 'RJ', 'MG', 'PR', 'SC', 'RS'
+    'SP',
+    'RJ',
+    'MG',
+    'PR',
+    'SC',
+    'RS',
   ]);
-  
+
   const anvisaAPI = useANVISA();
   const sefazAPI = useSEFAZ();
 
@@ -31,7 +45,7 @@ const PesquisaPrecos = () => {
       const produto = await anvisaAPI.buscar(registroANVISA);
       setDescricaoProduto(produto.nome);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao buscar produto ANVISA:', err);
     }
   };
@@ -40,7 +54,7 @@ const PesquisaPrecos = () => {
     try {
       await sefazAPI.consultarPrecos(ncm, descricaoProduto, estadosSelecionados);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao pesquisar preços:', err);
     }
   };
@@ -117,11 +131,13 @@ const PesquisaPrecos = () => {
                     </div>
                     <div>
                       <strong>Validade:</strong>{' '}
-                      <span className={cn(
-                        new Date(produtoANVISA.dataValidade) > new Date() 
-                          ? 'text-[var(--orx-success)]' 
-                          : 'text-[var(--orx-error)]'
-                      )}>
+                      <span
+                        className={cn(
+                          new Date(produtoANVISA.dataValidade) > new Date()
+                            ? 'text-[var(--orx-success)]'
+                            : 'text-[var(--orx-error)]'
+                        )}
+                      >
                         {new Date(produtoANVISA.dataValidade).toLocaleDateString('pt-BR')}
                       </span>
                     </div>
@@ -130,11 +146,13 @@ const PesquisaPrecos = () => {
                     </div>
                     <div>
                       <strong>Situação:</strong>{' '}
-                      <span className={cn(
-                        produtoANVISA.situacao === 'ATIVO' 
-                          ? 'text-[var(--orx-success)]' 
-                          : 'text-[var(--orx-warning)]'
-                      )}>
+                      <span
+                        className={cn(
+                          produtoANVISA.situacao === 'ATIVO'
+                            ? 'text-[var(--orx-success)]'
+                            : 'text-[var(--orx-warning)]'
+                        )}
+                      >
                         {produtoANVISA.situacao}
                       </span>
                     </div>
@@ -193,7 +211,7 @@ const PesquisaPrecos = () => {
                   key={uf}
                   onClick={() => {
                     if (estadosSelecionados.includes(uf)) {
-                      setEstadosSelecionados(estadosSelecionados.filter(e => e !== uf));
+                      setEstadosSelecionados(estadosSelecionados.filter((e) => e !== uf));
                     } else {
                       setEstadosSelecionados([...estadosSelecionados, uf]);
                     }
@@ -245,9 +263,7 @@ const PesquisaPrecos = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               <Card className="p-4 bg-[var(--orx-success)]/10 border border-[var(--orx-success)]">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-[var(--text-secondary)] text-[0.813rem]">
-                    Preço Mínimo
-                  </p>
+                  <p className="text-[var(--text-secondary)] text-[0.813rem]">Preço Mínimo</p>
                   <TrendingDown className="w-5 h-5 text-[var(--orx-success)]" />
                 </div>
                 <p className="text-[var(--orx-success)] text-[0.813rem] orx-orx-font-bold">
@@ -257,9 +273,7 @@ const PesquisaPrecos = () => {
 
               <Card className="p-4 bg-[var(--primary)]/10 border border-[var(--primary)]">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-[var(--text-secondary)] text-[0.813rem]">
-                    Preço Médio
-                  </p>
+                  <p className="text-[var(--text-secondary)] text-[0.813rem]">Preço Médio</p>
                   <DollarSign className="w-5 h-5 text-[var(--primary)]" />
                 </div>
                 <p className="text-[var(--primary)] text-[0.813rem] orx-orx-font-bold">
@@ -269,9 +283,7 @@ const PesquisaPrecos = () => {
 
               <Card className="p-4 bg-[var(--orx-error)]/10 border border-[var(--orx-error)]">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-[var(--text-secondary)] text-[0.813rem]">
-                    Preço Máximo
-                  </p>
+                  <p className="text-[var(--text-secondary)] text-[0.813rem]">Preço Máximo</p>
                   <TrendingUp className="w-5 h-5 text-[var(--orx-error)]" />
                 </div>
                 <p className="text-[var(--orx-error)] text-[0.813rem] orx-orx-font-bold">
@@ -283,9 +295,7 @@ const PesquisaPrecos = () => {
             {/* Informações Adicionais */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded-lg bg-[var(--surface)]">
               <div>
-                <p className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">
-                  NCM
-                </p>
+                <p className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">NCM</p>
                 <p className="text-[var(--text-primary)] font-mono text-[0.813rem] orx-orx-font-semibold">
                   {precosSEFAZ.ncm}
                 </p>
@@ -307,11 +317,14 @@ const PesquisaPrecos = () => {
                 </p>
               </div>
               <div>
-                <p className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">
-                  Variação
-                </p>
+                <p className="text-[var(--text-secondary)] mb-1 text-[0.813rem]">Variação</p>
                 <p className="text-[var(--orx-warning)] text-[0.813rem] orx-orx-font-semibold">
-                  {((precosSEFAZ.precoMaximo - precosSEFAZ.precoMinimo) / precosSEFAZ.precoMinimo * 100).toFixed(1)}%
+                  {(
+                    ((precosSEFAZ.precoMaximo - precosSEFAZ.precoMinimo) /
+                      precosSEFAZ.precoMinimo) *
+                    100
+                  ).toFixed(1)}
+                  %
                 </p>
               </div>
             </div>
@@ -340,4 +353,3 @@ const PesquisaPrecos = () => {
 };
 
 export default PesquisaPrecos;
-

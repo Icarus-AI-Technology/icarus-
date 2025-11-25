@@ -1,4 +1,4 @@
-import React from 'react';
+// React is automatically imported in JSX transform
 import { isFeatureEnabled } from '@/lib/flags';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -14,7 +14,9 @@ export default function SystemHealthDashboard(): JSX.Element {
         </div>
       )}
       <h1 className="orx-text-xl orx-orx-font-semibold mb-2">System Health Dashboard</h1>
-      <p className="orx-text-sm text-muted-foreground mb-4">Saúde do sistema, uptime e métricas de latência.</p>
+      <p className="orx-text-sm text-muted-foreground mb-4">
+        Saúde do sistema, uptime e métricas de latência.
+      </p>
 
       <div className="grid gap-4 md:grid-cols-3">
         <Card>

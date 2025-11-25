@@ -1,4 +1,4 @@
-import React from 'react';
+// React is automatically imported in JSX transform
 import { isFeatureEnabled } from '@/lib/flags';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -16,25 +16,35 @@ export default function VoiceAnalyticsDashboard(): JSX.Element {
         </div>
       )}
       <h1 className="orx-text-xl orx-orx-font-semibold mb-2">Voice Analytics</h1>
-      <p className="orx-text-sm text-muted-foreground mb-4">Métricas de chamadas e reconhecimento de voz.</p>
+      <p className="orx-text-sm text-muted-foreground mb-4">
+        Métricas de chamadas e reconhecimento de voz.
+      </p>
 
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="orx-text-base">Chamadas/dia</CardTitle></CardHeader>
+          <CardHeader className="pb-2">
+            <CardTitle className="orx-text-base">Chamadas/dia</CardTitle>
+          </CardHeader>
           <CardContent>
             <div className="orx-text-2xl orx-orx-font-semibold">128</div>
             <div className="orx-text-xs text-muted-foreground">Média móvel</div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="orx-text-base">Acurácia ASR</CardTitle></CardHeader>
+          <CardHeader className="pb-2">
+            <CardTitle className="orx-text-base">Acurácia ASR</CardTitle>
+          </CardHeader>
           <CardContent>
-            <div className="flex items-center gap-2 mb-2"><Badge variant="default">94.2%</Badge></div>
+            <div className="flex items-center gap-2 mb-2">
+              <Badge variant="default">94.2%</Badge>
+            </div>
             <Progress value={94.2} />
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="orx-text-base">Sentimento</CardTitle></CardHeader>
+          <CardHeader className="pb-2">
+            <CardTitle className="orx-text-base">Sentimento</CardTitle>
+          </CardHeader>
           <CardContent>
             <div className="orx-text-2xl orx-orx-font-semibold">Positivo</div>
             <div className="orx-text-xs text-muted-foreground">Últimas 24h</div>
@@ -43,8 +53,18 @@ export default function VoiceAnalyticsDashboard(): JSX.Element {
       </div>
 
       <div className="flex gap-2 mt-4">
-        <button className="px-3 py-2 rounded bg-indigo-600 text-white" onClick={() => addToast('Métricas atualizadas!', 'success')}>Mostrar Toast (sucesso)</button>
-        <button className="px-3 py-2 rounded bg-stone-200 text-stone-900" onClick={() => addToast('Falha ao sincronizar ASR', 'error')}>Mostrar Toast (erro)</button>
+        <button
+          className="px-3 py-2 rounded bg-indigo-600 text-white"
+          onClick={() => addToast('Métricas atualizadas!', 'success')}
+        >
+          Mostrar Toast (sucesso)
+        </button>
+        <button
+          className="px-3 py-2 rounded bg-stone-200 text-stone-900"
+          onClick={() => addToast('Falha ao sincronizar ASR', 'error')}
+        >
+          Mostrar Toast (erro)
+        </button>
       </div>
 
       <div className="grid gap-3 mt-6">

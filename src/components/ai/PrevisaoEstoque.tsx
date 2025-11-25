@@ -24,7 +24,7 @@ export function PrevisaoEstoque() {
 
       // Mock de produto ID (em produção, buscar da lista)
       const mockProdutoId = '00000000-0000-0000-0000-000000000001';
-      
+
       const [previsaoData, anomaliasData] = await Promise.all([
         EstoqueAI.preverDemanda(mockProdutoId).catch(() => null),
         EstoqueAI.detectarAnomalias().catch(() => []),
@@ -37,19 +37,21 @@ export function PrevisaoEstoque() {
     } catch (err) {
       console.error('Erro ao carregar dados:', err);
       setError('Erro ao carregar previsões. Gerando dados de exemplo...');
-      
+
       // Fallback com dados de exemplo
-      setPrevisoes([{
-        produto_id: '1',
-        produto_nome: 'Prótese de Joelho Premium',
-        demanda_historica: [45, 52, 48, 55, 60, 58, 62, 65, 68, 70, 72, 75],
-        demanda_prevista_30_dias: 78,
-        demanda_prevista_60_dias: 156,
-        demanda_prevista_90_dias: 240,
-        tendencia: 'crescente',
-        sazonalidade: false,
-        confianca: 87,
-      }]);
+      setPrevisoes([
+        {
+          produto_id: '1',
+          produto_nome: 'Prótese de Joelho Premium',
+          demanda_historica: [45, 52, 48, 55, 60, 58, 62, 65, 68, 70, 72, 75],
+          demanda_prevista_30_dias: 78,
+          demanda_prevista_60_dias: 156,
+          demanda_prevista_90_dias: 240,
+          tendencia: 'crescente',
+          sazonalidade: false,
+          confianca: 87,
+        },
+      ]);
     } finally {
       setLoading(false);
     }
@@ -71,7 +73,9 @@ export function PrevisaoEstoque() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="orx-text-2xl orx-orx-font-bold text-slate-900 dark:text-white">Previsão de Estoque IA</h2>
+          <h2 className="orx-text-2xl orx-orx-font-bold text-slate-900 dark:text-white">
+            Previsão de Estoque IA
+          </h2>
           <p className="text-slate-600 dark:text-slate-400">
             Algoritmos: ARIMA, ABC/XYZ, EOQ, Detecção de Anomalias
           </p>
@@ -93,7 +97,10 @@ export function PrevisaoEstoque() {
       {/* Previsões */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {previsoes.map((previsao) => (
-          <div key={previsao.produto_id} className="bg-slate-50 dark:bg-slate-900 rounded-xl p-6 space-y-4">
+          <div
+            key={previsao.produto_id}
+            className="bg-slate-50 dark:bg-slate-900 rounded-xl p-6 space-y-4"
+          >
             <div className="flex items-start justify-between">
               <div>
                 <h3 className="orx-text-lg orx-orx-font-semibold text-slate-900 dark:text-white">
@@ -103,12 +110,18 @@ export function PrevisaoEstoque() {
                   Confiança: {previsao.confianca}%
                 </p>
               </div>
-              <div className={`
+              <div
+                className={`
                 flex items-center gap-1 px-3 py-1 rounded-full orx-text-sm orx-orx-font-medium
-                ${previsao.tendencia === 'crescente' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 
-                  previsao.tendencia === 'decrescente' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : 
-                  'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400'}
-              `}>
+                ${
+                  previsao.tendencia === 'crescente'
+                    ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                    : previsao.tendencia === 'decrescente'
+                      ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                      : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
+                }
+              `}
+              >
                 {previsao.tendencia === 'crescente' && <TrendingUp className="w-4 h-4" />}
                 {previsao.tendencia === 'decrescente' && <TrendingDown className="w-4 h-4" />}
                 {previsao.tendencia === 'estavel' && <Minus className="w-4 h-4" />}
@@ -187,10 +200,15 @@ export function PrevisaoEstoque() {
                 key={idx}
                 className={`
                   rounded-xl p-4 border-l-4
-                  ${anomalia.severidade === 'critica' ? 'bg-red-50 dark:bg-red-900/20 border-red-600' :
-                    anomalia.severidade === 'alta' ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-600' :
-                    anomalia.severidade === 'media' ? 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-600' :
-                    'bg-blue-50 dark:bg-blue-900/20 border-blue-600'}
+                  ${
+                    anomalia.severidade === 'critica'
+                      ? 'bg-red-50 dark:bg-red-900/20 border-red-600'
+                      : anomalia.severidade === 'alta'
+                        ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-600'
+                        : anomalia.severidade === 'media'
+                          ? 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-600'
+                          : 'bg-blue-50 dark:bg-blue-900/20 border-blue-600'
+                  }
                 `}
               >
                 <div className="flex items-start justify-between">
@@ -200,13 +218,20 @@ export function PrevisaoEstoque() {
                       <h4 className="orx-orx-font-semibold text-slate-900 dark:text-white">
                         {anomalia.produto_nome}
                       </h4>
-                      <span className={`
+                      <span
+                        className={`
                         px-2 py-0.5 rounded orx-text-xs orx-orx-font-medium uppercase
-                        ${anomalia.severidade === 'critica' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
-                          anomalia.severidade === 'alta' ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' :
-                          anomalia.severidade === 'media' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' :
-                          'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'}
-                      `}>
+                        ${
+                          anomalia.severidade === 'critica'
+                            ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                            : anomalia.severidade === 'alta'
+                              ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'
+                              : anomalia.severidade === 'media'
+                                ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
+                                : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                        }
+                      `}
+                      >
                         {anomalia.severidade}
                       </span>
                     </div>
@@ -215,7 +240,7 @@ export function PrevisaoEstoque() {
                     </p>
                     <div className="flex items-center gap-4 orx-text-xs text-slate-600 dark:text-slate-400">
                       <span>Esperado: {anomalia.valor_esperado}</span>
-                      <span>Atual: {anomalia.valor_real}</span>
+                      <span>Atual: {anomalia.valor_atual}</span>
                       <span>Desvio: {anomalia.desvio_percentual}%</span>
                     </div>
                   </div>
@@ -245,4 +270,3 @@ export function PrevisaoEstoque() {
     </div>
   );
 }
-

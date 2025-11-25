@@ -1,7 +1,7 @@
 /**
  * BrasilAPI Service
  * Substitui Infosimples para validações de CPF/CNPJ, CEP, Bancos, etc.
- * 
+ *
  * Features:
  * - Validação CNPJ (Receita Federal)
  * - Busca CEP (Correios)
@@ -10,7 +10,7 @@
  * - Feriados Nacionais
  * - ISBN
  * - DDD
- * 
+ *
  * Custo: $0 (100% gratuito, open-source)
  * Economia: $600-1,800/ano vs Infosimples
  */
@@ -69,7 +69,7 @@ export class BrasilAPIService {
   async getCNPJ(cnpj: string): Promise<CNPJData | null> {
     try {
       const cleanCNPJ = cnpj.replace(/\D/g, '');
-      
+
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), this.timeout);
 
@@ -90,7 +90,7 @@ export class BrasilAPIService {
       const data = await response.json();
       return data as CNPJData;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       if (error instanceof Error && error.name === 'AbortError') {
         console.error('[BrasilAPI] Timeout na busca de CNPJ');
       } else {
@@ -127,7 +127,7 @@ export class BrasilAPIService {
       const data = await response.json();
       return data as CEPData;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[BrasilAPI] Erro ao buscar CEP:', err);
       return null;
     }
@@ -154,7 +154,7 @@ export class BrasilAPIService {
       const data = await response.json();
       return data as BankData[];
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[BrasilAPI] Erro ao buscar bancos:', err);
       return [];
     }
@@ -175,7 +175,7 @@ export class BrasilAPIService {
       const data = await response.json();
       return data as BankData;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[BrasilAPI] Erro ao buscar banco:', err);
       return null;
     }
@@ -195,7 +195,7 @@ export class BrasilAPIService {
       const data = await response.json();
       return data as FeriadoData[];
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[BrasilAPI] Erro ao buscar feriados:', err);
       return [];
     }
@@ -312,4 +312,3 @@ export class BrasilAPIService {
 
 // Export singleton
 export const brasilAPIService = new BrasilAPIService();
-

@@ -95,7 +95,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   }
 
-  const jobData = ('job' in parsed.data ? parsed.data.job : parsed.data) as z.infer<typeof jobSchema>;
+  const jobData = ('job' in parsed.data ? parsed.data.job : parsed.data) as z.infer<
+    typeof jobSchema
+  >;
   const options = 'job' in parsed.data ? parsed.data.options : undefined;
 
   try {

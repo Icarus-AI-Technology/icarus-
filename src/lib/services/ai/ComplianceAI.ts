@@ -1,9 +1,9 @@
 /**
  * Agente IA: Compliance Automático
- * 
+ *
  * Acurácia: 96.8%
  * Modelo: GPT-4 Turbo + Claude 3.5 Sonnet
- * 
+ *
  * Funcionalidades:
  * - Análise automática de conformidade regulatória
  * - Detecção de não-conformidades
@@ -77,7 +77,7 @@ export class ComplianceAI {
 
       return result;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[Compliance AI] Erro ao verificar conformidade:', err);
       throw error;
     }
@@ -104,12 +104,15 @@ export class ComplianceAI {
         return {
           score: 0,
           statusGeral: 'nao_conforme',
-          areas: []
+          areas: [],
         };
       }
 
       // Calcular score médio
-      const scoreTotal = (checks as ComplianceCheckRow[]).reduce((sum, check) => sum + (check.score || 0), 0);
+      const scoreTotal = (checks as ComplianceCheckRow[]).reduce(
+        (sum, check) => sum + (check.score || 0),
+        0
+      );
       const scoreMedia = scoreTotal / checks.length;
 
       // Agrupar por área
@@ -122,25 +125,32 @@ export class ComplianceAI {
         areaMap.get(area)!.push(check);
       });
 
-      const areas: ComplianceAreaResumo[] = Array.from(areaMap.entries()).map(([area, areaChecks]) => {
-        const areaScore = areaChecks.reduce((sum, check) => sum + (check.score || 0), 0) / areaChecks.length;
-        const alertas = areaChecks.filter((check) => !check.conforme).length;
-        
-        return {
-          area,
-          score: Math.round(areaScore),
-          status: (areaScore >= 90 ? 'conforme' : areaScore >= 70 ? 'atencao' : 'nao_conforme') as ComplianceAreaResumo['status'],
-          alertas
-        };
-      });
+      const areas: ComplianceAreaResumo[] = Array.from(areaMap.entries()).map(
+        ([area, areaChecks]) => {
+          const areaScore =
+            areaChecks.reduce((sum, check) => sum + (check.score || 0), 0) / areaChecks.length;
+          const alertas = areaChecks.filter((check) => !check.conforme).length;
+
+          return {
+            area,
+            score: Math.round(areaScore),
+            status: (areaScore >= 90
+              ? 'conforme'
+              : areaScore >= 70
+                ? 'atencao'
+                : 'nao_conforme') as ComplianceAreaResumo['status'],
+            alertas,
+          };
+        }
+      );
 
       return {
         score: Math.round(scoreMedia),
         statusGeral: scoreMedia >= 90 ? 'conforme' : scoreMedia >= 70 ? 'atencao' : 'nao_conforme',
-        areas
+        areas,
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[Compliance AI] Erro ao monitorar compliance:', err);
       throw error;
     }
@@ -149,7 +159,10 @@ export class ComplianceAI {
   /**
    * Gerar relatório de compliance
    */
-  static async generateReport(empresaId: string, periodo: { inicio: string; fim: string }): Promise<{
+  static async generateReport(
+    empresaId: string,
+    periodo: { inicio: string; fim: string }
+  ): Promise<{
     periodo: { inicio: string; fim: string };
     scoreGeral: number;
     totalChecks: number;
@@ -177,21 +190,27 @@ export class ComplianceAI {
           naoConformes: 0,
           areas: [],
           naoConformidadesPorSeveridade: {},
-          tendencia: 'estavel'
+          tendencia: 'estavel',
         };
       }
 
-      const scoreGeral = (checks as ComplianceCheckRow[]).reduce((sum, check) => sum + (check.score || 0), 0) / checks.length;
+      const scoreGeral =
+        (checks as ComplianceCheckRow[]).reduce((sum, check) => sum + (check.score || 0), 0) /
+        checks.length;
       const conformes = (checks as ComplianceCheckRow[]).filter((check) => check.conforme).length;
       const naoConformes = checks.length - conformes;
 
       // Calcular tendência
       const firstHalf = checks.slice(0, Math.floor(checks.length / 2));
       const secondHalf = checks.slice(Math.floor(checks.length / 2));
-      
-      const scoreFirstHalf = (firstHalf as ComplianceCheckRow[]).reduce((sum, check) => sum + (check.score || 0), 0) / firstHalf.length;
-      const scoreSecondHalf = (secondHalf as ComplianceCheckRow[]).reduce((sum, check) => sum + (check.score || 0), 0) / secondHalf.length;
-      
+
+      const scoreFirstHalf =
+        (firstHalf as ComplianceCheckRow[]).reduce((sum, check) => sum + (check.score || 0), 0) /
+        firstHalf.length;
+      const scoreSecondHalf =
+        (secondHalf as ComplianceCheckRow[]).reduce((sum, check) => sum + (check.score || 0), 0) /
+        secondHalf.length;
+
       let tendencia: 'melhorando' | 'estavel' | 'piorando' = 'estavel';
       if (scoreSecondHalf > scoreFirstHalf + 5) tendencia = 'melhorando';
       else if (scoreSecondHalf < scoreFirstHalf - 5) tendencia = 'piorando';
@@ -204,10 +223,10 @@ export class ComplianceAI {
         naoConformes,
         areas: [],
         naoConformidadesPorSeveridade: {},
-        tendencia
+        tendencia,
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[Compliance AI] Erro ao gerar relatório:', err);
       throw error;
     }
@@ -275,11 +294,8 @@ RESPONDA EM JSON com a seguinte estrutura:
       score: 95,
       conforme: true,
       naoConformidades: [],
-      recomendacoes: [
-        'Manter documentação atualizada',
-        'Agendar próxima auditoria em 6 meses'
-      ],
-      certificacoes: []
+      recomendacoes: ['Manter documentação atualizada', 'Agendar próxima auditoria em 6 meses'],
+      certificacoes: [],
     });
   }
 
@@ -290,7 +306,7 @@ RESPONDA EM JSON com a seguinte estrutura:
     try {
       return JSON.parse(response);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[Compliance AI] Erro ao parsear resposta:', err);
       throw new Error('Resposta inválida da IA');
     }
@@ -311,14 +327,13 @@ RESPONDA EM JSON com a seguinte estrutura:
         score: result.score,
         conforme: result.conforme,
         nao_conformidades: result.naoConformidades,
-        recomendacoes: result.recomendacoes
+        recomendacoes: result.recomendacoes,
       });
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[Compliance AI] Erro ao registrar log:', err);
     }
   }
 }
 
 export const complianceAI = new ComplianceAI();
-

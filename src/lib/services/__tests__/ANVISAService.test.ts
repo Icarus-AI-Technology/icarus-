@@ -36,9 +36,7 @@ describe('ANVISAService', () => {
 
   describe('validarFormatoProcesso', () => {
     it('deve validar processo válido', () => {
-      expect(
-        anvisaService.validarFormatoProcesso('1234567-12.2023-1/12345-12')
-      ).toBe(true);
+      expect(anvisaService.validarFormatoProcesso('1234567-12.2023-1/12345-12')).toBe(true);
     });
 
     it('deve rejeitar processo com formato incorreto', () => {
@@ -47,9 +45,7 @@ describe('ANVISAService', () => {
     });
 
     it('deve rejeitar processo com espaços', () => {
-      expect(
-        anvisaService.validarFormatoProcesso('1234567 12.2023-1/12345-12')
-      ).toBe(false);
+      expect(anvisaService.validarFormatoProcesso('1234567 12.2023-1/12345-12')).toBe(false);
     });
   });
 
@@ -80,15 +76,11 @@ describe('ANVISAService', () => {
 
   describe('formatarRegistro', () => {
     it('deve formatar registro (80XXX.XXX.XXX)', () => {
-      expect(anvisaService.formatarRegistro('80123456789')).toBe(
-        '80123.456.789'
-      );
+      expect(anvisaService.formatarRegistro('80123456789')).toBe('80123.456.789');
     });
 
     it('deve manter formatação se já estiver correta', () => {
-      expect(anvisaService.formatarRegistro('80123.456.789')).toBe(
-        '80123.456.789'
-      );
+      expect(anvisaService.formatarRegistro('80123.456.789')).toBe('80123.456.789');
     });
 
     it('deve retornar original se não começar com 80', () => {
@@ -161,4 +153,3 @@ describe('ANVISAService', () => {
     });
   });
 });
-

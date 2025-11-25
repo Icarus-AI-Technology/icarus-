@@ -3,8 +3,9 @@
  * ICARUS v5.0
  */
 
+import { useState } from 'react';
 import { MaskedInput } from '@/components/ui/masked-input';
-import { Card } from '@/components/ui/card';
+import { Card } from '@/components/oraclusx-ds/Card';
 
 export const MasksExamplePage = () => {
   const [cpf, setCpf] = useState('');
@@ -18,7 +19,21 @@ export const MasksExamplePage = () => {
 
   const [validationStates, setValidationStates] = useState<Record<string, boolean>>({});
 
-  const handleValueChange = (field: string) => (value: string, isValid: boolean) => {
+  const fieldSetters = {
+    cpf: setCpf,
+    cnpj: setCnpj,
+    telefone: setTelefone,
+    cep: setCep,
+    data: setData,
+    moeda: setMoeda,
+    porcentagem: setPorcentagem,
+    placa: setPlaca,
+  };
+
+  type MaskField = keyof typeof fieldSetters;
+
+  const handleValueChange = (field: MaskField) => (value: string, isValid: boolean) => {
+    fieldSetters[field](value);
     setValidationStates((prev) => ({ ...prev, [field]: isValid }));
   };
 
@@ -145,7 +160,10 @@ export const MasksExamplePage = () => {
           >
             Valores Não Formatados
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono" style={{ fontSize: '0.813rem' }}>
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono"
+            style={{ fontSize: '0.813rem' }}
+          >
             <div>
               <strong>CPF:</strong> {cpf}
             </div>
@@ -196,13 +214,13 @@ export const MasksExamplePage = () => {
             <div>
               <strong className="text-[var(--text-primary)]">Uso:</strong>
               <pre className="bg-[var(--background)] p-3 rounded mt-2 overflow-x-auto">
-{`<MaskedInput
+                {`<MaskedInput
   mask="CPF"
   label="CPF"
   value={cpf}
   onValueChange={(value, isValid) => {
     setCpf(value);
-    console.log('Válido?', isValid);
+
   }}
   required
 />`}
@@ -214,4 +232,3 @@ export const MasksExamplePage = () => {
     </div>
   );
 };
-

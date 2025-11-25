@@ -1,5 +1,5 @@
 // src/services/MLService.ts
-import { supabase } from '@/lib/supabase';
+import { legacySupabase as supabase } from '@/lib/legacySupabase';
 
 export interface MLVector {
   id: string;
@@ -30,16 +30,19 @@ export class MLService {
     try {
       const { data, error } = await supabase
         .from('ml_vectors')
-        .upsert({
-          external_id: externalId,
-          module,
-          embedding,
-          dimension: embedding.length,
-          metadata,
-          updated_at: new Date().toISOString()
-        }, {
-          onConflict: 'external_id'
-        })
+        .upsert(
+          {
+            external_id: externalId,
+            module,
+            embedding,
+            dimension: embedding.length,
+            metadata,
+            updated_at: new Date().toISOString(),
+          },
+          {
+            onConflict: 'external_id',
+          }
+        )
         .select()
         .single();
 
@@ -103,7 +106,7 @@ export class MLService {
 
   /**
    * Buscar vetores similares (RAG - Retrieval Augmented Generation)
-   * 
+   *
    * Usa a extensão pgvector para busca por similaridade
    * Requer a função personalizada no Supabase
    */
@@ -116,18 +119,14 @@ export class MLService {
     try {
       // TODO: Implementar com RPC function customizada no Supabase
       // Por ora, retorna busca simples por módulo
-      
-      let query = supabase
-        .from('ml_vectors')
-        .select('*');
+
+      let query = supabase.from('ml_vectors').select('*');
 
       if (module) {
         query = query.eq('module', module);
       }
 
-      const { data, error } = await query
-        .limit(limit)
-        .order('created_at', { ascending: false });
+      const { data, error } = await query.limit(limit).order('created_at', { ascending: false });
 
       if (error) {
         console.error('Erro ao buscar similares:', error);
@@ -137,14 +136,14 @@ export class MLService {
       if (!data) return [];
 
       // Calcular similaridade manualmente (cosine similarity)
-      const results = data.map(vector => ({
+      const results = data.map((vector) => ({
         vector,
-        similarity: this.cosineSimilarity(queryEmbedding, vector.embedding)
+        similarity: this.cosineSimilarity(queryEmbedding, vector.embedding),
       }));
 
       // Filtrar por threshold e ordenar
       return results
-        .filter(result => result.similarity >= threshold)
+        .filter((result) => result.similarity >= threshold)
         .sort((a, b) => b.similarity - a.similarity)
         .slice(0, limit);
     } catch (err) {
@@ -183,10 +182,7 @@ export class MLService {
    */
   static async deleteEmbedding(externalId: string): Promise<boolean> {
     try {
-      const { error } = await supabase
-        .from('ml_vectors')
-        .delete()
-        .eq('external_id', externalId);
+      const { error } = await supabase.from('ml_vectors').delete().eq('external_id', externalId);
 
       if (error) {
         console.error('Erro ao deletar embedding:', error);
@@ -205,10 +201,7 @@ export class MLService {
    */
   static async deleteEmbeddingsByModule(module: string): Promise<boolean> {
     try {
-      const { error } = await supabase
-        .from('ml_vectors')
-        .delete()
-        .eq('module', module);
+      const { error } = await supabase.from('ml_vectors').delete().eq('module', module);
 
       if (error) {
         console.error('Erro ao deletar embeddings por módulo:', error);
@@ -224,7 +217,7 @@ export class MLService {
 
   /**
    * Gerar embedding usando OpenAI (placeholder)
-   * 
+   *
    * TODO: Integrar com OpenAI Embeddings API
    */
   static async generateEmbedding(_text: string): Promise<number[] | null> {
@@ -238,7 +231,9 @@ export class MLService {
 
       // Por ora, retorna embedding fake de 1536 dimensões
       console.warn('generateEmbedding usando dados fake. Integre com OpenAI API.');
-      return Array(1536).fill(0).map(() => Math.random());
+      return Array(1536)
+        .fill(0)
+        .map(() => Math.random());
     } catch (err) {
       console.error('Erro generateEmbedding:', err);
       return null;
@@ -263,16 +258,11 @@ export class MLService {
       }
 
       // Salvar no banco
-      return await this.saveEmbedding(
-        documentId,
-        module,
-        embedding,
-        {
-          ...metadata,
-          text_length: text.length,
-          indexed_at: new Date().toISOString()
-        }
-      );
+      return await this.saveEmbedding(documentId, module, embedding, {
+        ...metadata,
+        text_length: text.length,
+        indexed_at: new Date().toISOString(),
+      });
     } catch (err) {
       console.error('Erro indexDocument:', err);
       return null;
@@ -303,4 +293,3 @@ export class MLService {
     }
   }
 }
-

@@ -3,45 +3,24 @@
  * Validação com Zod + React Hook Form
  */
 
-import { useForm } from"react-hook-form";
-import { zodResolver } from"@hookform/resolvers/zod";
-import { z } from"zod";
-import { useToast } from"@/contexts";
-import { Button, Input, Card, CardHeader, CardTitle, CardContent } from"@/components/oraclusx-ds";
-import { User, Phone, Mail, MapPin, FileText } from"lucide-react";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { useToast } from '@/contexts';
+import { Button, Input, Card, CardHeader, CardTitle, CardContent } from '@/components/oraclusx-ds';
+import { User, Phone, Mail, MapPin, FileText } from 'lucide-react';
 
 // Schema de validação Zod
 const medicoSchema = z.object({
-  nome: z
-    .string()
-    .min(3,"Nome deve ter pelo menos 3 caracteres")
-    .max(100,"Nome muito longo"),
-  crm: z
-    .string()
-    .regex(/^\d{4,7}$/,"CRM deve ter entre 4 e 7 dígitos"),
-  crmUF: z
-    .string()
-    .length(2,"UF do CRM deve ter 2 caracteres")
-    .toUpperCase(),
-  especialidade: z
-    .string()
-    .min(3,"Especialidade obrigatória"),
-  email: z
-    .string()
-    .email("E-mail inválido"),
-  telefone: z
-    .string()
-    .regex(/^\(\d{2}\) \d{4,5}-\d{4}$/,"Telefone no formato (XX) XXXXX-XXXX"),
-  cep: z
-    .string()
-    .regex(/^\d{5}-\d{3}$/,"CEP no formato XXXXX-XXX"),
-  endereco: z
-    .string()
-    .min(5,"Endereço obrigatório"),
-  volumeAnualEstimado: z
-    .number()
-    .min(0,"Valor deve ser positivo")
-    .optional(),
+  nome: z.string().min(3, 'Nome deve ter pelo menos 3 caracteres').max(100, 'Nome muito longo'),
+  crm: z.string().regex(/^\d{4,7}$/, 'CRM deve ter entre 4 e 7 dígitos'),
+  crmUF: z.string().length(2, 'UF do CRM deve ter 2 caracteres').toUpperCase(),
+  especialidade: z.string().min(3, 'Especialidade obrigatória'),
+  email: z.string().email('E-mail inválido'),
+  telefone: z.string().regex(/^\(\d{2}\) \d{4,5}-\d{4}$/, 'Telefone no formato (XX) XXXXX-XXXX'),
+  cep: z.string().regex(/^\d{5}-\d{3}$/, 'CEP no formato XXXXX-XXX'),
+  endereco: z.string().min(5, 'Endereço obrigatório'),
+  volumeAnualEstimado: z.number().min(0, 'Valor deve ser positivo').optional(),
 });
 
 type MedicoFormData = z.infer<typeof medicoSchema>;
@@ -61,11 +40,9 @@ export default function FormularioMedicoAvancado() {
     // Simular envio ao backend
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    console.log("Dados do médico:", data);
-
     addToast({
       message: `Médico ${data.nome} cadastrado com sucesso!`,
-      type:"success",
+      type: 'success',
       duration: 4000,
     });
 
@@ -73,7 +50,7 @@ export default function FormularioMedicoAvancado() {
   };
 
   return (
-    <Card variant="default" padding="lg">
+    <Card variant="neumo" padding="lg">
       <CardHeader>
         <CardTitle className="text-heading flex items-center gap-2">
           <User size={24} />
@@ -88,7 +65,9 @@ export default function FormularioMedicoAvancado() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Dados Pessoais */}
           <div className="space-y-4">
-            <h3 className="text-body-lg border-b pb-2" style={{ fontWeight: 500 }}>Dados Pessoais</h3>
+            <h3 className="text-body-lg border-b pb-2" style={{ fontWeight: 500 }}>
+              Dados Pessoais
+            </h3>
 
             {/* Nome */}
             <div className="space-y-2">
@@ -97,14 +76,12 @@ export default function FormularioMedicoAvancado() {
               </label>
               <Input
                 id="nome"
-                {...register("nome")}
+                {...register('nome')}
                 className="w-full orx-input"
                 placeholder="Ex: Dr. João Silva"
               />
               {errors.nome && (
-                <p className="text-error dark:text-red-400 text-body-xs">
-                  {errors.nome.message}
-                </p>
+                <p className="text-error dark:text-red-400 text-body-xs">{errors.nome.message}</p>
               )}
             </div>
 
@@ -116,15 +93,13 @@ export default function FormularioMedicoAvancado() {
                 </label>
                 <Input
                   id="crm"
-                  {...register("crm")}
+                  {...register('crm')}
                   className="w-full orx-input"
                   placeholder="123456"
                   maxLength={7}
                 />
                 {errors.crm && (
-                  <p className="text-error dark:text-red-400 text-body-xs">
-                    {errors.crm.message}
-                  </p>
+                  <p className="text-error dark:text-red-400 text-body-xs">{errors.crm.message}</p>
                 )}
               </div>
 
@@ -134,7 +109,7 @@ export default function FormularioMedicoAvancado() {
                 </label>
                 <Input
                   id="crmUF"
-                  {...register("crmUF")}
+                  {...register('crmUF')}
                   className="w-full orx-input uppercase"
                   placeholder="RJ"
                   maxLength={2}
@@ -149,13 +124,17 @@ export default function FormularioMedicoAvancado() {
 
             {/* Especialidade */}
             <div className="space-y-2">
-              <label htmlFor="especialidade" className="block text-body-sm" style={{ fontWeight: 500 }}>
+              <label
+                htmlFor="especialidade"
+                className="block text-body-sm"
+                style={{ fontWeight: 500 }}
+              >
                 <FileText size={16} className="inline mr-1" />
                 Especialidade *
               </label>
               <Input
                 id="especialidade"
-                {...register("especialidade")}
+                {...register('especialidade')}
                 className="w-full orx-input"
                 placeholder="Ex: Ortopedia"
               />
@@ -169,7 +148,9 @@ export default function FormularioMedicoAvancado() {
 
           {/* Contato */}
           <div className="space-y-4">
-            <h3 className="text-body-lg border-b pb-2" style={{ fontWeight: 500 }}>Contato</h3>
+            <h3 className="text-body-lg border-b pb-2" style={{ fontWeight: 500 }}>
+              Contato
+            </h3>
 
             {/* Email */}
             <div className="space-y-2">
@@ -180,14 +161,12 @@ export default function FormularioMedicoAvancado() {
               <Input
                 id="email"
                 type="email"
-                {...register("email")}
+                {...register('email')}
                 className="w-full orx-input"
                 placeholder="medico@exemplo.com"
               />
               {errors.email && (
-                <p className="text-error dark:text-red-400 text-body-xs">
-                  {errors.email.message}
-                </p>
+                <p className="text-error dark:text-red-400 text-body-xs">{errors.email.message}</p>
               )}
             </div>
 
@@ -199,7 +178,7 @@ export default function FormularioMedicoAvancado() {
               </label>
               <Input
                 id="telefone"
-                {...register("telefone")}
+                {...register('telefone')}
                 className="w-full orx-input"
                 placeholder="(21) 98765-4321"
               />
@@ -213,7 +192,9 @@ export default function FormularioMedicoAvancado() {
 
           {/* Endereço */}
           <div className="space-y-4">
-            <h3 className="text-body-lg border-b pb-2" style={{ fontWeight: 500 }}>Endereço</h3>
+            <h3 className="text-body-lg border-b pb-2" style={{ fontWeight: 500 }}>
+              Endereço
+            </h3>
 
             {/* CEP */}
             <div className="space-y-2">
@@ -223,14 +204,12 @@ export default function FormularioMedicoAvancado() {
               </label>
               <Input
                 id="cep"
-                {...register("cep")}
+                {...register('cep')}
                 className="w-full orx-input"
                 placeholder="22640-100"
               />
               {errors.cep && (
-                <p className="text-error dark:text-red-400 text-body-xs">
-                  {errors.cep.message}
-                </p>
+                <p className="text-error dark:text-red-400 text-body-xs">{errors.cep.message}</p>
               )}
             </div>
 
@@ -241,7 +220,7 @@ export default function FormularioMedicoAvancado() {
               </label>
               <Input
                 id="endereco"
-                {...register("endereco")}
+                {...register('endereco')}
                 className="w-full orx-input"
                 placeholder="Rua, número, complemento, bairro, cidade"
               />
@@ -255,16 +234,22 @@ export default function FormularioMedicoAvancado() {
 
           {/* Volume Anual (Opcional) */}
           <div className="space-y-4">
-            <h3 className="text-body-lg border-b pb-2" style={{ fontWeight: 500 }}>Informações Adicionais</h3>
+            <h3 className="text-body-lg border-b pb-2" style={{ fontWeight: 500 }}>
+              Informações Adicionais
+            </h3>
 
             <div className="space-y-2">
-              <label htmlFor="volumeAnualEstimado" className="block text-body-sm" style={{ fontWeight: 500 }}>
+              <label
+                htmlFor="volumeAnualEstimado"
+                className="block text-body-sm"
+                style={{ fontWeight: 500 }}
+              >
                 Volume Anual Estimado (R$)
               </label>
               <Input
                 id="volumeAnualEstimado"
                 type="number"
-                {...register("volumeAnualEstimado", { valueAsNumber: true })}
+                {...register('volumeAnualEstimado', { valueAsNumber: true })}
                 className="w-full orx-input"
                 placeholder="100000"
                 min={0}
@@ -285,7 +270,7 @@ export default function FormularioMedicoAvancado() {
               disabled={isSubmitting}
               className="orx-button-primary flex items-center gap-2"
             >
-              {isSubmitting ?"Salvando..." :"Cadastrar Médico"}
+              {isSubmitting ? 'Salvando...' : 'Cadastrar Médico'}
             </Button>
 
             <Button
@@ -302,4 +287,3 @@ export default function FormularioMedicoAvancado() {
     </Card>
   );
 }
-

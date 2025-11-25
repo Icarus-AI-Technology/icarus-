@@ -45,5 +45,3 @@ declare module '@/types/finance' {
     arquivo_envio_url?: string | null;
   }
 }
-
-

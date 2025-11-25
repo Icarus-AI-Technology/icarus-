@@ -1,45 +1,46 @@
 /**
  * OraclusX Design System - MiniCard Component
  * Mini Card Neumórfico 3D Premium
- * 
+ *
  * Card compacto para exibição de métricas e informações resumidas.
  */
 
 import React from 'react';
-import { LucideIcon, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import type { LucideIcon } from '@/types/lucide';
 
 export interface MiniCardProps {
   /** Título do card */
   title: string;
-  
+
   /** Valor principal */
   value: string | number;
-  
+
   /** Texto de hint/subtítulo */
   hint?: string;
-  
+
   /** Ícone (componente Lucide React) */
   icon?: LucideIcon;
-  
+
   /** Cor do ícone */
   iconColor?: string;
-  
+
   /** Variante visual */
   variant?: 'default' | 'success' | 'warning' | 'danger' | 'info';
-  
+
   /** Tendência (para métricas) */
   trend?: {
     direction: 'up' | 'down' | 'neutral';
     value: string | number;
   };
-  
+
   /** Classe CSS adicional */
   className?: string;
-  
+
   /** Modo compacto (menos padding) */
   dense?: boolean;
-  
+
   /** Callback ao clicar */
   onClick?: () => void;
 }
@@ -124,9 +125,7 @@ export const MiniCard: React.FC<MiniCardProps> = ({
           </p>
 
           {/* Valor */}
-          <p className="orx-text-2xl orx-orx-font-bold text-orx-text-primary truncate">
-            {value}
-          </p>
+          <p className="orx-text-2xl orx-orx-font-bold text-orx-text-primary truncate">{value}</p>
 
           {/* Hint ou Trend */}
           {trend ? (
@@ -144,26 +143,16 @@ export const MiniCard: React.FC<MiniCardProps> = ({
               <span>{trend.value}</span>
             </div>
           ) : hint ? (
-            <p className="mt-1.5 orx-text-xs text-orx-text-muted truncate">
-              {hint}
-            </p>
+            <p className="mt-1.5 orx-text-xs text-orx-text-muted truncate">{hint}</p>
           ) : null}
         </div>
 
         {/* Ícone */}
         {Icon && (
           <div
-            className={cn(
-              'flex-shrink-0 p-2.5 rounded-lg',
-              'shadow-neumo-sm-inset',
-              styles.iconBg
-            )}
+            className={cn('flex-shrink-0 p-2.5 rounded-lg', 'shadow-neumo-sm-inset', styles.iconBg)}
           >
-            <Icon
-              size={20}
-              className={iconColor || styles.iconColor}
-              strokeWidth={2}
-            />
+            <Icon size={20} className={iconColor || styles.iconColor} strokeWidth={2} />
           </div>
         )}
       </div>
@@ -174,4 +163,3 @@ export const MiniCard: React.FC<MiniCardProps> = ({
 MiniCard.displayName = 'MiniCard';
 
 export default MiniCard;
-

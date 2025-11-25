@@ -351,7 +351,9 @@ export default function MonitoringDashboard() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <CheckCircle size={24} style={{ color: 'var(--orx-success)' }} />
             <div>
-              <div style={{ fontSize: '1.5rem', fontWeight: '600', color: 'var(--orx-text-primary)' }}>
+              <div
+                style={{ fontSize: '1.5rem', fontWeight: '600', color: 'var(--orx-text-primary)' }}
+              >
                 {onlineCount}
               </div>
               <div style={{ fontSize: '0.75rem', color: 'var(--orx-text-secondary)' }}>Online</div>
@@ -363,7 +365,9 @@ export default function MonitoringDashboard() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <XCircle size={24} style={{ color: 'var(--orx-error)' }} />
             <div>
-              <div style={{ fontSize: '1.5rem', fontWeight: '600', color: 'var(--orx-text-primary)' }}>
+              <div
+                style={{ fontSize: '1.5rem', fontWeight: '600', color: 'var(--orx-text-primary)' }}
+              >
                 {offlineCount}
               </div>
               <div style={{ fontSize: '0.75rem', color: 'var(--orx-text-secondary)' }}>Offline</div>
@@ -375,10 +379,14 @@ export default function MonitoringDashboard() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <Clock size={24} style={{ color: 'var(--orx-info)' }} />
             <div>
-              <div style={{ fontSize: '1.5rem', fontWeight: '600', color: 'var(--orx-text-primary)' }}>
+              <div
+                style={{ fontSize: '1.5rem', fontWeight: '600', color: 'var(--orx-text-primary)' }}
+              >
                 {degradedCount}
               </div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--orx-text-secondary)' }}>Degradado</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--orx-text-secondary)' }}>
+                Degradado
+              </div>
             </div>
           </div>
         </div>
@@ -397,7 +405,9 @@ export default function MonitoringDashboard() {
           Última atualização: {lastUpdate.toLocaleTimeString('pt-BR')}
         </div>
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.813rem' }}>
+          <label
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.813rem' }}
+          >
             <input
               type="checkbox"
               checked={autoRefresh}
@@ -422,12 +432,23 @@ export default function MonitoringDashboard() {
           <div
             key={service.name}
             className="neumorphic-card"
-            style={{ padding: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+            style={{
+              padding: '1.5rem',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               {service.icon}
               <div>
-                <div style={{ fontWeight: '500', color: 'var(--orx-text-primary)', marginBottom: '0.25rem' }}>
+                <div
+                  style={{
+                    fontWeight: '500',
+                    color: 'var(--orx-text-primary)',
+                    marginBottom: '0.25rem',
+                  }}
+                >
                   {service.name}
                 </div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--orx-text-secondary)' }}>
@@ -445,10 +466,10 @@ export default function MonitoringDashboard() {
                     service.status === 'online'
                       ? 'var(--orx-success)'
                       : service.status === 'offline'
-                      ? 'var(--orx-error)'
-                      : service.status === 'degraded'
-                      ? 'var(--orx-info)'
-                      : 'var(--orx-text-secondary)',
+                        ? 'var(--orx-error)'
+                        : service.status === 'degraded'
+                          ? 'var(--orx-info)'
+                          : 'var(--orx-text-secondary)',
                   textTransform: 'uppercase',
                   marginBottom: '0.25rem',
                 }}
@@ -484,4 +505,3 @@ export default function MonitoringDashboard() {
     </div>
   );
 }
-

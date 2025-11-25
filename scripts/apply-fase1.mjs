@@ -21,35 +21,40 @@ const DB_CONFIG = {
 
 async function main() {
   const client = new pg.Client(DB_CONFIG);
-  
+
   try {
     console.log('🔌 Conectando...');
     await client.connect();
     console.log('✅ Conectado!\n');
-    
+
     const beforeCount = await client.query(`
       SELECT COUNT(*) FROM information_schema.tables 
       WHERE table_schema = 'public' AND table_type = 'BASE TABLE'
     `);
     console.log(`📊 Tabelas ANTES: ${beforeCount.rows[0].count}\n`);
-    
-    const sqlPath = path.join(__dirname, '..', 'supabase', 'migrations', '202510201300_fase1_10tabelas_criticas.sql');
+
+    const sqlPath = path.join(
+      __dirname,
+      '..',
+      'supabase',
+      'migrations',
+      '202510201300_fase1_10tabelas_criticas.sql'
+    );
     const sql = fs.readFileSync(sqlPath, 'utf-8');
-    
+
     console.log('🚀 Aplicando FASE 1...');
     await client.query('BEGIN');
     await client.query(sql);
     await client.query('COMMIT');
-    
+
     const afterCount = await client.query(`
       SELECT COUNT(*) FROM information_schema.tables 
       WHERE table_schema = 'public' AND table_type = 'BASE TABLE'
     `);
-    
+
     console.log('\n✅ Migration aplicada com sucesso!');
     console.log(`📊 Tabelas DEPOIS: ${afterCount.rows[0].count}`);
     console.log(`📈 Novas tabelas: +${afterCount.rows[0].count - beforeCount.rows[0].count}`);
-    
   } catch (error) {
     await client.query('ROLLBACK').catch(() => {});
     console.error(`\n❌ Erro: ${error.message}`);

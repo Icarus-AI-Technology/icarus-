@@ -1,7 +1,7 @@
 /**
  * API Receita Federal - Consulta CNPJ
  * ICARUS v5.0
- * 
+ *
  * Consulta dados de CNPJ via API pública da Receita Federal
  * Preenchimento automático de todos os campos do cadastro
  */
@@ -14,7 +14,7 @@ export interface ReceitaFederalResponse {
   porte: string;
   natureza_juridica: string;
   capital_social: number;
-  
+
   // Endereço
   logradouro: string;
   numero: string;
@@ -23,11 +23,11 @@ export interface ReceitaFederalResponse {
   municipio: string;
   uf: string;
   cep: string;
-  
+
   // Contato
   email: string;
   telefone: string;
-  
+
   // CNAE
   atividade_principal: {
     code: string;
@@ -37,12 +37,12 @@ export interface ReceitaFederalResponse {
     code: string;
     text: string;
   }[];
-  
+
   // Situação
   situacao: string;
   situacao_data: string;
   situacao_motivo: string;
-  
+
   // Sócios
   qsa: {
     nome: string;
@@ -61,7 +61,7 @@ export interface CNPJData {
   porte: string;
   naturezaJuridica: string;
   capitalSocial: number;
-  
+
   endereco: {
     logradouro: string;
     numero: string;
@@ -71,21 +71,21 @@ export interface CNPJData {
     estado: string;
     cep: string;
   };
-  
+
   contato: {
     email: string;
     telefone: string;
   };
-  
+
   atividadePrincipal: string;
   atividadesSecundarias: string[];
-  
+
   situacao: {
     status: string;
     data: string;
     motivo: string;
   };
-  
+
   socios: {
     nome: string;
     qualificacao: string;
@@ -102,21 +102,21 @@ export interface CNPJData {
 export async function consultarCNPJ(cnpj: string): Promise<CNPJData> {
   // Remove formatação
   const cnpjLimpo = cnpj.replace(/[^\d]/g, '');
-  
+
   if (cnpjLimpo.length !== 14) {
     throw new Error('CNPJ inválido');
   }
-  
+
   try {
     // Tenta BrasilAPI primeiro (sem limite)
     const response = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpjLimpo}`);
-    
+
     if (!response.ok) {
       throw new Error(`Erro na consulta: ${response.status}`);
     }
-    
+
     const data: ReceitaFederalResponse = await response.json();
-    
+
     return {
       cnpj: data.cnpj,
       razaoSocial: data.razao_social,
@@ -125,7 +125,7 @@ export async function consultarCNPJ(cnpj: string): Promise<CNPJData> {
       porte: data.porte,
       naturezaJuridica: data.natureza_juridica,
       capitalSocial: data.capital_social,
-      
+
       endereco: {
         logradouro: data.logradouro,
         numero: data.numero,
@@ -135,39 +135,39 @@ export async function consultarCNPJ(cnpj: string): Promise<CNPJData> {
         estado: data.uf,
         cep: data.cep,
       },
-      
+
       contato: {
         email: data.email,
         telefone: data.telefone,
       },
-      
+
       atividadePrincipal: data.atividade_principal?.[0]?.text || '',
-      atividadesSecundarias: data.atividades_secundarias?.map(a => a.text) || [],
-      
+      atividadesSecundarias: data.atividades_secundarias?.map((a) => a.text) || [],
+
       situacao: {
         status: data.situacao,
         data: data.situacao_data,
         motivo: data.situacao_motivo,
       },
-      
-      socios: data.qsa?.map(socio => ({
-        nome: socio.nome,
-        qualificacao: socio.qual,
-      })) || [],
+
+      socios:
+        data.qsa?.map((socio) => ({
+          nome: socio.nome,
+          qualificacao: socio.qual,
+        })) || [],
     };
-    
   } catch (error) {
-   const err = error as Error;
+    const err = error as Error;
     // Fallback para ReceitaWS
     try {
       const response = await fetch(`https://receitaws.com.br/v1/cnpj/${cnpjLimpo}`);
-      
+
       if (!response.ok) {
         throw new Error(`Erro na consulta: ${response.status}`);
       }
-      
+
       const data: ReceitaFederalResponse = await response.json();
-      
+
       return {
         cnpj: data.cnpj,
         razaoSocial: data.razao_social,
@@ -176,7 +176,7 @@ export async function consultarCNPJ(cnpj: string): Promise<CNPJData> {
         porte: data.porte,
         naturezaJuridica: data.natureza_juridica,
         capitalSocial: data.capital_social,
-        
+
         endereco: {
           logradouro: data.logradouro,
           numero: data.numero,
@@ -186,27 +186,27 @@ export async function consultarCNPJ(cnpj: string): Promise<CNPJData> {
           estado: data.uf,
           cep: data.cep,
         },
-        
+
         contato: {
           email: data.email,
           telefone: data.telefone,
         },
-        
+
         atividadePrincipal: data.atividade_principal?.[0]?.text || '',
-        atividadesSecundarias: data.atividades_secundarias?.map(a => a.text) || [],
-        
+        atividadesSecundarias: data.atividades_secundarias?.map((a) => a.text) || [],
+
         situacao: {
           status: data.situacao,
           data: data.situacao_data,
           motivo: data.situacao_motivo,
         },
-        
-        socios: data.qsa?.map(socio => ({
-          nome: socio.nome,
-          qualificacao: socio.qual,
-        })) || [],
+
+        socios:
+          data.qsa?.map((socio) => ({
+            nome: socio.nome,
+            qualificacao: socio.qual,
+          })) || [],
       };
-      
     } catch (fallbackError) {
       console.error('Erro ao consultar CNPJ:', fallbackError);
       throw new Error('Não foi possível consultar o CNPJ. Tente novamente.');
@@ -223,18 +223,18 @@ export function useCNPJ() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<CNPJData | null>(null);
-  
+
   const buscar = async (cnpj: string) => {
     setLoading(true);
     setError(null);
     setData(null);
-    
+
     try {
       const resultado = await consultarCNPJ(cnpj);
       setData(resultado);
       return resultado;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
       setError(errorMessage);
       throw err;
@@ -242,12 +242,12 @@ export function useCNPJ() {
       setLoading(false);
     }
   };
-  
+
   const limpar = () => {
     setData(null);
     setError(null);
   };
-  
+
   return {
     data,
     loading,
@@ -256,4 +256,3 @@ export function useCNPJ() {
     limpar,
   };
 }
-

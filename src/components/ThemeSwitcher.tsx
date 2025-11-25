@@ -1,18 +1,11 @@
 /**
  * THEME SWITCHER COMPONENT
- * 
+ *
  * Componente avançado para trocar temas e variantes de marca
  */
 
 import { useState, useEffect } from 'react';
-import {
-  Palette,
-  Sun,
-  Moon,
-  Monitor,
-  Download,
-  Check,
-} from 'lucide-react';
+import { Palette, Sun, Moon, Monitor, Download, Check } from 'lucide-react';
 import {
   applyTheme,
   getCurrentTheme,
@@ -22,10 +15,7 @@ import {
   BRAND_VARIANTS,
   type ThemeName,
 } from '@/lib/designTokens';
-import {
-  Button,
-  Card,
-} from '@/components/oraclusx-ds';
+import { Button, Card } from '@/components/oraclusx-ds';
 
 export function ThemeSwitcher() {
   const [currentTheme, setCurrentTheme] = useState<ThemeName>(getCurrentTheme());
@@ -119,7 +109,8 @@ export function ThemeSwitcher() {
               </h4>
               <div className="space-y-2">
                 {Object.entries(THEMES).map(([key, label]) => (
-                  <button type="button"
+                  <button
+                    type="button"
                     key={key}
                     onClick={() => handleThemeChange(key as ThemeName)}
                     className={`w-full flex items-center justify-between p-3 rounded-lg orx-transition-all orx-hover-lift ${
@@ -149,7 +140,8 @@ export function ThemeSwitcher() {
               </h4>
               <div className="grid grid-cols-2 gap-2">
                 {Object.entries(BRAND_VARIANTS).map(([key, variant]) => (
-                  <button type="button"
+                  <button
+                    type="button"
                     key={key}
                     onClick={() => handleBrandVariant(key)}
                     className="p-3 rounded-lg neuro-flat orx-hover-lift orx-transition-all text-left"
@@ -188,4 +180,3 @@ export function ThemeSwitcher() {
     </div>
   );
 }
-

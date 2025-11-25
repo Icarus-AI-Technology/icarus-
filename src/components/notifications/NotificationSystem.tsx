@@ -1,14 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
-import {
-  Bell,
-  X,
-  AlertTriangle,
-  Info,
-  CheckCircle2,
-  AlertOctagon
-} from 'lucide-react';
+import { Bell, X, AlertTriangle, Info, CheckCircle2, AlertOctagon } from 'lucide-react';
 
 interface Notification {
   id: string;
@@ -41,7 +34,7 @@ export const NotificationSystem: React.FC = () => {
 
       if (data) {
         setNotifications(data);
-        setUnreadCount(data.filter(n => !n.lido).length);
+        setUnreadCount(data.filter((n) => !n.lido).length);
       }
     } catch (error) {
       console.error('Erro ao carregar notificações:', error as Error);
@@ -62,16 +55,16 @@ export const NotificationSystem: React.FC = () => {
         {
           event: 'INSERT',
           schema: 'public',
-          table: 'system_alerts'
+          table: 'system_alerts',
         },
         (payload) => {
           const newAlert = payload.new as Notification;
-          
+
           // Verificar se o alerta é destinado ao usuário atual
           if (newAlert.destinatarios?.includes(user.role || 'user')) {
-            setNotifications(prev => [newAlert, ...prev]);
-            setUnreadCount(prev => prev + 1);
-            
+            setNotifications((prev) => [newAlert, ...prev]);
+            setUnreadCount((prev) => prev + 1);
+
             // Mostrar notificação do navegador
             if ('Notification' in window && Notification.permission === 'granted') {
               new Notification(newAlert.titulo, {
@@ -98,17 +91,14 @@ export const NotificationSystem: React.FC = () => {
   // Marcar como lida
   const markAsRead = async (notificationId: string) => {
     try {
-      await supabase
-        .from('system_alerts')
-        .update({ lido: true })
-        .eq('id', notificationId);
+      await supabase.from('system_alerts').update({ lido: true }).eq('id', notificationId);
 
-      setNotifications(prev =>
-        prev.map(n => n.id === notificationId ? { ...n, lido: true } : n)
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === notificationId ? { ...n, lido: true } : n))
       );
-      setUnreadCount(prev => Math.max(0, prev - 1));
+      setUnreadCount((prev) => Math.max(0, prev - 1));
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao marcar como lida:', err);
     }
   };
@@ -116,15 +106,12 @@ export const NotificationSystem: React.FC = () => {
   // Resolver notificação
   const resolveNotification = async (notificationId: string) => {
     try {
-      await supabase
-        .from('system_alerts')
-        .update({ resolvido: true })
-        .eq('id', notificationId);
+      await supabase.from('system_alerts').update({ resolvido: true }).eq('id', notificationId);
 
-      setNotifications(prev => prev.filter(n => n.id !== notificationId));
+      setNotifications((prev) => prev.filter((n) => n.id !== notificationId));
       loadNotifications();
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao resolver notificação:', err);
     }
   };
@@ -188,9 +175,7 @@ export const NotificationSystem: React.FC = () => {
                     className={`p-4 ${!notification.lido ? 'bg-blue-50' : 'bg-white'} hover:bg-gray-50 transition`}
                   >
                     <div className="flex items-start gap-3">
-                      <div className="flex-shrink-0 mt-1">
-                        {getIcon(notification.severidade)}
-                      </div>
+                      <div className="flex-shrink-0 mt-1">{getIcon(notification.severidade)}</div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between mb-1">
                           <h4 className="orx-orx-font-medium orx-text-sm text-gray-900">
@@ -206,9 +191,7 @@ export const NotificationSystem: React.FC = () => {
                             </button>
                           )}
                         </div>
-                        <p className="orx-text-xs text-gray-600 mb-2">
-                          {notification.descricao}
-                        </p>
+                        <p className="orx-text-xs text-gray-600 mb-2">{notification.descricao}</p>
                         <div className="flex items-center justify-between">
                           <span className="orx-text-xs text-gray-500">
                             {new Date(notification.criado_em).toLocaleString('pt-BR')}
@@ -243,13 +226,7 @@ export const NotificationSystem: React.FC = () => {
       )}
 
       {/* Click outside to close */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-40"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
+      {isOpen && <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />}
     </div>
   );
 };
-

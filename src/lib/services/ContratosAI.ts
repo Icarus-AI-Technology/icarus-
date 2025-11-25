@@ -12,5 +12,3 @@ export class ContratosAI {
     return Promise.resolve({ resumo: 'Análise de IA indisponível no ambiente atual.' });
   }
 }
-
-

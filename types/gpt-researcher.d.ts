@@ -1,4 +1,4 @@
-declare module "gpt-researcher" {
+declare module 'gpt-researcher' {
   export interface GPTResearcherOptions {
     host?: string;
     logListener?: (data: {

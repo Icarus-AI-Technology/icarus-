@@ -1,0 +1,226 @@
+{
+  "projectId": "xyzabc123def456",
+  "projectName": "E-commerce Demo",
+  "timestamp": "2025-11-23T14:30:00.000Z",
+  "summary": {
+    "totalIssues": 47,
+    "critical": 5,
+    "high": 14,
+    "medium": 18,
+    "low": 8,
+    "info": 2
+  },
+  "categories": {
+    "Schema & Tabelas": [
+      {
+        "id": "schema-tabelas-tabela-sem-primary-key-orders-1732371000000",
+        "category": "Schema & Tabelas",
+        "severity": "CRÍTICO",
+        "title": "Tabela sem PRIMARY KEY: orders",
+        "description": "A tabela public.orders não possui chave primária",
+        "impact": "Performance degradada, impossível usar replicação, problemas com RLS",
+        "table": "orders",
+        "schema": "public",
+        "solution": "Adicione uma PRIMARY KEY apropriada",
+        "sql": "-- Opção 1: Adicionar coluna ID\nALTER TABLE public.orders ADD COLUMN id BIGSERIAL PRIMARY KEY;\n\n-- Opção 2: Usar coluna existente\n-- ALTER TABLE public.orders ADD PRIMARY KEY (coluna_existente);",
+        "metadata": {
+          "total_rows": 125430,
+          "table_size": "89 MB"
+        }
+      },
+      {
+        "id": "schema-tabelas-bloat-detectado-products-1732371000001",
+        "category": "Schema & Tabelas",
+        "severity": "ALTO",
+        "title": "Bloat detectado: products",
+        "description": "A tabela public.products tem 5.8x de bloat (127 MB desperdiçados)",
+        "impact": "Desperdício de 127 MB de armazenamento e performance degradada",
+        "table": "products",
+        "schema": "public",
+        "solution": "VACUUM FULL recomendado",
+        "sql": "VACUUM FULL public.products; -- ATENÇÃO: Bloqueia a tabela",
+        "metadata": {
+          "bloat_ratio": 5.8,
+          "bloat_size": "127 MB",
+          "total_size": "219 MB"
+        }
+      }
+    ],
+    "Índices": [
+      {
+        "id": "indices-indice-invalido-idx-products-category-invalid-1732371000002",
+        "category": "Índices",
+        "severity": "CRÍTICO",
+        "title": "Índice inválido: idx_products_category_invalid",
+        "description": "O índice idx_products_category_invalid está marcado como INVALID",
+        "impact": "Índice não está sendo utilizado, queries podem estar lentas",
+        "table": "products",
+        "schema": "public",
+        "solution": "Reconstrua o índice",
+        "sql": "REINDEX INDEX CONCURRENTLY public.idx_products_category_invalid;",
+        "metadata": {
+          "reason": "Índice marcado como inválido (INVALID)"
+        }
+      },
+      {
+        "id": "indices-indice-nao-usado-idx-old-user-login-1732371000003",
+        "category": "Índices",
+        "severity": "MÉDIO",
+        "title": "Índice não usado: idx_old_user_login",
+        "description": "O índice idx_old_user_login na tabela users nunca foi utilizado",
+        "impact": "Desperdiçando 12 MB e tornando escritas mais lentas",
+        "table": "users",
+        "schema": "public",
+        "solution": "Remova o índice se confirmar que não é necessário",
+        "sql": "DROP INDEX public.idx_old_user_login;",
+        "metadata": {
+          "index_size": "12 MB",
+          "index_scans": 0
+        }
+      }
+    ],
+    "RLS & Segurança": [
+      {
+        "id": "rls-seguranca-tabela-sem-rls-users-1732371000004",
+        "category": "RLS & Segurança",
+        "severity": "CRÍTICO",
+        "title": "Tabela sem RLS: users",
+        "description": "A tabela public.users não possui Row Level Security habilitado",
+        "impact": "Dados potencialmente expostos publicamente",
+        "table": "users",
+        "schema": "public",
+        "solution": "Habilite RLS e crie policies apropriadas",
+        "sql": "ALTER TABLE users ENABLE ROW LEVEL SECURITY;",
+        "metadata": {
+          "total_rows": 12450,
+          "has_user_id": true
+        }
+      },
+      {
+        "id": "rls-seguranca-policy-permissiva-allow-all-access-1732371000005",
+        "category": "RLS & Segurança",
+        "severity": "CRÍTICO",
+        "title": "Policy permissiva: allow_all_access",
+        "description": "A policy allow_all_access na tabela orders é muito permissiva",
+        "impact": "Policy permite acesso irrestrito a todos os dados",
+        "table": "orders",
+        "schema": "public",
+        "solution": "Restrinja a policy para verificar permissões apropriadas",
+        "metadata": {
+          "policy_type": "SELECT",
+          "policy_definition": "true"
+        }
+      },
+      {
+        "id": "rls-seguranca-grant-excessivo-para-public-1732371000006",
+        "category": "RLS & Segurança",
+        "severity": "ALTO",
+        "title": "Grant excessivo para PUBLIC",
+        "description": "PUBLIC tem privilégio SELECT na tabela orders",
+        "impact": "Role PUBLIC possui privilégios - qualquer um pode acessar",
+        "table": "orders",
+        "schema": "public",
+        "solution": "Revogue privilégios desnecessários",
+        "sql": "REVOKE SELECT ON public.orders FROM PUBLIC;",
+        "metadata": {
+          "grantee": "PUBLIC",
+          "privilege_type": "SELECT",
+          "is_grantable": false
+        }
+      }
+    ],
+    "Storage & Buckets": [
+      {
+        "id": "storage-buckets-bucket-publico-product-images-1732371000007",
+        "category": "Storage & Buckets",
+        "severity": "MÉDIO",
+        "title": "Bucket público: product-images",
+        "description": "O bucket product-images é público e contém 8234 arquivos",
+        "impact": "2.4 GB de dados potencialmente expostos",
+        "solution": "Revise se o bucket realmente precisa ser público",
+        "metadata": {
+          "bucket_name": "product-images",
+          "total_objects": 8234,
+          "total_size": "2.4 GB"
+        }
+      },
+      {
+        "id": "storage-buckets-arquivos-duplicados-no-bucket-product-images-1732371000008",
+        "category": "Storage & Buckets",
+        "severity": "BAIXO",
+        "title": "Arquivos duplicados no bucket product-images",
+        "description": "156 arquivos duplicados encontrados",
+        "impact": "Desperdiçando 234 MB",
+        "solution": "Manter apenas 1 arquivo e atualizar referências",
+        "metadata": {
+          "duplicate_count": 156,
+          "wasted_size": "234 MB"
+        }
+      }
+    ],
+    "Performance & Saúde": [
+      {
+        "id": "performance-saude-query-lenta-detectada-1732371000009",
+        "category": "Performance & Saúde",
+        "severity": "CRÍTICO",
+        "title": "Query lenta detectada",
+        "description": "Query com tempo médio de 8234ms",
+        "impact": "12340 chamadas totalizando 101649160ms",
+        "solution": "Otimizar query urgentemente - considere índices ou reescrita",
+        "metadata": {
+          "query": "SELECT * FROM products p JOIN reviews r ON p.id = r.product_id WHERE p.category = $1 ORDER BY r.created_at DESC",
+          "mean_time": 8234,
+          "calls": 12340
+        }
+      },
+      {
+        "id": "performance-saude-dead-tuples-em-audit-logs-1732371000010",
+        "category": "Performance & Saúde",
+        "severity": "ALTO",
+        "title": "Dead tuples em audit_logs",
+        "description": "234560 dead tuples (45.2% da tabela)",
+        "impact": "Performance degradada, necessário VACUUM",
+        "table": "audit_logs",
+        "schema": "public",
+        "solution": "VACUUM ANALYZE public.audit_logs;",
+        "sql": "VACUUM ANALYZE public.audit_logs;",
+        "metadata": {
+          "dead_tuples": 234560,
+          "dead_ratio": 45.2,
+          "last_vacuum": "2025-10-15T03:00:00Z"
+        }
+      }
+    ],
+    "Funções & Triggers": [
+      {
+        "id": "funcoes-triggers-funcao-security-definer-admin-delete-user-1732371000011",
+        "category": "Funções & Triggers",
+        "severity": "ALTO",
+        "title": "Função SECURITY DEFINER: admin_delete_user",
+        "description": "Função executa com privilégios do criador - risco de escalação de privilégio",
+        "impact": "Risco de escalação de privilégio",
+        "solution": "Revisar código cuidadosamente. Considere usar SECURITY INVOKER se possível.",
+        "metadata": {
+          "function_owner": "postgres",
+          "language": "plpgsql"
+        }
+      },
+      {
+        "id": "funcoes-triggers-trigger-em-tabela-de-alto-volume-update-product-timestamp-1732371000012",
+        "category": "Funções & Triggers",
+        "severity": "ALTO",
+        "title": "Trigger em tabela de alto volume: update_product_timestamp",
+        "description": "Trigger update_product_timestamp na tabela products com 45890 escritas",
+        "impact": "Pode estar degradando performance de escrita",
+        "table": "products",
+        "schema": "public",
+        "solution": "Trigger em tabela de alto volume - verifique se é realmente necessário ou considere async",
+        "metadata": {
+          "total_writes": 45890,
+          "trigger_function": "update_timestamp_fn"
+        }
+      }
+    ]
+  }
+}
+

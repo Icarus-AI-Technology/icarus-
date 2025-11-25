@@ -1,7 +1,7 @@
 /**
  * OraclusX Design System - Skeleton Component
  * Loading placeholder com variantes
- * 
+ *
  * HARD GATES:
  * ✅ Sem text/font classes (tipografia CSS)
  * ✅ Cores via CSS variables
@@ -10,30 +10,30 @@
  * ✅ TypeScript strict
  */
 
-import React from"react";
-import { cn } from"@/lib/utils";
+import React from 'react';
+import { cn } from '@/lib/utils';
 
 export interface SkeletonProps {
-  variant?:"text" |"circular" |"rectangular" |"rounded";
+  variant?: 'text' | 'circular' | 'rectangular' | 'rounded';
   width?: string | number;
   height?: string | number;
   className?: string;
-  animation?:"pulse" |"wave" |"none";
+  animation?: 'pulse' | 'wave' | 'none';
   count?: number;
 }
 
 export const Skeleton: React.FC<SkeletonProps> = ({
-  variant ="text",
+  variant = 'text',
   width,
   height,
   className,
-  animation ="pulse",
-  count = 1
+  animation = 'pulse',
+  count = 1,
 }) => {
   const getStyles = () => {
     const baseStyles: React.CSSProperties = {
-      width: typeof width ==="number" ? `${width}px` : width,
-      height: typeof height ==="number" ? `${height}px` : height
+      width: typeof width === 'number' ? `${width}px` : width,
+      height: typeof height === 'number' ? `${height}px` : height,
     };
 
     return baseStyles;
@@ -46,29 +46,29 @@ export const Skeleton: React.FC<SkeletonProps> = ({
       aria-busy="true"
       aria-label="Carregando..."
       style={getStyles()}
-      className={cn("bg-surface-secondary dark:bg-muted",
-        animation ==="pulse" &&"animate-pulse",
-        animation ==="wave" &&"animate-wave",
-        variant ==="text" &&"h-4 w-full rounded",
-        variant ==="circular" &&"rounded-full",
-        variant ==="rectangular" &&"rounded-none",
-        variant ==="rounded" &&"rounded-lg",
+      className={cn(
+        'bg-surface-secondary dark:bg-muted',
+        animation === 'pulse' && 'animate-pulse',
+        animation === 'wave' && 'animate-wave',
+        variant === 'text' && 'h-4 w-full rounded',
+        variant === 'circular' && 'rounded-full',
+        variant === 'rectangular' && 'rounded-none',
+        variant === 'rounded' && 'rounded-lg',
         className
       )}
     />
   ));
 
-  return count > 1 ? (
-    <div className="space-y-2">{skeletons}</div>
-  ) : (
-    skeletons[0]
-  );
+  return count > 1 ? <div className="space-y-2">{skeletons}</div> : skeletons[0];
 };
 
 // Predefined skeleton layouts
 export const SkeletonCard: React.FC<{ className?: string }> = ({ className }) => (
   <div
-    className={cn("p-4 rounded-lg","bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]","shadow-[var(--shadow-light-outer)] dark:shadow-[var(--shadow-dark-outer)]",
+    className={cn(
+      'p-4 rounded-lg',
+      'bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]',
+      'shadow-[var(--shadow-light-outer)] dark:shadow-[var(--shadow-dark-outer)]',
       className
     )}
     role="status"
@@ -92,7 +92,10 @@ export const SkeletonTable: React.FC<{
   className?: string;
 }> = ({ rows = 5, columns = 4, className }) => (
   <div
-    className={cn("rounded-lg overflow-hidden","bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]","shadow-[var(--shadow-light-outer)] dark:shadow-[var(--shadow-dark-outer)]",
+    className={cn(
+      'rounded-lg overflow-hidden',
+      'bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]',
+      'shadow-[var(--shadow-light-outer)] dark:shadow-[var(--shadow-dark-outer)]',
       className
     )}
     role="status"
@@ -108,10 +111,7 @@ export const SkeletonTable: React.FC<{
 
     {/* Rows */}
     {Array.from({ length: rows }).map((_, rowIdx) => (
-      <div
-        key={rowIdx}
-        className="flex gap-4 p-4 border-b border-gray-100 dark:border-gray-800"
-      >
+      <div key={rowIdx} className="flex gap-4 p-4 border-b border-gray-100 dark:border-gray-800">
         {Array.from({ length: columns }).map((_, colIdx) => (
           <Skeleton key={colIdx} width="100%" />
         ))}
@@ -124,11 +124,19 @@ export const SkeletonList: React.FC<{
   items?: number;
   className?: string;
 }> = ({ items = 3, className }) => (
-  <div className={cn("space-y-3", className)} role="status" aria-busy="true" aria-label="Carregando lista...">
+  <div
+    className={cn('space-y-3', className)}
+    role="status"
+    aria-busy="true"
+    aria-label="Carregando lista..."
+  >
     {Array.from({ length: items }).map((_, i) => (
       <div
         key={i}
-        className={cn("flex items-center gap-3 p-3 rounded-lg","bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]","shadow-[var(--shadow-light-outer)] dark:shadow-[var(--shadow-dark-outer)]"
+        className={cn(
+          'flex items-center gap-3 p-3 rounded-lg',
+          'bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]',
+          'shadow-[var(--shadow-light-outer)] dark:shadow-[var(--shadow-dark-outer)]'
         )}
       >
         <Skeleton variant="circular" width={48} height={48} />
@@ -140,4 +148,3 @@ export const SkeletonList: React.FC<{
     ))}
   </div>
 );
-

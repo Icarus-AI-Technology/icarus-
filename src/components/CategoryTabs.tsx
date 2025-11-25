@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
-import type { LucideIcon } from 'lucide-react';
+type LucideIcon = React.ComponentType<React.SVGProps<SVGSVGElement> & { size?: string | number }>;
 
 export interface CategoryItem {
   /** ID único da categoria */
@@ -26,7 +26,9 @@ export interface CategoryTabsProps {
   /** Categoria ativa */
   activeCategory: string;
   /** Callback de mudança de categoria */
-  onChange: (categoryId: string) => void;
+  onChange?: (categoryId: string) => void;
+  /** Alias legada para callback */
+  onCategoryChange?: (categoryId: string) => void;
   /** Variante visual */
   variant?: 'default' | 'pills' | 'underline';
   /** Classes CSS adicionais */
@@ -35,7 +37,7 @@ export interface CategoryTabsProps {
 
 /**
  * CategoryTabs - Tabs de categorias padronizadas
- * 
+ *
  * @example
  * ```tsx
  * <CategoryTabs
@@ -53,13 +55,15 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
   categories,
   activeCategory,
   onChange,
+  onCategoryChange,
   variant = 'default',
   className,
 }) => {
+  const handleChange = onChange ?? onCategoryChange ?? (() => {});
   const handleKeyDown = (e: React.KeyboardEvent, categoryId: string) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      onChange(categoryId);
+      handleChange(categoryId);
     }
   };
 
@@ -70,7 +74,8 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
   };
 
   const itemBaseClasses = {
-    default: 'flex flex-col items-center justify-center h-24 text-center rounded-xl transition-all duration-200',
+    default:
+      'flex flex-col items-center justify-center h-24 text-center rounded-xl transition-all duration-200',
     pills: 'flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200',
     underline: 'flex items-center gap-2 px-4 py-3 border-b-2 transition-all duration-200',
   };
@@ -84,21 +89,19 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
   const itemInactiveClasses = {
     default: 'neuro-flat hover:neuro-raised',
     pills: 'neuro-flat hover:neuro-raised',
-    underline: 'border-transparent text-[var(--orx-text-secondary)] hover:text-[var(--orx-text-primary)]',
+    underline:
+      'border-transparent text-[var(--orx-text-secondary)] hover:text-[var(--orx-text-primary)]',
   };
 
   // Grid columns baseado no número de categorias
-  const gridCols = categories.length <= 3
-    ? `grid-cols-${categories.length}`
-    : `grid-cols-2 sm:grid-cols-3 lg:grid-cols-${Math.min(categories.length, 6)}`;
+  const gridCols =
+    categories.length <= 3
+      ? `grid-cols-${categories.length}`
+      : `grid-cols-2 sm:grid-cols-3 lg:grid-cols-${Math.min(categories.length, 6)}`;
 
   return (
     <div
-      className={cn(
-        variantClasses[variant],
-        variant === 'default' && gridCols,
-        className
-      )}
+      className={cn(variantClasses[variant], variant === 'default' && gridCols, className)}
       role="tablist"
     >
       {categories.map((category) => {
@@ -113,11 +116,12 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
             aria-selected={isActive}
             aria-controls={`panel-${category.id}`}
             id={`tab-${category.id}`}
-            onClick={() => onChange(category.id)}
+            onClick={() => handleChange(category.id)}
             onKeyDown={(e) => handleKeyDown(e, category.id)}
             className={cn(
               itemBaseClasses[variant],
-              isActive ? itemActiveClasses[variant] : itemInactiveClasses[variant]
+              isActive ? itemActiveClasses[variant] : itemInactiveClasses[variant],
+              isActive && 'active'
             )}
           >
             <Icon
@@ -155,8 +159,8 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
                       category.trend.startsWith('+')
                         ? 'text-[var(--orx-success)]'
                         : category.trend.startsWith('-')
-                        ? 'text-[var(--orx-error)]'
-                        : 'text-[var(--orx-text-secondary)]'
+                          ? 'text-[var(--orx-error)]'
+                          : 'text-[var(--orx-text-secondary)]'
                     )}
                   >
                     {category.trend}
@@ -174,4 +178,3 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
 CategoryTabs.displayName = 'OraclusXCategoryTabs';
 
 export default CategoryTabs;
-

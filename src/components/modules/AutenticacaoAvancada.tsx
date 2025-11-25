@@ -4,7 +4,7 @@
  * IA Detecção Fraude 99.6% precisão
  */
 
-import React, { useState } from"react";
+import React, { useState } from 'react';
 import {
   Card,
   CardHeader,
@@ -13,7 +13,7 @@ import {
   CardContent,
   Button,
   Badge,
-} from"@/components/oraclusx-ds";
+} from '@/components/oraclusx-ds';
 import {
   Shield,
   Key,
@@ -25,101 +25,101 @@ import {
   CheckCircle,
   AlertTriangle,
   TrendingUp,
-} from"lucide-react";
+} from 'lucide-react';
 
 export const AutenticacaoAvancada: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState("usuarios");
+  const [activeCategory, setActiveCategory] = useState('usuarios');
 
   const categories = [
-    { id:"usuarios", label:"Usuários Ativos", icon: Shield, count: 847, trend:"+45" },
-    { id:"2fa", label:"2FA Habilitado", icon: Smartphone, count: 742, trend:"+28" },
-    { id:"sso", label:"SSO Configurado", icon: Key, count: 156, trend:"+12" },
-    { id:"biometria", label:"Biometria", icon: Fingerprint, count: 89, trend:"+15" },
+    { id: 'usuarios', label: 'Usuários Ativos', icon: Shield, count: 847, trend: '+45' },
+    { id: '2fa', label: '2FA Habilitado', icon: Smartphone, count: 742, trend: '+28' },
+    { id: 'sso', label: 'SSO Configurado', icon: Key, count: 156, trend: '+12' },
+    { id: 'biometria', label: 'Biometria', icon: Fingerprint, count: 89, trend: '+15' },
   ];
 
   const kpis = [
     {
-      title:"Usuários Ativos",
-      value:"847",
-      trend:"+45 hoje",
+      title: 'Usuários Ativos',
+      value: '847',
+      trend: '+45 hoje',
       icon: Shield,
-      color:"blue",
+      color: 'blue',
     },
     {
-      title:"Taxa 2FA",
-      value:"87.6%",
-      trend:"+3.2%",
+      title: 'Taxa 2FA',
+      value: '87.6%',
+      trend: '+3.2%',
       icon: Smartphone,
-      color:"green",
+      color: 'green',
     },
     {
-      title:"Detecção Fraude",
-      value:"99.6%",
-      trend:"IA ativa",
+      title: 'Detecção Fraude',
+      value: '99.6%',
+      trend: 'IA ativa',
       icon: CheckCircle,
-      color:"indigo",
+      color: 'indigo',
     },
     {
-      title:"Tentativas Bloqueadas",
-      value:"12",
-      trend:"-8 hoje",
+      title: 'Tentativas Bloqueadas',
+      value: '12',
+      trend: '-8 hoje',
       icon: AlertTriangle,
-      color:"yellow",
+      color: 'yellow',
     },
   ];
 
   const usuarios = [
     {
-      id:"USR-001",
-      nome:"Roberto Silva",
-      email:"roberto@icarus.tech",
-      cargo:"Gerente Comercial",
-      nivel:"Administrador",
+      id: 'USR-001',
+      nome: 'Roberto Silva',
+      email: 'roberto@icarus.tech',
+      cargo: 'Gerente Comercial',
+      nivel: 'Administrador',
       twoFA: true,
       biometria: true,
-      ultimoAcesso:"Há 5 min",
-      status:"ativo",
+      ultimoAcesso: 'Há 5 min',
+      status: 'ativo',
     },
     {
-      id:"USR-002",
-      nome:"Ana Paula Costa",
-      email:"ana@icarus.tech",
-      cargo:"Diretora Operacional",
-      nivel:"Administrador",
+      id: 'USR-002',
+      nome: 'Ana Paula Costa',
+      email: 'ana@icarus.tech',
+      cargo: 'Diretora Operacional',
+      nivel: 'Administrador',
       twoFA: true,
       biometria: false,
-      ultimoAcesso:"Há 15 min",
-      status:"ativo",
+      ultimoAcesso: 'Há 15 min',
+      status: 'ativo',
     },
     {
-      id:"USR-003",
-      nome:"Carlos Mendes",
-      email:"carlos@icarus.tech",
-      cargo:"Analista Financeiro",
-      nivel:"Usuário",
+      id: 'USR-003',
+      nome: 'Carlos Mendes',
+      email: 'carlos@icarus.tech',
+      cargo: 'Analista Financeiro',
+      nivel: 'Usuário',
       twoFA: true,
       biometria: true,
-      ultimoAcesso:"Há 1 hora",
-      status:"ativo",
+      ultimoAcesso: 'Há 1 hora',
+      status: 'ativo',
     },
     {
-      id:"USR-004",
-      nome:"Maria Santos",
-      email:"maria@icarus.tech",
-      cargo:"Coordenadora Logística",
-      nivel:"Gerente",
+      id: 'USR-004',
+      nome: 'Maria Santos',
+      email: 'maria@icarus.tech',
+      cargo: 'Coordenadora Logística',
+      nivel: 'Gerente',
       twoFA: false,
       biometria: false,
-      ultimoAcesso:"Há 3 dias",
-      status:"inativo",
+      ultimoAcesso: 'Há 3 dias',
+      status: 'inativo',
     },
   ];
 
   const getNivelColor = (nivel: string) => {
     const colors: Record<string, string> = {
-      Administrador:"bg-[var(--accent)]/10 text-[var(--accent-foreground)]",
-      Gerente:"bg-[var(--primary)]/10 text-[var(--primary)]",
-      Usuário:"bg-surface text-[var(--text-secondary)]",
+      Administrador: 'bg-[var(--accent)]/10 text-[var(--accent-foreground)]',
+      Gerente: 'bg-[var(--primary)]/10 text-[var(--primary)]',
+      Usuário: 'bg-surface text-[var(--text-secondary)]',
     };
     return colors[nivel] || colors.Usuário;
   };
@@ -139,7 +139,9 @@ export const AutenticacaoAvancada: React.FC = () => {
           <div className="flex items-center gap-2 px-4 py-2 bg-[var(--primary)] rounded-full">
             <Settings className="text-[var(--primary-foreground)] animate-spin-slow" size={20} />
             <div className="text-left">
-              <p className="text-[var(--primary-foreground)] text-body-sm orx-orx-font-medium">IA Anti-Fraude</p>
+              <p className="text-[var(--primary-foreground)] text-body-sm orx-orx-font-medium">
+                IA Anti-Fraude
+              </p>
               <p className="text-[var(--primary-foreground)]/70 text-body-xs">99.6% precisão</p>
             </div>
           </div>
@@ -159,15 +161,15 @@ export const AutenticacaoAvancada: React.FC = () => {
                     relative p-4 rounded-xl transition-all duration-200
                     ${
                       isActive
-                        ?"neuro-raised text-[var(--primary)] scale-105"
-                        :"bg-surface dark:bg-card text-[var(--text-secondary)]"
+                        ? 'neuro-raised text-[var(--primary)] scale-105'
+                        : 'bg-surface dark:bg-card text-[var(--text-secondary)]'
                     }
                   `}
                 >
                   <div className="flex flex-col items-center gap-2">
                     <div
                       className={`p-2 rounded-lg ${
-                        isActive ?"bg-surface/20" :"bg-surface dark:bg-muted"
+                        isActive ? 'bg-surface/20' : 'bg-surface dark:bg-muted'
                       }`}
                     >
                       <Icon size={24} />
@@ -175,10 +177,12 @@ export const AutenticacaoAvancada: React.FC = () => {
                     <div className="text-center">
                       <p className="text-body-xs mb-1 orx-orx-font-medium">{category.label}</p>
                       <div className="flex items-center justify-center gap-2">
-                        <span className="text-heading font-display text-[0.813rem]">{category.count}</span>
+                        <span className="text-heading font-display text-[0.813rem]">
+                          {category.count}
+                        </span>
                         <span
                           className={`text-body-xs ${
-                            isActive ?"text-[var(--primary)]/80" :"text-success"
+                            isActive ? 'text-[var(--primary)]/80' : 'text-success'
                           }`}
                         >
                           <TrendingUp size={12} className="inline mr-0.5" />
@@ -197,10 +201,10 @@ export const AutenticacaoAvancada: React.FC = () => {
           {kpis.map((kpi, index) => {
             const Icon = kpi.icon;
             const colorClasses = {
-              blue:"bg-[var(--accent)]/10 text-[var(--accent-foreground)]",
-              green:"bg-success/10 text-success",
-              indigo:"bg-[var(--primary)]/10 text-[var(--primary)]",
-              yellow:"bg-warning/10 text-warning",
+              blue: 'bg-[var(--accent)]/10 text-[var(--accent-foreground)]',
+              green: 'bg-success/10 text-success',
+              indigo: 'bg-[var(--primary)]/10 text-[var(--primary)]',
+              yellow: 'bg-warning/10 text-warning',
             } as const;
 
             return (
@@ -215,7 +219,9 @@ export const AutenticacaoAvancada: React.FC = () => {
                       {kpi.trend}
                     </Badge>
                   </div>
-                  <div className={`p-3 rounded-lg ${colorClasses[kpi.color as keyof typeof colorClasses]}`}>
+                  <div
+                    className={`p-3 rounded-lg ${colorClasses[kpi.color as keyof typeof colorClasses]}`}
+                  >
                     <Icon size={24} />
                   </div>
                 </div>
@@ -313,11 +319,7 @@ export const AutenticacaoAvancada: React.FC = () => {
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <Badge
-                          variant="default"
-                          size="sm"
-                          className={getNivelColor(user.nivel)}
-                        >
+                        <Badge variant="default" size="sm" className={getNivelColor(user.nivel)}>
                           {user.nivel}
                         </Badge>
                       </td>
@@ -341,10 +343,7 @@ export const AutenticacaoAvancada: React.FC = () => {
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <Badge
-                          variant={user.status ==="ativo" ?"success" :"default"}
-                          size="sm"
-                        >
+                        <Badge variant={user.status === 'ativo' ? 'success' : 'default'} size="sm">
                           {user.status}
                         </Badge>
                       </td>
@@ -361,4 +360,3 @@ export const AutenticacaoAvancada: React.FC = () => {
 };
 
 export default AutenticacaoAvancada;
-

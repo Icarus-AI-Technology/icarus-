@@ -2,7 +2,7 @@
  * ComplianceAutomaticoAI - Agente de IA para Compliance Automático
  * Sistema: ICARUS v5.0
  * Taxa de Acerto: 96.8%
- * 
+ *
  * Funcionalidades:
  * - Monitoramento 24/7 de requisitos regulatórios
  * - Alertas preditivos de vencimentos
@@ -10,7 +10,7 @@
  * - Sugestão de ações preventivas
  */
 
-import { supabase } from '@/lib/supabase';
+import { legacySupabase as supabase } from '@/lib/legacySupabase';
 
 export interface AlertaPreditivo {
   tipo: 'certificacao' | 'treinamento' | 'calibracao' | 'documento';
@@ -62,7 +62,7 @@ export class ComplianceAutomaticoAI {
 
       return alertas;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro na análise de compliance:', err);
       return [];
     }
@@ -87,7 +87,7 @@ export class ComplianceAutomaticoAI {
 
       if (error) throw error;
 
-      requisitos?.forEach(req => {
+      requisitos?.forEach((req) => {
         const dataAuditoria = new Date(req.proxima_auditoria!);
         const diasRestantes = Math.ceil(
           (dataAuditoria.getTime() - hoje.getTime()) / (1000 * 60 * 60 * 24)
@@ -106,11 +106,13 @@ export class ComplianceAutomaticoAI {
           dias_ate_vencimento: diasRestantes,
           acao_sugerida: `Agendar auditoria de renovação até ${new Date(hoje.getTime() + 15 * 24 * 60 * 60 * 1000).toLocaleDateString('pt-BR')}`,
           responsavel: req.responsavel || undefined,
-          prazo_acao: new Date(hoje.getTime() + (diasRestantes / 2) * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+          prazo_acao: new Date(hoje.getTime() + (diasRestantes / 2) * 24 * 60 * 60 * 1000)
+            .toISOString()
+            .split('T')[0],
         });
       });
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao verificar certificações:', err);
     }
 
@@ -130,14 +132,16 @@ export class ComplianceAutomaticoAI {
 
       const { data: participantes, error } = await supabase
         .from('participantes_treinamento')
-        .select<ParticipanteTreinamentoRow[]>(`
+        .select(
+          `
           id,
           nome,
           email,
           data_validade_certificado,
           aprovador,
           treinamento:treinamentos_certificacoes(titulo, fabricante)
-        `)
+        `
+        )
         .eq('aprovado', true)
         .not('data_validade_certificado', 'is', null)
         .lte('data_validade_certificado', limite30Dias.toISOString().split('T')[0]);
@@ -146,7 +150,7 @@ export class ComplianceAutomaticoAI {
 
       const agrupado = new Map<string, ParticipanteTreinamentoRow[]>();
 
-      participantes?.forEach((part) => {
+      (participantes as unknown as ParticipanteTreinamentoRow[] | null)?.forEach((part) => {
         const key = part.treinamento?.titulo || 'Sem título';
         if (!agrupado.has(key)) {
           agrupado.set(key, []);
@@ -172,11 +176,13 @@ export class ComplianceAutomaticoAI {
           severidade,
           dias_ate_vencimento: diasRestantes,
           acao_sugerida: `Agendar reciclagem para ${parts.map((p) => p.nome).join(', ')}`,
-          prazo_acao: new Date(hoje.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+          prazo_acao: new Date(hoje.getTime() + 7 * 24 * 60 * 60 * 1000)
+            .toISOString()
+            .split('T')[0],
         });
       });
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao verificar treinamentos:', err);
     }
 
@@ -203,7 +209,7 @@ export class ComplianceAutomaticoAI {
 
       if (error) throw error;
 
-      documentos?.forEach(doc => {
+      documentos?.forEach((doc) => {
         const dataRevisao = new Date(doc.data_proxima_revisao!);
         const diasRestantes = Math.ceil(
           (dataRevisao.getTime() - hoje.getTime()) / (1000 * 60 * 60 * 24)
@@ -221,11 +227,13 @@ export class ComplianceAutomaticoAI {
           dias_ate_vencimento: diasRestantes,
           acao_sugerida: `Revisar documento e atualizar versão`,
           responsavel: doc.revisado_por || undefined,
-          prazo_acao: new Date(dataRevisao.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+          prazo_acao: new Date(dataRevisao.getTime() - 7 * 24 * 60 * 60 * 1000)
+            .toISOString()
+            .split('T')[0],
         });
       });
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao verificar documentos:', err);
     }
 
@@ -246,11 +254,11 @@ export class ComplianceAutomaticoAI {
           ultima_execucao: agora.toISOString(),
           proxima_execucao: proximaExecucao.toISOString(),
           alertas_gerados: alertasGerados,
-          taxa_acerto: this.TAXA_ACERTO
+          taxa_acerto: this.TAXA_ACERTO,
         })
         .eq('codigo', 'AI-COMP-001');
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao registrar execução:', err);
     }
   }
@@ -269,10 +277,9 @@ export class ComplianceAutomaticoAI {
       if (error) throw error;
       return data;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao obter estatísticas:', err);
       return null;
     }
   }
 }
-

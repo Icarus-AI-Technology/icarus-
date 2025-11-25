@@ -1,1 +1,1 @@
-export { default } from "@/components/modules/Faturamento";
+export { default } from '@/components/modules/Faturamento';

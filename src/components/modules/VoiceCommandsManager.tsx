@@ -1,4 +1,4 @@
-import React from 'react';
+// React is automatically imported in JSX transform
 import { isFeatureEnabled } from '@/lib/flags';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -13,23 +13,31 @@ export default function VoiceCommandsManager(): JSX.Element {
         </div>
       )}
       <h1 className="orx-text-xl orx-orx-font-semibold mb-2">Voice Commands</h1>
-      <p className="orx-text-sm text-muted-foreground mb-4">Gerenciamento de comandos e atalhos por voz.</p>
+      <p className="orx-text-sm text-muted-foreground mb-4">
+        Gerenciamento de comandos e atalhos por voz.
+      </p>
 
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="orx-text-base">Comandos ativos</CardTitle></CardHeader>
+          <CardHeader className="pb-2">
+            <CardTitle className="orx-text-base">Comandos ativos</CardTitle>
+          </CardHeader>
           <CardContent>
             <div className="orx-text-2xl orx-orx-font-semibold">85</div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="orx-text-base">Ações executadas</CardTitle></CardHeader>
+          <CardHeader className="pb-2">
+            <CardTitle className="orx-text-base">Ações executadas</CardTitle>
+          </CardHeader>
           <CardContent>
             <div className="orx-text-2xl orx-orx-font-semibold">1.204</div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="orx-text-base">Status</CardTitle></CardHeader>
+          <CardHeader className="pb-2">
+            <CardTitle className="orx-text-base">Status</CardTitle>
+          </CardHeader>
           <CardContent>
             <Badge variant="default">Estável</Badge>
           </CardContent>

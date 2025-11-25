@@ -1,10 +1,10 @@
 /**
  * Notas de Compra - Módulo Compras e Fornecedores
- * 
+ *
  * Sistema: ICARUS v5.0
  * Versão: 5.0.0
  * Última Atualização: Outubro 2025
- * 
+ *
  * FEATURES:
  * - Importação e Parse de XML NF-e
  * - OCR de DANFE (Tesseract.js)
@@ -12,12 +12,25 @@
  * - Conferência automática com Pedido de Compra
  * - Entrada automática no estoque
  * - Geração de contas a pagar
- * 
+ *
  * DESIGN SYSTEM: OraclusX DS + Neumorphism Premium 3D
  */
 
 import React, { useState } from 'react';
-import { Upload, CheckCircle, XCircle, AlertTriangle, Eye, Download, Loader2, Package, DollarSign, Scan, FileCheck, Clock } from 'lucide-react';
+import {
+  Upload,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  Eye,
+  Download,
+  Loader2,
+  Package,
+  DollarSign,
+  Scan,
+  FileCheck,
+  Clock,
+} from 'lucide-react';
 import type { NotaFiscalCompra } from '@/types/compras';
 
 export const NotasCompra: React.FC = () => {
@@ -161,7 +174,10 @@ export const NotasCompra: React.FC = () => {
   ];
 
   // Handlers
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>, type: 'xml' | 'pdf') => {
+  const handleFileUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+    type: 'xml' | 'pdf'
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -177,7 +193,7 @@ export const NotasCompra: React.FC = () => {
         await parseDANFEWithOCR(file);
       }
     } catch (error: unknown) {
-        const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao processar arquivo:', err);
     } finally {
       setProcessing(false);
@@ -252,7 +268,10 @@ export const NotasCompra: React.FC = () => {
 
   // Status Badge
   const getStatusBadge = (status: string) => {
-    const statusConfig: Record<string, { label: string; bg: string; text: string; icon: React.ReactNode }> = {
+    const statusConfig: Record<
+      string,
+      { label: string; bg: string; text: string; icon: React.ReactNode }
+    > = {
       pendente: {
         label: 'Pendente',
         bg: 'var(--orx-warning-light)',
@@ -288,13 +307,20 @@ export const NotasCompra: React.FC = () => {
     const config = statusConfig[status] || statusConfig.pendente;
 
     const bgClass =
-      status === 'pendente' ? 'bg-amber-500/15 text-amber-700 dark:text-amber-300' :
-      status === 'validada' ? 'bg-green-500/15 text-green-700 dark:text-green-300' :
-      status === 'divergente' || status === 'recusada' ? 'bg-red-500/15 text-red-700 dark:text-red-300' :
-      status === 'contabilizada' ? 'bg-blue-500/15 text-blue-700 dark:text-blue-300' : 'bg-surface text-[var(--text-secondary)]';
+      status === 'pendente'
+        ? 'bg-amber-500/15 text-amber-700 dark:text-amber-300'
+        : status === 'validada'
+          ? 'bg-green-500/15 text-green-700 dark:text-green-300'
+          : status === 'divergente' || status === 'recusada'
+            ? 'bg-red-500/15 text-red-700 dark:text-red-300'
+            : status === 'contabilizada'
+              ? 'bg-blue-500/15 text-blue-700 dark:text-blue-300'
+              : 'bg-surface text-[var(--text-secondary)]';
 
     return (
-      <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[0.813rem] orx-orx-font-semibold ${bgClass}`}>
+      <span
+        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[0.813rem] orx-orx-font-semibold ${bgClass}`}
+      >
         {config.icon}
         {config.label}
       </span>
@@ -302,9 +328,7 @@ export const NotasCompra: React.FC = () => {
   };
 
   return (
-    <div
-      className="p-6 flex flex-col gap-6"
-    >
+    <div className="p-6 flex flex-col gap-6">
       {/* Header */}
       <div>
         <h1 className="text-[0.813rem] orx-orx-font-extrabold text-[var(--orx-text-primary)] mb-2">
@@ -320,19 +344,33 @@ export const NotasCompra: React.FC = () => {
         {kpis.map((kpi, index) => {
           const Icon = kpi.icon;
           return (
-            <div key={index} className="p-6 rounded-2xl bg-[var(--orx-bg-light)] shadow border border-white/10">
+            <div
+              key={index}
+              className="p-6 rounded-2xl bg-[var(--orx-bg-light)] shadow border border-white/10"
+            >
               <div className="flex items-center gap-4">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow ${
-                  kpi.color === 'var(--orx-warning-dark)' ? 'bg-amber-600' :
-                  kpi.color === 'var(--orx-success-dark)' ? 'bg-green-600' :
-                  kpi.color === 'var(--orx-primary)' ? 'bg-indigo-600' :
-                  kpi.color === 'var(--orx-error-dark)' ? 'bg-red-600' : 'bg-surface'
-                }`}>
+                <div
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center shadow ${
+                    kpi.color === 'var(--orx-warning-dark)'
+                      ? 'bg-amber-600'
+                      : kpi.color === 'var(--orx-success-dark)'
+                        ? 'bg-green-600'
+                        : kpi.color === 'var(--orx-primary)'
+                          ? 'bg-indigo-600'
+                          : kpi.color === 'var(--orx-error-dark)'
+                            ? 'bg-red-600'
+                            : 'bg-surface'
+                  }`}
+                >
                   <Icon size={24} className="text-white" />
                 </div>
                 <div>
-                  <div className="text-[0.813rem] orx-orx-font-bold text-[var(--orx-text-primary)] mb-1">{kpi.value}</div>
-                  <div className="text-[0.813rem] text-[var(--orx-text-secondary)]">{kpi.label}</div>
+                  <div className="text-[0.813rem] orx-orx-font-bold text-[var(--orx-text-primary)] mb-1">
+                    {kpi.value}
+                  </div>
+                  <div className="text-[0.813rem] text-[var(--orx-text-secondary)]">
+                    {kpi.label}
+                  </div>
                 </div>
               </div>
             </div>
@@ -356,8 +394,12 @@ export const NotasCompra: React.FC = () => {
               <Upload size={32} className="text-white" />
             </div>
             <div className="text-center">
-              <h3 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-2">Importar XML NF-e</h3>
-              <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">Clique para selecionar o arquivo XML</p>
+              <h3 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-2">
+                Importar XML NF-e
+              </h3>
+              <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">
+                Clique para selecionar o arquivo XML
+              </p>
             </div>
           </label>
 
@@ -374,8 +416,12 @@ export const NotasCompra: React.FC = () => {
               <Scan size={32} className="text-white" />
             </div>
             <div className="text-center">
-              <h3 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-2">OCR de DANFE</h3>
-              <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">PDF ou imagem do DANFE</p>
+              <h3 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-2">
+                OCR de DANFE
+              </h3>
+              <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">
+                PDF ou imagem do DANFE
+              </p>
             </div>
           </label>
         </div>
@@ -395,14 +441,18 @@ export const NotasCompra: React.FC = () => {
       {nfe && validacaoStatus && (
         <div className="flex flex-col gap-6">
           {/* Validações */}
-          <div className={`p-6 rounded-2xl border ${validacaoStatus.sefaz ? 'bg-[var(--orx-success-light)] border-[var(--orx-success-dark)]' : 'bg-[var(--orx-error-light)] border-[var(--orx-error-dark)]'}`}>
+          <div
+            className={`p-6 rounded-2xl border ${validacaoStatus.sefaz ? 'bg-[var(--orx-success-light)] border-[var(--orx-success-dark)]' : 'bg-[var(--orx-error-light)] border-[var(--orx-error-dark)]'}`}
+          >
             <div className="flex items-center gap-3 mb-4">
               {validacaoStatus.sefaz ? (
                 <CheckCircle size={24} className="text-[var(--orx-success-dark)]" />
               ) : (
                 <XCircle size={24} className="text-[var(--orx-error-dark)]" />
               )}
-              <h3 className={`text-[0.813rem] orx-orx-font-semibold ${validacaoStatus.sefaz ? 'text-[var(--orx-success-dark)]' : 'text-[var(--orx-error-dark)]'}`}>
+              <h3
+                className={`text-[0.813rem] orx-orx-font-semibold ${validacaoStatus.sefaz ? 'text-[var(--orx-success-dark)]' : 'text-[var(--orx-error-dark)]'}`}
+              >
                 {validacaoStatus.sefaz ? 'NF-e Validada com Sucesso' : 'NF-e com Problemas'}
               </h3>
             </div>
@@ -424,7 +474,8 @@ export const NotasCompra: React.FC = () => {
                   <AlertTriangle size={16} className="text-[var(--orx-warning-dark)]" />
                 )}
                 <span className="text-[0.813rem]">
-                  Conferência com Pedido: {validacaoStatus.pedido ? 'OK' : 'Divergências encontradas'}
+                  Conferência com Pedido:{' '}
+                  {validacaoStatus.pedido ? 'OK' : 'Divergências encontradas'}
                 </span>
               </li>
               <li className="flex items-center gap-2">
@@ -434,7 +485,8 @@ export const NotasCompra: React.FC = () => {
                   <XCircle size={16} className="text-[var(--orx-error-dark)]" />
                 )}
                 <span className="text-[0.813rem]">
-                  Produtos Cadastrados: {validacaoStatus.produtos ? 'Todos' : 'Alguns não encontrados'}
+                  Produtos Cadastrados:{' '}
+                  {validacaoStatus.produtos ? 'Todos' : 'Alguns não encontrados'}
                 </span>
               </li>
               <li className="flex items-center gap-2">
@@ -452,7 +504,9 @@ export const NotasCompra: React.FC = () => {
 
           {/* Dados da NF-e */}
           <div className="p-6 rounded-2xl bg-[var(--orx-bg-light)] shadow border border-white/10">
-            <h3 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-4">Dados da Nota Fiscal</h3>
+            <h3 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-4">
+              Dados da Nota Fiscal
+            </h3>
             <div className="grid [grid-template-columns:repeat(auto-fit,minmax(200px,1fr))] gap-4">
               <div>
                 <p className="text-[0.813rem] text-[var(--orx-text-secondary)]">Número</p>
@@ -516,38 +570,64 @@ export const NotasCompra: React.FC = () => {
       {/* Lista de Notas */}
       <div className="rounded-2xl bg-[var(--orx-bg-light)] shadow border border-white/10 overflow-hidden">
         <div className="p-6 border-b border-black/5">
-          <h3 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)]">Notas Fiscais Recentes</h3>
+          <h3 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)]">
+            Notas Fiscais Recentes
+          </h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-indigo-500/5">
-                {['Nº NF-e','Fornecedor','Data Emissão','Valor Total','Status','Ações'].map((h, idx) => (
-                  <th key={idx} className={`p-4 ${idx === 5 ? 'text-center' : 'text-left'} text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-secondary)] border-b border-black/5`}>
-                    {h}
-                  </th>
-                ))}
+                {['Nº NF-e', 'Fornecedor', 'Data Emissão', 'Valor Total', 'Status', 'Ações'].map(
+                  (h, idx) => (
+                    <th
+                      key={idx}
+                      className={`p-4 ${idx === 5 ? 'text-center' : 'text-left'} text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-secondary)] border-b border-black/5`}
+                    >
+                      {h}
+                    </th>
+                  )
+                )}
               </tr>
             </thead>
             <tbody>
               {notas.map((nota) => (
-                <tr key={nota.id} className="border-b border-black/5 hover:bg-indigo-500/5 transition-colors">
-                  <td className="p-4 text-[0.813rem] orx-orx-font-semibold text-[var(--orx-primary)]">{nota.numero_nfe}</td>
+                <tr
+                  key={nota.id}
+                  className="border-b border-black/5 hover:bg-indigo-500/5 transition-colors"
+                >
+                  <td className="p-4 text-[0.813rem] orx-orx-font-semibold text-[var(--orx-primary)]">
+                    {nota.numero_nfe}
+                  </td>
                   <td className="p-4 text-[0.813rem] text-[var(--orx-text-primary)]">
                     <div>
                       <div className="orx-orx-font-semibold">{nota.fornecedor_nome}</div>
-                      <div className="text-[0.813rem] text-[var(--orx-text-secondary)]">{nota.fornecedor_cnpj}</div>
+                      <div className="text-[0.813rem] text-[var(--orx-text-secondary)]">
+                        {nota.fornecedor_cnpj}
+                      </div>
                     </div>
                   </td>
-                  <td className="p-4 text-[0.813rem] text-[var(--orx-text-primary)]">{new Date(nota.data_emissao).toLocaleDateString('pt-BR')}</td>
-                  <td className="p-4 text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)]">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(nota.valor_total)}</td>
+                  <td className="p-4 text-[0.813rem] text-[var(--orx-text-primary)]">
+                    {new Date(nota.data_emissao).toLocaleDateString('pt-BR')}
+                  </td>
+                  <td className="p-4 text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)]">
+                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
+                      nota.valor_total
+                    )}
+                  </td>
                   <td className="p-4">{getStatusBadge(nota.status)}</td>
                   <td className="p-4">
                     <div className="flex items-center justify-center gap-2">
-                      <button className="inline-flex items-center gap-2 p-2 rounded-lg bg-[var(--orx-bg-light)] border border-black/10 shadow transition" title="Visualizar">
+                      <button
+                        className="inline-flex items-center gap-2 p-2 rounded-lg bg-[var(--orx-bg-light)] border border-black/10 shadow transition"
+                        title="Visualizar"
+                      >
                         <Eye size={18} className="text-[var(--orx-info-dark)]" />
                       </button>
-                      <button className="inline-flex items-center gap-2 p-2 rounded-lg bg-[var(--orx-bg-light)] border border-black/10 shadow transition" title="Baixar XML">
+                      <button
+                        className="inline-flex items-center gap-2 p-2 rounded-lg bg-[var(--orx-bg-light)] border border-black/10 shadow transition"
+                        title="Baixar XML"
+                      >
                         <Download size={18} className="text-[var(--orx-primary)]" />
                       </button>
                     </div>
@@ -563,4 +643,3 @@ export const NotasCompra: React.FC = () => {
 };
 
 export default NotasCompra;
-

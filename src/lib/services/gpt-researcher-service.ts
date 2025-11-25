@@ -1,9 +1,9 @@
 /**
  * GPT Researcher Service
- * 
+ *
  * Serviço para integração com GPT Researcher
  * (Deep Web Research Agent)
- * 
+ *
  * @version 1.0.0
  * @author ICARUS Team
  */
@@ -114,7 +114,7 @@ export class GPTResearcher {
         return false;
       }
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       this.log({
         type: 'error',
         message: `Erro ao conectar: ${err instanceof Error ? err.message : 'Desconhecido'}`,
@@ -199,7 +199,7 @@ export class GPTResearcher {
         },
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
 
       this.log({
@@ -244,10 +244,7 @@ export class GPTResearcher {
   // PESQUISA RÁPIDA (SHORTHAND)
   // ============================================
 
-  async quickResearch(
-    task: string,
-    domains?: string[]
-  ): Promise<string> {
+  async quickResearch(task: string, domains?: string[]): Promise<string> {
     const response = await this.sendMessage({
       task,
       reportType: 'summary',
@@ -263,10 +260,7 @@ export class GPTResearcher {
   // PESQUISA DETALHADA (SHORTHAND)
   // ============================================
 
-  async detailedResearch(
-    task: string,
-    domains?: string[]
-  ): Promise<ResearchResponse> {
+  async detailedResearch(task: string, domains?: string[]): Promise<ResearchResponse> {
     return await this.sendMessage({
       task,
       reportType: 'detailed_analysis',
@@ -281,10 +275,7 @@ export class GPTResearcher {
   // PESQUISA EM DOMÍNIOS ESPECÍFICOS
   // ============================================
 
-  async researchInDomains(
-    task: string,
-    domains: string[]
-  ): Promise<ResearchResponse> {
+  async researchInDomains(task: string, domains: string[]): Promise<ResearchResponse> {
     this.log({
       type: 'info',
       message: `Pesquisando em domínios: ${domains.join(', ')}`,
@@ -334,17 +325,6 @@ export const OPME_DOMAINS = [
   'tuss.ans.gov.br',
 ];
 
-export const TECH_DOMAINS = [
-  'techcrunch.com',
-  'wired.com',
-  'theverge.com',
-  'arstechnica.com',
-];
+export const TECH_DOMAINS = ['techcrunch.com', 'wired.com', 'theverge.com', 'arstechnica.com'];
 
-export const FINANCE_DOMAINS = [
-  'bcb.gov.br',
-  'cvm.gov.br',
-  'b3.com.br',
-  'infomoney.com.br',
-];
-
+export const FINANCE_DOMAINS = ['bcb.gov.br', 'cvm.gov.br', 'b3.com.br', 'infomoney.com.br'];

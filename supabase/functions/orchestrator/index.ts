@@ -64,21 +64,23 @@ serve(async (req) => {
     const { data: mainTask, error: taskError } = await supabaseClient
       .from("agent_tasks")
       .insert({
-        query_text: request.query_text,
-        task_type: request.task_type || "master_planning",
-        organization_id: request.organization_id,
-        priority: request.priority || 5,
-        parameters: request.parameters || {},
+        query: request.query_text,
+        empresa_id: request.organization_id,
         status: "in_progress",
-        assigned_agent: "orchestrator-master",
-        created_by: user.id,
+        user_id: user.id,
+        metadata: {
+          task_type: request.task_type || "master_planning",
+          priority: request.priority || 5,
+          parameters: request.parameters || {},
+          assigned_agent: "orchestrator-master",
+        },
       })
       .select()
       .single();
 
     if (taskError) throw taskError;
 
-    console.log("Main task created:", mainTask.task_id);
+    console.log("Main task created:", mainTask.id);
 
     // 2. Analisar a query e decompor em subtarefas usando LLM
     const masterPlan = await decomposeQuery(
@@ -95,14 +97,14 @@ serve(async (req) => {
     await supabaseClient
       .from("agent_tasks")
       .update({
-        master_plan: masterPlan,
         metadata: {
           ...mainTask.metadata,
+          master_plan: masterPlan,
           decomposed_at: new Date().toISOString(),
           subtasks_planned: masterPlan.subtasks.length,
         },
       })
-      .eq("task_id", mainTask.task_id);
+      .eq("id", mainTask.id);
 
     // 4. Criar subtarefas
     const subtaskIds: string[] = [];
@@ -110,17 +112,17 @@ serve(async (req) => {
       const { data: createdSubtask, error: subtaskError } = await supabaseClient
         .from("agent_tasks")
         .insert({
-          parent_task_id: mainTask.task_id,
-          query_text: request.query_text,
-          task_description: subtask.description,
-          task_type: subtask.task_type,
-          organization_id: request.organization_id,
-          priority: subtask.priority,
-          assigned_agent: subtask.agent_name,
-          parameters: subtask.parameters || {},
+          query: request.query_text,
+          empresa_id: request.organization_id,
           status: "pending",
-          created_by: user.id,
+          user_id: user.id,
           metadata: {
+            parent_task_id: mainTask.id,
+            task_description: subtask.description,
+            task_type: subtask.task_type,
+            priority: subtask.priority,
+            assigned_agent: subtask.agent_name,
+            parameters: subtask.parameters || {},
             dependencies: subtask.dependencies || [],
           },
         })
@@ -132,11 +134,11 @@ serve(async (req) => {
         continue;
       }
 
-      subtaskIds.push(createdSubtask.task_id);
+      subtaskIds.push(createdSubtask.id);
 
       // Log de criação da subtarefa
       await supabaseClient.from("agent_logs").insert({
-        task_id: createdSubtask.task_id,
+        task_id: createdSubtask.id,
         agent_name: "orchestrator-master",
         event_type: "task_started",
         action: `Subtask created: ${subtask.description}`,
@@ -152,9 +154,12 @@ serve(async (req) => {
     await supabaseClient
       .from("agent_tasks")
       .update({
-        subtasks: subtaskIds,
+        metadata: {
+          ...mainTask.metadata,
+          subtasks: subtaskIds,
+        },
       })
-      .eq("task_id", mainTask.task_id);
+      .eq("id", mainTask.id);
 
     // 6. Disparar execução assíncrona dos agentes (via webhook ou fila)
     if (masterPlan.subtasks.length > 0) {
@@ -167,7 +172,7 @@ serve(async (req) => {
 
     // 7. Log de orquestração completa
     await supabaseClient.from("agent_logs").insert({
-      task_id: mainTask.task_id,
+      task_id: mainTask.id,
       agent_name: "orchestrator-master",
       event_type: "task_progress",
       action: `Orchestration complete: ${subtaskIds.length} subtasks created`,
@@ -181,7 +186,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({
         success: true,
-        task_id: mainTask.task_id,
+        task_id: mainTask.id,
         subtasks: subtaskIds,
         master_plan: masterPlan,
         message: "Orchestration initiated successfully",
@@ -390,16 +395,23 @@ async function triggerAgentExecution(
   // Os agentes podem ser workers que fazem polling dessa tabela
 
   for (const subtaskId of subtaskIds) {
-    // Notificar via Realtime
+    // Notificar via Realtime - buscar metadata atual e atualizar
+    const { data: currentTask } = await supabaseClient
+      .from("agent_tasks")
+      .select("metadata")
+      .eq("id", subtaskId)
+      .single();
+
     await supabaseClient
       .from("agent_tasks")
       .update({
         metadata: {
+          ...(currentTask?.metadata || {}),
           ready_for_execution: true,
           notified_at: new Date().toISOString(),
         },
       })
-      .eq("task_id", subtaskId);
+      .eq("id", subtaskId);
   }
 
   console.log("Agent execution triggered successfully");

@@ -50,14 +50,9 @@ interface SortableItemComponentProps {
 // ============================================
 
 function SortableItemComponent({ id, children }: SortableItemComponentProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id });
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -70,9 +65,7 @@ function SortableItemComponent({ id, children }: SortableItemComponentProps) {
       style={style}
       className={cn(
         'group flex items-center gap-3 p-4 rounded-xl transition-all',
-        isDragging
-          ? 'neuro-inset scale-105 opacity-50'
-          : 'neuro-raised hover:neuro-flat'
+        isDragging ? 'neuro-inset scale-105 opacity-50' : 'neuro-raised hover:neuro-flat'
       )}
       {...attributes}
     >
@@ -116,7 +109,7 @@ export function SortableList({ items, onReorder, className }: SortableListProps)
         const newIndex = items.findIndex((item) => item.id === over.id);
 
         const reorderedItems = arrayMove(items, oldIndex, newIndex);
-        
+
         // Callback para atualizar estado externo
         if (onReorder) {
           onReorder(reorderedItems);
@@ -128,11 +121,7 @@ export function SortableList({ items, onReorder, className }: SortableListProps)
   };
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-    >
+    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext items={localItems} strategy={verticalListSortingStrategy}>
         <div className={cn('space-y-3', className)} role="list">
           {localItems.map((item) => (
@@ -215,11 +204,8 @@ export function ExemploSortableTaskList() {
 
   const handleReorder = (reorderedItems: SortableItem[]) => {
     // Atualizar o estado das tasks com a nova ordem
-    const newTasks = reorderedItems.map((item) =>
-      tasks.find((task) => task.id === item.id)!
-    );
+    const newTasks = reorderedItems.map((item) => tasks.find((task) => task.id === item.id)!);
     setTasks(newTasks);
-    console.log('Nova ordem:', newTasks.map((t) => t.title));
   };
 
   return (
@@ -264,7 +250,7 @@ export function ExemploSortableTaskList() {
             Ordem Atual:
           </h3>
           <ol className="list-decimal list-inside space-y-1">
-            {tasks.map((task, index) => (
+            {tasks.map((task) => (
               <li
                 key={task.id}
                 className="text-[var(--text-secondary)]"
@@ -282,4 +268,3 @@ export function ExemploSortableTaskList() {
     </div>
   );
 }
-

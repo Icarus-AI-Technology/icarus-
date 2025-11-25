@@ -19,9 +19,12 @@
   /* ========================================
      NEUMÓRFICO - MODO CLARO (AJUSTADO - Menos brilho, mais contraste)
      ======================================== */
-  --orx-bg-light: #d6dce6; /* Reduzido de #e0e5ec para menos brilho */
-  --orx-shadow-light-1: 8px 8px 16px #8f9db3; /* Sombra escura mais forte (era #a3b1c6) */
-  --orx-shadow-light-2: -8px -8px 16px #f5f7fa; /* Sombra clara menos intensa (era #ffffff) */
+  --orx-bg-light: #d6dce6;
+  /* Reduzido de #e0e5ec para menos brilho */
+  --orx-shadow-light-1: 8px 8px 16px #8f9db3;
+  /* Sombra escura mais forte (era #a3b1c6) */
+  --orx-shadow-light-2: -8px -8px 16px #f5f7fa;
+  /* Sombra clara menos intensa (era #ffffff) */
   --orx-shadow-inset-light-1: inset 8px 8px 16px #8f9db3;
   --orx-shadow-inset-light-2: inset -8px -8px 16px #f5f7fa;
 
@@ -40,19 +43,19 @@
   --orx-success: #10b981;
   --orx-success-light: #d1fae5;
   --orx-success-dark: #15803d;
-  
+
   --orx-warning: #f59e0b;
   --orx-warning-light: #fef3c7;
   --orx-warning-dark: #92400e;
-  
+
   --orx-error: #ef4444;
   --orx-error-light: #fecaca;
   --orx-error-dark: #dc2626;
-  
+
   --orx-info: #3b82f6;
   --orx-info-light: #dbeafe;
   --orx-info-dark: #1e40af;
-  
+
   /* Paleta Indigo Extendida */
   --orx-indigo-50: #eef2ff;
   --orx-indigo-100: #e0e7ff;
@@ -64,7 +67,7 @@
   --orx-indigo-700: #4338ca;
   --orx-indigo-800: #3730a3;
   --orx-indigo-900: #312e81;
-  
+
   /* Paleta Teal Extendida */
   --orx-teal-50: #f0fdfa;
   --orx-teal-100: #ccfbf1;
@@ -76,7 +79,7 @@
   --orx-teal-700: #0f766e;
   --orx-teal-800: #115e59;
   --orx-teal-900: #134e4a;
-  
+
   /* Paleta Adicional - Pink, Purple, Cyan, Gray */
   --orx-pink-500: #ec4899;
   --orx-purple-500: #8b5cf6;
@@ -91,31 +94,48 @@
   --orx-font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
     sans-serif;
-  --orx-font-size-xs: 0.75rem; /* 12px */
-  --orx-font-size-sm: 0.875rem; /* 14px */
-  --orx-font-size-base: 1rem; /* 16px */
-  --orx-font-size-lg: 1.125rem; /* 18px */
-  --orx-font-size-xl: 1.25rem; /* 20px */
-  --orx-font-size-2xl: 1.5rem; /* 24px */
-  --orx-font-size-3xl: 1.875rem; /* 30px */
+  --orx-font-size-xs: 0.75rem;
+  /* 12px */
+  --orx-font-size-sm: 0.875rem;
+  /* 14px */
+  --orx-font-size-base: 1rem;
+  /* 16px */
+  --orx-font-size-lg: 1.125rem;
+  /* 18px */
+  --orx-font-size-xl: 1.25rem;
+  /* 20px */
+  --orx-font-size-2xl: 1.5rem;
+  /* 24px */
+  --orx-font-size-3xl: 1.875rem;
+  /* 30px */
 
   /* ========================================
      ESPAÇAMENTOS
      ======================================== */
-  --orx-spacing-xs: 0.25rem; /* 4px */
-  --orx-spacing-sm: 0.5rem; /* 8px */
-  --orx-spacing-md: 1rem; /* 16px */
-  --orx-spacing-lg: 1.5rem; /* 24px */
-  --orx-spacing-xl: 2rem; /* 32px */
-  --orx-spacing-2xl: 3rem; /* 48px */
+  --orx-spacing-xs: 0.25rem;
+  /* 4px */
+  --orx-spacing-sm: 0.5rem;
+  /* 8px */
+  --orx-spacing-md: 1rem;
+  /* 16px */
+  --orx-spacing-lg: 1.5rem;
+  /* 24px */
+  --orx-spacing-xl: 2rem;
+  /* 32px */
+  --orx-spacing-2xl: 3rem;
+  /* 48px */
 
   /* ========================================
      BORDER RADIUS
      ======================================== */
-  --orx-radius-sm: 0.5rem; /* 8px */
-  --orx-radius-md: 1rem; /* 16px */
-  --orx-radius-lg: 1.5rem; /* 24px */
-  --orx-radius-full: 9999px; /* Circular */
+  --orx-radius-sm: 0.5rem;
+  /* 8px */
+  --orx-radius-md: 1rem;
+  /* 16px */
+  --orx-radius-lg: 1.5rem;
+  /* 24px */
+  --orx-radius-full: 9999px;
+  /* Circular */
 
   /* ========================================
      TRANSIÇÕES
@@ -135,9 +155,19 @@
   /* ========================================
      CORES DE TEXTO E FUNDO (MODO CLARO - AJUSTADO)
      ======================================== */
-  --orx-text-primary: #1a202c; /* Mais escuro para maior contraste (era #1f2937) */
-  --orx-text-secondary: #4b5563; /* Mais escuro para melhor legibilidade (era #6b7280) */
-  --orx-text-muted: #6b7280; /* Ajustado (era #9ca3af) */
+  --orx-text-primary: #1a202c;
+  /* Mais escuro para maior contraste (era #1f2937) */
+  --orx-text-secondary: #4b5563;
+  /* Mais escuro para melhor legibilidade (era #6b7280) */
+  --orx-text-muted: #6b7280;
+  /* Ajustado (era #9ca3af) */
+
+  /* ========================================
+     NEUMORPHIC DEPTH SHADOWS (Para KPICard/MiniCard)
+     ======================================== */
+  --orx-shadow-dark: rgba(143, 157, 179, 0.5);
+  --orx-shadow-light: rgba(245, 247, 250, 0.9);
+  --orx-bg-card: var(--orx-bg-light);
 }
 
 /* ========================================
@@ -149,10 +179,15 @@
   --orx-shadow-light-2: -8px -8px 16px #374151;
   --orx-shadow-inset-light-1: inset 8px 8px 16px #111827;
   --orx-shadow-inset-light-2: inset -8px -8px 16px #374151;
-  
+
   --orx-text-primary: #f9fafb;
   --orx-text-secondary: #d1d5db;
   --orx-text-muted: #9ca3af;
+
+  /* Dark Mode Neumorphic Depth Shadows */
+  --orx-shadow-dark: rgba(26, 32, 44, 0.8);
+  --orx-shadow-light: rgba(61, 74, 92, 0.6);
+  --orx-bg-card: var(--orx-bg-dark);
 }
 
 /* ========================================
@@ -186,8 +221,10 @@
 
 .orx-button:hover {
   box-shadow:
-    10px 10px 20px #8f9db3, /* Sombra mais forte */
-    -10px -10px 20px #f5f7fa; /* Highlight menos intenso */
+    10px 10px 20px #8f9db3,
+    /* Sombra mais forte */
+    -10px -10px 20px #f5f7fa;
+  /* Highlight menos intenso */
   transform: translateY(-1px);
 }
 

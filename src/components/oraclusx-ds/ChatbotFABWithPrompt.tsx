@@ -3,14 +3,14 @@
  * FAB do Chatbot com prompt de entrada rápida
  */
 
-import React, { useState } from"react";
-import { MessageCircle, Send, X } from"lucide-react";
-import { cn } from"@/lib/utils";
+import React, { useState } from 'react';
+import { MessageCircle, Send, X } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export interface ChatbotFABWithPromptProps {
   onSendMessage?: (message: string) => void;
   onClose?: () => void;
-  position?:"bottom-right" |"bottom-left";
+  position?: 'bottom-right' | 'bottom-left';
   suggestions?: string[];
   className?: string;
 }
@@ -18,21 +18,23 @@ export interface ChatbotFABWithPromptProps {
 export const ChatbotFABWithPrompt: React.FC<ChatbotFABWithPromptProps> = ({
   onSendMessage,
   onClose,
-  position ="bottom-right",
-  suggestions = ["Como cadastrar um novo médico?","Ver cirurgias agendadas hoje","Relatório de estoque",
+  position = 'bottom-right',
+  suggestions = [
+    'Como cadastrar um novo médico?',
+    'Ver cirurgias agendadas hoje',
+    'Relatório de estoque',
   ],
   className,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
 
-  const positionClasses = {"bottom-right":"bottom-6 right-6","bottom-left":"bottom-6 left-6",
-  };
+  const positionClasses = { 'bottom-right': 'bottom-6 right-6', 'bottom-left': 'bottom-6 left-6' };
 
   const handleSend = () => {
     if (message.trim()) {
       onSendMessage?.(message);
-      setMessage("");
+      setMessage('');
     }
   };
 
@@ -41,7 +43,7 @@ export const ChatbotFABWithPrompt: React.FC<ChatbotFABWithPromptProps> = ({
   };
 
   return (
-    <div className={cn("fixed z-50", positionClasses[position], className)}>
+    <div className={cn('fixed z-50', positionClasses[position], className)}>
       {isExpanded ? (
         <div className="orx-card p-4 w-80 mb-4 animate-in slide-in-from-bottom-5 fade-in duration-300">
           <div className="flex items-center justify-between mb-3">
@@ -77,7 +79,7 @@ export const ChatbotFABWithPrompt: React.FC<ChatbotFABWithPromptProps> = ({
               type="text"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              onKeyPress={(e) => e.key ==="Enter" && handleSend()}
+              onKeyPress={(e) => e.key === 'Enter' && handleSend()}
               placeholder="Digite sua mensagem..."
               className="orx-input flex-1 text-body-sm"
             />
@@ -95,7 +97,12 @@ export const ChatbotFABWithPrompt: React.FC<ChatbotFABWithPromptProps> = ({
 
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className={cn("orx-button-primary w-14 h-14 rounded-full","flex items-center justify-center","shadow-lg hover:shadow-xl","transition-all duration-200","hover:scale-110 active:scale-95",
+        className={cn(
+          'orx-button-primary w-14 h-14 rounded-full',
+          'flex items-center justify-center',
+          'shadow-lg hover:shadow-xl',
+          'transition-all duration-200',
+          'hover:scale-110 active:scale-95'
         )}
         aria-label="Abrir Assistente IA"
       >
@@ -105,7 +112,6 @@ export const ChatbotFABWithPrompt: React.FC<ChatbotFABWithPromptProps> = ({
   );
 };
 
-ChatbotFABWithPrompt.displayName ="OraclusXChatbotFABWithPrompt";
+ChatbotFABWithPrompt.displayName = 'OraclusXChatbotFABWithPrompt';
 
 export default ChatbotFABWithPrompt;
-

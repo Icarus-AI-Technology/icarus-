@@ -25,7 +25,7 @@ export class UpstashRedisAdapter {
     const response = await fetch(this.url, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${this.token}`,
+        Authorization: `Bearer ${this.token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(command),
@@ -133,4 +133,3 @@ export const upstashRedis = new UpstashRedisAdapter({
   url: import.meta.env.VITE_UPSTASH_REDIS_REST_URL || '',
   token: import.meta.env.VITE_UPSTASH_REDIS_REST_TOKEN || '',
 });
-

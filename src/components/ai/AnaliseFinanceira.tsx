@@ -30,7 +30,7 @@ export function AnaliseFinanceira() {
       setFluxoCaixa(fluxoData.slice(0, 15)); // Próximos 15 dias
     } catch (err) {
       console.error('Erro:', err);
-      
+
       // Fallback com dados de exemplo
       setScore({
         cliente_id: '1',
@@ -56,7 +56,7 @@ export function AnaliseFinanceira() {
         data.setDate(data.getDate() + i);
         const entradas = Math.random() * 50000 + 30000;
         const saidas = Math.random() * 40000 + 25000;
-        saldoAcumulado += (entradas - saidas);
+        saldoAcumulado += entradas - saidas;
         fluxoExemplo.push({
           data: data.toISOString().split('T')[0],
           entradas_previstas: entradas,
@@ -87,7 +87,9 @@ export function AnaliseFinanceira() {
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="orx-text-2xl orx-orx-font-bold text-slate-900 dark:text-white">Análise Financeira IA</h2>
+          <h2 className="orx-text-2xl orx-orx-font-bold text-slate-900 dark:text-white">
+            Análise Financeira IA
+          </h2>
           <p className="text-slate-600 dark:text-slate-400">
             Score de Inadimplência, Fluxo de Caixa, Análise de Risco
           </p>
@@ -108,15 +110,24 @@ export function AnaliseFinanceira() {
               <h3 className="orx-text-lg orx-orx-font-semibold text-slate-900 dark:text-white mb-1">
                 {score.cliente_nome}
               </h3>
-              <p className="orx-text-sm text-slate-600 dark:text-slate-400">Score de Inadimplência</p>
+              <p className="orx-text-sm text-slate-600 dark:text-slate-400">
+                Score de Inadimplência
+              </p>
             </div>
-            <div className={`
+            <div
+              className={`
               px-4 py-2 rounded-full orx-orx-font-bold orx-text-lg
-              ${score.categoria_risco === 'baixo' ? 'bg-green-600 text-white' :
-                score.categoria_risco === 'medio' ? 'bg-yellow-600 text-white' :
-                score.categoria_risco === 'alto' ? 'bg-orange-600 text-white' :
-                'bg-red-600 text-white'}
-            `}>
+              ${
+                score.categoria_risco === 'baixo'
+                  ? 'bg-green-600 text-white'
+                  : score.categoria_risco === 'medio'
+                    ? 'bg-yellow-600 text-white'
+                    : score.categoria_risco === 'alto'
+                      ? 'bg-orange-600 text-white'
+                      : 'bg-red-600 text-white'
+              }
+            `}
+            >
               {score.score}
             </div>
           </div>
@@ -158,8 +169,12 @@ export function AnaliseFinanceira() {
             <div className="flex items-start gap-3">
               <CreditCard className="w-5 h-5 text-green-600 mt-0.5" />
               <div>
-                <p className="orx-orx-font-medium text-slate-900 dark:text-white mb-1">Recomendação IA</p>
-                <p className="orx-text-sm text-slate-700 dark:text-slate-300">{score.recomendacao}</p>
+                <p className="orx-orx-font-medium text-slate-900 dark:text-white mb-1">
+                  Recomendação IA
+                </p>
+                <p className="orx-text-sm text-slate-700 dark:text-slate-300">
+                  {score.recomendacao}
+                </p>
                 <p className="orx-text-xs text-slate-500 dark:text-slate-500 mt-2">
                   Probabilidade de inadimplência: {score.probabilidade_inadimplencia.toFixed(1)}%
                 </p>
@@ -180,11 +195,11 @@ export function AnaliseFinanceira() {
           {/* Gráfico de Linha Simplificado */}
           <div className="h-48 flex items-end gap-1">
             {fluxoCaixa.map((dia, idx) => {
-              const minSaldo = Math.min(...fluxoCaixa.map(d => d.saldo_previsto));
-              const maxSaldo = Math.max(...fluxoCaixa.map(d => d.saldo_previsto));
+              const minSaldo = Math.min(...fluxoCaixa.map((d) => d.saldo_previsto));
+              const maxSaldo = Math.max(...fluxoCaixa.map((d) => d.saldo_previsto));
               const altura = ((dia.saldo_previsto - minSaldo) / (maxSaldo - minSaldo)) * 100;
               const isNegativo = dia.saldo_previsto < 0;
-              
+
               return (
                 <div
                   key={idx}
@@ -194,18 +209,24 @@ export function AnaliseFinanceira() {
                   <div
                     className={`
                       w-full rounded-t transition-all
-                      ${isNegativo 
-                        ? 'bg-gradient-to-t from-red-500 to-red-300' 
-                        : 'bg-gradient-to-t from-green-500 to-green-300'}
+                      ${
+                        isNegativo
+                          ? 'bg-gradient-to-t from-red-500 to-red-300'
+                          : 'bg-gradient-to-t from-green-500 to-green-300'
+                      }
                       group-hover:opacity-75
                     `}
                     style={{ height: `${Math.max(altura, 5)}%` }}
                   />
                   <div className="absolute -top-20 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white orx-text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                     <p className="orx-orx-font-medium">{dia.data.split('-').slice(1).join('/')}</p>
-                    <p className="text-green-300">↑ R$ {(dia.entradas_previstas / 1000).toFixed(0)}k</p>
+                    <p className="text-green-300">
+                      ↑ R$ {(dia.entradas_previstas / 1000).toFixed(0)}k
+                    </p>
                     <p className="text-red-300">↓ R$ {(dia.saidas_previstas / 1000).toFixed(0)}k</p>
-                    <p className="orx-orx-font-bold">= R$ {(dia.saldo_previsto / 1000).toFixed(0)}k</p>
+                    <p className="orx-orx-font-bold">
+                      = R$ {(dia.saldo_previsto / 1000).toFixed(0)}k
+                    </p>
                   </div>
                 </div>
               );
@@ -216,7 +237,8 @@ export function AnaliseFinanceira() {
             <div className="text-center">
               <p className="orx-text-sm text-slate-600 dark:text-slate-400">Entradas Previstas</p>
               <p className="orx-text-2xl orx-orx-font-bold text-green-600">
-                R$ {(fluxoCaixa.reduce((sum, d) => sum + d.entradas_previstas, 0) / 1000).toFixed(0)}k
+                R${' '}
+                {(fluxoCaixa.reduce((sum, d) => sum + d.entradas_previstas, 0) / 1000).toFixed(0)}k
               </p>
             </div>
             <div className="text-center">
@@ -227,7 +249,9 @@ export function AnaliseFinanceira() {
             </div>
             <div className="text-center">
               <p className="orx-text-sm text-slate-600 dark:text-slate-400">Saldo Final</p>
-              <p className={`orx-text-2xl orx-orx-font-bold ${fluxoCaixa[fluxoCaixa.length - 1]?.saldo_previsto > 0 ? 'text-green-600' : 'text-red-600'}`}>
+              <p
+                className={`orx-text-2xl orx-orx-font-bold ${fluxoCaixa[fluxoCaixa.length - 1]?.saldo_previsto > 0 ? 'text-green-600' : 'text-red-600'}`}
+              >
                 R$ {((fluxoCaixa[fluxoCaixa.length - 1]?.saldo_previsto || 0) / 1000).toFixed(0)}k
               </p>
             </div>
@@ -252,4 +276,3 @@ export function AnaliseFinanceira() {
     </div>
   );
 }
-

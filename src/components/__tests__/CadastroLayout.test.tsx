@@ -3,7 +3,12 @@
  */
 
 import { render, screen } from '@testing-library/react';
-import { CadastroPageLayout, CadastroSection, FormGrid, FormActions } from '@/components/oraclusx-ds/CadastroLayout';
+import {
+  CadastroPageLayout,
+  CadastroSection,
+  FormGrid,
+  FormActions,
+} from '@/components/oraclusx-ds/CadastroLayout';
 import { Button } from '@/components/oraclusx-ds';
 import { Users } from 'lucide-react';
 
@@ -19,10 +24,7 @@ describe('CadastroPageLayout', () => {
 
   it('renders description when provided', () => {
     render(
-      <CadastroPageLayout
-        title="Test"
-        description="Test Description"
-      >
+      <CadastroPageLayout title="Test" description="Test Description">
         <div>Content</div>
       </CadastroPageLayout>
     );
@@ -59,9 +61,7 @@ describe('CadastroSection', () => {
   });
 
   it('applies default animation styling', () => {
-    const { container } = render(
-      <CadastroSection>Content</CadastroSection>
-    );
+    const { container } = render(<CadastroSection>Content</CadastroSection>);
     const section = container.firstChild as HTMLElement;
     expect(section.className).toContain('orx-animate-slide-up');
   });
@@ -112,4 +112,3 @@ describe('FormActions', () => {
     expect(actions.className).toContain('justify-end');
   });
 });
-

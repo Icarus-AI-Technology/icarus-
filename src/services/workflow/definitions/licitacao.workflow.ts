@@ -1,9 +1,9 @@
 /**
  * 🏛️ WORKFLOW: LICITAÇÕES
- * 
+ *
  * Workflow completo para gerenciamento de processos licitatórios
  * Desde a identificação da oportunidade até a assinatura do contrato
- * 
+ *
  * Modalidades suportadas:
  * - Pregão Eletrônico/Presencial
  * - Concorrência
@@ -20,7 +20,7 @@ export const LICITACAO_WORKFLOW: WorkflowDefinition = {
   name: 'Gestão de Licitações',
   description: 'Workflow completo para participação em processos licitatórios públicos',
   module: 'licitacoes',
-  
+
   states: [
     {
       id: 'identificada',
@@ -404,7 +404,7 @@ export const LICITACAO_WORKFLOW: WorkflowDefinition = {
       isFinal: true,
     },
   ],
-  
+
   notifications: [
     {
       id: 'notif-licitacao-identificada',
@@ -412,7 +412,8 @@ export const LICITACAO_WORKFLOW: WorkflowDefinition = {
       stateId: 'identificada',
       recipients: ['assignee'],
       recipientRoles: ['gestor_licitacoes', 'comercial'],
-      template: 'Nova oportunidade de licitação: {orgao_nome} - {objeto}. Valor estimado: R$ {valor_estimado}',
+      template:
+        'Nova oportunidade de licitação: {orgao_nome} - {objeto}. Valor estimado: R$ {valor_estimado}',
       channels: ['email', 'whatsapp', 'in_app'],
     },
     {
@@ -421,7 +422,8 @@ export const LICITACAO_WORKFLOW: WorkflowDefinition = {
       stateId: 'analise_aprovada',
       recipients: ['creator'],
       recipientRoles: ['documentacao', 'juridico'],
-      template: 'Participação aprovada! Iniciar preparação de documentação. Edital: {numero_edital}',
+      template:
+        'Participação aprovada! Iniciar preparação de documentação. Edital: {numero_edital}',
       channels: ['email', 'in_app'],
     },
     {
@@ -457,7 +459,8 @@ export const LICITACAO_WORKFLOW: WorkflowDefinition = {
       stateId: 'aguardando_sessao',
       recipients: ['assignee'],
       recipientRoles: ['gestor_licitacoes', 'comercial'],
-      template: 'LEMBRETE: Sessão pública em 24 horas! Modalidade: {modalidade}. Edital: {numero_edital}',
+      template:
+        'LEMBRETE: Sessão pública em 24 horas! Modalidade: {modalidade}. Edital: {numero_edital}',
       channels: ['email', 'whatsapp', 'push', 'in_app'],
     },
     {
@@ -493,7 +496,8 @@ export const LICITACAO_WORKFLOW: WorkflowDefinition = {
       stateId: 'contrato_assinado',
       recipients: ['creator', 'assignee'],
       recipientRoles: ['gestor_licitacoes', 'comercial', 'diretor', 'financeiro', 'operacional'],
-      template: '🎉 CONTRATO ASSINADO! Órgão: {orgao_nome}. Valor: R$ {valor_contrato}. Vigência: {data_inicio} a {data_termino}',
+      template:
+        '🎉 CONTRATO ASSINADO! Órgão: {orgao_nome}. Valor: R$ {valor_contrato}. Vigência: {data_inicio} a {data_termino}',
       channels: ['email', 'whatsapp', 'push', 'in_app'],
     },
     {
@@ -502,7 +506,8 @@ export const LICITACAO_WORKFLOW: WorkflowDefinition = {
       stateId: 'perdedora',
       recipients: ['creator'],
       recipientRoles: ['gestor_licitacoes', 'comercial'],
-      template: 'Licitação não vencida. Vencedor: {vencedor_nome}. Valor vencedor: R$ {valor_vencedor}. Motivo: {motivo_derrota}',
+      template:
+        'Licitação não vencida. Vencedor: {vencedor_nome}. Valor vencedor: R$ {valor_vencedor}. Motivo: {motivo_derrota}',
       channels: ['email', 'in_app'],
     },
     {
@@ -515,14 +520,14 @@ export const LICITACAO_WORKFLOW: WorkflowDefinition = {
       channels: ['email', 'whatsapp', 'in_app'],
     },
   ],
-  
+
   validations: [
     {
       stateId: 'analise_aprovada',
       type: 'required_fields',
       message: 'É necessário verificar se a empresa possui as certidões exigidas',
-      validator: async (instance) => {
-        const certidoesOk = instance.metadata?.certidoesRegulares || false;
+      validator: async (instance): Promise<boolean> => {
+        const certidoesOk = (instance.metadata?.certidoesRegulares as boolean) || false;
         return certidoesOk;
       },
     },
@@ -530,26 +535,31 @@ export const LICITACAO_WORKFLOW: WorkflowDefinition = {
       stateId: 'documentacao_pronta',
       type: 'required_fields',
       message: 'É necessário anexar todos os documentos exigidos no edital',
-      validator: async (instance) => {
-        const documentosExigidos = instance.metadata?.documentosExigidos || [];
-        const documentosAnexados = instance.metadata?.documentosAnexados || [];
-        return documentosExigidos.length > 0 && documentosAnexados.length >= documentosExigidos.length;
+      validator: async (instance): Promise<boolean> => {
+        const documentosExigidos = (instance.metadata?.documentosExigidos as string[]) || [];
+        const documentosAnexados = (instance.metadata?.documentosAnexados as string[]) || [];
+        return (
+          documentosExigidos.length > 0 && documentosAnexados.length >= documentosExigidos.length
+        );
       },
     },
     {
       stateId: 'proposta_pronta',
       type: 'required_fields',
       message: 'É necessário preencher a planilha de custos e valor final da proposta',
-      validator: async (instance) => {
-        return !!instance.metadata?.valorProposta && instance.metadata.valorProposta > 0;
+      validator: async (instance): Promise<boolean> => {
+        const valorProposta = (instance.metadata?.valorProposta as number) || 0;
+        return valorProposta > 0;
       },
     },
     {
       stateId: 'aguardando_sessao',
       type: 'custom_rule',
       message: 'A proposta não pode ser enviada após o prazo limite',
-      validator: async (instance) => {
-        const dataLimite = new Date(instance.metadata?.dataLimiteEnvio);
+      validator: async (instance): Promise<boolean> => {
+        const dataLimiteEnvio = instance.metadata?.dataLimiteEnvio as string | undefined;
+        if (!dataLimiteEnvio) return true;
+        const dataLimite = new Date(dataLimiteEnvio);
         return new Date() <= dataLimite;
       },
     },
@@ -557,10 +567,10 @@ export const LICITACAO_WORKFLOW: WorkflowDefinition = {
       stateId: 'homologada',
       type: 'approval',
       message: 'Contratos acima de R$ 500.000 requerem aprovação da diretoria',
-      validator: async (instance) => {
-        const valorContrato = instance.metadata?.valorContrato || 0;
-        const aprovadoDiretoria = instance.metadata?.aprovadoDiretoria || false;
-        
+      validator: async (instance): Promise<boolean> => {
+        const valorContrato = (instance.metadata?.valorContrato as number) || 0;
+        const aprovadoDiretoria = (instance.metadata?.aprovadoDiretoria as boolean) || false;
+
         if (valorContrato > 500000) {
           return aprovadoDiretoria;
         }
@@ -577,19 +587,26 @@ export const LICITACAO_WORKFLOW: WorkflowDefinition = {
 export interface LicitacaoWorkflowMetadata {
   // Dados do Edital
   numeroEdital: string;
-  modalidade: 'pregao_eletronico' | 'pregao_presencial' | 'concorrencia' | 'tomada_precos' | 'convite' | 'dispensa' | 'inexigibilidade';
+  modalidade:
+    | 'pregao_eletronico'
+    | 'pregao_presencial'
+    | 'concorrencia'
+    | 'tomada_precos'
+    | 'convite'
+    | 'dispensa'
+    | 'inexigibilidade';
   orgaoNome: string;
   orgaoCNPJ: string;
   objeto: string;
   valorEstimado?: number;
-  
+
   // Prazos
   dataPublicacao: Date;
   dataLimiteImpugnacao?: Date;
   dataLimiteEsclarecimentos?: Date;
   dataLimiteEnvio: Date;
   dataSessao: Date;
-  
+
   // Documentação
   certidoesRegulares: boolean;
   documentosExigidos: string[];
@@ -598,13 +615,13 @@ export interface LicitacaoWorkflowMetadata {
     arquivo: string;
     dataAnexo: Date;
   }>;
-  
+
   // Proposta Comercial
   valorProposta?: number;
   planilhaCustos?: string;
   prazoExecucao?: string;
   garantiaOferta?: string;
-  
+
   // Resultado
   vencedorNome?: string;
   valorVencedor?: number;
@@ -612,12 +629,12 @@ export interface LicitacaoWorkflowMetadata {
   valorContrato?: number;
   dataInicio?: Date;
   dataTermino?: Date;
-  
+
   // Recursos e Impugnações
   recursoCriado?: boolean;
   recursoMotivo?: string;
   recursoResultado?: 'deferido' | 'indeferido';
-  
+
   // Aprovações
   aprovadoDiretoria?: boolean;
   aprovadores?: Array<{
@@ -625,11 +642,10 @@ export interface LicitacaoWorkflowMetadata {
     cargo: string;
     aprovadoEm?: Date;
   }>;
-  
+
   // Cancelamento
   motivoCancelamento?: string;
-  
+
   // Observações
   observacoes?: string;
 }
-

@@ -1,10 +1,10 @@
 /**
  * Gestão de Cotações - Módulo Compras e Fornecedores
- * 
+ *
  * Sistema: ICARUS v5.0
  * Versão: 5.0.0
  * Última Atualização: Outubro 2025
- * 
+ *
  * FEATURES:
  * - Criar/Editar Cotações
  * - Multi-fornecedor (comparativo lado a lado)
@@ -12,12 +12,12 @@
  * - Validação de prazos e valores
  * - Anexos de documentos
  * - Dashboard com KPIs
- * 
+ *
  * DESIGN SYSTEM: OraclusX DS + Neumorphism Premium 3D
  */
 
 import React, { useState } from 'react';
-import { Search, Plus, Eye, Edit, Trash2, Send, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { Search, Plus, Eye, Edit, Trash2, Send, CheckCircle, XCircle, Clock, FileText, TrendingUp, TrendingDown, Sparkles } from 'lucide-react';
 import type { Cotacao } from '@/types/compras';
 
 export const GestaoCotacoes: React.FC = () => {
@@ -25,6 +25,7 @@ export const GestaoCotacoes: React.FC = () => {
   const [filterStatus, setFilterStatus] = useState<string>('todos');
   const [filterPrioridade, setFilterPrioridade] = useState<string>('todas');
   const [, setCotacaoSelecionada] = useState<Cotacao | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
   // Mock Data - KPIs
   const kpis = [
@@ -127,7 +128,11 @@ export const GestaoCotacoes: React.FC = () => {
       analise_ia: {
         fornecedor_recomendado_id: 'forn-1',
         score_confianca: 92,
-        fatores_considerados: ['Qualidade histórica', 'Prazo competitivo', 'Condições de pagamento'],
+        fatores_considerados: [
+          'Qualidade histórica',
+          'Prazo competitivo',
+          'Condições de pagamento',
+        ],
         economia_estimada: 4500,
         alertas: [],
       },
@@ -219,7 +224,10 @@ export const GestaoCotacoes: React.FC = () => {
 
   // Status Badge
   const getStatusBadge = (status: string) => {
-    const statusConfig: Record<string, { label: string; bg: string; text: string; icon: React.ReactNode }> = {
+    const statusConfig: Record<
+      string,
+      { label: string; bg: string; text: string; icon: React.ReactNode }
+    > = {
       rascunho: {
         label: 'Rascunho',
         bg: 'var(--orx-bg-light)',
@@ -359,7 +367,8 @@ export const GestaoCotacoes: React.FC = () => {
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = 'var(--orx-shadow-light-1), var(--orx-shadow-light-2)';
+            e.currentTarget.style.boxShadow =
+              'var(--orx-shadow-light-1), var(--orx-shadow-light-2)';
           }}
         >
           <Plus size={20} />
@@ -492,7 +501,8 @@ export const GestaoCotacoes: React.FC = () => {
                 background: 'var(--orx-bg-light)',
                 color: 'var(--orx-text-primary)',
                 fontSize: '0.813rem',
-                boxShadow: 'inset 2px 2px 4px rgba(0, 0, 0, 0.05), inset -2px -2px 4px rgba(255, 255, 255, 0.05)',
+                boxShadow:
+                  'inset 2px 2px 4px rgba(0, 0, 0, 0.05), inset -2px -2px 4px rgba(255, 255, 255, 0.05)',
               }}
             />
           </div>
@@ -508,7 +518,8 @@ export const GestaoCotacoes: React.FC = () => {
               background: 'var(--orx-bg-light)',
               color: 'var(--orx-text-primary)',
               fontSize: '0.813rem',
-              boxShadow: 'inset 2px 2px 4px rgba(0, 0, 0, 0.05), inset -2px -2px 4px rgba(255, 255, 255, 0.05)',
+              boxShadow:
+                'inset 2px 2px 4px rgba(0, 0, 0, 0.05), inset -2px -2px 4px rgba(255, 255, 255, 0.05)',
               cursor: 'pointer',
             }}
           >
@@ -531,7 +542,8 @@ export const GestaoCotacoes: React.FC = () => {
               background: 'var(--orx-bg-light)',
               color: 'var(--orx-text-primary)',
               fontSize: '0.813rem',
-              boxShadow: 'inset 2px 2px 4px rgba(0, 0, 0, 0.05), inset -2px -2px 4px rgba(255, 255, 255, 0.05)',
+              boxShadow:
+                'inset 2px 2px 4px rgba(0, 0, 0, 0.05), inset -2px -2px 4px rgba(255, 255, 255, 0.05)',
               cursor: 'pointer',
             }}
           >
@@ -723,9 +735,12 @@ export const GestaoCotacoes: React.FC = () => {
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <span style={{ fontWeight: 600, fontSize: '0.813rem' }}>{cotacao.fornecedores.length}</span>
+                        <span style={{ fontWeight: 600, fontSize: '0.813rem' }}>
+                          {cotacao.fornecedores.length}
+                        </span>
                         <span style={{ color: 'var(--orx-text-secondary)', fontSize: '0.813rem' }}>
-                          ({cotacao.fornecedores.filter((f) => f.status === 'respondida').length} respondidas)
+                          ({cotacao.fornecedores.filter((f) => f.status === 'respondida').length}{' '}
+                          respondidas)
                         </span>
                       </div>
                     </td>
@@ -744,7 +759,9 @@ export const GestaoCotacoes: React.FC = () => {
                           </span>
                         </div>
                       ) : (
-                        <span style={{ color: 'var(--orx-text-secondary)', fontSize: '0.813rem' }}>-</span>
+                        <span style={{ color: 'var(--orx-text-secondary)', fontSize: '0.813rem' }}>
+                          -
+                        </span>
                       )}
                     </td>
                     <td style={{ padding: '1rem' }}>
@@ -815,4 +832,3 @@ export const GestaoCotacoes: React.FC = () => {
 };
 
 export default GestaoCotacoes;
-

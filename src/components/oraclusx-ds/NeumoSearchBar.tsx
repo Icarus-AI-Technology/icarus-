@@ -1,7 +1,7 @@
 /**
  * OraclusX Design System - NeumoSearchBar Component
  * Barra de Busca Neumórfica 3D Premium
- * 
+ *
  * Barra de busca com visual neumórfico integrado, ícone de lupa,
  * suporte a filtros e loading state.
  */
@@ -14,22 +14,22 @@ export interface NeumoSearchBarProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   /** Callback quando há mudança no valor */
   onSearch?: (value: string) => void;
-  
+
   /** Callback ao limpar o campo */
   onClear?: () => void;
-  
+
   /** Callback ao clicar no botão de filtros */
   onFiltersClick?: () => void;
-  
+
   /** Mostra o botão de filtros */
   showFilters?: boolean;
-  
+
   /** Estado de loading */
   loading?: boolean;
-  
+
   /** Tamanho da barra de busca */
   size?: 'sm' | 'md' | 'lg';
-  
+
   /** Classe CSS adicional para o container */
   containerClassName?: string;
 }
@@ -91,10 +91,7 @@ export const NeumoSearchBar = forwardRef<HTMLInputElement, NeumoSearchBarProps>(
         <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
           <Search
             size={iconSizes[size]}
-            className={cn(
-              'text-orx-text-muted transition-colors',
-              loading && 'animate-pulse'
-            )}
+            className={cn('text-orx-text-muted transition-colors', loading && 'animate-pulse')}
           />
         </div>
 
@@ -174,4 +171,3 @@ export const NeumoSearchBar = forwardRef<HTMLInputElement, NeumoSearchBarProps>(
 NeumoSearchBar.displayName = 'NeumoSearchBar';
 
 export default NeumoSearchBar;
-

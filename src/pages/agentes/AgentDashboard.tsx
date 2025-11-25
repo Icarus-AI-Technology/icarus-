@@ -1,21 +1,28 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@/lib/supabase";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Activity,
-  FileText,
-  TrendingUp,
-  Clock,
-  BarChart3,
-  PlayCircle,
-} from "lucide-react";
-import { AgentTasksList } from "./AgentTasksList";
-import { AgentReportsList } from "./AgentReportsList";
-import { AgentPerformance } from "./AgentPerformance";
-import { CreateTaskDialog } from "./CreateTaskDialog";
+import { useCallback, useEffect, useState } from 'react';
+import { supabase } from '@/lib/supabase';
+import { legacySupabase } from '@/lib/legacySupabase';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/oraclusx-ds/Button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Activity, FileText, TrendingUp, Clock, BarChart3, PlayCircle } from 'lucide-react';
+import { AgentTasksList } from './AgentTasksList';
+import { AgentReportsList } from './AgentReportsList';
+import { AgentPerformance } from './AgentPerformance';
+import { CreateTaskDialog } from './CreateTaskDialog';
+
+interface AgentTaskRow {
+  status?: string | null;
+  execution_time_ms?: number | null;
+  result_data?: {
+    summary?: {
+      compliance_score?: number | string | null;
+    } | null;
+  } | null;
+}
+
+interface AgentReportRow {
+  status?: string | null;
+}
 
 interface DashboardStats {
   activeTasks: number;
@@ -28,7 +35,6 @@ interface DashboardStats {
 }
 
 export function AgentDashboard() {
-  const navigate = useNavigate();
   const [stats, setStats] = useState<DashboardStats>({
     activeTasks: 0,
     completedTasks: 0,
@@ -41,108 +47,133 @@ export function AgentDashboard() {
   const [loading, setLoading] = useState(true);
   const [createTaskOpen, setCreateTaskOpen] = useState(false);
 
-  useEffect(() => {
-    loadDashboardStats();
-
-    // Realtime subscription para atualizações
-    const subscription = supabase
-      .channel("dashboard-updates")
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "agent_tasks",
-        },
-        () => {
-          loadDashboardStats();
-        },
-      )
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "agent_reports",
-        },
-        () => {
-          loadDashboardStats();
-        },
-      )
-      .subscribe();
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
-
-  async function loadDashboardStats() {
+  const loadDashboardStats = useCallback(async () => {
     try {
-      // Buscar estatísticas de tarefas
-      const { data: tasks } = await supabase
-        .from("agent_tasks")
-        .select("status, execution_time_ms");
+      const { data: tasks } = await legacySupabase
+        .from('agent_tasks')
+        .select('status, execution_time_ms, result_data');
 
+      const tasksData = sanitizeTasks(tasks);
       const activeTasks =
-        tasks?.filter((t) => ["pending", "in_progress"].includes(t.status))
-          .length || 0;
+        tasksData.filter((t) => ['pending', 'in_progress'].includes(t.status ?? '')).length || 0;
 
-      const completedTasks =
-        tasks?.filter((t) => t.status === "completed").length || 0;
-      const failedTasks =
-        tasks?.filter((t) => t.status === "failed").length || 0;
+      const completedTasks = tasksData.filter((t) => t.status === 'completed').length || 0;
+      const failedTasks = tasksData.filter((t) => t.status === 'failed').length || 0;
 
       const completedTasksData =
-        tasks?.filter((t) => t.status === "completed" && t.execution_time_ms) ||
+        tasksData.filter((t) => t.status === 'completed' && typeof t.execution_time_ms === 'number') ||
         [];
 
       const avgExecutionTime =
         completedTasksData.length > 0
-          ? completedTasksData.reduce(
-              (sum, t) => sum + t.execution_time_ms,
-              0,
-            ) / completedTasksData.length
+          ? completedTasksData.reduce((sum, t) => sum + (t.execution_time_ms ?? 0), 0) /
+            completedTasksData.length
           : 0;
 
-      // Buscar estatísticas de relatórios
-      const { data: reports } = await supabase
-        .from("agent_reports")
-        .select("status");
+      const { data: reports } = await legacySupabase.from('agent_reports').select('status');
 
+      const reportsData = sanitizeReports(reports);
       const pendingReports =
-        reports?.filter((r) => ["draft", "pending_review"].includes(r.status))
-          .length || 0;
+        reportsData.filter((r) => ['draft', 'pending_review'].includes(r.status ?? '')).length || 0;
 
-      const publishedReports =
-        reports?.filter((r) => r.status === "published").length || 0;
+      const publishedReports = reportsData.filter((r) => r.status === 'published').length || 0;
 
-      // Buscar score de compliance (última tarefa de compliance)
-      const { data: lastCompliance } = await supabase
-        .from("agent_tasks")
-        .select("result_data")
-        .eq("task_type", "compliance")
-        .eq("status", "completed")
-        .order("completed_at", { ascending: false })
+      const { data: lastCompliance } = await legacySupabase
+        .from('agent_tasks')
+        .select('result_data')
+        .eq('task_type', 'compliance')
+        .eq('status', 'completed')
+        .order('completed_at', { ascending: false })
         .limit(1)
         .single();
 
-      const complianceScore =
-        lastCompliance?.result_data?.summary?.compliance_score || 0;
+      const complianceScoreRaw = lastCompliance?.result_data?.summary?.compliance_score;
+      const parsedCompliance =
+        typeof complianceScoreRaw === 'number'
+          ? complianceScoreRaw
+          : parseFloat(String(complianceScoreRaw ?? ''));
 
-      setStats({
+      setStats((prev) => ({
         activeTasks,
         completedTasks,
         failedTasks,
         pendingReports,
         publishedReports,
         avgExecutionTime: Math.round(avgExecutionTime),
-        complianceScore: parseFloat(complianceScore),
-      });
+        complianceScore: Number.isFinite(parsedCompliance) ? parsedCompliance : prev.complianceScore,
+      }));
     } catch (error) {
-      console.error("Error loading dashboard stats:", error);
+      console.error('Error loading dashboard stats:', error);
     } finally {
       setLoading(false);
     }
+  }, []);
+
+  useEffect(() => {
+    loadDashboardStats();
+
+    // Realtime subscription para atualizações
+    const subscription = supabase
+      .channel('dashboard-updates')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'agent_tasks',
+        },
+        () => {
+          loadDashboardStats();
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'agent_reports',
+        },
+        () => {
+          loadDashboardStats();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [loadDashboardStats]);
+
+  function sanitizeTasks(data: unknown): AgentTaskRow[] {
+    if (!Array.isArray(data)) {
+      return [];
+    }
+    return data.map((item) => ({
+      status: typeof item?.status === 'string' ? item.status : null,
+      execution_time_ms:
+        typeof item?.execution_time_ms === 'number' ? item.execution_time_ms : null,
+      result_data:
+        item && typeof item === 'object' && 'result_data' in item
+          ? (item.result_data as AgentTaskRow['result_data'])
+          : null,
+    }));
+  }
+
+  function sanitizeReports(data: unknown): AgentReportRow[] {
+    if (!Array.isArray(data)) {
+      return [];
+    }
+    return data.map((item) => ({
+      status: typeof item?.status === 'string' ? item.status : null,
+    }));
+  }
+
+  if (loading) {
+    return (
+      <div className="container mx-auto p-6 space-y-6 text-muted-foreground">
+        Carregando painel de agentes...
+      </div>
+    );
   }
 
   return (
@@ -151,9 +182,7 @@ export function AgentDashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="orx-text-3xl orx-orx-font-bold tracking-tight">Agentes IA</h1>
-          <p className="text-muted-foreground">
-            Dashboard de orquestração e supervisão de agentes
-          </p>
+          <p className="text-muted-foreground">Dashboard de orquestração e supervisão de agentes</p>
         </div>
         <Button onClick={() => setCreateTaskOpen(true)} size="lg">
           <PlayCircle className="mr-2 h-4 w-4" />
@@ -165,16 +194,12 @@ export function AgentDashboard() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="orx-text-sm orx-orx-font-medium">
-              Tarefas Ativas
-            </CardTitle>
+            <CardTitle className="orx-text-sm orx-orx-font-medium">Tarefas Ativas</CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="orx-text-2xl orx-orx-font-bold">{stats.activeTasks}</div>
-            <p className="orx-text-xs text-muted-foreground">
-              {stats.completedTasks} concluídas
-            </p>
+            <p className="orx-text-xs text-muted-foreground">{stats.completedTasks} concluídas</p>
           </CardContent>
         </Card>
 
@@ -213,10 +238,10 @@ export function AgentDashboard() {
             <div className="orx-text-2xl orx-orx-font-bold">{stats.complianceScore}%</div>
             <p className="orx-text-xs text-muted-foreground">
               {stats.complianceScore >= 95
-                ? "Excelente"
+                ? 'Excelente'
                 : stats.complianceScore >= 80
-                  ? "Bom"
-                  : "Atenção"}
+                  ? 'Bom'
+                  : 'Atenção'}
             </p>
           </CardContent>
         </Card>
@@ -253,10 +278,7 @@ export function AgentDashboard() {
       </Tabs>
 
       {/* Create Task Dialog */}
-      <CreateTaskDialog
-        open={createTaskOpen}
-        onOpenChange={setCreateTaskOpen}
-      />
+      <CreateTaskDialog open={createTaskOpen} onOpenChange={setCreateTaskOpen} />
     </div>
   );
 }

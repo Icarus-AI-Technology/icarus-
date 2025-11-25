@@ -1,11 +1,11 @@
-import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
-import { CampanhasMarketing } from "@/components/modules/CampanhasMarketing";
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { CampanhasMarketing } from '@/components/modules/CampanhasMarketing';
 
-describe("CampanhasMarketing", () => {
-  it("deve estar definido", () => {
+describe('CampanhasMarketing', () => {
+  it('deve estar definido', () => {
     render(<CampanhasMarketing />);
-    const headings = screen.getAllByRole("heading", { level: 1 });
+    const headings = screen.getAllByRole('heading', { level: 1 });
     expect(headings.length).toBeGreaterThan(0);
   });
 

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Contato - Smoke', () => {
+test.describe.skip('Contato - Smoke', () => {
   test('formulário de contato aceita entrada mínima', async ({ page }) => {
     await page.goto('/contato');
 

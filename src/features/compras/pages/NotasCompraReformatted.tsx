@@ -1,6 +1,6 @@
 /**
  * Notas de Compras - ICARUS v5.0
- * 
+ *
  * Sistema completo para gestão de notas fiscais de entrada com:
  * ✅ Integração REAL-TIME com Receita Federal (via SEFAZ)
  * ✅ Verificação automática de NF-e emitidas para CNPJ do cliente
@@ -9,21 +9,38 @@
  * ✅ Conferência com pedido de compra
  * ✅ Entrada automática no estoque
  * ✅ Design Neumórfico 3D Premium (Light + Dark)
- * 
+ *
  * @version 5.0.0
  * @author AGENTE_REVISOR_CORRETOR_MCP_SUPABASE
  * @date Outubro 2025
  */
 
 import React, { useState, useCallback, useEffect } from 'react';
-import { Upload, CheckCircle, XCircle, AlertTriangle, Eye, Download, Loader2, Package, DollarSign, Scan, FileCheck, Clock, Search, RefreshCw, TrendingUp, Database } from 'lucide-react';
+import {
+  Upload,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  Eye,
+  Download,
+  Loader2,
+  Package,
+  DollarSign,
+  Scan,
+  FileCheck,
+  Clock,
+  Search,
+  RefreshCw,
+  TrendingUp,
+  Database,
+} from 'lucide-react';
 import { useSEFAZ } from '@/services/sefaz.service';
 import type { NotaFiscalCompra } from '@/types/compras';
 
 export const NotasCompraReformatted: React.FC = () => {
   // Estados para integração SEFAZ
   const { consultarNota } = useSEFAZ();
-  
+
   // Estados locais
   const [cnpjCliente, setCnpjCliente] = useState('');
   const [uploadType, setUploadType] = useState<'xml' | 'pdf' | null>(null);
@@ -157,9 +174,7 @@ export const NotasCompraReformatted: React.FC = () => {
     },
     {
       label: 'Valor Total (Mês)',
-      value: `R$ ${(
-        notas.reduce((acc, n) => acc + n.valor_total, 0) / 1000
-      ).toFixed(1)}k`,
+      value: `R$ ${(notas.reduce((acc, n) => acc + n.valor_total, 0) / 1000).toFixed(1)}k`,
       icon: DollarSign,
       color: 'var(--orx-primary)',
       trend: '+15%',
@@ -183,7 +198,7 @@ export const NotasCompraReformatted: React.FC = () => {
           console.log('Verificando novas notas para CNPJ:', cnpjCliente);
           setUltimaVerificacao(new Date());
         } catch (error: unknown) {
-            const err = error as Error;
+          const err = error as Error;
           console.error('Erro ao verificar novas notas:', err);
         }
       }, 60000); // Verifica a cada 1 minuto
@@ -209,9 +224,9 @@ export const NotasCompraReformatted: React.FC = () => {
       } else {
         await parseDANFEWithOCR(file);
       }
-      } catch (error: unknown) {
-          const err = error as Error;
-        console.error('Erro ao processar arquivo:', err);
+    } catch (error: unknown) {
+      const err = error as Error;
+      console.error('Erro ao processar arquivo:', err);
     } finally {
       setProcessing(false);
     }
@@ -292,7 +307,7 @@ export const NotasCompraReformatted: React.FC = () => {
       try {
         await consultarNota(chave, uf);
       } catch (error: unknown) {
-          const err = error as Error;
+        const err = error as Error;
         console.error('Erro ao consultar SEFAZ:', err);
       }
     },
@@ -386,7 +401,8 @@ export const NotasCompraReformatted: React.FC = () => {
             color: 'var(--orx-text-secondary)',
           }}
         >
-          Monitoramento em tempo real com Receita Federal • Validação automática SEFAZ • Entrada no estoque
+          Monitoramento em tempo real com Receita Federal • Validação automática SEFAZ • Entrada no
+          estoque
         </p>
       </div>
 
@@ -400,7 +416,15 @@ export const NotasCompraReformatted: React.FC = () => {
           border: `1px solid ${monitoramentoAtivo ? 'var(--orx-success-dark)' : 'rgba(255, 255, 255, 0.1)'}`,
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '1rem',
+          }}
+        >
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <div
               style={{
@@ -434,7 +458,10 @@ export const NotasCompraReformatted: React.FC = () => {
                       ● ATIVO
                     </span>
                     {ultimaVerificacao && (
-                      <span> • Última verificação: {ultimaVerificacao.toLocaleTimeString('pt-BR')}</span>
+                      <span>
+                        {' '}
+                        • Última verificação: {ultimaVerificacao.toLocaleTimeString('pt-BR')}
+                      </span>
                     )}
                   </>
                 ) : (
@@ -469,7 +496,9 @@ export const NotasCompraReformatted: React.FC = () => {
                 gap: '0.5rem',
                 padding: '0.75rem 1.5rem',
                 borderRadius: '0.75rem',
-                background: monitoramentoAtivo ? 'var(--orx-error-dark)' : 'var(--orx-success-dark)',
+                background: monitoramentoAtivo
+                  ? 'var(--orx-error-dark)'
+                  : 'var(--orx-success-dark)',
                 color: 'white',
                 fontSize: '0.813rem',
                 fontWeight: 600,
@@ -547,7 +576,9 @@ export const NotasCompraReformatted: React.FC = () => {
                   <div
                     style={{
                       fontSize: '0.75rem',
-                      color: kpi.trend.startsWith('+') ? 'var(--orx-success-dark)' : 'var(--orx-error-dark)',
+                      color: kpi.trend.startsWith('+')
+                        ? 'var(--orx-success-dark)'
+                        : 'var(--orx-error-dark)',
                       display: 'flex',
                       alignItems: 'center',
                       gap: '0.25rem',
@@ -753,13 +784,22 @@ export const NotasCompraReformatted: React.FC = () => {
             style={{
               padding: '1.5rem',
               borderRadius: '1.25rem',
-              background: validacaoStatus.sefaz ? 'var(--orx-success-light)' : 'var(--orx-error-light)',
+              background: validacaoStatus.sefaz
+                ? 'var(--orx-success-light)'
+                : 'var(--orx-error-light)',
               border: `1px solid ${
                 validacaoStatus.sefaz ? 'var(--orx-success-dark)' : 'var(--orx-error-dark)'
               }`,
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                marginBottom: '1rem',
+              }}
+            >
               {validacaoStatus.sefaz ? (
                 <CheckCircle size={24} style={{ color: 'var(--orx-success-dark)' }} />
               ) : (
@@ -769,7 +809,9 @@ export const NotasCompraReformatted: React.FC = () => {
                 style={{
                   fontSize: '1.125rem',
                   fontWeight: 'var(--orx-orx-orx-font-semibold)',
-                  color: validacaoStatus.sefaz ? 'var(--orx-success-dark)' : 'var(--orx-error-dark)',
+                  color: validacaoStatus.sefaz
+                    ? 'var(--orx-success-dark)'
+                    : 'var(--orx-error-dark)',
                 }}
               >
                 {validacaoStatus.sefaz ? 'NF-e Validada com Sucesso' : 'NF-e com Problemas'}
@@ -801,7 +843,8 @@ export const NotasCompraReformatted: React.FC = () => {
                   <AlertTriangle size={16} style={{ color: 'var(--orx-warning-dark)' }} />
                 )}
                 <span style={{ fontSize: '0.875rem' }}>
-                  Conferência com Pedido: {validacaoStatus.pedido ? 'OK' : 'Divergências encontradas'}
+                  Conferência com Pedido:{' '}
+                  {validacaoStatus.pedido ? 'OK' : 'Divergências encontradas'}
                 </span>
               </li>
               <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -811,7 +854,8 @@ export const NotasCompraReformatted: React.FC = () => {
                   <XCircle size={16} style={{ color: 'var(--orx-error-dark)' }} />
                 )}
                 <span style={{ fontSize: '0.875rem' }}>
-                  Produtos Cadastrados: {validacaoStatus.produtos ? 'Todos' : 'Alguns não encontrados'}
+                  Produtos Cadastrados:{' '}
+                  {validacaoStatus.produtos ? 'Todos' : 'Alguns não encontrados'}
                 </span>
               </li>
               <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -879,7 +923,9 @@ export const NotasCompraReformatted: React.FC = () => {
                 </p>
               </div>
               <div>
-                <p style={{ fontSize: '0.875rem', color: 'var(--orx-text-secondary)' }}>Data Emissão</p>
+                <p style={{ fontSize: '0.875rem', color: 'var(--orx-text-secondary)' }}>
+                  Data Emissão
+                </p>
                 <p
                   style={{
                     fontSize: '1rem',
@@ -891,7 +937,9 @@ export const NotasCompraReformatted: React.FC = () => {
                 </p>
               </div>
               <div>
-                <p style={{ fontSize: '0.875rem', color: 'var(--orx-text-secondary)' }}>Valor Total</p>
+                <p style={{ fontSize: '0.875rem', color: 'var(--orx-text-secondary)' }}>
+                  Valor Total
+                </p>
                 <p
                   style={{
                     fontSize: '1.25rem',
@@ -906,7 +954,9 @@ export const NotasCompraReformatted: React.FC = () => {
                 </p>
               </div>
               <div style={{ gridColumn: 'span 2' }}>
-                <p style={{ fontSize: '0.875rem', color: 'var(--orx-text-secondary)' }}>Fornecedor</p>
+                <p style={{ fontSize: '0.875rem', color: 'var(--orx-text-secondary)' }}>
+                  Fornecedor
+                </p>
                 <p
                   style={{
                     fontSize: '1rem',
@@ -954,7 +1004,9 @@ export const NotasCompraReformatted: React.FC = () => {
                 gap: '0.5rem',
                 padding: '0.75rem 1.5rem',
                 borderRadius: '0.75rem',
-                background: validacaoStatus.sefaz ? 'var(--orx-success-dark)' : 'var(--orx-bg-light)',
+                background: validacaoStatus.sefaz
+                  ? 'var(--orx-success-dark)'
+                  : 'var(--orx-bg-light)',
                 color: 'white',
                 fontSize: '0.813rem',
                 fontWeight: 600,
@@ -1240,4 +1292,3 @@ export const NotasCompraReformatted: React.FC = () => {
 };
 
 export default NotasCompraReformatted;
-

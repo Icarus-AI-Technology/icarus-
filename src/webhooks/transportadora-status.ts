@@ -1,12 +1,37 @@
-// src/webhooks/transportadora-status.ts
+/**
+ * Transportadora Webhook - Status de Entregas
+ *
+ * Processa atualizações de status de rastreamento das transportadoras
+ *
+ * SEGURANÇA:
+ * - Validação de assinatura HMAC SHA256 obrigatória em produção
+ * - Rate limiting por transportadora
+ * - Validação de payload
+ * - Logging de eventos suspeitos
+ */
 
 import { Request, Response } from 'express';
 import { createClient } from '@supabase/supabase-js';
+import {
+  validateHMACSHA256,
+  setSecurityHeaders,
+  logSuspiciousRequest,
+  checkRateLimit,
+  sanitizeString,
+} from '../lib/security/apiMiddleware';
+
+const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
 const supabase = createClient(
   process.env.VITE_SUPABASE_URL || '',
   process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 );
+
+// Rate limit específico por transportadora (mais permissivo)
+const TRANSPORTADORA_RATE_LIMIT = {
+  windowMs: 60 * 1000,
+  maxRequests: 100, // 100 req/min por transportadora
+};
 
 interface TransportadoraWebhookPayload {
   transportadora: string;
@@ -29,85 +54,167 @@ type EnvioRecord = {
   [key: string]: unknown;
 };
 
+// Transportadoras conhecidas e seus IPs permitidos (whitelist)
+const TRANSPORTADORAS_WHITELIST: Record<string, string[]> = {
+  correios: ['200.252.0.0/16', '189.9.0.0/16'],
+  jadlog: ['177.10.0.0/16'],
+  tnt: ['200.155.0.0/16'],
+  // Adicionar mais conforme necessário
+};
+
+/**
+ * Verifica se o IP está na whitelist da transportadora
+ */
+function isIPAllowed(ip: string, transportadora: string): boolean {
+  if (!IS_PRODUCTION) return true;
+
+  const allowedIPs = TRANSPORTADORAS_WHITELIST[transportadora.toLowerCase()];
+  if (!allowedIPs) {
+    console.warn(`⚠️ Transportadora ${transportadora} não tem whitelist configurada`);
+    return true; // Permitir se não configurado
+  }
+
+  // Verificação simplificada - em produção usar biblioteca de CIDR
+  return allowedIPs.some((range) => {
+    const [network] = range.split('/');
+    return ip.startsWith(network.split('.').slice(0, 2).join('.'));
+  });
+}
+
 /**
  * Webhook para receber atualizações de status das transportadoras
  */
-export async function handleTransportadoraStatus(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function handleTransportadoraStatus(req: Request, res: Response): Promise<void> {
+  // Security headers
+  setSecurityHeaders(res);
+
   try {
     console.log('📦 Webhook transportadora-status recebido');
 
-    // Validar assinatura do webhook
-    const isValid = await validateWebhookSignature(req);
-    if (!isValid) {
-      console.error('❌ Assinatura inválida');
-      res.status(401).json({ error: 'Invalid signature' });
-      return;
-    }
-
     const payload: TransportadoraWebhookPayload = req.body;
 
-    // Validar payload
-    if (!payload.codigoRastreio || !payload.transportadora || !payload.evento) {
-      console.error('❌ Payload inválido', payload);
+    // Validar payload básico antes de qualquer processamento
+    if (!payload || typeof payload !== 'object') {
+      logSuspiciousRequest(req, 'Invalid payload structure');
       res.status(400).json({ error: 'Invalid payload' });
       return;
     }
 
-    // Processar atualização
-    await processarAtualizacaoStatus(payload);
+    // Sanitizar e validar campos obrigatórios
+    const transportadora = sanitizeString(payload.transportadora);
+    const codigoRastreio = sanitizeString(payload.codigoRastreio);
 
-    // Retornar sucesso
-    res.status(200).json({ 
-      success: true, 
-      message: 'Status atualizado com sucesso' 
+    if (!transportadora || !codigoRastreio || !payload.evento) {
+      logSuspiciousRequest(req, 'Missing required fields');
+      res.status(400).json({ error: 'Invalid payload: missing required fields' });
+      return;
+    }
+
+    // Rate limiting por transportadora
+    const rateLimitKey = `transportadora:${transportadora}`;
+    const rateResult = checkRateLimit(rateLimitKey, TRANSPORTADORA_RATE_LIMIT);
+
+    res.setHeader('X-RateLimit-Remaining', rateResult.remaining.toString());
+
+    if (!rateResult.allowed) {
+      logSuspiciousRequest(req, `Rate limit exceeded for ${transportadora}`);
+      res.status(429).json({
+        error: 'Too many requests',
+        retryAfter: Math.ceil((rateResult.resetAt - Date.now()) / 1000),
+      });
+      return;
+    }
+
+    // Verificar IP (whitelist)
+    const clientIP = (req.headers['x-forwarded-for'] as string)?.split(',')[0] || req.ip || '';
+    if (!isIPAllowed(clientIP, transportadora)) {
+      logSuspiciousRequest(req, `IP ${clientIP} not in whitelist for ${transportadora}`);
+      res.status(403).json({ error: 'Forbidden: IP not allowed' });
+      return;
+    }
+
+    // Validar assinatura do webhook
+    const isValid = await validateWebhookSignature(req, transportadora);
+    if (!isValid) {
+      logSuspiciousRequest(req, `Invalid signature for ${transportadora}`);
+      res.status(401).json({ error: 'Invalid signature' });
+      return;
+    }
+
+    // Validar código de rastreio (formato)
+    if (!isValidTrackingCode(codigoRastreio, transportadora)) {
+      logSuspiciousRequest(req, `Invalid tracking code format: ${codigoRastreio}`);
+      res.status(400).json({ error: 'Invalid tracking code format' });
+      return;
+    }
+
+    // Processar atualização
+    await processarAtualizacaoStatus({
+      ...payload,
+      transportadora,
+      codigoRastreio,
     });
 
+    // Retornar sucesso
+    res.status(200).json({
+      success: true,
+      message: 'Status atualizado com sucesso',
+    });
   } catch (error: unknown) {
     console.error('❌ Erro ao processar webhook:', error);
     const message = error instanceof Error ? error.message : 'Unknown error';
-    res.status(500).json({ 
+    res.status(500).json({
       error: 'Internal server error',
-      message 
+      message: IS_PRODUCTION ? 'An error occurred' : message,
     });
   }
 }
 
 /**
+ * Valida formato do código de rastreio por transportadora
+ */
+function isValidTrackingCode(code: string, transportadora: string): boolean {
+  const patterns: Record<string, RegExp> = {
+    correios: /^[A-Z]{2}\d{9}[A-Z]{2}$/, // Ex: AB123456789BR
+    jadlog: /^\d{14}$/, // 14 dígitos
+    tnt: /^\d{9}$/, // 9 dígitos
+    default: /^[A-Z0-9]{6,20}$/, // Genérico
+  };
+
+  const pattern = patterns[transportadora.toLowerCase()] || patterns.default;
+  return pattern.test(code);
+}
+
+/**
  * Valida assinatura do webhook
  */
-async function validateWebhookSignature(req: Request): Promise<boolean> {
+async function validateWebhookSignature(req: Request, transportadora: string): Promise<boolean> {
   try {
     const signature = req.headers['x-webhook-signature'] as string;
-    const transportadora = req.body.transportadora as string;
 
     if (!signature) {
+      if (IS_PRODUCTION) {
       return false;
+      }
+      console.warn(`⚠️ Webhook sem assinatura para ${transportadora}`);
+      return true; // Permitir em dev
     }
 
     // Obter secret da transportadora do banco de dados
-    const { data: config } = await supabase
+    const { data: config, error } = await supabase
       .from('transportadora_config')
       .select('webhook_secret')
       .eq('nome', transportadora)
       .single();
 
-    if (!config?.webhook_secret) {
+    if (error || !config?.webhook_secret) {
       console.warn(`⚠️ Secret não configurado para ${transportadora}`);
-      return true; // Permitir em desenvolvimento
+      return !IS_PRODUCTION;
     }
 
     // Verificar assinatura HMAC SHA256
-    const crypto = await import('crypto');
     const bodyString = JSON.stringify(req.body);
-    const hash = crypto
-      .createHmac('sha256', config.webhook_secret)
-      .update(bodyString)
-      .digest('hex');
-
-    return signature === hash;
+    return validateHMACSHA256(bodyString, signature, config.webhook_secret);
   } catch (error) {
     console.error('❌ Erro ao validar assinatura:', error);
     return false;
@@ -117,9 +224,7 @@ async function validateWebhookSignature(req: Request): Promise<boolean> {
 /**
  * Processa atualização de status
  */
-async function processarAtualizacaoStatus(
-  payload: TransportadoraWebhookPayload
-): Promise<void> {
+async function processarAtualizacaoStatus(payload: TransportadoraWebhookPayload): Promise<void> {
   try {
     // Buscar envio no banco de dados
     const { data: envio, error: envioError } = await supabase
@@ -150,16 +255,14 @@ async function processarAtualizacaoStatus(
     }
 
     // Registrar evento no histórico
-    const { error: historicoError } = await supabase
-      .from('envios_historico')
-      .insert({
-        envio_id: envioRecord.id,
-        evento_tipo: payload.evento.tipo,
-        evento_data: `${payload.evento.data} ${payload.evento.hora}`,
-        evento_local: payload.evento.local,
-        evento_descricao: payload.evento.descricao,
-        created_at: new Date().toISOString(),
-      });
+    const { error: historicoError } = await supabase.from('envios_historico').insert({
+      envio_id: envioRecord.id,
+      evento_tipo: payload.evento.tipo,
+      evento_data: `${payload.evento.data} ${payload.evento.hora}`,
+      evento_local: sanitizeString(payload.evento.local),
+      evento_descricao: sanitizeString(payload.evento.descricao),
+      created_at: new Date().toISOString(),
+    });
 
     if (historicoError) {
       console.error('❌ Erro ao registrar histórico:', historicoError);
@@ -170,9 +273,7 @@ async function processarAtualizacaoStatus(
       await notificarUsuario(envioRecord, payload);
     }
 
-    console.log(
-      `✅ Status atualizado: ${payload.codigoRastreio} -> ${payload.status}`
-    );
+    console.log(`✅ Status atualizado: ${payload.codigoRastreio} -> ${payload.status}`);
   } catch (error) {
     console.error('❌ Erro ao processar atualização:', error);
     throw error;
@@ -207,10 +308,7 @@ async function notificarUsuario(
     }
 
     // Enviar SMS (via Twilio) para eventos críticos
-    if (
-      usuario.telefone &&
-      ['EXTRAVIADO', 'DEVOLUCAO'].includes(payload.evento.tipo)
-    ) {
+    if (usuario.telefone && ['EXTRAVIADO', 'DEVOLUCAO'].includes(payload.evento.tipo)) {
       await enviarSMS(usuario.telefone, mensagem);
     }
   } catch (error) {
@@ -221,25 +319,23 @@ async function notificarUsuario(
 /**
  * Gera mensagem de notificação
  */
-function gerarMensagemNotificacao(
-  payload: TransportadoraWebhookPayload
-): string {
-  const emoji = {
-    POSTADO: '📦',
-    TRANSITO: '🚚',
-    ENTREGUE: '✅',
-    DEVOLUCAO: '↩️',
-    EXTRAVIADO: '⚠️',
-  }[payload.evento.tipo] || '📦';
+function gerarMensagemNotificacao(payload: TransportadoraWebhookPayload): string {
+  const emoji: Record<string, string> = {
+      POSTADO: '📦',
+      TRANSITO: '🚚',
+      ENTREGUE: '✅',
+      DEVOLUCAO: '↩️',
+      EXTRAVIADO: '⚠️',
+  };
 
-  return `${emoji} ${payload.evento.tipo}: Seu pedido (${payload.codigoRastreio}) ${payload.evento.descricao}. Local: ${payload.evento.local}.`;
+  return `${emoji[payload.evento.tipo] || '📦'} ${payload.evento.tipo}: Seu pedido (${payload.codigoRastreio}) ${payload.evento.descricao}. Local: ${payload.evento.local}.`;
 }
 
 /**
  * Envia email via SendGrid
  */
 async function enviarEmail(email: string, mensagem: string): Promise<void> {
-  // Implementação usando SendGrid service
+  // TODO: Implementação usando SendGrid service
   console.log(`📧 Email enviado para ${email}: ${mensagem}`);
 }
 
@@ -247,9 +343,8 @@ async function enviarEmail(email: string, mensagem: string): Promise<void> {
  * Envia SMS via Twilio
  */
 async function enviarSMS(telefone: string, mensagem: string): Promise<void> {
-  // Implementação usando Twilio service
+  // TODO: Implementação usando Twilio service
   console.log(`📱 SMS enviado para ${telefone}: ${mensagem}`);
 }
 
 export default handleTransportadoraStatus;
-

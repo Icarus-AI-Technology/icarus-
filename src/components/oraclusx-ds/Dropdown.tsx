@@ -3,8 +3,8 @@
  * Menu dropdown neuromórfico
  */
 
-import React, { useState, useRef, useEffect } from"react";
-import { cn } from"@/lib/utils";
+import React, { useState, useRef, useEffect } from 'react';
+import { cn } from '@/lib/utils';
 
 export interface DropdownItem {
   id: string;
@@ -18,14 +18,14 @@ export interface DropdownItem {
 export interface DropdownProps {
   trigger: React.ReactNode;
   items: DropdownItem[];
-  align?:"left" |"right";
+  align?: 'left' | 'right';
   className?: string;
 }
 
 export const Dropdown: React.FC<DropdownProps> = ({
   trigger,
   items,
-  align ="left",
+  align = 'left',
   className,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,16 +33,13 @@ export const Dropdown: React.FC<DropdownProps> = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleItemClick = (item: DropdownItem) => {
@@ -53,15 +50,17 @@ export const Dropdown: React.FC<DropdownProps> = ({
   };
 
   return (
-    <div className={cn("relative inline-block", className)} ref={dropdownRef}>
+    <div className={cn('relative inline-block', className)} ref={dropdownRef}>
       <div onClick={() => setIsOpen(!isOpen)} className="cursor-pointer">
         {trigger}
       </div>
 
       {isOpen && (
         <div
-          className={cn("absolute z-50 mt-2 min-w-[200px] orx-card p-2","animate-in fade-in-0 zoom-in-95 duration-150",
-            align ==="left" ?"left-0" :"right-0",
+          className={cn(
+            'absolute z-50 mt-2 min-w-[200px] orx-card p-2',
+            'animate-in fade-in-0 zoom-in-95 duration-150',
+            align === 'left' ? 'left-0' : 'right-0'
           )}
         >
           {items.map((item) => (
@@ -72,15 +71,16 @@ export const Dropdown: React.FC<DropdownProps> = ({
                 <button
                   onClick={() => handleItemClick(item)}
                   disabled={item.disabled}
-                  className={cn("w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left","transition-colors duration-150","text-[var(--text-primary)]",
+                  className={cn(
+                    'w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left',
+                    'transition-colors duration-150',
+                    'text-[var(--text-primary)]',
                     item.disabled
-                      ?"opacity-50 cursor-not-allowed"
-                      :"hover:bg-[var(--surface-hover)] cursor-pointer",
+                      ? 'opacity-50 cursor-not-allowed'
+                      : 'hover:bg-[var(--surface-hover)] cursor-pointer'
                   )}
                 >
-                  {item.icon && (
-                    <span className="flex-shrink-0">{item.icon}</span>
-                  )}
+                  {item.icon && <span className="flex-shrink-0">{item.icon}</span>}
                   <span className="flex-1">{item.label}</span>
                 </button>
               )}
@@ -92,7 +92,6 @@ export const Dropdown: React.FC<DropdownProps> = ({
   );
 };
 
-Dropdown.displayName ="OraclusXDropdown";
+Dropdown.displayName = 'OraclusXDropdown';
 
 export default Dropdown;
-

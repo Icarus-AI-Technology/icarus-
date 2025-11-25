@@ -1,11 +1,17 @@
 /**
  * Hybrid LLM Service
  * Estratégia 80/20: 80% Ollama (grátis) + 20% GPT-4/Claude (pago)
- * 
+ * + RAG (Memória de Longo Prazo) via LangChain/Supabase
+ *
  * Economia estimada: $1,920-4,800/ano
  */
 
 import { ollamaService, OllamaMessage } from './ollama.service';
+import { ragService } from './rag.service'; // Integração RAG
+
+type RagSearchResult = Awaited<ReturnType<typeof ragService.search>> extends Array<infer Item>
+  ? Item
+  : never;
 
 export type LLMComplexity = 'simple' | 'moderate' | 'complex';
 
@@ -14,6 +20,7 @@ export interface LLMRequest {
   context?: string;
   complexity?: LLMComplexity;
   systemPrompt?: string;
+  useRAG?: boolean; // Nova flag para ativar busca documental
 }
 
 export interface LLMResponse {
@@ -21,6 +28,7 @@ export interface LLMResponse {
   model: string;
   cost: number; // Custo em USD (0 para Ollama)
   duration?: number; // Tempo de resposta em ms
+  sourceDocuments?: RagSearchResult[]; // Documentos fonte usados pelo RAG
 }
 
 export class HybridLLMService {
@@ -66,23 +74,44 @@ export class HybridLLMService {
   async processQuery(request: LLMRequest): Promise<LLMResponse> {
     const {
       prompt,
-      context,
+      context: initialContext,
       complexity = 'simple',
       systemPrompt = 'Você é um assistente especializado em gestão hospitalar e OPME.',
+      useRAG = false,
     } = request;
 
     const startTime = Date.now();
+    
+    // Etapa RAG: Buscar contexto adicional se solicitado
+    let context = initialContext || '';
+    let sourceDocuments: RagSearchResult[] = [];
+
+    if (useRAG) {
+      try {
+        // Busca documentos relevantes para o prompt
+        const docs = await ragService.search(prompt, 3);
+        if (docs && docs.length > 0) {
+          const ragContext = docs.map(d => d.pageContent).join('\n\n---\n\n');
+          context = context ? `${context}\n\nContexto Documental:\n${ragContext}` : `Contexto Documental:\n${ragContext}`;
+          sourceDocuments = docs;
+        }
+      } catch (error) {
+        console.error('[HybridLLM] RAG search failed:', error);
+      }
+    }
+
+    // Atualiza request com contexto enriquecido
+    const enrichedRequest = { ...request, context };
+
     const useOllama = this.shouldUseOllama(complexity);
 
     try {
       if (useOllama) {
         // Usar Ollama (custo zero)
-        const messages: OllamaMessage[] = [
-          { role: 'system', content: systemPrompt },
-        ];
+        const messages: OllamaMessage[] = [{ role: 'system', content: systemPrompt }];
 
         if (context) {
-          messages.push({ role: 'system', content: `Contexto: ${context}` });
+          messages.push({ role: 'system', content: `Contexto:\n${context}` });
         }
 
         messages.push({ role: 'user', content: prompt });
@@ -95,19 +124,22 @@ export class HybridLLMService {
           model: `ollama:${model}`,
           cost: 0,
           duration: Date.now() - startTime,
+          sourceDocuments
         };
       } else {
         // Fallback para LLM remoto (GPT-4/Claude)
-        return await this.processWithRemoteLLM(request, startTime);
+        const response = await this.processWithRemoteLLM(enrichedRequest, startTime);
+        return { ...response, sourceDocuments };
       }
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[HybridLLM] Error:', err);
 
       // Fallback para remoto se Ollama falhar
       if (useOllama && this.fallbackToRemote) {
         console.warn('[HybridLLM] Ollama failed, falling back to remote LLM');
-        return await this.processWithRemoteLLM(request, startTime);
+        const response = await this.processWithRemoteLLM(enrichedRequest, startTime);
+        return { ...response, sourceDocuments };
       }
 
       throw error;
@@ -117,10 +149,7 @@ export class HybridLLMService {
   /**
    * Processa com LLM remoto (GPT-4 ou Claude)
    */
-  private async processWithRemoteLLM(
-    request: LLMRequest,
-    startTime: number
-  ): Promise<LLMResponse> {
+  private async processWithRemoteLLM(request: LLMRequest, startTime: number): Promise<LLMResponse> {
     const { prompt, context, complexity, systemPrompt } = request;
 
     try {
@@ -132,11 +161,10 @@ export class HybridLLMService {
         // Tentar GPT-4
         const { openaiService } = await import('./openai.service');
         const fullPrompt = context ? `${context}\n\n${prompt}` : prompt;
-        const response = await openaiService.generate(
-          fullPrompt,
-          systemPrompt,
-          { temperature: 0.7, max_tokens: 1000 }
-        );
+        const response = await openaiService.generate(fullPrompt, systemPrompt, {
+          temperature: 0.7,
+          max_tokens: 1000,
+        });
 
         return {
           content: response.content,
@@ -148,11 +176,10 @@ export class HybridLLMService {
         // Usar Claude 3.5
         const { claudeService } = await import('./claude.service');
         const fullPrompt = context ? `${context}\n\n${prompt}` : prompt;
-        const response = await claudeService.generate(
-          fullPrompt,
-          systemPrompt,
-          { temperature: 0.7, max_tokens: 1000 }
-        );
+        const response = await claudeService.generate(fullPrompt, systemPrompt, {
+          temperature: 0.7,
+          max_tokens: 1000,
+        });
 
         return {
           content: response.content,
@@ -197,7 +224,8 @@ export class HybridLLMService {
       prompt: `Com base no contexto fornecido, sugira 3-5 ações ou insights relevantes para: ${query}`,
       context,
       complexity: 'moderate',
-      systemPrompt: 'Você é um especialista em gestão hospitalar. Forneça sugestões práticas e diretas.',
+      systemPrompt:
+        'Você é um especialista em gestão hospitalar. Forneça sugestões práticas e diretas.',
     });
 
     // Parse suggestions (esperando lista numerada)
@@ -232,6 +260,23 @@ export class HybridLLMService {
   }
 
   /**
+   * Indexar Documento (Novo recurso RAG)
+   * Facilita a injeção de documentos no sistema
+   */
+  async indexDocument(
+    content: string,
+    metadata: Record<string, unknown> = {}
+  ): Promise<boolean> {
+    try {
+      const result = await ragService.addDocuments([content], [metadata]);
+      return result.success;
+    } catch (error) {
+      console.error('[HybridLLM] Indexing error:', error);
+      return false;
+    }
+  }
+
+  /**
    * Retorna estatísticas de uso
    */
   getUsageStats(): {
@@ -249,4 +294,3 @@ export class HybridLLMService {
 
 // Export singleton
 export const hybridLLMService = new HybridLLMService();
-

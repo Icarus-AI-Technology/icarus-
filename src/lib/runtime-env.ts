@@ -5,12 +5,12 @@
 type EnvRecord = Record<string, string | undefined>;
 
 const browserEnv: EnvRecord | undefined =
-  typeof import.meta !== "undefined" && (import.meta as unknown as { env?: EnvRecord }).env
+  typeof import.meta !== 'undefined' && (import.meta as unknown as { env?: EnvRecord }).env
     ? (import.meta as unknown as { env?: EnvRecord }).env
     : undefined;
 
 const nodeEnv: EnvRecord | undefined =
-  typeof process !== "undefined" && typeof process === "object" ? process.env : undefined;
+  typeof process !== 'undefined' && typeof process === 'object' ? process.env : undefined;
 
 /**
  * Retorna o valor de uma variável de ambiente considerando os diferentes runtimes.
@@ -18,7 +18,7 @@ const nodeEnv: EnvRecord | undefined =
  */
 export function getRuntimeEnvVar(name: string): string | undefined {
   const value = browserEnv?.[name] ?? nodeEnv?.[name];
-  if (!value || typeof value !== "string") {
+  if (!value || typeof value !== 'string') {
     return undefined;
   }
   const trimmed = value.trim();
@@ -30,6 +30,5 @@ export function getRuntimeEnvVar(name: string): string | undefined {
  * usado em testes/unitários.
  */
 export function getJwtRoleClaim(): string | undefined {
-  return getRuntimeEnvVar("SUPABASE_JWT_ROLE");
+  return getRuntimeEnvVar('SUPABASE_JWT_ROLE');
 }
-

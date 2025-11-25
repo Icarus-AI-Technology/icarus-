@@ -25,6 +25,7 @@ export default tseslint.config(
       "tests/**",
       "tools/**",
       "legacy-tests/**",
+      "supabase-auditor-pro/**",
     ],
   },
   {

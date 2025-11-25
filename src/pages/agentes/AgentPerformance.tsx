@@ -1,12 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { useCallback, useEffect, useState } from 'react';
+import { legacySupabase } from '@/lib/legacySupabase';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   LineChart,
   Line,
@@ -21,11 +15,11 @@ import {
   PieChart,
   Pie,
   Cell,
-} from "recharts";
+} from 'recharts';
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"];
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
-type AgentTaskStatus = "pending" | "in_progress" | "completed" | "failed";
+type AgentTaskStatus = 'pending' | 'in_progress' | 'completed' | 'failed';
 
 interface AgentPerformanceSummaryRow {
   task_type: string | null;
@@ -74,28 +68,29 @@ export function AgentPerformance() {
   const loadPerformanceData = useCallback(async () => {
     try {
       // Buscar dados da view de performance
-      const { data: agentPerf } = await supabase
-        .from("agent_performance_summary")
-        .select("*");
+      const { data: agentPerf } = await legacySupabase.from('agent_performance_summary').select('*');
 
       // Buscar dados de tarefas por dia (últimos 7 dias)
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-      const { data: tasksByDay } = await supabase
-        .from("agent_tasks")
-        .select("created_at, status")
-        .gte("created_at", sevenDaysAgo.toISOString());
+      const { data: tasksByDay } = await legacySupabase
+        .from('agent_tasks')
+        .select('created_at, status')
+        .gte('created_at', sevenDaysAgo.toISOString());
 
+      const normalizedPerf = Array.isArray(agentPerf)
+        ? (agentPerf as AgentPerformanceSummaryRow[])
+        : [];
       // Processar dados
       const dailyStats = processTasksByDay((tasksByDay as AgentTaskDailyRow[] | null) || []);
 
       setPerformanceData({
-        agentPerformance: (agentPerf as AgentPerformanceSummaryRow[] | null) || [],
+        agentPerformance: normalizedPerf,
         dailyStats,
       });
     } catch (error) {
-      console.error("Error loading performance data:", error);
+      console.error('Error loading performance data:', error);
     } finally {
       setLoading(false);
     }
@@ -109,7 +104,7 @@ export function AgentPerformance() {
     const dayMap: Record<string, DailyStats> = {};
 
     tasks.forEach((task) => {
-      const date = new Date(task.created_at).toLocaleDateString("pt-BR");
+      const date = new Date(task.created_at).toLocaleDateString('pt-BR');
       if (!dayMap[date]) {
         dayMap[date] = {
           date,
@@ -120,13 +115,13 @@ export function AgentPerformance() {
         };
       }
       dayMap[date].total++;
-      if (task.status === "completed") dayMap[date].completed++;
-      else if (task.status === "failed") dayMap[date].failed++;
+      if (task.status === 'completed') dayMap[date].completed++;
+      else if (task.status === 'failed') dayMap[date].failed++;
       else dayMap[date].pending++;
     });
 
     return Object.values(dayMap).sort(
-      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
     );
   }
 
@@ -139,7 +134,7 @@ export function AgentPerformance() {
   }
 
   const agentData: AgentChartData[] = performanceData.agentPerformance.map((agent) => ({
-    name: agent.task_type ?? "Desconhecido",
+    name: agent.task_type ?? 'Desconhecido',
     total: agent.total_tasks,
     completed: agent.completed_count,
     failed: agent.failed_count,
@@ -153,13 +148,13 @@ export function AgentPerformance() {
       acc.pending += agent.total - agent.completed - agent.failed;
       return acc;
     },
-    { completed: 0, failed: 0, pending: 0 },
+    { completed: 0, failed: 0, pending: 0 }
   );
 
   const pieData = [
-    { name: "Concluídas", value: statusData.completed || 0 },
-    { name: "Falhadas", value: statusData.failed || 0 },
-    { name: "Pendentes", value: statusData.pending || 0 },
+    { name: 'Concluídas', value: statusData.completed || 0 },
+    { name: 'Falhadas', value: statusData.failed || 0 },
+    { name: 'Pendentes', value: statusData.pending || 0 },
   ];
 
   return (
@@ -167,9 +162,7 @@ export function AgentPerformance() {
       <Card className="md:col-span-2">
         <CardHeader>
           <CardTitle>Tarefas por Dia (Últimos 7 Dias)</CardTitle>
-          <CardDescription>
-            Volume de tarefas criadas e concluídas
-          </CardDescription>
+          <CardDescription>Volume de tarefas criadas e concluídas</CardDescription>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
@@ -179,24 +172,9 @@ export function AgentPerformance() {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Line
-                type="monotone"
-                dataKey="total"
-                stroke="#8884d8"
-                name="Total"
-              />
-              <Line
-                type="monotone"
-                dataKey="completed"
-                stroke="#82ca9d"
-                name="Concluídas"
-              />
-              <Line
-                type="monotone"
-                dataKey="failed"
-                stroke="#ff7c7c"
-                name="Falhadas"
-              />
+              <Line type="monotone" dataKey="total" stroke="#8884d8" name="Total" />
+              <Line type="monotone" dataKey="completed" stroke="#82ca9d" name="Concluídas" />
+              <Line type="monotone" dataKey="failed" stroke="#ff7c7c" name="Falhadas" />
             </LineChart>
           </ResponsiveContainer>
         </CardContent>
@@ -241,10 +219,7 @@ export function AgentPerformance() {
                 dataKey="value"
               >
                 {pieData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
               <Tooltip />

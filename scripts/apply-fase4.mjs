@@ -50,9 +50,9 @@ async function countTables(client) {
 async function applyMigration(client, filename) {
   const sqlPath = path.join(__dirname, '..', 'supabase', 'migrations', filename);
   const sql = fs.readFileSync(sqlPath, 'utf-8');
-  
+
   log(`\n📄 Aplicando: ${filename}`, 'cyan');
-  
+
   try {
     await client.query('BEGIN');
     await client.query(sql);
@@ -70,41 +70,46 @@ async function main() {
   log('\n' + '='.repeat(80), 'cyan');
   log('🚀 APLICADOR FASE 4 - Features Avançadas (20 tabelas)', 'cyan');
   log('='.repeat(80) + '\n', 'cyan');
-  
+
   const client = new pg.Client(DB_CONFIG);
-  
+
   try {
     log('🔌 Conectando...', 'blue');
     await client.connect();
     log('✅ Conectado!\n', 'green');
-    
+
     const beforeCount = await countTables(client);
     log(`📊 Tabelas ANTES: ${beforeCount}\n`, 'blue');
-    
+
     let applied = 0;
     for (const migration of MIGRATIONS_FASE4) {
       const result = await applyMigration(client, migration);
       if (result.success) applied++;
     }
-    
+
     const afterCount = await countTables(client);
-    
+
     log('\n' + '='.repeat(80), 'cyan');
     log('📊 RESUMO FASE 4', 'cyan');
     log('='.repeat(80), 'cyan');
-    log(`Migrations aplicadas:     ${applied}/${MIGRATIONS_FASE4.length}`, applied === MIGRATIONS_FASE4.length ? 'green' : 'yellow');
+    log(
+      `Migrations aplicadas:     ${applied}/${MIGRATIONS_FASE4.length}`,
+      applied === MIGRATIONS_FASE4.length ? 'green' : 'yellow'
+    );
     log(`\n📊 Tabelas ANTES:         ${beforeCount}`, 'blue');
     log(`📊 Tabelas DEPOIS:        ${afterCount}`, 'green');
     log(`📈 Novas tabelas:         +${afterCount - beforeCount}`, 'green');
-    
+
     const completude = Math.round((afterCount / 104) * 100);
-    log(`\n📈 Completude do schema:  ${completude}% (${afterCount}/104)`, completude >= 80 ? 'green' : 'yellow');
-    
+    log(
+      `\n📈 Completude do schema:  ${completude}% (${afterCount}/104)`,
+      completude >= 80 ? 'green' : 'yellow'
+    );
+
     if (applied === MIGRATIONS_FASE4.length) {
       log('\n✅ FASE 4 COMPLETA COM SUCESSO!', 'green');
       log('🎯 Meta de 83% do schema atingida!', 'green');
     }
-    
   } catch (error) {
     log(`\n❌ ERRO FATAL: ${error.message}`, 'red');
     process.exit(1);
@@ -114,4 +119,3 @@ async function main() {
 }
 
 main().catch(console.error);
-

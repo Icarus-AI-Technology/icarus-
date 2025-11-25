@@ -5,9 +5,10 @@
 
 import React, { type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
-import { Badge, type BadgeProps } from './Badge';
-import { Breadcrumb, type BreadcrumbItem } from './Breadcrumb';
-import type { LucideIcon } from 'lucide-react';
+import { Badge, type BadgeProps } from '@/components/oraclusx-ds';
+import { Breadcrumb } from '@/components/oraclusx-ds';
+import type { BreadcrumbItem } from '@/components/oraclusx-ds/Breadcrumb';
+type LucideIcon = React.ComponentType<React.SVGProps<SVGSVGElement> & { size?: string | number }>;
 
 export interface PageHeaderProps {
   /** Título da página */
@@ -31,7 +32,7 @@ export interface PageHeaderProps {
 
 /**
  * PageHeader - Cabeçalho padronizado de página
- * 
+ *
  * @example
  * ```tsx
  * <PageHeader
@@ -59,9 +60,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
   return (
     <div className={cn('space-y-4 pb-6 border-b border-[var(--orx-border-muted)]', className)}>
       {/* Breadcrumbs */}
-      {breadcrumbs && breadcrumbs.length > 0 && (
-        <Breadcrumb items={breadcrumbs} />
-      )}
+      {breadcrumbs && breadcrumbs.length > 0 && <Breadcrumb items={breadcrumbs} />}
 
       {/* Header principal */}
       <div className="flex items-center justify-between gap-6">
@@ -69,10 +68,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
           {/* Ícone */}
           {Icon && (
             <div className="flex-shrink-0 w-14 h-14 rounded-2xl neuro-raised flex items-center justify-center shadow-[var(--shadow-light-outer)]">
-              <Icon
-                className="w-7 h-7 text-[var(--orx-primary)]"
-                aria-hidden="true"
-              />
+              <Icon className="w-7 h-7 text-[var(--orx-primary)]" aria-hidden="true" />
             </div>
           )}
 
@@ -82,26 +78,16 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
               <h1 className="orx-text-3xl orx-orx-font-bold text-[var(--orx-text-primary)] leading-tight">
                 {title}
               </h1>
-              {badge && (
-                <Badge variant={badge.variant || 'default'}>
-                  {badge.label}
-                </Badge>
-              )}
+              {badge && <Badge variant={badge.variant || 'default'}>{badge.label}</Badge>}
             </div>
             {description && (
-              <p className="text-[var(--orx-text-secondary)] orx-text-base">
-                {description}
-              </p>
+              <p className="text-[var(--orx-text-secondary)] orx-text-base">{description}</p>
             )}
           </div>
         </div>
 
         {/* Ações */}
-        {actions && (
-          <div className="flex items-center gap-2 flex-shrink-0">
-            {actions}
-          </div>
-        )}
+        {actions && <div className="flex items-center gap-2 flex-shrink-0">{actions}</div>}
       </div>
     </div>
   );
@@ -110,4 +96,3 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
 PageHeader.displayName = 'OraclusXPageHeader';
 
 export default PageHeader;
-

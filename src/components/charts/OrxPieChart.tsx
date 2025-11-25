@@ -1,6 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { ResponsivePie } from '@nivo/pie';
-import { OrxChartTheme } from './OrxChartTheme';
+import React from 'react';
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export interface OrxPieChartDatum {
   id: string;
@@ -19,35 +18,48 @@ export interface OrxPieChartProps {
 export const OrxPieChart: React.FC<OrxPieChartProps> = ({
   data,
   height = 280,
-  colors = ['var(--orx-primary)', 'var(--orx-accent)', 'var(--orx-success)', 'var(--orx-warning)'],
-  innerRadius = 0.5
+  colors = ['#2dd4bf', '#6366f1', '#10b981', '#f59e0b'],
+  innerRadius = 0.5,
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  // Transform data for Recharts
+  const chartData = data.map((item) => ({
+    name: item.label || item.id,
+    value: item.value,
+  }));
 
-  useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.style.height = `${height}px`;
-    }
-  }, [height]);
+  const actualInnerRadius = innerRadius * 100; // Convert to percentage
 
   return (
-    <div ref={containerRef} className="h-[280px]">
-      <ResponsivePie
-        data={data}
-        theme={OrxChartTheme}
-        margin={{ top: 12, right: 12, bottom: 12, left: 12 }}
-        innerRadius={innerRadius}
-        padAngle={0.7}
-        cornerRadius={8}
-        activeOuterRadiusOffset={6}
-        colors={colors}
-        borderWidth={1}
-        borderColor={{ from: 'color', modifiers: [['darker', 0.4]] }}
-        enableArcLabels={false}
-        enableArcLinkLabels={false}
-        role="img"
-        ariaLabel="Gráfico de pizza"
-      />
+    <div style={{ height: `${height}px`, width: '100%' }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart margin={{ top: 12, right: 12, bottom: 12, left: 12 }}>
+          <Pie
+            data={chartData}
+            cx="50%"
+            cy="50%"
+            innerRadius={`${actualInnerRadius}%`}
+            outerRadius="80%"
+            paddingAngle={2}
+            dataKey="value"
+          >
+            {chartData.map((_entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={data[index]?.color || colors[index % colors.length]}
+              />
+            ))}
+          </Pie>
+          <Tooltip
+            contentStyle={{
+              backgroundColor: '#15192b',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '8px',
+              color: '#ffffff',
+            }}
+          />
+          <Legend wrapperStyle={{ color: '#94a3b8', fontSize: '12px' }} />
+        </PieChart>
+      </ResponsiveContainer>
     </div>
   );
 };

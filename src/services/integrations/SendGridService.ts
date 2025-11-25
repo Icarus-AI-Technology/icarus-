@@ -1,6 +1,6 @@
 /**
  * SendGrid Service - Email Transacional
- * 
+ *
  * Funcionalidades:
  * - Envio de emails
  * - Templates dinâmicos
@@ -8,7 +8,7 @@
  * - Anexos
  * - Tracking de abertura e cliques
  * - Webhooks para eventos
- * 
+ *
  * Documentação API: https://docs.sendgrid.com/
  */
 
@@ -17,6 +17,46 @@ import type { MailDataRequired, ResponseError } from '@sendgrid/mail';
 
 function isResponseError(error: unknown): error is ResponseError {
   return typeof error === 'object' && error !== null && 'response' in error;
+}
+
+function extractSendgridError(error: ResponseError): string {
+  const body = error.response?.body;
+
+  if (!body) {
+    return error.message ?? 'Erro desconhecido';
+  }
+
+  if (typeof body === 'string') {
+    try {
+      const parsed = JSON.parse(body) as {
+        errors?: Array<{ message?: string }>;
+        message?: string;
+      };
+      return parsed.errors?.[0]?.message ?? parsed.message ?? body;
+    } catch {
+      return body;
+    }
+  }
+
+  if (Buffer.isBuffer(body)) {
+    const text = body.toString('utf-8');
+    try {
+      const parsed = JSON.parse(text) as {
+        errors?: Array<{ message?: string }>;
+        message?: string;
+      };
+      return parsed.errors?.[0]?.message ?? parsed.message ?? text;
+    } catch {
+      return text;
+    }
+  }
+
+  if (typeof body === 'object' && body !== null) {
+    const maybe = body as { errors?: Array<{ message?: string }>; message?: string };
+    return maybe.errors?.[0]?.message ?? maybe.message ?? 'Erro desconhecido';
+  }
+
+  return 'Erro desconhecido';
 }
 
 export interface EmailParams {
@@ -86,7 +126,9 @@ export class SendGridService {
     this.fromName = process.env.SENDGRID_FROM_NAME || 'Icarus Make';
 
     if (!this.isConfigured()) {
-      console.warn('⚠️  SendGridService: API Key não configurada. Configure SENDGRID_API_KEY no .env');
+      console.warn(
+        '⚠️  SendGridService: API Key não configurada. Configure SENDGRID_API_KEY no .env'
+      );
     }
 
     sgMail.setApiKey(this.apiKey);
@@ -103,25 +145,24 @@ export class SendGridService {
         to: params.para,
         from: {
           email: this.fromEmail,
-          name: this.fromName
+          name: this.fromName,
         },
         subject: params.assunto,
         text: params.texto || '',
         html: params.html || params.texto || '',
         cc: params.cc,
         bcc: params.bcc,
-        replyTo: params.replyTo
+        replyTo: params.replyTo,
       };
 
       // Anexos
       if (params.anexos && params.anexos.length > 0) {
-        msg.attachments = params.anexos.map(anexo => ({
+        msg.attachments = params.anexos.map((anexo) => ({
           filename: anexo.nome,
-          content: typeof anexo.conteudo === 'string' 
-            ? anexo.conteudo 
-            : anexo.conteudo.toString('base64'),
+          content:
+            typeof anexo.conteudo === 'string' ? anexo.conteudo : anexo.conteudo.toString('base64'),
           type: anexo.tipo || 'application/octet-stream',
-          disposition: 'attachment'
+          disposition: 'attachment',
         }));
       }
 
@@ -129,11 +170,11 @@ export class SendGridService {
       if (params.tracking) {
         msg.trackingSettings = {
           clickTracking: {
-            enable: params.tracking.clicarLinks ?? true
+            enable: params.tracking.clicarLinks ?? true,
           },
           openTracking: {
-            enable: params.tracking.abrirEmail ?? true
-          }
+            enable: params.tracking.abrirEmail ?? true,
+          },
         };
       }
 
@@ -153,15 +194,13 @@ export class SendGridService {
         messageId: response.headers['x-message-id'],
         statusCode: response.statusCode,
         para: Array.isArray(params.para) ? params.para : [params.para],
-        enviado: response.statusCode >= 200 && response.statusCode < 300
+        enviado: response.statusCode >= 200 && response.statusCode < 300,
       };
     } catch (error: unknown) {
       console.error('Erro ao enviar email:', error);
 
       if (isResponseError(error)) {
-        const message =
-          error.response.body?.errors?.[0]?.message ?? 'Erro desconhecido';
-        throw new Error(`Falha ao enviar email: ${message}`);
+        throw new Error(`Falha ao enviar email: ${extractSendgridError(error)}`);
       }
 
       const message = error instanceof Error ? error.message : String(error);
@@ -178,12 +217,12 @@ export class SendGridService {
         to: params.para,
         from: {
           email: this.fromEmail,
-          name: this.fromName
+          name: this.fromName,
         },
         templateId: params.templateId,
         dynamicTemplateData: params.dados,
         cc: params.cc,
-        bcc: params.bcc
+        bcc: params.bcc,
       };
 
       // Tags
@@ -202,15 +241,13 @@ export class SendGridService {
         messageId: response.headers['x-message-id'],
         statusCode: response.statusCode,
         para: Array.isArray(params.para) ? params.para : [params.para],
-        enviado: response.statusCode >= 200 && response.statusCode < 300
+        enviado: response.statusCode >= 200 && response.statusCode < 300,
       };
     } catch (error: unknown) {
       console.error('Erro ao enviar email template:', error);
 
       if (isResponseError(error)) {
-        const message =
-          error.response.body?.errors?.[0]?.message ?? 'Erro desconhecido';
-        throw new Error(`Falha ao enviar email template: ${message}`);
+        throw new Error(`Falha ao enviar email template: ${extractSendgridError(error)}`);
       }
 
       const message = error instanceof Error ? error.message : String(error);
@@ -240,7 +277,7 @@ export class SendGridService {
           const para = Array.isArray(emailParams.para) ? emailParams.para[0] : emailParams.para;
           falhas.push({
             email: para,
-            erro: error instanceof Error ? error.message : String(error)
+            erro: error instanceof Error ? error.message : String(error),
           });
         }
       });
@@ -274,7 +311,7 @@ export class SendGridService {
         </div>
       `,
       texto: `Olá, ${nome}! Seja bem-vindo ao Icarus Make.`,
-      tags: ['boas-vindas', 'onboarding']
+      tags: ['boas-vindas', 'onboarding'],
     });
   }
 
@@ -283,7 +320,7 @@ export class SendGridService {
    */
   async enviarRecuperacaoSenha(para: string, token: string): Promise<EmailStatus> {
     const url = `https://icarus.com.br/reset-password?token=${token}`;
-    
+
     return this.enviarEmail({
       para,
       assunto: 'Recuperação de Senha - Icarus Make',
@@ -306,7 +343,7 @@ export class SendGridService {
         </div>
       `,
       texto: `Acesse o link para redefinir sua senha: ${url}`,
-      tags: ['recuperacao-senha', 'seguranca']
+      tags: ['recuperacao-senha', 'seguranca'],
     });
   }
 
@@ -314,31 +351,27 @@ export class SendGridService {
    * Processa webhook de eventos do SendGrid
    */
   processarWebhook(body: SendGridWebhookEvent[]): EmailEvent[] {
-    return body.map(event => ({
+    return body.map((event) => ({
       email: event.email,
       evento: event.event,
       timestamp: event.timestamp,
       url: event.url,
-      razao: event.reason || event.status
+      razao: event.reason || event.status,
     }));
   }
 
   /**
    * Valida assinatura do webhook
    */
-  validarWebhookSignature(
-    signature: string,
-    timestamp: string,
-    body: string
-  ): boolean {
+  validarWebhookSignature(signature: string, timestamp: string, body: string): boolean {
     try {
       const crypto = require('crypto');
       const publicKey = process.env.SENDGRID_WEBHOOK_PUBLIC_KEY || '';
-      
+
       const payload = timestamp + body;
       const verifier = crypto.createVerify('sha256');
       verifier.update(payload);
-      
+
       return verifier.verify(publicKey, signature, 'base64');
     } catch (error) {
       console.error('Erro ao validar assinatura:', error);
@@ -363,7 +396,7 @@ export class SendGridService {
 
     // Validar formato de email
     const emails = Array.isArray(params.para) ? params.para : [params.para];
-    emails.forEach(email => {
+    emails.forEach((email) => {
       if (!this.isValidEmailFormat(email)) {
         throw new Error(`Email inválido: ${email}`);
       }
@@ -406,4 +439,3 @@ export class SendGridService {
 }
 
 export default SendGridService;
-

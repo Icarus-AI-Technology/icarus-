@@ -1,121 +1,148 @@
-/**
- * OraclusX Design System - Button Component
- * Botão neuromórfico padronizado
- */
+import { forwardRef, isValidElement } from 'react';
+import type { ReactNode } from 'react';
+import { Button as HeroButton, ButtonProps as HeroButtonProps } from '@heroui/react';
+import type { LucideIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-import React, { ReactNode } from "react";
-import { LucideIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
+type IconSource = LucideIcon | ReactNode;
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?:
-    | "default"
-    | "primary"
-    | "secondary"
-    | "ghost"
-    | "success"
-    | "warning"
-    | "error";
-  size?: "sm" | "md" | "lg";
-  icon?: LucideIcon | ReactNode;
-  iconPosition?: "left" | "right";
-  isLoading?: boolean;
+type BaseVariant = Exclude<HeroButtonProps['variant'], undefined>;
+
+type ExtendedVariant =
+  | BaseVariant
+  | 'primary'
+  | 'secondary'
+  | 'default'
+  | 'neumorphic'
+  | 'neumo'
+  | 'danger'
+  | 'success'
+  | 'warning'
+  | 'info'
+  | 'error'
+  | 'destructive'
+  | 'outline';
+
+type BaseSize = Exclude<HeroButtonProps['size'], undefined>;
+type ExtendedSize = BaseSize | 'default';
+
+export interface ButtonProps extends Omit<HeroButtonProps, 'variant' | 'size'> {
+  variant?: ExtendedVariant;
+  size?: ExtendedSize;
+  neumorphic?: boolean;
+  leftIcon?: IconSource;
+  rightIcon?: IconSource;
+  icon?: IconSource;
+  /** Alias for isLoading */
+  loading?: boolean;
 }
 
-const ButtonComponent = React.forwardRef<HTMLButtonElement, ButtonProps>(
+const variantMap: Record<ExtendedVariant, BaseVariant> = {
+  flat: 'flat',
+  solid: 'solid',
+  shadow: 'shadow',
+  bordered: 'bordered',
+  light: 'light',
+  ghost: 'ghost',
+  faded: 'faded',
+  neumo: 'flat',
+  neumorphic: 'flat',
+  primary: 'solid',
+  secondary: 'flat',
+  default: 'flat',
+  danger: 'solid',
+  success: 'solid',
+  warning: 'solid',
+  info: 'solid',
+  error: 'solid',
+  destructive: 'solid',
+  outline: 'bordered',
+};
+
+const colorMap: Partial<Record<ExtendedVariant, HeroButtonProps['color']>> = {
+  primary: 'primary',
+  secondary: 'secondary',
+  default: 'default',
+  danger: 'danger',
+  success: 'success',
+  warning: 'warning',
+  info: 'primary',
+  error: 'danger',
+  destructive: 'danger',
+};
+
+const sizeMap: Record<ExtendedSize, HeroButtonProps['size']> = {
+  sm: 'sm',
+  md: 'md',
+  lg: 'lg',
+  default: 'md',
+};
+
+const renderIcon = (icon?: IconSource) => {
+  if (!icon) return undefined;
+  if (typeof icon === 'function') {
+    const IconComponent = icon as LucideIcon;
+    return <IconComponent size={18} className="text-current flex-shrink-0" />;
+  }
+
+  if (isValidElement(icon)) {
+    return icon;
+  }
+
+  return icon;
+};
+
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
+      variant = 'flat',
+      size = 'md',
       className,
-      variant = "default",
-      size = "md",
+      neumorphic,
+      leftIcon,
+      rightIcon,
       icon,
-      iconPosition = "left",
-      isLoading = false,
       children,
-      disabled,
+      color,
+      loading,
+      isLoading,
       ...props
     },
     ref
   ) => {
-    const sizeClasses = {
-      sm: "text-body-sm px-2.5 py-1.5 md:px-3 md:py-1.5",
-      md: "text-body px-3 py-1.5 md:px-4 md:py-2",
-      lg: "text-body-lg px-5 py-2.5 md:px-6 md:py-3",
-    };
+    const mappedVariant = variantMap[variant] ?? 'flat';
+    const mappedSize = sizeMap[size] ?? 'md';
+    const resolvedColor = color ?? colorMap[variant];
+    const isNeumorphic = neumorphic || variant === 'neumorphic' || variant === 'neumo';
 
-    const variantClasses: Record<
-      NonNullable<ButtonProps["variant"]>,
-      string
-    > = {
-      default:
-        "orx-button dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700",
-      primary:
-        "orx-button-primary dark:bg-[var(--orx-primary)] dark:hover:bg-[var(--orx-primary-hover)]",
-      secondary:
-        "bg-surface text-[var(--text-primary)] border border-[var(--border)] hover:shadow-md dark:bg-gray-900 dark:text-gray-100",
-      ghost:
-        "bg-transparent text-[var(--text-secondary)] hover:bg-[var(--surface-hover)]",
-      success:
-        "bg-[var(--color-success)]/80 hover:bg-[var(--color-success)] text-[var(--inverse)] dark:bg-green-600 dark:hover:bg-green-700",
-      warning:
-        "bg-[var(--color-warning)]/80 hover:bg-[var(--color-warning)] text-[var(--inverse)] dark:bg-yellow-600 dark:hover:bg-yellow-700",
-      error:
-        "bg-[var(--color-error)]/80 hover:bg-[var(--color-error)] text-[var(--inverse)] dark:bg-red-600 dark:hover:bg-red-700",
-    };
-
-    const renderIcon = (position: "left" | "right") => {
-      if (!icon || iconPosition !== position) return null;
-
-      const isForwardRefComponent =
-        typeof icon === "object" &&
-        icon !== null &&
-        "render" in icon &&
-        typeof (icon as { render?: unknown }).render === "function";
-
-      if (typeof icon === "function" || isForwardRefComponent) {
-        const IconComponent = icon as LucideIcon;
-        return <IconComponent size={18} />;
-      }
-
-      if (React.isValidElement(icon)) {
-        return icon;
-      }
-
-      return icon as ReactNode;
-    };
+    const startContent = renderIcon(leftIcon ?? (children ? icon : undefined));
+    const endContent = renderIcon(rightIcon);
+    const iconOnlyContent = !children ? renderIcon(icon) : null;
 
     return (
-      <button
+      <HeroButton
         ref={ref}
+        variant={mappedVariant}
+        size={mappedSize}
+        color={resolvedColor}
+        startContent={startContent}
+        endContent={endContent}
+        isIconOnly={!children && Boolean(iconOnlyContent)}
+        isLoading={loading || isLoading}
         className={cn(
-          "inline-flex items-center justify-center gap-2",
-          "orx-orx-font-medium rounded-lg",
-          "transition-all duration-150",
-          "disabled:opacity-50 disabled:cursor-not-allowed",
-          sizeClasses[size],
-          variantClasses[variant] || variantClasses.default,
+          isNeumorphic &&
+            'bg-gradient-to-br from-white/10 to-white/5 border border-white/5 shadow-[5px_5px_15px_rgba(15,23,42,0.25),-5px_-5px_15px_rgba(255,255,255,0.15)] hover:shadow-[8px_8px_20px_rgba(15,23,42,0.35),-8px_-8px_20px_rgba(255,255,255,0.25)]',
+          !children && iconOnlyContent && 'px-0 w-10 h-10',
           className
         )}
-        disabled={disabled || isLoading}
         {...props}
       >
-        {isLoading ? (
-          <span className="animate-spin">⟳</span>
-        ) : (
-          <>
-            {renderIcon("left")}
-            {children}
-            {renderIcon("right")}
-          </>
-        )}
-      </button>
+        {children ?? iconOnlyContent}
+      </HeroButton>
     );
   }
 );
 
-ButtonComponent.displayName = "OraclusXButton";
-
-export const Button = React.memo(ButtonComponent);
+Button.displayName = 'OraclusButton';
 
 export default Button;

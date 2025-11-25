@@ -27,8 +27,8 @@ export class AuditoriaAI {
           probabilidade: 0.35,
           impacto: 'alto',
           descricao: 'Falta de documentação completa em 15% dos dispositivos',
-          acaoPreventiva: 'Implementar checklist automático de rastreabilidade'
-        }
+          acaoPreventiva: 'Implementar checklist automático de rastreabilidade',
+        },
       ],
       proximaAuditoria: {
         data: '2025-12-15',
@@ -36,12 +36,11 @@ export class AuditoriaAI {
         preparacao: [
           'Revisar registros de rastreabilidade',
           'Atualizar procedimentos operacionais',
-          'Treinar equipe em novos processos'
-        ]
-      }
+          'Treinar equipe em novos processos',
+        ],
+      },
     };
   }
 }
 
 export const auditoriaAI = new AuditoriaAI();
-

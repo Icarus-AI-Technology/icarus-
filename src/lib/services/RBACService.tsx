@@ -1,13 +1,16 @@
 /**
  * Service: RBAC (Role-Based Access Control)
- * 
+ *
  * Gerenciamento de permissões e controle de acesso
  * Conformidade: LGPD Art. 37, ISO 27001
  */
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
+
+const db = supabase as any;
 import { ShieldX } from 'lucide-react';
+import type { Database } from '@/lib/database.types.generated';
 
 export interface Permission {
   id: string;
@@ -29,15 +32,33 @@ export interface Role {
 }
 
 export class RBACService {
+  private static normalizePermissionRow(
+    perm: Database['public']['Views']['vw_user_permissions']['Row']
+  ): Permission {
+    const allowedLevels: Permission['nivel_criticidade'][] = ['baixo', 'medio', 'alto', 'critico'];
+    const safeLevel = allowedLevels.includes(
+      (perm.nivel_criticidade ?? 'medio') as Permission['nivel_criticidade']
+    )
+      ? ((perm.nivel_criticidade ?? 'medio') as Permission['nivel_criticidade'])
+      : 'medio';
+
+    return {
+      id: perm.id ?? perm.permission_id ?? '',
+      codigo: perm.codigo ?? '',
+      nome: perm.nome ?? '',
+      modulo: perm.modulo ?? 'geral',
+      acao: perm.acao ?? '',
+      nivel_criticidade: safeLevel,
+      requer_2fa: perm.requer_2fa ?? false,
+    };
+  }
+
   /**
    * Verificar se usuário tem permissão específica
    */
-  static async userHasPermission(
-    userId: string,
-    permissionCode: string
-  ): Promise<boolean> {
+  static async userHasPermission(userId: string, permissionCode: string): Promise<boolean> {
     try {
-      const { data, error } = await supabase.rpc('user_has_permission', {
+      const { data, error } = await db.rpc('user_has_permission', {
         p_user_id: userId,
         p_permission_code: permissionCode,
       });
@@ -59,14 +80,16 @@ export class RBACService {
    */
   static async getUserPermissions(userId: string): Promise<Permission[]> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('vw_user_permissions')
         .select('*')
         .eq('user_id', userId);
 
       if (error) throw error;
 
-      return data || [];
+      const rows = (data ?? []) as Database['public']['Views']['vw_user_permissions']['Row'][];
+
+      return rows.map((perm) => this.normalizePermissionRow(perm));
     } catch (error) {
       console.error('[RBAC] Erro ao obter permissões do usuário:', error);
       return [];
@@ -78,7 +101,7 @@ export class RBACService {
    */
   static async getUserRoles(userId: string): Promise<Role[]> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('user_roles')
         .select('*, role:roles(*)')
         .eq('user_id', userId)
@@ -87,7 +110,9 @@ export class RBACService {
       if (error) throw error;
 
       return (
-        data?.map((record) => record.role as Role | null).filter((role): role is Role => role !== null) || []
+        data
+          ?.map((record) => record.role as Role | null)
+          .filter((role): role is Role => role !== null) || []
       );
     } catch (error) {
       console.error('[RBAC] Erro ao obter roles do usuário:', error);
@@ -100,7 +125,7 @@ export class RBACService {
    */
   static async userHasRole(userId: string, roleName: string): Promise<boolean> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('user_roles')
         .select('*, role:roles(nome)')
         .eq('user_id', userId)
@@ -125,7 +150,7 @@ export class RBACService {
     validUntil?: Date
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      const { error } = await supabase.from('user_roles').insert({
+      const { error } = await db.from('user_roles').insert({
         user_id: userId,
         role_id: roleId,
         assigned_by: assignedBy,
@@ -156,7 +181,7 @@ export class RBACService {
     revokedBy: string
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      const { error } = await supabase
+      const { error } = await db
         .from('user_roles')
         .update({ is_active: false })
         .eq('id', userRoleId);
@@ -187,7 +212,7 @@ export class RBACService {
     validUntil?: Date
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      const { error } = await supabase.from('user_permissions_override').insert({
+      const { error } = await db.from('user_permissions_override').insert({
         user_id: userId,
         permission_id: permissionId,
         tipo_override: 'grant',
@@ -225,7 +250,7 @@ export class RBACService {
     revokedBy: string
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      const { error } = await supabase.from('user_permissions_override').insert({
+      const { error } = await db.from('user_permissions_override').insert({
         user_id: userId,
         permission_id: permissionId,
         tipo_override: 'revoke',
@@ -263,7 +288,7 @@ export class RBACService {
     expiresAt: Date
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      const { error } = await supabase.from('user_sessions').insert({
+      const { error } = await db.from('user_sessions').insert({
         user_id: userId,
         session_token: sessionToken,
         ip_address: ipAddress,
@@ -294,7 +319,7 @@ export class RBACService {
     reason: string
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      const { error } = await supabase
+      const { error } = await db
         .from('user_sessions')
         .update({
           is_active: false,
@@ -323,7 +348,7 @@ export class RBACService {
    */
   static async getActiveSessions(userId: string) {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('vw_active_sessions')
         .select('*')
         .eq('user_id', userId);
@@ -332,7 +357,7 @@ export class RBACService {
 
       return data || [];
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[RBAC] Erro ao obter sessões ativas:', err);
       return [];
     }
@@ -343,7 +368,7 @@ export class RBACService {
    */
   static async cleanupExpiredSessions(): Promise<number> {
     try {
-      const { data, error } = await supabase.rpc('cleanup_expired_sessions');
+      const { data, error } = await db.rpc('cleanup_expired_sessions');
 
       if (error) throw error;
 
@@ -351,7 +376,7 @@ export class RBACService {
       console.log(`[RBAC] ${cleaned} sessões expiradas limpas`);
       return cleaned;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[RBAC] Erro ao limpar sessões expiradas:', err);
       return 0;
     }
@@ -367,14 +392,14 @@ export class RBACService {
     motivoFalha: string
   ): Promise<void> {
     try {
-      await supabase.from('failed_login_attempts').insert({
+      await db.from('failed_login_attempts').insert({
         email,
         ip_address: ipAddress,
         user_agent: userAgent,
         motivo_falha: motivoFalha,
       });
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[RBAC] Erro ao registrar tentativa falha:', err);
     }
   }
@@ -382,12 +407,9 @@ export class RBACService {
   /**
    * Verificar se deve bloquear login (muitas tentativas falhadas)
    */
-  static async shouldBlockLogin(
-    email: string,
-    ipAddress: string
-  ): Promise<boolean> {
+  static async shouldBlockLogin(email: string, ipAddress: string): Promise<boolean> {
     try {
-      const { data, error } = await supabase.rpc('check_failed_login_attempts', {
+      const { data, error } = await db.rpc('check_failed_login_attempts', {
         p_email: email,
         p_ip_address: ipAddress,
         p_time_window_minutes: 15,
@@ -398,7 +420,7 @@ export class RBACService {
 
       return data === true;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[RBAC] Erro ao verificar bloqueio:', err);
       return false;
     }
@@ -415,15 +437,15 @@ export class RBACService {
     nivelSensibilidade: 'interno' | 'sensivel' | 'sigiloso' | 'critico' = 'interno'
   ): Promise<void> {
     try {
-      await supabase.rpc('log_audit', {
+      await db.rpc('log_audit', {
         p_user_id: userId,
         p_acao: acao,
         p_modulo: modulo,
-        p_descricao: detalhes ? JSON.stringify(detalhes) : null,
+        p_descricao: detalhes ? JSON.stringify(detalhes) : undefined,
         p_nivel_sensibilidade: nivelSensibilidade,
       });
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[RBAC] Erro ao registrar auditoria:', err);
     }
   }
@@ -440,10 +462,7 @@ export class RBACService {
     limit?: number;
   }) {
     try {
-      let query = supabase
-        .from('audit_log')
-        .select('*')
-        .order('created_at', { ascending: false });
+      let query = db.from('audit_log').select('*').order('created_at', { ascending: false });
 
       if (filters?.userId) {
         query = query.eq('user_id', filters.userId);
@@ -470,7 +489,7 @@ export class RBACService {
 
       return data || [];
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[RBAC] Erro ao obter logs de auditoria:', err);
       return [];
     }
@@ -517,7 +536,7 @@ export class RBACService {
         return [headers, ...rows].map((row) => row.join(',')).join('\n');
       }
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[RBAC] Erro ao exportar logs:', err);
       return '';
     }
@@ -532,7 +551,9 @@ export function usePermission(permissionCode: string): boolean {
 
   useEffect(() => {
     const checkPermission = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) {
         setHasPermission(false);
         return;
@@ -563,7 +584,9 @@ export function withPermission<P extends object>(
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
             <ShieldX className="w-16 h-16 mx-auto mb-4 text-error" />
-            <h2 className="mb-2" style={{  fontSize: '1.25rem' , fontWeight: 600 }}>Acesso Negado</h2>
+            <h2 className="mb-2" style={{ fontSize: '1.25rem', fontWeight: 600 }}>
+              Acesso Negado
+            </h2>
             <p className="text-[var(--text-secondary)]">
               Você não tem permissão para acessar esta página.
             </p>
@@ -575,4 +598,3 @@ export function withPermission<P extends object>(
     return <Component {...(props as P)} />;
   };
 }
-

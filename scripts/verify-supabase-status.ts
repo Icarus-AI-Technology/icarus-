@@ -31,25 +31,25 @@ const CRITICAL_TABLES = [
   'produtos',
   'lotes',
   'fornecedores',
-  
+
   // Medical/Operations
   'medicos',
   'hospitais',
   'cirurgias',
   'kits',
-  
+
   // Business
   'pedidos_compra',
   'faturas',
   'transacoes',
   'leads',
-  
+
   // EDR Integration
   'edr_research_sessions',
   'edr_agent_tasks',
   'edr_search_results',
   'edr_reflection_logs',
-  
+
   // Audit & Logs
   'audit_log',
   'activity_logs',
@@ -57,16 +57,13 @@ const CRITICAL_TABLES = [
 
 async function checkTable(tableName: string): Promise<boolean> {
   try {
-    const { data, error } = await supabase
-      .from(tableName)
-      .select('*')
-      .limit(1);
-    
+    const { data, error } = await supabase.from(tableName).select('*').limit(1);
+
     if (error) {
       console.log(`  ✗ ${tableName} - ${error.message}`);
       return false;
     }
-    
+
     console.log(`  ✓ ${tableName}`);
     return true;
   } catch (err) {
@@ -77,18 +74,15 @@ async function checkTable(tableName: string): Promise<boolean> {
 
 async function checkEdgeFunctions() {
   console.log('\n⚡ Checking Edge Functions:\n');
-  
-  const functions = [
-    'edr-orchestrator',
-    'edr-stream',
-  ];
-  
+
+  const functions = ['edr-orchestrator', 'edr-stream'];
+
   for (const funcName of functions) {
     try {
       const { data, error } = await supabase.functions.invoke(funcName, {
         body: { test: true },
       });
-      
+
       if (error) {
         console.log(`  ✗ ${funcName} - ${error.message}`);
       } else {
@@ -102,20 +96,20 @@ async function checkEdgeFunctions() {
 
 async function checkStorageBuckets() {
   console.log('\n🗄️  Checking Storage Buckets:\n');
-  
+
   try {
     const { data: buckets, error } = await supabase.storage.listBuckets();
-    
+
     if (error) {
       console.log(`  ✗ Error listing buckets: ${error.message}`);
       return;
     }
-    
+
     if (!buckets || buckets.length === 0) {
       console.log('  ⊙ No storage buckets found');
       return;
     }
-    
+
     buckets.forEach((bucket) => {
       console.log(`  ✓ ${bucket.name} (${bucket.public ? 'public' : 'private'})`);
     });
@@ -126,7 +120,7 @@ async function checkStorageBuckets() {
 
 async function getStatistics() {
   console.log('\n📊 Database Statistics:\n');
-  
+
   const statsQueries = [
     { label: 'Empresas', table: 'empresas' },
     { label: 'Usuários', table: 'usuarios' },
@@ -134,13 +128,13 @@ async function getStatistics() {
     { label: 'Cirurgias', table: 'cirurgias' },
     { label: 'EDR Sessions', table: 'edr_research_sessions' },
   ];
-  
+
   for (const { label, table } of statsQueries) {
     try {
       const { count, error } = await supabase
         .from(table)
         .select('*', { count: 'exact', head: true });
-      
+
       if (!error && count !== null) {
         console.log(`  ${label}: ${count} records`);
       }
@@ -152,10 +146,10 @@ async function getStatistics() {
 
 async function main() {
   console.log('📋 Checking Critical Tables:\n');
-  
+
   let existingCount = 0;
   let missingCount = 0;
-  
+
   for (const table of CRITICAL_TABLES) {
     const exists = await checkTable(table);
     if (exists) {
@@ -164,20 +158,20 @@ async function main() {
       missingCount++;
     }
   }
-  
+
   await checkEdgeFunctions();
   await checkStorageBuckets();
   await getStatistics();
-  
+
   console.log('\n==========================================');
   console.log('Summary:');
   console.log(`  ✓ Existing tables: ${existingCount}/${CRITICAL_TABLES.length}`);
   console.log(`  ✗ Missing tables: ${missingCount}/${CRITICAL_TABLES.length}`);
-  
+
   const completeness = (existingCount / CRITICAL_TABLES.length) * 100;
   console.log(`  📊 Completeness: ${completeness.toFixed(1)}%`);
   console.log('==========================================\n');
-  
+
   if (completeness < 50) {
     console.log('⚠️  Database needs significant setup');
     console.log('Recommendation: Run migrations manually via Supabase Dashboard\n');
@@ -187,7 +181,7 @@ async function main() {
   } else {
     console.log('✅ Database is fully set up!\n');
   }
-  
+
   process.exit(0);
 }
 

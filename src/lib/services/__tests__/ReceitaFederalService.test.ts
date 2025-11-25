@@ -87,13 +87,15 @@ describe('ReceitaFederalService', () => {
         email: 'teste@teste.com',
         cnae_fiscal: '1234567',
         cnae_fiscal_descricao: 'ATIVIDADE TESTE',
-        status: 'ATIVA'
+        status: 'ATIVA',
       };
 
-      (global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce({
+      (
+        global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }
+      ).mockResolvedValueOnce({
         ok: true,
         status: 200,
-        json: async () => mockResponse
+        json: async () => mockResponse,
       });
 
       // Act
@@ -110,9 +112,11 @@ describe('ReceitaFederalService', () => {
 
     it('deve retornar null se CNPJ não for encontrado', async () => {
       // Arrange
-      (global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce({
+      (
+        global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }
+      ).mockResolvedValueOnce({
         ok: false,
-        status: 404
+        status: 404,
       });
 
       // Act
@@ -124,51 +128,42 @@ describe('ReceitaFederalService', () => {
 
     it('deve lançar erro se CNPJ for inválido', async () => {
       // Act & Assert
-      await expect(
-        receitaFederalService.consultarCNPJ('12345')
-      ).rejects.toThrow('CNPJ inválido');
+      await expect(receitaFederalService.consultarCNPJ('12345')).rejects.toThrow('CNPJ inválido');
     });
 
     it('deve lançar erro se API retornar erro HTTP', async () => {
       // Arrange
-      (global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce({
+      (
+        global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }
+      ).mockResolvedValueOnce({
         ok: false,
-        status: 500
+        status: 500,
       });
 
       // Act & Assert
-      await expect(
-        receitaFederalService.consultarCNPJ('00000000000191')
-      ).rejects.toThrow('Erro na API Brasil API: 500');
+      await expect(receitaFederalService.consultarCNPJ('00000000000191')).rejects.toThrow(
+        'Erro na API Brasil API: 500'
+      );
     });
   });
 
   describe('formatarCNPJ', () => {
     it('deve formatar CNPJ corretamente', () => {
-      expect(receitaFederalService.formatarCNPJ('00000000000191')).toBe(
-        '00.000.000/0001-91'
-      );
+      expect(receitaFederalService.formatarCNPJ('00000000000191')).toBe('00.000.000/0001-91');
     });
 
     it('deve formatar CNPJ que já está formatado', () => {
-      expect(receitaFederalService.formatarCNPJ('00.000.000/0001-91')).toBe(
-        '00.000.000/0001-91'
-      );
+      expect(receitaFederalService.formatarCNPJ('00.000.000/0001-91')).toBe('00.000.000/0001-91');
     });
   });
 
   describe('formatarCPF', () => {
     it('deve formatar CPF corretamente', () => {
-      expect(receitaFederalService.formatarCPF('00000000191')).toBe(
-        '000.000.001-91'
-      );
+      expect(receitaFederalService.formatarCPF('00000000191')).toBe('000.000.001-91');
     });
 
     it('deve formatar CPF que já está formatado', () => {
-      expect(receitaFederalService.formatarCPF('000.000.001-91')).toBe(
-        '000.000.001-91'
-      );
+      expect(receitaFederalService.formatarCPF('000.000.001-91')).toBe('000.000.001-91');
     });
   });
 });
-

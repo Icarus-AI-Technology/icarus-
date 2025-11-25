@@ -1,7 +1,7 @@
 /**
  * ValidadeService - Serviço de gestão de validade de produtos
  * Sistema: ICARUS v5.0
- * 
+ *
  * Funcionalidades:
  * - Verificar vencimentos
  * - Bloquear produtos vencidos automaticamente
@@ -10,7 +10,7 @@
  * - Relatórios de vencimento
  */
 
-import { supabase } from '@/lib/supabase';
+import { legacySupabase as supabase } from '@/lib/legacySupabase';
 
 // ============================================
 // INTERFACES
@@ -87,7 +87,8 @@ export class ValidadeService {
       // Buscar todos os lotes com validade
       const { data: lotes, error } = await supabase
         .from('estoque_lotes')
-        .select(`
+        .select(
+          `
           *,
           produto:produtos_opme(nome, codigo_anvisa),
           estoque!inner(
@@ -96,7 +97,8 @@ export class ValidadeService {
             armazem:estoque_armazens(nome),
             localizacao:estoque_localizacoes(codigo)
           )
-        `)
+        `
+        )
         .not('data_validade', 'is', null)
         .order('data_validade', { ascending: true });
 
@@ -128,7 +130,7 @@ export class ValidadeService {
           valor_total: lote.estoque?.[0]?.custo_total || 0,
           status: lote.status,
           armazem_nome: lote.estoque?.[0]?.armazem?.nome || 'N/A',
-          localizacao: lote.estoque?.[0]?.localizacao?.codigo
+          localizacao: lote.estoque?.[0]?.localizacao?.codigo,
         };
 
         totalValor += produto.valor_total;
@@ -150,10 +152,10 @@ export class ValidadeService {
         vencidos,
         vencendo_7_dias: vencendo7,
         vencendo_30_dias: vencendo30,
-        vencendo_90_dias: vencendo90
+        vencendo_90_dias: vencendo90,
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao verificar vencimentos:', err);
       throw error;
     }
@@ -172,7 +174,7 @@ export class ValidadeService {
         .update({
           status: 'vencido',
           bloqueado: true,
-          motivo_bloqueio: 'Produto vencido automaticamente pelo sistema'
+          motivo_bloqueio: 'Produto vencido automaticamente pelo sistema',
         })
         .lt('data_validade', hoje)
         .eq('status', 'ativo')
@@ -190,20 +192,18 @@ export class ValidadeService {
             .eq('produto_id', lote.produto_id);
 
           // Criar alerta
-          await supabase
-            .from('estoque_alertas')
-            .insert({
-              produto_id: lote.produto_id,
-              tipo: 'lote_bloqueado',
-              severidade: 'critica',
-              mensagem: `Lote ${lote.lote} vencido e bloqueado automaticamente`
-            });
+          await supabase.from('estoque_alertas').insert({
+            produto_id: lote.produto_id,
+            tipo: 'lote_bloqueado',
+            severidade: 'critica',
+            mensagem: `Lote ${lote.lote} vencido e bloqueado automaticamente`,
+          });
         }
       }
 
       return lotesVencidos?.length || 0;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao bloquear vencidos:', err);
       throw error;
     }
@@ -224,13 +224,13 @@ export class ValidadeService {
         tipo: 'bloquear',
         prioridade: 'alta',
         descricao: 'Bloquear imediatamente e iniciar processo de descarte',
-        prazo_dias: 0
+        prazo_dias: 0,
       });
       acoes.push({
         tipo: 'descarte',
         prioridade: 'alta',
         descricao: 'Seguir protocolo de descarte de produtos vencidos',
-        prazo_dias: 7
+        prazo_dias: 7,
       });
     } else if (diasRestantes <= 7) {
       // Menos de 7 dias
@@ -238,13 +238,13 @@ export class ValidadeService {
         tipo: 'promocao',
         prioridade: 'alta',
         descricao: 'Oferecer desconto de 30-40% para venda rápida',
-        prazo_dias: 7
+        prazo_dias: 7,
       });
       acoes.push({
         tipo: 'devolver',
         prioridade: 'alta',
         descricao: 'Verificar possibilidade de devolução ao fornecedor',
-        prazo_dias: 5
+        prazo_dias: 5,
       });
     } else if (diasRestantes <= 30) {
       // Menos de 30 dias
@@ -252,13 +252,13 @@ export class ValidadeService {
         tipo: 'promocao',
         prioridade: 'media',
         descricao: 'Oferecer desconto de 15-20% ou priorizar nas vendas',
-        prazo_dias: 30
+        prazo_dias: 30,
       });
       acoes.push({
         tipo: 'devolver',
         prioridade: 'media',
         descricao: 'Negociar devolução com fornecedor',
-        prazo_dias: 20
+        prazo_dias: 20,
       });
     } else if (diasRestantes <= 90) {
       // Menos de 90 dias
@@ -266,7 +266,7 @@ export class ValidadeService {
         tipo: 'promocao',
         prioridade: 'baixa',
         descricao: 'Incluir em campanhas promocionais',
-        prazo_dias: 90
+        prazo_dias: 90,
       });
     }
 
@@ -281,7 +281,8 @@ export class ValidadeService {
     try {
       const { data: lotes, error } = await supabase
         .from('estoque_lotes')
-        .select(`
+        .select(
+          `
           *,
           produto:produtos_opme(nome),
           estoque!inner(
@@ -291,7 +292,8 @@ export class ValidadeService {
             armazem:estoque_armazens(nome),
             localizacao:estoque_localizacoes(codigo)
           )
-        `)
+        `
+        )
         .eq('produto_id', produtoId)
         .eq('status', 'ativo')
         .gt('estoque.quantidade', 0)
@@ -300,7 +302,7 @@ export class ValidadeService {
       if (error) throw error;
 
       const hoje = new Date();
-      
+
       return (lotes || []).map((lote: EstoqueLoteRow) => {
         const dataValidade = new Date(lote.data_validade);
         const diasRestantes = Math.ceil(
@@ -319,11 +321,11 @@ export class ValidadeService {
           valor_total: lote.estoque?.[0]?.custo_total || 0,
           status: lote.estoque?.[0]?.status || 'disponivel',
           armazem_nome: lote.estoque?.[0]?.armazem?.nome || 'N/A',
-          localizacao: lote.estoque?.[0]?.localizacao?.codigo
+          localizacao: lote.estoque?.[0]?.localizacao?.codigo,
         };
       });
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao obter ordem FEFO:', err);
       throw error;
     }
@@ -355,7 +357,7 @@ export class ValidadeService {
           tipo: 'vencimento_proximo',
           severidade: 'critica',
           mensagem: `Lote ${produto.lote} vence em ${produto.dias_restantes} dias`,
-          dias_vencimento: produto.dias_restantes
+          dias_vencimento: produto.dias_restantes,
         });
         alertasCriados++;
       }
@@ -367,7 +369,7 @@ export class ValidadeService {
           tipo: 'vencimento_proximo',
           severidade: 'alta',
           mensagem: `Lote ${produto.lote} vence em ${produto.dias_restantes} dias`,
-          dias_vencimento: produto.dias_restantes
+          dias_vencimento: produto.dias_restantes,
         });
         alertasCriados++;
       }
@@ -377,13 +379,12 @@ export class ValidadeService {
 
       return {
         bloqueados,
-        alertas_criados: alertasCriados
+        alertas_criados: alertasCriados,
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro na rotina automática:', err);
       throw error;
     }
   }
 }
-

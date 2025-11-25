@@ -1,8 +1,8 @@
-import * as Sentry from "@sentry/react";
+import * as Sentry from '@sentry/react';
 
 /**
  * Inicializa o Sentry para monitoramento de erros
- * 
+ *
  * Para configurar:
  * 1. Crie conta em: https://sentry.io
  * 2. Crie novo projeto React
@@ -25,26 +25,26 @@ export function initSentry() {
   try {
     Sentry.init({
       dsn: SENTRY_DSN,
-      
+
       // Integrations
       integrations: [
         // Captura erros de React components
         Sentry.browserTracingIntegration(),
-        
+
         // Captura interações do usuário
         Sentry.replayIntegration({
           // Replay apenas em erros (economiza dados)
           maskAllText: true,
           blockAllMedia: true,
         }),
-        
+
         // Performance profiling
         Sentry.browserProfilingIntegration(),
       ],
 
       // Performance Monitoring
       tracesSampleRate: ENVIRONMENT === 'production' ? 0.1 : 1.0, // 10% em prod, 100% em dev
-      
+
       // Session Replay
       replaysSessionSampleRate: 0.1, // 10% das sessões
       replaysOnErrorSampleRate: 1.0, // 100% dos erros
@@ -90,27 +90,23 @@ export function initSentry() {
         'canvas.contentDocument',
         'MyApp_RemoveAllHighlights',
         'atomicFindClose',
-        
+
         // Erros de rede que não podemos controlar
         'NetworkError',
         'Network request failed',
         'Failed to fetch',
-        
+
         // Erros de timeout
         'timeout',
         'AbortError',
-        
+
         // Erros conhecidos que podem ser ignorados
         'ResizeObserver loop limit exceeded',
         'ResizeObserver loop completed with undelivered notifications',
       ],
 
       // Não capturar URLs de extensões de browser
-      denyUrls: [
-        /extensions\//i,
-        /^chrome:\/\//i,
-        /^chrome-extension:\/\//i,
-      ],
+      denyUrls: [/extensions\//i, /^chrome:\/\//i, /^chrome-extension:\/\//i],
     });
 
     // Configurar usuário (após login)
@@ -125,12 +121,9 @@ export function initSentry() {
 /**
  * Captura erro manualmente
  */
-export function captureError(
-  error: Error,
-  context?: Record<string, unknown>,
-) {
+export function captureError(error: Error, context?: Record<string, unknown>) {
   if (!SENTRY_DSN) return;
-  
+
   Sentry.captureException(error, {
     contexts: { extra: context },
   });
@@ -141,7 +134,7 @@ export function captureError(
  */
 export function captureMessage(message: string, level: Sentry.SeverityLevel = 'info') {
   if (!SENTRY_DSN) return;
-  
+
   Sentry.captureMessage(message, level);
 }
 
@@ -150,7 +143,7 @@ export function captureMessage(message: string, level: Sentry.SeverityLevel = 'i
  */
 export function addBreadcrumb(breadcrumb: Sentry.Breadcrumb) {
   if (!SENTRY_DSN) return;
-  
+
   Sentry.addBreadcrumb(breadcrumb);
 }
 
@@ -159,7 +152,7 @@ export function addBreadcrumb(breadcrumb: Sentry.Breadcrumb) {
  */
 export function setUser(user: { id: string; email?: string; username?: string } | null) {
   if (!SENTRY_DSN) return;
-  
+
   if (user) {
     Sentry.setUser(user);
   } else {
@@ -172,19 +165,16 @@ export function setUser(user: { id: string; email?: string; username?: string } 
  */
 export function setTag(key: string, value: string) {
   if (!SENTRY_DSN) return;
-  
+
   Sentry.setTag(key, value);
 }
 
 /**
  * Define contexto extra
  */
-export function setContext(
-  name: string,
-  context: Record<string, unknown>,
-) {
+export function setContext(name: string, context: Record<string, unknown>) {
   if (!SENTRY_DSN) return;
-  
+
   Sentry.setContext(name, context);
 }
 
@@ -197,4 +187,3 @@ export const SentryErrorBoundary = Sentry.ErrorBoundary;
  * Hooks do Sentry
  */
 export { Sentry };
-

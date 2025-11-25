@@ -18,7 +18,8 @@ export function ChatIA() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: 'Olá! Sou o assistente de IA do ICARUS v5.0. Posso ajudá-lo com análises, previsões e insights sobre estoque, cirurgias, finanças e compliance. Como posso ajudar?',
+      content:
+        'Olá! Sou o assistente de IA do ICARUS v5.0. Posso ajudá-lo com análises, previsões e insights sobre estoque, cirurgias, finanças e compliance. Como posso ajudar?',
       model: 'system',
       timestamp: new Date(),
     },
@@ -35,23 +36,24 @@ export function ChatIA() {
       timestamp: new Date(),
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setLoading(true);
 
     try {
       // Determinar complexidade baseado na pergunta
-      const complexity = 
-        input.toLowerCase().includes('análise') || input.toLowerCase().includes('compliance') 
-          ? 'complex' 
+      const complexity =
+        input.toLowerCase().includes('análise') || input.toLowerCase().includes('compliance')
+          ? 'complex'
           : input.toLowerCase().includes('previsão') || input.toLowerCase().includes('recomend')
-          ? 'moderate'
-          : 'simple';
+            ? 'moderate'
+            : 'simple';
 
       const response = await hybridLLMService.processQuery({
         prompt: input,
         complexity,
-        systemPrompt: 'Você é um assistente especializado em gestão hospitalar e OPME. Seja direto, preciso e prático.',
+        systemPrompt:
+          'Você é um assistente especializado em gestão hospitalar e OPME. Seja direto, preciso e prático.',
       });
 
       const assistantMessage: Message = {
@@ -61,16 +63,17 @@ export function ChatIA() {
         timestamp: new Date(),
       };
 
-      setMessages(prev => [...prev, assistantMessage]);
+      setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Erro ao processar mensagem:', error);
       const errorMessage: Message = {
         role: 'assistant',
-        content: 'Desculpe, ocorreu um erro ao processar sua mensagem. Por favor, tente novamente ou reformule sua pergunta.',
+        content:
+          'Desculpe, ocorreu um erro ao processar sua mensagem. Por favor, tente novamente ou reformule sua pergunta.',
         model: 'error',
         timestamp: new Date(),
       };
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setLoading(false);
     }
@@ -99,7 +102,9 @@ export function ChatIA() {
             <Bot className="w-6 h-6 text-white" />
           </div>
           <div className="flex-1">
-            <h3 className="orx-orx-font-semibold text-slate-900 dark:text-white">Chat IA - Assistente ICARUS</h3>
+            <h3 className="orx-orx-font-semibold text-slate-900 dark:text-white">
+              Chat IA - Assistente ICARUS
+            </h3>
             <p className="orx-text-xs text-slate-600 dark:text-slate-400">
               Powered by: Ollama + GPT-4 + Claude 3.5
             </p>
@@ -123,16 +128,25 @@ export function ChatIA() {
                 <Bot className="w-5 h-5 text-white" />
               </div>
             )}
-            
-            <div className={`
+
+            <div
+              className={`
               max-w-[80%] rounded-2xl px-4 py-3
-              ${message.role === 'user' 
-                ? 'bg-indigo-600 text-white' 
-                : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white'}
-            `}>
+              ${
+                message.role === 'user'
+                  ? 'bg-[var(--orx-primary)] text-white'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white'
+              }
+            `}
+            >
               <p className="orx-text-sm whitespace-pre-wrap">{message.content}</p>
               <div className="flex items-center gap-2 mt-2 orx-text-xs opacity-70">
-                <span>{message.timestamp.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
+                <span>
+                  {message.timestamp.toLocaleTimeString('pt-BR', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </span>
                 {message.model && message.model !== 'system' && (
                   <>
                     <span>•</span>
@@ -161,7 +175,9 @@ export function ChatIA() {
             <div className="bg-slate-100 dark:bg-slate-800 rounded-2xl px-4 py-3">
               <div className="flex items-center gap-2">
                 <Loader className="w-4 h-4 animate-spin" />
-                <span className="orx-text-sm text-slate-600 dark:text-slate-400">Processando...</span>
+                <span className="orx-text-sm text-slate-600 dark:text-slate-400">
+                  Processando...
+                </span>
               </div>
             </div>
           </div>
@@ -201,16 +217,16 @@ export function ChatIA() {
           <button
             onClick={handleSend}
             disabled={!input.trim() || loading}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="px-4 py-2 bg-[var(--orx-primary)] text-white rounded-xl hover:bg-[var(--orx-primary)]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
             <Send className="w-5 h-5" />
           </button>
         </div>
         <p className="orx-text-xs text-slate-500 dark:text-slate-500 mt-2">
-          💡 Este chat usa estratégia híbrida: 80% Ollama (grátis) + 20% GPT-4/Claude (casos complexos)
+          💡 Este chat usa estratégia híbrida: 80% Ollama (grátis) + 20% GPT-4/Claude (casos
+          complexos)
         </p>
       </div>
     </div>
   );
 }
-

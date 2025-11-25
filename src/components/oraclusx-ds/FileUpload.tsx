@@ -1,7 +1,7 @@
 /**
  * OraclusX Design System - FileUpload Component
  * Upload de arquivos com drag & drop e múltiplo
- * 
+ *
  * HARD GATES:
  * ✅ Sem text/font classes (tipografia CSS)
  * ✅ Cores via CSS variables
@@ -10,9 +10,9 @@
  * ✅ TypeScript strict
  */
 
-import React, { useRef, useState } from"react";
-import { Upload, X, File, Image, FileText } from"lucide-react";
-import { cn } from"@/lib/utils";
+import React, { useRef, useState } from 'react';
+import { Upload, X, File, Image, FileText } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export interface FileUploadProps {
   onFileSelect: (files: File[]) => void;
@@ -39,15 +39,15 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   helperText,
   error,
   className,
-  showPreview = true
+  showPreview = true,
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [validationError, setValidationError] = useState<string>("");
+  const [validationError, setValidationError] = useState<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
 
   const validateFiles = (files: File[]): boolean => {
-    setValidationError("");
+    setValidationError('');
 
     if (maxFiles && selectedFiles.length + files.length > maxFiles) {
       setValidationError(`Máximo de ${maxFiles} arquivo(s) permitido(s)`);
@@ -56,7 +56,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 
     for (const file of files) {
       if (maxSize && file.size > maxSize) {
-        setValidationError(`Arquivo"${file.name}" excede o tamanho máximo de ${(maxSize / 1024 / 1024).toFixed(2)}MB`);
+        setValidationError(
+          `Arquivo"${file.name}" excede o tamanho máximo de ${(maxSize / 1024 / 1024).toFixed(2)}MB`
+        );
         return false;
       }
     }
@@ -68,7 +70,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     if (!files || files.length === 0) return;
 
     const fileArray = Array.from(files);
-    
+
     if (!validateFiles(fileArray)) return;
 
     const newFiles = multiple ? [...selectedFiles, ...fileArray] : fileArray;
@@ -108,8 +110,8 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   };
 
   const getFileIcon = (file: File) => {
-    if (file.type.startsWith("image/")) return <Image size={20} />;
-    if (file.type.includes("pdf")) return <FileText size={20} />;
+    if (file.type.startsWith('image/')) return <Image size={20} />;
+    if (file.type.includes('pdf')) return <FileText size={20} />;
     return <File size={20} />;
   };
 
@@ -120,7 +122,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   };
 
   return (
-    <div className={cn("w-full", className)}>
+    <div className={cn('w-full', className)}>
       {label && (
         <label className="block mb-2 text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]">
           {label}
@@ -134,7 +136,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onKeyDown={(e) => {
-          if (e.key ==="Enter" || e.key ==="") {
+          if (e.key === 'Enter' || e.key === '') {
             e.preventDefault();
             handleClick();
           }
@@ -143,11 +145,14 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         role="button"
         aria-label="Selecionar arquivos"
         title="Selecionar arquivos"
-        className={cn("relative border-2 border-dashed rounded-lg p-8 text-center transition-all cursor-pointer","bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]","focus:outline-none focus:ring-3 focus:ring-[var(--primary)]",
-          isDragging &&"border-[var(--primary)] bg-[var(--primary)]/5",
-          !isDragging &&"border-gray-300 dark:border-border hover:border-[var(--primary)]",
-          disabled &&"opacity-50 cursor-not-allowed",
-          (error || validationError) &&"border-error"
+        className={cn(
+          'relative border-2 border-dashed rounded-lg p-8 text-center transition-all cursor-pointer',
+          'bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]',
+          'focus:outline-none focus:ring-3 focus:ring-[var(--primary)]',
+          isDragging && 'border-[var(--primary)] bg-[var(--primary)]/5',
+          !isDragging && 'border-gray-300 dark:border-border hover:border-[var(--primary)]',
+          disabled && 'opacity-50 cursor-not-allowed',
+          (error || validationError) && 'border-error'
         )}
       >
         <input
@@ -164,13 +169,16 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 
         <Upload
           size={48}
-          className={cn("mx-auto mb-4",
-            isDragging ?"text-[var(--primary)]" :"text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]"
+          className={cn(
+            'mx-auto mb-4',
+            isDragging
+              ? 'text-[var(--primary)]'
+              : 'text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]'
           )}
         />
 
         <p className="mb-2 text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]">
-          {isDragging ?"Solte os arquivos aqui" :"Clique ou arraste arquivos"}
+          {isDragging ? 'Solte os arquivos aqui' : 'Clique ou arraste arquivos'}
         </p>
 
         {helperText && (
@@ -187,9 +195,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
       </div>
 
       {(error || validationError) && (
-        <p className="mt-2 text-error dark:text-red-400">
-          {error || validationError}
-        </p>
+        <p className="mt-2 text-error dark:text-red-400">{error || validationError}</p>
       )}
 
       {/* File Preview */}
@@ -198,12 +204,13 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           {selectedFiles.map((file, index) => (
             <div
               key={index}
-              className={cn("flex items-center gap-3 p-3 rounded-lg","bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]","shadow-[var(--shadow-light-outer)] dark:shadow-[var(--shadow-dark-outer)]"
+              className={cn(
+                'flex items-center gap-3 p-3 rounded-lg',
+                'bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]',
+                'shadow-[var(--shadow-light-outer)] dark:shadow-[var(--shadow-dark-outer)]'
               )}
             >
-              <div className="text-[var(--primary)]">
-                {getFileIcon(file)}
-              </div>
+              <div className="text-[var(--primary)]">{getFileIcon(file)}</div>
 
               <div className="flex-1 min-w-0">
                 <p className="text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)] truncate orx-orx-font-medium">
@@ -218,7 +225,10 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                 onClick={() => handleRemoveFile(index)}
                 aria-label={`Remover ${file.name}`}
                 title={`Remover ${file.name}`}
-                className={cn("p-2 rounded-md transition-colors","hover:bg-destructive/5 dark:hover:bg-red-950/20 text-error dark:text-red-400","focus:outline-none focus:ring-3 focus:ring-error"
+                className={cn(
+                  'p-2 rounded-md transition-colors',
+                  'hover:bg-destructive/5 dark:hover:bg-red-950/20 text-error dark:text-red-400',
+                  'focus:outline-none focus:ring-3 focus:ring-error'
                 )}
               >
                 <X size={18} />
@@ -230,4 +240,3 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     </div>
   );
 };
-

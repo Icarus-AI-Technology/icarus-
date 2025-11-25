@@ -1,7 +1,7 @@
 /**
  * OraclusX Design System - Table Component
  * Tabela de dados enterprise com sort, filtro e seleção
- * 
+ *
  * HARD GATES:
  * ✅ Sem text/font classes (tipografia CSS)
  * ✅ Cores via CSS variables
@@ -10,9 +10,9 @@
  * ✅ TypeScript strict
  */
 
-import React, { useState, useMemo, useEffect, useRef } from"react";
-import { ChevronUp, ChevronDown, ChevronsUpDown } from"lucide-react";
-import { cn } from"@/lib/utils";
+import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export interface TableColumn<T> {
   // Chave da coluna (preferencial). Backcompat: usar 'accessor'.
@@ -26,7 +26,7 @@ export interface TableColumn<T> {
   accessor?: keyof T | string;
   cell?: (args: { value: T[keyof T] | undefined; row: T }) => React.ReactNode;
   width?: string;
-  align?:"left" |"center" |"right";
+  align?: 'left' | 'center' | 'right';
 }
 
 export interface TableProps<T> {
@@ -41,18 +41,18 @@ export interface TableProps<T> {
   maxHeight?: string;
 }
 
-type SortDirection ="asc" |"desc" | null;
+type SortDirection = 'asc' | 'desc' | null;
 
-export function Table<T extends Record<string, unknown>>({
+export function Table<T extends object>({
   data,
   columns,
   selectable = false,
   onRowSelect,
   onRowClick,
   className,
-  emptyMessage ="Nenhum registro encontrado",
+  emptyMessage = 'Nenhum registro encontrado',
   loading = false,
-  maxHeight ="600px"
+  maxHeight = '600px',
 }: TableProps<T>) {
   const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set());
   const [sortColumn, setSortColumn] = useState<string | null>(null);
@@ -86,7 +86,7 @@ export function Table<T extends Record<string, unknown>>({
       if (aVal === bVal) return 0;
 
       const comparison = aVal > bVal ? 1 : -1;
-      return sortDirection ==="asc" ? comparison : -comparison;
+      return sortDirection === 'asc' ? comparison : -comparison;
     });
   }, [data, sortColumn, sortDirection]);
 
@@ -97,10 +97,10 @@ export function Table<T extends Record<string, unknown>>({
 
     if (sortColumn !== key) {
       setSortColumn(key);
-      setSortDirection("asc");
+      setSortDirection('asc');
     } else {
-      if (sortDirection ==="asc") {
-        setSortDirection("desc");
+      if (sortDirection === 'asc') {
+        setSortDirection('desc');
       } else {
         setSortColumn(null);
         setSortDirection(null);
@@ -127,7 +127,7 @@ export function Table<T extends Record<string, unknown>>({
     }
     setSelectedRows(newSelection);
 
-    const selected = Array.from(newSelection).map(idx => data[idx]);
+    const selected = Array.from(newSelection).map((idx) => data[idx]);
     onRowSelect?.(selected);
   };
 
@@ -141,25 +141,20 @@ export function Table<T extends Record<string, unknown>>({
       return <ChevronsUpDown size={16} className="opacity-50" />;
     }
 
-    return sortDirection ==="asc" ? (
-      <ChevronUp size={16} />
-    ) : (
-      <ChevronDown size={16} />
-    );
+    return sortDirection === 'asc' ? <ChevronUp size={16} /> : <ChevronDown size={16} />;
   };
 
   return (
     <div
-      className={cn("overflow-x-auto rounded-lg","bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]","shadow-[var(--shadow-light-outer)] dark:shadow-[var(--shadow-dark-outer)]",
+      className={cn(
+        'overflow-x-auto rounded-lg',
+        'bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]',
+        'shadow-[var(--shadow-light-outer)] dark:shadow-[var(--shadow-dark-outer)]',
         className
       )}
       ref={containerRef}
     >
-      <table
-        className="w-full border-collapse"
-        role="table"
-        aria-label="Tabela de dados"
-      >
+      <table className="w-full border-collapse" role="table" aria-label="Tabela de dados">
         <thead
           className="sticky top-0 z-10 bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]"
           role="rowgroup"
@@ -183,16 +178,25 @@ export function Table<T extends Record<string, unknown>>({
             {columns.map((column, idx) => (
               <th
                 key={idx}
-                className={cn("px-4 py-3 border-b border-gray-200 dark:border-border","text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]",
-                  column.align ==="center" &&"text-center",
-                  column.align ==="right" &&"text-right",
-                  column.sortable &&"cursor-pointer select-none hover:bg-[var(--surface-hover)] transition-colors"
+                className={cn(
+                  'px-4 py-3 border-b border-gray-200 dark:border-border',
+                  'text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]',
+                  column.align === 'center' && 'text-center',
+                  column.align === 'right' && 'text-right',
+                  column.sortable &&
+                    'cursor-pointer select-none hover:bg-[var(--surface-hover)] transition-colors'
                 )}
-                ref={(el) => { headerRefs.current[idx] = el; }}
+                ref={(el) => {
+                  headerRefs.current[idx] = el;
+                }}
                 onClick={() => handleSort(column)}
                 role="columnheader"
                 {...(sortColumn === (column.key ?? column.accessor)
-                  ? { 'aria-sort': (sortDirection === 'asc' ? 'ascending' : 'descending') as 'ascending' | 'descending' }
+                  ? {
+                      'aria-sort': (sortDirection === 'asc' ? 'ascending' : 'descending') as
+                        | 'ascending'
+                        | 'descending',
+                    }
                   : { 'aria-sort': 'none' as const })}
               >
                 <div className="flex items-center gap-2">
@@ -229,9 +233,11 @@ export function Table<T extends Record<string, unknown>>({
             sortedData.map((row, rowIdx) => (
               <tr
                 key={rowIdx}
-                className={cn("border-b border-[var(--border)] transition-colors","hover:bg-[var(--surface-hover)]",
-                  onRowClick &&"cursor-pointer",
-                  selectedRows.has(rowIdx) &&"bg-[var(--primary)]/5"
+                className={cn(
+                  'border-b border-[var(--border)] transition-colors',
+                  'hover:bg-[var(--surface-hover)]',
+                  onRowClick && 'cursor-pointer',
+                  selectedRows.has(rowIdx) && 'bg-[var(--primary)]/5'
                 )}
                 onClick={() => onRowClick?.(row)}
                 role="row"
@@ -255,20 +261,25 @@ export function Table<T extends Record<string, unknown>>({
                   const renderValue = column.cell
                     ? column.cell({ value, row })
                     : column.render
-                    ? column.render(value, row)
-                    : value;
-                  const content = (typeof renderValue === 'string' || typeof renderValue === 'number' || React.isValidElement(renderValue))
-                    ? (renderValue as React.ReactNode)
-                    : (renderValue === null || renderValue === undefined)
-                      ? null
-                      : String(renderValue);
+                      ? column.render(value, row)
+                      : value;
+                  const content =
+                    typeof renderValue === 'string' ||
+                    typeof renderValue === 'number' ||
+                    React.isValidElement(renderValue)
+                      ? (renderValue as React.ReactNode)
+                      : renderValue === null || renderValue === undefined
+                        ? null
+                        : String(renderValue);
 
                   return (
                     <td
                       key={colIdx}
-                      className={cn("px-4 py-3","text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]",
-                        column.align ==="center" &&"text-center",
-                        column.align ==="right" &&"text-right"
+                      className={cn(
+                        'px-4 py-3',
+                        'text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]',
+                        column.align === 'center' && 'text-center',
+                        column.align === 'right' && 'text-right'
                       )}
                       role="cell"
                     >
@@ -284,4 +295,3 @@ export function Table<T extends Record<string, unknown>>({
     </div>
   );
 }
-

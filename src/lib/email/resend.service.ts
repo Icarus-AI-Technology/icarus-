@@ -2,7 +2,7 @@
  * Resend Email Service
  * Substitui SendGrid/Mailgun com free tier generoso (3k emails/mês)
  * Templates em React
- * 
+ *
  * Economia: $180-600/ano
  */
 
@@ -52,7 +52,7 @@ export class ResendService {
       const response = await fetch(`${this.baseURL}/emails`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
+          Authorization: `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -77,7 +77,7 @@ export class ResendService {
         success: true,
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('[ResendService] Send error:', err);
       return {
         id: '',
@@ -289,4 +289,3 @@ ICARUS v5.0 - Sistema de Gestão OPME
 
 // Export singleton
 export const resendService = new ResendService();
-

@@ -5,7 +5,11 @@ import clsx from 'clsx';
 export type SliderSize = 'sm' | 'md' | 'lg';
 export type SliderColor = 'primary' | 'success' | 'warning' | 'error' | 'info';
 
-export interface SliderProps extends Omit<React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>, 'onValueChange' | 'defaultValue' | 'value'> {
+export interface SliderProps
+  extends Omit<
+    React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>,
+    'onValueChange' | 'defaultValue' | 'value'
+  > {
   id?: string;
   label?: string;
   value?: number[];
@@ -59,7 +63,10 @@ export function Slider({
   return (
     <div className={clsx('w-full', className)}>
       {label && (
-        <label htmlFor={id} className="mb-2 block orx-text-sm orx-orx-font-medium text-[var(--orx-text-primary)] dark:text-[var(--orx-text-secondary)]">
+        <label
+          htmlFor={id}
+          className="mb-2 block orx-text-sm orx-orx-font-medium text-[var(--orx-text-primary)] dark:text-[var(--orx-text-secondary)]"
+        >
           {label}
         </label>
       )}
@@ -68,10 +75,7 @@ export function Slider({
         value={value}
         defaultValue={value ? undefined : defaultValue}
         onValueChange={onValueChange}
-        className={clsx(
-          'relative flex w-full touch-none select-none items-center',
-          classes.root
-        )}
+        className={clsx('relative flex w-full touch-none select-none items-center', classes.root)}
         {...props}
       >
         <SliderPrimitive.Track
@@ -113,5 +117,3 @@ export function Slider({
 }
 
 export default Slider;
-
-

@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
  * Script de Padronização Neumórfica — ICARUS v5.0
- * 
+ *
  * Este script automatiza a correção de:
  * 1. Elimina KPI Cards (substitui por estatísticas inline)
  * 2. Padroniza font-size de botões para 0.813rem
  * 3. Garante ícone + texto na mesma linha (inline-flex)
- * 
+ *
  * Uso: node scripts/fix/padronizar-design-neomorphic.mjs
  */
 
@@ -72,8 +72,9 @@ function removeKPICards(content) {
   let removedCount = 0;
 
   // Padrão 1: Grid de KPI Cards com 4 colunas
-  const kpiCardGridPattern = /<div[^>]*className="grid[^"]*grid-cols-[1-4].*?md:grid-cols-[2-4].*?lg:grid-cols-4[^"]*"[^>]*>[\s\S]*?{kpis\.map[\s\S]*?<\/div>\s*<\/div>\s*<\/div>/g;
-  
+  const kpiCardGridPattern =
+    /<div[^>]*className="grid[^"]*grid-cols-[1-4].*?md:grid-cols-[2-4].*?lg:grid-cols-4[^"]*"[^>]*>[\s\S]*?{kpis\.map[\s\S]*?<\/div>\s*<\/div>\s*<\/div>/g;
+
   if (kpiCardGridPattern.test(modified)) {
     modified = modified.replace(kpiCardGridPattern, (match) => {
       removedCount++;
@@ -108,8 +109,9 @@ function standardizeButtonFontSize(content) {
   let fixedCount = 0;
 
   // Padrão 1: <button> com <span> sem fontSize definido
-  const buttonSpanPattern = /(<button[^>]*>[\s\S]*?<.*?size=\{\d+\}\s*\/>[\s\S]*?)<span(?![^>]*fontSize)([^>]*)>(.*?)<\/span>/g;
-  
+  const buttonSpanPattern =
+    /(<button[^>]*>[\s\S]*?<.*?size=\{\d+\}\s*\/>[\s\S]*?)<span(?![^>]*fontSize)([^>]*)>(.*?)<\/span>/g;
+
   modified = modified.replace(buttonSpanPattern, (match, before, spanAttrs, spanContent) => {
     fixedCount++;
     return `${before}<span${spanAttrs} style={{ fontSize: '0.813rem' }}>${spanContent}</span>`;
@@ -117,7 +119,7 @@ function standardizeButtonFontSize(content) {
 
   // Padrão 2: <button> com fontSize diferente de 0.813rem
   const incorrectFontSizePattern = /fontSize:\s*['"](?!0\.813rem)[^'"]+['"]/g;
-  
+
   if (incorrectFontSizePattern.test(modified)) {
     modified = modified.replace(incorrectFontSizePattern, "fontSize: '0.813rem'");
     fixedCount++;
@@ -125,7 +127,7 @@ function standardizeButtonFontSize(content) {
 
   // Padrão 3: <button> com var(--orx-text-base) ou var(--orx-text-sm)
   const varFontSizePattern = /fontSize:\s*['"]var\(--orx-text-(?:base|sm)\)['"]/g;
-  
+
   if (varFontSizePattern.test(modified)) {
     modified = modified.replace(varFontSizePattern, "fontSize: '0.813rem'");
     fixedCount++;
@@ -143,18 +145,22 @@ function fixButtonIconTextAlignment(content) {
 
   // Padrão 1: <button> com flex-col (errado)
   const flexColPattern = /<button([^>]*)className="([^"]*)flex-col([^"]*)"/g;
-  
+
   modified = modified.replace(flexColPattern, (match, before, classPrefix, classAffix) => {
     fixedCount++;
     return `<button${before}className="${classPrefix}${classAffix}"`;
   });
 
   // Padrão 2: <button> sem display: flex ou inline-flex
-  const buttonWithoutFlexPattern = /<button(?![^>]*display:\s*['"](?:inline-)?flex['"])([^>]*style=\{(?!\{[^}]*display)[^}]*\})([^>]*)>/g;
-  
+  const buttonWithoutFlexPattern =
+    /<button(?![^>]*display:\s*['"](?:inline-)?flex['"])([^>]*style=\{(?!\{[^}]*display)[^}]*\})([^>]*)>/g;
+
   modified = modified.replace(buttonWithoutFlexPattern, (match, styleAttr, rest) => {
     // Adicionar display: 'inline-flex', alignItems: 'center', gap: '0.5rem'
-    const newStyle = styleAttr.replace(/style=\{/, "style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', ");
+    const newStyle = styleAttr.replace(
+      /style=\{/,
+      "style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', "
+    );
     fixedCount++;
     return `<button${newStyle}${rest}>`;
   });
@@ -201,7 +207,6 @@ function processFile(filePath) {
       log.success(`Arquivo modificado: ${relPath}`);
       stats.filesProcessed++;
     }
-
   } catch (error) {
     log.error(`Erro ao processar ${filePath}: ${error.message}`);
   }
@@ -214,14 +219,11 @@ function main() {
   log.title('🎨 PADRONIZAÇÃO NEUMÓRFICA — ICARUS v5.0');
 
   log.info('Buscando arquivos .tsx em src/pages e src/components...');
-  
+
   const pagesDir = path.join(projectRoot, 'src/pages');
   const componentsDir = path.join(projectRoot, 'src/components');
 
-  const tsxFiles = [
-    ...findTsxFiles(pagesDir),
-    ...findTsxFiles(componentsDir),
-  ];
+  const tsxFiles = [...findTsxFiles(pagesDir), ...findTsxFiles(componentsDir)];
 
   log.info(`Encontrados ${tsxFiles.length} arquivos .tsx`);
   log.info('Aplicando correções...\n');
@@ -248,4 +250,3 @@ function main() {
 }
 
 main();
-

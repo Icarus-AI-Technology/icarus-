@@ -19,7 +19,7 @@ export interface ContainerProps {
    * - 2xl: 1536px
    * - full: 100%
    */
-  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
+  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | 'full';
   /**
    * Padding horizontal
    * - none: 0
@@ -34,20 +34,23 @@ export interface ContainerProps {
   center?: boolean;
 }
 
-const maxWidthClasses = {
-  sm: 'max-w-screen-sm', // 640px
-  md: 'max-w-screen-md', // 768px
-  lg: 'max-w-screen-lg', // 1024px
-  xl: 'max-w-screen-xl', // 1280px
-  '2xl': 'max-w-screen-2xl', // 1536px
+const maxWidthClasses: Record<NonNullable<ContainerProps['maxWidth']>, string> = {
+  sm: 'max-w-screen-sm',
+  md: 'max-w-screen-md',
+  lg: 'max-w-screen-lg',
+  xl: 'max-w-screen-xl',
+  '2xl': 'max-w-screen-2xl',
+  '3xl': 'max-w-[1600px]',
+  '4xl': 'max-w-[1800px]',
+  '5xl': 'max-w-[2048px]',
   full: 'max-w-full',
 };
 
-const paddingClasses = {
-  none: 'px-0',
-  sm: 'px-4', // 16px
-  md: 'px-6', // 24px
-  lg: 'px-8', // 32px
+const paddingClasses: Record<NonNullable<ContainerProps['padding']>, string> = {
+  none: 'p-0',
+  sm: 'p-4',
+  md: 'p-6',
+  lg: 'p-8',
 };
 
 /**
@@ -75,4 +78,3 @@ export function Container({
     </div>
   );
 }
-

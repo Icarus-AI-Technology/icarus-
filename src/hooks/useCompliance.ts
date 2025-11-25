@@ -1,7 +1,7 @@
 /**
  * useCompliance - Hook para gestão de compliance regulatório
  * Sistema: ICARUS v5.0
- * 
+ *
  * Funcionalidades:
  * - Gestão de requisitos Abbott (7 requisitos)
  * - Auditorias internas e externas
@@ -22,8 +22,24 @@ import { supabase } from '@/lib/supabase';
 export interface ComplianceRequisito {
   id: string;
   codigo: string; // ABB001, ABB002...
-  categoria: 'qualidade' | 'rastreabilidade' | 'armazenamento' | 'transporte' | 'documentacao' | 'treinamento' | 'etica';
-  fabricante?: 'abbott' | 'medtronic' | 'jnj' | 'stryker' | 'boston_scientific' | 'anvisa' | 'iso' | 'todos' | null;
+  categoria:
+    | 'qualidade'
+    | 'rastreabilidade'
+    | 'armazenamento'
+    | 'transporte'
+    | 'documentacao'
+    | 'treinamento'
+    | 'etica';
+  fabricante?:
+    | 'abbott'
+    | 'medtronic'
+    | 'jnj'
+    | 'stryker'
+    | 'boston_scientific'
+    | 'anvisa'
+    | 'iso'
+    | 'todos'
+    | null;
   titulo: string;
   descricao?: string | null;
   status: 'conforme' | 'nao_conforme' | 'parcial' | 'nao_aplicavel';
@@ -45,7 +61,14 @@ export interface AuditoriaInterna {
   codigo: string;
   titulo: string;
   tipo: 'iso_13485' | 'anvisa' | 'fabricante' | 'bpd' | 'interna';
-  fabricante_alvo?: 'abbott' | 'medtronic' | 'jnj' | 'stryker' | 'boston_scientific' | 'todos' | null;
+  fabricante_alvo?:
+    | 'abbott'
+    | 'medtronic'
+    | 'jnj'
+    | 'stryker'
+    | 'boston_scientific'
+    | 'todos'
+    | null;
   data_planejamento?: string | null;
   data_execucao?: string | null;
   data_conclusao?: string | null;
@@ -77,7 +100,13 @@ export interface NaoConformidade {
   data_identificacao: string;
   data_prazo_correcao: string;
   data_correcao_efetiva?: string | null;
-  status: 'aberta' | 'em_analise' | 'em_correcao' | 'aguardando_verificacao' | 'verificada' | 'fechada';
+  status:
+    | 'aberta'
+    | 'em_analise'
+    | 'em_correcao'
+    | 'aguardando_verificacao'
+    | 'verificada'
+    | 'fechada';
   responsavel_analise?: string | null;
   responsavel_correcao?: string | null;
   causa_raiz?: string | null;
@@ -123,7 +152,13 @@ export interface AgenteIA {
 export interface AlertaCompliance {
   id: string;
   agente_id?: string | null;
-  tipo: 'vencimento_certificacao' | 'treinamento_vencido' | 'auditoria_programada' | 'nao_conformidade' | 'documento_revisao' | 'calibracao_vencida';
+  tipo:
+    | 'vencimento_certificacao'
+    | 'treinamento_vencido'
+    | 'auditoria_programada'
+    | 'nao_conformidade'
+    | 'documento_revisao'
+    | 'calibracao_vencida';
   requisito_id?: string | null;
   auditoria_id?: string | null;
   nc_id?: string | null;
@@ -174,25 +209,25 @@ export interface MetricasCompliance {
   scoreGlobalAbbott: number;
   requisitosConformes: number;
   requisitosNaoConformes: number;
-  
+
   // Auditorias
   totalAuditorias: number;
   scoreMedioAuditorias: number;
   auditoriasConcluidas: number;
-  
+
   // Não Conformidades
   ncCriticas: number;
   ncMaiores: number;
   ncMenores: number;
   ncAbertas: number;
   ncResolvidas: number;
-  
+
   // Treinamentos
   totalTreinamentos: number;
   treinamentosConcluidos: number;
   taxaAprovacao: number;
   certificadosVigentes: number;
-  
+
   // Agentes IA
   agentesAtivos: number;
   taxaAcertoMedia: number;
@@ -232,10 +267,10 @@ export const useCompliance = () => {
 
       const { data, error } = await query;
       if (error) throw error;
-      
+
       setRequisitos(data || []);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao carregar requisitos:', err);
       setError(err instanceof Error ? err.message : 'Erro ao carregar requisitos');
     } finally {
@@ -257,7 +292,7 @@ export const useCompliance = () => {
       if (error) throw error;
       setAuditorias(data || []);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao carregar auditorias:', err);
     }
   }, []);
@@ -276,7 +311,7 @@ export const useCompliance = () => {
       if (error) throw error;
       setNaoConformidades(data || []);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao carregar não conformidades:', err);
     }
   }, []);
@@ -295,7 +330,7 @@ export const useCompliance = () => {
       if (error) throw error;
       setAgentesIA(data || []);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao carregar agentes IA:', err);
     }
   }, []);
@@ -315,7 +350,7 @@ export const useCompliance = () => {
       if (error) throw error;
       setAlertas(data || []);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao carregar alertas:', err);
     }
   }, []);
@@ -334,7 +369,7 @@ export const useCompliance = () => {
       if (error) throw error;
       setTreinamentos(data || []);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao carregar treinamentos:', err);
     }
   }, []);
@@ -343,28 +378,31 @@ export const useCompliance = () => {
   // CALCULAR SCORE ABBOTT
   // ============================================
 
-  const calcularScoreAbbott = useCallback((): { score: number; breakdown: Record<string, number> } => {
-    const requisitosAbbott = requisitos.filter(r => r.fabricante === 'abbott');
-    
+  const calcularScoreAbbott = useCallback((): {
+    score: number;
+    breakdown: Record<string, number>;
+  } => {
+    const requisitosAbbott = requisitos.filter((r) => r.fabricante === 'abbott');
+
     if (requisitosAbbott.length === 0) {
       return { score: 0, breakdown: {} };
     }
 
     // Pesos por categoria (conforme documentação Abbott)
     const pesos: Record<string, number> = {
-      'qualidade': 0.20,        // ISO 13485
-      'rastreabilidade': 0.20,  // Rastreabilidade
-      'armazenamento': 0.15,    // Temp/Umidade
-      'transporte': 0.15,       // Transporte Qualificado
-      'documentacao': 0.10,     // Documentação
-      'treinamento': 0.10,      // Treinamentos
-      'etica': 0.10             // Código de Conduta
+      qualidade: 0.2, // ISO 13485
+      rastreabilidade: 0.2, // Rastreabilidade
+      armazenamento: 0.15, // Temp/Umidade
+      transporte: 0.15, // Transporte Qualificado
+      documentacao: 0.1, // Documentação
+      treinamento: 0.1, // Treinamentos
+      etica: 0.1, // Código de Conduta
     };
 
     let scoreTotal = 0;
     const breakdown: Record<string, number> = {};
 
-    requisitosAbbott.forEach(req => {
+    requisitosAbbott.forEach((req) => {
       const peso = pesos[req.categoria] || 0;
       const scoreCategoria = req.score_conformidade * peso;
       scoreTotal += scoreCategoria;
@@ -373,7 +411,7 @@ export const useCompliance = () => {
 
     return {
       score: Math.round(scoreTotal * 10) / 10,
-      breakdown
+      breakdown,
     };
   }, [requisitos]);
 
@@ -384,37 +422,41 @@ export const useCompliance = () => {
   const calcularMetricas = useCallback((): MetricasCompliance => {
     // Abbott
     const { score: scoreGlobalAbbott } = calcularScoreAbbott();
-    const requisitosConformes = requisitos.filter(r => r.status === 'conforme').length;
-    const requisitosNaoConformes = requisitos.filter(r => r.status === 'nao_conforme').length;
+    const requisitosConformes = requisitos.filter((r) => r.status === 'conforme').length;
+    const requisitosNaoConformes = requisitos.filter((r) => r.status === 'nao_conforme').length;
 
     // Auditorias
     const totalAuditorias = auditorias.length;
-    const auditoriasConcluidas = auditorias.filter(a => a.status === 'concluida').length;
-    const scoreMedioAuditorias = auditorias.length > 0
-      ? auditorias.reduce((sum, a) => sum + (a.score_global || 0), 0) / auditorias.length
-      : 0;
+    const auditoriasConcluidas = auditorias.filter((a) => a.status === 'concluida').length;
+    const scoreMedioAuditorias =
+      auditorias.length > 0
+        ? auditorias.reduce((sum, a) => sum + (a.score_global || 0), 0) / auditorias.length
+        : 0;
 
     // NCs
-    const ncCriticas = naoConformidades.filter(nc => nc.severidade === 'critica').length;
-    const ncMaiores = naoConformidades.filter(nc => nc.severidade === 'maior').length;
-    const ncMenores = naoConformidades.filter(nc => nc.severidade === 'menor').length;
-    const ncAbertas = naoConformidades.filter(nc => nc.status === 'aberta').length;
-    const ncResolvidas = naoConformidades.filter(nc => nc.status === 'fechada').length;
+    const ncCriticas = naoConformidades.filter((nc) => nc.severidade === 'critica').length;
+    const ncMaiores = naoConformidades.filter((nc) => nc.severidade === 'maior').length;
+    const ncMenores = naoConformidades.filter((nc) => nc.severidade === 'menor').length;
+    const ncAbertas = naoConformidades.filter((nc) => nc.status === 'aberta').length;
+    const ncResolvidas = naoConformidades.filter((nc) => nc.status === 'fechada').length;
 
     // Treinamentos
     const totalTreinamentos = treinamentos.length;
-    const treinamentosConcluidos = treinamentos.filter(t => t.status === 'concluido').length;
-    const taxaAprovacao = treinamentos.length > 0
-      ? (treinamentos.reduce((sum, t) => sum + t.total_aprovados, 0) / 
-         treinamentos.reduce((sum, t) => sum + t.total_participantes, 0)) * 100
-      : 0;
-    const certificadosVigentes = treinamentos.filter(t => t.certificado_emitido).length;
+    const treinamentosConcluidos = treinamentos.filter((t) => t.status === 'concluido').length;
+    const taxaAprovacao =
+      treinamentos.length > 0
+        ? (treinamentos.reduce((sum, t) => sum + t.total_aprovados, 0) /
+            treinamentos.reduce((sum, t) => sum + t.total_participantes, 0)) *
+          100
+        : 0;
+    const certificadosVigentes = treinamentos.filter((t) => t.certificado_emitido).length;
 
     // Agentes IA
-    const agentesAtivos = agentesIA.filter(a => a.status === 'ativo').length;
-    const taxaAcertoMedia = agentesIA.length > 0
-      ? agentesIA.reduce((sum, a) => sum + a.taxa_acerto, 0) / agentesIA.length
-      : 0;
+    const agentesAtivos = agentesIA.filter((a) => a.status === 'ativo').length;
+    const taxaAcertoMedia =
+      agentesIA.length > 0
+        ? agentesIA.reduce((sum, a) => sum + a.taxa_acerto, 0) / agentesIA.length
+        : 0;
     const alertasGerados = agentesIA.reduce((sum, a) => sum + a.alertas_gerados, 0);
     const acoesRealizadas = agentesIA.reduce((sum, a) => sum + a.acoes_sugeridas, 0);
 
@@ -437,7 +479,7 @@ export const useCompliance = () => {
       agentesAtivos,
       taxaAcertoMedia: Math.round(taxaAcertoMedia * 10) / 10,
       alertasGerados,
-      acoesRealizadas
+      acoesRealizadas,
     };
   }, [requisitos, auditorias, naoConformidades, treinamentos, agentesIA, calcularScoreAbbott]);
 
@@ -445,76 +487,88 @@ export const useCompliance = () => {
   // CRUD REQUISITOS
   // ============================================
 
-  const updateRequisito = useCallback(async (id: string, updates: Partial<ComplianceRequisito>) => {
-    try {
-      const { data, error } = await supabase
-        .from('compliance_requisitos')
-        .update(updates)
-        .eq('id', id)
-        .select()
-        .single();
+  const updateRequisito = useCallback(
+    async (id: string, updates: Partial<ComplianceRequisito>) => {
+      try {
+        const { data, error } = await supabase
+          .from('compliance_requisitos')
+          .update(updates)
+          .eq('id', id)
+          .select()
+          .single();
 
-      if (error) throw error;
-      
-      await fetchRequisitos();
-      console.log('Requisito atualizado');
-      return data;
-    } catch (error) {
-   const err = error as Error;
-      console.error('Erro ao atualizar requisito:', err);
-      throw err;
-    }
-  }, [fetchRequisitos]);
+        if (error) throw error;
+
+        await fetchRequisitos();
+        console.log('Requisito atualizado');
+        return data;
+      } catch (error) {
+        const err = error as Error;
+        console.error('Erro ao atualizar requisito:', err);
+        throw err;
+      }
+    },
+    [fetchRequisitos]
+  );
 
   // ============================================
   // CRUD NÃO CONFORMIDADES
   // ============================================
 
-  const criarNaoConformidade = useCallback(async (nc: Omit<NaoConformidade, 'id' | 'created_at' | 'updated_at'>) => {
-    try {
-      const { data, error } = await supabase
-        .from('nao_conformidades')
-        .insert([nc])
-        .select()
-        .single();
+  const criarNaoConformidade = useCallback(
+    async (nc: Omit<NaoConformidade, 'id' | 'created_at' | 'updated_at'>) => {
+      try {
+        const { data, error } = await supabase
+          .from('nao_conformidades')
+          .insert([nc])
+          .select()
+          .single();
 
-      if (error) throw error;
-      
-      await fetchNaoConformidades();
-      console.log('Não conformidade criada');
-      return data;
-    } catch (error) {
-   const err = error as Error;
-      console.error('Erro ao criar NC:', err);
-      throw err;
-    }
-  }, [fetchNaoConformidades]);
+        if (error) throw error;
 
-  const resolverNaoConformidade = useCallback(async (id: string, resolucao: {
-    status: 'verificada' | 'fechada';
-    data_correcao_efetiva: string;
-    evidencias_correcao?: string[];
-    verificacao_eficacia: boolean;
-  }) => {
-    try {
-      const { data, error } = await supabase
-        .from('nao_conformidades')
-        .update(resolucao)
-        .eq('id', id)
-        .select()
-        .single();
+        await fetchNaoConformidades();
+        console.log('Não conformidade criada');
+        return data;
+      } catch (error) {
+        const err = error as Error;
+        console.error('Erro ao criar NC:', err);
+        throw err;
+      }
+    },
+    [fetchNaoConformidades]
+  );
 
-      if (error) throw error;
-      
-      await fetchNaoConformidades();
-      console.log('NC resolvida');
-      return data;
-    } catch (error) {
-   const err = error as Error;
-      console.error('Erro ao resolver NC:', err);
-      throw err;
-    }
-  }, [fetchNaoConformidades]);
+  const resolverNaoConformidade = useCallback(
+    async (
+      id: string,
+      resolucao: {
+        status: 'verificada' | 'fechada';
+        data_correcao_efetiva: string;
+        evidencias_correcao?: string[];
+        verificacao_eficacia: boolean;
+      }
+    ) => {
+      try {
+        const { data, error } = await supabase
+          .from('nao_conformidades')
+          .update(resolucao)
+          .eq('id', id)
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        await fetchNaoConformidades();
+        console.log('NC resolvida');
+        return data;
+      } catch (error) {
+        const err = error as Error;
+        console.error('Erro ao resolver NC:', err);
+        throw err;
+      }
+    },
+    [fetchNaoConformidades]
+  );
 
   // ============================================
   // GERAR ALERTAS IA
@@ -524,11 +578,11 @@ export const useCompliance = () => {
     try {
       const { error } = await supabase.rpc('gerar_alertas_ia');
       if (error) throw error;
-      
+
       await fetchAlertas();
       console.log('Alertas IA gerados');
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao gerar alertas:', err);
     }
   }, [fetchAlertas]);
@@ -541,11 +595,11 @@ export const useCompliance = () => {
     try {
       const { error } = await supabase.rpc('atualizar_scores_compliance');
       if (error) throw error;
-      
+
       await fetchRequisitos();
       console.log('Scores atualizados');
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao atualizar scores:', err);
     }
   }, [fetchRequisitos]);
@@ -561,7 +615,14 @@ export const useCompliance = () => {
     fetchAgentesIA();
     fetchAlertas();
     fetchTreinamentos();
-  }, [fetchRequisitos, fetchAuditorias, fetchNaoConformidades, fetchAgentesIA, fetchAlertas, fetchTreinamentos]);
+  }, [
+    fetchRequisitos,
+    fetchAuditorias,
+    fetchNaoConformidades,
+    fetchAgentesIA,
+    fetchAlertas,
+    fetchTreinamentos,
+  ]);
 
   // ============================================
   // RETURN
@@ -577,16 +638,16 @@ export const useCompliance = () => {
     treinamentos,
     loading,
     error,
-    
+
     // Métricas
     metricas: calcularMetricas(),
     scoreAbbott: calcularScoreAbbott(),
-    
+
     // CRUD
     updateRequisito,
     criarNaoConformidade,
     resolverNaoConformidade,
-    
+
     // Utilitários
     gerarAlertasIA,
     atualizarScores,
@@ -597,7 +658,6 @@ export const useCompliance = () => {
       fetchAgentesIA();
       fetchAlertas();
       fetchTreinamentos();
-    }
+    },
   };
 };
-

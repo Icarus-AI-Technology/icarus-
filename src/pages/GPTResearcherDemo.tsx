@@ -3,48 +3,59 @@
  * Demonstra a integração completa do chatbot com pesquisa
  */
 
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from"@/components/oraclusx-ds";
-import { ChatbotWithResearch } from"@/components/oraclusx-ds";
-import { Search, MessageSquare, TrendingUp, Zap } from"lucide-react";
-import { useDocumentTitle } from"@/hooks";
+import { useState } from 'react';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@/components/oraclusx-ds';
+import { ChatbotWithResearch } from '@/components/oraclusx-ds';
+import { Search, MessageSquare, TrendingUp, Zap } from 'lucide-react';
+import { useDocumentTitle } from '@/hooks';
 
 export default function GPTResearcherDemo() {
-  useDocumentTitle("GPT Researcher Demo");
+  useDocumentTitle('GPT Researcher Demo');
   const [mensagensEnviadas, setMensagensEnviadas] = useState<string[]>([]);
 
   const handleMessageSent = (message: string) => {
-    console.log("Mensagem enviada:", message);
-    setMensagensEnviadas(prev => [...prev, message]);
+    setMensagensEnviadas((prev) => [...prev, message]);
   };
 
   const features = [
     {
       icon: Search,
-      title:"Pesquisa Profunda",
-      description:"Pesquisa web avançada com múltiplas fontes e citações automáticas",
-      color:"blue"
+      title: 'Pesquisa Profunda',
+      description: 'Pesquisa web avançada com múltiplas fontes e citações automáticas',
+      color: 'blue',
     },
     {
       icon: MessageSquare,
-      title:"Interface Intuitiva",
-      description:"Chat interativo com histórico de mensagens e indicadores visuais",
-      color:"green"
+      title: 'Interface Intuitiva',
+      description: 'Chat interativo com histórico de mensagens e indicadores visuais',
+      color: 'green',
     },
     {
       icon: TrendingUp,
-      title:"Relatórios Customizados",
-      description:"Diferentes tipos de relatórios: pesquisa, detalhado e recursos",
-      color:"indigo"
+      title: 'Relatórios Customizados',
+      description: 'Diferentes tipos de relatórios: pesquisa, detalhado e recursos',
+      color: 'indigo',
     },
     {
       icon: Zap,
-      title:"Tempo Real",
-      description:"Resultados em tempo real com logs detalhados do processo",
-      color:"purple"
-    }
+      title: 'Tempo Real',
+      description: 'Resultados em tempo real com logs detalhados do processo',
+      color: 'purple',
+    },
   ];
 
-  const exemplos = ["Quais são as tendências de IA em 2025?","Como funciona a tecnologia blockchain?","Melhores práticas de segurança web","Análise de mercado de computação quântica","Comparação entre frameworks JavaScript modernos"
+  const exemplos = [
+    'Quais são as tendências de IA em 2025?',
+    'Como funciona a tecnologia blockchain?',
+    'Melhores práticas de segurança web',
+    'Análise de mercado de computação quântica',
+    'Comparação entre frameworks JavaScript modernos',
   ];
 
   return (
@@ -60,15 +71,16 @@ export default function GPTResearcherDemo() {
               <h1 className="text-display font-display text-primary dark:text-gray-100">
                 GPT Researcher
               </h1>
-              <p className="text-secondary dark:text-muted">
-                Assistente de Pesquisa Inteligente
-              </p>
+              <p className="text-secondary dark:text-muted">Assistente de Pesquisa Inteligente</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2 px-4 py-2 bg-success/10 dark:bg-green-900 rounded-full inline-flex">
             <span className="w-2 h-2 bg-success/50 rounded-full animate-pulse" />
-            <span className="text-body-sm  text-green-800 dark:text-green-200" style={{ fontWeight: 500 }}>
+            <span
+              className="text-body-sm  text-green-800 dark:text-green-200"
+              style={{ fontWeight: 500 }}
+            >
               Integração Completa
             </span>
           </div>
@@ -79,16 +91,18 @@ export default function GPTResearcherDemo() {
           {features.map((feature, index) => {
             const Icon = feature.icon;
             const colorClasses = {
-              blue:"bg-blue-100 dark:bg-blue-900/30 text-accent dark:text-accent-light",
-              green:"bg-success/10 dark:bg-green-900/30 text-success dark:text-green-400",
-              indigo:"bg-indigo-100 dark:bg-indigo-900/30 text-primary dark:text-indigo-400",
-              purple:"bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400"
+              blue: 'bg-blue-100 dark:bg-blue-900/30 text-accent dark:text-accent-light',
+              green: 'bg-success/10 dark:bg-green-900/30 text-success dark:text-green-400',
+              indigo: 'bg-indigo-100 dark:bg-indigo-900/30 text-primary dark:text-indigo-400',
+              purple: 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400',
             };
 
             return (
               <Card key={index} className="hover:shadow-lg transition-shadow duration-200">
                 <CardContent className="pt-6">
-                  <div className={`inline-flex p-3 rounded-lg mb-3 ${colorClasses[feature.color as keyof typeof colorClasses]}`}>
+                  <div
+                    className={`inline-flex p-3 rounded-lg mb-3 ${colorClasses[feature.color as keyof typeof colorClasses]}`}
+                  >
                     <Icon size={24} />
                   </div>
                   <h3 className="text-primary dark:text-gray-100 mb-2" style={{ fontWeight: 500 }}>
@@ -109,9 +123,7 @@ export default function GPTResearcherDemo() {
           <Card>
             <CardHeader>
               <CardTitle>Como Usar</CardTitle>
-              <CardDescription>
-                Comece a pesquisar em 3 passos simples
-              </CardDescription>
+              <CardDescription>Comece a pesquisar em 3 passos simples</CardDescription>
             </CardHeader>
             <CardContent>
               <ol className="space-y-4">
@@ -162,9 +174,7 @@ export default function GPTResearcherDemo() {
           <Card>
             <CardHeader>
               <CardTitle>Exemplos de Pesquisa</CardTitle>
-              <CardDescription>
-                Tente estas perguntas para começar
-              </CardDescription>
+              <CardDescription>Tente estas perguntas para começar</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
@@ -194,9 +204,7 @@ export default function GPTResearcherDemo() {
             {mensagensEnviadas.length === 0 ? (
               <div className="text-center py-8">
                 <MessageSquare size={48} className="mx-auto text-muted mb-3" />
-                <p className="text-secondary dark:text-muted">
-                  Nenhuma pesquisa realizada ainda
-                </p>
+                <p className="text-secondary dark:text-muted">Nenhuma pesquisa realizada ainda</p>
                 <p className="text-body-sm text-muted dark:text-muted mt-1">
                   Clique no botão do chat para começar
                 </p>
@@ -211,9 +219,7 @@ export default function GPTResearcherDemo() {
                     <span className="flex-shrink-0 text-primary dark:text-indigo-400 font-mono text-body-xs">
                       #{idx + 1}
                     </span>
-                    <p className="text-body-sm text-secondary dark:text-muted">
-                      {msg}
-                    </p>
+                    <p className="text-body-sm text-secondary dark:text-muted">{msg}</p>
                   </div>
                 ))}
               </div>
@@ -223,11 +229,14 @@ export default function GPTResearcherDemo() {
 
         {/* Info Box */}
         <div className="mt-8 p-6 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl border-2 border-indigo-200 dark:border-indigo-800">
-          <h3 className="text-body-lg  text-indigo-900 dark:text-indigo-100 mb-2" style={{ fontWeight: 500 }}>
+          <h3
+            className="text-body-lg  text-indigo-900 dark:text-indigo-100 mb-2"
+            style={{ fontWeight: 500 }}
+          >
             ⚠️ Importante: Configuração do Servidor
           </h3>
           <p className="text-body-sm text-indigo-800 dark:text-indigo-200 mb-3">
-            Para usar o GPT Researcher, você precisa ter o servidor rodando em{""}
+            Para usar o GPT Researcher, você precisa ter o servidor rodando em{''}
             <code className="px-2 py-1 bg-indigo-100 dark:bg-indigo-900 rounded">
               http://localhost:8000
             </code>
@@ -254,4 +263,3 @@ export default function GPTResearcherDemo() {
     </div>
   );
 }
-

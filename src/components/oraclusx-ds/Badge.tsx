@@ -3,19 +3,13 @@
  * Badge/Tag neuromórfico
  */
 
-import React from"react";
-import { X } from"lucide-react";
-import { cn } from"@/lib/utils";
+import React from 'react';
+import { X } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?:
-    |"default"
-    |"primary"
-    |"success"
-    |"warning"
-    |"error"
-    |"info";
-  size?:"sm" |"md" |"lg";
+  variant?: 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info';
+  size?: 'sm' | 'md' | 'lg';
   removable?: boolean;
   onRemove?: () => void;
 }
@@ -24,37 +18,39 @@ const BadgeComponent = React.forwardRef<HTMLSpanElement, BadgeProps>(
   (
     {
       className,
-      variant ="default",
-      size ="md",
+      variant = 'default',
+      size = 'md',
       removable = false,
       onRemove,
       children,
       ...props
     },
-    ref,
+    ref
   ) => {
     const sizeClasses = {
-      sm:"text-body-xs px-2 py-0.5",
-      md:"text-body-sm px-2.5 py-1",
-      lg:"text-body px-3 py-1.5",
+      sm: 'text-body-xs px-2 py-0.5',
+      md: 'text-body-sm px-2.5 py-1',
+      lg: 'text-body px-3 py-1.5',
     };
 
     const variantClasses = {
-      default:"bg-surface text-primary dark:bg-muted dark:text-muted",
-      primary:"bg-[var(--orx-primary-lighter)] text-[var(--orx-primary)] dark:bg-[var(--orx-primary)]/30 dark:text-[var(--orx-primary-light)]",
-      success:"bg-success/10 text-green-800 dark:bg-green-900/30 dark:text-green-300",
-      warning:"bg-warning/10 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300",
-      error:"bg-destructive/10 text-red-800 dark:bg-red-900/30 dark:text-red-300",
-      info:"bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300",
+      default: 'bg-surface text-primary dark:bg-muted dark:text-muted',
+      primary:
+        'bg-[var(--orx-primary-lighter)] text-[var(--orx-primary)] dark:bg-[var(--orx-primary)]/30 dark:text-[var(--orx-primary-light)]',
+      success: 'bg-success/10 text-green-800 dark:bg-green-900/30 dark:text-green-300',
+      warning: 'bg-warning/10 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300',
+      error: 'bg-destructive/10 text-red-800 dark:bg-red-900/30 dark:text-red-300',
+      info: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
     };
 
     return (
       <span
         ref={ref}
-        className={cn("inline-flex items-center gap-1 rounded-full orx-orx-font-medium",
+        className={cn(
+          'inline-flex items-center gap-1 rounded-full orx-orx-font-medium',
           sizeClasses[size],
           variantClasses[variant],
-          className,
+          className
         )}
         {...props}
       >
@@ -66,17 +62,16 @@ const BadgeComponent = React.forwardRef<HTMLSpanElement, BadgeProps>(
             className="hover:opacity-70 transition-opacity"
             aria-label="Remover"
           >
-            <X size={size ==="sm" ? 12 : size ==="md" ? 14 : 16} />
+            <X size={size === 'sm' ? 12 : size === 'md' ? 14 : 16} />
           </button>
         )}
       </span>
     );
-  },
+  }
 );
 
-BadgeComponent.displayName ="OraclusXBadge";
+BadgeComponent.displayName = 'OraclusXBadge';
 
 export const Badge = React.memo(BadgeComponent);
 
 export default Badge;
-

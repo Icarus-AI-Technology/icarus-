@@ -2,7 +2,7 @@
 
 /**
  * Script para sincronizar credenciais do Vercel para o Supabase
- * 
+ *
  * Este script:
  * 1. Lê as variáveis de ambiente do Vercel
  * 2. Insere/atualiza no banco Supabase
@@ -29,25 +29,115 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 // Mapeamento de variáveis Vercel → Supabase
 const CREDENTIAL_MAP = [
   // Comunicação
-  { vercel: 'VITE_TWILIO_ACCOUNT_SID', supabase: 'TWILIO_ACCOUNT_SID', servico: 'Twilio', categoria: 'comunicacao', tipo: 'text' },
-  { vercel: 'VITE_TWILIO_AUTH_TOKEN', supabase: 'TWILIO_AUTH_TOKEN', servico: 'Twilio', categoria: 'comunicacao', tipo: 'password' },
-  { vercel: 'VITE_TWILIO_PHONE_NUMBER', supabase: 'TWILIO_PHONE_NUMBER', servico: 'Twilio', categoria: 'comunicacao', tipo: 'text' },
-  { vercel: 'VITE_WHATSAPP_ACCESS_TOKEN', supabase: 'WHATSAPP_ACCESS_TOKEN', servico: 'WhatsApp', categoria: 'comunicacao', tipo: 'api_key' },
-  { vercel: 'VITE_SENDGRID_API_KEY', supabase: 'SENDGRID_API_KEY', servico: 'SendGrid', categoria: 'comunicacao', tipo: 'api_key' },
-  { vercel: 'VITE_SENDGRID_FROM_EMAIL', supabase: 'SENDGRID_FROM_EMAIL', servico: 'SendGrid', categoria: 'comunicacao', tipo: 'text' },
-  { vercel: 'VITE_MAILCHIMP_API_KEY', supabase: 'MAILCHIMP_API_KEY', servico: 'Mailchimp', categoria: 'comunicacao', tipo: 'api_key' },
-  { vercel: 'VITE_MAILCHIMP_DC', supabase: 'MAILCHIMP_DC', servico: 'Mailchimp', categoria: 'comunicacao', tipo: 'text' },
-  
+  {
+    vercel: 'VITE_TWILIO_ACCOUNT_SID',
+    supabase: 'TWILIO_ACCOUNT_SID',
+    servico: 'Twilio',
+    categoria: 'comunicacao',
+    tipo: 'text',
+  },
+  {
+    vercel: 'VITE_TWILIO_AUTH_TOKEN',
+    supabase: 'TWILIO_AUTH_TOKEN',
+    servico: 'Twilio',
+    categoria: 'comunicacao',
+    tipo: 'password',
+  },
+  {
+    vercel: 'VITE_TWILIO_PHONE_NUMBER',
+    supabase: 'TWILIO_PHONE_NUMBER',
+    servico: 'Twilio',
+    categoria: 'comunicacao',
+    tipo: 'text',
+  },
+  {
+    vercel: 'VITE_WHATSAPP_ACCESS_TOKEN',
+    supabase: 'WHATSAPP_ACCESS_TOKEN',
+    servico: 'WhatsApp',
+    categoria: 'comunicacao',
+    tipo: 'api_key',
+  },
+  {
+    vercel: 'VITE_SENDGRID_API_KEY',
+    supabase: 'SENDGRID_API_KEY',
+    servico: 'SendGrid',
+    categoria: 'comunicacao',
+    tipo: 'api_key',
+  },
+  {
+    vercel: 'VITE_SENDGRID_FROM_EMAIL',
+    supabase: 'SENDGRID_FROM_EMAIL',
+    servico: 'SendGrid',
+    categoria: 'comunicacao',
+    tipo: 'text',
+  },
+  {
+    vercel: 'VITE_MAILCHIMP_API_KEY',
+    supabase: 'MAILCHIMP_API_KEY',
+    servico: 'Mailchimp',
+    categoria: 'comunicacao',
+    tipo: 'api_key',
+  },
+  {
+    vercel: 'VITE_MAILCHIMP_DC',
+    supabase: 'MAILCHIMP_DC',
+    servico: 'Mailchimp',
+    categoria: 'comunicacao',
+    tipo: 'text',
+  },
+
   // OPME
-  { vercel: 'VITE_ABBOTT_API_KEY', supabase: 'ABBOTT_API_KEY', servico: 'Abbott', categoria: 'opme', tipo: 'api_key' },
-  { vercel: 'VITE_MEDTRONIC_CLIENT_ID', supabase: 'MEDTRONIC_CLIENT_ID', servico: 'Medtronic', categoria: 'opme', tipo: 'text' },
-  { vercel: 'VITE_MEDTRONIC_CLIENT_SECRET', supabase: 'MEDTRONIC_CLIENT_SECRET', servico: 'Medtronic', categoria: 'opme', tipo: 'password' },
-  { vercel: 'VITE_JJ_TRACELINK_TOKEN', supabase: 'JJ_TRACELINK_TOKEN', servico: 'J&J', categoria: 'opme', tipo: 'api_key' },
-  { vercel: 'VITE_STRYKER_API_KEY', supabase: 'STRYKER_API_KEY', servico: 'Stryker', categoria: 'opme', tipo: 'api_key' },
-  { vercel: 'VITE_BOSTON_SCIENTIFIC_TOKEN', supabase: 'BOSTON_SCIENTIFIC_TOKEN', servico: 'Boston Scientific', categoria: 'opme', tipo: 'api_key' },
-  
+  {
+    vercel: 'VITE_ABBOTT_API_KEY',
+    supabase: 'ABBOTT_API_KEY',
+    servico: 'Abbott',
+    categoria: 'opme',
+    tipo: 'api_key',
+  },
+  {
+    vercel: 'VITE_MEDTRONIC_CLIENT_ID',
+    supabase: 'MEDTRONIC_CLIENT_ID',
+    servico: 'Medtronic',
+    categoria: 'opme',
+    tipo: 'text',
+  },
+  {
+    vercel: 'VITE_MEDTRONIC_CLIENT_SECRET',
+    supabase: 'MEDTRONIC_CLIENT_SECRET',
+    servico: 'Medtronic',
+    categoria: 'opme',
+    tipo: 'password',
+  },
+  {
+    vercel: 'VITE_JJ_TRACELINK_TOKEN',
+    supabase: 'JJ_TRACELINK_TOKEN',
+    servico: 'J&J',
+    categoria: 'opme',
+    tipo: 'api_key',
+  },
+  {
+    vercel: 'VITE_STRYKER_API_KEY',
+    supabase: 'STRYKER_API_KEY',
+    servico: 'Stryker',
+    categoria: 'opme',
+    tipo: 'api_key',
+  },
+  {
+    vercel: 'VITE_BOSTON_SCIENTIFIC_TOKEN',
+    supabase: 'BOSTON_SCIENTIFIC_TOKEN',
+    servico: 'Boston Scientific',
+    categoria: 'opme',
+    tipo: 'api_key',
+  },
+
   // APIs
-  { vercel: 'VITE_INFOSIMPLES_TOKEN', supabase: 'INFOSIMPLES_TOKEN', servico: 'InfoSimples', categoria: 'apis', tipo: 'api_key' },
+  {
+    vercel: 'VITE_INFOSIMPLES_TOKEN',
+    supabase: 'INFOSIMPLES_TOKEN',
+    servico: 'InfoSimples',
+    categoria: 'apis',
+    tipo: 'api_key',
+  },
 ];
 
 async function syncCredentials() {
@@ -70,11 +160,11 @@ async function syncCredentials() {
 
     // 2. Baixar variáveis do Vercel
     console.log('📥 Baixando variáveis do Vercel...');
-    
+
     try {
-      execSync('npx vercel env pull .env.production --yes', { 
+      execSync('npx vercel env pull .env.production --yes', {
         cwd: process.cwd(),
-        stdio: 'pipe'
+        stdio: 'pipe',
       });
       console.log('✅ Variáveis baixadas\n');
     } catch (err) {
@@ -104,9 +194,8 @@ async function syncCredentials() {
 
       try {
         // Upsert no Supabase
-        const { error } = await supabase
-          .from('api_credentials')
-          .upsert({
+        const { error } = await supabase.from('api_credentials').upsert(
+          {
             empresa_id: empresaId,
             nome: cred.supabase,
             servico: cred.servico,
@@ -114,10 +203,12 @@ async function syncCredentials() {
             categoria: cred.categoria,
             tipo: cred.tipo,
             ativo: true,
-            atualizado_em: new Date().toISOString()
-          }, {
-            onConflict: 'empresa_id,nome'
-          });
+            atualizado_em: new Date().toISOString(),
+          },
+          {
+            onConflict: 'empresa_id,nome',
+          }
+        );
 
         if (error) {
           console.log(`❌ ${cred.supabase.padEnd(30)} → Erro: ${error.message}`);
@@ -151,9 +242,10 @@ async function syncCredentials() {
       console.log('As credenciais devem ter o prefixo VITE_ no Vercel:');
       console.log('   Exemplo: VITE_TWILIO_ACCOUNT_SID\n');
       console.log('Configure em:');
-      console.log('   https://vercel.com/daxs-projects-5db3d203/icarus-oficial/settings/environment-variables\n');
+      console.log(
+        '   https://vercel.com/daxs-projects-5db3d203/icarus-oficial/settings/environment-variables\n'
+      );
     }
-
   } catch (err) {
     console.error('\n❌ Erro geral:', err.message);
     process.exit(1);
@@ -162,4 +254,3 @@ async function syncCredentials() {
 
 // Executar
 syncCredentials();
-

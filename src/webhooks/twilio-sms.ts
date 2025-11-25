@@ -1,8 +1,8 @@
 /**
  * Twilio Webhook - Status de SMS/WhatsApp
- * 
+ *
  * Processa callbacks de status de mensagens enviadas
- * 
+ *
  * Status possíveis:
  * - queued: Mensagem na fila
  * - sending: Enviando
@@ -26,28 +26,15 @@ export async function twilioWebhookHandler(req: Request, res: Response) {
     const url = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
 
     // Verificar assinatura
-    const isValid = twilio.validateRequest(
-      authToken,
-      signature,
-      url,
-      req.body
-    );
+    const isValid = twilio.validateRequest(authToken, signature, url, req.body);
 
     if (!isValid) {
       console.error('❌ Assinatura Twilio inválida');
       return res.status(403).send('Forbidden');
     }
 
-    const {
-      MessageSid,
-      SmsSid,
-      MessageStatus,
-      SmsStatus,
-      From,
-      To,
-      ErrorCode,
-      ErrorMessage
-    } = req.body;
+    const { MessageSid, SmsSid, MessageStatus, SmsStatus, From, To, ErrorCode, ErrorMessage } =
+      req.body;
 
     const messageSid = MessageSid || SmsSid;
     const status = MessageStatus || SmsStatus;
@@ -84,14 +71,14 @@ export async function twilioWebhookHandler(req: Request, res: Response) {
 
 async function handleMessageDelivered(sid: string, from: string, to: string) {
   console.log(`✅ Mensagem entregue: ${sid} de ${from} para ${to}`);
-  
+
   // TODO: Atualizar status no banco de dados
   // TODO: Registrar métrica de entrega
 }
 
 async function handleMessageSent(sid: string, from: string, to: string) {
   console.log(`📤 Mensagem enviada: ${sid} de ${from} para ${to}`);
-  
+
   // TODO: Atualizar status no banco
 }
 
@@ -103,11 +90,10 @@ async function handleMessageFailed(
   errorMessage?: string
 ) {
   console.log(`❌ Mensagem falhou: ${sid} de ${from} para ${to} - ${errorCode}: ${errorMessage}`);
-  
+
   // TODO: Registrar falha
   // TODO: Notificar administrador se erro crítico
   // TODO: Tentar alternativa (email)
 }
 
 export default twilioWebhookHandler;
-

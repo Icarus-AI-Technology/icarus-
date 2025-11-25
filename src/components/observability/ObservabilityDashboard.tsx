@@ -8,7 +8,7 @@ import {
   CheckCircle2,
   XCircle,
   BarChart3,
-  RefreshCw
+  RefreshCw,
 } from 'lucide-react';
 
 interface BehaviorProfile {
@@ -63,14 +63,13 @@ export const ObservabilityDashboard: React.FC = () => {
         .limit(10);
 
       // Detectar comportamentos anômalos
-      const { data: anomalousUsers } = await supabase
-        .rpc('detectar_comportamento_anomalo');
+      const { data: anomalousUsers } = await supabase.rpc('detectar_comportamento_anomalo');
 
       setBehaviorProfiles(profiles || []);
       setSystemAlerts(alerts || []);
       setAnomalies(anomalousUsers || []);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao carregar dados:', err);
     } finally {
       setLoading(false);
@@ -79,7 +78,7 @@ export const ObservabilityDashboard: React.FC = () => {
 
   useEffect(() => {
     loadData();
-    
+
     // Atualizar a cada 30 segundos
     const interval = setInterval(loadData, 30000);
     return () => clearInterval(interval);
@@ -87,23 +86,24 @@ export const ObservabilityDashboard: React.FC = () => {
 
   const getSeverityColor = (severidade: string) => {
     switch (severidade) {
-      case 'critico': return 'text-red-600 bg-red-100';
-      case 'urgente': return 'text-orange-600 bg-orange-100';
-      case 'atencao': return 'text-yellow-600 bg-yellow-100';
-      default: return 'text-blue-600 bg-blue-100';
+      case 'critico':
+        return 'text-red-600 bg-red-100';
+      case 'urgente':
+        return 'text-orange-600 bg-orange-100';
+      case 'atencao':
+        return 'text-yellow-600 bg-yellow-100';
+      default:
+        return 'text-blue-600 bg-blue-100';
     }
   };
 
   const resolveAlert = async (alertId: string) => {
     try {
-      await supabase
-        .from('system_alerts')
-        .update({ resolvido: true })
-        .eq('id', alertId);
-      
+      await supabase.from('system_alerts').update({ resolvido: true }).eq('id', alertId);
+
       loadData();
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao resolver alerta:', err);
     }
   };
@@ -136,7 +136,9 @@ export const ObservabilityDashboard: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="orx-text-sm text-gray-600">Usuários Ativos</p>
-                <p className="orx-text-2xl orx-orx-font-bold text-gray-900">{behaviorProfiles.length}</p>
+                <p className="orx-text-2xl orx-orx-font-bold text-gray-900">
+                  {behaviorProfiles.length}
+                </p>
               </div>
               <Users className="w-10 h-10 text-blue-600" />
             </div>
@@ -146,7 +148,9 @@ export const ObservabilityDashboard: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="orx-text-sm text-gray-600">Alertas Pendentes</p>
-                <p className="orx-text-2xl orx-orx-font-bold text-orange-600">{systemAlerts.length}</p>
+                <p className="orx-text-2xl orx-orx-font-bold text-orange-600">
+                  {systemAlerts.length}
+                </p>
               </div>
               <AlertTriangle className="w-10 h-10 text-orange-600" />
             </div>
@@ -169,10 +173,12 @@ export const ObservabilityDashboard: React.FC = () => {
                 <p className="orx-text-2xl orx-orx-font-bold text-green-600">
                   {behaviorProfiles.length > 0
                     ? Math.round(
-                        (behaviorProfiles.reduce((sum, p) => 
-                          sum + (1 - p.taxa_erro_geral), 0) / behaviorProfiles.length) * 100
+                        (behaviorProfiles.reduce((sum, p) => sum + (1 - p.taxa_erro_geral), 0) /
+                          behaviorProfiles.length) *
+                          100
                       )
-                    : 0}%
+                    : 0}
+                  %
                 </p>
               </div>
               <CheckCircle2 className="w-10 h-10 text-green-600" />
@@ -231,24 +237,32 @@ export const ObservabilityDashboard: React.FC = () => {
             {activeTab === 'profiles' && (
               <div className="space-y-4">
                 {behaviorProfiles.map((profile) => (
-                  <div key={profile.usuario_id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
+                  <div
+                    key={profile.usuario_id}
+                    className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition"
+                  >
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
                           <Users className="w-5 h-5 text-blue-600" />
                         </div>
                         <div>
-                          <h3 className="orx-orx-font-semibold text-gray-900">{profile.usuario_id.substring(0, 8)}</h3>
+                          <h3 className="orx-orx-font-semibold text-gray-900">
+                            {profile.usuario_id.substring(0, 8)}
+                          </h3>
                           <p className="orx-text-sm text-gray-500">
-                            Última atividade: {new Date(profile.ultima_atividade).toLocaleDateString('pt-BR')}
+                            Última atividade:{' '}
+                            {new Date(profile.ultima_atividade).toLocaleDateString('pt-BR')}
                           </p>
                         </div>
                       </div>
                       <div className="text-right">
                         <p className="orx-text-sm text-gray-600">Taxa de Erro</p>
-                        <p className={`orx-text-lg orx-orx-font-bold ${
-                          profile.taxa_erro_geral > 0.3 ? 'text-red-600' : 'text-green-600'
-                        }`}>
+                        <p
+                          className={`orx-text-lg orx-orx-font-bold ${
+                            profile.taxa_erro_geral > 0.3 ? 'text-red-600' : 'text-green-600'
+                          }`}
+                        >
                           {(profile.taxa_erro_geral * 100).toFixed(1)}%
                         </p>
                       </div>
@@ -257,7 +271,9 @@ export const ObservabilityDashboard: React.FC = () => {
                     <div className="grid grid-cols-3 gap-4 orx-text-sm">
                       <div>
                         <p className="text-gray-600">Total de Atividades</p>
-                        <p className="orx-orx-font-semibold text-gray-900">{profile.total_atividades}</p>
+                        <p className="orx-orx-font-semibold text-gray-900">
+                          {profile.total_atividades}
+                        </p>
                       </div>
                       <div>
                         <p className="text-gray-600">Total de Erros</p>
@@ -266,7 +282,9 @@ export const ObservabilityDashboard: React.FC = () => {
                       <div>
                         <p className="text-gray-600">Módulos Usados</p>
                         <p className="orx-orx-font-semibold text-blue-600">
-                          {profile.modulos_mais_usados ? Object.keys(profile.modulos_mais_usados).length : 0}
+                          {profile.modulos_mais_usados
+                            ? Object.keys(profile.modulos_mais_usados).length
+                            : 0}
                         </p>
                       </div>
                     </div>
@@ -279,7 +297,10 @@ export const ObservabilityDashboard: React.FC = () => {
             {activeTab === 'alerts' && (
               <div className="space-y-4">
                 {systemAlerts.map((alert) => (
-                  <div key={alert.id} className="border-l-4 border-orange-500 bg-orange-50 p-4 rounded-r-lg">
+                  <div
+                    key={alert.id}
+                    className="border-l-4 border-orange-500 bg-orange-50 p-4 rounded-r-lg"
+                  >
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center gap-3">
                         <AlertTriangle className="w-5 h-5 text-orange-600" />
@@ -288,7 +309,9 @@ export const ObservabilityDashboard: React.FC = () => {
                           <p className="orx-text-sm text-gray-600 mt-1">{alert.descricao}</p>
                         </div>
                       </div>
-                      <span className={`px-3 py-1 rounded-full orx-text-xs orx-orx-font-medium ${getSeverityColor(alert.severidade)}`}>
+                      <span
+                        className={`px-3 py-1 rounded-full orx-text-xs orx-orx-font-medium ${getSeverityColor(alert.severidade)}`}
+                      >
                         {alert.severidade}
                       </span>
                     </div>
@@ -330,7 +353,9 @@ export const ObservabilityDashboard: React.FC = () => {
                           Usuário: {anomaly.usuario_id.substring(0, 8)}
                         </p>
                       </div>
-                      <span className={`px-3 py-1 rounded-full orx-text-xs orx-orx-font-medium ${getSeverityColor(anomaly.severidade)}`}>
+                      <span
+                        className={`px-3 py-1 rounded-full orx-text-xs orx-orx-font-medium ${getSeverityColor(anomaly.severidade)}`}
+                      >
                         {anomaly.severidade}
                       </span>
                     </div>
@@ -362,3 +387,4 @@ export const ObservabilityDashboard: React.FC = () => {
   );
 };
 
+export default ObservabilityDashboard;

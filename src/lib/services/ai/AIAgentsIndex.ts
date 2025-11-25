@@ -1,8 +1,8 @@
 /**
  * ICARUS v5.0 - IA Central
- * 
+ *
  * Orquestrador de 17 Agentes de IA Especializados
- * 
+ *
  * AGENTES IMPLEMENTADOS:
  * 1. Dashboard AI - Insights preditivos (implementado)
  * 2. Estoque AI - Otimização de inventário (implementado)
@@ -64,24 +64,29 @@ export class IACentral {
       totalRequests: 0, // TODO: Buscar do banco
       averageAccuracy: 93.2, // Média das acurácias
       agentsByCategory: {
-        'Operacional': 6,
-        'Financeiro': 3,
-        'Compliance': 4,
-        'RH': 2,
-        'Vendas': 2
-      }
+        Operacional: 6,
+        Financeiro: 3,
+        Compliance: 4,
+        RH: 2,
+        Vendas: 2,
+      },
     };
   }
 
   /**
    * Health check de todos os agentes
    */
-  static async healthCheck(): Promise<Record<string, {
-    status: 'online' | 'offline' | 'degraded';
-    accuracy: number;
-    lastRequest?: string;
-    responseTime?: number;
-  }>> {
+  static async healthCheck(): Promise<
+    Record<
+      string,
+      {
+        status: 'online' | 'offline' | 'degraded';
+        accuracy: number;
+        lastRequest?: string;
+        responseTime?: number;
+      }
+    >
+  > {
     return {
       dashboard_ai: { status: 'online', accuracy: 94.5, responseTime: 250 },
       estoque_ai: { status: 'online', accuracy: 96.2, responseTime: 180 },
@@ -99,8 +104,7 @@ export class IACentral {
       auditoria_ai: { status: 'online', accuracy: 91.5, responseTime: 380 },
       treinamento_ai: { status: 'online', accuracy: 89.3, responseTime: 260 },
       risco_ai: { status: 'online', accuracy: 93.7, responseTime: 290 },
-      viabilidade_ai: { status: 'online', accuracy: 92.1, responseTime: 410 }
+      viabilidade_ai: { status: 'online', accuracy: 92.1, responseTime: 410 },
     };
   }
 }
-

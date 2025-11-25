@@ -43,10 +43,12 @@ export const useLotes = () => {
 
       const { data, error: fetchError } = await supabase
         .from('lotes')
-        .select(`
+        .select(
+          `
           *,
           produto:produtos(nome, codigo, categoria)
-        `)
+        `
+        )
         .order('data_validade', { ascending: true });
 
       if (fetchError) throw fetchError;
@@ -56,12 +58,12 @@ export const useLotes = () => {
       em30Dias.setDate(hoje.getDate() + 30);
 
       // Filtrar lotes por vencimento
-      const proximosVencimento = ((data ?? []) as Lote[]).filter(lote => {
+      const proximosVencimento = ((data ?? []) as Lote[]).filter((lote) => {
         const validade = new Date(lote.data_validade);
         return validade > hoje && validade <= em30Dias;
       });
 
-      const vencidos = ((data ?? []) as Lote[]).filter(lote => {
+      const vencidos = ((data ?? []) as Lote[]).filter((lote) => {
         const validade = new Date(lote.data_validade);
         return validade <= hoje;
       });
@@ -71,7 +73,7 @@ export const useLotes = () => {
       setLotesVencidos(vencidos);
       setError(null);
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       handleError(err, 'Erro ao carregar lotes');
       setLotes([]);
     } finally {
@@ -85,18 +87,14 @@ export const useLotes = () => {
 
   const criarLote = async (lote: Omit<Lote, 'id'>) => {
     try {
-      const { data, error } = await supabase
-        .from('lotes')
-        .insert(lote)
-        .select()
-        .single();
+      const { data, error } = await supabase.from('lotes').insert(lote).select().single();
 
       if (error) throw error;
 
       await fetchLotes();
       return data as Lote;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       handleError(err, 'Erro ao criar lote');
       throw err;
     }
@@ -104,16 +102,13 @@ export const useLotes = () => {
 
   const atualizarLote = async (id: string, updates: Partial<Lote>) => {
     try {
-      const { error } = await supabase
-        .from('lotes')
-        .update(updates)
-        .eq('id', id);
+      const { error } = await supabase.from('lotes').update(updates).eq('id', id);
 
       if (error) throw error;
 
       await fetchLotes();
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       handleError(err, 'Erro ao atualizar lote');
       throw err;
     }
@@ -141,7 +136,7 @@ export const useLotes = () => {
         .from('lotes')
         .update({
           quantidade_disponivel: quantidadeDisponivel,
-          status: quantidadeDisponivel === 0 ? 'utilizado' : 'disponivel'
+          status: quantidadeDisponivel === 0 ? 'utilizado' : 'disponivel',
         })
         .eq('id', id);
 
@@ -149,7 +144,7 @@ export const useLotes = () => {
 
       await fetchLotes();
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       handleError(err, 'Erro ao consumir lote');
       throw err;
     }
@@ -159,10 +154,12 @@ export const useLotes = () => {
     try {
       const { data, error } = await supabase
         .from('lotes')
-        .select(`
+        .select(
+          `
           *,
           produto:produtos(*)
-        `)
+        `
+        )
         .eq('numero_lote', numeroLote)
         .single();
 
@@ -170,7 +167,7 @@ export const useLotes = () => {
 
       return data as Lote;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       handleError(err, 'Erro ao buscar lote');
       throw err;
     }
@@ -186,7 +183,6 @@ export const useLotes = () => {
     criarLote,
     atualizarLote,
     consumirLote,
-    buscarPorNumeroLote
+    buscarPorNumeroLote,
   };
 };
-

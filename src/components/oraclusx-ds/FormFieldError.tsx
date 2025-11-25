@@ -11,12 +11,5 @@ interface FormFieldErrorProps {
 export const FormFieldError = ({ error }: FormFieldErrorProps) => {
   if (!error) return null;
 
-  return (
-    <p
-      className="text-[var(--orx-error-dark)] text-[0.813rem] mt-1 leading-6"
-    >
-      {error}
-    </p>
-  );
+  return <p className="text-[var(--orx-error-dark)] text-[0.813rem] mt-1 leading-6">{error}</p>;
 };
-

@@ -3,7 +3,7 @@
 /**
  * DEPLOY AUTOMÁTICO — ICARUS-PRO
  * Utiliza Supabase MCP para aplicar migrations
- * 
+ *
  * Requisitos: Supabase MCP configurado no Cursor
  */
 
@@ -21,7 +21,7 @@ const colors = {
   red: '\x1b[31m',
   yellow: '\x1b[33m',
   blue: '\x1b[34m',
-  cyan: '\x1b[36m'
+  cyan: '\x1b[36m',
 };
 
 function log(message, color = 'reset') {
@@ -31,25 +31,25 @@ function log(message, color = 'reset') {
 async function deployWithMCP() {
   try {
     log('\n🚀 DEPLOY AUTOMÁTICO — ICARUS-PRO (via MCP)\n', 'cyan');
-    
+
     // Listar migrations locais
     const migrationsDir = join(__dirname, '../../supabase/migrations');
     const localFiles = readdirSync(migrationsDir)
-      .filter(f => f.endsWith('.sql'))
+      .filter((f) => f.endsWith('.sql'))
       .sort();
-    
+
     log(`📁 ${localFiles.length} migrations encontradas localmente\n`, 'blue');
-    
+
     // Aplicar cada migration
     let successCount = 0;
     let errorCount = 0;
-    
+
     for (const file of localFiles) {
       const name = file.replace('.sql', '');
       const sqlContent = readFileSync(join(migrationsDir, file), 'utf8');
-      
+
       log(`⚙️  Aplicando: ${file}...`, 'yellow');
-      
+
       try {
         // Usar MCP para aplicar migration
         // Nota: Esta chamada precisa ser feita via Cursor Agent/MCP
@@ -57,14 +57,14 @@ async function deployWithMCP() {
         log(`   💡 Use o Cursor Agent para executar: mcp_supabase_apply_migration`, 'cyan');
         log(`      - name: ${name}`, 'cyan');
         log(`      - query: [conteúdo do arquivo]\n`, 'cyan');
-        
+
         successCount++;
       } catch (err) {
         log(`   ❌ Erro: ${err.message}\n`, 'red');
         errorCount++;
       }
     }
-    
+
     // Resumo
     log('\n═══════════════════════════════════════', 'cyan');
     log('📊 RESUMO DO DEPLOY', 'cyan');
@@ -72,16 +72,15 @@ async function deployWithMCP() {
     log(`✅ Sucesso: ${successCount}`, 'green');
     log(`❌ Erros: ${errorCount}`, 'red');
     log(`📁 Total: ${localFiles.length}`, 'blue');
-    
+
     // Instruções
     log('\n💡 PRÓXIMOS PASSOS:\n', 'yellow');
     log('Como o MCP requer interação via Cursor Agent,', 'reset');
     log('você pode pedir ao agent:', 'reset');
     log('  "Aplique todas as migrations usando o Supabase MCP"\n', 'cyan');
-    
+
     log('Ou siga o guia manual:', 'reset');
     log('  → DEPLOY_ICARUS_PRO.md\n', 'cyan');
-    
   } catch (err) {
     log(`\n❌ ERRO: ${err.message}`, 'red');
     log('\n💡 Alternativa: Use DEPLOY_ICARUS_PRO.md', 'yellow');
@@ -93,10 +92,10 @@ async function deployWithMCP() {
 function getMigrationsList() {
   const migrationsDir = join(__dirname, '../../supabase/migrations');
   const files = readdirSync(migrationsDir)
-    .filter(f => f.endsWith('.sql'))
+    .filter((f) => f.endsWith('.sql'))
     .sort();
-  
-  return files.map(file => {
+
+  return files.map((file) => {
     const name = file.replace('.sql', '');
     const content = readFileSync(join(migrationsDir, file), 'utf8');
     return { name, file, content, lines: content.split('\n').length };
@@ -107,14 +106,14 @@ function getMigrationsList() {
 function showMigrations() {
   log('\n📋 MIGRATIONS DISPONÍVEIS\n', 'cyan');
   const migrations = getMigrationsList();
-  
+
   migrations.forEach((m, i) => {
     log(`${i + 1}. ${m.file}`, 'blue');
     log(`   Nome: ${m.name}`, 'reset');
     log(`   Linhas: ${m.lines}`, 'reset');
     log(`   Path: supabase/migrations/${m.file}\n`, 'reset');
   });
-  
+
   return migrations;
 }
 
@@ -141,16 +140,18 @@ if (args.includes('--list')) {
   log('\n═══════════════════════════════════════', 'cyan');
   log('🤖 INSTRUÇÕES PARA CURSOR AGENT', 'cyan');
   log('═══════════════════════════════════════\n', 'cyan');
-  
+
   log('Para aplicar automaticamente via MCP, use:\n', 'yellow');
-  
+
   migrations.forEach((m, i) => {
     log(`${i + 1}. mcp_supabase_apply_migration`, 'blue');
     log(`   name: "${m.name}"`, 'reset');
     log(`   query: [conteúdo de ${m.file}]\n`, 'reset');
   });
-  
-  log('Ou peça ao agent:', 'yellow');
-  log('  "Leia e aplique todas as migrations de supabase/migrations/ usando o Supabase MCP"\n', 'cyan');
-}
 
+  log('Ou peça ao agent:', 'yellow');
+  log(
+    '  "Leia e aplique todas as migrations de supabase/migrations/ usando o Supabase MCP"\n',
+    'cyan'
+  );
+}

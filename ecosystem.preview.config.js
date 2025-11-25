@@ -1,9 +1,9 @@
 /**
  * 🔄 PM2 Ecosystem Configuration - Preview Automation
- * 
+ *
  * Gerencia o servidor de preview e a captura automática de screenshots
  * para validação visual contínua do ICARUS v5.0
- * 
+ *
  * @version 1.0.0
  * @date 2025-10-20
  */
@@ -26,7 +26,7 @@ module.exports = {
       env: {
         NODE_ENV: 'production',
         PORT: 4173,
-        HOST: '0.0.0.0'
+        HOST: '0.0.0.0',
       },
       error_file: './logs/preview-server-error.log',
       out_file: './logs/preview-server-out.log',
@@ -35,7 +35,7 @@ module.exports = {
       min_uptime: '10s',
       max_restarts: 5,
     },
-    
+
     // ======================================
     // 2. Captura de Screenshots (Agendado)
     // ======================================
@@ -47,25 +47,25 @@ module.exports = {
       instances: 1,
       autorestart: false,
       watch: false,
-      
+
       // Agendar execução: a cada 20 minutos
       // Formato cron: minuto hora dia mês dia-da-semana
       cron_restart: '*/20 * * * *',
-      
+
       // Aguardar 30s após início do servidor antes da primeira captura
       wait_ready: true,
       listen_timeout: 30000,
-      
+
       env: {
         NODE_ENV: 'production',
-        PREVIEW_URL: 'http://localhost:4173'
+        PREVIEW_URL: 'http://localhost:4173',
       },
       error_file: './logs/preview-capture-error.log',
       out_file: './logs/preview-capture-out.log',
       log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
       merge_logs: true,
-    }
-  ]
+    },
+  ],
 };
 
 // 📝 INSTRUÇÕES DE USO
@@ -103,4 +103,3 @@ module.exports = {
 // - A cada 1 hora: "0 * * * *"
 // - A cada 2 horas: "0 */2 * * *"
 // - Diariamente às 9h: "0 9 * * *"
-

@@ -1,8 +1,8 @@
-import { Activity, TrendingUp, Users, DollarSign } from"lucide-react";
-import { useDocumentTitle } from"@/hooks";
+import { Activity, TrendingUp, Users, DollarSign } from 'lucide-react';
+import { useDocumentTitle } from '@/hooks';
 
 export default function Welcome() {
-  useDocumentTitle("Bem-vindo");
+  useDocumentTitle('Bem-vindo');
 
   return (
     <div className="space-y-6">
@@ -12,8 +12,8 @@ export default function Welcome() {
           Bem-vindo ao Icarus Make
         </h2>
         <p className="text-body-lg text-muted-foreground max-w-2xl mx-auto">
-          Design neumórfico moderno importado do Figma. Uma experiência visual
-          única e elegante para suas aplicações.
+          Design neumórfico moderno importado do Figma. Uma experiência visual única e elegante para
+          suas aplicações.
         </p>
       </div>
 
@@ -27,9 +27,7 @@ export default function Welcome() {
             <Users className="text-primary" size={20} />
           </div>
           <p className="text-heading-lg font-display">2,543</p>
-          <p className="text-body-xs text-muted-foreground mt-2">
-            +12% em relação ao mês anterior
-          </p>
+          <p className="text-body-xs text-muted-foreground mt-2">+12% em relação ao mês anterior</p>
         </div>
 
         <div className="neumorphic-card">
@@ -40,9 +38,7 @@ export default function Welcome() {
             <DollarSign className="text-success" size={20} />
           </div>
           <p className="text-heading-lg font-display">R$ 45,231</p>
-          <p className="text-body-xs text-muted-foreground mt-2">
-            +8% em relação ao mês anterior
-          </p>
+          <p className="text-body-xs text-muted-foreground mt-2">+8% em relação ao mês anterior</p>
         </div>
 
         <div className="neumorphic-card">
@@ -53,9 +49,7 @@ export default function Welcome() {
             <Activity className="text-purple-500" size={20} />
           </div>
           <p className="text-heading-lg font-display">89%</p>
-          <p className="text-body-xs text-muted-foreground mt-2">
-            Taxa de engajamento
-          </p>
+          <p className="text-body-xs text-muted-foreground mt-2">Taxa de engajamento</p>
         </div>
 
         <div className="neumorphic-card">
@@ -66,9 +60,7 @@ export default function Welcome() {
             <TrendingUp className="text-orange-500" size={20} />
           </div>
           <p className="text-heading-lg font-display">+23%</p>
-          <p className="text-body-xs text-muted-foreground mt-2">
-            Taxa de crescimento mensal
-          </p>
+          <p className="text-body-xs text-muted-foreground mt-2">Taxa de crescimento mensal</p>
         </div>
       </div>
 
@@ -77,8 +69,8 @@ export default function Welcome() {
         <div className="neumorphic-card">
           <h3 className="text-heading-sm font-display mb-4">🎨 Design Neumórfico</h3>
           <p className="text-muted-foreground mb-4">
-            Interface moderna com efeitos de sombra suaves que criam uma
-            sensação tridimensional única.
+            Interface moderna com efeitos de sombra suaves que criam uma sensação tridimensional
+            única.
           </p>
           <ul className="space-y-2 text-body-sm">
             <li>✓ Sombras suaves e realistas</li>
@@ -91,8 +83,7 @@ export default function Welcome() {
         <div className="neumorphic-card">
           <h3 className="text-heading-sm font-display mb-4">🌓 Modo Escuro</h3>
           <p className="text-muted-foreground mb-4">
-            Alterne facilmente entre os modos claro e escuro para uma
-            experiência personalizada.
+            Alterne facilmente entre os modos claro e escuro para uma experiência personalizada.
           </p>
           <ul className="space-y-2 text-body-sm">
             <li>✓ Tema claro otimizado</li>
@@ -109,10 +100,15 @@ export default function Welcome() {
         <p className="text-muted-foreground mb-6">
           Explore o dashboard e descubra todas as funcionalidades.
         </p>
-        <button className="neumorphic-button px-8 py-3 text-body-lg" style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem', fontWeight: 500 }}>
+        <button
+          className="neumorphic-button px-8 py-3 text-body-lg"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            fontWeight: 500,
+          }}
+        >
           Explorar Dashboard
         </button>
       </div>

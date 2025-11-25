@@ -1,8 +1,8 @@
 /**
  * 🔌 PLUGGY API — TYPE DEFINITIONS
- * 
+ *
  * Tipos TypeScript para toda a integração Pluggy (Open Finance Brasil)
- * 
+ *
  * @see https://docs.pluggy.ai/
  */
 
@@ -37,9 +37,9 @@ export interface PluggyConnector {
   supportsPaymentInitiation: boolean;
 }
 
-export type ItemStatus = 
-  | 'UPDATED' 
-  | 'UPDATING' 
+export type ItemStatus =
+  | 'UPDATED'
+  | 'UPDATING'
   | 'WAITING_USER_INPUT'
   | 'WAITING_USER_ACTION'
   | 'LOGIN_ERROR'
@@ -66,10 +66,7 @@ export interface PluggyItem {
 
 export type AccountType = 'BANK' | 'CREDIT';
 
-export type AccountSubtype = 
-  | 'CHECKING_ACCOUNT'
-  | 'SAVINGS_ACCOUNT'
-  | 'CREDIT_CARD';
+export type AccountSubtype = 'CHECKING_ACCOUNT' | 'SAVINGS_ACCOUNT' | 'CREDIT_CARD';
 
 export interface AccountBankData {
   transferNumber?: string;
@@ -151,12 +148,7 @@ export interface TransactionListResponse {
 // PAGAMENTOS PIX
 // ============================================
 
-export type PaymentStatus = 
-  | 'PENDING'
-  | 'SCHEDULED'
-  | 'APPROVED'
-  | 'REJECTED'
-  | 'CANCELLED';
+export type PaymentStatus = 'PENDING' | 'SCHEDULED' | 'APPROVED' | 'REJECTED' | 'CANCELLED';
 
 export interface PaymentRecipient {
   pixKey?: string;
@@ -198,12 +190,7 @@ export interface CreatePaymentRequest {
 // INVESTIMENTOS
 // ============================================
 
-export type InvestmentType = 
-  | 'MUTUAL_FUND'
-  | 'SECURITY'
-  | 'EQUITY'
-  | 'FIXED_INCOME'
-  | 'PENSION';
+export type InvestmentType = 'MUTUAL_FUND' | 'SECURITY' | 'EQUITY' | 'FIXED_INCOME' | 'PENSION';
 
 export interface PluggyInvestment {
   id: string;
@@ -258,7 +245,7 @@ export interface PluggyIdentity {
 // WEBHOOKS
 // ============================================
 
-export type WebhookEvent = 
+export type WebhookEvent =
   | 'item/created'
   | 'item/updated'
   | 'item/deleted'
@@ -429,4 +416,3 @@ export const PLUGGY_DEFAULT_FEATURES: PluggyFeatures = {
   webhooks: true,
   aiAnalysis: true,
 };
-

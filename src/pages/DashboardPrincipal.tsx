@@ -1,430 +1,301 @@
-/**
- * Dashboard Principal - ICARUS v5.0
- * Módulo: 01 - Core Business
- * 
- * Visão consolidada de todos os KPIs críticos do negócio OPME
- * 100% conformidade com OraclusX Design System
- */
+import {
+  Activity,
+  User2,
+  Package,
+  CalendarDays,
+  FileSpreadsheet,
+  AlertTriangle,
+  Truck,
+  Cpu,
+  MapPin,
+  TrendingUp,
+} from 'lucide-react';
+import { Card, CardBody } from '@heroui/react';
+import { Button } from '@/components/oraclusx-ds/Button';
+import { DashboardKPI } from '../components/DashboardKPI';
+import {
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  PieChart,
+  Pie,
+  Cell,
+} from 'recharts';
 
-import { useState } from "react";
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  DollarSign, 
-  Stethoscope, 
-  AlertTriangle, 
-  Package, 
-  Calendar,
-  RefreshCw,
-  Download,
-  Settings,
-  Maximize2
-} from "lucide-react";
-import { Card } from "../components/oraclusx-ds/Card";
-import { Button } from "../components/oraclusx-ds/Button";
-import { IconButtonNeu } from "../components/oraclusx-ds/IconButtonNeu";
-import { SubModulesNavigation } from "../components/oraclusx-ds/SubModulesNavigation";
-import { OrxBarChart } from "../components/charts/OrxBarChart";
-import { OrxLineChart } from "../components/charts/OrxLineChart";
-import { OrxPieChart } from "../components/charts/OrxPieChart";
+// Dados Mockados para os Gráficos
+const dataFaturamento = [
+  { name: 'Jan', valor: 2400 },
+  { name: 'Fev', valor: 1398 },
+  { name: 'Mar', valor: 9800 },
+  { name: 'Abr', valor: 3908 },
+  { name: 'Mai', valor: 4800 },
+  { name: 'Jun', valor: 3800 },
+  { name: 'Jul', valor: 4300 },
+];
 
-/**
- * KPI Card Component - PADRÃO OFICIAL OraclusX DS
- * 
- * ESPECIFICAÇÃO:
- * - Background: var(--orx-primary) (indigo médio)
- * - Texto: var(--orx-text-white) (branco)
- * - Sombra: Neuromórfica
- * - Altura: 140px
- */
-interface KPICardProps {
-  label: string;
-  value: string | number;
-  icon: React.ReactNode;
-  trend?: {
-    direction: 'up' | 'down' | 'neutral';
-    percentage: number;
-  };
-  onClick?: () => void;
+const dataDistribuicao = [
+  { name: 'SP', value: 400 },
+  { name: 'RJ', value: 300 },
+  { name: 'MG', value: 300 },
+  { name: 'RS', value: 200 },
+];
+
+const COLORS = ['#6366f1', '#2dd4bf', '#f43f5e', '#f59e0b'];
+
+// Custom Tooltip para o tema Dark Glass
+interface ChartTooltipPayload {
+  name?: string;
+  value?: number;
+  color?: string;
 }
 
-const KPICard: React.FC<KPICardProps> = ({ label, value, icon, trend, onClick }) => {
-  return (
-    <div
-      className="
-        kpi-card
-        bg-[var(--orx-primary)] text-white
-        h-[140px]
-        cursor-pointer
-        transition-transform hover:scale-105
-        shadow-[8px_8px_16px_rgba(99,102,241,0.3),-4px_-4px_12px_rgba(255,255,255,0.1)]
-        rounded-xl p-6
-      "
-      onClick={onClick}
-    >
-      <div className="flex items-start justify-between h-full">
-        {/* Ícone */}
-        <div className="
-          w-14 h-14 rounded-xl
-          bg-white/10
-          flex items-center justify-center
-        ">
-          <span className="text-white orx-text-2xl">
-            {icon}
-          </span>
-        </div>
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: ChartTooltipPayload[];
+  label?: string;
+}
 
-        {/* Valor e Label */}
-        <div className="flex-1 ml-4">
-          <p className="orx-text-sm text-white/80 mb-1">
-            {label}
+const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-[#181b29] border border-white/10 p-3 rounded-lg shadow-xl backdrop-blur-xl">
+        <p className="text-white font-medium mb-1">{label}</p>
+        {payload?.[0] && (
+          <p className="text-primary text-sm">
+            {`${payload[0].name ?? 'Valor'}: ${payload[0].value ?? 0}`}
           </p>
-          <p className="orx-text-3xl orx-orx-font-bold text-white kpi-value">
-            {value}
-          </p>
-          
-          {/* Tendência */}
-          {trend && (
-            <div className={`
-              flex items-center gap-1 mt-2
-              orx-text-sm
-              ${trend.direction === 'up' ? 'text-green-300' :
-                trend.direction === 'down' ? 'text-red-300' :
-                'text-white/60'
-              }
-            `}>
-              {trend.direction === 'up' && <TrendingUp size={16} />}
-              {trend.direction === 'down' && <TrendingDown size={16} />}
-              {trend.direction === 'neutral' && <span>→</span>}
-              <span>{trend.percentage}%</span>
-            </div>
-          )}
-        </div>
+        )}
       </div>
-    </div>
-  );
+    );
+  }
+  return null;
 };
 
-/**
- * Dashboard Principal Component
- */
 export default function DashboardPrincipal() {
-  const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState('visao-geral');
-  const currentPeriod = 'Hoje';
-
-  // Dados mockados para demonstração
-  const kpis = {
-    cirurgiasHoje: 12,
-    cirurgiasMes: 147,
-    faturamentoMes: 'R$ 2.847.500',
-    ticketMedio: 'R$ 19.372',
-    estoqueBaixo: 23,
-    contasReceber: 'R$ 1.234.000',
-    taxaInadimplencia: '2.3',
-    margemLucro: '18.5'
-  };
-
-  const handleRefresh = () => {
-    setLoading(true);
-    setTimeout(() => setLoading(false), 1000);
-  };
-
-  const handleExportPDF = () => {
-    alert('Exportar PDF - Em desenvolvimento');
-  };
-
-  const handleFullScreen = () => {
-    document.documentElement.requestFullscreen();
-  };
-
-  // Sub-navegação do Dashboard
-  const tabs = [
-    { id: 'visao-geral', label: 'Visão Geral', icon: <Calendar size={16} /> },
-    { id: 'cirurgias-hoje', label: 'Cirurgias do Dia', icon: <Stethoscope size={16} /> },
-    { id: 'estoque-critico', label: 'Estoque Crítico', icon: <Package size={16} /> },
-    { id: 'financeiro', label: 'Financeiro', icon: <DollarSign size={16} /> },
-    { id: 'alertas', label: 'Alertas', icon: <AlertTriangle size={16} /> }
-  ];
-
   return (
-    <div className="space-y-6">
-      {/* Header do Módulo */}
-      <div className="flex items-center justify-between">
+    <div className="flex flex-col gap-8 pb-8">
+      {/* HEADER DA PÁGINA */}
+      <section className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
-          <h1 className="orx-text-3xl orx-orx-font-bold text-[var(--orx-text-primary)] mb-2">
+          <h1 className="text-2xl font-bold text-white mb-1">
             Dashboard Principal
           </h1>
-          <p className="text-[var(--orx-text-secondary)]">
-            Visão consolidada em tempo real dos KPIs críticos do negócio
+          <p className="text-sm text-slate-400">
+            Visão geral do sistema ICARUS v5.0
           </p>
         </div>
-        
-        <div className="flex items-center gap-3">
+
+        <div className="flex gap-3">
           <Button
-            variant="secondary"
-            icon={<RefreshCw size={18} className={loading ? 'animate-spin' : ''} />}
-            onClick={handleRefresh}
+            color="success"
+            variant="shadow"
+            startContent={<Activity size={18} />}
+            className="font-medium text-white"
           >
-            Atualizar
+            Atualizar Dados
           </Button>
           <Button
-            variant="secondary"
-            icon={<Calendar size={18} />}
+            color="primary"
+            variant="shadow"
+            startContent={<FileSpreadsheet size={18} />}
+            className="font-medium text-white"
           >
-            {currentPeriod}
+            Relatório Completo
           </Button>
-          <IconButtonNeu
-            icon={<Download size={18} />}
-            onClick={handleExportPDF}
-            tooltip="Exportar PDF"
-          />
-          <IconButtonNeu
-            icon={<Settings size={18} />}
-            tooltip="Configurar"
-          />
-          <IconButtonNeu
-            icon={<Maximize2 size={18} />}
-            onClick={handleFullScreen}
-            tooltip="Tela Cheia"
-          />
         </div>
-      </div>
+      </section>
 
-      {/* Sub-navegação */}
-      <SubModulesNavigation
-        items={tabs}
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-      />
+      {/* LINHA DE KPIs PRINCIPAIS */}
+      <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+        <DashboardKPI
+          title="Sistema Status"
+          value="98%"
+          icon={Activity}
+          subtitle="Disponibilidade"
+          trend="+2.3%"
+          trendPositive={true}
+          color="secondary"
+        />
+        <DashboardKPI
+          title="Médicos Ativos"
+          value="1.847"
+          icon={User2}
+          subtitle="Últimos 30 dias"
+          trend="+12.5%"
+          trendPositive={true}
+          color="primary"
+        />
+        <DashboardKPI
+          title="Produtos OPME"
+          value="12.4K"
+          icon={Package}
+          subtitle="Catálogo homologado"
+          trend="+5.2%"
+          trendPositive={true}
+          color="warning"
+        />
+        <DashboardKPI
+          title="Pedidos Urgentes"
+          value="89"
+          icon={CalendarDays}
+          subtitle="Últimos 7 dias"
+          trend="-8.1%"
+          trendPositive={false}
+          color="danger"
+        />
+      </section>
 
-      {/* Conteúdo baseado na aba ativa */}
-      {activeTab === 'visao-geral' && (
-        <>
-          {/* Grid de KPIs - 12 COLUNAS RESPONSIVO conforme spec */}
-          <div className="grid grid-cols-12 gap-6">
-            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
-              <KPICard
-                label="Cirurgias Hoje"
-                value={kpis.cirurgiasHoje}
-                icon={<Stethoscope size={28} />}
-                trend={{ direction: 'up', percentage: 8.5 }}
-              />
-            </div>
-            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
-              <KPICard
-                label="Cirurgias do Mês"
-                value={kpis.cirurgiasMes}
-                icon={<Calendar size={28} />}
-                trend={{ direction: 'up', percentage: 12.3 }}
-              />
-            </div>
-            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
-              <KPICard
-                label="Faturamento do Mês"
-                value={kpis.faturamentoMes}
-                icon={<DollarSign size={28} />}
-                trend={{ direction: 'up', percentage: 15.7 }}
-              />
-            </div>
-            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
-              <KPICard
-                label="Ticket Médio"
-                value={kpis.ticketMedio}
-                icon={<TrendingUp size={28} />}
-                trend={{ direction: 'up', percentage: 4.2 }}
-              />
-            </div>
-            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
-              <KPICard
-                label="Estoque Baixo"
-                value={kpis.estoqueBaixo}
-                icon={<Package size={28} />}
-                trend={{ direction: 'down', percentage: 3.1 }}
-              />
-            </div>
-            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
-              <KPICard
-                label="Contas a Receber"
-                value={kpis.contasReceber}
-                icon={<DollarSign size={28} />}
-                trend={{ direction: 'neutral', percentage: 0 }}
-              />
-            </div>
-            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
-              <KPICard
-                label="Taxa Inadimplência"
-                value={`${kpis.taxaInadimplencia}%`}
-                icon={<AlertTriangle size={28} />}
-                trend={{ direction: 'down', percentage: 0.5 }}
-              />
-            </div>
-            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
-              <KPICard
-                label="Margem de Lucro"
-                value={`${kpis.margemLucro}%`}
-                icon={<TrendingUp size={28} />}
-                trend={{ direction: 'up', percentage: 2.1 }}
-              />
-            </div>
-          </div>
-
-          {/* Gráficos */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-            <Card title="Faturamento Mensal" padding="lg">
-              <OrxBarChart
-                data={[
-                  { name: 'Jan', value: 2400000 },
-                  { name: 'Fev', value: 2100000 },
-                  { name: 'Mar', value: 2800000 },
-                  { name: 'Abr', value: 2600000 },
-                  { name: 'Mai', value: 2847500 },
-                ]}
-              />
-            </Card>
-
-            <Card title="Evolução de Cirurgias" padding="lg">
-              <OrxLineChart
-                data={[
-                  { name: 'Jan', value: 135 },
-                  { name: 'Fev', value: 128 },
-                  { name: 'Mar', value: 152 },
-                  { name: 'Abr', value: 143 },
-                  { name: 'Mai', value: 147 },
-                ]}
-              />
-            </Card>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card title="Distribuição por Especialidade" padding="lg">
-              <OrxPieChart
-                data={[
-                  { name: 'Ortopedia', value: 35 },
-                  { name: 'Cardiologia', value: 25 },
-                  { name: 'Neurologia', value: 20 },
-                  { name: 'Outras', value: 20 },
-                ]}
-              />
-            </Card>
-
-            <Card title="Status de Estoque" padding="lg">
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="orx-text-sm">Produtos em Estoque Alto</span>
-                  <span className="orx-orx-font-bold text-green-600">234</span>
+      {/* SEGUNDA LINHA: FATURAMENTO + DISTRIBUIÇÃO */}
+      <section className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        <Card className="border-white/5 bg-white/5 backdrop-blur-xl shadow-lg min-h-[350px]">
+          <CardBody className="p-6">
+            <div className="flex items-start justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="p-3 rounded-xl bg-success/10 text-success">
+                  <FileSpreadsheet size={24} />
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="orx-text-sm">Produtos em Estoque Médio</span>
-                  <span className="orx-orx-font-bold text-yellow-600">87</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="orx-text-sm">Produtos em Estoque Baixo</span>
-                  <span className="orx-orx-font-bold text-red-600">23</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="orx-text-sm">Produtos em Falta</span>
-                  <span className="orx-orx-font-bold text-red-800">5</span>
-                </div>
-              </div>
-            </Card>
-          </div>
-        </>
-      )}
-
-      {activeTab === 'cirurgias-hoje' && (
-        <Card title="Cirurgias Agendadas para Hoje" padding="lg">
-          <div className="space-y-4">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="flex items-center justify-between p-4 bg-[var(--orx-surface-light)] rounded-lg">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-[var(--orx-primary)]/10 flex items-center justify-center">
-                    <Stethoscope size={24} className="text-[var(--orx-primary)]" />
-                  </div>
-                  <div>
-                    <p className="orx-orx-font-semibold">Cirurgia #{i}</p>
-                    <p className="orx-text-sm text-[var(--orx-text-secondary)]">Dr. João Silva - Hospital ABC</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="orx-orx-font-semibold">{8 + i}:00</p>
-                  <p className="orx-text-sm text-[var(--orx-text-secondary)]">Ortopedia</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
-      )}
-
-      {activeTab === 'estoque-critico' && (
-        <Card title="Produtos com Estoque Crítico" padding="lg">
-          <div className="space-y-3">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="flex items-center justify-between p-4 bg-[var(--orx-surface-light)] rounded-lg">
                 <div>
-                  <p className="orx-orx-font-semibold">Produto OPME #{i}</p>
-                  <p className="orx-text-sm text-[var(--orx-text-secondary)]">Código: OPME-{1000 + i}</p>
+                  <h3 className="text-slate-400 font-medium">
+                    Faturamento Mensal
+                  </h3>
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl font-bold text-white">R$ 3.8M</span>
+                    <span className="text-success text-sm font-medium flex items-center">
+                      <TrendingUp size={14} className="mr-1" /> +15.3%
+                    </span>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <p className="orx-orx-font-bold text-red-600">{5 - i} unidades</p>
-                  <p className="orx-text-sm text-[var(--orx-text-secondary)]">Mínimo: 10</p>
+              </div>
+            </div>
+
+            <div className="h-[250px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={dataFaturamento}>
+                  <defs>
+                    <linearGradient id="colorValor" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" vertical={false} />
+                  <XAxis dataKey="name" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                  <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `R$${value/1000}k`} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Area type="monotone" dataKey="valor" stroke="#6366f1" strokeWidth={3} fillOpacity={1} fill="url(#colorValor)" />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </CardBody>
+        </Card>
+
+        <Card className="border-white/5 bg-white/5 backdrop-blur-xl shadow-lg min-h-[350px]">
+          <CardBody className="p-6">
+            <div className="flex items-start justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="p-3 rounded-xl bg-secondary/10 text-secondary">
+                  <MapPin size={24} />
+                </div>
+                <div>
+                  <h3 className="text-slate-400 font-medium">
+                    Distribuição Geográfica
+                  </h3>
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl font-bold text-white">147</span>
+                    <span className="text-slate-500 text-sm">unidades em 28 cidades</span>
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </Card>
-      )}
+            </div>
 
-      {activeTab === 'financeiro' && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Card title="Contas a Receber" padding="lg">
-            <div className="text-center">
-              <p className="orx-text-4xl orx-orx-font-bold text-[var(--orx-primary)]">R$ 1.234.000</p>
-              <p className="orx-text-sm text-[var(--orx-text-secondary)] mt-2">Em aberto</p>
+            <div className="h-[250px] w-full flex justify-center">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={dataDistribuicao}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {dataDistribuicao.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="none" />
+                    ))}
+                  </Pie>
+                  <Tooltip content={<CustomTooltip />} />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
-          </Card>
-          <Card title="Contas a Pagar" padding="lg">
-            <div className="text-center">
-              <p className="orx-text-4xl orx-orx-font-bold text-[var(--orx-primary)]">R$ 876.500</p>
-              <p className="orx-text-sm text-[var(--orx-text-secondary)] mt-2">A vencer</p>
+            <div className="flex justify-center gap-4 mt-[-20px]">
+              {dataDistribuicao.map((entry, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
+                  <span className="text-xs text-slate-400">{entry.name}</span>
+                </div>
+              ))}
             </div>
-          </Card>
-          <Card title="Saldo Disponível" padding="lg">
-            <div className="text-center">
-              <p className="orx-text-4xl orx-orx-font-bold text-green-600">R$ 456.200</p>
-              <p className="orx-text-sm text-[var(--orx-text-secondary)] mt-2">Líquido</p>
-            </div>
-          </Card>
-        </div>
-      )}
-
-      {activeTab === 'alertas' && (
-        <Card title="Alertas Prioritários" padding="lg">
-          <div className="space-y-3">
-            <div className="flex items-start gap-3 p-4 bg-red-50 rounded-lg">
-              <AlertTriangle size={24} className="text-red-600 flex-shrink-0" />
-              <div>
-                <p className="orx-orx-font-semibold text-red-900">Estoque Crítico</p>
-                <p className="orx-text-sm text-red-700">5 produtos em falta, 18 abaixo do mínimo</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-4 bg-yellow-50 rounded-lg">
-              <AlertTriangle size={24} className="text-yellow-600 flex-shrink-0" />
-              <div>
-                <p className="orx-orx-font-semibold text-yellow-900">Contas Vencidas</p>
-                <p className="orx-text-sm text-yellow-700">3 contas a receber vencidas há mais de 30 dias</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-lg">
-              <AlertTriangle size={24} className="text-blue-600 flex-shrink-0" />
-              <div>
-                <p className="orx-orx-font-semibold text-blue-900">Certificações</p>
-                <p className="orx-text-sm text-blue-700">2 certificações ANVISA vencem em 15 dias</p>
-              </div>
-            </div>
-          </div>
+          </CardBody>
         </Card>
-      )}
+      </section>
+
+      {/* TERCEIRA LINHA: ESTOQUE + LOGÍSTICA + PERFORMANCE */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Estoque Crítico */}
+        <Card className="border-white/5 bg-white/5 backdrop-blur-xl shadow-lg">
+          <CardBody className="p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 rounded-lg bg-danger/10 text-danger">
+                <AlertTriangle size={20} />
+              </div>
+              <h3 className="text-slate-300 font-medium">Estoque Crítico</h3>
+            </div>
+            <div className="text-3xl font-bold text-white mb-1">8</div>
+            <p className="text-sm text-slate-500">produtos em falta</p>
+            <div className="w-full bg-white/10 h-1.5 rounded-full mt-4 overflow-hidden">
+              <div className="bg-danger h-full rounded-full" style={{ width: '85%' }}></div>
+            </div>
+          </CardBody>
+        </Card>
+
+        {/* Logística */}
+        <Card className="border-white/5 bg-white/5 backdrop-blur-xl shadow-lg">
+          <CardBody className="p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 rounded-lg bg-success/10 text-success">
+                <Truck size={20} />
+              </div>
+              <h3 className="text-slate-300 font-medium">Logística</h3>
+            </div>
+            <div className="text-3xl font-bold text-white mb-1">96.2%</div>
+            <p className="text-sm text-slate-500">entregas no prazo</p>
+            <div className="w-full bg-white/10 h-1.5 rounded-full mt-4 overflow-hidden">
+              <div className="bg-success h-full rounded-full" style={{ width: '96%' }}></div>
+            </div>
+          </CardBody>
+        </Card>
+
+        {/* Performance IA */}
+        <Card className="border-white/5 bg-white/5 backdrop-blur-xl shadow-lg">
+          <CardBody className="p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 rounded-lg bg-secondary/10 text-secondary">
+                <Cpu size={20} />
+              </div>
+              <h3 className="text-slate-300 font-medium">Performance IA</h3>
+            </div>
+            <div className="text-3xl font-bold text-white mb-1">97.3%</div>
+            <p className="text-sm text-slate-500">precisão do sistema</p>
+            <div className="w-full bg-white/10 h-1.5 rounded-full mt-4 overflow-hidden">
+              <div className="bg-secondary h-full rounded-full" style={{ width: '97%' }}></div>
+            </div>
+          </CardBody>
+        </Card>
+      </section>
     </div>
   );
 }

@@ -2,9 +2,11 @@ import type { VercelRequest } from '@vercel/node';
 
 const DEFAULT_PROJECT_REF = 'gvbkviozlhxorjoavmky';
 
-type AuthResult =
-  | { ok: true }
-  | { ok: false; status: number; message: string };
+type AuthResult = {
+  ok: boolean;
+  status: number;
+  message?: string;
+};
 
 export type SupabaseInvocationResult = {
   ok: boolean;
@@ -43,39 +45,34 @@ export function verifyCronSecret(req: VercelRequest): AuthResult {
     };
   }
 
-  return { ok: true };
+  return { ok: true, status: 200 };
 }
 
 export async function triggerSupabaseEdgeFunction(
   functionName: string,
-  payload: Record<string, unknown> = {},
+  payload: Record<string, unknown> = {}
 ): Promise<SupabaseInvocationResult> {
-  const projectRef =
-    process.env.SUPABASE_PROJECT_REF ?? DEFAULT_PROJECT_REF;
+  const projectRef = process.env.SUPABASE_PROJECT_REF ?? DEFAULT_PROJECT_REF;
   const baseUrl =
-    process.env.SUPABASE_FUNCTION_URL ??
-    `https://${projectRef}.supabase.co/functions/v1`;
+    process.env.SUPABASE_FUNCTION_URL ?? `https://${projectRef}.supabase.co/functions/v1`;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!serviceRoleKey) {
     throw new Error('SUPABASE_SERVICE_ROLE_KEY não configurada');
   }
 
-  const response = await fetch(
-    `${baseUrl.replace(/\/$/, '')}/${functionName}`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${serviceRoleKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        triggeredBy: 'vercel-cron',
-        invokedAt: new Date().toISOString(),
-        ...payload,
-      }),
+  const response = await fetch(`${baseUrl.replace(/\/$/, '')}/${functionName}`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${serviceRoleKey}`,
+      'Content-Type': 'application/json',
     },
-  );
+    body: JSON.stringify({
+      triggeredBy: 'vercel-cron',
+      invokedAt: new Date().toISOString(),
+      ...payload,
+    }),
+  });
 
   const raw = await response.text();
   let data: unknown = {};
@@ -94,4 +91,3 @@ export async function triggerSupabaseEdgeFunction(
     data,
   };
 }
-

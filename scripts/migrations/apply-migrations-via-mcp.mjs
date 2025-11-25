@@ -26,9 +26,9 @@ const SKIP_MIGRATIONS = [
 
 function getAllMigrations() {
   const files = readdirSync(MIGRATIONS_DIR)
-    .filter(f => f.endsWith('.sql'))
-    .filter(f => !SKIP_MIGRATIONS.includes(f))
-    .filter(f => !APPLIED_MIGRATIONS.includes(f))
+    .filter((f) => f.endsWith('.sql'))
+    .filter((f) => !SKIP_MIGRATIONS.includes(f))
+    .filter((f) => !APPLIED_MIGRATIONS.includes(f))
     .sort(); // Ordem cronológica
 
   return files;
@@ -36,7 +36,7 @@ function getAllMigrations() {
 
 function formatMigrationForMCP(filename) {
   const content = readFileSync(join(MIGRATIONS_DIR, filename), 'utf8');
-  
+
   // Remove comentários de múltiplas linhas e simplifica
   let cleaned = content
     .replace(/\/\*[\s\S]*?\*\//g, '') // Remove /* ... */
@@ -51,7 +51,7 @@ function formatMigrationForMCP(filename) {
 
 function generateMCPInstructions() {
   const migrations = getAllMigrations();
-  
+
   console.log(`\n📦 Total de migrações a aplicar: ${migrations.length}\n`);
 
   let markdown = `# 🚀 Aplicação de Migrações via MCP Supabase\n\n`;
@@ -96,4 +96,3 @@ function generateMCPInstructions() {
 
 // Executar
 generateMCPInstructions();
-

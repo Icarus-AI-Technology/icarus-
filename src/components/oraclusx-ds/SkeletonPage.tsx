@@ -1,5 +1,3 @@
-import React from "react";
-
 function SkeletonCard({ height = 140 }: { height?: number }) {
   const minH = `min-h-[${height}px]`;
   return (
@@ -13,13 +11,11 @@ function SkeletonCard({ height = 140 }: { height?: number }) {
   );
 }
 
-export default function SkeletonPage() {
+export function SkeletonPage() {
   return (
     <div className="p-4">
       {/* Header skeleton */}
-      <div
-        className="neumorphic-card p-6 rounded-2xl animate-pulse mb-4 bg-[var(--orx-bg-light)]"
-      >
+      <div className="neumorphic-card p-6 rounded-2xl animate-pulse mb-4 bg-[var(--orx-bg-light)]">
         <div className="h-6 w-56 rounded mb-2 bg-[rgba(0,0,0,0.10)]" />
         <div className="h-4 w-80 rounded bg-[rgba(0,0,0,0.06)]" />
       </div>
@@ -40,5 +36,3 @@ export default function SkeletonPage() {
     </div>
   );
 }
-
-

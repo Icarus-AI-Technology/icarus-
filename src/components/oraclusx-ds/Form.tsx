@@ -3,7 +3,7 @@
  * Componentes de formulário com validação e acessibilidade
  */
 
-import React, { forwardRef } from"react";
+import React, { forwardRef } from 'react';
 
 // FormField Component
 export interface FormFieldProps {
@@ -33,9 +33,7 @@ export const FormField: React.FC<FormFieldProps> = ({
         {required && <span className="text-error ml-1">*</span>}
       </label>
       {children}
-      {hint && !error && (
-        <p className="mt-1 text-body-xs text-[var(--text-secondary)]">{hint}</p>
-      )}
+      {hint && !error && <p className="mt-1 text-body-xs text-[var(--text-secondary)]">{hint}</p>}
       {error && (
         <p className="mt-1 text-body-xs text-error" role="alert">
           {error}
@@ -46,14 +44,13 @@ export const FormField: React.FC<FormFieldProps> = ({
 };
 
 // TextInput Component
-export interface TextInputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: boolean;
   fullWidth?: boolean;
 }
 
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
-  ({ error, fullWidth = true, className ="", ...props }, ref) => {
+  ({ error, fullWidth = true, className = '', ...props }, ref) => {
     return (
       <input
         ref={ref}
@@ -66,8 +63,8 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           transition-all duration-200
           focus:outline-none focus:ring-3 focus:ring-primary focus:border-transparent
           disabled:opacity-50 disabled:cursor-not-allowed
-          ${error ?"border-error focus:ring-error" :"border-[var(--border)]"}
-          ${fullWidth ?"w-full" :""}
+          ${error ? 'border-error focus:ring-error' : 'border-[var(--border)]'}
+          ${fullWidth ? 'w-full' : ''}
           ${className}
         `}
         {...props}
@@ -76,17 +73,16 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
   }
 );
 
-TextInput.displayName ="TextInput";
+TextInput.displayName = 'TextInput';
 
 // TextArea Component
-export interface TextAreaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   error?: boolean;
   fullWidth?: boolean;
 }
 
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  ({ error, fullWidth = true, className ="", ...props }, ref) => {
+  ({ error, fullWidth = true, className = '', ...props }, ref) => {
     return (
       <textarea
         ref={ref}
@@ -100,8 +96,8 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           focus:outline-none focus:ring-3 focus:ring-primary focus:border-transparent
           disabled:opacity-50 disabled:cursor-not-allowed
           resize-vertical
-          ${error ?"border-error focus:ring-error" :"border-[var(--border)]"}
-          ${fullWidth ?"w-full" :""}
+          ${error ? 'border-error focus:ring-error' : 'border-[var(--border)]'}
+          ${fullWidth ? 'w-full' : ''}
           ${className}
         `}
         {...props}
@@ -110,18 +106,25 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   }
 );
 
-TextArea.displayName ="TextArea";
+TextArea.displayName = 'TextArea';
 
 // Select Component
 export interface SelectProps
-  extends React.SelectHTMLAttributes<HTMLSelectElement> {
+  extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'onChange'> {
   error?: boolean;
   fullWidth?: boolean;
   options: Array<{ value: string; label: string }>;
+  onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  onValueChange?: (value: string) => void;
 }
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ error, fullWidth = true, options, className ="", ...props }, ref) => {
+  ({ error, fullWidth = true, options, className = '', onChange, onValueChange, ...props }, ref) => {
+    const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      onChange?.(event);
+      onValueChange?.(event.target.value);
+    };
+
     return (
       <select
         ref={ref}
@@ -133,10 +136,11 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           transition-all duration-200
           focus:outline-none focus:ring-3 focus:ring-primary focus:border-transparent
           disabled:opacity-50 disabled:cursor-not-allowed
-          ${error ?"border-error focus:ring-error" :"border-gray-300 dark:border-border"}
-          ${fullWidth ?"w-full" :""}
+          ${error ? 'border-error focus:ring-error' : 'border-gray-300 dark:border-border'}
+          ${fullWidth ? 'w-full' : ''}
           ${className}
         `}
+        onChange={handleChange}
         {...props}
       >
         {options.map((option) => (
@@ -149,16 +153,15 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
   }
 );
 
-Select.displayName ="Select";
+Select.displayName = 'Select';
 
 // Checkbox Component
-export interface CheckboxProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
 }
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ label, className ="", ...props }, ref) => {
+  ({ label, className = '', ...props }, ref) => {
     return (
       <label className="flex items-center gap-2 cursor-pointer">
         <input
@@ -176,26 +179,21 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           `}
           {...props}
         />
-        {label && (
-          <span className="text-body-sm text-secondary dark:text-muted">
-            {label}
-          </span>
-        )}
+        {label && <span className="text-body-sm text-secondary dark:text-muted">{label}</span>}
       </label>
     );
   }
 );
 
-Checkbox.displayName ="Checkbox";
+Checkbox.displayName = 'Checkbox';
 
 // Radio Component
-export interface RadioProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface RadioProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
 }
 
 export const Radio = forwardRef<HTMLInputElement, RadioProps>(
-  ({ label, className ="", ...props }, ref) => {
+  ({ label, className = '', ...props }, ref) => {
     return (
       <label className="flex items-center gap-2 cursor-pointer">
         <input
@@ -212,17 +210,13 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
           `}
           {...props}
         />
-        {label && (
-          <span className="text-body-sm text-secondary dark:text-muted">
-            {label}
-          </span>
-        )}
+        {label && <span className="text-body-sm text-secondary dark:text-muted">{label}</span>}
       </label>
     );
   }
 );
 
-Radio.displayName ="Radio";
+Radio.displayName = 'Radio';
 
 // FormGroup Component
 export interface FormGroupProps {
@@ -230,19 +224,15 @@ export interface FormGroupProps {
   columns?: 1 | 2 | 3 | 4;
 }
 
-export const FormGroup: React.FC<FormGroupProps> = ({
-  children,
-  columns = 1,
-}) => {
+export const FormGroup: React.FC<FormGroupProps> = ({ children, columns = 1 }) => {
   const columnClasses = {
-    1:"grid-cols-1",
-    2:"grid-cols-1 md:grid-cols-2",
-    3:"grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
-    4:"grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
+    1: 'grid-cols-1',
+    2: 'grid-cols-1 md:grid-cols-2',
+    3: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
+    4: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4',
   };
 
   return <div className={`grid ${columnClasses[columns]} gap-4`}>{children}</div>;
 };
 
 export default { FormField, TextInput, TextArea, Select, Checkbox, Radio, FormGroup };
-

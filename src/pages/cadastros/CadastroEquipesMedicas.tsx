@@ -1,7 +1,7 @@
 /**
  * Cadastro de Equipes Médicas - ICARUS v5.0
  * Design System: OraclusX DS - Neumórfico 3D Premium
- * 
+ *
  * Formulário completo para cadastro de equipes médicas cirúrgicas
  * com validações, integrações e design neumórfico padronizado.
  */
@@ -10,13 +10,21 @@ import { useState } from 'react';
 import { ArrowLeft, Users, Stethoscope, Plus, Trash2, Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { NeumoInput, NeumoTextarea, NeumoButton } from '@/components/oraclusx-ds';
+import { Input } from '@/components/oraclusx-ds/Input';
+import { Button } from '@/components/oraclusx-ds/Button';
+import { Select } from '@/components/oraclusx-ds/Select';
 import { useDocumentTitle } from '@/hooks';
 
 interface MembroEquipe {
   medico_id: string;
   medico_nome?: string;
-  funcao: 'cirurgiao_principal' | 'cirurgiao_auxiliar' | 'anestesista' | 'instrumentador' | 'auxiliar_enfermagem' | '';
+  funcao:
+    | 'cirurgiao_principal'
+    | 'cirurgiao_auxiliar'
+    | 'anestesista'
+    | 'instrumentador'
+    | 'auxiliar_enfermagem'
+    | '';
 }
 
 interface EquipeMedicaFormData {
@@ -35,7 +43,7 @@ const INITIAL_STATE: EquipeMedicaFormData = {
   nome: '',
   medico_responsavel_id: '',
   membros: [],
-  dias_atuacao: []
+  dias_atuacao: [],
 };
 
 const DIAS_SEMANA = [
@@ -45,7 +53,7 @@ const DIAS_SEMANA = [
   { id: 'quinta', label: 'Quinta' },
   { id: 'sexta', label: 'Sexta' },
   { id: 'sabado', label: 'Sábado' },
-  { id: 'domingo', label: 'Domingo' }
+  { id: 'domingo', label: 'Domingo' },
 ];
 
 const FUNCOES = [
@@ -53,7 +61,7 @@ const FUNCOES = [
   { value: 'cirurgiao_auxiliar', label: 'Cirurgião Auxiliar' },
   { value: 'anestesista', label: 'Anestesista' },
   { value: 'instrumentador', label: 'Instrumentador' },
-  { value: 'auxiliar_enfermagem', label: 'Auxiliar de Enfermagem' }
+  { value: 'auxiliar_enfermagem', label: 'Auxiliar de Enfermagem' },
 ];
 
 const ESPECIALIDADES = [
@@ -62,7 +70,7 @@ const ESPECIALIDADES = [
   { value: 'neurologia', label: 'Neurologia' },
   { value: 'cirurgia_geral', label: 'Cirurgia Geral' },
   { value: 'vascular', label: 'Cirurgia Vascular' },
-  { value: 'plastica', label: 'Cirurgia Plástica' }
+  { value: 'plastica', label: 'Cirurgia Plástica' },
 ];
 
 export default function CadastroEquipesMedicas() {
@@ -74,14 +82,14 @@ export default function CadastroEquipesMedicas() {
   const handleAddMembro = () => {
     setFormData({
       ...formData,
-      membros: [...formData.membros, { medico_id: '', funcao: '' }]
+      membros: [...formData.membros, { medico_id: '', funcao: '' }],
     });
   };
 
   const handleRemoveMembro = (index: number) => {
     setFormData({
       ...formData,
-      membros: formData.membros.filter((_, i) => i !== index)
+      membros: formData.membros.filter((_, i) => i !== index),
     });
   };
 
@@ -96,25 +104,25 @@ export default function CadastroEquipesMedicas() {
     if (dias.includes(dia)) {
       setFormData({
         ...formData,
-        dias_atuacao: dias.filter(d => d !== dia)
+        dias_atuacao: dias.filter((d) => d !== dia),
       });
     } else {
       setFormData({
         ...formData,
-        dias_atuacao: [...dias, dia]
+        dias_atuacao: [...dias, dia],
       });
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validações
     if (!formData.nome) {
       toast.error('Nome da equipe é obrigatório');
       return;
     }
-    
+
     if (!formData.medico_responsavel_id) {
       toast.error('Médico responsável é obrigatório');
       return;
@@ -123,8 +131,8 @@ export default function CadastroEquipesMedicas() {
     setLoading(true);
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      console.log('Equipe Médica salva:', formData);
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
       toast.success('Equipe médica cadastrada com sucesso!');
       navigate('/cadastros');
     } catch (error) {
@@ -139,25 +147,20 @@ export default function CadastroEquipesMedicas() {
     <div className="min-h-screen p-6 bg-orx-bg-app">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="mb-6">
-          <NeumoButton
-            variant="secondary"
-            leftIcon={ArrowLeft}
-            onClick={() => navigate('/cadastros')}
-            className="mb-4"
-          >
-            Voltar
-          </NeumoButton>
-          
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-3 rounded-xl bg-orx-bg-surface shadow-neumo-sm">
-              <Users className="w-6 h-6 text-orx-primary" />
-            </div>
+        <div className="mb-8">
+          <div className="flex items-center gap-4 mb-6">
+            <Button
+              onClick={() => navigate('/cadastros')}
+              variant="ghost"
+              className="p-3 rounded-lg flex items-center justify-center"
+            >
+              <ArrowLeft size={20} />
+            </Button>
             <div>
-              <h1 className="orx-text-3xl orx-orx-font-bold text-orx-text-primary">
+              <h1 className="text-[0.813rem] font-bold text-[var(--orx-text-primary)]">
                 Cadastro de Equipes Médicas
               </h1>
-              <p className="text-orx-text-secondary mt-1">
+              <p className="text-[0.813rem] text-[var(--orx-text-secondary)] mt-1">
                 Configure equipes para cirurgias e procedimentos
               </p>
             </div>
@@ -166,149 +169,134 @@ export default function CadastroEquipesMedicas() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Identificação */}
-          <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
-            <h2 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
-              <Stethoscope className="w-5 h-5 text-orx-primary" />
-              Identificação da Equipe
-            </h2>
-            
+          <div className="bg-[var(--orx-bg-card)] shadow-[var(--orx-shadow-card)] p-6 rounded-2xl">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-lg bg-[var(--orx-primary)] flex items-center justify-center">
+                <Stethoscope size={20} className="text-white" />
+              </div>
+              <h2 className="text-[0.813rem] font-semibold text-[var(--orx-text-primary)]">
+                Identificação da Equipe
+              </h2>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div className="lg:col-span-2">
-                <NeumoInput
+                <Input
+                  variant="neumo"
                   id="nome"
-                  label="Nome da Equipe"
+                  label="Nome da Equipe *"
                   value={formData.nome}
                   onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
                   placeholder="Ex: Equipe Cirurgia Cardíaca Dr. Silva"
-                  required
                 />
               </div>
-              
+
               <div>
-                <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2">
-                  Especialidade
-                </label>
-                <select
+                <Select
+                  label="Especialidade"
                   value={formData.especialidade || ''}
                   onChange={(e) => setFormData({ ...formData, especialidade: e.target.value })}
-                  className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary orx-text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2 focus-visible:shadow-neumo-sm"
-                >
-                  <option value="">Selecione...</option>
-                  {ESPECIALIDADES.map(esp => (
-                    <option key={esp.value} value={esp.value}>{esp.label}</option>
-                  ))}
-                </select>
+                  options={ESPECIALIDADES}
+                />
               </div>
-              
+
               <div className="lg:col-span-2">
-                <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2">
-                  Médico Responsável <span className="text-orx-danger">*</span>
-                </label>
-                <select
+                <Select
+                  label="Médico Responsável *"
                   value={formData.medico_responsavel_id}
-                  onChange={(e) => setFormData({ ...formData, medico_responsavel_id: e.target.value })}
-                  className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary orx-text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2 focus-visible:shadow-neumo-sm"
-                  required
-                >
-                  <option value="">Selecione o médico responsável...</option>
-                  <option value="1">Dr. João Silva - CRM 12345/SP - Cardiologia</option>
-                  <option value="2">Dra. Maria Santos - CRM 67890/SP - Ortopedia</option>
-                  <option value="3">Dr. Pedro Costa - CRM 11223/SP - Neurologia</option>
-                </select>
+                  onChange={(e) =>
+                    setFormData({ ...formData, medico_responsavel_id: e.target.value })
+                  }
+                  options={[
+                    { value: '1', label: 'Dr. João Silva - CRM 12345/SP - Cardiologia' },
+                    { value: '2', label: 'Dra. Maria Santos - CRM 67890/SP - Ortopedia' },
+                    { value: '3', label: 'Dr. Pedro Costa - CRM 11223/SP - Neurologia' },
+                  ]}
+                />
               </div>
-              
+
               <div>
-                <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2">
-                  Hospital Preferencial
-                </label>
-                <select
+                <Select
+                  label="Hospital Preferencial"
                   value={formData.hospital_id || ''}
                   onChange={(e) => setFormData({ ...formData, hospital_id: e.target.value })}
-                  className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary orx-text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2 focus-visible:shadow-neumo-sm"
-                >
-                  <option value="">Nenhum específico</option>
-                  <option value="1">Hospital São Paulo</option>
-                  <option value="2">Hospital Samaritano</option>
-                  <option value="3">Hospital Sírio-Libanês</option>
-                </select>
+                  options={[
+                    { value: '1', label: 'Hospital São Paulo' },
+                    { value: '2', label: 'Hospital Samaritano' },
+                    { value: '3', label: 'Hospital Sírio-Libanês' },
+                  ]}
+                />
               </div>
             </div>
           </div>
 
           {/* Membros da Equipe */}
-          <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
+          <div className="bg-[var(--orx-bg-card)] shadow-[var(--orx-shadow-card)] p-6 rounded-2xl">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary flex items-center gap-2">
-                <Users className="w-5 h-5 text-orx-primary" />
-                Membros da Equipe
-              </h2>
-              <NeumoButton
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-[var(--orx-primary)] flex items-center justify-center">
+                  <Users size={20} className="text-white" />
+                </div>
+                <h2 className="text-[0.813rem] font-semibold text-[var(--orx-text-primary)]">
+                  Membros da Equipe
+                </h2>
+              </div>
+              <Button
                 type="button"
-                variant="secondary"
-                size="sm"
-                leftIcon={Plus}
+                variant="primary"
                 onClick={handleAddMembro}
+                className="flex items-center gap-2"
               >
-                Adicionar Membro
-              </NeumoButton>
+                <Plus size={16} />
+                Adicionar
+              </Button>
             </div>
 
             {formData.membros.length === 0 ? (
-              <div className="text-center py-8 text-orx-text-muted">
+              <div className="text-center py-8 text-[var(--orx-text-secondary)]">
                 <Users className="w-12 h-12 mx-auto mb-2 opacity-50" />
                 <p>Nenhum membro adicionado</p>
-                <p className="orx-text-sm">Clique em "Adicionar Membro" para começar</p>
+                <p className="text-[0.75rem]">Clique em "Adicionar" para começar</p>
               </div>
             ) : (
               <div className="space-y-4">
                 {formData.membros.map((membro, index) => (
-                  <div key={index} className="bg-orx-bg-app rounded-lg p-4 shadow-neumo-sm">
+                  <div
+                    key={index}
+                    className="bg-[var(--orx-bg-light)] rounded-lg p-4 shadow-[var(--orx-shadow-inner)]"
+                  >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2">
-                          Médico/Profissional
-                        </label>
-                        <select
+                        <Select
+                          label="Médico/Profissional"
                           value={membro.medico_id}
                           onChange={(e) => handleUpdateMembro(index, 'medico_id', e.target.value)}
-                          className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary orx-text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2"
-                        >
-                          <option value="">Selecione...</option>
-                          <option value="1">Dr. João Silva - CRM 12345/SP</option>
-                          <option value="2">Dra. Maria Santos - CRM 67890/SP</option>
-                          <option value="3">Enf. Carlos Souza - COREN 98765/SP</option>
-                        </select>
+                          options={[
+                            { value: '1', label: 'Dr. João Silva - CRM 12345/SP' },
+                            { value: '2', label: 'Dra. Maria Santos - CRM 67890/SP' },
+                            { value: '3', label: 'Enf. Carlos Souza - COREN 98765/SP' },
+                          ]}
+                        />
                       </div>
-                      
-                      <div className="flex gap-2">
+
+                      <div className="flex gap-2 items-end">
                         <div className="flex-1">
-                          <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-2">
-                            Função
-                          </label>
-                          <select
+                          <Select
+                            label="Função"
                             value={membro.funcao}
                             onChange={(e) => handleUpdateMembro(index, 'funcao', e.target.value)}
-                            className="flex h-10 w-full rounded-md border border-orx-border-subtle bg-orx-bg-surface px-3 py-2 text-orx-text-primary orx-text-sm shadow-neumo-inset transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orx-primary focus-visible:ring-offset-2"
-                          >
-                            <option value="">Selecione...</option>
-                            {FUNCOES.map(funcao => (
-                              <option key={funcao.value} value={funcao.value}>
-                                {funcao.label}
-                              </option>
-                            ))}
-                          </select>
+                            options={FUNCOES}
+                          />
                         </div>
-                        
-                        <div className="flex items-end">
-                          <NeumoButton
-                            type="button"
-                            variant="danger"
-                            size="icon"
-                            onClick={() => handleRemoveMembro(index)}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </NeumoButton>
-                        </div>
+
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          onClick={() => handleRemoveMembro(index)}
+                          className="p-3 text-[var(--orx-error)] hover:bg-[var(--orx-error)] hover:text-white"
+                        >
+                          <Trash2 size={16} />
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -318,15 +306,19 @@ export default function CadastroEquipesMedicas() {
           </div>
 
           {/* Disponibilidade */}
-          <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
-            <h2 className="orx-text-lg orx-orx-font-semibold text-orx-text-primary mb-6 flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-orx-primary" />
-              Disponibilidade
-            </h2>
-            
+          <div className="bg-[var(--orx-bg-card)] shadow-[var(--orx-shadow-card)] p-6 rounded-2xl">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-lg bg-[var(--orx-primary)] flex items-center justify-center">
+                <Calendar size={20} className="text-white" />
+              </div>
+              <h2 className="text-[0.813rem] font-semibold text-[var(--orx-text-primary)]">
+                Disponibilidade
+              </h2>
+            </div>
+
             <div className="space-y-4">
               <div>
-                <label className="block orx-text-sm orx-orx-font-medium text-orx-text-primary mb-3">
+                <label className="block text-[0.813rem] font-medium text-[var(--orx-text-primary)] mb-3">
                   Dias de Atuação
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
@@ -336,10 +328,11 @@ export default function CadastroEquipesMedicas() {
                       type="button"
                       onClick={() => handleToggleDia(dia.id)}
                       className={`
-                        px-4 py-2 rounded-lg orx-text-sm orx-orx-font-medium transition-all duration-200
-                        ${formData.dias_atuacao?.includes(dia.id)
-                          ? 'bg-orx-primary text-white shadow-neumo'
-                          : 'bg-orx-bg-app text-orx-text-secondary shadow-neumo-sm hover:shadow-neumo'
+                        px-4 py-2 rounded-lg text-[0.813rem] font-medium transition-all duration-200
+                        ${
+                          formData.dias_atuacao?.includes(dia.id)
+                            ? 'bg-[var(--orx-primary)] text-white shadow-[var(--orx-shadow-card)]'
+                            : 'bg-[var(--orx-bg-light)] text-[var(--orx-text-secondary)] shadow-[var(--orx-shadow-inner)] hover:shadow-[var(--orx-shadow-card)]'
                         }
                       `}
                     >
@@ -348,22 +341,31 @@ export default function CadastroEquipesMedicas() {
                   ))}
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <NeumoInput
+                <Input
+                  variant="neumo"
                   id="horarios_preferencia"
                   label="Horários de Preferência"
                   value={formData.horarios_preferencia || ''}
-                  onChange={(e) => setFormData({ ...formData, horarios_preferencia: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, horarios_preferencia: e.target.value })
+                  }
                   placeholder="Ex: 08:00 - 12:00"
                 />
-                
-                <NeumoInput
+
+                <Input
+                  variant="neumo"
                   id="cirurgias_semana_media"
                   label="Cirurgias/Semana (Média)"
                   type="number"
                   value={formData.cirurgias_semana_media || ''}
-                  onChange={(e) => setFormData({ ...formData, cirurgias_semana_media: parseInt(e.target.value) || 0 })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      cirurgias_semana_media: parseInt(e.target.value) || 0,
+                    })
+                  }
                   placeholder="Ex: 5"
                 />
               </div>
@@ -371,35 +373,42 @@ export default function CadastroEquipesMedicas() {
           </div>
 
           {/* Observações */}
-          <div className="bg-orx-bg-surface rounded-xl p-6 shadow-neumo">
-            <NeumoTextarea
-              id="observacoes"
-              label="Observações"
-              value={formData.observacoes || ''}
-              onChange={(e) => setFormData({ ...formData, observacoes: e.target.value })}
-              placeholder="Informações adicionais sobre a equipe..."
-              rows={4}
-            />
+          <div className="bg-[var(--orx-bg-card)] shadow-[var(--orx-shadow-card)] p-6 rounded-2xl">
+            <div className="mb-4">
+              <label className="block text-[0.813rem] font-medium text-[var(--orx-text-primary)] mb-2">
+                Observações
+              </label>
+              <textarea
+                id="observacoes"
+                value={formData.observacoes || ''}
+                onChange={(e) => setFormData({ ...formData, observacoes: e.target.value })}
+                placeholder="Informações adicionais sobre a equipe..."
+                rows={4}
+                className="w-full p-3 rounded-lg bg-[var(--orx-bg-input)] border border-[var(--orx-border-input)] text-[var(--orx-text-primary)] text-[0.813rem] focus:outline-none focus:ring-2 focus:ring-[var(--orx-primary)] transition-all min-h-[100px]"
+              />
+            </div>
           </div>
 
           {/* Ações */}
-          <div className="flex items-center justify-end gap-3">
-            <NeumoButton
+          <div className="flex items-center justify-end gap-4">
+            <Button
               type="button"
-              variant="secondary"
+              variant="ghost"
               onClick={() => navigate('/cadastros')}
               disabled={loading}
+              className="px-6 py-3"
             >
               Cancelar
-            </NeumoButton>
-            
-            <NeumoButton
+            </Button>
+
+            <Button
               type="submit"
-              loading={loading}
-              leftIcon={loading ? undefined : Users}
+              variant="primary"
+              disabled={loading}
+              className="px-6 py-3 flex items-center gap-2"
             >
               {loading ? 'Salvando...' : 'Salvar Equipe'}
-            </NeumoButton>
+            </Button>
           </div>
         </form>
       </div>

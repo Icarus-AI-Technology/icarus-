@@ -1,214 +1,144 @@
 /**
- * OraclusX Design System - Index (Atualizado)
- * Exportação centralizada de TODOS os componentes
- * 
- * COMPONENTES: 47 total
- * - Core: 8
- * - Form: 6
- * - Navigation: 3
- * - Feedback: 6
- * - Data Display: 4
- * - Chatbot: 4 (incluindo ChatbotWithResearch)
- * - Enterprise: 11
- * - Neumórfico 3D Premium: 5 (NOVOS!)
+ * OraclusX Design System - Central Export
+ * TODOS os componentes enterprise (87 componentes)
  */
 
-// ===== LAYOUT COMPONENTS (NEW) =====
-export { Container } from "../Container";
-export type { ContainerProps } from "../Container";
+// ===== CORE COMPONENTS =====
+export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './Card';
+export { Button } from './Button';
+export { Input } from './Input';
+export { Badge } from './Badge';
+export { Alert } from './Alert';
+export { Avatar } from './Avatar';
+export { CardKpi } from './CardKpi';
+export { CardKpiNeumo } from './CardKpiNeumo';
 
-export { Section } from "../Section";
-export type { SectionProps } from "../Section";
-
-export { GlassCard } from "../GlassCard";
-export type { GlassCardProps } from "../GlassCard";
-
-export { AnimatedCard } from "../AnimatedCard";
-export type { AnimatedCardProps } from "../AnimatedCard";
-
+// ===== FORM COMPONENTS =====
 export {
-  CadastroPageLayout,
-  CadastroSection,
-  FormGrid,
-  FormActions,
-} from "../CadastroLayout";
-export type {
-  CadastroPageLayoutProps,
-  CadastroSectionProps,
-  FormGridProps,
-  FormActionsProps,
-} from "../CadastroLayout";
+  FormField,
+  FormGroup,
+  TextInput,
+  TextArea,
+  Checkbox as FormCheckbox,
+  Radio as FormRadio,
+  Select as FormSelect,
+} from './Form';
+export { Select } from './Select';
+export { Checkbox } from './Checkbox';
+export { Radio } from './Radio';
+export { Textarea } from './Textarea';
+export { FileUpload } from './FileUpload';
+export { DatePicker } from './DatePicker';
+export { Slider } from './Slider';
+export { Switch } from './Switch';
+export { InputContainer } from './InputContainer';
+export { FormBanner } from './FormBanner';
+export { FormFieldError } from './FormFieldError';
 
-// ===== CORE COMPONENTS (8) =====
-export { Button } from"./Button";
-export type { ButtonProps } from"./Button";
+// ===== NAVIGATION =====
+export { Tabs } from './Tabs';
+export { Breadcrumb, type BreadcrumbItem } from './Breadcrumb';
+export { Pagination } from './Pagination';
+export { Dropdown } from './Dropdown';
+export { NavigationBar } from './NavigationBar';
+export { SubModulesNavigation } from './SubModulesNavigation';
+export { CategoryTabs } from './CategoryTabs';
 
-export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from"./Card";
-export type { CardProps } from"./Card";
+// ===== FEEDBACK =====
+export { Modal } from './Modal';
+export { Toast } from './Toast';
+export { Tooltip } from './Tooltip';
+export { Progress } from './Progress';
+export { RadialProgress } from './RadialProgress';
+export { Skeleton } from './Skeleton';
+export { SkeletonPage } from './SkeletonPage';
+export { SkeletonRouteFallback } from './SkeletonRouteFallback';
+export { Dialog } from './Dialog';
+export {
+  DialogRoot,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogTrigger,
+  DialogOverlay,
+} from './DialogPrimitives';
+export { Drawer } from './Drawer';
+export { Accordion } from './Accordion';
 
-export { Input } from"./Input";
-export type { InputProps } from"./Input";
-
-export { InputContainer } from"./InputContainer";
-export type { InputContainerProps } from"./InputContainer";
-
-export { SearchField } from"./SearchField";
-export type { SearchFieldProps } from"./SearchField";
-
-export { SearchContainer } from"./SearchContainer";
-export type { SearchContainerProps } from"./SearchContainer";
-
-export { Textarea } from"./Textarea";
-export type { TextareaProps } from"./Textarea";
-
-export { IconButtonNeu } from"./IconButtonNeu";
-export type { IconButtonNeuProps } from"./IconButtonNeu";
-
-// ===== FORM COMPONENTS (6) =====
-export { FormField, TextInput, TextArea, Select, Checkbox, Radio, FormGroup } from"./Form";
-export type {
-  FormFieldProps,
-  TextInputProps,
-  TextAreaProps,
-  SelectProps,
-  CheckboxProps,
-  RadioProps,
-  FormGroupProps,
-} from"./Form";
-
-export { FormBanner } from"./FormBanner";
-export type { FormBannerProps } from"./FormBanner";
-
-export { Switch } from"./Switch";
-export type { SwitchProps } from"./Switch";
-
-// ===== NAVIGATION COMPONENTS (3) =====
-export { NavigationBar } from"./NavigationBar";
-export type { NavigationBarProps, NavigationTab } from"./NavigationBar";
-
-export { SubModulesNavigation } from"./SubModulesNavigation";
-export type { SubModulesNavigationProps } from"./SubModulesNavigation";
-
-export { TopbarIconButton } from"./TopbarIconButton";
-export type { TopbarIconButtonProps } from"./TopbarIconButton";
-
-// ===== FEEDBACK COMPONENTS (6) =====
-export { Dialog } from"./Dialog";
-export type { DialogProps } from"./Dialog";
-
-export { Modal } from"./Modal";
-export type { ModalProps } from"./Modal";
-
-export { Drawer } from"./Drawer";
-export type { DrawerProps } from"./Drawer";
-
-export { Toast } from"./Toast";
-export type { ToastProps } from"./Toast";
-
-export { Tooltip } from"./Tooltip";
-export type { TooltipProps } from"./Tooltip";
-
-export { Progress } from"./Progress";
-export type { ProgressProps } from"./Progress";
-
-// ===== DATA DISPLAY COMPONENTS (4) =====
-export { Avatar } from"./Avatar";
-export type { AvatarProps } from"./Avatar";
-
-export { Badge } from"./Badge";
-export type { BadgeProps } from"./Badge";
-
-export { Dropdown } from"./Dropdown";
-export type { DropdownProps, DropdownItem } from"./Dropdown";
-
-export { LibraryShowcase } from"./LibraryShowcase";
-
-// ===== CHATBOT COMPONENTS (4) =====
-export { ChatbotFAB } from"./ChatbotFAB";
-export type { ChatbotFABProps } from"./ChatbotFAB";
-
-export { ChatbotFABWithPrompt } from"./ChatbotFABWithPrompt";
-export type { ChatbotFABWithPromptProps } from"./ChatbotFABWithPrompt";
-
-export { ChatbotCloseButton } from"./ChatbotCloseButton";
-export type { ChatbotCloseButtonProps } from"./ChatbotCloseButton";
-
-export { ChatbotWithResearch } from"./ChatbotWithResearch";
-export type { ChatbotWithResearchProps, Message as ChatbotMessage } from"./ChatbotWithResearch";
-
-// ===== ENTERPRISE COMPONENTS (11) =====
-export { Table } from"./Table";
-export type { TableProps, TableColumn } from"./Table";
-
-// HTML Table Primitives (para tabelas customizadas)
-export { 
+// ===== DATA DISPLAY =====
+export { Table } from './Table';
+export {
   TableContainer,
   TableHeader,
   TableBody,
   TableRow,
   TableHead,
-  TableCell
-} from"./TablePrimitives";
-
-export { Tabs } from"./Tabs";
-export type { TabsProps, Tab } from"./Tabs";
-
-export { Accordion } from"./Accordion";
-export type { AccordionProps, AccordionItem } from"./Accordion";
-
-export { Breadcrumb } from"./Breadcrumb";
-export type { BreadcrumbProps, BreadcrumbItem } from"./Breadcrumb";
-
-export { Pagination } from"./Pagination";
-export type { PaginationProps } from"./Pagination";
-
-export { Skeleton, SkeletonCard, SkeletonTable, SkeletonList } from"./Skeleton";
-export type { SkeletonProps } from"./Skeleton";
-
-export { Alert } from"./Alert";
-export type { AlertProps } from"./Alert";
-
-export { Stepper } from"./Stepper";
-export type { StepperProps, Step } from"./Stepper";
-
-export { DatePicker } from"./DatePicker";
-export type { DatePickerProps } from"./DatePicker";
-
-export { FileUpload } from"./FileUpload";
-export type { FileUploadProps } from"./FileUpload";
-
-// ===== NEUMÓRFICO 3D PREMIUM (5) - NOVOS! =====
-export { CardKpi } from './CardKpi';
-export type { CardKpiProps } from './CardKpi';
-
+  TableCell,
+} from './TablePrimitives';
+export { Stepper } from './Stepper';
+export { TrendIndicator } from './TrendIndicator';
 export { MiniCard } from './MiniCard';
-export type { MiniCardProps } from './MiniCard';
-
-export { NeumoInput } from './NeumoInput';
-export type { NeumoInputProps } from './NeumoInput';
-
-export { NeumoTextarea } from './NeumoTextarea';
-export type { NeumoTextareaProps } from './NeumoTextarea';
-
-export { NeumoButton } from './NeumoButton';
-export type { NeumoButtonProps } from './NeumoButton';
-
-export { NeumoSearchBar } from './NeumoSearchBar';
-export type { NeumoSearchBarProps } from './NeumoSearchBar';
-
-// ===== NEUROMORPHIC COMPONENTS - DASHBOARD =====
-export { NeomorphicCard } from './NeomorphicCard';
-export type { NeomorphicCardProps } from './NeomorphicCard';
-
-export { NeomorphicIconBox } from './NeomorphicIconBox';
-export type { NeomorphicIconBoxProps, IconColorVariant, IconSize } from './NeomorphicIconBox';
-
+export { MiniCardNeumo } from './MiniCardNeumo';
 export { MiniBarChart } from './MiniBarChart';
-export type { MiniBarChartProps, BarColorScheme } from './MiniBarChart';
+export { StatsGrid } from './StatsGrid';
 
-export { TrendIndicator, getTrendIcon, getTrendColor, formatTrend } from './TrendIndicator';
-export type { TrendIndicatorProps } from './TrendIndicator';
+// ===== CHATBOT =====
+export { ChatbotWithResearch } from './ChatbotWithResearch';
+export { ChatbotFABWithPrompt } from './ChatbotFABWithPrompt';
+export { ChatbotCloseButton } from './ChatbotCloseButton';
 
-// KPI Visuals
-export { RadialProgress } from './RadialProgress';
-export type { RadialProgressProps } from './RadialProgress';
+// ===== CHATBOT (NEW CONSOLIDATED) =====
+export {
+  ChatbotFAB,
+  ChatbotWindow,
+  SuggestionsPanel,
+  type ChatbotFABProps,
+  type ChatbotWindowProps,
+  type SuggestionsPanelProps,
+  type ChatSuggestion,
+  type ModuleContext,
+  type Message as ChatMessage,
+} from './chatbot';
+
+// ===== NEUMORPHIC COMPONENTS =====
+export { NeumoButton } from './NeumoButton';
+export { NeumoInput } from './NeumoInput';
+export { NeumoTextarea } from './NeumoTextarea';
+export { NeumoSearchBar } from './NeumoSearchBar';
+export { NeomorphicCard } from './NeomorphicCard';
+export { NeomorphicIconBox } from './NeomorphicIconBox';
+
+// ===== LAYOUT & CONTAINERS =====
+export { Container } from './Container';
+export { Section } from './Section';
+export { PageHeader } from './PageHeader';
+export { ModulePageNeumo } from './ModulePageNeumo';
+export { GlassCard } from './GlassCard';
+export { AnimatedCard } from './AnimatedCard';
+
+// ===== SEARCH & UTILITY =====
+export { SearchContainer } from './SearchContainer';
+export { SearchField } from './SearchField';
+export { SearchBarNeumo } from './SearchBarNeumo';
+export { IconButtonNeu } from './IconButtonNeu';
+export { TopbarIconButton } from './TopbarIconButton';
+export { TopbarIconButtonNeumo } from './TopbarIconButtonNeumo';
+export { SidebarIconButtonNeumo } from './SidebarIconButtonNeumo';
+export { LibraryShowcase } from './LibraryShowcase';
+
+// ===== LAYOUT COMPONENTS (Cadastro) =====
+// export { CadastroLayout } from "./CadastroLayout"; // Temporariamente comentado (importação circular)
+
+// ===== RE-EXPORTS DE TIPOS =====
+export type { CardProps } from './Card';
+export type { ButtonProps } from './Button';
+export type { InputProps } from './Input';
+export type { BadgeProps } from './Badge';
+export type { TableProps, TableColumn } from './Table';
+export type { SelectProps, SelectOption } from './Select';
+
+// ===== VARIANT EXPORTS (for advanced usage) =====
+export { inputVariants } from './Input';
+export { cardVariants } from './Card';

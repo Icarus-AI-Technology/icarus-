@@ -2,7 +2,7 @@
 
 /**
  * Script para sincronizar credenciais do Supabase com Vercel
- * 
+ *
  * Este script:
  * 1. Lê as credenciais do banco Supabase
  * 2. Envia para o Vercel como variáveis de ambiente
@@ -10,9 +10,7 @@
  */
 
 import { createClient } from '@supabase/supabase-js';
-import { execSync } from 'child_process';
 import * as dotenv from 'dotenv';
-import { readFileSync } from 'fs';
 
 // Carrega variáveis de ambiente
 dotenv.config({ path: '.env' });
@@ -62,11 +60,11 @@ async function syncCredentials() {
 
         // Comando para adicionar variável no Vercel
         const command = `npx vercel env add ${cred.nome} production`;
-        
+
         // Executa o comando (o valor será solicitado interativamente)
         // Para automação completa, seria necessário usar a API do Vercel
         console.log(`   ℹ️  Execute manualmente: echo "${cred.valor}" | ${command}`);
-        
+
         successCount++;
       } catch (err) {
         console.error(`   ❌ Erro ao enviar ${cred.nome}:`, err.message);
@@ -80,14 +78,15 @@ async function syncCredentials() {
 
     // 3. Listar comandos para execução manual
     console.log('\n📋 COMANDOS PARA EXECUTAR MANUALMENTE:\n');
-    
+
     for (const cred of credentials) {
       console.log(`echo "VALOR_DA_CREDENCIAL" | npx vercel env add ${cred.nome} production`);
     }
 
     console.log('\n💡 OU use a interface do Vercel:');
-    console.log('   https://vercel.com/daxs-projects-5db3d203/icarus-oficial/settings/environment-variables\n');
-
+    console.log(
+      '   https://vercel.com/daxs-projects-5db3d203/icarus-oficial/settings/environment-variables\n'
+    );
   } catch (err) {
     console.error('❌ Erro geral:', err);
     process.exit(1);
@@ -96,4 +95,3 @@ async function syncCredentials() {
 
 // Executar
 syncCredentials();
-

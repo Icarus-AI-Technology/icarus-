@@ -46,7 +46,7 @@ export class GPTResearcherService {
     this.researcher = {
       sendMessage: async (_message: ResearchQuery) => {
         return Promise.resolve();
-      }
+      },
     };
     return true;
   }
@@ -69,7 +69,7 @@ export class GPTResearcherService {
    * Notifica todos os callbacks
    */
   private notifyCallbacks(log: ResearchLog): void {
-    this.callbacks.forEach(callback => callback(log));
+    this.callbacks.forEach((callback) => callback(log));
   }
 
   /**
@@ -86,10 +86,10 @@ export class GPTResearcherService {
         reportType: query.reportType || 'research_report',
         reportSource: query.reportSource || 'web',
         tone: query.tone,
-        queryDomains: query.queryDomains
+        queryDomains: query.queryDomains,
       });
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro durante pesquisa:', err);
       throw error;
     }
@@ -122,4 +122,3 @@ export function getGPTResearcherService(options?: GPTResearcherOptions): GPTRese
 }
 
 export default GPTResearcherService;
-

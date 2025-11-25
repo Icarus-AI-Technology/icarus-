@@ -1,73 +1,64 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Playwright Configuration - ICARUS v5.0
- * Testes E2E para OraclusX DS
+ * Configuração Playwright - ICARUS E2E Tests
+ *
+ * Cobertura:
+ * - Autenticação (login/logout/signup)
+ * - Dashboard principal
+ * - Módulos core (estoque, cirurgias, financeiro)
+ * - Responsividade (mobile/tablet/desktop)
+ * - Acessibilidade (ARIA, keyboard navigation)
  */
+
 export default defineConfig({
   testDir: './tests/e2e',
-  
-  /* Máximo de falhas antes de parar */
-  maxFailures: 5,
-  
-  /* Execução paralela */
   fullyParallel: true,
-  
-  /* Não permitir testes órfãos em CI */
   forbidOnly: !!process.env.CI,
-  
-  /* Retry em CI */
   retries: process.env.CI ? 2 : 0,
-  
-  /* Workers */
   workers: process.env.CI ? 1 : undefined,
-  
-  /* Reporter */
+
   reporter: [
     ['html', { outputFolder: 'playwright-report' }],
-    ['json', { outputFile: 'playwright-results.json' }],
+    ['json', { outputFile: 'test-results/results.json' }],
+    ['junit', { outputFile: 'test-results/junit.xml' }],
     ['list'],
   ],
-  
-  /* Configuração global */
+
   use: {
-    /* URL base */
-    baseURL: 'http://localhost:5173',
-    
-    /* Screenshots em caso de falha */
-    screenshot: 'only-on-failure',
-    
-    /* Traços em caso de falha */
+    baseURL: process.env.VITE_APP_URL || 'http://localhost:5173',
     trace: 'on-first-retry',
-    
-    /* Video em caso de falha */
+    screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    
-    /* Timeout de navegação */
-    navigationTimeout: 10000,
-    
-    /* Timeout de ação */
-    actionTimeout: 5000,
   },
 
-  /* Configuração de projetos (browsers) */
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
+    {
+      name: 'Mobile Chrome',
+      use: { ...devices['Pixel 5'] },
+    },
+    {
+      name: 'Mobile Safari',
+      use: { ...devices['iPhone 12'] },
+    },
   ],
 
-  /* Servidor dev */
   webServer: {
     command: 'npm run dev',
-    env: {
-      VITE_SUPABASE_URL: 'http://localhost:54321',
-      VITE_SUPABASE_ANON_KEY: 'test-anon-key',
-    },
     url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
   },
 });
-

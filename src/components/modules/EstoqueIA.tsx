@@ -1,7 +1,7 @@
 /**
  * Módulo 4: Estoque IA
  * Gestão inteligente de estoque com IA, scanner e alertas automáticos
- * 
+ *
  * FUNCIONALIDADES:
  * - Dashboard com IA predictions
  * - Scanner de código de barras/QR
@@ -10,8 +10,8 @@
  * - Containers IA
  */
 
-import { useState, useEffect } from"react";
-import { Card } from"@/components/oraclusx-ds";
+import { useState, useEffect } from 'react';
+import { Card } from '@/components/oraclusx-ds';
 import {
   Package,
   Bot,
@@ -29,9 +29,9 @@ import {
   Boxes,
   BarChart3,
   Download,
-} from"lucide-react";
-import { useDocumentTitle, useMateriais } from"@/hooks";
-import { useToast } from"@/contexts/ToastContext";
+} from 'lucide-react';
+import { useDocumentTitle, useMateriais } from '@/hooks';
+import { useToast } from '@/contexts/ToastContext';
 
 interface KPI {
   title: string;
@@ -49,11 +49,20 @@ interface Category {
   trend?: string;
 }
 
-export default function EstoqueIA() {
-  useDocumentTitle("Estoque IA");
+interface Material {
+  id: string;
+  descricao: string;
+  codigo?: string;
+  quantidade?: number;
+  status?: string;
+  validade?: string;
+}
 
-  const [activeCategory, setActiveCategory] = useState("dashboard");
-  const [activeTab, setActiveTab] = useState("todos");
+export default function EstoqueIA() {
+  useDocumentTitle('Estoque IA');
+
+  const [activeCategory, setActiveCategory] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState('todos');
 
   const {
     materiais,
@@ -74,46 +83,58 @@ export default function EstoqueIA() {
     alertasVencimento: 0,
   });
   const [materiaisAlerta, setMateriaisAlerta] = useState<Material[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
 
   const categories: Category[] = [
-    { id:"dashboard", label:"Dashboard IA", icon: Bot, count: materiais.length, trend:"+12" },
-    { id:"materiais", label:"Materiais OPME", icon: Package, count: materiais.length, trend:"+8" },
-    { id:"alertas", label:"Alertas", icon: AlertCircle, count: materiaisAlerta.length, trend:"-3" },
-    { id:"scanner", label:"Scanner", icon: QrCode, count: 0, trend:"0" },
-    { id:"containers", label:"Containers IA", icon: Boxes, count: 15, trend:"+2" },
-    { id:"predicoes", label:"Predições IA", icon: BarChart3, count: 0, trend:"0" },
-    { id:"relatorios", label:"Relatórios", icon: TrendingUp, count: 0, trend:"0" },
+    { id: 'dashboard', label: 'Dashboard IA', icon: Bot, count: materiais.length, trend: '+12' },
+    {
+      id: 'materiais',
+      label: 'Materiais OPME',
+      icon: Package,
+      count: materiais.length,
+      trend: '+8',
+    },
+    {
+      id: 'alertas',
+      label: 'Alertas',
+      icon: AlertCircle,
+      count: materiaisAlerta.length,
+      trend: '-3',
+    },
+    { id: 'scanner', label: 'Scanner', icon: QrCode, count: 0, trend: '0' },
+    { id: 'containers', label: 'Containers IA', icon: Boxes, count: 15, trend: '+2' },
+    { id: 'predicoes', label: 'Predições IA', icon: BarChart3, count: 0, trend: '0' },
+    { id: 'relatorios', label: 'Relatórios', icon: TrendingUp, count: 0, trend: '0' },
   ];
 
   const kpis: KPI[] = [
     {
-      title:"Total Itens",
+      title: 'Total Itens',
       value: resumo.totalItens,
-      trend:"+12 novos",
+      trend: '+12 novos',
       icon: Package,
-      color:"blue",
+      color: 'blue',
     },
     {
-      title:"Valor Total",
+      title: 'Valor Total',
       value: `R$ ${(resumo.valorTotal / 1000).toFixed(1)}k`,
-      trend:"+8.3%",
+      trend: '+8.3%',
       icon: TrendingUp,
-      color:"green",
+      color: 'green',
     },
     {
-      title:"Estoque Baixo",
+      title: 'Estoque Baixo',
       value: resumo.alertasEstoque,
-      trend: materiaisAlerta.length > 0 ?"Atenção!" :"Tudo OK",
+      trend: materiaisAlerta.length > 0 ? 'Atenção!' : 'Tudo OK',
       icon: AlertCircle,
-      color:"red",
+      color: 'red',
     },
     {
-      title:"Próx. Vencimento",
+      title: 'Próx. Vencimento',
       value: resumo.alertasVencimento,
-      trend:"30 dias",
+      trend: '30 dias',
       icon: Calendar,
-      color:"yellow",
+      color: 'yellow',
     },
   ];
 
@@ -126,10 +147,8 @@ export default function EstoqueIA() {
         setResumo(resumoData);
         setMateriaisAlerta([...abaixoMinimo, ...proximosVencimento]);
       } catch (error) {
-   const err = error as Error;
-        addToast(
-          err instanceof Error ? err.message :"Erro ao carregar dados de estoque","error"
-        );
+        const err = error as Error;
+        addToast(err instanceof Error ? err.message : 'Erro ao carregar dados de estoque', 'error');
       }
     };
     if (!loading) {
@@ -145,25 +164,25 @@ export default function EstoqueIA() {
 
   useEffect(() => {
     if (error) {
-      addToast(error,"error");
+      addToast(error, 'error');
     }
   }, [error, addToast]);
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Tem certeza que deseja excluir este material?")) return;
+    if (!confirm('Tem certeza que deseja excluir este material?')) return;
     try {
       await deleteMaterial(id);
-      addToast("Material excluído com sucesso!","success");
+      addToast('Material excluído com sucesso!', 'success');
     } catch {
-      addToast("Erro ao excluir material","error");
+      addToast('Erro ao excluir material', 'error');
     }
   };
 
   const formatCurrency = (value?: number) => {
-    if (!value) return"R$ 0,00";
-    return new Intl.NumberFormat("pt-BR", {
-      style:"currency",
-      currency:"BRL",
+    if (!value) return 'R$ 0,00';
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
     }).format(value);
   };
 
@@ -175,10 +194,13 @@ export default function EstoqueIA() {
     const matchSearch = descricaoMatch || codigoMatch;
 
     const matchTab =
-      activeTab ==="todos" ? true :
-      activeTab ==="ativos" ? (material.quantidade_estoque || 0) > 0 :
-      activeTab ==="baixo" ? (material.quantidade_estoque || 0) <= (material.quantidade_minima || 0) :
-      false;
+      activeTab === 'todos'
+        ? true
+        : activeTab === 'ativos'
+          ? (material.quantidade_estoque || 0) > 0
+          : activeTab === 'baixo'
+            ? (material.quantidade_estoque || 0) <= (material.quantidade_minima || 0)
+            : false;
 
     return matchSearch && matchTab;
   });
@@ -197,7 +219,9 @@ export default function EstoqueIA() {
           </div>
           <div>
             <p className="text-body-sm text-[var(--text-secondary)] mb-2">Alertas Automáticos</p>
-            <p className="text-heading-lg font-display text-[var(--text-primary)]">{materiaisAlerta.length}</p>
+            <p className="text-heading-lg font-display text-[var(--text-primary)]">
+              {materiaisAlerta.length}
+            </p>
           </div>
           <div>
             <p className="text-body-sm text-[var(--text-secondary)] mb-2">Containers Ativos</p>
@@ -216,10 +240,18 @@ export default function EstoqueIA() {
             <Plus className="w-4 h-4" />
             Novo Material
           </button>
-          <button className="neuro-button-secondary px-4 py-2 rounded-xl" aria-label="Filtrar materiais" title="Filtrar materiais">
+          <button
+            className="neuro-button-secondary px-4 py-2 rounded-xl"
+            aria-label="Filtrar materiais"
+            title="Filtrar materiais"
+          >
             <Filter className="w-4 h-4" />
           </button>
-          <button className="neuro-button-secondary px-4 py-2 rounded-xl" aria-label="Exportar lista" title="Exportar lista">
+          <button
+            className="neuro-button-secondary px-4 py-2 rounded-xl"
+            aria-label="Exportar lista"
+            title="Exportar lista"
+          >
             <Download className="w-4 h-4" />
           </button>
         </div>
@@ -238,17 +270,17 @@ export default function EstoqueIA() {
 
       <div className="flex gap-2 p-2 neuro-inset rounded-2xl w-fit">
         {[
-          { id:"todos", label:"Todos" },
-          { id:"ativos", label:"Em Estoque" },
-          { id:"baixo", label:"Estoque Baixo" },
+          { id: 'todos', label: 'Todos' },
+          { id: 'ativos', label: 'Em Estoque' },
+          { id: 'baixo', label: 'Estoque Baixo' },
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`px-6 py-3 rounded-xl orx-orx-font-medium transition-all ${
               activeTab === tab.id
-                ?"neuro-raised text-[var(--primary)]"
-                :"text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                ? 'neuro-raised text-[var(--primary)]'
+                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
             }`}
           >
             {tab.label}
@@ -268,45 +300,78 @@ export default function EstoqueIA() {
             <table className="w-full">
               <thead className="border-b border-[var(--border)]">
                 <tr>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Código</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Descrição</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Quantidade</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Mínimo</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Valor Unit.</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Status</th>
-                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">Ações</th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    Código
+                  </th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    Descrição
+                  </th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    Quantidade
+                  </th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    Mínimo
+                  </th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    Valor Unit.
+                  </th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    Status
+                  </th>
+                  <th className="text-left p-4 text-body-sm text-[var(--text-secondary)] orx-orx-font-medium">
+                    Ações
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {filteredMateriais.map((material) => {
-                  const isLow = (material.quantidade_estoque || 0) <= (material.quantidade_minima || 0);
+                  const isLow =
+                    (material.quantidade_estoque || 0) <= (material.quantidade_minima || 0);
                   return (
                     <tr
                       key={material.id}
                       className="border-b border-[var(--border)] hover:bg-[var(--surface-hover)] transition-colors"
                     >
-                      <td className="p-4 text-[var(--text-primary)] orx-orx-font-medium">{material.codigo}</td>
+                      <td className="p-4 text-[var(--text-primary)] orx-orx-font-medium">
+                        {material.codigo}
+                      </td>
                       <td className="p-4 text-[var(--text-primary)]">{material.descricao}</td>
                       <td className="p-4">
-                        <span className={`font-display ${isLow ?"text-error" :"text-[var(--text-primary)]"}`}>
+                        <span
+                          className={`font-display ${isLow ? 'text-error' : 'text-[var(--text-primary)]'}`}
+                        >
                           {material.quantidade_estoque || 0}
                         </span>
                       </td>
-                      <td className="p-4 text-[var(--text-secondary)]">{material.quantidade_minima || 0}</td>
-                      <td className="p-4 text-[var(--text-primary)]">{formatCurrency(material.valor_unitario)}</td>
+                      <td className="p-4 text-[var(--text-secondary)]">
+                        {material.quantidade_minima || 0}
+                      </td>
+                      <td className="p-4 text-[var(--text-primary)]">
+                        {formatCurrency(material.valor_unitario)}
+                      </td>
                       <td className="p-4">
-                        <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs orx-orx-font-medium ${
-                          isLow ?"text-error bg-destructive/5" :"text-success bg-success/5"
-                        }`}>
-                          {isLow ?"Estoque Baixo" :"OK"}
+                        <span
+                          className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-body-xs orx-orx-font-medium ${
+                            isLow ? 'text-error bg-destructive/5' : 'text-success bg-success/5'
+                          }`}
+                        >
+                          {isLow ? 'Estoque Baixo' : 'OK'}
                         </span>
                       </td>
                       <td className="p-4">
                         <div className="flex gap-2">
-                          <button className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all" aria-label="Visualizar material" title="Visualizar material">
+                          <button
+                            className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all"
+                            aria-label="Visualizar material"
+                            title="Visualizar material"
+                          >
                             <Eye className="w-4 h-4" />
                           </button>
-                          <button className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all" aria-label="Editar material" title="Editar material">
+                          <button
+                            className="p-2 rounded-lg neuro-button-secondary hover:neuro-pressed transition-all"
+                            aria-label="Editar material"
+                            title="Editar material"
+                          >
                             <Edit2 className="w-4 h-4" />
                           </button>
                           <button
@@ -340,104 +405,167 @@ export default function EstoqueIA() {
   return (
     <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto space-y-6">
-        {typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && (
-          <>
-            <style>{`* { animation: none !important; transition: none !important; }`}</style>
-            <div id="qa-lcp-h1" className="p-4 rounded-xl bg-indigo-500/10">
-              <h1 className="m-0 text-[1.5rem] orx-orx-font-extrabold text-[var(--orx-text-primary)]">
-                Estoque IA — Snapshot QA
-              </h1>
-            </div>
-            <div role="toolbar" aria-label="QA Actions" className="flex gap-2 mt-2 flex-nowrap">
-              {['Novo','Importar','Atualizar','Ajuda','Atalhos','Preferências'].map((label) => (
-                <button
-                  key={label}
-                  type="button"
-                  data-qa-button="true"
-                  className="neuro-button px-2 py-1 text-[0.75rem] leading-none whitespace-nowrap"
-                  onClick={(e) => e.preventDefault()}
-                  aria-label={`QA ${label}`}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </>
-        )}
+        {typeof window !== 'undefined' &&
+          new URLSearchParams(window.location.search).get('qa') === '1' && (
+            <>
+              <style>{`* { animation: none !important; transition: none !important; }`}</style>
+              <div id="qa-lcp-h1" className="p-4 rounded-xl bg-indigo-500/10">
+                <h1 className="m-0 text-[1.5rem] orx-orx-font-extrabold text-[var(--orx-text-primary)]">
+                  Estoque IA — Snapshot QA
+                </h1>
+              </div>
+              <div role="toolbar" aria-label="QA Actions" className="flex gap-2 mt-2 flex-nowrap">
+                {['Novo', 'Importar', 'Atualizar', 'Ajuda', 'Atalhos', 'Preferências'].map(
+                  (label) => (
+                    <button
+                      key={label}
+                      type="button"
+                      data-qa-button="true"
+                      className="neuro-button px-2 py-1 text-[0.75rem] leading-none whitespace-nowrap"
+                      onClick={(e) => e.preventDefault()}
+                      aria-label={`QA ${label}`}
+                    >
+                      {label}
+                    </button>
+                  )
+                )}
+              </div>
+            </>
+          )}
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-heading-lg font-display text-[var(--text-primary)] mb-2">Estoque IA</h1>
+            <h1 className="text-heading-lg font-display text-[var(--text-primary)] mb-2">
+              Estoque IA
+            </h1>
             <p className="text-[var(--text-secondary)]">
               Gestão inteligente de estoque com IA, alertas automáticos e scanner
             </p>
           </div>
           <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
             <Bot className="w-4 h-4 text-[var(--primary)] animate-pulse" />
-            <span className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">IA: 99.2%</span>
+            <span className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">
+              IA: 99.2%
+            </span>
           </div>
         </div>
 
-        {typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && (
-          <>
-            <form aria-label="Filtros QA Estoque" className="rounded-2xl p-4 neuro-raised grid [grid-template-columns:1.2fr_0.8fr_0.8fr_0.6fr] gap-3 items-end mt-3">
-              <div>
-                <label htmlFor="qa-busca-est" className="text-[0.75rem] text-[var(--orx-text-secondary)]">Busca</label>
-                <input id="qa-busca-est" name="busca" placeholder="Código ou descrição" className="w-full px-3 py-2 rounded-xl" />
-              </div>
-              <div>
-                <label htmlFor="qa-est-inicio" className="text-[0.75rem] text-[var(--orx-text-secondary)]">Início</label>
-                <input id="qa-est-inicio" name="inicio" type="date" className="w-full px-3 py-2 rounded-xl" />
-              </div>
-              <div>
-                <label htmlFor="qa-est-fim" className="text-[0.75rem] text-[var(--orx-text-secondary)]">Fim</label>
-                <input id="qa-est-fim" name="fim" type="date" className="w-full px-3 py-2 rounded-xl" />
-              </div>
-              <div>
-                <label htmlFor="qa-est-status" className="text-[0.75rem] text-[var(--orx-text-secondary)]">Status</label>
-                <select id="qa-est-status" name="status" className="w-full px-3 py-2 rounded-xl">
-                  <option value="">Todos</option>
-                  <option value="ok">OK</option>
-                  <option value="baixo">Baixo</option>
-                </select>
-              </div>
-              <div className="col-span-full flex gap-2">
-                <button type="submit" className="neuro-button px-3 py-2 rounded-xl" aria-label="Aplicar filtros">Aplicar</button>
-                <button type="button" className="neuro-button px-3 py-2 rounded-xl" aria-label="Limpar filtros">Limpar</button>
-              </div>
-            </form>
+        {typeof window !== 'undefined' &&
+          new URLSearchParams(window.location.search).get('qa') === '1' && (
+            <>
+              <form
+                aria-label="Filtros QA Estoque"
+                className="rounded-2xl p-4 neuro-raised grid [grid-template-columns:1.2fr_0.8fr_0.8fr_0.6fr] gap-3 items-end mt-3"
+              >
+                <div>
+                  <label
+                    htmlFor="qa-busca-est"
+                    className="text-[0.75rem] text-[var(--orx-text-secondary)]"
+                  >
+                    Busca
+                  </label>
+                  <input
+                    id="qa-busca-est"
+                    name="busca"
+                    placeholder="Código ou descrição"
+                    className="w-full px-3 py-2 rounded-xl"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="qa-est-inicio"
+                    className="text-[0.75rem] text-[var(--orx-text-secondary)]"
+                  >
+                    Início
+                  </label>
+                  <input
+                    id="qa-est-inicio"
+                    name="inicio"
+                    type="date"
+                    className="w-full px-3 py-2 rounded-xl"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="qa-est-fim"
+                    className="text-[0.75rem] text-[var(--orx-text-secondary)]"
+                  >
+                    Fim
+                  </label>
+                  <input
+                    id="qa-est-fim"
+                    name="fim"
+                    type="date"
+                    className="w-full px-3 py-2 rounded-xl"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="qa-est-status"
+                    className="text-[0.75rem] text-[var(--orx-text-secondary)]"
+                  >
+                    Status
+                  </label>
+                  <select id="qa-est-status" name="status" className="w-full px-3 py-2 rounded-xl">
+                    <option value="">Todos</option>
+                    <option value="ok">OK</option>
+                    <option value="baixo">Baixo</option>
+                  </select>
+                </div>
+                <div className="col-span-full flex gap-2">
+                  <button
+                    type="submit"
+                    className="neuro-button px-3 py-2 rounded-xl"
+                    aria-label="Aplicar filtros"
+                  >
+                    Aplicar
+                  </button>
+                  <button
+                    type="button"
+                    className="neuro-button px-3 py-2 rounded-xl"
+                    aria-label="Limpar filtros"
+                  >
+                    Limpar
+                  </button>
+                </div>
+              </form>
 
-            <div className="neuro-raised p-4 rounded-2xl">
-              <h2 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-3">Materiais (QA)</h2>
-              <div className="overflow-x-auto">
-                <table role="table" className="w-full">
-                  <thead>
-                    <tr>
-                      <th className="text-left p-2">Código</th>
-                      <th className="text-left p-2">Descrição</th>
-                      <th className="text-left p-2">Qtd</th>
-                      <th className="text-left p-2">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {[1,2,3,4,5,6,7,8].map((i) => (
-                      <tr key={i}>
-                        <td className="p-2">MAT-{i}</td>
-                        <td className="p-2">Material {i}</td>
-                        <td className="p-2">{(i * 3) % 17}</td>
-                        <td className="p-2">{i % 3 === 0 ? 'Baixo' : 'OK'}</td>
+              <div className="neuro-raised p-4 rounded-2xl">
+                <h2 className="text-[0.813rem] orx-orx-font-semibold text-[var(--orx-text-primary)] mb-3">
+                  Materiais (QA)
+                </h2>
+                <div className="overflow-x-auto">
+                  <table role="table" className="w-full">
+                    <thead>
+                      <tr>
+                        <th className="text-left p-2">Código</th>
+                        <th className="text-left p-2">Descrição</th>
+                        <th className="text-left p-2">Qtd</th>
+                        <th className="text-left p-2">Status</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                        <tr key={i}>
+                          <td className="p-2">MAT-{i}</td>
+                          <td className="p-2">Material {i}</td>
+                          <td className="p-2">{(i * 3) % 17}</td>
+                          <td className="p-2">{i % 3 === 0 ? 'Baixo' : 'OK'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="flex gap-2 mt-3">
+                  <button type="button" aria-label="Página Anterior" className="neuro-button">
+                    Anterior
+                  </button>
+                  <button type="button" aria-label="Próxima Página" className="neuro-button">
+                    Próximo
+                  </button>
+                </div>
               </div>
-              <div className="flex gap-2 mt-3">
-                <button type="button" aria-label="Página Anterior" className="neuro-button">Anterior</button>
-                <button type="button" aria-label="Próxima Página" className="neuro-button">Próximo</button>
-              </div>
-            </div>
-          </>
-        )}
-
+            </>
+          )}
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
           {categories.map((category) => (
@@ -445,14 +573,20 @@ export default function EstoqueIA() {
               key={category.id}
               onClick={() => setActiveCategory(category.id)}
               className={`flex flex-col items-center justify-center h-24 text-center rounded-xl transition-all duration-200 ${
-                activeCategory === category.id ?"neuro-raised scale-105" :"neuro-flat hover:neuro-raised"
+                activeCategory === category.id
+                  ? 'neuro-raised scale-105'
+                  : 'neuro-flat hover:neuro-raised'
               }`}
             >
               <category.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
-              <span className="text-body-xs text-[var(--text-primary)] orx-orx-font-medium">{category.label}</span>
+              <span className="text-body-xs text-[var(--text-primary)] orx-orx-font-medium">
+                {category.label}
+              </span>
               <div className="flex items-center gap-1 mt-1">
-                <span className="text-body-lg font-display text-[var(--text-primary)]">{category.count}</span>
-                {category.trend && category.trend !=="0" && (
+                <span className="text-body-lg font-display text-[var(--text-primary)]">
+                  {category.count}
+                </span>
+                {category.trend && category.trend !== '0' && (
                   <TrendingUp className="w-3 h-3 text-success" />
                 )}
               </div>
@@ -466,18 +600,20 @@ export default function EstoqueIA() {
               <div className="flex items-start justify-between h-full">
                 <div>
                   <p className="text-body-sm text-[var(--text-secondary)] mb-1">{kpi.title}</p>
-                  <h3 className="text-heading font-display text-[var(--text-primary)]">{kpi.value}</h3>
+                  <h3 className="text-heading font-display text-[var(--text-primary)]">
+                    {kpi.value}
+                  </h3>
                   {kpi.trend && (
                     <p
                       className={`text-body-xs mt-2 flex items-center gap-1 ${
-                        kpi.color ==="red"
-                          ?"text-error"
-                          : kpi.color ==="yellow"
-                          ?"text-warning"
-                          :"text-success"
+                        kpi.color === 'red'
+                          ? 'text-error'
+                          : kpi.color === 'yellow'
+                            ? 'text-warning'
+                            : 'text-success'
                       }`}
                     >
-                      {kpi.color ==="red" && <TrendingUp className="w-3 h-3" />}
+                      {kpi.color === 'red' && <TrendingUp className="w-3 h-3" />}
                       {kpi.trend}
                     </p>
                   )}
@@ -490,13 +626,13 @@ export default function EstoqueIA() {
           ))}
         </div>
 
-        {activeCategory ==="dashboard" && renderDashboard()}
-        {activeCategory ==="materiais" && renderLista()}
-        {activeCategory ==="alertas" && renderLista()}
-        {activeCategory ==="scanner" && renderDashboard()}
-        {activeCategory ==="containers" && renderDashboard()}
-        {activeCategory ==="predicoes" && renderDashboard()}
-        {activeCategory ==="relatorios" && renderDashboard()}
+        {activeCategory === 'dashboard' && renderDashboard()}
+        {activeCategory === 'materiais' && renderLista()}
+        {activeCategory === 'alertas' && renderLista()}
+        {activeCategory === 'scanner' && renderDashboard()}
+        {activeCategory === 'containers' && renderDashboard()}
+        {activeCategory === 'predicoes' && renderDashboard()}
+        {activeCategory === 'relatorios' && renderDashboard()}
       </div>
     </div>
   );

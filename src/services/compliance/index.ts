@@ -5,4 +5,3 @@
 
 export { ComplianceAutomaticoAI } from './ComplianceAutomaticoAI';
 export type { AlertaPreditivo } from './ComplianceAutomaticoAI';
-

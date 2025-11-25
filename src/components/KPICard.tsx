@@ -7,7 +7,9 @@
  */
 
 import React, { CSSProperties } from 'react';
-import { TrendingUp, TrendingDown, Minus, type LucideIcon } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
+
+type LucideIcon = React.ComponentType<React.SVGProps<SVGSVGElement> & { size?: string | number }>;
 
 export type KPIColorScheme =
   | 'purple'
@@ -34,6 +36,7 @@ export interface KPICardProps {
   loading?: boolean;
   onClick?: () => void;
   className?: string;
+  depth?: boolean;
 }
 
 const colorSchemes: Record<KPIColorScheme, { accent: string }> = {
@@ -53,6 +56,7 @@ const buildIconStyle = (accent: string): CSSProperties => ({
   background: `linear-gradient(135deg, hsla(${accent} / 0.15), hsla(${accent} / 0.08))`,
   border: `1px solid hsla(${accent} / 0.2)`,
   color: `hsl(${accent})`,
+  boxShadow: `inset 2px 2px 4px hsla(${accent} / 0.05), inset -2px -2px 4px hsla(${accent} / 0.1)`,
 });
 
 const positiveTrendStyles: CSSProperties = {
@@ -83,6 +87,7 @@ export const KPICard: React.FC<KPICardProps> = ({
   loading = false,
   onClick,
   className = '',
+  depth = true,
 }) => {
   const colors = colorSchemes[colorScheme];
   const iconStyle = buildIconStyle(colors.accent);
@@ -120,9 +125,13 @@ export const KPICard: React.FC<KPICardProps> = ({
     );
   }
 
+  const depthClasses = depth
+    ? 'shadow-[6px_6px_12px_var(--orx-shadow-dark),-6px_-6px_12px_var(--orx-shadow-light)] hover:shadow-[8px_8px_16px_var(--orx-shadow-dark),-8px_-8px_16px_var(--orx-shadow-light)] active:shadow-[inset_4px_4px_8px_var(--orx-shadow-dark),inset_-4px_-4px_8px_var(--orx-shadow-light)]'
+    : '';
+
   return (
     <div
-      className={`kpi-card ${onClick ? 'cursor-pointer' : ''} ${className}`.trim()}
+      className={`kpi-card group relative overflow-hidden rounded-3xl bg-[var(--orx-bg-card)] p-6 transition-all duration-300 ease-out ${depthClasses} ${onClick ? 'cursor-pointer' : ''} ${className}`.trim()}
       onClick={onClick}
       role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
@@ -135,20 +144,24 @@ export const KPICard: React.FC<KPICardProps> = ({
       aria-label={`KPI: ${title} - ${value}`}
     >
       <div className="mb-4 flex items-center gap-3">
-        <div className="kpi-card__icon" style={iconStyle} aria-hidden="true">
+        <div
+          className="kpi-card__icon flex h-12 w-12 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110"
+          style={iconStyle}
+          aria-hidden="true"
+        >
           <Icon className="h-6 w-6" />
         </div>
-        <h3 className="kpi-card__title text-[0.75rem] orx-orx-font-medium uppercase">
+        <h3 className="kpi-card__title text-[0.75rem] orx-orx-font-medium uppercase tracking-wider text-[var(--orx-text-secondary)]">
           {title}
         </h3>
       </div>
 
       <div className="mb-3">
-        <p className="kpi-card__value orx-text-4xl orx-orx-font-bold leading-none tracking-tight">
+        <p className="kpi-card__value orx-text-4xl orx-orx-font-bold leading-none tracking-tight text-[var(--orx-text-primary)]">
           {value}
         </p>
         {subtitle && (
-          <p className="kpi-card__subtitle mt-1 orx-text-sm">
+          <p className="kpi-card__subtitle mt-1 orx-text-sm text-[var(--orx-text-secondary)]">
             {subtitle}
           </p>
         )}
@@ -156,7 +169,10 @@ export const KPICard: React.FC<KPICardProps> = ({
 
       {trend && TrendIcon && (
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1 rounded-lg px-2.5 py-1 orx-text-sm orx-orx-font-semibold" style={trendConfig}>
+          <div
+            className="flex items-center gap-1 rounded-lg px-2.5 py-1 orx-text-sm orx-orx-font-semibold transition-colors"
+            style={trendConfig}
+          >
             <TrendIcon className="h-4 w-4" aria-hidden="true" />
             <span>
               {trend.value > 0 ? '+' : ''}
@@ -164,9 +180,7 @@ export const KPICard: React.FC<KPICardProps> = ({
             </span>
           </div>
           {trend.label && (
-            <span className="orx-text-xs text-[hsl(var(--text-muted))]">
-              {trend.label}
-            </span>
+            <span className="orx-text-xs text-[hsl(var(--text-muted))]">{trend.label}</span>
           )}
         </div>
       )}

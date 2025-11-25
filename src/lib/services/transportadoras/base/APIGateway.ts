@@ -1,6 +1,6 @@
 /**
  * API Gateway para Transportadoras
- * 
+ *
  * FUNCIONALIDADES:
  * - Rate limiting unificado
  * - Cache de respostas
@@ -48,7 +48,7 @@ export class TransportadorasAPIGateway {
     // Cache key baseado nos parâmetros
     const cacheKey = this.generateCacheKey('cotacao', params);
     const cached = this.getFromCache<CotacaoResult[]>(cacheKey);
-    
+
     if (cached) {
       console.log('Cache HIT: cotacao');
       return cached;
@@ -73,7 +73,7 @@ export class TransportadorasAPIGateway {
     // Processar resultados válidos
     const cotacoesValidas = resultados
       .filter((r): r is PromiseFulfilledResult<CotacaoResult[]> => r.status === 'fulfilled')
-      .flatMap(r => r.value);
+      .flatMap((r) => r.value);
 
     // Salvar em cache
     this.setCache(cacheKey, cotacoesValidas, this.DEFAULT_CACHE_TTL);
@@ -90,7 +90,7 @@ export class TransportadorasAPIGateway {
   ): Promise<RastreamentoResult> {
     const cacheKey = this.generateCacheKey('rastreamento', { codigoRastreio });
     const cached = this.getFromCache<RastreamentoResult>(cacheKey);
-    
+
     if (cached) {
       console.log('Cache HIT: rastreamento');
       return cached;
@@ -127,20 +127,17 @@ export class TransportadorasAPIGateway {
   /**
    * Executar com circuit breaker, retry e timeout
    */
-  private async executeWithProtection<T>(
-    fn: () => Promise<T>,
-    serviceName: string
-  ): Promise<T> {
+  private async executeWithProtection<T>(fn: () => Promise<T>, serviceName: string): Promise<T> {
     // Verificar circuit breaker
     const breaker = this.getCircuitBreaker(serviceName);
-    
+
     if (breaker.isOpen) {
       const timeSinceLastFailure = Date.now() - (breaker.lastFailure?.getTime() || 0);
-      
+
       if (timeSinceLastFailure < this.CIRCUIT_BREAKER_TIMEOUT) {
         throw new Error(`Circuit breaker aberto para ${serviceName}`);
       }
-      
+
       // Reset circuit breaker
       breaker.isOpen = false;
       breaker.failures = 0;
@@ -153,11 +150,11 @@ export class TransportadorasAPIGateway {
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
         const result = await this.executeWithTimeout(fn, this.DEFAULT_TIMEOUT);
-        
+
         // Sucesso - resetar circuit breaker
         breaker.failures = 0;
         breaker.lastFailure = null;
-        
+
         return result;
       } catch (error) {
         const err = error as Error;
@@ -167,7 +164,7 @@ export class TransportadorasAPIGateway {
           `Tentativa ${attempt}/${maxRetries} falhou para ${serviceName}:`,
           err.message ?? err
         );
-        
+
         // Aguardar antes de retry (exponential backoff)
         if (attempt < maxRetries) {
           await this.delay(Math.pow(2, attempt) * 1000);
@@ -190,15 +187,10 @@ export class TransportadorasAPIGateway {
   /**
    * Executar com timeout
    */
-  private async executeWithTimeout<T>(
-    fn: () => Promise<T>,
-    timeout: number
-  ): Promise<T> {
+  private async executeWithTimeout<T>(fn: () => Promise<T>, timeout: number): Promise<T> {
     return Promise.race([
       fn(),
-      new Promise<T>((_, reject) =>
-        setTimeout(() => reject(new Error('Timeout')), timeout)
-      )
+      new Promise<T>((_, reject) => setTimeout(() => reject(new Error('Timeout')), timeout)),
     ]);
   }
 
@@ -206,7 +198,7 @@ export class TransportadorasAPIGateway {
    * Delay helper
    */
   private delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   /**
@@ -217,7 +209,7 @@ export class TransportadorasAPIGateway {
       this.circuitBreakers.set(serviceName, {
         failures: 0,
         lastFailure: null,
-        isOpen: false
+        isOpen: false,
       });
     }
     return this.circuitBreakers.get(serviceName)!;
@@ -232,15 +224,15 @@ export class TransportadorasAPIGateway {
 
   private getFromCache<T>(key: string): T | null {
     const entry = this.cache.get(key);
-    
+
     if (!entry) return null;
-    
+
     // Verificar se expirou
     if (Date.now() - entry.timestamp > entry.ttl) {
       this.cache.delete(key);
       return null;
     }
-    
+
     return entry.data as T;
   }
 
@@ -248,7 +240,7 @@ export class TransportadorasAPIGateway {
     this.cache.set(key, {
       data,
       timestamp: Date.now(),
-      ttl
+      ttl,
     });
 
     // Limpar cache antigo periodicamente
@@ -259,7 +251,7 @@ export class TransportadorasAPIGateway {
 
   private clearExpiredCache(): void {
     const now = Date.now();
-    
+
     for (const [key, entry] of this.cache.entries()) {
       if (now - entry.timestamp > entry.ttl) {
         this.cache.delete(key);
@@ -270,9 +262,7 @@ export class TransportadorasAPIGateway {
   /**
    * Health check de todas as transportadoras
    */
-  async healthCheckAll(
-    services: TransportadoraService[]
-  ): Promise<Record<string, boolean>> {
+  async healthCheckAll(services: TransportadoraService[]): Promise<Record<string, boolean>> {
     const promises = services.map(async (service) => {
       try {
         const isHealthy = await service.healthCheck();
@@ -283,10 +273,10 @@ export class TransportadorasAPIGateway {
     });
 
     const results = await Promise.allSettled(promises);
-    
+
     const healthStatus: Record<string, boolean> = {};
-    
-    results.forEach(result => {
+
+    results.forEach((result) => {
       if (result.status === 'fulfilled') {
         healthStatus[result.value.name] = result.value.healthy;
       }
@@ -313,12 +303,11 @@ export class TransportadorasAPIGateway {
         name,
         failures: state.failures,
         isOpen: state.isOpen,
-        lastFailure: state.lastFailure
-      }))
+        lastFailure: state.lastFailure,
+      })),
     };
   }
 }
 
 // Singleton instance
 export const apiGateway = new TransportadorasAPIGateway();
-

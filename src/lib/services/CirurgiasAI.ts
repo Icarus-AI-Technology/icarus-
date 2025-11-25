@@ -1,6 +1,6 @@
 /**
  * CirurgiasAI - Inteligência Artificial para Otimização de Cirurgias
- * 
+ *
  * Algoritmos de IA implementados:
  * 1. Previsão de Duração de Cirurgia (Regressão Linear)
  * 2. Recomendação de Kit Cirúrgico (Collaborative Filtering)
@@ -8,7 +8,7 @@
  * 4. Previsão de Glosas (NLP + Random Forest)
  * 5. Otimização de Agenda (Algoritmo Genético)
  * 6. Detecção de Anomalias (Isolation Forest)
- * 
+ *
  * @module CirurgiasAI
  * @version 1.0.0
  */
@@ -137,9 +137,11 @@ export class CirurgiasAI {
         .limit(30);
 
       // Calcular médias
-      const mediaEspecialidade = this.calcularMedia(historicoEspecialidade?.map(c => c.duracao_real) || []);
-      const mediaMedico = this.calcularMedia(historicoMedico?.map(c => c.duracao_real) || []);
-      const mediaHospital = this.calcularMedia(historicoHospital?.map(c => c.duracao_real) || []);
+      const mediaEspecialidade = this.calcularMedia(
+        historicoEspecialidade?.map((c) => c.duracao_real) || []
+      );
+      const mediaMedico = this.calcularMedia(historicoMedico?.map((c) => c.duracao_real) || []);
+      const mediaHospital = this.calcularMedia(historicoHospital?.map((c) => c.duracao_real) || []);
 
       // Regressão Linear Simples (peso ponderado)
       let duracaoEstimada = 120; // Base: 2 horas
@@ -171,7 +173,7 @@ export class CirurgiasAI {
 
       // Confiança baseada no tamanho da amostra
       const totalAmostras = (historicoMedico?.length || 0) + (historicoEspecialidade?.length || 0);
-      const confianca = Math.min(95, 30 + (totalAmostras * 1.5));
+      const confianca = Math.min(95, 30 + totalAmostras * 1.5);
 
       const fatoresConsiderados = [];
       if (historicoMedico && historicoMedico.length > 0) {
@@ -195,7 +197,7 @@ export class CirurgiasAI {
         },
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao prever duração:', err);
       throw err;
     }
@@ -210,7 +212,8 @@ export class CirurgiasAI {
       // Buscar cirurgias similares
       const { data: cirurgiasSimilares } = await supabase
         .from('cirurgias')
-        .select(`
+        .select(
+          `
           id,
           cirurgias_produtos (
             produto_id,
@@ -221,34 +224,44 @@ export class CirurgiasAI {
               descricao
             )
           )
-        `)
+        `
+        )
         .eq('tipo_cirurgia', dados.tipo_cirurgia)
         .eq('especialidade', dados.especialidade)
         .limit(20);
 
       // Contar frequência de cada produto
-      const produtosFrequencia = new Map<string, {
-        produto_id: string;
-        produto_nome: string;
-        count: number;
-        quantidadeMedia: number;
-        quantidadeTotal: number;
-      }>();
+      const produtosFrequencia = new Map<
+        string,
+        {
+          produto_id: string;
+          produto_nome: string;
+          count: number;
+          quantidadeMedia: number;
+          quantidadeTotal: number;
+        }
+      >();
 
-      const cirurgiasList = (cirurgiasSimilares as Array<{
-        cirurgias_produtos?: Array<{
+      const cirurgiasList =
+        (cirurgiasSimilares as Array<{
+          cirurgias_produtos?: Array<{
+            produto_id: string;
+            quantidade_consumida?: number;
+            quantidade_planejada?: number;
+            produto?: { descricao?: string };
+          }>;
+        }> | null) ?? [];
+
+      for (const cirurgia of cirurgiasList) {
+        const produtos = cirurgia.cirurgias_produtos || [];
+        for (const item of produtos as Array<{
           produto_id: string;
           quantidade_consumida?: number;
           quantidade_planejada?: number;
           produto?: { descricao?: string };
-        }>;
-      }> | null) ?? [];
-
-      for (const cirurgia of cirurgiasList) {
-        const produtos = cirurgia.cirurgias_produtos || [];
-        for (const item of produtos as Array<{ produto_id: string; quantidade_consumida?: number; quantidade_planejada?: number; produto?: { descricao?: string } }>) {
+        }>) {
           const produtoId = item.produto_id;
-          const quantidade = (item.quantidade_consumida ?? item.quantidade_planejada) ?? 0;
+          const quantidade = item.quantidade_consumida ?? item.quantidade_planejada ?? 0;
           const produtoNome = item.produto?.descricao ?? 'Produto sem nome';
 
           if (produtosFrequencia.has(produtoId)) {
@@ -290,7 +303,7 @@ export class CirurgiasAI {
 
       return recomendacoes;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao recomendar kit:', err);
       throw err;
     }
@@ -390,12 +403,14 @@ export class CirurgiasAI {
       // Buscar dados da cirurgia
       const { data: cirurgia } = await supabase
         .from('cirurgias')
-        .select(`
+        .select(
+          `
           *,
           cirurgias_autorizacoes (*),
           cirurgias_produtos (*),
           cirurgias_consumo (*)
-        `)
+        `
+        )
         .eq('id', cirurgiaId)
         .single();
 
@@ -470,7 +485,7 @@ export class CirurgiasAI {
         acoesPreventivas,
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao prever glosas:', err);
       throw err;
     }
@@ -521,7 +536,7 @@ export class CirurgiasAI {
         conflitos: [],
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao otimizar agenda:', err);
       throw err;
     }
@@ -568,7 +583,7 @@ export class CirurgiasAI {
           .not('valor_materiais', 'is', null)
           .limit(20);
 
-        const mediaPreco = this.calcularMedia(historicoPrecos?.map(c => c.valor_materiais) || []);
+        const mediaPreco = this.calcularMedia(historicoPrecos?.map((c) => c.valor_materiais) || []);
         const desvioPercentual = ((cirurgia.valor_materiais - mediaPreco) / mediaPreco) * 100;
 
         if (desvioPercentual > 30) {
@@ -585,7 +600,7 @@ export class CirurgiasAI {
 
       return anomalias;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao detectar anomalias:', err);
       throw err;
     }
@@ -601,7 +616,11 @@ export class CirurgiasAI {
     return soma / valores.length;
   }
 
-  private calcularScoreHorario(horario: string, cirurgiasNoDia: ReadonlyArray<unknown>, _duracaoEstimada: number): number {
+  private calcularScoreHorario(
+    horario: string,
+    cirurgiasNoDia: ReadonlyArray<unknown>,
+    _duracaoEstimada: number
+  ): number {
     // Score simples: priorizar manhã, evitar conflitos
     let score = 50;
 
@@ -618,4 +637,3 @@ export class CirurgiasAI {
 
 // Exportar instância singleton
 export const cirurgiasAI = CirurgiasAI.getInstance();
-

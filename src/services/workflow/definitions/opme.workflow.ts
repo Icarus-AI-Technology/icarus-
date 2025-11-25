@@ -1,6 +1,6 @@
 /**
  * 📦 WORKFLOW: OPME (Rastreabilidade & Faturamento)
- * 
+ *
  * Workflows para:
  * 1. Rastreabilidade de OPME
  * 2. Faturamento de OPME
@@ -17,7 +17,7 @@ export const OPME_RASTREABILIDADE_WORKFLOW: WorkflowDefinition = {
   name: 'Rastreabilidade de OPME',
   description: 'Workflow para rastreamento completo de materiais OPME',
   module: 'opme',
-  
+
   states: [
     {
       id: 'em_estoque',
@@ -185,7 +185,7 @@ export const OPME_RASTREABILIDADE_WORKFLOW: WorkflowDefinition = {
       isFinal: true,
     },
   ],
-  
+
   notifications: [
     {
       id: 'notif-opme-reservado',
@@ -224,7 +224,7 @@ export const OPME_RASTREABILIDADE_WORKFLOW: WorkflowDefinition = {
       channels: ['email', 'whatsapp', 'push', 'in_app'],
     },
   ],
-  
+
   validations: [
     {
       stateId: 'utilizado',
@@ -246,7 +246,7 @@ export const FATURAMENTO_OPME_WORKFLOW: WorkflowDefinition = {
   name: 'Faturamento de OPME',
   description: 'Workflow para faturamento de materiais OPME junto a convênios',
   module: 'opme',
-  
+
   states: [
     {
       id: 'pendente_digitacao',
@@ -446,7 +446,7 @@ export const FATURAMENTO_OPME_WORKFLOW: WorkflowDefinition = {
       isFinal: true,
     },
   ],
-  
+
   notifications: [
     {
       id: 'notif-faturamento-conferido',
@@ -494,7 +494,7 @@ export const FATURAMENTO_OPME_WORKFLOW: WorkflowDefinition = {
       channels: ['email', 'in_app'],
     },
   ],
-  
+
   validations: [
     {
       stateId: 'aguardando_conferencia',
@@ -515,4 +515,3 @@ export const FATURAMENTO_OPME_WORKFLOW: WorkflowDefinition = {
     },
   ],
 };
-

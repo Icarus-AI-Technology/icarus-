@@ -65,11 +65,7 @@ for (const key of REQUIRED_KEYS) {
   }
 }
 
-const LOCALHOST_KEYS = [
-  'ML_SERVICE_URL',
-  'VITE_OLLAMA_URL',
-  'VITE_APP_URL',
-];
+const LOCALHOST_KEYS = ['ML_SERVICE_URL', 'VITE_OLLAMA_URL', 'VITE_APP_URL'];
 
 for (const key of LOCALHOST_KEYS) {
   const value = devEnv[key] || exampleEnv[key];

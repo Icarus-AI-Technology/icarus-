@@ -71,13 +71,9 @@ function AcessoNegado({ tipo, nome }: { tipo: string; nome: string }) {
       <div className="max-w-md w-full">
         <Alert className="bg-red-900/20 border-red-900/50">
           <Shield className="h-5 w-5 text-red-500" />
-          <AlertTitle className="text-red-400 orx-text-lg mb-2">
-            Acesso Negado
-          </AlertTitle>
+          <AlertTitle className="text-red-400 orx-text-lg mb-2">Acesso Negado</AlertTitle>
           <AlertDescription className="text-slate-300 space-y-2">
-            <p>
-              Você não tem permissão para acessar este recurso.
-            </p>
+            <p>Você não tem permissão para acessar este recurso.</p>
             <div className="mt-4 p-3 bg-slate-800/50 rounded-lg orx-text-sm">
               <p className="text-slate-400">
                 <strong>Usuário:</strong> {usuario?.nome_completo}
@@ -99,10 +95,7 @@ function AcessoNegado({ tipo, nome }: { tipo: string; nome: string }) {
         </Alert>
 
         <div className="mt-6 text-center">
-          <a
-            href="/dashboard"
-            className="text-blue-400 hover:text-blue-300 transition-colors"
-          >
+          <a href="/dashboard" className="text-blue-400 hover:text-blue-300 transition-colors">
             ← Voltar para o Dashboard
           </a>
         </div>
@@ -172,4 +165,3 @@ export function ComAcessoRecurso({
 
   return <>{children}</>;
 }
-

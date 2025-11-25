@@ -33,29 +33,24 @@ export class TreinamentoAI {
           {
             nome: 'Fundamentos de Rastreabilidade OPME',
             duracao: 8,
-            conteudo: [
-              'Introdução à rastreabilidade',
-              'Normas ANVISA',
-              'Sistemas de registro'
-            ],
-            avaliacao: 'Quiz + Prática'
-          }
-        ]
+            conteudo: ['Introdução à rastreabilidade', 'Normas ANVISA', 'Sistemas de registro'],
+            avaliacao: 'Quiz + Prática',
+          },
+        ],
       },
       cronograma: [
         { data: '2025-10-25', atividade: 'Início Módulo 1' },
-        { data: '2025-11-01', atividade: 'Avaliação Módulo 1' }
+        { data: '2025-11-01', atividade: 'Avaliação Módulo 1' },
       ],
       recursos: [
         {
           tipo: 'video',
           nome: 'Rastreabilidade na Prática',
-          url: 'https://example.com/video1'
-        }
-      ]
+          url: 'https://example.com/video1',
+        },
+      ],
     };
   }
 }
 
 export const treinamentoAI = new TreinamentoAI();
-

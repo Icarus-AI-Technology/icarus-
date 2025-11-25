@@ -1,8 +1,8 @@
 /**
  * FORMULÁRIO DE PEDIDOS DE COMPRA - OraclusX DS Neumorphic 3D
- * 
+ *
  * Cadastro completo de pedidos de compra
- * 
+ *
  * @version 1.0.0
  */
 
@@ -23,9 +23,11 @@ const schemaPedido = z.object({
   data_pedido: z.string().optional(),
   data_entrega_prevista: z.string().optional(),
   valor_total: z.number().min(0, 'Valor deve ser positivo'),
-  status: z.enum(['rascunho', 'aguardando', 'aprovado', 'processando', 'entregue', 'cancelado']).optional(),
+  status: z
+    .enum(['rascunho', 'aguardando', 'aprovado', 'processando', 'entregue', 'cancelado'])
+    .optional(),
   urgencia: z.enum(['normal', 'urgente', 'critico']).optional(),
-  observacoes: z.string().optional()
+  observacoes: z.string().optional(),
 });
 
 type FormPedidoData = z.infer<typeof schemaPedido>;
@@ -33,15 +35,20 @@ type FormPedidoData = z.infer<typeof schemaPedido>;
 export default function FormularioPedidosCompra() {
   const navigate = useNavigate();
 
-  const { register, control, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormPedidoData>({
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormPedidoData>({
     resolver: zodResolver(schemaPedido),
-    defaultValues: { status: 'rascunho', urgencia: 'normal' }
+    defaultValues: { status: 'rascunho', urgencia: 'normal' },
   });
 
   const onSubmit = async (data: FormPedidoData) => {
     try {
       const result = await insertRecord('pedidos_compra', data);
-      
+
       if (result.success) {
         toast.success('Pedido de compra criado com sucesso!');
         navigate('/compras/pedidos');
@@ -61,37 +68,67 @@ export default function FormularioPedidosCompra() {
       campos: (
         <div className={FORM_GRID}>
           <FormField id="numero" label="Número do Pedido" required error={errors.numero?.message}>
-            <NeuInput id="numero" placeholder="Ex: PC-2025-001" error={!!errors.numero} {...register('numero')} />
+            <NeuInput
+              id="numero"
+              placeholder="Ex: PC-2025-001"
+              error={!!errors.numero}
+              {...register('numero')}
+            />
           </FormField>
 
-          <FormField id="fornecedor_id" label="Fornecedor" className={FORM_COL.twoThirds} helpText="Busque e selecione o fornecedor">
-            <NeuInput id="fornecedor_id" placeholder="Buscar fornecedor..." {...register('fornecedor_id')} />
+          <FormField
+            id="fornecedor_id"
+            label="Fornecedor"
+            className={FORM_COL.twoThirds}
+            helpText="Busque e selecione o fornecedor"
+          >
+            <NeuInput
+              id="fornecedor_id"
+              placeholder="Buscar fornecedor..."
+              {...register('fornecedor_id')}
+            />
           </FormField>
 
           <FormField id="urgencia" label="Urgência">
-            <Controller name="urgencia" control={control} render={({ field }) => (
-              <NeuSelect value={field.value} onValueChange={field.onChange} options={[
-                { value: 'normal', label: 'Normal' },
-                { value: 'urgente', label: 'Urgente' },
-                { value: 'critico', label: 'Crítico' }
-              ]} />
-            )} />
+            <Controller
+              name="urgencia"
+              control={control}
+              render={({ field }) => (
+                <NeuSelect
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  options={[
+                    { value: 'normal', label: 'Normal' },
+                    { value: 'urgente', label: 'Urgente' },
+                    { value: 'critico', label: 'Crítico' },
+                  ]}
+                />
+              )}
+            />
           </FormField>
 
           <FormField id="status" label="Status" className={FORM_COL.twoThirds}>
-            <Controller name="status" control={control} render={({ field }) => (
-              <NeuSelect value={field.value} onValueChange={field.onChange} options={[
-                { value: 'rascunho', label: 'Rascunho' },
-                { value: 'aguardando', label: 'Aguardando Aprovação' },
-                { value: 'aprovado', label: 'Aprovado' },
-                { value: 'processando', label: 'Processando' },
-                { value: 'entregue', label: 'Entregue' },
-                { value: 'cancelado', label: 'Cancelado' }
-              ]} />
-            )} />
+            <Controller
+              name="status"
+              control={control}
+              render={({ field }) => (
+                <NeuSelect
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  options={[
+                    { value: 'rascunho', label: 'Rascunho' },
+                    { value: 'aguardando', label: 'Aguardando Aprovação' },
+                    { value: 'aprovado', label: 'Aprovado' },
+                    { value: 'processando', label: 'Processando' },
+                    { value: 'entregue', label: 'Entregue' },
+                    { value: 'cancelado', label: 'Cancelado' },
+                  ]}
+                />
+              )}
+            />
           </FormField>
         </div>
-      )
+      ),
     },
     {
       id: 'datas',
@@ -104,10 +141,14 @@ export default function FormularioPedidosCompra() {
           </FormField>
 
           <FormField id="data_entrega_prevista" label="Data de Entrega Prevista">
-            <NeuInput id="data_entrega_prevista" type="date" {...register('data_entrega_prevista')} />
+            <NeuInput
+              id="data_entrega_prevista"
+              type="date"
+              {...register('data_entrega_prevista')}
+            />
           </FormField>
         </div>
-      )
+      ),
     },
     {
       id: 'financeiro',
@@ -115,16 +156,32 @@ export default function FormularioPedidosCompra() {
       titulo: 'Informações Financeiras',
       campos: (
         <div className={FORM_GRID}>
-          <FormField id="valor_total" label="Valor Total (R$)" required error={errors.valor_total?.message}>
-            <NeuInput id="valor_total" type="number" step="0.01" placeholder="0.00" error={!!errors.valor_total} {...register('valor_total', { valueAsNumber: true })} />
+          <FormField
+            id="valor_total"
+            label="Valor Total (R$)"
+            required
+            error={errors.valor_total?.message}
+          >
+            <NeuInput
+              id="valor_total"
+              type="number"
+              step="0.01"
+              placeholder="0.00"
+              error={!!errors.valor_total}
+              {...register('valor_total', { valueAsNumber: true })}
+            />
           </FormField>
 
           <FormField id="observacoes" label="Observações" className={FORM_COL.full}>
-            <NeuTextarea id="observacoes" placeholder="Informações adicionais sobre o pedido..." {...register('observacoes')} />
+            <NeuTextarea
+              id="observacoes"
+              placeholder="Informações adicionais sobre o pedido..."
+              {...register('observacoes')}
+            />
           </FormField>
         </div>
-      )
-    }
+      ),
+    },
   ];
 
   return (
@@ -140,4 +197,3 @@ export default function FormularioPedidosCompra() {
     />
   );
 }
-

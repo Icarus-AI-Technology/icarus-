@@ -3,8 +3,8 @@
  * Barra de navegação por abas neuromórfica
  */
 
-import React, { useState } from"react";
-import { cn } from"@/lib/utils";
+import React, { useState } from 'react';
+import { cn } from '@/lib/utils';
 
 export interface NavigationTab {
   id: string;
@@ -17,7 +17,7 @@ export interface NavigationBarProps {
   tabs: NavigationTab[];
   activeTab?: string;
   onTabChange?: (tabId: string) => void;
-  variant?:"default" |"centered";
+  variant?: 'default' | 'centered';
   className?: string;
 }
 
@@ -25,12 +25,11 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({
   tabs,
   activeTab: controlledActiveTab,
   onTabChange,
-  variant ="centered",
+  variant = 'centered',
   className,
 }) => {
-  const [internalActiveTab, setInternalActiveTab] = useState(tabs[0]?.id ||"");
-  const activeTab =
-    controlledActiveTab !== undefined ? controlledActiveTab : internalActiveTab;
+  const [internalActiveTab, setInternalActiveTab] = useState(tabs[0]?.id || '');
+  const activeTab = controlledActiveTab !== undefined ? controlledActiveTab : internalActiveTab;
 
   const handleTabClick = (tabId: string) => {
     if (controlledActiveTab === undefined) {
@@ -41,9 +40,10 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({
 
   return (
     <div
-      className={cn("flex gap-2 p-2 orx-card",
-        variant ==="centered" &&"justify-center",
-        className,
+      className={cn(
+        'flex gap-2 p-2 orx-card',
+        variant === 'centered' && 'justify-center',
+        className
       )}
     >
       {tabs.map((tab) => {
@@ -52,20 +52,22 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({
           <button
             key={tab.id}
             onClick={() => handleTabClick(tab.id)}
-            className={cn("relative inline-flex items-center gap-2 px-6 py-2.5 rounded-lg","orx-orx-font-medium text-body-sm transition-all duration-200","focus:outline-none focus:ring-3 focus:ring-offset-2 focus:ring-primary",
+            className={cn(
+              'relative inline-flex items-center gap-2 px-6 py-2.5 rounded-lg',
+              'orx-orx-font-medium text-body-sm transition-all duration-200',
+              'focus:outline-none focus:ring-3 focus:ring-offset-2 focus:ring-primary',
               isActive
-                ?"bg-primary text-inverse shadow-md"
-                :"text-secondary dark:text-muted hover:bg-surface dark:hover:bg-gray-700",
+                ? 'bg-primary text-inverse shadow-md'
+                : 'text-secondary dark:text-muted hover:bg-surface dark:hover:bg-gray-700'
             )}
           >
             {tab.icon && <span className="flex-shrink-0">{tab.icon}</span>}
             <span>{tab.label}</span>
             {tab.badge !== undefined && tab.badge > 0 && (
               <span
-                className={cn("ml-2 px-2 py-0.5 rounded-full text-body-xs orx-orx-font-medium",
-                  isActive
-                    ?"bg-surface text-primary"
-                    :"bg-primary text-inverse",
+                className={cn(
+                  'ml-2 px-2 py-0.5 rounded-full text-body-xs orx-orx-font-medium',
+                  isActive ? 'bg-surface text-primary' : 'bg-primary text-inverse'
                 )}
               >
                 {tab.badge}
@@ -78,6 +80,6 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({
   );
 };
 
-NavigationBar.displayName ="OraclusXNavigationBar";
+NavigationBar.displayName = 'OraclusXNavigationBar';
 
 export default NavigationBar;

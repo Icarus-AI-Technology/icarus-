@@ -1,17 +1,17 @@
-import { useCallback, useEffect, useMemo, useState } from"react";
-import { supabase } from"@/lib/supabase";
-import { useAuth } from"./useAuth";
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from './useAuth';
 
 export type EtapaOportunidade =
-  |"prospeccao"
-  |"contato_inicial"
-  |"qualificacao"
-  |"apresentacao"
-  |"proposta"
-  |"negociacao"
-  |"fechamento"
-  |"ganho"
-  |"perdido";
+  | 'prospeccao'
+  | 'contato_inicial'
+  | 'qualificacao'
+  | 'apresentacao'
+  | 'proposta'
+  | 'negociacao'
+  | 'fechamento'
+  | 'ganho'
+  | 'perdido';
 
 export interface Oportunidade {
   id: string;
@@ -20,7 +20,7 @@ export interface Oportunidade {
   titulo: string;
   valor: number;
   etapa: EtapaOportunidade;
-  status:"aberta" |"fechada_ganho" |"fechada_perdido" |"congelada";
+  status: 'aberta' | 'fechada_ganho' | 'fechada_perdido' | 'congelada';
   probabilidade: number;
   data_fechamento_prevista: string | null;
   data_fechamento_real: string | null;
@@ -48,7 +48,7 @@ interface OportunidadeTarefa {
   id: string;
   oportunidade_id: string;
   titulo: string;
-  status:"pendente" |"em_andamento" |"concluida" |"cancelada";
+  status: 'pendente' | 'em_andamento' | 'concluida' | 'cancelada';
   due_date: string | null;
   responsavel_id: string | null;
   created_at: string;
@@ -60,7 +60,7 @@ interface OportunidadeProposta {
   oportunidade_id: string;
   numero: string | null;
   valor: number;
-  status:"rascunho" |"enviada" |"aceita" |"rejeitada" |"cancelada";
+  status: 'rascunho' | 'enviada' | 'aceita' | 'rejeitada' | 'cancelada';
   url_pdf: string | null;
   criada_em: string;
   atualizada_em: string;
@@ -90,27 +90,27 @@ export function useOportunidades() {
 
   const fetchOportunidades = useCallback(async () => {
     if (!empresaAtual?.id) return;
-    setState(prev => ({ ...prev, loading: true, error: null }));
+    setState((prev) => ({ ...prev, loading: true, error: null }));
 
     try {
       const { data, error } = await supabase
-        .from("oportunidades")
-        .select("*")
-        .eq("empresa_id", empresaAtual.id)
-        .order("created_at", { ascending: false });
+        .from('oportunidades')
+        .select('*')
+        .eq('empresa_id', empresaAtual.id)
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
 
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         oportunidades: (data as Oportunidade[] | null) ?? [],
         loading: false,
       }));
     } catch (error) {
-   const err = error as Error;
-      setState(prev => ({
+      const err = error as Error;
+      setState((prev) => ({
         ...prev,
-        error: error instanceof Error ? error.message :"Erro ao carregar oportunidades",
+        error: error instanceof Error ? error.message : 'Erro ao carregar oportunidades',
         loading: false,
       }));
     }
@@ -121,35 +121,35 @@ export function useOportunidades() {
 
     const [{ data: resumo }, { data: funil }] = await Promise.all([
       supabase
-        .from("view_crm_pipeline_resumo")
-        .select("valor_total,total_oportunidades,probabilidade_media")
-        .eq("empresa_id", empresaAtual.id)
+        .from('view_crm_pipeline_resumo')
+        .select('valor_total,total_oportunidades,probabilidade_media')
+        .eq('empresa_id', empresaAtual.id)
         .single(),
       supabase
-        .from("view_crm_funil")
-        .select("etapa,total,valor_total")
-        .eq("empresa_id", empresaAtual.id),
+        .from('view_crm_funil')
+        .select('etapa,total,valor_total')
+        .eq('empresa_id', empresaAtual.id),
     ]);
 
     if (resumo) {
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
-        resumoPipeline: resumo as UseOportunidadesState["resumoPipeline"],
+        resumoPipeline: resumo as UseOportunidadesState['resumoPipeline'],
       }));
     }
 
     if (funil) {
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
-        funil: (funil as Array<{ etapa: EtapaOportunidade; total: number; valor_total: number }>),
+        funil: funil as Array<{ etapa: EtapaOportunidade; total: number; valor_total: number }>,
       }));
     }
   }, [empresaAtual?.id]);
 
   const createOportunidade = useCallback(
-    async (payload: Omit<Oportunidade,"id" |"created_at" |"updated_at">) => {
+    async (payload: Omit<Oportunidade, 'id' | 'created_at' | 'updated_at'>) => {
       const { data, error } = await supabase
-        .from("oportunidades")
+        .from('oportunidades')
         .insert([payload])
         .select()
         .single();
@@ -158,7 +158,7 @@ export function useOportunidades() {
 
       const oportunidade = data as Oportunidade;
 
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         oportunidades: [oportunidade, ...prev.oportunidades],
       }));
@@ -169,49 +169,48 @@ export function useOportunidades() {
     [fetchResumo]
   );
 
-  const updateOportunidade = useCallback(async (id: string, updates: Partial<Oportunidade>) => {
-    const { data, error } = await supabase
-      .from("oportunidades")
-      .update(updates)
-      .eq("id", id)
-      .select()
-      .single();
+  const updateOportunidade = useCallback(
+    async (id: string, updates: Partial<Oportunidade>) => {
+      const { data, error } = await supabase
+        .from('oportunidades')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
 
-    if (error) throw error;
+      if (error) throw error;
 
-    const oportunidade = data as Oportunidade;
+      const oportunidade = data as Oportunidade;
 
-    setState(prev => ({
-      ...prev,
-      oportunidades: prev.oportunidades.map(item => (item.id === id ? oportunidade : item)),
-    }));
+      setState((prev) => ({
+        ...prev,
+        oportunidades: prev.oportunidades.map((item) => (item.id === id ? oportunidade : item)),
+      }));
 
-    await fetchResumo();
-    return oportunidade;
-  }, [fetchResumo]);
+      await fetchResumo();
+      return oportunidade;
+    },
+    [fetchResumo]
+  );
 
-  const deleteOportunidade = useCallback(async (id: string) => {
-    const { error } = await supabase
-      .from("oportunidades")
-      .delete()
-      .eq("id", id);
+  const deleteOportunidade = useCallback(
+    async (id: string) => {
+      const { error } = await supabase.from('oportunidades').delete().eq('id', id);
 
-    if (error) throw error;
+      if (error) throw error;
 
-    setState(prev => ({
-      ...prev,
-      oportunidades: prev.oportunidades.filter(item => item.id !== id),
-    }));
+      setState((prev) => ({
+        ...prev,
+        oportunidades: prev.oportunidades.filter((item) => item.id !== id),
+      }));
 
-    await fetchResumo();
-  }, [fetchResumo]);
+      await fetchResumo();
+    },
+    [fetchResumo]
+  );
 
   const getOportunidade = useCallback(async (id: string) => {
-    const { data, error } = await supabase
-      .from("oportunidades")
-      .select("*")
-      .eq("id", id)
-      .single();
+    const { data, error } = await supabase.from('oportunidades').select('*').eq('id', id).single();
 
     if (error) throw error;
     return data as Oportunidade;
@@ -219,64 +218,79 @@ export function useOportunidades() {
 
   const getInteracoes = useCallback(async (oportunidadeId: string) => {
     const { data, error } = await supabase
-      .from("oportunidade_interacoes")
-      .select("*")
-      .eq("oportunidade_id", oportunidadeId)
-      .order("ocorreu_em", { ascending: false });
+      .from('oportunidade_interacoes')
+      .select('*')
+      .eq('oportunidade_id', oportunidadeId)
+      .order('ocorreu_em', { ascending: false });
 
     if (error) throw error;
     return (data as OportunidadeInteracao[] | null) ?? [];
   }, []);
 
-  const registrarInteracao = useCallback(async (payload: Omit<OportunidadeInteracao,"id" |"created_at">) => {
-    const { error } = await supabase.from("oportunidade_interacoes").insert([payload]);
-    if (error) throw error;
-  }, []);
+  const registrarInteracao = useCallback(
+    async (payload: Omit<OportunidadeInteracao, 'id' | 'created_at'>) => {
+      const { error } = await supabase.from('oportunidade_interacoes').insert([payload]);
+      if (error) throw error;
+    },
+    []
+  );
 
   const getTarefas = useCallback(async (oportunidadeId: string) => {
     const { data, error } = await supabase
-      .from("oportunidade_tarefas")
-      .select("*")
-      .eq("oportunidade_id", oportunidadeId)
-      .order("due_date", { ascending: true });
+      .from('oportunidade_tarefas')
+      .select('*')
+      .eq('oportunidade_id', oportunidadeId)
+      .order('due_date', { ascending: true });
 
     if (error) throw error;
     return (data as OportunidadeTarefa[] | null) ?? [];
   }, []);
 
-  const createTarefa = useCallback(async (payload: Omit<OportunidadeTarefa,"id" |"created_at" |"concluido_em">) => {
-    const { error } = await supabase.from("oportunidade_tarefas").insert([payload]);
-    if (error) throw error;
-  }, []);
+  const createTarefa = useCallback(
+    async (payload: Omit<OportunidadeTarefa, 'id' | 'created_at' | 'concluido_em'>) => {
+      const { error } = await supabase.from('oportunidade_tarefas').insert([payload]);
+      if (error) throw error;
+    },
+    []
+  );
 
-  const atualizarStatusTarefa = useCallback(async (id: string, status: OportunidadeTarefa["status"]) => {
-    const { error } = await supabase
-      .from("oportunidade_tarefas")
-      .update({ status, concluido_em: status ==="concluida" ? new Date().toISOString() : null })
-      .eq("id", id);
+  const atualizarStatusTarefa = useCallback(
+    async (id: string, status: OportunidadeTarefa['status']) => {
+      const { error } = await supabase
+        .from('oportunidade_tarefas')
+        .update({ status, concluido_em: status === 'concluida' ? new Date().toISOString() : null })
+        .eq('id', id);
 
-    if (error) throw error;
-  }, []);
+      if (error) throw error;
+    },
+    []
+  );
 
   const getPropostas = useCallback(async (oportunidadeId: string) => {
     const { data, error } = await supabase
-      .from("oportunidade_propostas")
-      .select("*")
-      .eq("oportunidade_id", oportunidadeId)
-      .order("criada_em", { ascending: false });
+      .from('oportunidade_propostas')
+      .select('*')
+      .eq('oportunidade_id', oportunidadeId)
+      .order('criada_em', { ascending: false });
 
     if (error) throw error;
     return (data as OportunidadeProposta[] | null) ?? [];
   }, []);
 
-  const registrarProposta = useCallback(async (payload: Omit<OportunidadeProposta,"id" |"criada_em" |"atualizada_em">) => {
-    const { error } = await supabase.from("oportunidade_propostas").insert([payload]);
-    if (error) throw error;
-  }, []);
+  const registrarProposta = useCallback(
+    async (payload: Omit<OportunidadeProposta, 'id' | 'criada_em' | 'atualizada_em'>) => {
+      const { error } = await supabase.from('oportunidade_propostas').insert([payload]);
+      if (error) throw error;
+    },
+    []
+  );
 
-  const updateEtapa = useCallback(async (id: string, etapa: EtapaOportunidade) => {
-    return updateOportunidade(id, { etapa });
-  }, [updateOportunidade]);
+  const updateEtapa = useCallback(
+    async (id: string, etapa: EtapaOportunidade) => {
+      return updateOportunidade(id, { etapa });
+    },
+    [updateOportunidade]
+  );
 
   const oportunidadesPorEtapa = useMemo(() => {
     return state.oportunidades.reduce(
@@ -296,8 +310,8 @@ export function useOportunidades() {
     fetchResumo();
 
     const channel = supabase
-      .channel("oportunidades_channel")
-      .on("postgres_changes", { event:"*", schema:"public", table:"oportunidades" }, () => {
+      .channel('oportunidades_channel')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'oportunidades' }, () => {
         fetchOportunidades();
         fetchResumo();
       })
@@ -329,4 +343,3 @@ export function useOportunidades() {
 }
 
 export default useOportunidades;
-

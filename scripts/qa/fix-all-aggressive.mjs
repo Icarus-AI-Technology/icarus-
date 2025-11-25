@@ -42,31 +42,31 @@ const COLOR_MAP = {
   '#4F46E5': 'var(--orx-primary-hover)',
   '#818cf8': 'var(--orx-primary-light)',
   '#818CF8': 'var(--orx-primary-light)',
-  
+
   // Success
   '#10b981': 'var(--orx-success)',
   '#10B981': 'var(--orx-success)',
   '#34d399': 'var(--orx-success)',
   '#34D399': 'var(--orx-success)',
-  
+
   // Warning/Orange
   '#f59e0b': 'var(--orx-warning)',
   '#F59E0B': 'var(--orx-warning)',
   '#fb923c': 'var(--orx-warning)',
   '#FB923C': 'var(--orx-warning)',
-  
+
   // Error/Red
   '#ef4444': 'var(--orx-error)',
   '#EF4444': 'var(--orx-error)',
   '#f87171': 'var(--orx-error)',
   '#F87171': 'var(--orx-error)',
-  
+
   // Gray backgrounds
   '#f9fafb': 'var(--orx-bg-light)',
   '#F9FAFB': 'var(--orx-bg-light)',
   '#f3f4f6': 'var(--orx-bg-light)',
   '#F3F4F6': 'var(--orx-bg-light)',
-  
+
   // Outros comuns
   '#ffffff': '#ffffff', // Branco pode ficar
   '#FFFFFF': '#ffffff',
@@ -77,7 +77,7 @@ function corrigirArquivo(path) {
   let content = readFileSync(path, 'utf8');
   let original = content;
   let mudancas = 0;
-  
+
   // 1. Substituir tamanhos de fonte com captura de style existente
   Object.entries(TEXT_SIZE_MAP).forEach(([classe, tamanho]) => {
     // Caso 1: className com style já existente
@@ -92,12 +92,9 @@ function corrigirArquivo(path) {
       const newClass = [cleanBefore, cleanAfter].filter(Boolean).join(' ');
       return `className="${newClass}" style={{ ${styleExistente}, fontSize: '${tamanho}' }}`;
     });
-    
+
     // Caso 2: className sem style
-    const regexSemStyle = new RegExp(
-      `className="([^"]*\\s*)${classe}(\\s*[^"]*)"`,
-      'g'
-    );
+    const regexSemStyle = new RegExp(`className="([^"]*\\s*)${classe}(\\s*[^"]*)"`, 'g');
     content = content.replace(regexSemStyle, (match, antes, depois) => {
       // Verificar se não há style logo após (evitar duplicação)
       const posMatch = content.indexOf(match);
@@ -105,7 +102,7 @@ function corrigirArquivo(path) {
       if (apos.trim().startsWith('style=')) {
         return match; // Já tem style, não mexer
       }
-      
+
       mudancas++;
       const cleanBefore = antes.trim();
       const cleanAfter = depois.trim();
@@ -113,7 +110,7 @@ function corrigirArquivo(path) {
       return `className="${newClass}" style={{ fontSize: '${tamanho}' }}`;
     });
   });
-  
+
   // 2. Substituir pesos de fonte
   Object.entries(FONT_WEIGHT_MAP).forEach(([classe, peso]) => {
     const regexComStyle = new RegExp(
@@ -127,18 +124,15 @@ function corrigirArquivo(path) {
       const newClass = [cleanBefore, cleanAfter].filter(Boolean).join(' ');
       return `className="${newClass}" style={{ ${styleExistente}, fontWeight: ${peso} }}`;
     });
-    
-    const regexSemStyle = new RegExp(
-      `className="([^"]*\\s*)${classe}(\\s*[^"]*)"`,
-      'g'
-    );
+
+    const regexSemStyle = new RegExp(`className="([^"]*\\s*)${classe}(\\s*[^"]*)"`, 'g');
     content = content.replace(regexSemStyle, (match, antes, depois) => {
       const posMatch = content.indexOf(match);
       const apos = content.substring(posMatch + match.length, posMatch + match.length + 20);
       if (apos.trim().startsWith('style=')) {
         return match;
       }
-      
+
       mudancas++;
       const cleanBefore = antes.trim();
       const cleanAfter = depois.trim();
@@ -146,7 +140,7 @@ function corrigirArquivo(path) {
       return `className="${newClass}" style={{ fontWeight: ${peso} }}`;
     });
   });
-  
+
   // 3. Migrar cores hex
   Object.entries(COLOR_MAP).forEach(([hex, cssVar]) => {
     const count = (content.match(new RegExp(hex, 'g')) || []).length;
@@ -155,31 +149,31 @@ function corrigirArquivo(path) {
       mudancas += count;
     }
   });
-  
+
   // 4. Limpar espaços duplos
   content = content.replace(/className="\s+/g, 'className="');
   content = content.replace(/\s+"/g, '"');
   content = content.replace(/className=""/g, 'className');
-  
+
   if (content !== original) {
     writeFileSync(path, content, 'utf8');
     return { modificado: true, mudancas };
   }
-  
+
   return { modificado: false, mudancas: 0 };
 }
 
 async function main() {
   // Processar TODOS os arquivos TypeScript exceto CSS base
   const files = await glob('src/**/*.{tsx,ts}', {
-    ignore: ['**/*.bak', '**/node_modules/**']
+    ignore: ['**/*.bak', '**/node_modules/**'],
   });
-  
+
   let count = 0;
   let totalMudancas = 0;
-  
+
   console.log(`\n🔧 Correção AGRESSIVA: processando ${files.length} arquivos...\n`);
-  
+
   for (const file of files) {
     try {
       const result = corrigirArquivo(file);
@@ -192,10 +186,9 @@ async function main() {
       console.error(`❌ ${file}:`, err.message);
     }
   }
-  
+
   console.log(`\n🎉 ${count} arquivos modificados!`);
   console.log(`📊 Total de ${totalMudancas} substituições realizadas\n`);
 }
 
 main().catch(console.error);
-

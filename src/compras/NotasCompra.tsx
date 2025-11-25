@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ModulePage } from '@/components/templates/ModulePage';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/oraclusx-ds/Input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 export default function NotasCompra(): JSX.Element {
   const [numeroNota, setNumeroNota] = useState('');
@@ -13,7 +19,7 @@ export default function NotasCompra(): JSX.Element {
     <ModulePage
       title="Notas de Compra"
       description="Registro e controle de notas fiscais de compra"
-      iconLabel="📄"
+      icon={<span role="img" aria-label="Nota">📄</span>}
     >
       <Card>
         <CardHeader>

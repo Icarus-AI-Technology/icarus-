@@ -18,11 +18,11 @@ const { Client } = pg;
 // Credenciais separadas (sem encoding issues)
 const dbConfig = {
   user: 'postgres',
-  password: '%Ortho#New&25\']',
+  password: "%Ortho#New&25']",
   host: 'db.ttswvavcisdnonytslom.supabase.co',
   port: 5432,
   database: 'postgres',
-  ssl: { rejectUnauthorized: false }
+  ssl: { rejectUnauthorized: false },
 };
 
 const MIGRATIONS_DIR = path.join(__dirname, '../supabase/migrations');
@@ -34,12 +34,12 @@ const migrations = [
   '202510201244_04_dashboard_functions.sql',
   '202510201245_05_indices_performance.sql',
   '202510201246_06_seeds_demo.sql',
-  '202510201247_07_storage_config.sql'
+  '202510201247_07_storage_config.sql',
 ];
 
 async function applyMigrations() {
   const client = new Client(dbConfig);
-  
+
   console.log('╔════════════════════════════════════════════════════════════════════════╗');
   console.log('║                                                                        ║');
   console.log('║          🚀 Aplicando Migrations - ICARUS v5.0                        ║');
@@ -55,16 +55,16 @@ async function applyMigrations() {
 
     for (const migration of migrations) {
       const migrationPath = path.join(MIGRATIONS_DIR, migration);
-      
+
       console.log(`📦 Aplicando: ${migration}`);
-      
+
       if (!fs.existsSync(migrationPath)) {
         console.log(`   ⚠️  Arquivo não encontrado, pulando...\n`);
         continue;
       }
 
       const sql = fs.readFileSync(migrationPath, 'utf-8');
-      
+
       try {
         await client.query(sql);
         console.log(`   ✅ Aplicado com sucesso!\n`);
@@ -91,7 +91,7 @@ async function applyMigrations() {
       ORDER BY tablename
     `);
     console.log(`✅ Tabelas criadas: ${tablesResult.rows.length}/3`);
-    tablesResult.rows.forEach(row => console.log(`   • ${row.tablename}`));
+    tablesResult.rows.forEach((row) => console.log(`   • ${row.tablename}`));
     console.log('');
 
     // Verificar views
@@ -103,7 +103,7 @@ async function applyMigrations() {
       ORDER BY viewname
     `);
     console.log(`✅ Views criadas: ${viewsResult.rows.length}`);
-    viewsResult.rows.forEach(row => console.log(`   • ${row.viewname}`));
+    viewsResult.rows.forEach((row) => console.log(`   • ${row.viewname}`));
     console.log('');
 
     // Verificar functions
@@ -116,7 +116,7 @@ async function applyMigrations() {
       ORDER BY routine_name
     `);
     console.log(`✅ Functions RPC criadas: ${functionsResult.rows.length}`);
-    functionsResult.rows.forEach(row => console.log(`   • ${row.routine_name}()`));
+    functionsResult.rows.forEach((row) => console.log(`   • ${row.routine_name}()`));
     console.log('');
 
     // Verificar índices
@@ -129,7 +129,7 @@ async function applyMigrations() {
       LIMIT 10
     `);
     console.log(`✅ Índices criados: ${indexesResult.rows.length}+ (amostra)`);
-    indexesResult.rows.forEach(row => console.log(`   • ${row.indexname}`));
+    indexesResult.rows.forEach((row) => console.log(`   • ${row.indexname}`));
     console.log('');
 
     // Verificar RLS policies
@@ -143,7 +143,7 @@ async function applyMigrations() {
     `);
     let totalPolicies = 0;
     console.log(`✅ RLS Policies criadas:`);
-    policiesResult.rows.forEach(row => {
+    policiesResult.rows.forEach((row) => {
       console.log(`   • ${row.tablename}: ${row.policy_count} policies`);
       totalPolicies += parseInt(row.policy_count);
     });
@@ -157,7 +157,9 @@ async function applyMigrations() {
       ORDER BY name
     `);
     console.log(`✅ Storage Buckets configurados: ${bucketsResult.rows.length}/5`);
-    bucketsResult.rows.forEach(row => console.log(`   • ${row.name} (${row.public ? 'público' : 'privado'})`));
+    bucketsResult.rows.forEach((row) =>
+      console.log(`   • ${row.name} (${row.public ? 'público' : 'privado'})`)
+    );
     console.log('');
 
     console.log('═══════════════════════════════════════════════════════════════════════');
@@ -167,12 +169,24 @@ async function applyMigrations() {
     console.log('║          ✅ Migrations Aplicadas com Sucesso!                         ║');
     console.log('║                                                                        ║');
     console.log('║          📊 Resumo:                                                    ║');
-    console.log(`║             • ${tablesResult.rows.length} tabelas criadas                                      ║`);
-    console.log(`║             • ${viewsResult.rows.length} views criadas                                        ║`);
-    console.log(`║             • ${functionsResult.rows.length} functions RPC criadas                                    ║`);
-    console.log(`║             • ${indexesResult.rows.length}+ índices criados                                     ║`);
-    console.log(`║             • ${totalPolicies} RLS policies ativas                                      ║`);
-    console.log(`║             • ${bucketsResult.rows.length} storage buckets configurados                            ║`);
+    console.log(
+      `║             • ${tablesResult.rows.length} tabelas criadas                                      ║`
+    );
+    console.log(
+      `║             • ${viewsResult.rows.length} views criadas                                        ║`
+    );
+    console.log(
+      `║             • ${functionsResult.rows.length} functions RPC criadas                                    ║`
+    );
+    console.log(
+      `║             • ${indexesResult.rows.length}+ índices criados                                     ║`
+    );
+    console.log(
+      `║             • ${totalPolicies} RLS policies ativas                                      ║`
+    );
+    console.log(
+      `║             • ${bucketsResult.rows.length} storage buckets configurados                            ║`
+    );
     console.log('║                                                                        ║');
     console.log('╚════════════════════════════════════════════════════════════════════════╝');
     console.log('');
@@ -181,7 +195,6 @@ async function applyMigrations() {
     console.log('   2. Execute: npm run infra:health');
     console.log('   3. Deploy Edge Functions (se necessário)');
     console.log('');
-
   } catch (error) {
     console.error('');
     console.error('╔════════════════════════════════════════════════════════════════════════╗');

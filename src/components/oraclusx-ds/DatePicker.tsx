@@ -1,7 +1,7 @@
 /**
  * OraclusX Design System - DatePicker Component
  * Seletor de data com validação
- * 
+ *
  * HARD GATES:
  * ✅ Sem text/font classes (tipografia CSS)
  * ✅ Cores via CSS variables
@@ -10,9 +10,9 @@
  * ✅ TypeScript strict
  */
 
-import React, { useState, useRef, useEffect } from"react";
-import { Calendar as CalendarIcon } from"lucide-react";
-import { cn } from"@/lib/utils";
+import React, { useState, useRef, useEffect } from 'react';
+import { Calendar as CalendarIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export interface DatePickerProps {
   value?: Date;
@@ -24,20 +24,20 @@ export interface DatePickerProps {
   disabled?: boolean;
   error?: string;
   className?: string;
-  format?:"dd/MM/yyyy" |"MM/dd/yyyy" |"yyyy-MM-dd";
+  format?: 'dd/MM/yyyy' | 'MM/dd/yyyy' | 'yyyy-MM-dd';
 }
 
 export const DatePicker: React.FC<DatePickerProps> = ({
   value,
   onChange,
   label,
-  placeholder ="Selecione uma data",
+  placeholder = 'Selecione uma data',
   minDate,
   maxDate,
   disabled = false,
   error,
   className,
-  format ="dd/MM/yyyy"
+  format = 'dd/MM/yyyy',
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(value);
@@ -51,21 +51,21 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const formatDate = (date: Date): string => {
-    const day = date.getDate().toString().padStart(2,"0");
-    const month = (date.getMonth() + 1).toString().padStart(2,"0");
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
 
     switch (format) {
-      case"dd/MM/yyyy":
+      case 'dd/MM/yyyy':
         return `${day}/${month}/${year}`;
-      case"MM/dd/yyyy":
+      case 'MM/dd/yyyy':
         return `${month}/${day}/${year}`;
-      case"yyyy-MM-dd":
+      case 'yyyy-MM-dd':
         return `${year}-${month}-${day}`;
       default:
         return `${day}/${month}/${year}`;
@@ -108,7 +108,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   };
 
   return (
-    <div ref={containerRef} className={cn("relative", className)}>
+    <div ref={containerRef} className={cn('relative', className)}>
       {label && (
         <label className="block mb-2 text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]">
           {label}
@@ -122,16 +122,22 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         aria-label="Selecionar data"
         {...(isOpen ? { 'aria-expanded': 'true' as const } : { 'aria-expanded': 'false' as const })}
         aria-haspopup="dialog"
-        className={cn("w-full px-4 py-2 rounded-lg flex items-center justify-between","bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]","border border-gray-200 dark:border-border","shadow-[var(--shadow-light-inner)] dark:shadow-[var(--shadow-dark-inner)]","focus:outline-none focus:ring-3 focus:ring-[var(--primary)]","transition-all",
-          disabled &&"opacity-50 cursor-not-allowed",
-          error &&"border-error"
+        className={cn(
+          'w-full px-4 py-2 rounded-lg flex items-center justify-between',
+          'bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]',
+          'border border-gray-200 dark:border-border',
+          'shadow-[var(--shadow-light-inner)] dark:shadow-[var(--shadow-dark-inner)]',
+          'focus:outline-none focus:ring-3 focus:ring-[var(--primary)]',
+          'transition-all',
+          disabled && 'opacity-50 cursor-not-allowed',
+          error && 'border-error'
         )}
       >
         <span
           className={cn(
             selectedDate
-              ?"text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]"
-              :"text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]"
+              ? 'text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]'
+              : 'text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]'
           )}
         >
           {selectedDate ? formatDate(selectedDate) : placeholder}
@@ -139,18 +145,18 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         <CalendarIcon size={18} />
       </button>
 
-      {error && (
-        <p className="mt-1 text-error dark:text-red-400">
-          {error}
-        </p>
-      )}
+      {error && <p className="mt-1 text-error dark:text-red-400">{error}</p>}
 
       {/* Calendar Dropdown */}
       {isOpen && (
         <div
           role="dialog"
           aria-label="Calendário"
-          className={cn("absolute z-50 mt-2 p-4 rounded-lg","bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]","shadow-[var(--shadow-light-outer)] dark:shadow-[var(--shadow-dark-outer)]","border border-gray-200 dark:border-border"
+          className={cn(
+            'absolute z-50 mt-2 p-4 rounded-lg',
+            'bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]',
+            'shadow-[var(--shadow-light-outer)] dark:shadow-[var(--shadow-dark-outer)]',
+            'border border-gray-200 dark:border-border'
           )}
         >
           {/* Month/Year Header */}
@@ -163,7 +169,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
               ←
             </button>
             <span className="text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)] orx-orx-font-medium">
-              {viewMonth.toLocaleDateString("pt-BR", { month:"long", year:"numeric" })}
+              {viewMonth.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}
             </span>
             <button
               onClick={nextMonth}
@@ -176,7 +182,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
 
           {/* Days of Week */}
           <div className="grid grid-cols-7 gap-1 mb-2">
-            {["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"].map((day) => (
+            {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map((day) => (
               <div
                 key={day}
                 className="text-center text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)] py-2"
@@ -205,11 +211,13 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                   key={day}
                   onClick={() => !isDisabled && handleDateSelect(date)}
                   disabled={isDisabled}
-                  aria-label={`${day} de ${viewMonth.toLocaleDateString("pt-BR", { month:"long" })}`}
-                  className={cn("p-2 rounded-md text-center transition-colors","focus:outline-none focus:ring-3 focus:ring-[var(--primary)]",
-                    isSelected &&"bg-[var(--primary)] text-inverse shadow-md",
-                    !isSelected && !isDisabled &&"hover:bg-[var(--surface-hover)]",
-                    isDisabled &&"opacity-30 cursor-not-allowed"
+                  aria-label={`${day} de ${viewMonth.toLocaleDateString('pt-BR', { month: 'long' })}`}
+                  className={cn(
+                    'p-2 rounded-md text-center transition-colors',
+                    'focus:outline-none focus:ring-3 focus:ring-[var(--primary)]',
+                    isSelected && 'bg-[var(--primary)] text-inverse shadow-md',
+                    !isSelected && !isDisabled && 'hover:bg-[var(--surface-hover)]',
+                    isDisabled && 'opacity-30 cursor-not-allowed'
                   )}
                 >
                   {day}
@@ -222,4 +230,3 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     </div>
   );
 };
-

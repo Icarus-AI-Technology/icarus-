@@ -1,12 +1,12 @@
 /* Import Design Tokens First */
 @import "./design-tokens.css";
+@import "./neumorphic-tokens.css";
 
 /* Import OraclusX Design System */
 @import "./oraclusx-ds.css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind CSS v4 is now imported via src/index.css using @import "tailwindcss" */
+/* No need for @tailwind directives here anymore */
 
 /* RESET GLOBAL - Força background em TODAS as camadas */
 html,

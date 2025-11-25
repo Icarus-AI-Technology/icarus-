@@ -22,10 +22,10 @@ interface UseCNPJReturn {
 
 /**
  * Hook para buscar CEP e auto-preencher endereço
- * 
+ *
  * @example
  * const { data, loading, error, fetchCEP } = useCEP();
- * 
+ *
  * const handleCEPChange = async (cep: string) => {
  *   if (cep.length === 8 || cep.length === 9) {
  *     const result = await fetchCEP(cep);
@@ -61,7 +61,7 @@ export function useCEP(): UseCEPReturn {
         return null;
       }
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       const errorMessage = err instanceof Error ? err.message : 'Erro ao buscar CEP';
       setError(errorMessage);
       return null;
@@ -75,10 +75,10 @@ export function useCEP(): UseCEPReturn {
 
 /**
  * Hook para buscar CNPJ e auto-preencher dados da empresa
- * 
+ *
  * @example
  * const { data, loading, error, fetchCNPJ } = useCNPJ();
- * 
+ *
  * const handleCNPJBlur = async (cnpj: string) => {
  *   const result = await fetchCNPJ(cnpj);
  *   if (result) {
@@ -125,7 +125,7 @@ export function useCNPJ(): UseCNPJReturn {
         return null;
       }
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       const errorMessage = err instanceof Error ? err.message : 'Erro ao buscar CNPJ';
       setError(errorMessage);
       return null;
@@ -174,4 +174,3 @@ export function useValidateCNPJ() {
 
   return { isValid, validate, format };
 }
-

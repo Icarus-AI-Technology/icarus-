@@ -1,7 +1,7 @@
 /**
  * Vercel KV Adapter (Redis gerenciado)
  * Substitui Upstash com serviço nativo Vercel
- * 
+ *
  * Free tier: 256MB + 10k commands/dia
  */
 
@@ -24,7 +24,7 @@ export class VercelKVQueueService {
    */
   async addJob(job: Omit<JobData, 'id' | 'createdAt'>): Promise<string> {
     const jobId = `job-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-    
+
     const fullJob: JobData = {
       ...job,
       id: jobId,
@@ -46,7 +46,7 @@ export class VercelKVQueueService {
    */
   async getNextJob(): Promise<JobData | null> {
     const jobStr = await kv.rpop<string>(this.queueKey);
-    
+
     if (!jobStr) return null;
 
     const job = JSON.parse(jobStr) as JobData;
@@ -64,7 +64,7 @@ export class VercelKVQueueService {
   async completeJob(jobId: string): Promise<void> {
     await kv.hincrby(this.statsKey, 'active', -1);
     await kv.hincrby(this.statsKey, 'completed', 1);
-    
+
     // Salvar timestamp de conclusão
     await kv.set(`job:${jobId}:completed`, Date.now(), { ex: 86400 }); // 24h TTL
   }
@@ -75,7 +75,7 @@ export class VercelKVQueueService {
   async failJob(jobId: string, error: string): Promise<void> {
     await kv.hincrby(this.statsKey, 'active', -1);
     await kv.hincrby(this.statsKey, 'failed', 1);
-    
+
     // Salvar erro
     await kv.set(`job:${jobId}:error`, error, { ex: 86400 }); // 24h TTL
   }
@@ -150,10 +150,7 @@ export async function queueSendEmail(params: {
 }
 
 // Job: Processar NFe
-export async function queueProcessNFe(params: {
-  nfeId: string;
-  xml: string;
-}): Promise<string> {
+export async function queueProcessNFe(params: { nfeId: string; xml: string }): Promise<string> {
   return vercelKVQueue.addJob({
     type: 'process_nfe',
     data: params,
@@ -182,4 +179,3 @@ export async function queueSyncEstoque(): Promise<string> {
     priority: 6,
   });
 }
-

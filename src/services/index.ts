@@ -5,18 +5,14 @@
 
 // Estoque Services
 export { ValidadeService } from './ValidadeService';
-export type {
-  ProdutoVencimento,
-  AcaoVencimento,
-  RelatorioVencimento
-} from './ValidadeService';
+export type { ProdutoVencimento, AcaoVencimento, RelatorioVencimento } from './ValidadeService';
 
 export { PontoReposicaoService } from './PontoReposicaoService';
 export type {
   PontoReposicaoCalculo,
   ProdutoAbaixoPonto,
   SugestaoCompra,
-  HistoricoConsumo
+  HistoricoConsumo,
 } from './PontoReposicaoService';
 
 export { EstoqueAI } from './EstoqueAI';
@@ -25,10 +21,9 @@ export type {
   ClassificacaoABCXYZ,
   CalculoEOQ,
   Anomalia,
-  OtimizacaoEstoque
+  OtimizacaoEstoque,
 } from './EstoqueAI';
 
 // Compliance Services
 export { ComplianceAutomaticoAI } from './compliance';
 export type { AlertaPreditivo } from './compliance';
-

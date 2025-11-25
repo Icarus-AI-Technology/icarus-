@@ -3,9 +3,9 @@
  * Painel lateral deslizante para formulários e conteúdo lateral
  */
 
-import React, { useEffect } from"react";
-import { X } from"lucide-react";
-import { Button } from"./Button";
+import React, { useEffect } from 'react';
+import { X } from 'lucide-react';
+import { Button } from './Button';
 
 export interface DrawerProps {
   isOpen: boolean;
@@ -13,8 +13,8 @@ export interface DrawerProps {
   title: string;
   description?: string;
   children: React.ReactNode;
-  position?:"left" |"right";
-  size?:"sm" |"md" |"lg" |"xl";
+  position?: 'left' | 'right';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   footer?: React.ReactNode;
   closeOnOverlay?: boolean;
   showCloseButton?: boolean;
@@ -26,8 +26,8 @@ export const Drawer: React.FC<DrawerProps> = ({
   title,
   description,
   children,
-  position ="right",
-  size ="md",
+  position = 'right',
+  size = 'md',
   footer,
   closeOnOverlay = true,
   showCloseButton = true,
@@ -35,45 +35,45 @@ export const Drawer: React.FC<DrawerProps> = ({
   // Fechar com ESC
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key ==="Escape" && isOpen) {
+      if (e.key === 'Escape' && isOpen) {
         onClose();
       }
     };
 
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen, onClose]);
 
   // Bloquear scroll do body quando drawer aberto
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow ="hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow ="unset";
+      document.body.style.overflow = 'unset';
     }
 
     return () => {
-      document.body.style.overflow ="unset";
+      document.body.style.overflow = 'unset';
     };
   }, [isOpen]);
 
   if (!isOpen) return null;
 
   const sizeClasses = {
-    sm:"max-w-sm",
-    md:"max-w-md",
-    lg:"max-w-2xl",
-    xl:"max-w-4xl",
+    sm: 'max-w-sm',
+    md: 'max-w-md',
+    lg: 'max-w-2xl',
+    xl: 'max-w-4xl',
   };
 
   const positionClasses = {
-    left:"left-0",
-    right:"right-0",
+    left: 'left-0',
+    right: 'right-0',
   };
 
   const animationClasses = {
-    left: isOpen ?"animate-slide-in-left" :"animate-slide-out-left",
-    right: isOpen ?"animate-slide-in-right" :"animate-slide-out-right",
+    left: isOpen ? 'animate-slide-in-left' : 'animate-slide-out-left',
+    right: isOpen ? 'animate-slide-in-right' : 'animate-slide-out-right',
   };
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -89,7 +89,7 @@ export const Drawer: React.FC<DrawerProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="drawer-title"
-      aria-describedby={description ?"drawer-description" : undefined}
+      aria-describedby={description ? 'drawer-description' : undefined}
     >
       <div
         className={`
@@ -114,10 +114,7 @@ export const Drawer: React.FC<DrawerProps> = ({
               {title}
             </h2>
             {description && (
-              <p
-                id="drawer-description"
-                className="text-body-sm text-secondary dark:text-muted"
-              >
+              <p id="drawer-description" className="text-body-sm text-secondary dark:text-muted">
                 {description}
               </p>
             )}
@@ -136,9 +133,7 @@ export const Drawer: React.FC<DrawerProps> = ({
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6">
-          {children}
-        </div>
+        <div className="flex-1 overflow-y-auto p-6">{children}</div>
 
         {/* Footer */}
         {footer && (
@@ -152,4 +147,3 @@ export const Drawer: React.FC<DrawerProps> = ({
 };
 
 export default Drawer;
-

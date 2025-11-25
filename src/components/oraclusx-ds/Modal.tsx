@@ -3,9 +3,9 @@
  * Sistema de modal com overlay, animações e acessibilidade
  */
 
-import React, { useEffect, useRef } from"react";
-import { X } from"lucide-react";
-import { Button } from"./Button";
+import React, { useEffect, useRef } from 'react';
+import { X } from 'lucide-react';
+import { Button } from './Button';
 
 export interface ModalProps {
   isOpen: boolean;
@@ -13,7 +13,7 @@ export interface ModalProps {
   title: string;
   description?: string;
   children: React.ReactNode;
-  size?:"sm" |"md" |"lg" |"xl" |"full";
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
   footer?: React.ReactNode;
   closeOnOverlay?: boolean;
   showCloseButton?: boolean;
@@ -25,7 +25,7 @@ export const Modal: React.FC<ModalProps> = ({
   title,
   description,
   children,
-  size ="md",
+  size = 'md',
   footer,
   closeOnOverlay = true,
   showCloseButton = true,
@@ -35,36 +35,36 @@ export const Modal: React.FC<ModalProps> = ({
   // Fechar com ESC
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key ==="Escape" && isOpen) {
+      if (e.key === 'Escape' && isOpen) {
         onClose();
       }
     };
 
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen, onClose]);
 
   // Bloquear scroll do body quando modal aberto
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow ="hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow ="unset";
+      document.body.style.overflow = 'unset';
     }
 
     return () => {
-      document.body.style.overflow ="unset";
+      document.body.style.overflow = 'unset';
     };
   }, [isOpen]);
 
   if (!isOpen) return null;
 
   const sizeClasses = {
-    sm:"max-w-md",
-    md:"max-w-2xl",
-    lg:"max-w-4xl",
-    xl:"max-w-6xl",
-    full:"max-w-[95vw]",
+    sm: 'max-w-md',
+    md: 'max-w-2xl',
+    lg: 'max-w-4xl',
+    xl: 'max-w-6xl',
+    full: 'max-w-[95vw]',
   };
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -80,7 +80,7 @@ export const Modal: React.FC<ModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
-      aria-describedby={description ?"modal-description" : undefined}
+      aria-describedby={description ? 'modal-description' : undefined}
     >
       <div
         ref={modalRef}
@@ -106,10 +106,7 @@ export const Modal: React.FC<ModalProps> = ({
               {title}
             </h2>
             {description && (
-              <p
-                id="modal-description"
-                className="text-body-sm text-secondary dark:text-muted"
-              >
+              <p id="modal-description" className="text-body-sm text-secondary dark:text-muted">
                 {description}
               </p>
             )}
@@ -128,9 +125,7 @@ export const Modal: React.FC<ModalProps> = ({
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6">
-          {children}
-        </div>
+        <div className="flex-1 overflow-y-auto p-6">{children}</div>
 
         {/* Footer */}
         {footer && (

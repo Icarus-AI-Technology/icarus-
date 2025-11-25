@@ -1,6 +1,6 @@
 /**
  * Base Interface for all Transportadora Services
- * 
+ *
  * PADRÃO:
  * Todas as transportadoras implementam esta interface
  * garantindo consistência e facilidade de manutenção
@@ -210,4 +210,3 @@ export interface TransportadoraInfo {
     horario: string;
   };
 }
-

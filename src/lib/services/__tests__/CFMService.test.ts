@@ -5,6 +5,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { cfmService } from '@/lib/services/CFMService';
+import { cfmScraperService } from '@/lib/services/CFMScraperService';
 
 describe('CFMService', () => {
   beforeEach(() => {
@@ -18,42 +19,42 @@ describe('CFMService', () => {
   describe('validarCRMLocal', () => {
     it('deve validar CRM com formato válido (5 dígitos)', () => {
       const resultado = cfmService.validarCRMLocal('12345', 'SP');
-      
+
       expect(resultado.formatoValido).toBe(true);
       expect(resultado.mensagem).toBe('Formato válido');
     });
 
     it('deve validar CRM com formato válido (6 dígitos)', () => {
       const resultado = cfmService.validarCRMLocal('123456', 'RJ');
-      
+
       expect(resultado.formatoValido).toBe(true);
       expect(resultado.mensagem).toBe('Formato válido');
     });
 
     it('deve rejeitar CRM com menos de 5 dígitos', () => {
       const resultado = cfmService.validarCRMLocal('1234', 'SP');
-      
+
       expect(resultado.formatoValido).toBe(false);
       expect(resultado.mensagem).toBe('CRM deve conter 5 ou 6 dígitos');
     });
 
     it('deve rejeitar CRM com mais de 6 dígitos', () => {
       const resultado = cfmService.validarCRMLocal('1234567', 'SP');
-      
+
       expect(resultado.formatoValido).toBe(false);
       expect(resultado.mensagem).toBe('CRM deve conter 5 ou 6 dígitos');
     });
 
     it('deve rejeitar CRM com UF inválida', () => {
       const resultado = cfmService.validarCRMLocal('12345', 'XX');
-      
+
       expect(resultado.formatoValido).toBe(false);
       expect(resultado.mensagem).toBe('UF inválida');
     });
 
     it('deve rejeitar CRM com caracteres não numéricos', () => {
       const resultado = cfmService.validarCRMLocal('12A45', 'SP');
-      
+
       expect(resultado.formatoValido).toBe(false);
       // O CRM"12A45" limpo fica"1245" (4 dígitos), então mensagem é de comprimento
       expect(resultado.mensagem).toBe('CRM deve conter 5 ou 6 dígitos');
@@ -61,7 +62,7 @@ describe('CFMService', () => {
 
     it('deve aceitar CRM com formatação (remover antes)', () => {
       const resultado = cfmService.validarCRMLocal('CRM/SP 12345', 'SP');
-      
+
       // Deve limpar a string antes de validar
       expect(resultado.formatoValido).toBe(true);
     });
@@ -88,7 +89,7 @@ describe('CFMService', () => {
   describe('getUFsValidas', () => {
     it('deve retornar todas as 27 UFs válidas', () => {
       const ufs = cfmService.getUFsValidas();
-      
+
       expect(ufs).toHaveLength(27);
       expect(ufs).toContain('SP');
       expect(ufs).toContain('RJ');
@@ -98,10 +99,10 @@ describe('CFMService', () => {
     it('deve retornar cópia do array (não referência)', () => {
       const ufs1 = cfmService.getUFsValidas();
       const ufs2 = cfmService.getUFsValidas();
-      
+
       // Modificar ufs1 não deve afetar ufs2
       ufs1.push('XX');
-      
+
       expect(ufs2).toHaveLength(27);
     });
   });
@@ -121,22 +122,51 @@ describe('CFMService', () => {
 
     it('deve validar todas as 27 UFs', () => {
       const ufsValidas = [
-        'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
-        'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN',
-        'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
+        'AC',
+        'AL',
+        'AP',
+        'AM',
+        'BA',
+        'CE',
+        'DF',
+        'ES',
+        'GO',
+        'MA',
+        'MT',
+        'MS',
+        'MG',
+        'PA',
+        'PB',
+        'PR',
+        'PE',
+        'PI',
+        'RJ',
+        'RN',
+        'RS',
+        'RO',
+        'RR',
+        'SC',
+        'SP',
+        'SE',
+        'TO',
       ];
-      
-      ufsValidas.forEach(uf => {
+
+      ufsValidas.forEach((uf) => {
         expect(cfmService.isUFValida(uf)).toBe(true);
       });
     });
   });
 
   describe('consultarCRM', () => {
+    beforeEach(() => {
+      vi.spyOn(cfmScraperService, 'isScrapingAvailable').mockResolvedValue(false);
+      vi.spyOn(cfmScraperService, 'consultarCRM').mockResolvedValue(null);
+    });
+
     it('deve retornar validação local quando scraping indisponível', async () => {
       // Nota: Este teste faz consulta real que pode demorar (Puppeteer)
       // Em CI/CD, considere mockar o cfmScraperService
-      
+
       // Act
       const resultado = await cfmService.consultarCRM('12345', 'SP');
 
@@ -158,10 +188,7 @@ describe('CFMService', () => {
 
     it('deve lançar erro se UF for inválida', async () => {
       // Act & Assert
-      await expect(
-        cfmService.consultarCRM('12345', 'XX')
-      ).rejects.toThrow('UF inválida');
+      await expect(cfmService.consultarCRM('12345', 'XX')).rejects.toThrow('UF inválida');
     });
   });
 });
-

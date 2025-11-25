@@ -14,7 +14,7 @@
  * Custo: $0 (self-hosted) vs $300-1,200/ano (Amplitude)
  */
 
-import posthog from "posthog-js";
+import posthog from 'posthog-js';
 
 export interface AnalyticsEvent {
   event: string;
@@ -44,23 +44,20 @@ export class PostHogService {
   private sessionId?: string;
 
   constructor(apiKey?: string, host?: string) {
-    this.apiKey = apiKey || process.env.VITE_POSTHOG_API_KEY || "";
-    this.host =
-      host || process.env.VITE_POSTHOG_HOST || "https://app.posthog.com";
+    this.apiKey = apiKey || process.env.VITE_POSTHOG_API_KEY || '';
+    this.host = host || process.env.VITE_POSTHOG_HOST || 'https://app.posthog.com';
     this.enabled = !!this.apiKey;
 
-    if (!this.enabled && process.env.NODE_ENV === "production") {
-      console.warn("[PostHog] Not configured. Set VITE_POSTHOG_API_KEY");
+    if (!this.enabled && process.env.NODE_ENV === 'production') {
+      console.warn('[PostHog] Not configured. Set VITE_POSTHOG_API_KEY');
     }
 
     this.initSession();
 
     // Initialize browser SDK when available and not in QA mode
     try {
-      const isBrowser = typeof window !== "undefined";
-      const isQAMode =
-        isBrowser &&
-        new URLSearchParams(window.location.search).get("qa") === "1";
+      const isBrowser = typeof window !== 'undefined';
+      const isQAMode = isBrowser && new URLSearchParams(window.location.search).get('qa') === '1';
       if (isBrowser && this.enabled && !isQAMode) {
         posthog.init(this.apiKey, {
           api_host: this.host,
@@ -89,7 +86,7 @@ export class PostHogService {
       this.setUserProperties({ $set: properties });
     }
 
-    console.log("[PostHog] User identified:", userId);
+    console.log('[PostHog] User identified:', userId);
   }
 
   /**
@@ -98,7 +95,7 @@ export class PostHogService {
   setUserProperties(properties: UserProperties): void {
     if (!this.enabled) return;
 
-    this.capture("$set", {
+    this.capture('$set', {
       $set: properties.$set,
       $set_once: properties.$set_once,
       $unset: properties.$unset,
@@ -110,7 +107,7 @@ export class PostHogService {
    */
   capture(event: string, properties?: Record<string, unknown>): void {
     if (!this.enabled) {
-      console.debug("[PostHog] Disabled, skipping event:", event);
+      console.debug('[PostHog] Disabled, skipping event:', event);
       return;
     }
 
@@ -132,7 +129,7 @@ export class PostHogService {
    * Page view
    */
   pageView(pageName?: string, properties?: Record<string, unknown>): void {
-    this.capture("$pageview", {
+    this.capture('$pageview', {
       $current_url: window.location.href,
       $pathname: window.location.pathname,
       $title: pageName || document.title,
@@ -148,9 +145,9 @@ export class PostHogService {
 
     try {
       const response = await fetch(`${this.host}/decide`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           api_key: this.apiKey,
@@ -164,7 +161,7 @@ export class PostHogService {
       return data.featureFlags?.[flagKey] === true;
     } catch (error) {
       const err = error as Error;
-      console.error("[PostHog] Feature flag check error:", err);
+      console.error('[PostHog] Feature flag check error:', err);
       return false;
     }
   }
@@ -177,9 +174,9 @@ export class PostHogService {
 
     try {
       const response = await fetch(`${this.host}/decide`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           api_key: this.apiKey,
@@ -193,7 +190,7 @@ export class PostHogService {
       return data.featureFlagPayloads?.[flagKey] || null;
     } catch (error) {
       const err = error as Error;
-      console.error("[PostHog] Feature flag variant error:", err);
+      console.error('[PostHog] Feature flag variant error:', err);
       return null;
     }
   }
@@ -204,9 +201,9 @@ export class PostHogService {
   private async sendEvent(event: AnalyticsEvent): Promise<void> {
     try {
       await fetch(`${this.host}/capture`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           api_key: this.apiKey,
@@ -217,7 +214,7 @@ export class PostHogService {
       });
     } catch (error) {
       const err = error as Error;
-      console.error("[PostHog] Send event error:", err);
+      console.error('[PostHog] Send event error:', err);
     }
   }
 
@@ -225,10 +222,10 @@ export class PostHogService {
    * Get or create anonymous ID
    */
   private getAnonymousId(): string {
-    let anonId = localStorage.getItem("posthog_anon_id");
+    let anonId = localStorage.getItem('posthog_anon_id');
     if (!anonId) {
       anonId = `anon-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-      localStorage.setItem("posthog_anon_id", anonId);
+      localStorage.setItem('posthog_anon_id', anonId);
     }
     return anonId;
   }
@@ -240,7 +237,7 @@ export class PostHogService {
     this.userId = undefined;
     this.userProperties = {};
     this.initSession();
-    localStorage.removeItem("posthog_anon_id");
+    localStorage.removeItem('posthog_anon_id');
   }
 
   /**
@@ -266,11 +263,8 @@ type CirurgiaData = {
   procedimento?: string;
   data_cirurgia?: string;
 };
-export function trackCirurgiaCriada(
-  cirurgiaId: string,
-  data: CirurgiaData,
-): void {
-  analyticsService.capture("cirurgia_criada", {
+export function trackCirurgiaCriada(cirurgiaId: string, data: CirurgiaData): void {
+  analyticsService.capture('cirurgia_criada', {
     cirurgia_id: cirurgiaId,
     medico_id: data.medico_id,
     hospital_id: data.hospital_id,
@@ -280,11 +274,8 @@ export function trackCirurgiaCriada(
 }
 
 // Track: Produto adicionado ao estoque
-export function trackProdutoAdicionado(
-  produtoId: string,
-  quantidade: number,
-): void {
-  analyticsService.capture("produto_adicionado", {
+export function trackProdutoAdicionado(produtoId: string, quantidade: number): void {
+  analyticsService.capture('produto_adicionado', {
     produto_id: produtoId,
     quantidade,
   });
@@ -292,18 +283,15 @@ export function trackProdutoAdicionado(
 
 // Track: NFe emitida
 export function trackNFeEmitida(nfeId: string, valor: number): void {
-  analyticsService.capture("nfe_emitida", {
+  analyticsService.capture('nfe_emitida', {
     nfe_id: nfeId,
     valor,
   });
 }
 
 // Track: Relatório gerado
-export function trackRelatorioGerado(
-  tipo: string,
-  filtros: Record<string, unknown>,
-): void {
-  analyticsService.capture("relatorio_gerado", {
+export function trackRelatorioGerado(tipo: string, filtros: Record<string, unknown>): void {
+  analyticsService.capture('relatorio_gerado', {
     tipo,
     filtros,
   });
@@ -312,28 +300,22 @@ export function trackRelatorioGerado(
 // Track: Login
 export function trackLogin(userId: string, metodo: string): void {
   analyticsService.identify(userId);
-  analyticsService.capture("login", {
+  analyticsService.capture('login', {
     metodo,
   });
 }
 
 // Track: Erro
-export function trackError(
-  errorMessage: string,
-  context?: Record<string, unknown>,
-): void {
-  analyticsService.capture("error", {
+export function trackError(errorMessage: string, context?: Record<string, unknown>): void {
+  analyticsService.capture('error', {
     error_message: errorMessage,
     context,
   });
 }
 
 // Track: Feature usado
-export function trackFeatureUsed(
-  featureName: string,
-  context?: Record<string, unknown>,
-): void {
-  analyticsService.capture("feature_used", {
+export function trackFeatureUsed(featureName: string, context?: Record<string, unknown>): void {
+  analyticsService.capture('feature_used', {
     feature: featureName,
     context,
   });

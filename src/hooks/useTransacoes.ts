@@ -38,8 +38,8 @@ export function useTransacoes() {
   });
 
   const fetchTransacoes = useCallback(async () => {
-    setState(prev => ({ ...prev, loading: true, error: null }));
-    
+    setState((prev) => ({ ...prev, loading: true, error: null }));
+
     try {
       const { data, error } = await supabase
         .from('transacoes')
@@ -54,8 +54,8 @@ export function useTransacoes() {
         error: null,
       });
     } catch (error) {
-   const err = error as Error;
-      setState(prev => ({
+      const err = error as Error;
+      setState((prev) => ({
         ...prev,
         loading: false,
         error: error instanceof Error ? error.message : 'Erro ao carregar transações',
@@ -65,95 +65,96 @@ export function useTransacoes() {
 
   const getTransacaoById = useCallback(async (id: string): Promise<Transacao | null> => {
     try {
-      const { data, error } = await supabase
-        .from('transacoes')
-        .select('*')
-        .eq('id', id)
-        .single();
+      const { data, error } = await supabase.from('transacoes').select('*').eq('id', id).single();
 
       if (error) throw error;
       return data;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao buscar transação:', err);
       return null;
     }
   }, []);
 
-  const createTransacao = useCallback(async (transacao: Omit<Transacao, 'id' | 'created_at' | 'updated_at'>): Promise<Transacao | null> => {
-    try {
-      const { data, error } = await supabase
-        .from('transacoes')
-        .insert([transacao])
-        .select()
-        .single();
+  const createTransacao = useCallback(
+    async (
+      transacao: Omit<Transacao, 'id' | 'created_at' | 'updated_at'>
+    ): Promise<Transacao | null> => {
+      try {
+        const { data, error } = await supabase
+          .from('transacoes')
+          .insert([transacao])
+          .select()
+          .single();
 
-      if (error) throw error;
+        if (error) throw error;
 
-      // Atualizar lista local
-      setState(prev => ({
-        ...prev,
-        transacoes: [data, ...prev.transacoes],
-      }));
+        // Atualizar lista local
+        setState((prev) => ({
+          ...prev,
+          transacoes: [data, ...prev.transacoes],
+        }));
 
-      return data;
-    } catch (error) {
-   const err = error as Error;
-      setState(prev => ({
-        ...prev,
-        error: error instanceof Error ? error.message : 'Erro ao criar transação',
-      }));
-      return null;
-    }
-  }, []);
+        return data;
+      } catch (error) {
+        const err = error as Error;
+        setState((prev) => ({
+          ...prev,
+          error: error instanceof Error ? error.message : 'Erro ao criar transação',
+        }));
+        return null;
+      }
+    },
+    []
+  );
 
-  const updateTransacao = useCallback(async (id: string, updates: Partial<Transacao>): Promise<Transacao | null> => {
-    try {
-      const { data, error } = await supabase
-        .from('transacoes')
-        .update(updates)
-        .eq('id', id)
-        .select()
-        .single();
+  const updateTransacao = useCallback(
+    async (id: string, updates: Partial<Transacao>): Promise<Transacao | null> => {
+      try {
+        const { data, error } = await supabase
+          .from('transacoes')
+          .update(updates)
+          .eq('id', id)
+          .select()
+          .single();
 
-      if (error) throw error;
+        if (error) throw error;
 
-      // Atualizar lista local
-      setState(prev => ({
-        ...prev,
-        transacoes: prev.transacoes.map(t => t.id === id ? data : t),
-      }));
+        // Atualizar lista local
+        setState((prev) => ({
+          ...prev,
+          transacoes: prev.transacoes.map((t) => (t.id === id ? data : t)),
+        }));
 
-      return data;
-    } catch (error) {
-   const err = error as Error;
-      setState(prev => ({
-        ...prev,
-        error: error instanceof Error ? error.message : 'Erro ao atualizar transação',
-      }));
-      return null;
-    }
-  }, []);
+        return data;
+      } catch (error) {
+        const err = error as Error;
+        setState((prev) => ({
+          ...prev,
+          error: error instanceof Error ? error.message : 'Erro ao atualizar transação',
+        }));
+        return null;
+      }
+    },
+    []
+  );
 
   const deleteTransacao = useCallback(async (id: string): Promise<boolean> => {
     try {
-      const { error } = await supabase
-        .from('transacoes')
-        .delete()
-        .eq('id', id);
+      const { error } = await supabase.from('transacoes').delete().eq('id', id);
 
       if (error) throw error;
 
       // Atualizar lista local
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
-        transacoes: prev.transacoes.filter(t => t.id !== id),
+        transacoes: prev.transacoes.filter((t) => t.id !== id),
       }));
 
       return true;
     } catch (error) {
-   const err = error as Error;
-      setState(prev => ({
+      const err = error as Error;
+      setState((prev) => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Erro ao deletar transação',
       }));
@@ -172,7 +173,7 @@ export function useTransacoes() {
       if (error) throw error;
       return data || [];
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao buscar transações por tipo:', err);
       return [];
     }
@@ -189,7 +190,7 @@ export function useTransacoes() {
       if (error) throw error;
       return data || [];
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao buscar transações por status:', err);
       return [];
     }
@@ -207,7 +208,7 @@ export function useTransacoes() {
       if (error) throw error;
       return data || [];
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao buscar transações por período:', err);
       return [];
     }
@@ -215,22 +216,20 @@ export function useTransacoes() {
 
   const getResumoFinanceiro = useCallback(async () => {
     try {
-      const { data, error } = await supabase
-        .from('transacoes')
-        .select('tipo, valor, status');
+      const { data, error } = await supabase.from('transacoes').select('tipo, valor, status');
 
       if (error) throw error;
 
       const receitas = data
-        .filter(t => t.tipo === 'receita' && t.status === 'paga')
+        .filter((t) => t.tipo === 'receita' && t.status === 'paga')
         .reduce((sum, t) => sum + t.valor, 0);
 
       const despesas = data
-        .filter(t => t.tipo === 'despesa' && t.status === 'paga')
+        .filter((t) => t.tipo === 'despesa' && t.status === 'paga')
         .reduce((sum, t) => sum + t.valor, 0);
 
       const pendentes = data
-        .filter(t => t.status === 'pendente')
+        .filter((t) => t.status === 'pendente')
         .reduce((sum, t) => sum + t.valor, 0);
 
       const saldo = receitas - despesas;
@@ -243,7 +242,7 @@ export function useTransacoes() {
         totalTransacoes: data.length,
       };
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao calcular resumo financeiro:', err);
       return {
         receitas: 0,
@@ -257,20 +256,21 @@ export function useTransacoes() {
 
   const countByStatus = useCallback(async () => {
     try {
-      const { data, error } = await supabase
-        .from('transacoes')
-        .select('status');
+      const { data, error } = await supabase.from('transacoes').select('status');
 
       if (error) throw error;
 
-      const counts = data.reduce((acc, t) => {
-        acc[t.status] = (acc[t.status] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>);
+      const counts = data.reduce(
+        (acc, t) => {
+          acc[t.status] = (acc[t.status] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      );
 
       return counts;
     } catch (error) {
-   const err = error as Error;
+      const err = error as Error;
       console.error('Erro ao contar transações:', err);
       return {};
     }
@@ -307,4 +307,3 @@ export function useTransacoes() {
     countByStatus,
   };
 }
-

@@ -34,7 +34,7 @@ const spacingClasses = {
 
 /**
  * Section - Seção de página padronizada
- * 
+ *
  * @example
  * ```tsx
  * <Section
@@ -64,14 +64,7 @@ export const Section: React.FC<SectionProps> = ({
   const hasHeader = title || description || actions;
 
   return (
-    <section
-      id={id}
-      className={cn(
-        spacingClasses[spacing],
-        variantClasses[variant],
-        className
-      )}
-    >
+    <section id={id} className={cn(spacingClasses[spacing], variantClasses[variant], className)}>
       {hasHeader && (
         <div className="flex items-start justify-between gap-4 mb-6">
           <div className="flex-1 min-w-0">
@@ -80,17 +73,9 @@ export const Section: React.FC<SectionProps> = ({
                 {title}
               </h2>
             )}
-            {description && (
-              <p className="text-[var(--orx-text-secondary)]">
-                {description}
-              </p>
-            )}
+            {description && <p className="text-[var(--orx-text-secondary)]">{description}</p>}
           </div>
-          {actions && (
-            <div className="flex items-center gap-2 flex-shrink-0">
-              {actions}
-            </div>
-          )}
+          {actions && <div className="flex items-center gap-2 flex-shrink-0">{actions}</div>}
         </div>
       )}
       {children}
@@ -101,4 +86,3 @@ export const Section: React.FC<SectionProps> = ({
 Section.displayName = 'OraclusXSection';
 
 export default Section;
-

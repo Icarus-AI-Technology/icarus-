@@ -1,7 +1,7 @@
 /**
  * OraclusX Design System - Breadcrumb Component
  * Migalhas de pão para navegação hierárquica
- * 
+ *
  * HARD GATES:
  * ✅ Sem text/font classes (tipografia CSS)
  * ✅ Cores via CSS variables
@@ -10,9 +10,9 @@
  * ✅ TypeScript strict
  */
 
-import React from"react";
-import { ChevronRight, Home } from"lucide-react";
-import { cn } from"@/lib/utils";
+import React from 'react';
+import { ChevronRight, Home } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export interface BreadcrumbItem {
   label: string;
@@ -34,24 +34,23 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
   separator = <ChevronRight size={16} />,
   showHome = true,
   className,
-  maxItems
+  maxItems,
 }) => {
   // If maxItems is set, truncate middle items
   let displayItems = items;
   if (maxItems && items.length > maxItems) {
     const firstItems = items.slice(0, 1);
     const lastItems = items.slice(-(maxItems - 1));
-    displayItems = [
-      ...firstItems,
-      { label:"...", href: undefined },
-      ...lastItems
-    ];
+    displayItems = [...firstItems, { label: '...', href: undefined }, ...lastItems];
   }
 
   return (
     <nav
       aria-label="Breadcrumb"
-      className={cn("flex items-center gap-2 px-4 py-2 rounded-lg","bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]","shadow-[var(--shadow-light-inner)] dark:shadow-[var(--shadow-dark-inner)]",
+      className={cn(
+        'flex items-center gap-2 px-4 py-2 rounded-lg',
+        'bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]',
+        'shadow-[var(--shadow-light-inner)] dark:shadow-[var(--shadow-dark-inner)]',
         className
       )}
     >
@@ -61,7 +60,12 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
             <li>
               <a
                 href="/"
-                className={cn("flex items-center gap-1 px-2 py-1 rounded-md","text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]","hover:text-[var(--primary)] hover:bg-[var(--surface-hover)]","transition-colors","focus:outline-none focus:ring-3 focus:ring-[var(--primary)]"
+                className={cn(
+                  'flex items-center gap-1 px-2 py-1 rounded-md',
+                  'text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]',
+                  'hover:text-[var(--primary)] hover:bg-[var(--surface-hover)]',
+                  'transition-colors',
+                  'focus:outline-none focus:ring-3 focus:ring-[var(--primary)]'
                 )}
                 aria-label="Home"
               >
@@ -69,7 +73,10 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
               </a>
             </li>
             {displayItems.length > 0 && (
-              <li aria-hidden="true" className="text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]">
+              <li
+                aria-hidden="true"
+                className="text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]"
+              >
                 {separator}
               </li>
             )}
@@ -78,7 +85,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
 
         {displayItems.map((item, index) => {
           const isLast = index === displayItems.length - 1;
-          const isTruncated = item.label ==="...";
+          const isTruncated = item.label === '...';
 
           return (
             <React.Fragment key={index}>
@@ -104,7 +111,12 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
                         item.onClick();
                       }
                     }}
-                    className={cn("flex items-center gap-2 px-2 py-1 rounded-md","text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]","hover:text-[var(--primary)] hover:bg-[var(--surface-hover)]","transition-colors","focus:outline-none focus:ring-3 focus:ring-[var(--primary)]"
+                    className={cn(
+                      'flex items-center gap-2 px-2 py-1 rounded-md',
+                      'text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]',
+                      'hover:text-[var(--primary)] hover:bg-[var(--surface-hover)]',
+                      'transition-colors',
+                      'focus:outline-none focus:ring-3 focus:ring-[var(--primary)]'
                     )}
                   >
                     {item.icon && <span>{item.icon}</span>}
@@ -114,7 +126,10 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
               </li>
 
               {!isLast && (
-                <li aria-hidden="true" className="text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]">
+                <li
+                  aria-hidden="true"
+                  className="text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]"
+                >
                   {separator}
                 </li>
               )}
@@ -125,4 +140,3 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
     </nav>
   );
 };
-

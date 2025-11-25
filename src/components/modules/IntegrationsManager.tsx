@@ -1,16 +1,16 @@
 /**
  * Componente: Integrations Manager
- * 
+ *
  * Gerenciamento centralizado de todas as integrações externas
  * Dashboard completo com logs, webhooks, health checks e configurações
  */
 
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import {
   Card,
   Button,
   Badge,
-  Table,
+  TableContainer,
   TableHeader,
   TableRow,
   TableHead,
@@ -48,6 +48,11 @@ import { useDocumentTitle } from '@/hooks';
 import { useToast } from '@/contexts/ToastContext';
 import { APIGatewayService } from '@/lib/services/APIGatewayService';
 import { formatNumber } from '@/lib/utils';
+
+// Helper function para formatar percentuais
+const formatPercent = (value: number): string => {
+  return `${value.toFixed(1)}%`;
+};
 // import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
 // (Nenhum gráfico ativo aqui no momento; manter comentado até adicionar OrxLineChart quando necessário)
 
@@ -90,9 +95,20 @@ interface LogEntry {
   erro?: string;
 }
 
-const STATUS_COLORS: Record<string, { bg: string; text: string; icon: typeof CheckCircle | typeof XCircle | typeof AlertCircle | typeof Clock }> = {
+const STATUS_COLORS: Record<
+  string,
+  {
+    bg: string;
+    text: string;
+    icon: typeof CheckCircle | typeof XCircle | typeof AlertCircle | typeof Clock;
+  }
+> = {
   ativo: { bg: 'bg-success/20', text: 'text-success', icon: CheckCircle },
-  inativo: { bg: 'bg-gray-200 dark:bg-gray-700', text: 'text-gray-600 dark:text-gray-400', icon: XCircle },
+  inativo: {
+    bg: 'bg-gray-200 dark:bg-gray-700',
+    text: 'text-gray-600 dark:text-gray-400',
+    icon: XCircle,
+  },
   erro: { bg: 'bg-error/20', text: 'text-error', icon: AlertCircle },
   manutencao: { bg: 'bg-warning/20', text: 'text-warning', icon: Clock },
 };
@@ -111,22 +127,20 @@ export default function IntegrationsManager() {
   useDocumentTitle('Integrations Manager');
   const { addToast } = useToast();
 
-  const [activeTab, setActiveTab] = useState<'overview' | 'integrations' | 'webhooks' | 'logs' | 'config'>('overview');
+  const [activeTab, setActiveTab] = useState<
+    'overview' | 'integrations' | 'webhooks' | 'logs' | 'config'
+  >('overview');
   const [loading, setLoading] = useState(true);
   const [integrations, setIntegrations] = useState<Integration[]>([]);
   const [webhooks, setWebhooks] = useState<Webhook[]>([]);
   const [logs, setLogs] = useState<LogEntry[]>([]);
-  // const [selectedIntegration, setSelectedIntegration] = useState<Integration | null>(null);
-  // const [isConfigDialogOpen, setIsConfigDialogOpen] = useState(false);
+  const [selectedIntegration, setSelectedIntegration] = useState<Integration | null>(null);
+  const [isConfigDialogOpen, setIsConfigDialogOpen] = useState(false);
 
   const carregarDados = useCallback(async () => {
     setLoading(true);
     try {
-      await Promise.all([
-        carregarIntegracoes(),
-        carregarWebhooks(),
-        carregarLogs(),
-      ]);
+      await Promise.all([carregarIntegracoes(), carregarWebhooks(), carregarLogs()]);
     } catch (error: unknown) {
       const err = error as Error;
       addToast(`Erro ao carregar dados: ${err.message}`, 'error');
@@ -142,7 +156,7 @@ export default function IntegrationsManager() {
   const carregarIntegracoes = async () => {
     try {
       const metrics = await APIGatewayService.getMetrics();
-      
+
       const integrationsData: Integration[] = metrics.map((m: Record<string, unknown>) => ({
         id: String(m.endpoint_id ?? ''),
         nome: String(m.endpoint_nome ?? ''),
@@ -151,8 +165,8 @@ export default function IntegrationsManager() {
         status: (m.circuit_breaker_state === 'closed'
           ? 'ativo'
           : m.circuit_breaker_state === 'open'
-          ? 'erro'
-          : 'manutencao') as Integration['status'],
+            ? 'erro'
+            : 'manutencao') as Integration['status'],
         url: '-',
         auth_tipo: 'api_key',
         ultima_sincronizacao: new Date().toISOString(),
@@ -316,9 +330,7 @@ export default function IntegrationsManager() {
   const handleToggleWebhook = async (webhookId: string, isAtivo: boolean) => {
     try {
       // Implementar toggle de webhook
-      setWebhooks(webhooks.map(w => 
-        w.id === webhookId ? { ...w, is_ativo: isAtivo } : w
-      ));
+      setWebhooks(webhooks.map((w) => (w.id === webhookId ? { ...w, is_ativo: isAtivo } : w)));
       addToast(`Webhook ${isAtivo ? 'ativado' : 'desativado'}!`, 'success');
     } catch (error: unknown) {
       const err = error as Error;
@@ -332,15 +344,17 @@ export default function IntegrationsManager() {
   };
 
   const renderOverview = () => {
-    const integracoesAtivas = integrations.filter(i => i.status === 'ativo').length;
+    const integracoesAtivas = integrations.filter((i) => i.status === 'ativo').length;
     const integracoesTotal = integrations.length;
     const chamadas24h = integrations.reduce((sum, i) => sum + i.total_chamadas, 0);
-    const taxaSucessoMedia = integrations.length > 0
-      ? integrations.reduce((sum, i) => sum + i.taxa_sucesso, 0) / integrations.length
-      : 0;
-    const tempoMedio = integrations.length > 0
-      ? integrations.reduce((sum, i) => sum + i.tempo_resposta_medio, 0) / integrations.length
-      : 0;
+    const taxaSucessoMedia =
+      integrations.length > 0
+        ? integrations.reduce((sum, i) => sum + i.taxa_sucesso, 0) / integrations.length
+        : 0;
+    const tempoMedio =
+      integrations.length > 0
+        ? integrations.reduce((sum, i) => sum + i.tempo_resposta_medio, 0) / integrations.length
+        : 0;
 
     return (
       <div className="space-y-6">
@@ -351,8 +365,12 @@ export default function IntegrationsManager() {
               <h3 className="opacity-90 text-[0.813rem] orx-orx-font-medium">Integrações Ativas</h3>
               <CheckCircle className="w-5 h-5 opacity-80" />
             </div>
-            <p className="text-[0.813rem] orx-orx-font-bold">{integracoesAtivas}/{integracoesTotal}</p>
-            <p className="opacity-80 mt-2 text-[0.813rem]">{formatPercent((integracoesAtivas / integracoesTotal) * 100)} operacionais</p>
+            <p className="text-[0.813rem] orx-orx-font-bold">
+              {integracoesAtivas}/{integracoesTotal}
+            </p>
+            <p className="opacity-80 mt-2 text-[0.813rem]">
+              {formatPercent((integracoesAtivas / integracoesTotal) * 100)} operacionais
+            </p>
           </Card>
 
           <Card className="p-6 neuro-raised bg-gradient-to-br from-blue-500 to-blue-600 text-white">
@@ -361,7 +379,9 @@ export default function IntegrationsManager() {
               <Activity className="w-5 h-5 opacity-80" />
             </div>
             <p className="text-[0.813rem] orx-orx-font-bold">{formatNumber(chamadas24h)}</p>
-            <p className="opacity-80 mt-2 text-[0.813rem]">Média: {Math.round(chamadas24h / 24)}/hora</p>
+            <p className="opacity-80 mt-2 text-[0.813rem]">
+              Média: {Math.round(chamadas24h / 24)}/hora
+            </p>
           </Card>
 
           <Card className="p-6 neuro-raised bg-gradient-to-br from-purple-500 to-purple-600 text-white">
@@ -391,7 +411,8 @@ export default function IntegrationsManager() {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {integrations.map((integration) => {
-              const TypeIcon = INTEGRATION_TYPES[integration.tipo as keyof typeof INTEGRATION_TYPES]?.icon || Plug;
+              const TypeIcon =
+                INTEGRATION_TYPES[integration.tipo as keyof typeof INTEGRATION_TYPES]?.icon || Plug;
               const statusConfig = STATUS_COLORS[integration.status];
               const StatusIcon = statusConfig.icon;
 
@@ -399,10 +420,14 @@ export default function IntegrationsManager() {
                 <div key={integration.id} className="p-4 neuro-flat rounded-lg">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
-                      <TypeIcon className={`w-5 h-5 ${INTEGRATION_TYPES[integration.tipo as keyof typeof INTEGRATION_TYPES]?.color}`} />
+                      <TypeIcon
+                        className={`w-5 h-5 ${INTEGRATION_TYPES[integration.tipo as keyof typeof INTEGRATION_TYPES]?.color}`}
+                      />
                       <div>
                         <h4 className="orx-orx-font-semibold">{integration.nome}</h4>
-                        <p className="text-[var(--text-secondary)] text-[0.813rem]">{integration.descricao}</p>
+                        <p className="text-[var(--text-secondary)] text-[0.813rem]">
+                          {integration.descricao}
+                        </p>
                       </div>
                     </div>
                     <Badge variant="default" className={`${statusConfig.bg} ${statusConfig.text}`}>
@@ -413,22 +438,36 @@ export default function IntegrationsManager() {
                   <div className="grid grid-cols-3 gap-2 text-[0.813rem]">
                     <div>
                       <p className="text-[var(--text-secondary)] text-[0.813rem]">Chamadas</p>
-                      <p className="orx-orx-font-semibold">{formatNumber(integration.total_chamadas)}</p>
+                      <p className="orx-orx-font-semibold">
+                        {formatNumber(integration.total_chamadas)}
+                      </p>
                     </div>
                     <div>
                       <p className="text-[var(--text-secondary)] text-[0.813rem]">Sucesso</p>
-                      <p className="orx-orx-font-semibold">{integration.taxa_sucesso.toFixed(1)}%</p>
+                      <p className="orx-orx-font-semibold">
+                        {integration.taxa_sucesso.toFixed(1)}%
+                      </p>
                     </div>
                     <div>
                       <p className="text-[var(--text-secondary)] text-[0.813rem]">Tempo</p>
-                      <p className="orx-orx-font-semibold">{integration.tempo_resposta_medio.toFixed(0)}ms</p>
+                      <p className="orx-orx-font-semibold">
+                        {integration.tempo_resposta_medio.toFixed(0)}ms
+                      </p>
                     </div>
                   </div>
                   <div className="flex gap-2 mt-3">
-                    <Button size="sm" variant="secondary" onClick={() => handleTestarIntegracao(integration.id)}>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => handleTestarIntegracao(integration.id)}
+                    >
                       Testar
                     </Button>
-                    <Button size="sm" variant="secondary" onClick={() => setSelectedIntegration(integration)}>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => setSelectedIntegration(integration)}
+                    >
                       Ver Detalhes
                     </Button>
                   </div>
@@ -451,7 +490,7 @@ export default function IntegrationsManager() {
       </div>
 
       <Card className="neuro-raised p-0">
-        <Table>
+        <TableContainer>
           <TableHeader>
             <TableRow>
               <TableHead>Nome</TableHead>
@@ -491,8 +530,8 @@ export default function IntegrationsManager() {
                         integration.taxa_sucesso >= 95
                           ? 'bg-success/20 text-success'
                           : integration.taxa_sucesso >= 85
-                          ? 'bg-warning/20 text-warning'
-                          : 'bg-error/20 text-error'
+                            ? 'bg-warning/20 text-warning'
+                            : 'bg-error/20 text-error'
                       }`}
                     >
                       {integration.taxa_sucesso.toFixed(1)}%
@@ -501,10 +540,20 @@ export default function IntegrationsManager() {
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
                       <Tooltip content="Ver Logs">
-                        <Button variant="ghost" size="sm" icon={<Eye />} />
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          icon={<Eye />}
+                          aria-label="Visualizar integração"
+                        />
                       </Tooltip>
                       <Tooltip content="Configurar">
-                        <Button variant="ghost" size="sm" icon={<Settings />} />
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          icon={<Settings />}
+                          aria-label="Configurar integração"
+                        />
                       </Tooltip>
                       <Tooltip content="Testar Agora">
                         <Button
@@ -520,7 +569,7 @@ export default function IntegrationsManager() {
               );
             })}
           </TableBody>
-        </Table>
+        </TableContainer>
       </Card>
     </div>
   );
@@ -542,13 +591,17 @@ export default function IntegrationsManager() {
                   <h3 className="orx-orx-font-semibold">{webhook.nome}</h3>
                   <Switch
                     checked={webhook.is_ativo}
-                    onCheckedChange={(checked) => handleToggleWebhook(webhook.id, checked)}
+                    onChange={(e) => handleToggleWebhook(webhook.id, e.target.checked)}
                   />
                 </div>
                 <p className="text-[var(--text-secondary)] mb-2 text-[0.813rem]">{webhook.url}</p>
                 <div className="flex flex-wrap gap-2">
                   {webhook.eventos.map((evento, idx) => (
-                    <Badge key={idx} variant="default" className="bg-[var(--primary)]/20 text-[var(--primary)]">
+                    <Badge
+                      key={idx}
+                      variant="default"
+                      className="bg-[var(--primary)]/20 text-[var(--primary)]"
+                    >
                       {evento}
                     </Badge>
                   ))}
@@ -592,7 +645,7 @@ export default function IntegrationsManager() {
       <div className="flex justify-between items-center">
         <h2 className="text-[0.813rem] orx-orx-font-semibold">Logs de Integrações</h2>
         <div className="flex gap-2">
-          <Input placeholder="Buscar logs..." icon={<Code />} className="w-[300px]" />
+          <Input placeholder="Buscar logs..." leftIcon={Code} className="w-[300px]" />
           <Button variant="secondary" icon={<Download />} onClick={handleExportarLogs}>
             Exportar
           </Button>
@@ -600,7 +653,7 @@ export default function IntegrationsManager() {
       </div>
 
       <Card className="neuro-raised p-0">
-        <Table>
+        <TableContainer>
           <TableHeader>
             <TableRow>
               <TableHead>Timestamp</TableHead>
@@ -635,12 +688,12 @@ export default function IntegrationsManager() {
                 </TableCell>
                 <TableCell>{log.tempo_resposta}ms</TableCell>
                 <TableCell className="text-right">
-                  <Button variant="ghost" size="sm" icon={<Eye />} />
+                  <Button variant="ghost" size="sm" icon={<Eye />} aria-label="Visualizar log" />
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
-        </Table>
+        </TableContainer>
       </Card>
     </div>
   );
@@ -658,7 +711,12 @@ export default function IntegrationsManager() {
               Gerenciamento centralizado de APIs, Webhooks e Logs
             </p>
           </div>
-          <Button variant="secondary" icon={<RefreshCw />} onClick={carregarDados} disabled={loading}>
+          <Button
+            variant="secondary"
+            icon={<RefreshCw />}
+            onClick={carregarDados}
+            disabled={loading}
+          >
             Atualizar
           </Button>
         </div>
@@ -695,11 +753,12 @@ export default function IntegrationsManager() {
         {activeTab === 'config' && (
           <Card className="p-8 text-center neuro-flat">
             <Settings className="w-16 h-16 mx-auto mb-4 text-[var(--primary)] opacity-50" />
-            <p className="text-[var(--text-secondary)]">Configurações avançadas em desenvolvimento</p>
+            <p className="text-[var(--text-secondary)]">
+              Configurações avançadas em desenvolvimento
+            </p>
           </Card>
         )}
       </div>
     </div>
   );
 }
-

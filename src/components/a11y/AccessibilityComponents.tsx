@@ -187,10 +187,7 @@ export function AccessibleInput({
       />
 
       {helpText && !error && (
-        <p
-          id={helpId}
-          className="text-[var(--text-secondary)] text-[0.813rem]"
-        >
+        <p id={helpId} className="text-[var(--text-secondary)] text-[0.813rem]">
           {helpText}
         </p>
       )}
@@ -219,12 +216,7 @@ interface LiveRegionProps {
 
 export function LiveRegion({ message, politeness = 'polite' }: LiveRegionProps) {
   return (
-    <div
-      role="status"
-      aria-live={politeness}
-      aria-atomic="true"
-      className="sr-only"
-    >
+    <div role="status" aria-live={politeness} aria-atomic="true" className="sr-only">
       {message}
     </div>
   );
@@ -287,9 +279,7 @@ export function ExemploFormularioAcessivel() {
 
       <div className="max-w-2xl mx-auto">
         <main id="main-content">
-          <h1
-            className="text-[var(--text-primary)] mb-6 text-[0.813rem] orx-orx-font-bold"
-          >
+          <h1 className="text-[var(--text-primary)] mb-6 text-[0.813rem] orx-orx-font-bold">
             Formulário Acessível
           </h1>
 
@@ -358,4 +348,3 @@ export function ExemploFormularioAcessivel() {
     </div>
   );
 }
-

@@ -1,7 +1,7 @@
 /**
  * OraclusX Design System - Pagination Component
  * Paginação de dados com page size configurável
- * 
+ *
  * HARD GATES:
  * ✅ Sem text/font classes (tipografia CSS)
  * ✅ Cores via CSS variables
@@ -10,9 +10,9 @@
  * ✅ TypeScript strict
  */
 
-import React from"react";
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from"lucide-react";
-import { cn } from"@/lib/utils";
+import React from 'react';
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export interface PaginationProps {
   currentPage: number;
@@ -39,11 +39,11 @@ export const Pagination: React.FC<PaginationProps> = ({
   className,
   showFirstLast = true,
   showPageSize = true,
-  maxVisiblePages = 7
+  maxVisiblePages = 7,
 }) => {
   const getPageNumbers = () => {
     const pages: (number | string)[] = [];
-    
+
     if (totalPages <= maxVisiblePages) {
       // Show all pages
       for (let i = 1; i <= totalPages; i++) {
@@ -67,7 +67,7 @@ export const Pagination: React.FC<PaginationProps> = ({
 
       if (start > 1) {
         pages.push(1);
-        if (start > 2) pages.push("...");
+        if (start > 2) pages.push('...');
       }
 
       for (let i = start; i <= end; i++) {
@@ -75,7 +75,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       }
 
       if (end < totalPages) {
-        if (end < totalPages - 1) pages.push("...");
+        if (end < totalPages - 1) pages.push('...');
         pages.push(totalPages);
       }
     }
@@ -91,15 +91,18 @@ export const Pagination: React.FC<PaginationProps> = ({
   return (
     <nav
       aria-label="Paginação"
-      className={cn("flex items-center justify-between gap-4 px-4 py-3 rounded-lg","bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]","shadow-[var(--shadow-light-outer)] dark:shadow-[var(--shadow-dark-outer)]",
+      className={cn(
+        'flex items-center justify-between gap-4 px-4 py-3 rounded-lg',
+        'bg-[var(--surface-light)] dark:bg-[var(--surface-dark)]',
+        'shadow-[var(--shadow-light-outer)] dark:shadow-[var(--shadow-dark-outer)]',
         className
       )}
     >
       {/* Items Info */}
       {totalItems !== undefined && (
         <div className="hidden sm:block text-[var(--text-secondary-light)] dark:text-[var(--text-secondary-dark)]">
-          Mostrando <span className="orx-orx-font-medium">{startItem}</span> a{" "}
-          <span className="orx-orx-font-medium">{endItem}</span> de{" "}
+          Mostrando <span className="orx-orx-font-medium">{startItem}</span> a{' '}
+          <span className="orx-orx-font-medium">{endItem}</span> de{' '}
           <span className="orx-orx-font-medium">{totalItems}</span> registros
         </div>
       )}
@@ -112,10 +115,12 @@ export const Pagination: React.FC<PaginationProps> = ({
             onClick={() => onPageChange(1)}
             disabled={currentPage === 1}
             aria-label="Primeira página"
-            className={cn("p-2 rounded-md transition-colors","focus:outline-none focus:ring-3 focus:ring-[var(--primary)]",
+            className={cn(
+              'p-2 rounded-md transition-colors',
+              'focus:outline-none focus:ring-3 focus:ring-[var(--primary)]',
               currentPage === 1
-                ?"opacity-50 cursor-not-allowed"
-                :"hover:bg-[var(--surface-hover)] text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]"
+                ? 'opacity-50 cursor-not-allowed'
+                : 'hover:bg-[var(--surface-hover)] text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]'
             )}
           >
             <ChevronsLeft size={18} />
@@ -127,10 +132,12 @@ export const Pagination: React.FC<PaginationProps> = ({
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
           aria-label="Página anterior"
-          className={cn("p-2 rounded-md transition-colors","focus:outline-none focus:ring-3 focus:ring-[var(--primary)]",
+          className={cn(
+            'p-2 rounded-md transition-colors',
+            'focus:outline-none focus:ring-3 focus:ring-[var(--primary)]',
             currentPage === 1
-              ?"opacity-50 cursor-not-allowed"
-              :"hover:bg-[var(--surface-hover)] text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]"
+              ? 'opacity-50 cursor-not-allowed'
+              : 'hover:bg-[var(--surface-hover)] text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]'
           )}
         >
           <ChevronLeft size={18} />
@@ -138,7 +145,7 @@ export const Pagination: React.FC<PaginationProps> = ({
 
         {/* Page Numbers */}
         {pageNumbers.map((page, idx) => {
-          if (page ==="...") {
+          if (page === '...') {
             return (
               <span
                 key={`ellipsis-${idx}`}
@@ -157,11 +164,13 @@ export const Pagination: React.FC<PaginationProps> = ({
               key={pageNum}
               onClick={() => onPageChange(pageNum)}
               aria-label={`Página ${pageNum}`}
-              aria-current={isActive ?"page" : undefined}
-              className={cn("px-3 py-1 rounded-md transition-all min-w-[40px]","focus:outline-none focus:ring-3 focus:ring-[var(--primary)]",
+              aria-current={isActive ? 'page' : undefined}
+              className={cn(
+                'px-3 py-1 rounded-md transition-all min-w-[40px]',
+                'focus:outline-none focus:ring-3 focus:ring-[var(--primary)]',
                 isActive
-                  ?"bg-[var(--primary)] text-inverse shadow-md"
-                  :"hover:bg-[var(--surface-hover)] text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]"
+                  ? 'bg-[var(--primary)] text-inverse shadow-md'
+                  : 'hover:bg-[var(--surface-hover)] text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]'
               )}
             >
               {pageNum}
@@ -174,10 +183,12 @@ export const Pagination: React.FC<PaginationProps> = ({
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           aria-label="Próxima página"
-          className={cn("p-2 rounded-md transition-colors","focus:outline-none focus:ring-3 focus:ring-[var(--primary)]",
+          className={cn(
+            'p-2 rounded-md transition-colors',
+            'focus:outline-none focus:ring-3 focus:ring-[var(--primary)]',
             currentPage === totalPages
-              ?"opacity-50 cursor-not-allowed"
-              :"hover:bg-[var(--surface-hover)] text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]"
+              ? 'opacity-50 cursor-not-allowed'
+              : 'hover:bg-[var(--surface-hover)] text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]'
           )}
         >
           <ChevronRight size={18} />
@@ -189,10 +200,12 @@ export const Pagination: React.FC<PaginationProps> = ({
             onClick={() => onPageChange(totalPages)}
             disabled={currentPage === totalPages}
             aria-label="Última página"
-            className={cn("p-2 rounded-md transition-colors","focus:outline-none focus:ring-3 focus:ring-[var(--primary)]",
+            className={cn(
+              'p-2 rounded-md transition-colors',
+              'focus:outline-none focus:ring-3 focus:ring-[var(--primary)]',
               currentPage === totalPages
-                ?"opacity-50 cursor-not-allowed"
-                :"hover:bg-[var(--surface-hover)] text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]"
+                ? 'opacity-50 cursor-not-allowed'
+                : 'hover:bg-[var(--surface-hover)] text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]'
             )}
           >
             <ChevronsRight size={18} />
@@ -213,7 +226,12 @@ export const Pagination: React.FC<PaginationProps> = ({
             id="page-size"
             value={pageSize}
             onChange={(e) => onPageSizeChange(Number(e.target.value))}
-            className={cn("px-3 py-1 rounded-md border-0","bg-surface dark:bg-card","text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]","focus:outline-none focus:ring-3 focus:ring-[var(--primary)]","cursor-pointer"
+            className={cn(
+              'px-3 py-1 rounded-md border-0',
+              'bg-surface dark:bg-card',
+              'text-[var(--text-primary-light)] dark:text-[var(--text-primary-dark)]',
+              'focus:outline-none focus:ring-3 focus:ring-[var(--primary)]',
+              'cursor-pointer'
             )}
           >
             {pageSizeOptions.map((size) => (
@@ -227,4 +245,3 @@ export const Pagination: React.FC<PaginationProps> = ({
     </nav>
   );
 };
-

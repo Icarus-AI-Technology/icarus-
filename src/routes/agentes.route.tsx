@@ -1,12 +1,12 @@
-import { lazy } from "react";
-import type { ReactNode } from "react";
-import type { RouteObject } from "react-router-dom";
-import { Activity } from "lucide-react";
+import { lazy } from 'react';
+import type { ReactNode } from 'react';
+import type { RouteObject } from 'react-router-dom';
+import { Activity } from 'lucide-react';
 
 const AgentDashboardPage = lazy(() =>
-  import("@/pages/agentes/AgentDashboard").then((module) => ({
+  import('@/pages/agentes/AgentDashboard').then((module) => ({
     default: module.AgentDashboard,
-  })),
+  }))
 );
 
 type AppRoute = RouteObject & {
@@ -18,12 +18,12 @@ type AppRoute = RouteObject & {
 };
 
 export const agentesRoute: AppRoute = {
-  path: "/agentes",
+  path: '/agentes',
   element: <AgentDashboardPage />,
   meta: {
-    title: "Agentes IA",
+    title: 'Agentes IA',
     requiresAuth: true,
-    permissions: ["agentes:view"],
+    permissions: ['agentes:view'],
   },
 };
 
@@ -36,11 +36,11 @@ export interface SidebarItem {
 }
 
 export const agentesSidebarItem: SidebarItem = {
-  title: "Agentes IA",
+  title: 'Agentes IA',
   icon: <Activity size={18} />,
-  href: "/agentes",
-  badge: "NOVO",
-  description: "Sistema de análise com IA",
+  href: '/agentes',
+  badge: 'NOVO',
+  description: 'Sistema de análise com IA',
 };
 
 export default agentesRoute;

@@ -49,9 +49,7 @@ describe('processMlJob', () => {
   });
 
   it('delegates vector store jobs', async () => {
-    const vectors = [
-      { externalId: 'doc-1', module: 'cirurgias', embedding: [0.1, 0.2] },
-    ];
+    const vectors = [{ externalId: 'doc-1', module: 'cirurgias', embedding: [0.1, 0.2] }];
     await processMlJob({ type: 'vector-store', vectors });
     expect(mocked.persistVectors).toHaveBeenCalledWith(vectors);
   });
@@ -60,8 +58,8 @@ describe('processMlJob', () => {
     await expect(
       processMlJob(
         // @ts-expect-error teste proposital de erro
-        { type: 'desconhecido' },
-      ),
+        { type: 'desconhecido' }
+      )
     ).rejects.toThrow('Tipo de job não suportado');
   });
 });

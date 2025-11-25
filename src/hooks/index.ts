@@ -11,6 +11,15 @@ export { usePedidos } from './usePedidos';
 export { useFaturas } from './useFaturas';
 export { useEntregas } from './useEntregas';
 export { useContratos } from './useContratos';
+export type {
+  Contrato,
+  ContratoClausula,
+  ContratoAditivo,
+  ContratoSLA,
+  ContratoAprovacao,
+  ContratoAlerta,
+  ContratoKPIs,
+} from './useContratos';
 export { useOportunidades } from './useOportunidades';
 
 // Novos hooks para integração completa
@@ -42,7 +51,7 @@ export type {
   MovimentacaoConsignacao,
   FaturamentoConsignacao,
   AlertaConsignacao,
-  MetricasConsignacao
+  MetricasConsignacao,
 } from './useConsignacao';
 
 // Hook Compliance
@@ -54,5 +63,5 @@ export type {
   AgenteIA,
   AlertaCompliance,
   TreinamentoCertificacao,
-  MetricasCompliance
+  MetricasCompliance,
 } from './useCompliance';

@@ -48,8 +48,8 @@ serve(async (req) => {
     // 1. Buscar informações da tarefa
     const { data: task, error: taskError } = await supabaseClient
       .from("agent_tasks")
-      .select("*, organization_id")
-      .eq("task_id", request.task_id)
+      .select("*, empresa_id")
+      .eq("id", request.task_id)
       .single();
 
     if (taskError) throw taskError;
@@ -59,9 +59,12 @@ serve(async (req) => {
       .from("agent_tasks")
       .update({
         status: "in_progress",
-        started_at: new Date().toISOString(),
+        metadata: {
+          ...(task.metadata || {}),
+          started_at: new Date().toISOString(),
+        },
       })
-      .eq("task_id", request.task_id);
+      .eq("id", request.task_id);
 
     // 3. Log de início
     await supabaseClient.from("agent_logs").insert({
@@ -88,7 +91,7 @@ serve(async (req) => {
     ) {
       const cirurgiasData = await fetchCirurgiasData(
         supabaseClient,
-        task.organization_id,
+        task.empresa_id,
         request.parameters?.date_range,
       );
       collectedData.cirurgias = cirurgiasData.data;
@@ -111,13 +114,13 @@ serve(async (req) => {
     ) {
       const consignacaoData = await fetchConsignacaoData(
         supabaseClient,
-        task.organization_id,
+        task.empresa_id,
         request.parameters?.date_range,
       );
       collectedData.consignacao = consignacaoData.data;
       sources.push({
         source_type: "database_internal",
-        source_name: "consignacao_materiais",
+        source_name: "materiais_consignados",
         record_count: consignacaoData.count,
         confidence_score: 1.0,
       });
@@ -134,7 +137,7 @@ serve(async (req) => {
     ) {
       const estoqueData = await fetchEstoqueData(
         supabaseClient,
-        task.organization_id,
+        task.empresa_id,
       );
       collectedData.estoque = estoqueData.data;
       sources.push({
@@ -154,7 +157,7 @@ serve(async (req) => {
     ) {
       const iotData = await fetchIoTData(
         supabaseClient,
-        task.organization_id,
+        task.empresa_id,
         request.parameters?.date_range,
       );
       collectedData.iot_readings = iotData.data;
@@ -206,14 +209,17 @@ serve(async (req) => {
       .update({
         status: "completed",
         completed_at: new Date().toISOString(),
-        execution_time_ms: executionTime,
-        result_data: {
-          data: collectedData,
-          metrics: metrics,
-          sources_count: sources.length,
+        metadata: {
+          ...(task.metadata || {}),
+          execution_time_ms: executionTime,
+          result_data: {
+            data: collectedData,
+            metrics: metrics,
+            sources_count: sources.length,
+          },
         },
       })
-      .eq("task_id", request.task_id);
+      .eq("id", request.task_id);
 
     // 9. Log de conclusão
     await supabaseClient.from("agent_logs").insert({
@@ -308,7 +314,7 @@ async function fetchCirurgiasData(
   let query = client
     .from("cirurgias")
     .select("*, cirurgia_materiais(*), pacientes(*)")
-    .eq("organization_id", organizationId)
+    .eq("empresa_id", organizationId)
     .order("data_cirurgia", { ascending: false });
 
   if (dateRange) {
@@ -338,15 +344,15 @@ async function fetchConsignacaoData(
   dateRange?: { start: string; end: string },
 ) {
   let query = client
-    .from("consignacao_materiais")
-    .select("*, products(*), lotes(*)")
-    .eq("organization_id", organizationId)
-    .order("data_entrada", { ascending: false });
+    .from("materiais_consignados")
+    .select("*, produtos(*), lotes(*)")
+    .eq("empresa_id", organizationId)
+    .order("created_at", { ascending: false });
 
   if (dateRange) {
     query = query
-      .gte("data_entrada", dateRange.start)
-      .lte("data_entrada", dateRange.end);
+      .gte("created_at", dateRange.start)
+      .lte("created_at", dateRange.end);
   }
 
   const { data, error } = await query.limit(1000);
@@ -362,10 +368,10 @@ async function fetchConsignacaoData(
 async function fetchEstoqueData(client: any, organizationId: string) {
   const { data, error } = await client
     .from("estoque")
-    .select("*, products(*), lotes(*)")
-    .eq("organization_id", organizationId)
-    .gte("quantidade_atual", 0)
-    .order("quantidade_atual", { ascending: true });
+    .select("*, produtos(*), lotes(*)")
+    .eq("empresa_id", organizationId)
+    .gte("quantidade", 0)
+    .order("quantidade", { ascending: true });
 
   if (error) throw error;
 
@@ -445,11 +451,11 @@ function calculateMetrics(data: any): Record<string, number> {
     metrics.total_itens_estoque = data.estoque.length;
     metrics.valor_total_estoque = data.estoque.reduce(
       (sum: number, e: any) =>
-        sum + (e.valor_unitario * e.quantidade_atual || 0),
+        sum + (e.valor_unitario * e.quantidade || 0),
       0,
     );
     metrics.itens_baixo_estoque = data.estoque.filter(
-      (e: any) => e.quantidade_atual < e.estoque_minimo,
+      (e: any) => e.quantidade < e.estoque_minimo,
     ).length;
   }
 

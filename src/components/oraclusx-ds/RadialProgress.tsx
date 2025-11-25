@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useRef } from "react";
-import { cn } from "@/lib/utils";
+import React, { useEffect, useMemo, useRef } from 'react';
+import { cn } from '@/lib/utils';
 
 export interface RadialProgressProps {
   value: number;
@@ -55,29 +55,19 @@ export const RadialProgress: React.FC<RadialProgressProps> = ({
   return (
     <div
       className={cn(
-        "inline-flex items-center justify-center relative",
-        critical && "animate-pulse",
+        'inline-flex items-center justify-center relative',
+        critical && 'animate-pulse',
         className
       )}
       role="img"
       aria-label={`Progresso: ${percent.toFixed(0)}%`}
     >
-      <svg
-        width={size}
-        height={size}
-        viewBox={`0 0 ${size} ${size}`}
-        className="block"
-      >
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="block">
         {gradientStops && gradientStops.length > 0 && (
           <defs>
             <linearGradient id={gid} x1="0%" y1="0%" x2="100%" y2="0%">
               {gradientStops.map((s, i) => (
-                <stop
-                  key={i}
-                  offset={s.offset}
-                  stopColor={s.color}
-                  stopOpacity={s.opacity ?? 1}
-                />
+                <stop key={i} offset={s.offset} stopColor={s.color} stopOpacity={s.opacity ?? 1} />
               ))}
             </linearGradient>
           </defs>
@@ -89,8 +79,8 @@ export const RadialProgress: React.FC<RadialProgressProps> = ({
           cy={size / 2}
           r={radius}
           className={cn(
-            "fill-none",
-            trackClassName || "stroke-[var(--border)] dark:stroke-gray-700 opacity-40"
+            'fill-none',
+            trackClassName || 'stroke-[var(--border)] dark:stroke-gray-700 opacity-40'
           )}
           strokeWidth={strokeWidth}
         />
@@ -102,8 +92,8 @@ export const RadialProgress: React.FC<RadialProgressProps> = ({
           cy={size / 2}
           r={radius}
           className={cn(
-            "fill-none transition-all duration-300 ease-out",
-            progressClassName || "stroke-[var(--primary)]"
+            'fill-none transition-all duration-300 ease-out',
+            progressClassName || 'stroke-[var(--primary)]'
           )}
           strokeLinecap="round"
           strokeWidth={strokeWidth}
@@ -123,8 +113,6 @@ export const RadialProgress: React.FC<RadialProgressProps> = ({
   );
 };
 
-RadialProgress.displayName = "OraclusXRadialProgress";
+RadialProgress.displayName = 'OraclusXRadialProgress';
 
 export default RadialProgress;
-
-

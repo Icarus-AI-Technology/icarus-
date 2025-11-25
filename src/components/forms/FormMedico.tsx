@@ -10,11 +10,24 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Loader2, Stethoscope, CheckCircle2, AlertCircle } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@/components/oraclusx-ds/Button';
+import { Input } from '@/components/oraclusx-ds/Input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { useValidacaoCRM } from '@/hooks/useValidacao';
@@ -23,12 +36,14 @@ import { cfmService } from '@/lib/services/CFMService';
 // Schema de validação com Zod
 const medicoSchema = z.object({
   nome: z.string().min(3, 'Nome é obrigatório'),
-  crm: z.string()
+  crm: z
+    .string()
     .min(5, 'CRM deve conter 5 ou 6 dígitos')
     .max(6, 'CRM deve conter 5 ou 6 dígitos')
     .regex(/^\d+$/, 'CRM deve conter apenas números'),
   uf: z.string().length(2, 'UF é obrigatória'),
-  cpf: z.string()
+  cpf: z
+    .string()
     .min(11, 'CPF deve conter 11 dígitos')
     .regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, 'CPF inválido'),
   telefone: z.string().optional(),
@@ -52,10 +67,16 @@ export function FormMedico({
   description = 'Preencha o CRM para validar o registro profissional',
 }: FormMedicoProps) {
   const [crmBuscado, setCrmBuscado] = useState(false);
-  const [statusCRM, setStatusCRM] = useState<'ativo' | 'inativo' | null>(null);
+  const [statusCRM, setStatusCRM] = useState<'ativo' | 'inativo' | 'cancelado' | 'suspenso' | null>(null);
   const [especialidades, setEspecialidades] = useState<string[]>([]);
-  
-  const { data: _dadosCrm, loading: buscandoCrm, cached, error, validate: buscarCrm } = useValidacaoCRM();
+
+  const {
+    data: _dadosCrm,
+    loading: buscandoCrm,
+    cached,
+    error,
+    validate: buscarCrm,
+  } = useValidacaoCRM();
 
   const form = useForm<MedicoFormData>({
     resolver: zodResolver(medicoSchema),
@@ -80,7 +101,7 @@ export function FormMedico({
 
     // Valida formato primeiro
     const validacao = cfmService.validarCRMLocal(crm, uf);
-    
+
     if (!validacao.formatoValido) {
       form.setError('crm', {
         type: 'manual',
@@ -99,9 +120,9 @@ export function FormMedico({
 
       setCrmBuscado(true);
       setStatusCRM(medico.situacao);
-      
+
       if (medico.especialidades && medico.especialidades.length > 0) {
-        setEspecialidades(medico.especialidades.map(e => e.nome));
+        setEspecialidades(medico.especialidades.map((e) => e.nome));
         form.setValue('especialidade', medico.especialidades[0].nome);
       }
 
@@ -122,7 +143,7 @@ export function FormMedico({
     if (limpo.length <= 3) return limpo;
     if (limpo.length <= 6) return `${limpo.slice(0, 3)}.${limpo.slice(3)}`;
     if (limpo.length <= 9) return `${limpo.slice(0, 3)}.${limpo.slice(3, 6)}.${limpo.slice(6)}`;
-    
+
     return `${limpo.slice(0, 3)}.${limpo.slice(3, 6)}.${limpo.slice(6, 9)}-${limpo.slice(9, 11)}`;
   };
 
@@ -147,7 +168,7 @@ export function FormMedico({
               <Alert variant={statusCRM === 'ativo' ? 'default' : 'destructive'}>
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>
-                  {statusCRM === 'ativo' 
+                  {statusCRM === 'ativo'
                     ? '✅ CRM com situação ATIVA no Conselho Federal de Medicina'
                     : '⚠️ CRM com situação IRREGULAR no CFM'}
                 </AlertDescription>
@@ -157,7 +178,9 @@ export function FormMedico({
             {/* Especialidades (se encontradas) */}
             {especialidades.length > 0 && (
               <div className="flex flex-wrap gap-2">
-                <span className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>Especialidades:</span>
+                <span className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>
+                  Especialidades:
+                </span>
                 {especialidades.map((esp, idx) => (
                   <Badge key={idx} variant="secondary">
                     {esp}
@@ -328,4 +351,3 @@ export function FormMedico({
     </Card>
   );
 }
-

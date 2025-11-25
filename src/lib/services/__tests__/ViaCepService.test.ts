@@ -29,12 +29,14 @@ describe('ViaCepService', () => {
         localidade: 'São Paulo',
         uf: 'SP',
         ibge: '3550308',
-        ddd: '11'
+        ddd: '11',
       };
 
-      (global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce({
+      (
+        global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }
+      ).mockResolvedValueOnce({
         ok: true,
-        json: async () => mockResponse
+        json: async () => mockResponse,
       });
 
       // Act
@@ -50,12 +52,10 @@ describe('ViaCepService', () => {
         estado: 'São Paulo',
         uf: 'SP',
         ibge: '3550308',
-        ddd: '11'
+        ddd: '11',
       });
-      
-      expect(global.fetch).toHaveBeenCalledWith(
-        'https://viacep.com.br/ws/01310100/json/'
-      );
+
+      expect(global.fetch).toHaveBeenCalledWith('https://viacep.com.br/ws/01310100/json/');
     });
 
     it('deve buscar endereço com CEP sem formatação', async () => {
@@ -68,12 +68,14 @@ describe('ViaCepService', () => {
         localidade: 'São Paulo',
         uf: 'SP',
         ibge: '3550308',
-        ddd: '11'
+        ddd: '11',
       };
 
-      (global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce({
+      (
+        global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }
+      ).mockResolvedValueOnce({
         ok: true,
-        json: async () => mockResponse
+        json: async () => mockResponse,
       });
 
       // Act
@@ -86,9 +88,11 @@ describe('ViaCepService', () => {
 
     it('deve retornar null se CEP não for encontrado', async () => {
       // Arrange
-      (global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce({
+      (
+        global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }
+      ).mockResolvedValueOnce({
         ok: true,
-        json: async () => ({ erro: true })
+        json: async () => ({ erro: true }),
       });
 
       // Act
@@ -100,16 +104,16 @@ describe('ViaCepService', () => {
 
     it('deve lançar erro se CEP for inválido (menos de 8 dígitos)', async () => {
       // Act & Assert
-      await expect(viaCepService.buscarPorCep('1234')).rejects.toThrow(
-        'CEP deve conter 8 dígitos'
-      );
+      await expect(viaCepService.buscarPorCep('1234')).rejects.toThrow('CEP deve conter 8 dígitos');
     });
 
     it('deve lançar erro se API retornar erro HTTP', async () => {
       // Arrange
-      (global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce({
+      (
+        global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }
+      ).mockResolvedValueOnce({
         ok: false,
-        status: 500
+        status: 500,
       });
 
       // Act & Assert
@@ -131,7 +135,7 @@ describe('ViaCepService', () => {
           localidade: 'São Paulo',
           uf: 'SP',
           ibge: '3550308',
-          ddd: '11'
+          ddd: '11',
         },
         {
           cep: '01310200',
@@ -141,21 +145,19 @@ describe('ViaCepService', () => {
           localidade: 'São Paulo',
           uf: 'SP',
           ibge: '3550308',
-          ddd: '11'
-        }
+          ddd: '11',
+        },
       ];
 
-      (global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce({
+      (
+        global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }
+      ).mockResolvedValueOnce({
         ok: true,
-        json: async () => mockResponse
+        json: async () => mockResponse,
       });
 
       // Act
-      const resultado = await viaCepService.buscarPorEndereco(
-        'SP',
-        'São Paulo',
-        'Paulista'
-      );
+      const resultado = await viaCepService.buscarPorEndereco('SP', 'São Paulo', 'Paulista');
 
       // Assert
       expect(resultado).toHaveLength(2);
@@ -165,17 +167,15 @@ describe('ViaCepService', () => {
 
     it('deve retornar array vazio se nenhum endereço for encontrado', async () => {
       // Arrange
-      (global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce({
+      (
+        global.fetch as unknown as { mockResolvedValueOnce: (v: unknown) => void }
+      ).mockResolvedValueOnce({
         ok: true,
-        json: async () => []
+        json: async () => [],
       });
 
       // Act
-      const resultado = await viaCepService.buscarPorEndereco(
-        'SP',
-        'São Paulo',
-        'Rua Inexistente'
-      );
+      const resultado = await viaCepService.buscarPorEndereco('SP', 'São Paulo', 'Rua Inexistente');
 
       // Assert
       expect(resultado).toEqual([]);
@@ -183,16 +183,16 @@ describe('ViaCepService', () => {
 
     it('deve lançar erro se UF for inválida', async () => {
       // Act & Assert
-      await expect(
-        viaCepService.buscarPorEndereco('XXX', 'São Paulo', 'Paulista')
-      ).rejects.toThrow('UF deve conter 2 letras');
+      await expect(viaCepService.buscarPorEndereco('XXX', 'São Paulo', 'Paulista')).rejects.toThrow(
+        'UF deve conter 2 letras'
+      );
     });
 
     it('deve lançar erro se cidade for muito curta', async () => {
       // Act & Assert
-      await expect(
-        viaCepService.buscarPorEndereco('SP', 'AB', 'Paulista')
-      ).rejects.toThrow('Cidade e logradouro devem ter ao menos 3 caracteres');
+      await expect(viaCepService.buscarPorEndereco('SP', 'AB', 'Paulista')).rejects.toThrow(
+        'Cidade e logradouro devem ter ao menos 3 caracteres'
+      );
     });
   });
 
@@ -218,4 +218,3 @@ describe('ViaCepService', () => {
     });
   });
 });
-

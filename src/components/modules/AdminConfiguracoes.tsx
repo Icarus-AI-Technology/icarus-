@@ -5,7 +5,7 @@
  * - Cadastro Empresa via CNPJ (auto-preenchimento)
  * - Templates de Documentos (WYSIWYG placeholder)
  */
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from 'react';
 import {
   Card,
   CardHeader,
@@ -18,10 +18,10 @@ import {
   Textarea,
   FormField,
   FormGroup,
-} from "@/components/oraclusx-ds";
-import { MaskedInput } from "@/components/ui/masked-input";
-import { Camera, ShieldCheck } from "lucide-react";
-import DOMPurify from "dompurify";
+} from '@/components/oraclusx-ds';
+import { MaskedInput } from '@/components/ui/masked-input';
+import { Camera, ShieldCheck } from 'lucide-react';
+import DOMPurify from 'dompurify';
 
 const MAX_PFX = 10 * 1024 * 1024; // 10MB
 const TEMPLATE_PREVIEW_PLACEHOLDER =
@@ -32,7 +32,7 @@ export const AdminConfiguracoes: React.FC = () => {
   const [pfxFiles, setPfxFiles] = useState<File[]>([]);
   const [pfxValid, setPfxValid] = useState<boolean | null>(null);
   const [pfxInfo, setPfxInfo] = useState<{ validade?: string } | null>(null);
-  const [pfxPassword, setPfxPassword] = useState("");
+  const [pfxPassword, setPfxPassword] = useState('');
   const [pfxPasswordOk, setPfxPasswordOk] = useState<boolean | null>(null);
 
   // Logo
@@ -41,65 +41,60 @@ export const AdminConfiguracoes: React.FC = () => {
   // Empresa (CNPJ)
   const [cnpjValid, setCnpjValid] = useState(false);
   const [empresa, setEmpresa] = useState({
-    razao: "",
-    fantasia: "",
-    cep: "",
-    endereco: "",
-    numero: "",
-    bairro: "",
-    cidade: "",
-    estado: "",
-    telefone: "",
-    email: "",
-    atividadePrincipal: "",
-    atividadesSecundarias: "",
-    situacao: "",
-    abertura: "",
-    capitalSocial: "",
-    naturezaJuridica: "",
-    ie: "",
-    im: "",
-    regimeTributario: "",
-    responsavel: "",
+    razao: '',
+    fantasia: '',
+    cep: '',
+    endereco: '',
+    numero: '',
+    bairro: '',
+    cidade: '',
+    estado: '',
+    telefone: '',
+    email: '',
+    atividadePrincipal: '',
+    atividadesSecundarias: '',
+    situacao: '',
+    abertura: '',
+    capitalSocial: '',
+    naturezaJuridica: '',
+    ie: '',
+    im: '',
+    regimeTributario: '',
+    responsavel: '',
   });
   const [responsavelStatus, setResponsavelStatus] = useState<
-    "idle" | "corrigindo" | "padronizado" | "invalido"
-  >("idle");
-  const [templateHtml, setTemplateHtml] = useState("");
+    'idle' | 'corrigindo' | 'padronizado' | 'invalido'
+  >('idle');
+  const [templateHtml, setTemplateHtml] = useState('');
   const editorRef = useRef<HTMLDivElement>(null);
 
   const sanitizedTemplatePreview = useMemo(() => {
     const preview =
-      templateHtml && templateHtml.trim().length > 0
-        ? templateHtml
-        : TEMPLATE_PREVIEW_PLACEHOLDER;
+      templateHtml && templateHtml.trim().length > 0 ? templateHtml : TEMPLATE_PREVIEW_PLACEHOLDER;
     return DOMPurify.sanitize(preview, { USE_PROFILES: { html: true } });
   }, [templateHtml]);
 
   const standardizeUppercase = (value: string): string => {
-    return value.normalize("NFKC").replace(/\s+/g, " ").trim().toUpperCase();
+    return value.normalize('NFKC').replace(/\s+/g, ' ').trim().toUpperCase();
   };
 
   const handleResponsavelChange = (value: string) => {
     const corrected = standardizeUppercase(value);
-    const isPadronizado =
-      corrected.length > 0 && corrected === value.toUpperCase();
+    const isPadronizado = corrected.length > 0 && corrected === value.toUpperCase();
     setEmpresa((prev) => ({ ...prev, responsavel: corrected }));
-    setResponsavelStatus(isPadronizado ? "padronizado" : "corrigindo");
+    setResponsavelStatus(isPadronizado ? 'padronizado' : 'corrigindo');
   };
 
   const handlePfx = (files: File[]) => {
     const valid =
-      files.every((f) => f.name.toLowerCase().endsWith(".pfx")) &&
+      files.every((f) => f.name.toLowerCase().endsWith('.pfx')) &&
       files.every((f) => f.size <= MAX_PFX);
     setPfxFiles(files);
     setPfxValid(valid);
     // Mock de leitura e validade
     if (valid && files.length) {
       setPfxInfo({
-        validade: new Date(
-          Date.now() + 1000 * 60 * 60 * 24 * 180,
-        ).toLocaleDateString("pt-BR"),
+        validade: new Date(Date.now() + 1000 * 60 * 60 * 24 * 180).toLocaleDateString('pt-BR'),
       });
     } else {
       setPfxInfo(null);
@@ -114,7 +109,7 @@ export const AdminConfiguracoes: React.FC = () => {
     img.onload = () => {
       if (img.width !== 200 || img.height !== 60) {
         // Mantém upload, mas sinaliza recomendação
-        console.warn("Logo fora das dimensões recomendadas 200x60");
+        console.warn('Logo fora das dimensões recomendadas 200x60');
       }
       setLogoUrl(URL.createObjectURL(f));
     };
@@ -126,22 +121,22 @@ export const AdminConfiguracoes: React.FC = () => {
     // Preenche alguns dados fictícios
     setEmpresa((prev) => ({
       ...prev,
-      razao: "ICARUS SISTEMAS LTDA",
-      fantasia: "ICARUS",
-      cep: "01001-000",
-      endereco: "Praça da Sé",
-      numero: "100",
-      bairro: "Sé",
-      cidade: "São Paulo",
-      estado: "SP",
-      telefone: "(11) 99999-0000",
-      email: "contato@icarus.com.br",
-      atividadePrincipal: "Desenvolvimento de programas de computador",
-      atividadesSecundarias: "Consultoria em TI; Treinamentos",
-      situacao: "ATIVA",
-      abertura: "01/01/2018",
-      capitalSocial: "R$ 500.000,00",
-      naturezaJuridica: "Sociedade Empresária Limitada",
+      razao: 'ICARUS SISTEMAS LTDA',
+      fantasia: 'ICARUS',
+      cep: '01001-000',
+      endereco: 'Praça da Sé',
+      numero: '100',
+      bairro: 'Sé',
+      cidade: 'São Paulo',
+      estado: 'SP',
+      telefone: '(11) 99999-0000',
+      email: 'contato@icarus.com.br',
+      atividadePrincipal: 'Desenvolvimento de programas de computador',
+      atividadesSecundarias: 'Consultoria em TI; Treinamentos',
+      situacao: 'ATIVA',
+      abertura: '01/01/2018',
+      capitalSocial: 'R$ 500.000,00',
+      naturezaJuridica: 'Sociedade Empresária Limitada',
     }));
   };
 
@@ -185,9 +180,7 @@ export const AdminConfiguracoes: React.FC = () => {
                   <button
                     type="button"
                     className="orx-button-primary px-3 py-2 rounded-lg"
-                    onClick={() =>
-                      setPfxPasswordOk(pfxPassword.trim().length >= 4)
-                    }
+                    onClick={() => setPfxPasswordOk(pfxPassword.trim().length >= 4)}
                     title="Validar senha"
                   >
                     Validar senha
@@ -196,10 +189,7 @@ export const AdminConfiguracoes: React.FC = () => {
               </div>
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <ShieldCheck
-                    className={pfxValid ? "text-success" : "text-warning"}
-                    size={18}
-                  />
+                  <ShieldCheck className={pfxValid ? 'text-success' : 'text-warning'} size={18} />
                   <span className="text-body-sm text-secondary dark:text-muted">
                     Validação em tempo real
                   </span>
@@ -215,9 +205,7 @@ export const AdminConfiguracoes: React.FC = () => {
                 )}
                 {pfxInfo?.validade && (
                   <div className="flex items-center gap-2">
-                    <Badge variant="default">
-                      Válido até {pfxInfo.validade}
-                    </Badge>
+                    <Badge variant="default">Válido até {pfxInfo.validade}</Badge>
                   </div>
                 )}
                 {pfxFiles.length > 0 && (
@@ -234,9 +222,7 @@ export const AdminConfiguracoes: React.FC = () => {
         <Card>
           <CardHeader>
             <CardTitle>Upload de Logo</CardTitle>
-            <CardDescription>
-              PNG/JPG/SVG 200x60 (transparente preferível)
-            </CardDescription>
+            <CardDescription>PNG/JPG/SVG 200x60 (transparente preferível)</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4 items-start">
@@ -252,11 +238,7 @@ export const AdminConfiguracoes: React.FC = () => {
                   <p className="text-body-sm text-secondary mb-2">Light</p>
                   <div className="h-[60px] flex items-center justify-center bg-gray-50 rounded">
                     {logoUrl ? (
-                      <img
-                        src={logoUrl}
-                        alt="logo"
-                        className="h-[40px] object-contain"
-                      />
+                      <img src={logoUrl} alt="logo" className="h-[40px] object-contain" />
                     ) : (
                       <Camera className="text-muted" />
                     )}
@@ -266,11 +248,7 @@ export const AdminConfiguracoes: React.FC = () => {
                   <p className="text-body-sm mb-2 text-white/70">Dark</p>
                   <div className="h-[60px] flex items-center justify-center bg-[#0b0f19] rounded">
                     {logoUrl ? (
-                      <img
-                        src={logoUrl}
-                        alt="logo"
-                        className="h-[40px] object-contain invert"
-                      />
+                      <img src={logoUrl} alt="logo" className="h-[40px] object-contain invert" />
                     ) : (
                       <Camera className="text-muted" />
                     )}
@@ -285,9 +263,7 @@ export const AdminConfiguracoes: React.FC = () => {
         <Card>
           <CardHeader>
             <CardTitle>Cadastro Empresa via CNPJ</CardTitle>
-            <CardDescription>
-              Auto-preenchimento via Receita Federal
-            </CardDescription>
+            <CardDescription>Auto-preenchimento via Receita Federal</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -303,9 +279,7 @@ export const AdminConfiguracoes: React.FC = () => {
                   }}
                 />
                 <div className="text-body-sm text-secondary dark:text-muted">
-                  {cnpjValid
-                    ? "CNPJ válido. Buscando dados..."
-                    : "Preencha um CNPJ válido"}
+                  {cnpjValid ? 'CNPJ válido. Buscando dados...' : 'Preencha um CNPJ válido'}
                 </div>
               </div>
 
@@ -325,11 +299,7 @@ export const AdminConfiguracoes: React.FC = () => {
                   />
                 </FormField>
                 <FormField label="CEP">
-                  <Input
-                    value={empresa.cep}
-                    readOnly
-                    className="cursor-not-allowed bg-muted/30"
-                  />
+                  <Input value={empresa.cep} readOnly className="cursor-not-allowed bg-muted/30" />
                 </FormField>
                 <FormField label="Endereço">
                   <Input
@@ -425,17 +395,13 @@ export const AdminConfiguracoes: React.FC = () => {
                 <FormField label="IE">
                   <Input
                     value={empresa.ie}
-                    onChange={(e) =>
-                      setEmpresa({ ...empresa, ie: e.target.value })
-                    }
+                    onChange={(e) => setEmpresa({ ...empresa, ie: e.target.value })}
                   />
                 </FormField>
                 <FormField label="IM">
                   <Input
                     value={empresa.im}
-                    onChange={(e) =>
-                      setEmpresa({ ...empresa, im: e.target.value })
-                    }
+                    onChange={(e) => setEmpresa({ ...empresa, im: e.target.value })}
                   />
                 </FormField>
                 <FormField label="Regime Tributário">
@@ -456,29 +422,24 @@ export const AdminConfiguracoes: React.FC = () => {
                       onChange={(e) => handleResponsavelChange(e.target.value)}
                       placeholder="NOME COMPLETO"
                       className={
-                        responsavelStatus === "corrigindo"
-                          ? "border-warning animate-pulse"
-                          : responsavelStatus === "invalido"
-                            ? "border-error"
-                            : ""
+                        responsavelStatus === 'corrigindo'
+                          ? 'border-warning animate-pulse'
+                          : responsavelStatus === 'invalido'
+                            ? 'border-error'
+                            : ''
                       }
                     />
                     <div className="mt-1 flex items-center gap-2">
-                      {responsavelStatus === "padronizado" && (
+                      {responsavelStatus === 'padronizado' && (
                         <Badge variant="default">✓ Padronizado</Badge>
                       )}
-                      {responsavelStatus === "corrigindo" && (
-                        <Badge
-                          variant="default"
-                          className="bg-warning/10 text-warning"
-                        >
+                      {responsavelStatus === 'corrigindo' && (
+                        <Badge variant="default" className="bg-warning/10 text-warning">
                           Corrigindo…
                         </Badge>
                       )}
-                      {responsavelStatus === "invalido" && (
-                        <span className="text-body-xs text-error">
-                          Valor inválido
-                        </span>
+                      {responsavelStatus === 'invalido' && (
+                        <span className="text-body-xs text-error">Valor inválido</span>
                       )}
                     </div>
                   </div>
@@ -492,9 +453,7 @@ export const AdminConfiguracoes: React.FC = () => {
         <Card>
           <CardHeader>
             <CardTitle>Templates de Documentos</CardTitle>
-            <CardDescription>
-              Editor visual com variáveis {'{{ variable }}'}
-            </CardDescription>
+            <CardDescription>Editor visual com variáveis {'{{ variable }}'}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4">
@@ -504,7 +463,7 @@ export const AdminConfiguracoes: React.FC = () => {
                     type="button"
                     className="orx-button px-2 py-1"
                     title="Negrito"
-                    onClick={() => document.execCommand("bold")}
+                    onClick={() => document.execCommand('bold')}
                   >
                     B
                   </button>
@@ -512,7 +471,7 @@ export const AdminConfiguracoes: React.FC = () => {
                     type="button"
                     className="orx-button px-2 py-1"
                     title="Itálico"
-                    onClick={() => document.execCommand("italic")}
+                    onClick={() => document.execCommand('italic')}
                   >
                     I
                   </button>
@@ -520,7 +479,7 @@ export const AdminConfiguracoes: React.FC = () => {
                     type="button"
                     className="orx-button px-2 py-1"
                     title="Sublinhado"
-                    onClick={() => document.execCommand("underline")}
+                    onClick={() => document.execCommand('underline')}
                   >
                     U
                   </button>
@@ -531,7 +490,7 @@ export const AdminConfiguracoes: React.FC = () => {
                     onClick={() => {
                       if (editorRef.current) {
                         const sel = window.getSelection();
-                        const variable = "{{cliente.nome}}";
+                        const variable = '{{cliente.nome}}';
                         const node = document.createTextNode(variable);
                         if (sel && sel.rangeCount > 0) {
                           const range = sel.getRangeAt(0);
@@ -544,16 +503,14 @@ export const AdminConfiguracoes: React.FC = () => {
                       }
                     }}
                   >
-                    {"{ }"}
+                    {'{ }'}
                   </button>
                 </div>
                 <div
                   ref={editorRef}
                   contentEditable
                   className="orx-card p-3 rounded-lg min-h-[220px] focus:outline-none"
-                  onInput={(e) =>
-                    setTemplateHtml((e.target as HTMLDivElement).innerHTML)
-                  }
+                  onInput={(e) => setTemplateHtml((e.target as HTMLDivElement).innerHTML)}
                   aria-label="Editor de template"
                 />
               </div>

@@ -27,7 +27,7 @@ interface Empresa {
 export function useAuth() {
   // Importar contexto para compatibilidade
   const authContext = useAuthContext();
-  
+
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [empresaAtual, setEmpresaAtual] = useState<Empresa | null>(null);
@@ -51,28 +51,31 @@ export function useAuth() {
     }
   }, []);
 
-  const loadProfile = useCallback(async (userId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
+  const loadProfile = useCallback(
+    async (userId: string) => {
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', userId)
+          .single();
 
-      if (error) throw error;
-      setProfile(data);
-      if (data?.empresa_id) {
-        await loadEmpresa(data.empresa_id);
-      } else {
-        setEmpresaAtual(null);
+        if (error) throw error;
+        setProfile(data);
+        if (data?.empresa_id) {
+          await loadEmpresa(data.empresa_id);
+        } else {
+          setEmpresaAtual(null);
+        }
+      } catch (error) {
+        const err = error as Error;
+        console.error('Error loading profile:', err);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      const err = error as Error;
-      console.error('Error loading profile:', err);
-    } finally {
-      setLoading(false);
-    }
-  }, [loadEmpresa]);
+    },
+    [loadEmpresa]
+  );
 
   useEffect(() => {
     const loadSessionAndProfile = async () => {
@@ -181,20 +184,23 @@ export function useAuth() {
     updateProfile,
     isAuthenticated: !!user,
     isAdmin: profile?.role === 'admin',
-    
+
     // AuthContext (compatibilidade com novos hooks)
-    usuario: authContext?.usuario || (user ? {
-      id: user.id,
-      email: user.email || '',
-      nome_completo: profile?.full_name || '',
-      cargo: profile?.role || '',
-      empresa_id: empresaAtual?.id || '',
-      empresa_nome: empresaAtual?.nome,
-      avatar_url: profile?.avatar_url,
-    } : null),
+    usuario:
+      authContext?.usuario ||
+      (user
+        ? {
+            id: user.id,
+            email: user.email || '',
+            nome_completo: profile?.full_name || '',
+            cargo: profile?.role || '',
+            empresa_id: empresaAtual?.id || '',
+            empresa_nome: empresaAtual?.nome,
+            avatar_url: profile?.avatar_url,
+          }
+        : null),
     permissoes: authContext?.permissoes || [],
     temPermissao: authContext?.temPermissao || (() => false),
     temAcessoRecurso: authContext?.temAcessoRecurso || (() => false),
   };
 }
-

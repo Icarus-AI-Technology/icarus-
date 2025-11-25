@@ -1,4 +1,113 @@
-import React,{useState} from"react";
-import {Card,CardHeader,CardTitle,CardContent,Badge} from"@/components/oraclusx-ds";
-import {GraduationCap,Users,BookOpen,Award,Settings,TrendingUp} from"lucide-react";
-export const TreinamentoEquipes:React.FC=()=>{const [a,setA]=useState("geral");const cats=[{id:"geral",label:"Geral",icon:GraduationCap,count:124,trend:"+15"},{id:"det",label:"Detalhes",icon:Users,count:89,trend:"+8"},{id:"ana",label:"Analytics",icon:BookOpen,count:56,trend:"+12"},{id:"cfg",label:"Config",icon:Award,count:34,trend:"+5"}];const kpis=[{title:"Total",value:"303",trend:"+40",icon:GraduationCap,color:"blue"},{title:"Taxa",value:"97.2%",trend:"+2%",icon:Users,color:"green"},{title:"IA",value:"97.2%",trend:"on",icon:Settings,color:"indigo"},{title:"Perf",value:"98%",trend:"+1%",icon:TrendingUp,color:"yellow"}];return (<div className="min-h-screen p-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"><div className="max-w-7xl mx-auto"><header className="mb-6 flex items-start justify-between"><div><h1 className="text-heading-lg font-display text-primary dark:text-gray-100 mb-2">Treinamento Equipes IA</h1><p className="text-secondary dark:text-muted">Sistema IA</p></div><div className="flex items-center gap-2 px-4 py-2 bg-primary rounded-full"><Settings className="text-inverse animate-spin-slow" size={20}/><div className="text-left"><p className="text-inverse text-body-sm" style={{ fontWeight: 500 }}>IA</p><p className="text-indigo-100 text-body-xs">97.2%</p></div></div></header><div className="mb-6"><div className="grid grid-cols-2 md:grid-cols-4 gap-3">{cats.map((c)=>{const I=c.icon;const act=a===c.id;return (<button key={c.id} onClick={()=>setA(c.id)} className={`p-4 rounded-xl transition-all ${act?"bg-primary text-inverse shadow-lg":"bg-surface dark:bg-card hover:shadow-md"}`}><div className="flex flex-col items-center gap-2"><div className={`p-2 rounded-lg ${act?"bg-surface/20":"bg-surface dark:bg-muted"}`}><I size={24}/></div><div className="text-center"><p className="text-body-xs mb-1" style={{ fontWeight: 500 }}>{c.label}</p><span className="text-heading font-display" style={{ fontSize: '0.813rem' }}>{c.count}</span></div></div></button>);})}</div></div><div className="grid gap-4 md:grid-cols-4 mb-6">{kpis.map((k,i)=>{const I=k.icon;const cols={blue:"bg-blue-100 dark:bg-blue-900/30 text-accent",green:"bg-success/10 dark:bg-green-900/30 text-success",indigo:"bg-indigo-100 dark:bg-indigo-900/30 text-primary",yellow:"bg-warning/10 dark:bg-yellow-900/30 text-warning"};return (<Card key={i} padding="md"><div className="flex items-start justify-between"><div><p className="text-body-sm text-secondary dark:text-muted">{k.title}</p><p className="text-heading font-display text-primary dark:text-gray-100 mt-1">{k.value}</p><Badge variant="default" size="sm" className="mt-2">{k.trend}</Badge></div><div className={`p-3 rounded-lg ${cols[k.color as keyof typeof cols]}`}><I size={24}/></div></div></Card>);})}</div><Card><CardHeader><CardTitle>Treinamento Equipes IA</CardTitle></CardHeader><CardContent><div className="text-center py-12"><GraduationCap size={64} className="mx-auto text-muted mb-4"/><p className="text-secondary dark:text-muted">Módulo educacional IA</p></div></CardContent></Card></div></div>);};export default TreinamentoEquipes;
+import React, { useState } from 'react';
+import { Card, CardHeader, CardTitle, CardContent, Badge } from '@/components/oraclusx-ds';
+import { GraduationCap, Users, BookOpen, Award, Settings, TrendingUp } from 'lucide-react';
+export const TreinamentoEquipes: React.FC = () => {
+  const [a, setA] = useState('geral');
+  const cats = [
+    { id: 'geral', label: 'Geral', icon: GraduationCap, count: 124, trend: '+15' },
+    { id: 'det', label: 'Detalhes', icon: Users, count: 89, trend: '+8' },
+    { id: 'ana', label: 'Analytics', icon: BookOpen, count: 56, trend: '+12' },
+    { id: 'cfg', label: 'Config', icon: Award, count: 34, trend: '+5' },
+  ];
+  const kpis = [
+    { title: 'Total', value: '303', trend: '+40', icon: GraduationCap, color: 'blue' },
+    { title: 'Taxa', value: '97.2%', trend: '+2%', icon: Users, color: 'green' },
+    { title: 'IA', value: '97.2%', trend: 'on', icon: Settings, color: 'indigo' },
+    { title: 'Perf', value: '98%', trend: '+1%', icon: TrendingUp, color: 'yellow' },
+  ];
+  return (
+    <div className="min-h-screen p-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="max-w-7xl mx-auto">
+        <header className="mb-6 flex items-start justify-between">
+          <div>
+            <h1 className="text-heading-lg font-display text-primary dark:text-gray-100 mb-2">
+              Treinamento Equipes IA
+            </h1>
+            <p className="text-secondary dark:text-muted">Sistema IA</p>
+          </div>
+          <div className="flex items-center gap-2 px-4 py-2 bg-primary rounded-full">
+            <Settings className="text-inverse animate-spin-slow" size={20} />
+            <div className="text-left">
+              <p className="text-inverse text-body-sm" style={{ fontWeight: 500 }}>
+                IA
+              </p>
+              <p className="text-indigo-100 text-body-xs">97.2%</p>
+            </div>
+          </div>
+        </header>
+        <div className="mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {cats.map((c) => {
+              const I = c.icon;
+              const act = a === c.id;
+              return (
+                <button
+                  key={c.id}
+                  onClick={() => setA(c.id)}
+                  className={`p-4 rounded-xl transition-all ${act ? 'bg-primary text-inverse shadow-lg' : 'bg-surface dark:bg-card hover:shadow-md'}`}
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <div
+                      className={`p-2 rounded-lg ${act ? 'bg-surface/20' : 'bg-surface dark:bg-muted'}`}
+                    >
+                      <I size={24} />
+                    </div>
+                    <div className="text-center">
+                      <p className="text-body-xs mb-1" style={{ fontWeight: 500 }}>
+                        {c.label}
+                      </p>
+                      <span className="text-heading font-display" style={{ fontSize: '0.813rem' }}>
+                        {c.count}
+                      </span>
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div className="grid gap-4 md:grid-cols-4 mb-6">
+          {kpis.map((k, i) => {
+            const I = k.icon;
+            const cols = {
+              blue: 'bg-blue-100 dark:bg-blue-900/30 text-accent',
+              green: 'bg-success/10 dark:bg-green-900/30 text-success',
+              indigo: 'bg-indigo-100 dark:bg-indigo-900/30 text-primary',
+              yellow: 'bg-warning/10 dark:bg-yellow-900/30 text-warning',
+            };
+            return (
+              <Card key={i} padding="md">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="text-body-sm text-secondary dark:text-muted">{k.title}</p>
+                    <p className="text-heading font-display text-primary dark:text-gray-100 mt-1">
+                      {k.value}
+                    </p>
+                    <Badge variant="default" size="sm" className="mt-2">
+                      {k.trend}
+                    </Badge>
+                  </div>
+                  <div className={`p-3 rounded-lg ${cols[k.color as keyof typeof cols]}`}>
+                    <I size={24} />
+                  </div>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Treinamento Equipes IA</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-center py-12">
+              <GraduationCap size={64} className="mx-auto text-muted mb-4" />
+              <p className="text-secondary dark:text-muted">Módulo educacional IA</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
+export default TreinamentoEquipes;

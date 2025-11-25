@@ -2,7 +2,7 @@
 
 /**
  * ICARUS v5.0 - Divisor de Migrações
- * 
+ *
  * Divide o arquivo consolidado em 10 blocos menores para facilitar aplicação
  */
 
@@ -35,10 +35,10 @@ for (let i = 0; i < BLOCKS; i++) {
   const start = i * linesPerBlock;
   const end = Math.min((i + 1) * linesPerBlock, lines.length);
   const blockLines = lines.slice(start, end);
-  
+
   const blockNumber = String(i + 1).padStart(2, '0');
   const outputFile = `${OUTPUT_DIR}/block_${blockNumber}.sql`;
-  
+
   const header = `-- ╔════════════════════════════════════════════════════════════════════════╗
 -- ║  ICARUS v5.0 - Bloco ${blockNumber} de ${BLOCKS}                                          ║
 -- ║  Linhas: ${start + 1} → ${end}                                                      ║
@@ -46,9 +46,9 @@ for (let i = 0; i < BLOCKS; i++) {
 
 ${blockLines.join('\n')}
 `;
-  
+
   writeFileSync(outputFile, header);
-  
+
   console.log(`✅ Bloco ${blockNumber}: ${outputFile} (${blockLines.length} linhas)`);
 }
 
@@ -65,4 +65,3 @@ for (let i = 1; i <= BLOCKS; i++) {
 console.log('\n3. Aguarde a execução de cada bloco antes do próximo');
 console.log('4. Verifique logs para erros (alguns esperados)');
 console.log('\n✅ Blocos gerados com sucesso!');
-

@@ -3,16 +3,25 @@
  * Monitoramento e métricas de APIs externas e internas
  */
 
-import { useState } from"react";
-import { CheckCircle, XCircle, Zap, TrendingUp, AlertTriangle, Server, Globe, Database } from"lucide-react";
-import { ModulePage } from "@/components/templates/ModulePage";
+import { useState } from 'react';
+import {
+  CheckCircle,
+  XCircle,
+  Zap,
+  TrendingUp,
+  AlertTriangle,
+  Server,
+  Globe,
+  Database,
+} from 'lucide-react';
+import { ModulePage } from '@/components/templates/ModulePage';
 
 interface API {
   id: string;
   nome: string;
   endpoint: string;
-  tipo:"interna" |"externa";
-  status:"healthy" |"degraded" |"down";
+  tipo: 'interna' | 'externa';
+  status: 'healthy' | 'degraded' | 'down';
   latenciaMedia: number;
   requestsHoje: number;
   taxaSucesso: number;
@@ -20,134 +29,134 @@ interface API {
 }
 
 export default function APIGatewayDashboard() {
-  const [selectedPeriod, setSelectedPeriod] = useState<string>("hoje");
+  const [selectedPeriod, setSelectedPeriod] = useState<string>('hoje');
 
   // Mock data - APIs
   const apis: API[] = [
     {
-      id:"1",
-      nome:"SEFAZ - NF-e",
-      endpoint:"https://nfe.fazenda.gov.br/api/v1",
-      tipo:"externa",
-      status:"healthy",
+      id: '1',
+      nome: 'SEFAZ - NF-e',
+      endpoint: 'https://nfe.fazenda.gov.br/api/v1',
+      tipo: 'externa',
+      status: 'healthy',
       latenciaMedia: 245,
       requestsHoje: 1247,
       taxaSucesso: 99.2,
-      ultimoCheck:"2025-10-20T16:45:00",
+      ultimoCheck: '2025-10-20T16:45:00',
     },
     {
-      id:"2",
-      nome:"ANVISA - Rastreabilidade",
-      endpoint:"https://portal.anvisa.gov.br/api/v2",
-      tipo:"externa",
-      status:"healthy",
+      id: '2',
+      nome: 'ANVISA - Rastreabilidade',
+      endpoint: 'https://portal.anvisa.gov.br/api/v2',
+      tipo: 'externa',
+      status: 'healthy',
       latenciaMedia: 512,
       requestsHoje: 847,
       taxaSucesso: 98.5,
-      ultimoCheck:"2025-10-20T16:44:00",
+      ultimoCheck: '2025-10-20T16:44:00',
     },
     {
-      id:"3",
-      nome:"ViaCEP",
-      endpoint:"https://viacep.com.br/ws",
-      tipo:"externa",
-      status:"healthy",
+      id: '3',
+      nome: 'ViaCEP',
+      endpoint: 'https://viacep.com.br/ws',
+      tipo: 'externa',
+      status: 'healthy',
       latenciaMedia: 89,
       requestsHoje: 2341,
       taxaSucesso: 99.8,
-      ultimoCheck:"2025-10-20T16:45:00",
+      ultimoCheck: '2025-10-20T16:45:00',
     },
     {
-      id:"4",
-      nome:"Receita Federal",
-      endpoint:"https://www.receitafederal.gov.br/api",
-      tipo:"externa",
-      status:"degraded",
+      id: '4',
+      nome: 'Receita Federal',
+      endpoint: 'https://www.receitafederal.gov.br/api',
+      tipo: 'externa',
+      status: 'degraded',
       latenciaMedia: 1842,
       requestsHoje: 456,
       taxaSucesso: 87.3,
-      ultimoCheck:"2025-10-20T16:43:00",
+      ultimoCheck: '2025-10-20T16:43:00',
     },
     {
-      id:"5",
-      nome:"CFM - Validação CRM",
-      endpoint:"https://portal.cfm.org.br/api",
-      tipo:"externa",
-      status:"healthy",
+      id: '5',
+      nome: 'CFM - Validação CRM',
+      endpoint: 'https://portal.cfm.org.br/api',
+      tipo: 'externa',
+      status: 'healthy',
       latenciaMedia: 654,
       requestsHoje: 123,
       taxaSucesso: 96.8,
-      ultimoCheck:"2025-10-20T16:45:00",
+      ultimoCheck: '2025-10-20T16:45:00',
     },
     {
-      id:"6",
-      nome:"Supabase - Database",
-      endpoint:"https://[project].supabase.co",
-      tipo:"interna",
-      status:"healthy",
+      id: '6',
+      nome: 'Supabase - Database',
+      endpoint: 'https://[project].supabase.co',
+      tipo: 'interna',
+      status: 'healthy',
       latenciaMedia: 45,
       requestsHoje: 18924,
       taxaSucesso: 99.9,
-      ultimoCheck:"2025-10-20T16:45:00",
+      ultimoCheck: '2025-10-20T16:45:00',
     },
   ];
 
   const kpis = [
     {
-      title:"APIs Monitoradas",
-      value:"6",
-      trend:"100%",
+      title: 'APIs Monitoradas',
+      value: '6',
+      trend: '100%',
       icon: Globe,
-      iconBg:"linear-gradient(135deg, var(--orx-primary), var(--orx-primary-hover))",
-      color:"var(--orx-primary)",
+      iconBg: 'linear-gradient(135deg, var(--orx-primary), var(--orx-primary-hover))',
+      color: 'var(--orx-primary)',
     },
     {
-      title:"Uptime Médio",
-      value:"99.2%",
-      trend:"+0.3%",
+      title: 'Uptime Médio',
+      value: '99.2%',
+      trend: '+0.3%',
       icon: CheckCircle,
-      iconBg:"linear-gradient(135deg, var(--orx-success), #059669)",
-      color:"var(--orx-success)",
+      iconBg: 'linear-gradient(135deg, var(--orx-success), #059669)',
+      color: 'var(--orx-success)',
     },
     {
-      title:"Latência Média",
-      value:"245ms",
-      trend:"-12ms",
+      title: 'Latência Média',
+      value: '245ms',
+      trend: '-12ms',
       icon: Zap,
-      iconBg:"linear-gradient(135deg, var(--orx-warning), #D97706)",
-      color:"var(--orx-warning)",
+      iconBg: 'linear-gradient(135deg, var(--orx-warning), #D97706)',
+      color: 'var(--orx-warning)',
     },
     {
-      title:"Requests Hoje",
-      value:"23.9K",
-      trend:"+15%",
+      title: 'Requests Hoje',
+      value: '23.9K',
+      trend: '+15%',
       icon: TrendingUp,
-      iconBg:"linear-gradient(135deg, var(--orx-purple-500), #7C3AED)",
-      color:"var(--orx-purple-500)",
+      iconBg: 'linear-gradient(135deg, var(--orx-purple-500), #7C3AED)',
+      color: 'var(--orx-purple-500)',
     },
   ];
 
   const getStatusColor = (status: string) => {
     const colors = {
-      healthy:"var(--orx-success)",
-      degraded:"var(--orx-warning)",
-      down:"var(--orx-error)",
+      healthy: 'var(--orx-success)',
+      degraded: 'var(--orx-warning)',
+      down: 'var(--orx-error)',
     };
-    return colors[status as keyof typeof colors] ||"var(--orx-gray-500)";
+    return colors[status as keyof typeof colors] || 'var(--orx-gray-500)';
   };
 
   const getStatusLabel = (status: string) => {
     const labels = {
-      healthy:"Saudável",
-      degraded:"Degradado",
-      down:"Offline",
+      healthy: 'Saudável',
+      degraded: 'Degradado',
+      down: 'Offline',
     };
     return labels[status as keyof typeof labels] || status;
   };
 
   const getStatusIcon = (status: string) => {
-    if (status ==="healthy") return CheckCircle;
-    if (status ==="degraded") return AlertTriangle;
+    if (status === 'healthy') return CheckCircle;
+    if (status === 'degraded') return AlertTriangle;
     return XCircle;
   };
 
@@ -163,12 +172,12 @@ export default function APIGatewayDashboard() {
             onChange={(e) => setSelectedPeriod(e.target.value)}
             className="px-4 py-2 rounded-xl"
             style={{
-              background:"var(--orx-bg-light)",
-              boxShadow:"0 2px 4px rgba(0, 0, 0, 0.08)",
-              border:"1px solid rgba(99, 102, 241, 0.2)",
-              fontSize:"0.813rem",
-              fontFamily:"var(--orx-font-family)",
-              color:"var(--orx-text-primary)",
+              background: 'var(--orx-bg-light)',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.08)',
+              border: '1px solid rgba(99, 102, 241, 0.2)',
+              fontSize: '0.813rem',
+              fontFamily: 'var(--orx-font-family)',
+              color: 'var(--orx-text-primary)',
             }}
           >
             <option value="hoje">Hoje</option>
@@ -187,18 +196,18 @@ export default function APIGatewayDashboard() {
               key={index}
               className="neumorphic-card p-6 rounded-2xl"
               style={{
-                background:"var(--orx-bg-light)",
-                boxShadow:"0 4px 16px rgba(0, 0, 0, 0.06)",
+                background: 'var(--orx-bg-light)',
+                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06)',
               }}
             >
               <div className="flex items-start gap-4 mb-4">
                 <div
                   className="flex items-center justify-center rounded-2xl"
                   style={{
-                    width:"56px",
-                    height:"56px",
+                    width: '56px',
+                    height: '56px',
                     background: kpi.iconBg,
-                    boxShadow:"0 4px 12px rgba(0, 0, 0, 0.1)",
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
                   }}
                 >
                   <kpi.icon size={24} color="#ffffff" strokeWidth={1.5} />
@@ -207,9 +216,9 @@ export default function APIGatewayDashboard() {
                   <p
                     style={{
                       fontSize: '0.813rem',
-                      color:"var(--orx-text-secondary)",
-                      fontFamily:"var(--orx-font-family)",
-                      marginBottom:"0.25rem",
+                      color: 'var(--orx-text-secondary)',
+                      fontFamily: 'var(--orx-font-family)',
+                      marginBottom: '0.25rem',
                     }}
                   >
                     {kpi.title}
@@ -221,8 +230,8 @@ export default function APIGatewayDashboard() {
                   style={{
                     fontSize: '0.813rem',
                     fontWeight: 700,
-                    color:"var(--orx-text-primary)",
-                    fontFamily:"var(--orx-font-family)",
+                    color: 'var(--orx-text-primary)',
+                    fontFamily: 'var(--orx-font-family)',
                     lineHeight: 1,
                   }}
                 >
@@ -235,7 +244,7 @@ export default function APIGatewayDashboard() {
                     fontSize: '0.813rem',
                     fontWeight: 600,
                     color: kpi.color,
-                    fontFamily:"var(--orx-font-family)",
+                    fontFamily: 'var(--orx-font-family)',
                   }}
                 >
                   {kpi.trend}
@@ -254,8 +263,8 @@ export default function APIGatewayDashboard() {
                 key={api.id}
                 className="neumorphic-card p-6 rounded-2xl"
                 style={{
-                  background:"var(--orx-bg-light)",
-                  boxShadow:"0 4px 16px rgba(0, 0, 0, 0.06)",
+                  background: 'var(--orx-bg-light)',
+                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06)',
                 }}
               >
                 {/* Header */}
@@ -264,16 +273,16 @@ export default function APIGatewayDashboard() {
                     <div
                       className="flex items-center justify-center rounded-xl"
                       style={{
-                        width:"48px",
-                        height:"48px",
+                        width: '48px',
+                        height: '48px',
                         background:
-                          api.tipo ==="interna"
-                            ?"linear-gradient(135deg, var(--orx-primary), var(--orx-primary-hover))"
-                            :"linear-gradient(135deg, var(--orx-purple-500), #7C3AED)",
-                        boxShadow:"0 4px 12px rgba(0, 0, 0, 0.1)",
+                          api.tipo === 'interna'
+                            ? 'linear-gradient(135deg, var(--orx-primary), var(--orx-primary-hover))'
+                            : 'linear-gradient(135deg, var(--orx-purple-500), #7C3AED)',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
                       }}
                     >
-                      {api.tipo === "interna" ? (
+                      {api.tipo === 'interna' ? (
                         <Database size={24} color="#ffffff" strokeWidth={1.5} />
                       ) : (
                         <Globe size={24} color="#ffffff" strokeWidth={1.5} />
@@ -284,9 +293,9 @@ export default function APIGatewayDashboard() {
                         style={{
                           fontSize: '0.813rem',
                           fontWeight: 600,
-                          color:"var(--orx-text-primary)",
-                          fontFamily:"var(--orx-font-family)",
-                          marginBottom:"0.25rem",
+                          color: 'var(--orx-text-primary)',
+                          fontFamily: 'var(--orx-font-family)',
+                          marginBottom: '0.25rem',
                         }}
                       >
                         {api.nome}
@@ -294,8 +303,8 @@ export default function APIGatewayDashboard() {
                       <p
                         style={{
                           fontSize: '0.813rem',
-                          color:"var(--orx-text-secondary)",
-                          fontFamily:"var(--orx-font-family)",
+                          color: 'var(--orx-text-secondary)',
+                          fontFamily: 'var(--orx-font-family)',
                         }}
                       >
                         {api.endpoint}
@@ -304,14 +313,14 @@ export default function APIGatewayDashboard() {
                   </div>
                   <span
                     style={{
-                      display:"inline-flex",
-                      alignItems:"center",
-                      gap:"0.5rem",
-                      padding:"0.375rem 0.75rem",
-                      borderRadius:"0.5rem",
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      padding: '0.375rem 0.75rem',
+                      borderRadius: '0.5rem',
                       fontSize: '0.813rem',
                       fontWeight: 600,
-                      fontFamily:"var(--orx-font-family)",
+                      fontFamily: 'var(--orx-font-family)',
                       background: `${getStatusColor(api.status)}15`,
                       color: getStatusColor(api.status),
                     }}
@@ -327,9 +336,9 @@ export default function APIGatewayDashboard() {
                     <p
                       style={{
                         fontSize: '0.813rem',
-                        color:"var(--orx-text-secondary)",
-                        fontFamily:"var(--orx-font-family)",
-                        marginBottom:"0.25rem",
+                        color: 'var(--orx-text-secondary)',
+                        fontFamily: 'var(--orx-font-family)',
+                        marginBottom: '0.25rem',
                       }}
                     >
                       Latência
@@ -338,8 +347,8 @@ export default function APIGatewayDashboard() {
                       style={{
                         fontSize: '0.813rem',
                         fontWeight: 700,
-                        color:"var(--orx-text-primary)",
-                        fontFamily:"var(--orx-font-family)",
+                        color: 'var(--orx-text-primary)',
+                        fontFamily: 'var(--orx-font-family)',
                       }}
                     >
                       {api.latenciaMedia}ms
@@ -349,9 +358,9 @@ export default function APIGatewayDashboard() {
                     <p
                       style={{
                         fontSize: '0.813rem',
-                        color:"var(--orx-text-secondary)",
-                        fontFamily:"var(--orx-font-family)",
-                        marginBottom:"0.25rem",
+                        color: 'var(--orx-text-secondary)',
+                        fontFamily: 'var(--orx-font-family)',
+                        marginBottom: '0.25rem',
                       }}
                     >
                       Requests
@@ -360,20 +369,20 @@ export default function APIGatewayDashboard() {
                       style={{
                         fontSize: '0.813rem',
                         fontWeight: 700,
-                        color:"var(--orx-text-primary)",
-                        fontFamily:"var(--orx-font-family)",
+                        color: 'var(--orx-text-primary)',
+                        fontFamily: 'var(--orx-font-family)',
                       }}
                     >
-                      {api.requestsHoje.toLocaleString("pt-BR")}
+                      {api.requestsHoje.toLocaleString('pt-BR')}
                     </p>
                   </div>
                   <div>
                     <p
                       style={{
                         fontSize: '0.813rem',
-                        color:"var(--orx-text-secondary)",
-                        fontFamily:"var(--orx-font-family)",
-                        marginBottom:"0.25rem",
+                        color: 'var(--orx-text-secondary)',
+                        fontFamily: 'var(--orx-font-family)',
+                        marginBottom: '0.25rem',
                       }}
                     >
                       Sucesso
@@ -382,8 +391,8 @@ export default function APIGatewayDashboard() {
                       style={{
                         fontSize: '0.813rem',
                         fontWeight: 700,
-                        color: api.taxaSucesso >= 95 ?"var(--orx-success)" :"var(--orx-warning)",
-                        fontFamily:"var(--orx-font-family)",
+                        color: api.taxaSucesso >= 95 ? 'var(--orx-success)' : 'var(--orx-warning)',
+                        fontFamily: 'var(--orx-font-family)',
                       }}
                     >
                       {api.taxaSucesso}%
@@ -398,4 +407,3 @@ export default function APIGatewayDashboard() {
     </ModulePage>
   );
 }
-

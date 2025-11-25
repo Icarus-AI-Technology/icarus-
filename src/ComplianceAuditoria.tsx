@@ -2,7 +2,7 @@
  * Compliance & Auditoria Avançado - Módulo Completo
  * Sistema: ICARUS v5.0
  * Design: OraclusX DS Neumorphism Premium 3D
- * 
+ *
  * Funcionalidades:
  * - 12 KPIs estratégicos
  * - 7 Requisitos Abbott (Score 98.2%)
@@ -12,39 +12,74 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { ShieldCheck, FileCheck, AlertTriangle, GraduationCap, Brain, Download, Plus, BarChart3, Award, CheckCircle, Clock, Activity, Sparkles, AlertCircle } from 'lucide-react';
+import {
+  ShieldCheck,
+  FileCheck,
+  AlertTriangle,
+  GraduationCap,
+  Brain,
+  Download,
+  Plus,
+  BarChart3,
+  Award,
+  CheckCircle,
+  Clock,
+  Activity,
+  Sparkles,
+  AlertCircle,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { useCompliance } from '@/hooks';
-import { NeomorphicCard, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/oraclusx-ds/Card';
+import {
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@/components/oraclusx-ds/Card';
 import { Button } from '@/components/oraclusx-ds/Button';
 import { Badge } from '@/components/oraclusx-ds/Badge';
 import { NavigationBar, NavigationTab } from '@/components/oraclusx-ds/NavigationBar';
 import { Modal } from '@/components/oraclusx-ds/Modal';
 import { cn } from '@/lib/utils';
+import { ComplianceAutomaticoAI } from '@/services/compliance/ComplianceAutomaticoAI';
 
 // ============================================
 // HELPER COMPONENTS
 // ============================================
 
-const NeomorphicCard: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => (
-  <div className={cn("neomorphic-card p-6 rounded-2xl transition-all duration-300 ease-in-out","bg-gradient-to-br from-white/90 to-gray-100/80","dark:from-gray-800/95 dark:to-gray-900/90","hover:transform hover:translateY(-2px)",
-    className
-  )}>
+const NeomorphicCard: React.FC<{ children: React.ReactNode; className?: string }> = ({
+  children,
+  className,
+}) => (
+  <div
+    className={cn(
+      'neomorphic-card p-6 rounded-2xl transition-all duration-300 ease-in-out',
+      'bg-gradient-to-br from-white/90 to-gray-100/80',
+      'dark:from-gray-800/95 dark:to-gray-900/90',
+      'hover:transform hover:translateY(-2px)',
+      className
+    )}
+  >
     {children}
   </div>
 );
 
-const NeomorphicIcon: React.FC<{ 
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+const NeomorphicIcon: React.FC<{
+  icon: LucideIcon;
   color: string;
   size?: 'sm' | 'md' | 'lg';
 }> = ({ icon: Icon, color, size = 'md' }) => {
   const sizes = { sm: 'w-9 h-9', md: 'w-12 h-12', lg: 'w-14 h-14' };
   const iconSizes = { sm: 16, md: 20, lg: 24 };
-  
+
   return (
-    <div className={cn("neomorphic-icon-box flex items-center justify-center rounded-xl transition-all duration-300",
-      sizes[size]
-    )} style={{ backgroundColor: `${color}20` }}>
+    <div
+      className={cn(
+        'neomorphic-icon-box flex items-center justify-center rounded-xl transition-all duration-300',
+        sizes[size]
+      )}
+      style={{ backgroundColor: `${color}20` }}
+    >
       <Icon size={iconSizes[size]} className={color} />
     </div>
   );
@@ -52,10 +87,13 @@ const NeomorphicIcon: React.FC<{
 
 // KPICard component removed
 
-const ProgressBar: React.FC<{ value: number; color?: string }> = ({ value, color = 'bg-indigo-500' }) => (
+const ProgressBar: React.FC<{ value: number; color?: string }> = ({
+  value,
+  color = 'bg-indigo-500',
+}) => (
   <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
     <div
-      className={cn("h-full rounded-full transition-all duration-300", color)}
+      className={cn('h-full rounded-full transition-all duration-300', color)}
       style={{ width: `${Math.min(value, 100)}%` }}
     />
   </div>
@@ -63,16 +101,32 @@ const ProgressBar: React.FC<{ value: number; color?: string }> = ({ value, color
 
 const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
   const variants: Record<string, { label: string; color: string; bg: string }> = {
-    conforme: { label: 'Conforme', color: 'text-green-700 dark:text-green-300', bg: 'bg-green-100 dark:bg-green-900/30' },
-    nao_conforme: { label: 'Não Conforme', color: 'text-red-700 dark:text-red-300', bg: 'bg-red-100 dark:bg-red-900/30' },
-    parcial: { label: 'Parcial', color: 'text-yellow-700 dark:text-yellow-300', bg: 'bg-yellow-100 dark:bg-yellow-900/30' },
-    nao_aplicavel: { label: 'N/A', color: 'text-gray-700 dark:text-gray-300', bg: 'bg-gray-100 dark:bg-gray-900/30' }
+    conforme: {
+      label: 'Conforme',
+      color: 'text-green-700 dark:text-green-300',
+      bg: 'bg-green-100 dark:bg-green-900/30',
+    },
+    nao_conforme: {
+      label: 'Não Conforme',
+      color: 'text-red-700 dark:text-red-300',
+      bg: 'bg-red-100 dark:bg-red-900/30',
+    },
+    parcial: {
+      label: 'Parcial',
+      color: 'text-yellow-700 dark:text-yellow-300',
+      bg: 'bg-yellow-100 dark:bg-yellow-900/30',
+    },
+    nao_aplicavel: {
+      label: 'N/A',
+      color: 'text-gray-700 dark:text-gray-300',
+      bg: 'bg-gray-100 dark:bg-gray-900/30',
+    },
   };
-  
+
   const variant = variants[status] || variants.conforme;
-  
+
   return (
-    <Badge variant="default" className={cn(variant.bg, variant.color,"orx-orx-font-medium")}>
+    <Badge variant="default" className={cn(variant.bg, variant.color, 'orx-orx-font-medium')}>
       {variant.label}
     </Badge>
   );
@@ -93,7 +147,7 @@ export const ComplianceAuditoria: React.FC = () => {
     loading,
     metricas,
     scoreAbbott,
-    gerarAlertasIA
+    gerarAlertasIA,
   } = useCompliance();
 
   const [activeTab, setActiveTab] = useState<string>('dashboard');
@@ -103,14 +157,24 @@ export const ComplianceAuditoria: React.FC = () => {
   const tabs: NavigationTab[] = [
     { id: 'dashboard', label: 'Dashboard', icon: <BarChart3 size={18} /> },
     { id: 'abbott', label: 'Compliance Abbott', icon: <ShieldCheck size={18} /> },
-    { id: 'auditorias', label: 'Auditorias', icon: <FileCheck size={18} />, badge: metricas.auditoriasConcluidas },
-    { id: 'ncs', label: 'Não Conformidades', icon: <AlertTriangle size={18} />, badge: metricas.ncAbertas },
+    {
+      id: 'auditorias',
+      label: 'Auditorias',
+      icon: <FileCheck size={18} />,
+      badge: metricas.auditoriasConcluidas,
+    },
+    {
+      id: 'ncs',
+      label: 'Não Conformidades',
+      icon: <AlertTriangle size={18} />,
+      badge: metricas.ncAbertas,
+    },
     { id: 'treinamentos', label: 'Treinamentos', icon: <GraduationCap size={18} /> },
-    { id: 'ia', label: 'Agentes IA', icon: <Brain size={18} />, badge: metricas.agentesAtivos }
+    { id: 'ia', label: 'Agentes IA', icon: <Brain size={18} />, badge: metricas.agentesAtivos },
   ];
 
   // Requisitos Abbott
-  const requisitosAbbott = requisitos.filter(r => r.fabricante === 'abbott');
+  const requisitosAbbott = requisitos.filter((r) => r.fabricante === 'abbott');
 
   // ============================================
   // RENDER: HEADER
@@ -119,12 +183,14 @@ export const ComplianceAuditoria: React.FC = () => {
   const renderHeader = () => (
     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
       <div>
-        <h1 className="text-foreground" style={{ fontWeight: 700, fontSize: '0.813rem' }}>Compliance & Auditoria Avançado</h1>
+        <h1 className="text-foreground" style={{ fontWeight: 700, fontSize: '0.813rem' }}>
+          Compliance & Auditoria Avançado
+        </h1>
         <p className="text-muted-foreground mt-1">
           Gestão regulatória completa com compliance Abbott, ISO 13485 e ANVISA
         </p>
       </div>
-      
+
       <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
         <Button
           variant="default"
@@ -156,10 +222,14 @@ export const ComplianceAuditoria: React.FC = () => {
       <NeomorphicCard className="border-l-4 border-indigo-500">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-foreground mb-2" style={{ fontWeight: 600, fontSize: '0.813rem' }}>Score Global Abbott Brasil</h3>
+            <h3 className="text-foreground mb-2" style={{ fontWeight: 600, fontSize: '0.813rem' }}>
+              Score Global Abbott Brasil
+            </h3>
             <div className="flex items-baseline gap-2">
-              <span className="text-indigo-600" style={{ fontWeight: 700, fontSize: '0.813rem' }}>{scoreAbbott.score.toFixed(1)}%</span>
-              <Badge variant="success" className style={{ fontSize: '0.813rem' }}>
+              <span className="text-indigo-600" style={{ fontWeight: 700, fontSize: '0.813rem' }}>
+                {scoreAbbott.score.toFixed(1)}%
+              </span>
+              <Badge variant="success" style={{ fontSize: '0.813rem' }}>
                 Distribuidor Platinum
               </Badge>
             </div>
@@ -195,24 +265,43 @@ export const ComplianceAuditoria: React.FC = () => {
         <NeomorphicCard className="border-l-4 border-yellow-500">
           <div className="flex items-center gap-3 mb-4">
             <Sparkles className="w-5 h-5 text-yellow-500" />
-            <h3 className="text-foreground" style={{ fontWeight: 600 }}>Alertas Inteligentes (IA)</h3>
+            <h3 className="text-foreground" style={{ fontWeight: 600 }}>
+              Alertas Inteligentes (IA)
+            </h3>
             <Badge variant="warning" className="ml-auto">
-              {alertas.filter(a => a.status === 'novo' || a.status === 'visualizado').length} pendentes
+              {alertas.filter((a) => a.status === 'novo' || a.status === 'visualizado').length}{' '}
+              pendentes
             </Badge>
           </div>
           <div className="space-y-3">
-            {alertas.slice(0, 3).map(alerta => (
-              <div key={alerta.id} className={cn("p-3 rounded-lg border-l-2",
-                alerta.severidade === 'critico' ? 'bg-red-50 dark:bg-red-900/20 border-red-500' :
-                alerta.severidade === 'urgente' ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-500' :
-                'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-500'
-              )}>
+            {alertas.slice(0, 3).map((alerta) => (
+              <div
+                key={alerta.id}
+                className={cn(
+                  'p-3 rounded-lg border-l-2',
+                  alerta.severidade === 'critico'
+                    ? 'bg-red-50 dark:bg-red-900/20 border-red-500'
+                    : alerta.severidade === 'urgente'
+                      ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-500'
+                      : 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-500'
+                )}
+              >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <h4 className="text-foreground" style={{ fontWeight: 500, fontSize: '0.813rem' }}>{alerta.titulo}</h4>
-                    <p className="text-muted-foreground mt-1" style={{ fontSize: '0.813rem' }}>{alerta.descricao}</p>
+                    <h4
+                      className="text-foreground"
+                      style={{ fontWeight: 500, fontSize: '0.813rem' }}
+                    >
+                      {alerta.titulo}
+                    </h4>
+                    <p className="text-muted-foreground mt-1" style={{ fontSize: '0.813rem' }}>
+                      {alerta.descricao}
+                    </p>
                     {alerta.acao_sugerida && (
-                      <p className="text-foreground mt-2" style={{ fontWeight: 500, fontSize: '0.813rem' }}>
+                      <p
+                        className="text-foreground mt-2"
+                        style={{ fontWeight: 500, fontSize: '0.813rem' }}
+                      >
                         💡 {alerta.acao_sugerida}
                       </p>
                     )}
@@ -247,10 +336,10 @@ export const ComplianceAuditoria: React.FC = () => {
   const renderAbbott = () => (
     <div className="space-y-6">
       {/* Score Global */}
-      <NeomorphicCard>
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h3 className="text-foreground" style={{ fontWeight: 700, fontSize: '0.813rem' }}>
+      <NeomorphicCard >
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="text-foreground" style={{ fontWeight: 700, fontSize: '0.813rem' }}>
               Score Global: {scoreAbbott.score.toFixed(1)}%
             </h3>
             <p className="text-muted-foreground">
@@ -266,85 +355,145 @@ export const ComplianceAuditoria: React.FC = () => {
 
       {/* Requisitos Abbott */}
       <div className="space-y-4">
-        {requisitosAbbott.length > 0 ? requisitosAbbott.map((req) => (
-          <NeomorphicCard key={req.id} className="border-l-4 border-indigo-500">
-            <div className="space-y-4">
-              {/* Header */}
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <Badge variant="default" className="bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300">
-                      {req.codigo}
-                    </Badge>
-                    <h3 className="text-foreground" style={{ fontWeight: 600, fontSize: '0.813rem' }}>{req.titulo}</h3>
+        {requisitosAbbott.length > 0 ? (
+          requisitosAbbott.map((req) => (
+            <NeomorphicCard  key={req.id} className="border-l-4 border-indigo-500">
+              <div className="space-y-4">
+                {/* Header */}
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Badge
+                        variant="default"
+                        className="bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300"
+                      >
+                        {req.codigo}
+                      </Badge>
+                      <h3
+                        className="text-foreground"
+                        style={{ fontWeight: 600, fontSize: '0.813rem' }}
+                      >
+                        {req.titulo}
+                      </h3>
+                    </div>
+                    <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>
+                      {req.descricao}
+                    </p>
                   </div>
-                  <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>{req.descricao}</p>
+                  <div className="text-right ml-4">
+                    <div
+                      className="text-foreground"
+                      style={{ fontWeight: 700, fontSize: '0.813rem' }}
+                    >
+                      {req.score_conformidade.toFixed(1)}%
+                    </div>
+                    <StatusBadge status={req.status} />
+                  </div>
                 </div>
-                <div className="text-right ml-4">
-                  <div className="text-foreground" style={{ fontWeight: 700, fontSize: '0.813rem' }}>{req.score_conformidade.toFixed(1)}%</div>
-                  <StatusBadge status={req.status} />
+
+                {/* Progress */}
+                <ProgressBar
+                  value={req.score_conformidade}
+                  color={
+                    req.score_conformidade >= 95
+                      ? 'bg-green-500'
+                      : req.score_conformidade >= 85
+                        ? 'bg-yellow-500'
+                        : 'bg-red-500'
+                  }
+                />
+
+                {/* Detalhes */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <div>
+                    <h4
+                      className="text-muted-foreground uppercase mb-2"
+                      style={{ fontWeight: 600, fontSize: '0.813rem' }}
+                    >
+                      Evidências
+                    </h4>
+                    {req.evidencias && req.evidencias.length > 0 ? (
+                      <ul className="space-y-1">
+                        {req.evidencias.map((ev, i) => (
+                          <li
+                            key={i}
+                            className="text-foreground flex items-start gap-2"
+                            style={{ fontSize: '0.813rem' }}
+                          >
+                            <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span>{ev}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>
+                        Nenhuma evidência registrada
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <h4
+                      className="text-muted-foreground uppercase mb-2"
+                      style={{ fontWeight: 600, fontSize: '0.813rem' }}
+                    >
+                      Responsável
+                    </h4>
+                    <p className="text-foreground" style={{ fontSize: '0.813rem' }}>
+                      {req.responsavel || 'Não atribuído'}
+                    </p>
+                    {req.responsavel_cargo && (
+                      <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>
+                        {req.responsavel_cargo}
+                      </p>
+                    )}
+                    {req.proxima_auditoria && (
+                      <div className="mt-3">
+                        <h4
+                          className="text-muted-foreground uppercase mb-1"
+                          style={{ fontWeight: 600, fontSize: '0.813rem' }}
+                        >
+                          Próxima Auditoria
+                        </h4>
+                        <p
+                          className="text-foreground flex items-center gap-2"
+                          style={{ fontSize: '0.813rem' }}
+                        >
+                          <Clock size={14} />
+                          {new Date(req.proxima_auditoria).toLocaleDateString('pt-BR')}
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
 
-              {/* Progress */}
-              <ProgressBar 
-                value={req.score_conformidade} 
-                color={req.score_conformidade >= 95 ? 'bg-green-500' : req.score_conformidade >= 85 ? 'bg-yellow-500' : 'bg-red-500'}
-              />
-
-              {/* Detalhes */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                <div>
-                  <h4 className="text-muted-foreground uppercase mb-2" style={{ fontWeight: 600, fontSize: '0.813rem' }}>Evidências</h4>
-                  {req.evidencias && req.evidencias.length > 0 ? (
+                {/* Ações Corretivas */}
+                {req.acoes_corretivas && req.acoes_corretivas.length > 0 && (
+                  <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <h4
+                      className="text-muted-foreground uppercase mb-2"
+                      style={{ fontWeight: 600, fontSize: '0.813rem' }}
+                    >
+                      Ações Corretivas
+                    </h4>
                     <ul className="space-y-1">
-                      {req.evidencias.map((ev, i) => (
-                        <li key={i} className="text-foreground flex items-start gap-2" style={{ fontSize: '0.813rem' }}>
-                          <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                          <span>{ev}</span>
+                      {req.acoes_corretivas.map((acao, i) => (
+                        <li
+                          key={i}
+                          className="text-orange-600 dark:text-orange-400 flex items-start gap-2"
+                          style={{ fontSize: '0.813rem' }}
+                        >
+                          <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                          <span>{acao}</span>
                         </li>
                       ))}
                     </ul>
-                  ) : (
-                    <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>Nenhuma evidência registrada</p>
-                  )}
-                </div>
-                <div>
-                  <h4 className="text-muted-foreground uppercase mb-2" style={{ fontWeight: 600, fontSize: '0.813rem' }}>Responsável</h4>
-                  <p className="text-foreground" style={{ fontSize: '0.813rem' }}>{req.responsavel || 'Não atribuído'}</p>
-                  {req.responsavel_cargo && (
-                    <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>{req.responsavel_cargo}</p>
-                  )}
-                  {req.proxima_auditoria && (
-                    <div className="mt-3">
-                      <h4 className="text-muted-foreground uppercase mb-1" style={{ fontWeight: 600, fontSize: '0.813rem' }}>Próxima Auditoria</h4>
-                      <p className="text-foreground flex items-center gap-2" style={{ fontSize: '0.813rem' }}>
-                        <Clock size={14} />
-                        {new Date(req.proxima_auditoria).toLocaleDateString('pt-BR')}
-                      </p>
-                    </div>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
-
-              {/* Ações Corretivas */}
-              {req.acoes_corretivas && req.acoes_corretivas.length > 0 && (
-                <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <h4 className="text-muted-foreground uppercase mb-2" style={{ fontWeight: 600, fontSize: '0.813rem' }}>Ações Corretivas</h4>
-                  <ul className="space-y-1">
-                    {req.acoes_corretivas.map((acao, i) => (
-                      <li key={i} className="text-orange-600 dark:text-orange-400 flex items-start gap-2" style={{ fontSize: '0.813rem' }}>
-                        <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                        <span>{acao}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          </NeomorphicCard>
-        )) : (
-          <NeomorphicCard>
+            </NeomorphicCard>
+          ))
+        ) : (
+          <NeomorphicCard >
             <p className="text-center text-muted-foreground py-8">
               Nenhum requisito Abbott cadastrado
             </p>
@@ -366,7 +515,7 @@ export const ComplianceAuditoria: React.FC = () => {
         {/* KPICard removido - usar estatísticas inline */}
       </div>
 
-      <NeomorphicCard>
+      <NeomorphicCard >
         <CardHeader>
           <CardTitle>Histórico de Auditorias</CardTitle>
           <CardDescription>Auditorias internas e externas realizadas</CardDescription>
@@ -374,13 +523,18 @@ export const ComplianceAuditoria: React.FC = () => {
         <CardContent>
           {auditorias.length > 0 ? (
             <div className="space-y-3">
-              {auditorias.map(aud => (
-                <div key={aud.id} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+              {auditorias.map((aud) => (
+                <div
+                  key={aud.id}
+                  className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg"
+                >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <h4 className="text-foreground" style={{ fontWeight: 500 }}>{aud.titulo}</h4>
+                      <h4 className="text-foreground" style={{ fontWeight: 500 }}>
+                        {aud.titulo}
+                      </h4>
                       <div className="flex items-center gap-3 mt-1">
-                        <Badge variant="default" className style={{ fontSize: '0.813rem' }}>
+                        <Badge variant="default" style={{ fontSize: '0.813rem' }}>
                           {aud.tipo}
                         </Badge>
                         <span className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>
@@ -421,7 +575,7 @@ export const ComplianceAuditoria: React.FC = () => {
         {/* KPICard removido - usar estatísticas inline */}
       </div>
 
-      <NeomorphicCard>
+      <NeomorphicCard >
         <CardHeader>
           <CardTitle>Não Conformidades (NCs)</CardTitle>
           <CardDescription>Sistema CAPA - Ações corretivas e preventivas</CardDescription>
@@ -429,22 +583,33 @@ export const ComplianceAuditoria: React.FC = () => {
         <CardContent>
           {naoConformidades.length > 0 ? (
             <div className="space-y-3">
-              {naoConformidades.slice(0, 10).map(nc => (
-                <div key={nc.id} className={cn("p-4 border-l-4 rounded-lg",
-                  nc.severidade === 'critica' ? 'border-red-500 bg-red-50/50 dark:bg-red-900/10' :
-                  nc.severidade === 'maior' ? 'border-orange-500 bg-orange-50/50 dark:bg-orange-900/10' :
-                  nc.severidade === 'menor' ? 'border-yellow-500 bg-yellow-50/50 dark:bg-yellow-900/10' :
-                  'border-gray-500 bg-gray-50/50 dark:bg-gray-900/10'
-                )}>
+              {naoConformidades.slice(0, 10).map((nc) => (
+                <div
+                  key={nc.id}
+                  className={cn(
+                    'p-4 border-l-4 rounded-lg',
+                    nc.severidade === 'critica'
+                      ? 'border-red-500 bg-red-50/50 dark:bg-red-900/10'
+                      : nc.severidade === 'maior'
+                        ? 'border-orange-500 bg-orange-50/50 dark:bg-orange-900/10'
+                        : nc.severidade === 'menor'
+                          ? 'border-yellow-500 bg-yellow-50/50 dark:bg-yellow-900/10'
+                          : 'border-gray-500 bg-gray-50/50 dark:bg-gray-900/10'
+                  )}
+                >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <Badge variant="default" className style={{ fontSize: '0.813rem' }}>
+                        <Badge variant="default" style={{ fontSize: '0.813rem' }}>
                           {nc.codigo_nc}
                         </Badge>
-                        <h4 className="text-foreground" style={{ fontWeight: 500 }}>{nc.titulo}</h4>
+                        <h4 className="text-foreground" style={{ fontWeight: 500 }}>
+                          {nc.titulo}
+                        </h4>
                       </div>
-                      <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>{nc.descricao_completa}</p>
+                      <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>
+                        {nc.descricao_completa}
+                      </p>
                       {nc.causa_raiz && (
                         <p className="text-foreground mt-2" style={{ fontSize: '0.813rem' }}>
                           <strong>Causa Raiz:</strong> {nc.causa_raiz}
@@ -452,11 +617,15 @@ export const ComplianceAuditoria: React.FC = () => {
                       )}
                     </div>
                     <div className="text-right ml-4">
-                      <Badge variant={
-                        nc.severidade === 'critica' ? 'error' :
-                        nc.severidade === 'maior' ? 'warning' :
-                        'default'
-                      }>
+                      <Badge
+                        variant={
+                          nc.severidade === 'critica'
+                            ? 'error'
+                            : nc.severidade === 'maior'
+                              ? 'warning'
+                              : 'default'
+                        }
+                      >
                         {nc.severidade}
                       </Badge>
                       <p className="text-muted-foreground mt-1" style={{ fontSize: '0.813rem' }}>
@@ -468,7 +637,9 @@ export const ComplianceAuditoria: React.FC = () => {
               ))}
             </div>
           ) : (
-            <p className="text-center text-muted-foreground py-8">Nenhuma não conformidade registrada</p>
+            <p className="text-center text-muted-foreground py-8">
+              Nenhuma não conformidade registrada
+            </p>
           )}
         </CardContent>
       </NeomorphicCard>
@@ -487,7 +658,7 @@ export const ComplianceAuditoria: React.FC = () => {
         {/* KPICard removido - usar estatísticas inline */}
       </div>
 
-      <NeomorphicCard>
+      <NeomorphicCard >
         <CardHeader>
           <CardTitle>Treinamentos e Certificações</CardTitle>
           <CardDescription>Programa de capacitação e certificação</CardDescription>
@@ -495,13 +666,18 @@ export const ComplianceAuditoria: React.FC = () => {
         <CardContent>
           {treinamentos.length > 0 ? (
             <div className="space-y-3">
-              {treinamentos.map(trein => (
-                <div key={trein.id} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+              {treinamentos.map((trein) => (
+                <div
+                  key={trein.id}
+                  className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg"
+                >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <h4 className="text-foreground" style={{ fontWeight: 500 }}>{trein.titulo}</h4>
+                      <h4 className="text-foreground" style={{ fontWeight: 500 }}>
+                        {trein.titulo}
+                      </h4>
                       <div className="flex items-center gap-3 mt-1">
-                        <Badge variant="default" className style={{ fontSize: '0.813rem' }}>
+                        <Badge variant="default" style={{ fontSize: '0.813rem' }}>
                           {trein.tipo}
                         </Badge>
                         <span className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>
@@ -542,11 +718,13 @@ export const ComplianceAuditoria: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {agentesIA.map(agente => (
-          <NeomorphicCard key={agente.id} className="border-l-4 border-cyan-500">
+        {agentesIA.map((agente) => (
+          <NeomorphicCard  key={agente.id} className="border-l-4 border-cyan-500">
             <div className="flex items-start justify-between mb-4">
               <div>
-                <h3 className="text-foreground" style={{ fontWeight: 600 }}>{agente.nome}</h3>
+                <h3 className="text-foreground" style={{ fontWeight: 600 }}>
+                  {agente.nome}
+                </h3>
                 <Badge variant="default" className="mt-1" style={{ fontSize: '0.813rem' }}>
                   {agente.tipo}
                 </Badge>
@@ -559,25 +737,40 @@ export const ComplianceAuditoria: React.FC = () => {
             <div className="space-y-3">
               <div className="flex justify-between" style={{ fontSize: '0.813rem' }}>
                 <span className="text-muted-foreground">Taxa de Acerto</span>
-                <span className="text-foreground" style={{ fontWeight: 600 }}>{agente.taxa_acerto.toFixed(1)}%</span>
+                <span className="text-foreground" style={{ fontWeight: 600 }}>
+                  {agente.taxa_acerto.toFixed(1)}%
+                </span>
               </div>
               <ProgressBar value={agente.taxa_acerto} color="bg-cyan-500" />
 
               <div className="grid grid-cols-2 gap-4 pt-3">
                 <div>
-                  <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>Alertas Gerados</p>
-                  <p className="text-foreground" style={{ fontWeight: 600, fontSize: '0.813rem' }}>{agente.alertas_gerados}</p>
+                  <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>
+                    Alertas Gerados
+                  </p>
+                  <p className="text-foreground" style={{ fontWeight: 600, fontSize: '0.813rem' }}>
+                    {agente.alertas_gerados}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>Ações Sugeridas</p>
-                  <p className="text-foreground" style={{ fontWeight: 600, fontSize: '0.813rem' }}>{agente.acoes_sugeridas}</p>
+                  <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>
+                    Ações Sugeridas
+                  </p>
+                  <p className="text-foreground" style={{ fontWeight: 600, fontSize: '0.813rem' }}>
+                    {agente.acoes_sugeridas}
+                  </p>
                 </div>
               </div>
 
               {agente.ultima_execucao && (
                 <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
-                  <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>Última Execução</p>
-                  <p className="text-foreground flex items-center gap-2 mt-1" style={{ fontSize: '0.813rem' }}>
+                  <p className="text-muted-foreground" style={{ fontSize: '0.813rem' }}>
+                    Última Execução
+                  </p>
+                  <p
+                    className="text-foreground flex items-center gap-2 mt-1"
+                    style={{ fontSize: '0.813rem' }}
+                  >
                     <Activity size={14} />
                     {new Date(agente.ultima_execucao).toLocaleString('pt-BR')}
                   </p>
@@ -589,7 +782,7 @@ export const ComplianceAuditoria: React.FC = () => {
       </div>
 
       {agentesIA.length === 0 && (
-        <NeomorphicCard>
+        <NeomorphicCard >
           <div className="text-center py-12">
             <Brain className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
             <p className="text-muted-foreground">Nenhum agente de IA ativo</p>
@@ -617,18 +810,14 @@ export const ComplianceAuditoria: React.FC = () => {
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         {renderHeader()}
-        
+
         {/* Navigation Tabs */}
-        <NavigationBar
-          tabs={tabs}
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-        />
-        
+        <NavigationBar tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+
         {/* Tab Content */}
         <div className="mt-6">
           {loading ? (
-            <NeomorphicCard>
+            <NeomorphicCard >
               <div className="text-center py-12">
                 <p className="text-muted-foreground">Carregando...</p>
               </div>
@@ -659,9 +848,7 @@ export const ComplianceAuditoria: React.FC = () => {
             <Button variant="default" onClick={() => setIsNovaAuditoriaOpen(false)}>
               Cancelar
             </Button>
-            <Button variant="primary">
-              Agendar
-            </Button>
+            <Button variant="primary">Agendar</Button>
           </div>
         </div>
       </Modal>
@@ -670,4 +857,3 @@ export const ComplianceAuditoria: React.FC = () => {
 };
 
 export default ComplianceAuditoria;
-

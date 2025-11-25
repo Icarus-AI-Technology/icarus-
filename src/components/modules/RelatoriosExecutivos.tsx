@@ -3,8 +3,8 @@
  * Dashboards executivos e indicadores estratégicos
  */
 
-import { useState } from"react";
-import { Card } from"@/components/oraclusx-ds";
+import { useState } from 'react';
+import { Card } from '@/components/oraclusx-ds';
 import {
   BarChart3,
   TrendingUp,
@@ -14,27 +14,27 @@ import {
   DollarSign,
   Activity,
   Download,
-} from"lucide-react";
-import { useDocumentTitle } from"@/hooks";
+} from 'lucide-react';
+import { useDocumentTitle } from '@/hooks';
 
 export default function RelatoriosExecutivos() {
-  useDocumentTitle("Relatórios Executivos");
-  const [activeCategory, setActiveCategory] = useState("dashboard");
+  useDocumentTitle('Relatórios Executivos');
+  const [activeCategory, setActiveCategory] = useState('dashboard');
 
   const categories = [
-    { id:"dashboard", label:"Dashboard", icon: BarChart3, count: 0, trend:"+0" },
-    { id:"estrategico", label:"Estratégico", icon: Target, count: 0, trend:"+0" },
-    { id:"operacional", label:"Operacional", icon: Activity, count: 0, trend:"+0" },
-    { id:"comercial", label:"Comercial", icon: DollarSign, count: 0, trend:"+0" },
-    { id:"performance", label:"Performance", icon: Award, count: 0, trend:"+0" },
-    { id:"export", label:"Exportar", icon: Download, count: 0, trend:"+0" },
+    { id: 'dashboard', label: 'Dashboard', icon: BarChart3, count: 0, trend: '+0' },
+    { id: 'estrategico', label: 'Estratégico', icon: Target, count: 0, trend: '+0' },
+    { id: 'operacional', label: 'Operacional', icon: Activity, count: 0, trend: '+0' },
+    { id: 'comercial', label: 'Comercial', icon: DollarSign, count: 0, trend: '+0' },
+    { id: 'performance', label: 'Performance', icon: Award, count: 0, trend: '+0' },
+    { id: 'export', label: 'Exportar', icon: Download, count: 0, trend: '+0' },
   ];
 
   const kpis = [
-    { title:"ROI", value:"0%", trend:"+0%", icon: Target, color:"green" },
-    { title:"Growth Rate", value:"0%", trend:"+0%", icon: TrendingUp, color:"blue" },
-    { title:"Market Share", value:"0%", trend:"+0%", icon: Award, color:"indigo" },
-    { title:"NPS Score", value:"0", trend:"+0", icon: Users, color:"purple" },
+    { title: 'ROI', value: '0%', trend: '+0%', icon: Target, color: 'green' },
+    { title: 'Growth Rate', value: '0%', trend: '+0%', icon: TrendingUp, color: 'blue' },
+    { title: 'Market Share', value: '0%', trend: '+0%', icon: Award, color: 'indigo' },
+    { title: 'NPS Score', value: '0', trend: '+0', icon: Users, color: 'purple' },
   ];
 
   return (
@@ -42,14 +42,18 @@ export default function RelatoriosExecutivos() {
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-heading-lg font-display text-[var(--text-primary)] mb-2">Relatórios Executivos</h1>
+            <h1 className="text-heading-lg font-display text-[var(--text-primary)] mb-2">
+              Relatórios Executivos
+            </h1>
             <p className="text-[var(--text-secondary)]">
               Dashboards executivos com indicadores estratégicos e análises C-Level
             </p>
           </div>
           <div className="px-4 py-2 rounded-xl neuro-raised flex items-center gap-2">
             <Award className="w-4 h-4 text-[var(--primary)]" />
-            <span className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">C-Level</span>
+            <span className="text-body-sm text-[var(--text-primary)] orx-orx-font-medium">
+              C-Level
+            </span>
           </div>
         </div>
 
@@ -59,13 +63,19 @@ export default function RelatoriosExecutivos() {
               key={category.id}
               onClick={() => setActiveCategory(category.id)}
               className={`flex flex-col items-center justify-center h-24 text-center rounded-xl transition-all duration-200 ${
-                activeCategory === category.id ?"neuro-raised scale-105" :"neuro-flat hover:neuro-raised"
+                activeCategory === category.id
+                  ? 'neuro-raised scale-105'
+                  : 'neuro-flat hover:neuro-raised'
               }`}
             >
               <category.icon className="w-5 h-5 mb-1 text-[var(--primary)]" />
-              <span className="text-body-xs text-[var(--text-primary)] orx-orx-font-medium">{category.label}</span>
+              <span className="text-body-xs text-[var(--text-primary)] orx-orx-font-medium">
+                {category.label}
+              </span>
               <div className="flex items-center gap-1 mt-1">
-                <span className="text-body-lg font-display text-[var(--text-primary)]">{category.count}</span>
+                <span className="text-body-lg font-display text-[var(--text-primary)]">
+                  {category.count}
+                </span>
               </div>
             </button>
           ))}
@@ -77,7 +87,9 @@ export default function RelatoriosExecutivos() {
               <div className="flex items-start justify-between h-full">
                 <div>
                   <p className="text-body-sm text-[var(--text-secondary)] mb-1">{kpi.title}</p>
-                  <h3 className="text-heading font-display text-[var(--text-primary)]">{kpi.value}</h3>
+                  <h3 className="text-heading font-display text-[var(--text-primary)]">
+                    {kpi.value}
+                  </h3>
                   <p className="text-body-xs text-success mt-2 flex items-center gap-1">
                     <TrendingUp className="w-3 h-3" />
                     {kpi.trend}
@@ -93,11 +105,12 @@ export default function RelatoriosExecutivos() {
 
         <Card className="neuro-raised p-12 text-center">
           <BarChart3 className="w-16 h-16 text-[var(--text-secondary)] mx-auto mb-4" />
-          <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 orx-orx-font-medium">Relatórios Executivos</h3>
+          <h3 className="text-heading-sm text-[var(--text-primary)] mb-2 orx-orx-font-medium">
+            Relatórios Executivos
+          </h3>
           <p className="text-[var(--text-secondary)]">Módulo em desenvolvimento</p>
         </Card>
       </div>
     </div>
   );
 }
-
